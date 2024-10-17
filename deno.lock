@@ -1,6 +1,10 @@
 {
   "version": "4",
   "specifiers": {
+    "jsr:@std/assert@*": "1.0.6",
+    "jsr:@std/assert@^1.0.6": "1.0.6",
+    "jsr:@std/internal@^1.0.4": "1.0.4",
+    "jsr:@std/testing@*": "1.0.3",
     "npm:@eslint/js@^9.11.1": "9.12.0",
     "npm:@types/react-dom@^18.3.0": "18.3.1",
     "npm:@types/react@^18.3.10": "18.3.11",
@@ -14,6 +18,24 @@
     "npm:typescript-eslint@^8.7.0": "8.9.0_@typescript-eslint+parser@8.9.0__eslint@9.12.0__typescript@5.6.3_eslint@9.12.0_typescript@5.6.3",
     "npm:typescript@^5.5.3": "5.6.3",
     "npm:vite@^5.4.8": "5.4.9"
+  },
+  "jsr": {
+    "@std/assert@1.0.6": {
+      "integrity": "1904c05806a25d94fe791d6d883b685c9e2dcd60e4f9fc30f4fc5cf010c72207",
+      "dependencies": [
+        "jsr:@std/internal"
+      ]
+    },
+    "@std/internal@1.0.4": {
+      "integrity": "62e8e4911527e5e4f307741a795c0b0a9e6958d0b3790716ae71ce085f755422"
+    },
+    "@std/testing@1.0.3": {
+      "integrity": "f98c2bee53860a5916727d7e7d3abe920dd6f9edace022e2d059f00d05c2cf42",
+      "dependencies": [
+        "jsr:@std/assert@^1.0.6",
+        "jsr:@std/internal"
+      ]
+    }
   },
   "npm": {
     "@ampproject/remapping@2.3.0": {
@@ -1228,9 +1250,12 @@
     "packageJson": {
       "dependencies": [
         "npm:@eslint/js@^9.11.1",
+        "npm:@types/cors@^2.8.17",
         "npm:@types/express@5",
         "npm:@types/react-dom@^18.3.0",
         "npm:@types/react@^18.3.10",
+        "npm:@types/supertest@^6.0.2",
+        "npm:@types/uuid@10",
         "npm:@vitejs/plugin-react@^4.3.2",
         "npm:awilix@^12.0.2",
         "npm:cors@^2.8.5",
@@ -1240,8 +1265,10 @@
         "npm:eslint@^9.11.1",
         "npm:express@^4.21.1",
         "npm:globals@^15.9.0",
+        "npm:helmet@8",
         "npm:react-dom@^18.3.1",
         "npm:react@^18.3.1",
+        "npm:supertest@7",
         "npm:typescript-eslint@^8.7.0",
         "npm:typescript@^5.5.3",
         "npm:uuid@10",

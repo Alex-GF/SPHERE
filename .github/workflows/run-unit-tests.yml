@@ -1,0 +1,19 @@
+name: Unit Tests Run
+on:
+  push:
+    branches:
+      - "**"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.0
+
+      - name: Run Tests
+        run: deno task test

@@ -11,7 +11,7 @@ class UserController {
     this.getAll = this.getAll.bind(this);
   }
 
-  async getAll(req: Request, res: Response): Promise<void> {
+  async getAll(_: Request, res: Response): Promise<void> {
     try {
       const userList = await this.userService.getAll();
       res.json(userList);
