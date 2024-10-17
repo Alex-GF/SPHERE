@@ -4,9 +4,12 @@ import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url)
+console.log(__filename)
 const __dirname = path.dirname(__filename)
+console.log(__dirname)
 
 const basename = path.basename(__filename)
+console.log(basename)
 
 const loadRoutes = function (app: express.Application) {
     fs.readdirSync(__dirname)
@@ -15,6 +18,7 @@ const loadRoutes = function (app: express.Application) {
     })
     .forEach(async file => {
       const fileURL = pathToFileURL(path.join(__dirname, file)).href
+      console.log(fileURL)
       const { default: loadFileRoutes } = await import(fileURL)
       loadFileRoutes(app)
     })

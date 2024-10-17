@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export const userData: User[] = [
     {
-        id: "1",
+        id: uuidv4(),
         createdAt: new Date('2023-01-01T10:00:00Z'),
         updatedAt: new Date('2023-01-01T10:00:00Z'),
         email: 'user1@example.com',
@@ -15,7 +15,7 @@ export const userData: User[] = [
         tokenExpiration: null
     },
     {
-        id: "2",
+        id: uuidv4(),
         createdAt: new Date('2023-02-01T10:00:00Z'),
         updatedAt: new Date('2023-02-01T10:00:00Z'),
         email: 'user2@example.com',
@@ -27,7 +27,7 @@ export const userData: User[] = [
         tokenExpiration: null
     },
     {
-        id: "3",
+        id: uuidv4(),
         createdAt: new Date('2023-03-01T10:00:00Z'),
         updatedAt: new Date('2023-03-01T10:00:00Z'),
         email: 'user3@example.com',
@@ -39,7 +39,7 @@ export const userData: User[] = [
         tokenExpiration: null
     },
     {
-        id: "4",
+        id: uuidv4(),
         createdAt: new Date('2023-04-01T10:00:00Z'),
         updatedAt: new Date('2023-04-01T10:00:00Z'),
         email: 'user4@example.com',
