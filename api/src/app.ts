@@ -13,11 +13,11 @@ const bold = "\x1b[1m"; // Negrita
 
 const initializeApp = async () => {
   dotenv.config();
-  const app = express();
+  const app: express.Application = express();
   loadGlobalMiddlewares(app);
   routes(app);
   // initPassport()
-  // app.connection = await initializeDatabase()
+  await initializeDatabase()
   // await postInitializeDatabase(app)
   return app;
 };
@@ -44,6 +44,23 @@ const initializeServer = async (): Promise<{
 
   return { server, app };
 };
+
+const initializeDatabase = async () => {
+  let connection
+  try {
+    switch (process.env.DATABASE_TECHNOLOGY) {
+      case "mockDB":
+        console.log("Connecting to mock database")
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        break
+      default:
+        throw new Error("Unsupported database technology")
+    }
+  } catch (error) {
+    console.error(error)
+  }
+  return connection
+}
 
 const disconnectDatabase = async (app: express.Application) => {
   try {

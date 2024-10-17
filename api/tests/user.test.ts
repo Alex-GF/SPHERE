@@ -12,7 +12,6 @@ describe("Get public user information", () => {
 
   beforeAll(async () => {
     app = await getApp();
-    // await new Promise(resolve => setTimeout(resolve, 5000));
   });
 
   it("Should return 200 and the list of current users in the database", async () => {
