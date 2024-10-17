@@ -15,7 +15,6 @@ const loadRoutes = function (app: express.Application) {
     })
     .forEach(async file => {
       const fileURL = pathToFileURL(path.join(__dirname, file)).href
-      console.log(fileURL)
       const { default: loadFileRoutes } = await import(fileURL)
       loadFileRoutes(app)
     })
