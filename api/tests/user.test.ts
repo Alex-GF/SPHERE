@@ -16,6 +16,9 @@ describe("Get public user information", () => {
 
   it("Should return 200 and the list of current users in the database", async () => {
     const response = await request(app).get("/users");
+    if (response.status !== 200) {
+      console.error(response.body);
+    }
     assertEquals(response.status, 200);
     assert(response.body.length > 0);
   });
