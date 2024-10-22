@@ -4,9 +4,7 @@ import Box from '@mui/material/Box';
 
 import { HEADER } from './config-layout';
 import { useResponsive } from '../../hooks/useResponsive';
-
-
-const SPACING = 8;
+import { flex } from '../../theme/css';
 
 export default function Main({ children, sx, ...other } : { children: React.ReactNode, sx?: object }) {
   const lgUp = useResponsive('up', 'lg');
@@ -15,18 +13,8 @@ export default function Main({ children, sx, ...other } : { children: React.Reac
     <Box
       component="main"
       sx={{
-        flexGrow: 1,
-        minHeight: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        pt: `${HEADER.H_MOBILE + SPACING}px`,
-        ...(lgUp && {
-          px: 0,
-          pt: `${HEADER.H_DESKTOP + SPACING}px`,
-          // width: `calc(100% - ${NAV.WIDTH}px)`, This width should be used if nav is finally configured
-          width: `100%`,
-        }),
-        height: `calc(100vh - ${HEADER.H_MOBILE + SPACING}px)`,
+        ...flex({}),
+        height: `calc(100vh - ${lgUp ? HEADER.H_DESKTOP : HEADER.H_MOBILE}px)`,
         ...sx,
       }}
       {...other}

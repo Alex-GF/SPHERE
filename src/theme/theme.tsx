@@ -19,7 +19,7 @@ export default function MasspThemeProvider({ children }: { children: React.React
 
   return (
     <ThemeProvider theme={theme}>
-      <CssBaseline />
+      <CssBaseline/>
       {children}
     </ThemeProvider>
   );

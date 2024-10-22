@@ -75,6 +75,10 @@ export const common = {
   white: '#FFFFFF',
 };
 
+export const header= {
+  background: '#1B1B1B',
+}
+
 export const action = {
   hover: alpha(grey[500], 0.08),
   selected: alpha(grey[500], 0.16),
@@ -94,6 +98,7 @@ const base = {
   error,
   grey,
   common,
+  header,
   divider: alpha(grey[500], 0.2),
   action,
 };

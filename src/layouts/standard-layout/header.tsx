@@ -13,6 +13,7 @@ import AccountPopover from './common/account-popover';
 import Iconify from '../../components/iconify';
 import { useResponsive } from '../../hooks/useResponsive';
 import { bgBlur } from '../../theme/css';
+import { header } from '../../theme/palette';
 
 
 export default function Header({ onOpenNav } : { onOpenNav?: () => void }) {
@@ -41,11 +42,12 @@ export default function Header({ onOpenNav } : { onOpenNav?: () => void }) {
   return (
     <AppBar
       sx={{
+        position: 'inherit',
         boxShadow: 'none',
         height: HEADER.H_MOBILE,
         zIndex: theme.zIndex.appBar + 1,
         ...bgBlur({
-          color: theme.palette.background.default,
+          color: header.background,
         }),
         transition: theme.transitions.create(['height'], {
           duration: theme.transitions.duration.shorter,
