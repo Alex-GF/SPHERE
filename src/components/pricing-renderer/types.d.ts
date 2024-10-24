@@ -34,5 +34,6 @@ interface RenderingStyles {
 
 interface PricingProps {
   pricing: Pricing;
+  errors: string[];
   style?: RenderingStyles;
 }

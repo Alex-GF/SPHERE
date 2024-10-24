@@ -11,6 +11,7 @@
     "npm:@iconify/react@^5.0.2": "5.0.2_react@18.3.1",
     "npm:@monaco-editor/react@^4.6.0": "4.6.0_monaco-editor@0.52.0_react@18.3.1_react-dom@18.3.1__react@18.3.1",
     "npm:@mui/material@^6.1.4": "6.1.5_@emotion+react@11.13.3__react@18.3.1_@emotion+styled@11.13.0__@emotion+react@11.13.3___react@18.3.1__react@18.3.1_@types+react@18.3.11_react@18.3.1_react-dom@18.3.1__react@18.3.1",
+    "npm:@mui/system@^6.1.5": "6.1.5_@emotion+react@11.13.3__react@18.3.1_@emotion+styled@11.13.0__@emotion+react@11.13.3___react@18.3.1__react@18.3.1_@types+react@18.3.11_react@18.3.1",
     "npm:@types/cors@^2.8.17": "2.8.17",
     "npm:@types/crypto-js@^4.2.2": "4.2.2",
     "npm:@types/express@5": "5.0.0",
@@ -18,6 +19,7 @@
     "npm:@types/react-dom@^18.3.0": "18.3.1",
     "npm:@types/react-helmet@^6.1.11": "6.1.11",
     "npm:@types/react-router-dom@^5.3.3": "5.3.3",
+    "npm:@types/react-transition-group@^4.4.11": "4.4.11",
     "npm:@types/react@^18.3.10": "18.3.11",
     "npm:@types/supertest@^6.0.2": "6.0.2",
     "npm:@types/uuid@10": "10.0.0",
@@ -38,6 +40,8 @@
     "npm:react-dom@^18.3.1": "18.3.1_react@18.3.1",
     "npm:react-helmet@^6.1.0": "6.1.0_react@18.3.1",
     "npm:react-router-dom@^6.27.0": "6.27.0_react@18.3.1_react-dom@18.3.1__react@18.3.1",
+    "npm:react-svg@^16.1.34": "16.1.34_react@18.3.1_react-dom@18.3.1__react@18.3.1",
+    "npm:react-transition-group@^4.4.5": "4.4.5_react@18.3.1_react-dom@18.3.1__react@18.3.1",
     "npm:react@^18.3.1": "18.3.1",
     "npm:supertest@7": "7.0.0",
     "npm:typescript-eslint@^8.7.0": "8.9.0_@typescript-eslint+parser@8.9.0__eslint@9.12.0__typescript@5.6.3_eslint@9.12.0_typescript@5.6.3",
@@ -673,6 +677,14 @@
     },
     "@rollup/rollup-win32-x64-msvc@4.24.0": {
       "integrity": "sha512-fbMkAF7fufku0N2dE5TBXcNlg0pt0cJue4xBRE2Qc5Vqikxr4VCgKj/ht6SMdFcOacVA9rqF70APJ8RN/4vMJw=="
+    },
+    "@tanem/svg-injector@10.1.68": {
+      "integrity": "sha512-UkJajeR44u73ujtr5GVSbIlELDWD/mzjqWe54YMK61ljKxFcJoPd9RBSaO7xj02ISCWUqJW99GjrS+sVF0UnrA==",
+      "dependencies": [
+        "@babel/runtime",
+        "content-type",
+        "tslib"
+      ]
     },
     "@types/babel__core@7.20.5": {
       "integrity": "sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA==",
@@ -2465,6 +2477,17 @@
         "react"
       ]
     },
+    "react-svg@16.1.34_react@18.3.1_react-dom@18.3.1__react@18.3.1": {
+      "integrity": "sha512-L4ak1qNFLgzVbHm0xQEpHoIOqb3um/B0ybahd3U2TKoGZxb0JaPVI5lsAhvSng2P1kcsYEok2Z7RpcKx7arJGw==",
+      "dependencies": [
+        "@babel/runtime",
+        "@tanem/svg-injector",
+        "@types/prop-types",
+        "prop-types",
+        "react",
+        "react-dom"
+      ]
+    },
     "react-transition-group@4.4.5_react@18.3.1_react-dom@18.3.1__react@18.3.1": {
       "integrity": "sha512-pZcd1MCJoiKiBR2NRxeCRg13uCXbydPnmB4EOeRrY7480qNWO8IIgQG6zlDkm6uRMsURXPuKq0GWtiM59a5Q6g==",
       "dependencies": [
@@ -2897,6 +2920,7 @@
         "npm:@iconify/react@^5.0.2",
         "npm:@monaco-editor/react@^4.6.0",
         "npm:@mui/material@^6.1.4",
+        "npm:@mui/system@^6.1.5",
         "npm:@types/cors@^2.8.17",
         "npm:@types/crypto-js@^4.2.2",
         "npm:@types/express@5",
@@ -2904,6 +2928,7 @@
         "npm:@types/react-dom@^18.3.0",
         "npm:@types/react-helmet@^6.1.11",
         "npm:@types/react-router-dom@^5.3.3",
+        "npm:@types/react-transition-group@^4.4.11",
         "npm:@types/react@^18.3.10",
         "npm:@types/supertest@^6.0.2",
         "npm:@types/uuid@10",
@@ -2923,7 +2948,10 @@
         "npm:prop-types@^15.8.1",
         "npm:react-dom@^18.3.1",
         "npm:react-helmet@^6.1.0",
+        "npm:react-icons@^5.3.0",
         "npm:react-router-dom@^6.27.0",
+        "npm:react-svg@^16.1.34",
+        "npm:react-transition-group@^4.4.5",
         "npm:react@^18.3.1",
         "npm:supertest@7",
         "npm:typescript-eslint@^8.7.0",

@@ -10,19 +10,20 @@ type LogoProps = {
   sx?: object;
 };
 
-const Logo = forwardRef(
+const ShortLogo = forwardRef(
   ({ disabledLink = false, sx, ...other }: InferProps<LogoProps>, ref) => {
     const logo = (
       <ReactSVG
-        src="./assets/logo/SPHERE-logo.svg"
+        src="./assets/logo/SPHERE-logo-short.svg"
         useRequestCache={true}
         style={{
-          width: 300,
+          width: 75,
           height: "80%",
           cursor: "pointer",
           margin: "0 !important",
           ...sx,
         }}
+        {...other}
       />
     );
 
@@ -38,9 +39,9 @@ const Logo = forwardRef(
   }
 );
 
-Logo.propTypes = {
+ShortLogo.propTypes = {
   disabledLink: PropTypes.bool,
   sx: PropTypes.object,
 };
 
-export default Logo;
+export default ShortLogo;

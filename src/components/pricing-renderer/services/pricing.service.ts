@@ -21,7 +21,8 @@ function initializeData(
   items: (Feature | UsageLimit)[],
   plansLength: number,
   pricingData: PricingData,
-  formattedNames: FormattedNamesProp = {}
+  formattedNames: FormattedNamesProp = {},
+  errors: string[]
 ) {
   for (let item of items) {
     let isUsageLimit = "unit" in item;
@@ -58,7 +59,7 @@ function initializeData(
     } else if (item.render.toUpperCase() === "DISABLED") {
       continue;
     } else {
-      console.error(`Unknown render mode for '${item.name}'`);
+      errors.push(`Unknown render mode for '${item.name}'`);
     }
   }
 }
@@ -68,7 +69,8 @@ function populateData(
   planIndex: number,
   planName: string,
   pricingData: PricingData,
-  formattedNames: FormattedNamesProp
+  formattedNames: FormattedNamesProp,
+  errors: string[]
 ) {
   for (let item of Object.values(items)) {
     if (!item.render) {
@@ -80,7 +82,7 @@ function populateData(
 
       if ((item.value === null || item.value === undefined) &&
           (item.defaultValue === null || item.defaultValue === undefined)) {
-        console.error(
+        errors.push(
           `Missing value for '${formattedName}' in plan ${planName}`
         );
       }
@@ -95,14 +97,14 @@ function populateData(
         continue;
       }
     } else {
-      console.error(`Unknown render mode for '${item.name}'`);
+      errors.push(`Unknown render mode for '${item.name}'`);
     }
   }
 
   return pricingData;
 }
 
-export function getPricingData(pricing: Pricing) {
+export function getPricingData(pricing: Pricing, errors: string[]) {
   let pricingData: PricingData = {};
 
   let formattedNames: FormattedNamesProp = {};
@@ -111,13 +113,13 @@ export function getPricingData(pricing: Pricing) {
     pricing.usageLimits ?? [],
     pricing.plans.length,
     pricingData,
-    formattedNames
+    formattedNames, errors
   );
   initializeData(
     pricing.features,
     pricing.plans.length,
     pricingData,
-    formattedNames
+    formattedNames, errors
   );
 
   for (let i = 0; i < pricing.plans.length; i++) {
@@ -127,9 +129,9 @@ export function getPricingData(pricing: Pricing) {
       i,
       plan.name,
       pricingData,
-      formattedNames
+      formattedNames, errors
     );
-    populateData(plan.features, i, plan.name, pricingData, formattedNames);
+    populateData(plan.features, i, plan.name, pricingData, formattedNames, errors);
   }
 
   return pricingData;

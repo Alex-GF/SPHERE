@@ -6,7 +6,6 @@ import {
 import { useState } from "react";
 import "./styles.css";
 
-import SelectOfferTab from "./components/select-offer-tab";
 import PlanHeader from "./components/plan-header";
 import PricingElement from "./components/pricing-element";
 import AddOnElement from "./components/addon-element";
@@ -30,21 +29,22 @@ export const DEFAULT_RENDERING_STYLES: RenderingStyles = {
   addonTextColor: "#000000",
 };
 
-export function PricingTheme1({
+export function PricingRenderer({
   pricing,
+  errors,
   style,
 }: Readonly<PricingProps>): JSX.Element {
-  let pricingData: PricingData = getPricingData(pricing);
+  let pricingData: PricingData = getPricingData(pricing, errors);
 
   if (!style) {
     style = {};
   }
 
-  const [selectedBilledType, setSelectedBilledType] =
-    useState<BilledType>("monthly");
-  function handleSwitchTab(tab: BilledType) {
-    setSelectedBilledType(tab);
-  }
+  // const [selectedBilledType, setSelectedBilledType] =
+  //   useState<BilledType>("monthly");
+  // function handleSwitchTab(tab: BilledType) {
+  //   setSelectedBilledType(tab);
+  // }
 
   return (
     <section
@@ -62,7 +62,7 @@ export function PricingTheme1({
             Pricing
           </h1>
         </div> */}
-        {pricing.hasAnnualPayment && (
+        {/* {pricing.hasAnnualPayment && (
           <div className="pricing-page-title">
             <SelectOfferTab
               handleSwitchTab={handleSwitchTab}
@@ -70,7 +70,7 @@ export function PricingTheme1({
               style={style}
             />
           </div>
-        )}
+        )} */}
         <table className="pricing-table">
           <thead>
             <tr>
@@ -110,8 +110,8 @@ export function PricingTheme1({
               <h1>Add-Ons</h1>
             </div>
             <div className="add-ons-container">
-              {pricing.addOns.map((addOn) => {
-                return <AddOnElement addOn={addOn} currency={pricing.currency} selectedBilledType={selectedBilledType} style={style}/>;
+              {pricing.addOns.map((addOn, index) => {
+                return <AddOnElement addOn={addOn} currency={pricing.currency} style={style} key={index}/>;
               })}
             </div>
           </>

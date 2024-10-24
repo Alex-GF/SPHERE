@@ -1,76 +1,200 @@
-import PropTypes from 'prop-types';
+import { useEffect, useState } from "react";
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  Typography,
+  Menu,
+  Container,
+  Avatar,
+  Button,
+  Tooltip,
+  MenuItem,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+} from "@mui/material";
+import { alpha, styled } from "@mui/system";
+import { FaBars, FaTimes, FaUser } from "react-icons/fa";
+import Logo from "../../components/logo";
+import { grey, primary } from "../../theme/palette";
+import { useAuth } from "../../hooks/useAuth";
 
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import { useTheme } from '@mui/material/styles';
-import IconButton from '@mui/material/IconButton';
+const StyledAppBar = styled(AppBar)(() => ({
+  background: grey[100],
+  boxShadow: "0 2px 4px rgba(0,0,0,0.08)",
+}));
 
-// import Searchbar from './common/searchbar';
-import { HEADER } from './config-layout';
-import AccountPopover from './common/account-popover';
-import Iconify from '../../components/iconify';
-import { useResponsive } from '../../hooks/useResponsive';
-import { bgBlur } from '../../theme/css';
-import { header } from '../../theme/palette';
+const StyledToolbar = styled(Toolbar)({
+  display: "flex",
+  justifyContent: "space-between",
+});
 
+const NavItems = styled(Box)(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  gap: "1rem",
+  [theme.breakpoints.down("md")]: {
+    display: "none",
+  },
+}));
 
-export default function Header({ onOpenNav } : { onOpenNav?: () => void }) {
-  const theme = useTheme();
+const MobileNavButton = styled(IconButton)(({ theme }) => ({
+  display: "none",
+  [theme.breakpoints.down("md")]: {
+    display: "block",
+  },
+}));
 
-  const lgUp = useResponsive('up', 'lg');
+const Header = () => {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
 
-  const renderContent = (
-    <>
-      {!lgUp && (
-        <IconButton onClick={onOpenNav} sx={{ mr: 1 }}>
-          <Iconify icon="eva:menu-2-fill" />
-        </IconButton>
-      )}
+  const { authUser } = useAuth();
 
-      {/* <Searchbar /> */}
+  const pages = ["Home", "Products", "About", "Contact"];
+  const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
-      <Box sx={{ flexGrow: 1 }} />
+  const handleOpenUserMenu = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-      <Stack direction="row" alignItems="center" spacing={1}>
-        <AccountPopover />
-      </Stack>
-    </>
-  );
+  const handleCloseUserMenu = () => {
+    setAnchorEl(null);
+  };
+
+  const toggleMobileNav = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  useEffect(() => {
+    console.log(authUser.isAuthenticated);
+  });
 
   return (
-    <AppBar
-      sx={{
-        position: 'inherit',
-        boxShadow: 'none',
-        height: HEADER.H_MOBILE,
-        zIndex: theme.zIndex.appBar + 1,
-        ...bgBlur({
-          color: header.background,
-        }),
-        transition: theme.transitions.create(['height'], {
-          duration: theme.transitions.duration.shorter,
-        }),
-        ...(lgUp && {
-          // width: `calc(100% - ${NAV.WIDTH + 1}px)`, This width should be used if nav is finally configured
-          width: `100%`,
-          height: HEADER.H_DESKTOP,
-        }),
-      } as any}
-    >
-      <Toolbar
-        sx={{
-          height: 1,
-          px: { lg: 5 },
-        }}
-      >
-        {renderContent}
-      </Toolbar>
-    </AppBar>
-  );
-}
+    <StyledAppBar position="sticky">
+      <Container maxWidth="xl">
+        <StyledToolbar>
+          <Logo sx={{fill: primary[800]}}/>
 
-Header.propTypes = {
-  onOpenNav: PropTypes.func,
+          <NavItems>
+            {pages.map((page) => (
+              <Button
+                key={page}
+                sx={{
+                  color: primary[700],
+                  fontWeight: 900,
+                  "&:hover": { color: primary[900], backgroundColor: alpha(primary[100], 0.4) },
+                  textTransform: "none",
+                }}
+                aria-label={`navigate to ${page.toLowerCase()}`}
+              >
+                {page}
+              </Button>
+            ))}
+          </NavItems>
+
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <NavItems>
+              {authUser.isAuthenticated ? (
+                <Tooltip title="Open settings">
+                  <IconButton
+                    onClick={handleOpenUserMenu}
+                    aria-label="user settings"
+                  >
+                    <Avatar sx={{ bgcolor: primary[900] }}>
+                      <FaUser />
+                    </Avatar>
+                  </IconButton>
+                </Tooltip>
+              ) : (
+                <>
+                  <Button
+                    variant="outlined"
+                    sx={{
+                      color: primary[500],
+                      borderColor: primary[500],
+                      "&:hover": {
+                        borderColor: primary[600],
+                        color: primary[600],
+                      },
+                      textTransform: "none",
+                    }}
+                    aria-label="login"
+                  >
+                    Login
+                  </Button>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      bgcolor: primary[800],
+                      color: primary[100],
+                      "&:hover": {
+                        bgcolor: "transparent",
+                        borderColor: primary[600],
+                        color: primary[600],
+                      },
+                      textTransform: "none",
+                    }}
+                    aria-label="register"
+                  >
+                    Register
+                  </Button>
+                </>
+              )}
+            </NavItems>
+
+            <MobileNavButton
+              aria-label="open navigation menu"
+              onClick={toggleMobileNav}
+              sx={{ color: primary[900] }}
+            >
+              {mobileOpen ? <FaTimes /> : <FaBars />}
+            </MobileNavButton>
+
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleCloseUserMenu}
+              transformOrigin={{ horizontal: "right", vertical: "top" }}
+              anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+            >
+              {settings.map((setting) => (
+                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">{setting}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+        </StyledToolbar>
+      </Container>
+
+      <Drawer
+        anchor="right"
+        open={mobileOpen}
+        onClose={toggleMobileNav}
+        sx={{ display: { md: "none" } }}
+      >
+        <Box sx={{ width: 250, pt: 2 }}>
+          <List>
+            {pages.map((page, index) => (
+              <ListItem key={index}>
+                <ListItemText primary={page} />
+              </ListItem>
+            ))}
+            <ListItem>
+              <ListItemText primary="Login" />
+            </ListItem>
+            <ListItem>
+              <ListItemText primary="Register" />
+            </ListItem>
+          </List>
+        </Box>
+      </Drawer>
+    </StyledAppBar>
+  );
 };
+
+export default Header;

@@ -7,6 +7,7 @@ export const HomePage = lazy(() => import("../pages/home"));
 export const Page404 = lazy(() => import("../pages/page-not-found"));
 
 import EditorPage from "../pages/pricing2yaml-editor";
+import EditorLayout from "../layouts/editor-layout";
 
 export default function Router() {
   const routes = useRoutes([
@@ -21,8 +22,17 @@ export default function Router() {
       children: [
         // { element: <HomePage />, index: true },
         {element: <Navigate to="/editor" replace />, index: true},
-        { path: "editor", element: <EditorPage /> },
       ],
+    },
+    {
+      path: "/editor",
+      element: (
+        <EditorLayout>
+          <Suspense fallback={<LoadingView />}>
+            <EditorPage />
+          </Suspense>
+        </EditorLayout>
+      )
     },
     {
       path: "error",

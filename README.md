@@ -1,1 +1,1 @@
-# MASSP - Management, Analysis, and Simulations of SaaS Pricing
+# SPHERE - SaaS Pricing Holistic Evaluation and Regulation Environment

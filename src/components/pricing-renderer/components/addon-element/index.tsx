@@ -1,5 +1,5 @@
 import { AddOn } from "pricing4ts";
-import {BilledType, RenderingStyles} from "../../types";
+import {RenderingStyles} from "../../types";
 import { DEFAULT_RENDERING_STYLES } from "../..";
 import { formatPricingComponentName } from "../../services/pricing.service";
 
@@ -10,7 +10,6 @@ export default function AddOnElement({
   }: Readonly<{
     addOn: AddOn;
     currency: string;
-    selectedBilledType: BilledType;
     style: RenderingStyles;
   }>): JSX.Element {
     return (
