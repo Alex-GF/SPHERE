@@ -1,8 +1,6 @@
 import { useState } from "react";
 import {
-  AppBar,
   Box,
-  Button,
   Container,
   IconButton,
   Menu,
@@ -10,38 +8,39 @@ import {
   Stack,
   Toolbar,
   useMediaQuery,
-  useTheme
+  useTheme,
 } from "@mui/material";
-import { alpha, styled } from "@mui/system";
 import { MdBrightness4, MdBrightness7 } from "react-icons/md";
 import { FaBars } from "react-icons/fa";
-import { grey, primary } from "../../theme/palette";
+import { primary } from "../../theme/palette";
 import ShortLogo from "../../components/short-logo";
+import { StyledAppBar } from "./components/styled-appbar";
+import { StyledButton } from "./components/styled-button";
 import { useMode } from "../../hooks/useTheme";
-
-const StyledAppBar = styled(AppBar)(({mode}: {mode: 'light' | 'dark'}) => ({
-  backgroundColor: mode === 'light' ? grey[100] : "black",
-  boxShadow: "0 2px 4px rgba(0,0,0,0.05)"
-}));
-
-const StyledButton = styled(Button)(({mode}: {mode: 'light' | 'dark'}) => ({
-  textTransform: "none",
-  color: mode === 'light' ? primary[700] : primary[100],
-  fontWeight: 900,
-  "&:hover": {
-    backgroundColor: alpha(primary[100], 0.4),
-    color: mode === 'light' ? primary [800] : primary[500]
-  },
-  transition: "all 0.3s ease"
-}));
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
+
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const {mode, setMode} = useMode();
+  const { mode, setMode } = useMode();
 
-  const menuItems = ["Home", "Products", "Services", "About", "Contact"];
+  const menuItems = [
+    {
+      name: "File",
+      disabled: false,
+      children: [
+        { name: "New", disabled: false, onClick: () => console.log("New") },
+      ],
+    },
+    {
+      name: "About",
+      disabled: false,
+      children: [
+        { name: "Docs", disabled: false, onClick: () => console.log("Docs") },
+      ],
+    },
+  ];
 
   const handleMenuOpen = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -52,14 +51,16 @@ const Header = () => {
   };
 
   const toggleColorMode = () => {
-    setMode(mode === "light"? "dark" : "light");
+    setMode(mode === "light" ? "dark" : "light");
   };
 
   return (
     <StyledAppBar position="sticky" mode={mode}>
-      <Container maxWidth={false} sx={{marginLeft: 0}}>
+      <Container maxWidth={false} sx={{ marginLeft: 0 }}>
         <Toolbar disableGutters>
-          <ShortLogo sx={{ fill: mode === 'light' ? primary[800] : primary[100] }} />
+          <ShortLogo
+            sx={{ fill: mode === "light" ? primary[800] : primary[100] }}
+          />
 
           {isMobile ? (
             <>
@@ -71,7 +72,7 @@ const Header = () => {
                 aria-haspopup="true"
                 onClick={handleMenuOpen}
                 color="inherit"
-                sx={{ color: mode === 'light' ? primary[800] : primary[100] }}
+                sx={{ color: mode === "light" ? primary[800] : primary[100] }}
               >
                 <FaBars />
               </IconButton>
@@ -82,13 +83,16 @@ const Header = () => {
                 onClose={handleMenuClose}
                 sx={{ mt: 1 }}
               >
-                {menuItems.map((item) => (
+                {menuItems.map((item, index) => (
                   <MenuItem
-                    key={item}
+                    key={index}
                     onClick={handleMenuClose}
-                    sx={{ color: mode === 'light'? primary[800] : primary[100], fontWeight: 900 }}
+                    sx={{
+                      color: mode === "light" ? primary[800] : primary[100],
+                      fontWeight: 900,
+                    }}
                   >
-                    {item}
+                    {item.name}
                   </MenuItem>
                 ))}
               </Menu>
@@ -102,21 +106,29 @@ const Header = () => {
                 role="navigation"
                 aria-label="Main navigation"
               >
-                {menuItems.map((item) => (
+                {menuItems.map((item, index) => (
                   <StyledButton
-                    key={item}
-                    aria-label={item}
+                    key={index}
+                    aria-label={item.name}
                     tabIndex={0}
                     mode={mode}
                   >
-                    {item}
+                    {item.name}
                   </StyledButton>
                 ))}
               </Stack>
               <Stack direction="row" spacing={2}>
-              <IconButton sx={{ ml: 1 }} onClick={toggleColorMode} color="inherit">
-                {mode === 'dark' ? <MdBrightness4 fill={primary[100]}/> : <MdBrightness7 fill={primary[800]}/>}
-              </IconButton>
+                <IconButton
+                  sx={{ ml: 1 }}
+                  onClick={toggleColorMode}
+                  color="inherit"
+                >
+                  {mode === "dark" ? (
+                    <MdBrightness4 fill={primary[100]} />
+                  ) : (
+                    <MdBrightness7 fill={primary[800]} />
+                  )}
+                </IconButton>
               </Stack>
             </>
           )}
