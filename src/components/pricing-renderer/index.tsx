@@ -1,11 +1,13 @@
-import { Plan } from 'pricing4ts';
+import { Feature, Plan } from 'pricing4ts';
 import { getPricingData } from './services/pricing.service';
 import './styles.css';
 import { PricingData, PricingProps, RenderingStyles } from './types.d';
 
+import { useMemo } from 'react';
 import AddOnElement from './components/addon-element';
 import PlanHeader from './components/plan-header';
 import PricingElement from './components/pricing-element';
+import { TagFeatureCard } from './components/tag-card';
 
 export const DEFAULT_RENDERING_STYLES: RenderingStyles = {
   plansColor: '#000000',
@@ -32,6 +34,17 @@ export function PricingRenderer({ pricing, errors, style }: Readonly<PricingProp
     style = {};
   }
 
+  const tagFeatures = useMemo(() => {
+    const tagMap = new Map<string, Feature[]>();
+    pricing.features.forEach((feature) => {
+      if (feature.tag) {
+        if (!tagMap.has(feature.tag)) tagMap.set(feature.tag, []);
+        tagMap.get(feature.tag)?.push(feature);
+      }
+    });
+    return tagMap;
+  }, [pricing?.features]);
+
   // const [selectedBilledType, setSelectedBilledType] =
   //   useState<BilledType>("monthly");
   // function handleSwitchTab(tab: BilledType) {
@@ -56,6 +69,12 @@ export function PricingRenderer({ pricing, errors, style }: Readonly<PricingProp
             </div>
             <div>
               <strong>Add-ons:</strong> {pricing.addOns?.length || 0}
+            </div>
+            <div>
+              <strong>Number of subscriptions:</strong> 0
+            </div>
+            <div>
+              <strong>Success rate:</strong> 0.00
             </div>
           </div>
         </div>
@@ -119,6 +138,29 @@ export function PricingRenderer({ pricing, errors, style }: Readonly<PricingProp
                   />
                 );
               })}
+            </div>
+          </>
+        )}
+
+        {tagFeatures && (
+          <>
+            <div
+              className='pricing-page-title'
+              style={{ color: style.headerColor ?? DEFAULT_RENDERING_STYLES.headerColor }}>
+              <h1>Features by Tag</h1>
+            </div>
+            <div className='tag-feature-cards-container' style={{ marginTop: '1rem' }}>
+              {Array.from(tagFeatures.entries()).map(([tag, features]) => (
+                <TagFeatureCard
+                  tag={tag}
+                  features={features}
+                  style={style}
+                  key={tag}
+                  plans={pricing.plans}
+                  currency={pricing.currency}
+                  pricingData={pricingData}
+                />
+              ))}
             </div>
           </>
         )}
