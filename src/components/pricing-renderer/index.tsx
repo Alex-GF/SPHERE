@@ -45,6 +45,16 @@ export function PricingRenderer({ pricing, errors, style }: Readonly<PricingProp
     return tagMap;
   }, [pricing?.features]);
 
+  const featuresWithoutTags = useMemo(() => {
+    return Object.entries(pricingData).filter(([name, _]) => {
+      const normalizedName = name.toLowerCase().replace(/\s+/g, '');
+      const feature = pricing.features.find(
+        (f) => f.name.toLowerCase().replace(/\s+/g, '') === normalizedName
+      );
+      return feature && !feature.tag;
+    });
+  }, [pricing.features, pricingData]);
+
   // const [selectedBilledType, setSelectedBilledType] =
   //   useState<BilledType>("monthly");
   // function handleSwitchTab(tab: BilledType) {
@@ -110,7 +120,7 @@ export function PricingRenderer({ pricing, errors, style }: Readonly<PricingProp
             </tr>
           </thead>
           <tbody className='pricing-body'>
-            {Object.entries(pricingData).map(
+            {featuresWithoutTags.map(
               (
                 [name, values]: [string, { value: string | number | boolean; unit?: string }[]],
                 key: number
