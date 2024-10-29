@@ -10,7 +10,7 @@ interface TagFeatureCardProps {
   plans: Plan[];
   currency: string;
   style: RenderingStyles;
-  pricingData: PricingData; // Recibimos pricingData
+  pricingData: PricingData;
 }
 
 export function TagFeatureCard({

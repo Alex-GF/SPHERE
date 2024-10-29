@@ -120,6 +120,23 @@ export function PricingRenderer({ pricing, errors, style }: Readonly<PricingProp
             )}
           </tbody>
         </table>
+
+        {tagFeatures && (
+          <div className='tag-feature-cards-container' style={{ marginTop: '1rem' }}>
+            {Array.from(tagFeatures.entries()).map(([tag, features]) => (
+              <TagFeatureCard
+                tag={tag}
+                features={features}
+                style={style}
+                key={tag}
+                plans={pricing.plans}
+                currency={pricing.currency}
+                pricingData={pricingData}
+              />
+            ))}
+          </div>
+        )}
+
         {pricing.addOns && (
           <>
             <div
@@ -138,29 +155,6 @@ export function PricingRenderer({ pricing, errors, style }: Readonly<PricingProp
                   />
                 );
               })}
-            </div>
-          </>
-        )}
-
-        {tagFeatures && (
-          <>
-            <div
-              className='pricing-page-title'
-              style={{ color: style.headerColor ?? DEFAULT_RENDERING_STYLES.headerColor }}>
-              <h1>Features by Tag</h1>
-            </div>
-            <div className='tag-feature-cards-container' style={{ marginTop: '1rem' }}>
-              {Array.from(tagFeatures.entries()).map(([tag, features]) => (
-                <TagFeatureCard
-                  tag={tag}
-                  features={features}
-                  style={style}
-                  key={tag}
-                  plans={pricing.plans}
-                  currency={pricing.currency}
-                  pricingData={pricingData}
-                />
-              ))}
             </div>
           </>
         )}
