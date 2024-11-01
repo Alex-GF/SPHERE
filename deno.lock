@@ -35,7 +35,6 @@
     "npm:globals@^15.9.0": "15.11.0",
     "npm:helmet@8": "8.0.0",
     "npm:monaco-editor@0.52": "0.52.0",
-    "npm:pricing4ts@~0.2.2": "0.2.2",
     "npm:prop-types@^15.8.1": "15.8.1",
     "npm:react-dom@^18.3.1": "18.3.1_react@18.3.1",
     "npm:react-helmet@^6.1.0": "6.1.0_react@18.3.1",
@@ -2341,15 +2340,6 @@
     "prelude-ls@1.2.1": {
       "integrity": "sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g=="
     },
-    "pricing4ts@0.2.2": {
-      "integrity": "sha512-GhG8be+rAgqkTIq3D/yTRxx3G53PmwwwF1Mvyx8JS5jkKKvYuaXqeJXe1dlCB1Ppt6WPoCgi0u2SZ+B8kCXgSw==",
-      "dependencies": [
-        "assert",
-        "js-yaml",
-        "semver@7.6.3",
-        "uuid"
-      ]
-    },
     "process-nextick-args@2.0.1": {
       "integrity": "sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag=="
     },
@@ -2944,7 +2934,7 @@
         "npm:globals@^15.9.0",
         "npm:helmet@8",
         "npm:monaco-editor@0.52",
-        "npm:pricing4ts@~0.2.2",
+        "npm:pricing4ts@~0.2.3",
         "npm:prop-types@^15.8.1",
         "npm:react-dom@^18.3.1",
         "npm:react-helmet@^6.1.0",
