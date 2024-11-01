@@ -13,22 +13,16 @@ export default function Router() {
   const routes = useRoutes([
     {
       element: (
-        <StandardLayout>
+        <EditorLayout>
           <Suspense fallback={<LoadingView />}>
             <Outlet />
           </Suspense>
-        </StandardLayout>
+        </EditorLayout>
       ),
       children: [
         // { element: <HomePage />, index: true },
         // {element: <Navigate to="/editor" replace />, index: true},
-        {element: (
-          <EditorLayout>
-            <Suspense fallback={<LoadingView />}>
-              <EditorPage />
-            </Suspense>
-          </EditorLayout>
-        ), index: true},
+        {element: <EditorPage />, index: true},
       ],
     },
     // {
