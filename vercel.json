@@ -1,0 +1,6 @@
+{
+  "build": {
+    "ignoreCommand": "echo Ignoring API folder"
+  },
+  "ignoreFiles": ["api/**"]
+}
