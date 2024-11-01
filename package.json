@@ -12,7 +12,7 @@
     "dev:api": "deno run --allow-env --allow-net --allow-read --allow-sys api/src/backend.ts",
     "dev:vite": "deno run -A npm:vite",
     "test:api": "deno test --allow-env --allow-net --allow-read --allow-sys api/tests/",
-    "deploy:vercel": "sh scripts/deploy-vercel.sh"
+    "deploy:vercel": "vite build"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
