@@ -8,6 +8,7 @@ import AddOnElement from './components/addon-element';
 import PlanHeader from './components/plan-header';
 import PricingElement from './components/pricing-element';
 import { TagFeatureCard } from './components/tag-card';
+import PricingCard from './components/pricing-card';
 
 export const DEFAULT_RENDERING_STYLES: RenderingStyles = {
   plansColor: '#000000',
@@ -67,27 +68,7 @@ export function PricingRenderer({ pricing, errors, style }: Readonly<PricingProp
         backgroundColor: style.backgroundColor ?? DEFAULT_RENDERING_STYLES.backgroundColor,
       }}>
       <div className='container'>
-        {/* Basic Pricing Information */}
-        <div className='pricing-info' style={{ marginBottom: '2rem', textAlign: 'center' }}>
-          <h2 style={{ color: style.headerColor ?? DEFAULT_RENDERING_STYLES.headerColor }}>
-            {pricing?.saasName}
-          </h2>
-          <div
-            style={{ display: 'flex', justifyContent: 'center', gap: '2rem', marginTop: '1rem' }}>
-            <div>
-              <strong>Plans:</strong> {pricing.plans.length}
-            </div>
-            <div>
-              <strong>Add-ons:</strong> {pricing.addOns?.length || 0}
-            </div>
-            <div>
-              <strong>Number of subscriptions:</strong> 0
-            </div>
-            <div>
-              <strong>Success rate:</strong> 0.00
-            </div>
-          </div>
-        </div>
+        <PricingCard pricing={pricing} style={style} defaultStyle={DEFAULT_RENDERING_STYLES}/>
         {/* <div className="pricing-page-title">
           <h1
             style={{ color: style.headerColor ?? DEFAULT_RENDERING_STYLES.headerColor }}
