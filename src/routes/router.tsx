@@ -21,19 +21,26 @@ export default function Router() {
       ),
       children: [
         // { element: <HomePage />, index: true },
-        {element: <Navigate to="/editor" replace />, index: true},
+        // {element: <Navigate to="/editor" replace />, index: true},
+        {element: (
+          <EditorLayout>
+            <Suspense fallback={<LoadingView />}>
+              <EditorPage />
+            </Suspense>
+          </EditorLayout>
+        ), index: true},
       ],
     },
-    {
-      path: "/editor",
-      element: (
-        <EditorLayout>
-          <Suspense fallback={<LoadingView />}>
-            <EditorPage />
-          </Suspense>
-        </EditorLayout>
-      )
-    },
+    // {
+    //   path: "/editor",
+    //   element: (
+    //     <EditorLayout>
+    //       <Suspense fallback={<LoadingView />}>
+    //         <EditorPage />
+    //       </Suspense>
+    //     </EditorLayout>
+    //   )
+    // },
     {
       path: "error",
       element: <Page404 />,
