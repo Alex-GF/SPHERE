@@ -13,27 +13,28 @@ export default function Router() {
   const routes = useRoutes([
     {
       element: (
-        <StandardLayout>
+        <EditorLayout>
           <Suspense fallback={<LoadingView />}>
             <Outlet />
           </Suspense>
-        </StandardLayout>
+        </EditorLayout>
       ),
       children: [
         // { element: <HomePage />, index: true },
-        {element: <Navigate to="/editor" replace />, index: true},
+        // {element: <Navigate to="/editor" replace />, index: true},
+        {element: <EditorPage />, index: true},
       ],
     },
-    {
-      path: "/editor",
-      element: (
-        <EditorLayout>
-          <Suspense fallback={<LoadingView />}>
-            <EditorPage />
-          </Suspense>
-        </EditorLayout>
-      )
-    },
+    // {
+    //   path: "/editor",
+    //   element: (
+    //     <EditorLayout>
+    //       <Suspense fallback={<LoadingView />}>
+    //         <EditorPage />
+    //       </Suspense>
+    //     </EditorLayout>
+    //   )
+    // },
     {
       path: "error",
       element: <Page404 />,
