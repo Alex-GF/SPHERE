@@ -35,10 +35,6 @@ export function TagFeatureCard({
       return result;
     }, {} as PricingData);
 
-  console.log({
-    filteredPricingData,
-  });
-
   return (
     <Accordion sx={{ mb: 2, borderRadius: 2, boxShadow: 2 }}>
       <AccordionSummary
