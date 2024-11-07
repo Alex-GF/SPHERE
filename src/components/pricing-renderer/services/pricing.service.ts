@@ -24,6 +24,7 @@ function initializeData(
   formattedNames: FormattedNamesProp = {},
   errors: string[]
 ) {
+
   for (let item of items) {
     let isUsageLimit = "unit" in item;
 
@@ -43,6 +44,7 @@ function initializeData(
         });
       }
     } else if (item.render.toUpperCase() === "AUTO") {
+
       let formattedName = isUsageLimit
         ? formatPricingComponentName((item as UsageLimit).linkedFeatures![0])
         : formatPricingComponentName(item.name);
@@ -77,7 +79,7 @@ function populateData(
       item.render = "auto";
     }
 
-    if (item.render.toUpperCase() === "ENABLED" || item.render.toUpperCase() === "AUTO" || item.render.toUpperCase() === "DISABLED") {
+    if (item.render.toUpperCase() === "ENABLED" || item.render.toUpperCase() === "AUTO") {
       let formattedName = formattedNames[item.name];
 
       if ((item.value === null || item.value === undefined) &&
@@ -96,12 +98,8 @@ function populateData(
       } catch (e) {
         continue;
       }
-    } else {
-      errors.push(`Unknown render mode for '${item.name}'`);
     }
   }
-
-  return pricingData;
 }
 
 export function getPricingData(pricing: Pricing, errors: string[]) {
@@ -115,6 +113,7 @@ export function getPricingData(pricing: Pricing, errors: string[]) {
     pricingData,
     formattedNames, errors
   );
+
   initializeData(
     pricing.features,
     pricing.plans.length,
@@ -124,6 +123,7 @@ export function getPricingData(pricing: Pricing, errors: string[]) {
 
   for (let i = 0; i < pricing.plans.length; i++) {
     let plan: Plan = pricing.plans[i];
+    populateData(plan.features, i, plan.name, pricingData, formattedNames, errors);
     populateData(
       plan.usageLimits ?? {},
       i,
@@ -131,7 +131,6 @@ export function getPricingData(pricing: Pricing, errors: string[]) {
       pricingData,
       formattedNames, errors
     );
-    populateData(plan.features, i, plan.name, pricingData, formattedNames, errors);
   }
 
   return pricingData;
