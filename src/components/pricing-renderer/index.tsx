@@ -128,7 +128,7 @@ export function PricingRenderer({ pricing, errors, style }: Readonly<PricingProp
           </div>
         )}
 
-        {pricing.addOns && (
+        {(pricing.addOns && pricing.addOns.length > 0) && (
           <>
             <div
               className='pricing-page-title'

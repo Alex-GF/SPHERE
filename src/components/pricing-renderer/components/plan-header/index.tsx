@@ -20,19 +20,35 @@ export default function PlanHeader({
           {plan.name}
         </h2>
         <p className="plan-price-container">
-          <span
-            className="plan-price"
-            style={{ color: style.priceColor ?? DEFAULT_RENDERING_STYLES.priceColor }}
-          >
-            {plan.price}
-            {currency}
-          </span>
-          <span
-            className="plan-period"
-            style={{ color: style.periodColor ?? DEFAULT_RENDERING_STYLES.periodColor }}
-          >
-            /month
-          </span>
+          {
+            plan.price == 0 ?
+            (
+              <span
+                className="plan-price"
+                style={{ color: style.priceColor ?? DEFAULT_RENDERING_STYLES.priceColor }}
+              >
+                FREE
+              </span>
+            )
+            :
+            (
+              <>
+                <span
+                  className="plan-price"
+                  style={{ color: style.priceColor ?? DEFAULT_RENDERING_STYLES.priceColor }}
+                >
+                  {plan.price}
+                  {currency}
+                </span>
+                <span
+                  className="plan-period"
+                  style={{ color: style.periodColor ?? DEFAULT_RENDERING_STYLES.periodColor }}
+                >
+                  /month
+                </span>
+              </>
+            )
+          }
         </p>
       </th>
     );
