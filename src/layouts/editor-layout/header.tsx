@@ -26,19 +26,24 @@ const Header = () => {
   const { mode, setMode } = useMode();
 
   const menuItems = [
+    // {
+    //   name: "File",
+    //   disabled: false,
+    //   children: [
+    //     { name: "New", disabled: false, onClick: () => console.log("New") },
+    //   ],
+    // },
+    // {
+    //   name: "About",
+    //   disabled: false,
+    //   children: [
+    //     { name: "Docs", disabled: false, onClick: () => console.log("Docs") },
+    //   ],
+    // },
     {
-      name: "File",
+      name: "Documentation",
       disabled: false,
-      children: [
-        { name: "New", disabled: false, onClick: () => console.log("New") },
-      ],
-    },
-    {
-      name: "About",
-      disabled: false,
-      children: [
-        { name: "Docs", disabled: false, onClick: () => console.log("Docs") },
-      ],
+      onClick: () => window.open("https://pricing4saas-docs.vercel.app"),
     },
   ];
 
@@ -112,6 +117,7 @@ const Header = () => {
                     aria-label={item.name}
                     tabIndex={0}
                     mode={mode}
+                    onClick={item.onClick}
                   >
                     {item.name}
                   </StyledButton>
