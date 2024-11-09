@@ -1,5 +1,5 @@
 import { createTheme, ThemeOptions } from '@mui/material/styles';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { palette } from './palette';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { ModeContext } from '../contexts/modeContext';
@@ -18,12 +18,16 @@ export default function MasspThemeProvider({ children }: { children: React.React
 
   const theme = createTheme(memoizedValue as unknown as ThemeOptions);
 
-  const [mode, setMode] = useState<'light' | 'dark'>('light');
+  const [mode, setMode] = useState<'light' | 'dark'>('light');
+
+  useEffect(() => {
+    setMode(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
-      <ModeContext.Provider value={{mode, setMode}}>
-        <CssBaseline/>
+      <ModeContext.Provider value={{ mode, setMode }}>
+        <CssBaseline />
         {children}
       </ModeContext.Provider>
     </ThemeProvider>

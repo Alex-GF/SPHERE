@@ -18,9 +18,9 @@ import {
 } from "@mui/material";
 import { alpha, styled } from "@mui/system";
 import { FaBars, FaTimes, FaUser } from "react-icons/fa";
-import Logo from "../../modules/core/components/logo";
-import { grey, primary } from "../../theme/palette";
-import { useAuth } from "../../hooks/useAuth";
+import Logo from "../../../core/components/logo";
+import { grey, primary } from "../../../core/theme/palette";
+import { useAuth } from "../../../auth/hooks/useAuth";
 
 const StyledAppBar = styled(AppBar)(() => ({
   background: grey[100],
@@ -68,10 +68,6 @@ const Header = () => {
   const toggleMobileNav = () => {
     setMobileOpen(!mobileOpen);
   };
-
-  useEffect(() => {
-    console.log(authUser.isAuthenticated);
-  });
 
   return (
     <StyledAppBar position="sticky">
