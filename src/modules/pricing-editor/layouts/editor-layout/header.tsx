@@ -8,7 +8,8 @@ import DesktopHeaderItems from './components/desktop-header-items';
 import { useEditorValue } from '../../hooks/useEditorValue';
 import { downloadYaml } from '../../services/export.service';
 import Alerts from '../../../core/components/alerts';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getClearEditorValue } from '../../services/clear.service';
 
 export interface MenuItems {
   name: string;
@@ -17,23 +18,33 @@ export interface MenuItems {
   children?: MenuItems[];
 }
 
-const Header = ({ renderSharedLink }: { renderSharedLink: () => void }) => {
-  
+const Header = ({ renderSharedLink, renderYamlImport }: { renderSharedLink: () => void, renderYamlImport: () => void }) => {
   const [errors, setErrors] = useState<string[]>([]);
-  
+
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const { mode } = useMode();
-  const { editorValue } = useEditorValue();
+  const { editorValue, setEditorValue } = useEditorValue();
+  const [originalEditorValue, setOriginalEditorValue] = useState<string>("");
 
   const menuItems = [
-    // {
-    //   name: "File",
-    //   disabled: false,
-    //   children: [
-    //     { name: "New", disabled: false, onClick: () => console.log("New") },
-    //   ],
-    // },
+    {
+      name: 'File',
+      disabled: false,
+      children: [
+        {
+          name: 'New',
+          disabled: false,
+          onClick: () => {
+            setEditorValue(originalEditorValue);
+          },
+        },
+        { name: 'Import from YAML', disabled: false, onClick: renderYamlImport },
+        { name: 'Clear Editor', disabled: false, onClick: () => {
+          setEditorValue(getClearEditorValue());
+        } },
+      ],
+    },
     {
       name: 'Export',
       disabled: false,
@@ -42,10 +53,10 @@ const Header = ({ renderSharedLink }: { renderSharedLink: () => void }) => {
           name: 'Download YAML',
           disabled: false,
           onClick: () => {
-            try{
+            try {
               downloadYaml(editorValue);
-            }catch(e) {
-              setErrors([...errors, (e as Error).message])
+            } catch (e) {
+              setErrors([...errors, (e as Error).message]);
               setTimeout(() => {
                 setErrors([]);
               }, 3000);
@@ -61,6 +72,12 @@ const Header = ({ renderSharedLink }: { renderSharedLink: () => void }) => {
       onClick: () => window.open('https://pricing4saas-docs.vercel.app'),
     },
   ];
+
+  useEffect(() => {
+    if (originalEditorValue === ""){
+      setOriginalEditorValue(editorValue);
+    }
+  }, [editorValue]);
 
   return (
     <>
