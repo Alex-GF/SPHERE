@@ -1,39 +1,48 @@
-import { Box, IconButton, Modal, Paper, TextField, Typography } from '@mui/material';
+import { Box, Modal, Paper, Typography } from '@mui/material';
 import Header from './header';
 import Main from './main';
 import { useState } from 'react';
 import { parseStringYamlToEncodedYaml } from '../../services/export.service';
 import CopyToClipboardIcon from '../../../core/components/copy-icon';
 import { EditorValueContext } from '../../contexts/editorValueContext';
+import FileUpload from '../../../core/components/file-upload-input';
+import { flex } from '../../../core/theme/css';
 
 export default function EditorLayout({ children }: { children?: React.ReactNode }) {
   const [sharedLinkModalOpen, setSharedLinkModalOpen] = useState(false);
+  const [importModalOpen, setImportLinkModalOpen] = useState(false);
   const [editorValue, setEditorValue] = useState<string>('');
 
   const renderSharedLink = () => {
     setSharedLinkModalOpen(true);
   };
 
-  const handleClose = () => {
+  const handleSharedLinkClose = () => {
     setSharedLinkModalOpen(false);
   };
 
+  const renderYamlImport = () => {
+    setImportLinkModalOpen(true);
+  };
+
+  const handleYamlImportClose = () => {
+    setImportLinkModalOpen(false);
+  };
+
   return (
-    <>
+    <EditorValueContext.Provider value={{ editorValue, setEditorValue }}>
       <Box
         component="div"
         sx={{ display: 'grid', minHeight: '100dvh', gridTemplateRows: 'auto 1fr' }}
       >
-        <EditorValueContext.Provider value={{ editorValue, setEditorValue }}>
-          <Header renderSharedLink={renderSharedLink} />
-          <Main>{children}</Main>
-        </EditorValueContext.Provider>
+        <Header renderSharedLink={renderSharedLink} renderYamlImport={renderYamlImport} />
+        <Main>{children}</Main>
       </Box>
       <Modal
         open={sharedLinkModalOpen}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        onClose={handleSharedLinkClose}
+        aria-labelledby="modal-shared-link-title"
+        aria-describedby="modal-shared-link-description"
       >
         <Paper
           elevation={3}
@@ -69,6 +78,32 @@ export default function EditorLayout({ children }: { children?: React.ReactNode 
           </Box>
         </Paper>
       </Modal>
-    </>
+
+      <Modal
+        open={importModalOpen}
+        onClose={handleYamlImportClose}
+        aria-labelledby="modal-import-title"
+        aria-describedby="modal-import-description"
+      >
+        <Paper
+          elevation={3}
+          sx={{
+            maxWidth: 500,
+            width: '90dvw',
+            mx: 'auto',
+            mt: 4,
+            p: 4,
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translateX(-50%) translateY(-50%)',
+            borderRadius: '20px',
+            ...flex({ direction: 'column' }),
+          }}
+        >
+          <FileUpload />
+        </Paper>
+      </Modal>
+    </EditorValueContext.Provider>
   );
 }

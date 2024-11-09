@@ -91,6 +91,12 @@ export default function EditorPage() {
     });
   }, []);
 
+  useEffect(() => {
+    if (pricing) {
+      
+    }
+  }, [editorValue]);
+
   return (
     <>
       <Helmet>
@@ -110,7 +116,7 @@ export default function EditorPage() {
             height="100%"
             defaultLanguage="yaml"
             onChange={handleEditorChange}
-            defaultValue={editorValue}
+            value={editorValue}
             theme={mode === 'light' ? 'textmate' : 'github-dark'}
             beforeMount={handleEditorDidMount}
             options={{
