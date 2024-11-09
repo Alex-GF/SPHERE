@@ -18,7 +18,7 @@ export interface MenuItems{
   children?: MenuItems[];
 }
 
-const Header = () => {
+const Header = ({renderSharedLink}: {renderSharedLink: () => void}) => {
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -32,13 +32,13 @@ const Header = () => {
     //     { name: "New", disabled: false, onClick: () => console.log("New") },
     //   ],
     // },
-    // {
-    //   name: "About",
-    //   disabled: false,
-    //   children: [
-    //     { name: "Docs", disabled: false, onClick: () => console.log("Docs") },
-    //   ],
-    // },
+    {
+      name: "Export",
+      disabled: false,
+      children: [
+        { name: "Share Link", disabled: false, onClick: renderSharedLink },
+      ],
+    },
     {
       name: 'Documentation',
       disabled: false,

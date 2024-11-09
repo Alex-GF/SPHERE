@@ -2950,6 +2950,7 @@
         "npm:express@^4.21.1",
         "npm:globals@^15.9.0",
         "npm:helmet@8",
+        "npm:lz-string@^1.5.0",
         "npm:monaco-editor@0.52",
         "npm:pricing4ts@~0.2.3",
         "npm:prop-types@^15.8.1",
