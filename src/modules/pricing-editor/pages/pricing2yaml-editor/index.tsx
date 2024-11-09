@@ -14,15 +14,17 @@ import { useMode } from '../../../core/hooks/useTheme';
 import GithubDarkTheme from '../../../core/theme/editor-themes/GitHub-Dark.json';
 import TextmateTheme from '../../../core/theme/editor-themes/Textmate.json';
 import monaco from 'monaco-editor';
+import { useEditorValue } from '../../hooks/useEditorValue';
+import { parseEncodedYamlToStringYaml } from '../../services/export.service';
 
 const TEMPLATE_PRICING_PATH = '/data/petclinic.yml';
 
 export default function EditorPage() {
   const [pricing, setPricing] = useState<Pricing>();
-  const [editorValue, setEditorValue] = useState<string>();
   const [errors, setErrors] = useState<string[]>([]);
 
   const { mode } = useMode();
+  const { editorValue, setEditorValue } = useEditorValue();
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -63,7 +65,14 @@ export default function EditorPage() {
 
   useEffect(() => {
     fetch(TEMPLATE_PRICING_PATH).then(async response => {
-      const templatePricing: string = await response.text();
+      const pricingParam = new URLSearchParams(window.location.search).get('pricing');
+      let templatePricing: string = '';
+
+      if (!pricingParam) {
+        templatePricing = await response.text();
+      } else {
+        templatePricing = parseEncodedYamlToStringYaml(pricingParam);
+      }
 
       try {
         const parsedPricing: Pricing = retrievePricingFromYaml(templatePricing);

@@ -1,28 +1,30 @@
-import {
-  Container,
-  Toolbar,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { Container, Toolbar, useMediaQuery, useTheme } from '@mui/material';
 import { primary } from '../../../core/theme/palette';
 import ShortLogo from '../../../core/components/short-logo';
 import { StyledAppBar } from './components/styled-appbar';
 import { useMode } from '../../../core/hooks/useTheme';
 import MobileHeaderItems from './components/mobile-header-items';
 import DesktopHeaderItems from './components/desktop-header-items';
+import { useEditorValue } from '../../hooks/useEditorValue';
+import { downloadYaml } from '../../services/export.service';
+import Alerts from '../../../core/components/alerts';
+import { useState } from 'react';
 
-export interface MenuItems{
+export interface MenuItems {
   name: string;
   disabled: boolean;
   onClick?: () => void;
   children?: MenuItems[];
 }
 
-const Header = () => {
-
+const Header = ({ renderSharedLink }: { renderSharedLink: () => void }) => {
+  
+  const [errors, setErrors] = useState<string[]>([]);
+  
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const { mode } = useMode();
+  const { editorValue } = useEditorValue();
 
   const menuItems = [
     // {
@@ -32,13 +34,27 @@ const Header = () => {
     //     { name: "New", disabled: false, onClick: () => console.log("New") },
     //   ],
     // },
-    // {
-    //   name: "About",
-    //   disabled: false,
-    //   children: [
-    //     { name: "Docs", disabled: false, onClick: () => console.log("Docs") },
-    //   ],
-    // },
+    {
+      name: 'Export',
+      disabled: false,
+      children: [
+        {
+          name: 'Download YAML',
+          disabled: false,
+          onClick: () => {
+            try{
+              downloadYaml(editorValue);
+            }catch(e) {
+              setErrors([...errors, (e as Error).message])
+              setTimeout(() => {
+                setErrors([]);
+              }, 3000);
+            }
+          },
+        },
+        { name: 'Share Link', disabled: false, onClick: renderSharedLink },
+      ],
+    },
     {
       name: 'Documentation',
       disabled: false,
@@ -47,19 +63,22 @@ const Header = () => {
   ];
 
   return (
-    <StyledAppBar position="sticky" mode={mode}>
-      <Container maxWidth={false} sx={{ marginLeft: 0 }}>
-        <Toolbar disableGutters>
-          <ShortLogo sx={{ fill: mode === 'light' ? primary[800] : primary[100] }} />
+    <>
+      <StyledAppBar position="sticky" mode={mode}>
+        <Container maxWidth={false} sx={{ marginLeft: 0 }}>
+          <Toolbar disableGutters>
+            <ShortLogo sx={{ fill: mode === 'light' ? primary[800] : primary[100] }} />
 
-          {isMobile ? (
-            <MobileHeaderItems menuItems={menuItems}/>
-          ) : (
-            <DesktopHeaderItems menuItems={menuItems}/>
-          )}
-        </Toolbar>
-      </Container>
-    </StyledAppBar>
+            {isMobile ? (
+              <MobileHeaderItems menuItems={menuItems} />
+            ) : (
+              <DesktopHeaderItems menuItems={menuItems} />
+            )}
+          </Toolbar>
+        </Container>
+      </StyledAppBar>
+      <Alerts messages={errors} />
+    </>
   );
 };
 
