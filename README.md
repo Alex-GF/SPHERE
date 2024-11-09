@@ -45,3 +45,7 @@ Ensure you have **Deno 2.0** installed, as it is the package manager of the proj
    ```
 
    🎉 After running these commands, the project should be up and running!
+
+## Contributions
+
+This project is part of the research activities of the [ISA Group](https://www.isa.us.es/3.0/). It is still under development and should be used with caution. We are not responsible for any damage caused by the use of this software. If you find any bugs or have any suggestions, please let us know by opening an issue in the [GitHub repository](https://github.com/Alex-GF/SPHERE/issues).
