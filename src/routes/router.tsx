@@ -4,6 +4,7 @@ import LoadingView from '../modules/core/pages/loading';
 import PresentationLayout from '../modules/presentation/layouts/presentation-layout';
 
 export const HomePage = lazy(() => import('../modules/presentation/pages/home'));
+export const TeamPage = lazy(() => import('../modules/presentation/pages/team'));
 export const Page404 = lazy(() => import('../modules/core/pages/page-not-found'));
 
 import EditorPage from '../modules/pricing-editor/pages/pricing2yaml-editor';
@@ -13,28 +14,27 @@ export default function Router() {
   const routes = useRoutes([
     {
       element: (
-        <EditorLayout>
+        <PresentationLayout>
           <Suspense fallback={<LoadingView />}>
             <Outlet />
           </Suspense>
-        </EditorLayout>
+        </PresentationLayout>
       ),
       children: [
-        // { element: <HomePage />, index: true },
-        // {element: <Navigate to="/editor" replace />, index: true},
-        { element: <EditorPage />, index: true },
+        { element: <HomePage />, index: true },
+        {element: <TeamPage/>, path: "/team"},
       ],
     },
-    // {
-    //   path: "/editor",
-    //   element: (
-    //     <EditorLayout>
-    //       <Suspense fallback={<LoadingView />}>
-    //         <EditorPage />
-    //       </Suspense>
-    //     </EditorLayout>
-    //   )
-    // },
+    {
+      path: "/editor",
+      element: (
+        <EditorLayout>
+          <Suspense fallback={<LoadingView />}>
+            <EditorPage />
+          </Suspense>
+        </EditorLayout>
+      )
+    },
     {
       path: 'error',
       element: <Page404 />,

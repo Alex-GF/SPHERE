@@ -1,5 +1,5 @@
 import { useContext, useEffect } from 'react'
-import { useLocalStorage } from './useLocalStorage'
+import { useLocalStorage } from '../../core/hooks/useLocalStorage'
 import { AuthContext } from '../contexts/authContext'
 import { USERS_BASE_PATH } from '../api/usersApi'
 

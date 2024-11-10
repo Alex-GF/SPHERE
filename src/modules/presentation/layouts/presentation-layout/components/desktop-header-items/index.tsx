@@ -2,16 +2,19 @@ import { useEffect, useState } from 'react';
 import { alpha, Box, IconButton, Stack } from '@mui/material';
 import { MdBrightness4, MdBrightness7 } from 'react-icons/md';
 import { StyledButton } from '../styled-button';
-import { MenuItems } from '../../header';
+import { HeaderRoute } from '../../router/header-routes';
 import { useMode } from '../../../../../core/hooks/useTheme';
 import { grey, primary } from '../../../../../core/theme/palette';
 import { RiArrowDropDownFill } from 'react-icons/ri';
+import { useRouter } from '../../../../../core/hooks/useRouter';
 
-export default function DesktopHeaderItems({ menuItems }: { menuItems: MenuItems[] }) {
+export default function DesktopHeaderItems({ headerRoutes }: { headerRoutes: HeaderRoute[] }) {
   const { mode, setMode } = useMode();
   const [openedMenuItemChildren, setOpenedMenuItemChildren] = useState<{ [key: string]: boolean }>(
     {}
   );
+
+  const router = useRouter();
 
   const toggleColorMode = () => {
     setMode(mode === 'light' ? 'dark' : 'light');
@@ -46,7 +49,7 @@ export default function DesktopHeaderItems({ menuItems }: { menuItems: MenuItems
   useEffect(() => {
     const initialOpenedMenuItemChildren: { [key: string]: boolean } = {};
 
-    for (const menuItem of menuItems) {
+    for (const menuItem of headerRoutes) {
       initialOpenedMenuItemChildren[menuItem.name] = false;
     }
 
@@ -60,11 +63,11 @@ export default function DesktopHeaderItems({ menuItems }: { menuItems: MenuItems
       <Stack
         direction="row"
         spacing={2}
-        sx={{ flexGrow: 1, ml: 2 }}
+        sx={{ flexGrow: 1, ml: 2, display: 'flex', justifyContent: 'flex-start' }}
         role="nav"
         aria-label="Main navigation"
       >
-        {menuItems.map((item, index) => (
+        {headerRoutes.map((item, index) => (
           <Box
             sx={{ position: 'relative' }}
             key={index}
@@ -75,7 +78,8 @@ export default function DesktopHeaderItems({ menuItems }: { menuItems: MenuItems
               aria-label={item.name}
               tabIndex={0}
               mode={mode}
-              onClick={item.onClick ? item.onClick : () => {}}
+              onClick={() => item.to ? router.push(item.to) : {}}
+              sx={{cursor: 'pointer'}}
             >
               {item.name}
               {item.children && (
@@ -110,7 +114,7 @@ export default function DesktopHeaderItems({ menuItems }: { menuItems: MenuItems
                     aria-label={childItem.name}
                     tabIndex={0}
                     mode={mode}
-                    onClick={childItem.onClick}
+                    onClick={() => childItem.to ? router.push(childItem.to) : {}}
                     sx={{
                       width: '100%',
                       backgroundColor: 'transparent',
