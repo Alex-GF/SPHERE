@@ -1,7 +1,7 @@
 import {Chip} from '@mui/material';
 
 import AlejandroGarcia from "./profile-pictures/alejandro-garcia.png";
-// import FranciscoJavierCavero from "./profile-pictures/francisco-javier-cavero.png";
+import FranciscoJavierCavero from "./profile-pictures/francisco-javier-cavero.jpeg";
 import JoseAntonioParejo from "./profile-pictures/jose-antonio-parejo.png";
 import AntonioRuiz from "./profile-pictures/antonio-ruiz.jpg";
 
@@ -67,19 +67,19 @@ export const teamMembers: TeamMember[] = [
         github: 'https://github.com/Alex-GF',
         googlescholar: 'https://scholar.google.es/citations?user=g4AHBdEAAAAJ'
     },
-    // {
-    //     firstName: 'Francisco Javier',
-    //     lastName: 'Cavero López',
-    //     profilePicture: FranciscoJavierCavero,
-    //     role: 'PhD Student',
-    //     email: 'fcavero@us.es',
-    //     affiliation: getAffiliation('Universidad de Sevilla'),
-    //     orcid: '0009-0004-2453-8814',
-    //     website: "https://prisma.us.es/investigador/8488",
-    //     linkedin: 'https://www.linkedin.com/in/alegarfer/',
-    //     github: 'https://github.com/javiercavlop',
-    //     googlescholar: 'https://scholar.google.es/citations?user=vDBqkIkAAAAJ'
-    // },
+    {
+        firstName: 'Francisco Javier',
+        lastName: 'Cavero López',
+        profilePicture: FranciscoJavierCavero,
+        role: 'PhD Student',
+        email: 'fcavero@us.es',
+        affiliation: getAffiliation('Universidad de Sevilla'),
+        orcid: '0009-0004-2453-8814',
+        website: "https://prisma.us.es/investigador/8488",
+        linkedin: 'https://www.linkedin.com/in/alegarfer/',
+        github: 'https://github.com/javiercavlop',
+        googlescholar: 'https://scholar.google.es/citations?user=vDBqkIkAAAAJ'
+    },
     {
         firstName: 'José Antonio',
         lastName: 'Parejo Maestre',
