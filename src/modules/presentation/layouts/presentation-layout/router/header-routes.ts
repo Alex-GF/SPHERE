@@ -12,14 +12,19 @@ export const headerRoutes: HeaderRoute[] = [
       to: "/team"
     },
     {
-      name: 'Publications',
+      name: 'Activities',
       disabled: false,
-      children: [
-        {
-          name: 'Papers',
-          disabled: false,
-          to: "/papers"
-        }
-      ],
-    }
+      to: "/activities"
+    },
+    // {
+    //   name: 'Publications',
+    //   disabled: false,
+    //   children: [
+    //     {
+    //       name: 'Papers',
+    //       disabled: false,
+    //       to: "/papers"
+    //     }
+    //   ],
+    // }
   ];

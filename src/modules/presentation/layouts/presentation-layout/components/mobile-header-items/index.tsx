@@ -1,4 +1,4 @@
-import { Box, IconButton, Drawer, List, ListItem, ListItemText } from '@mui/material';
+import { Box, IconButton, Drawer, List, ListItem } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { useMode } from '../../../../../core/hooks/useTheme';
@@ -62,9 +62,9 @@ export default function MobileHeaderItems({ headerRoutes }: { headerRoutes: Head
         sx={{ color: primary[900] }}
       >
         {mobileOpen ? (
-          <FaTimes fill={mode === 'light' ? primary[700] : primary[100]} />
+          <FaTimes fill={primary[700]} />
         ) : (
-          <FaBars fill={mode === 'light' ? primary[700] : primary[100]} />
+          <FaBars fill={primary[700]} />
         )}
       </MobileNavButton>
 
@@ -76,13 +76,13 @@ export default function MobileHeaderItems({ headerRoutes }: { headerRoutes: Head
           display: { md: 'none' },
         }}
       >
-        <Box sx={{ width: 250, pt: 2, backgroundColor: mode === 'light' ? grey[100] : 'black' }}>
+        <Box sx={{ width: 250, pt: 2, backgroundColor: grey[100]}}>
           <List>
             {headerRoutes.map((item, index) => (
               <ListItem
                 key={index}
                 sx={{
-                  color: mode === 'light' ? primary[800] : primary[100],
+                  color: primary[800],
                   fontWeight: 900,
                   display: 'flex',
                   flexDirection: 'column',
@@ -93,13 +93,13 @@ export default function MobileHeaderItems({ headerRoutes }: { headerRoutes: Head
                   aria-label={item.name}
                   tabIndex={0}
                   mode={mode}
-                  onClick={() => item.to ? router.push(item.to) : {}}
+                  onClick={item.children ? handleMenuItemChildrenClick : () => item.to ? router.push(item.to) : {}}
                   sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}
                 >
                   {item.name}
                   {item.children && (
                     <RiArrowDropDownFill
-                      fill={mode === 'light' ? primary[700] : primary[100]}
+                      fill={primary[700]}
                       size="20px"
                       aria-label={item.name}
                     />
@@ -111,7 +111,7 @@ export default function MobileHeaderItems({ headerRoutes }: { headerRoutes: Head
                       maxHeight: openedMenuItemChildren[item.name] ? '2000px' : 0,
                       transition: 'all .5s ease',
                       overflow: 'hidden',
-                      backgroundColor: mode === 'light' ? grey[200] : grey[600],
+                      backgroundColor: grey[200],
                       borderRadius: '5px',
                       padding: openedMenuItemChildren[item.name] ? '10px' : 0,
                       width: '100%',
@@ -129,10 +129,10 @@ export default function MobileHeaderItems({ headerRoutes }: { headerRoutes: Head
                         sx={{
                           width: '100%',
                           backgroundColor: 'transparent',
-                          color: mode === 'light' ? primary[700] : primary[300],
+                          color: primary[700],
                           '&:hover': {
                             backgroundColor: alpha(primary[100], 0.8),
-                            color: mode === 'light' ? primary[800] : grey[900],
+                            color: primary[800],
                           },
                         }}
                       >

@@ -74,12 +74,12 @@ export default function DesktopHeaderItems({ headerRoutes }: { headerRoutes: Hea
               tabIndex={0}
               mode={mode}
               onClick={() => item.to ? router.push(item.to) : {}}
-              sx={{cursor: 'pointer'}}
+              sx={{cursor: 'pointer', color: primary[700]}}
             >
               {item.name}
               {item.children && (
                 <RiArrowDropDownFill
-                  fill={mode === 'light' ? primary[700] : primary[100]}
+                  fill={primary[700]}
                   size="20px"
                   aria-label={item.name}
                 />
@@ -95,7 +95,7 @@ export default function DesktopHeaderItems({ headerRoutes }: { headerRoutes: Hea
                   maxHeight: openedMenuItemChildren[item.name] ? '2000px' : 0,
                   transition: 'all .5s ease',
                   overflow: 'hidden',
-                  backgroundColor: mode === 'light' ? grey[200] : grey[600],
+                  backgroundColor: grey[200],
                   borderRadius: '5px',
                   padding: openedMenuItemChildren[item.name] ? '10px' : 0,
                   width: openedMenuItemChildren[item.name] ? '200px' : 0,
@@ -113,10 +113,10 @@ export default function DesktopHeaderItems({ headerRoutes }: { headerRoutes: Hea
                     sx={{
                       width: '100%',
                       backgroundColor: 'transparent',
-                      color: mode === 'light' ? primary[700] : primary[300],
+                      color: primary[700],
                       '&:hover': {
                         backgroundColor: alpha(primary[100], 0.8),
-                        color: mode === 'light' ? primary[800] : grey[900],
+                        color: primary[800],
                       },
                     }}
                   >

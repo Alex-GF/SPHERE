@@ -9,6 +9,7 @@ export const Page404 = lazy(() => import('../modules/core/pages/page-not-found')
 
 import EditorPage from '../modules/pricing-editor/pages/pricing2yaml-editor';
 import EditorLayout from '../modules/pricing-editor/layouts/editor-layout';
+import ActivitiesPage from '../modules/presentation/pages/activities';
 
 export default function Router() {
   const routes = useRoutes([
@@ -23,6 +24,7 @@ export default function Router() {
       children: [
         { element: <HomePage />, index: true },
         {element: <TeamPage/>, path: "/team"},
+        {element: <ActivitiesPage/>, path: "/activities"},
       ],
     },
     {

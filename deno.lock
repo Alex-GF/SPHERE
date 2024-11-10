@@ -41,6 +41,7 @@
     "npm:react-router-dom@^6.27.0": "6.27.0_react@18.3.1_react-dom@18.3.1__react@18.3.1",
     "npm:react-svg@^16.1.34": "16.1.34_react@18.3.1_react-dom@18.3.1__react@18.3.1",
     "npm:react-transition-group@^4.4.5": "4.4.5_react@18.3.1_react-dom@18.3.1__react@18.3.1",
+    "npm:react-vertical-timeline-component@^3.6.0": "3.6.0_react@18.3.1",
     "npm:react@^18.3.1": "18.3.1",
     "npm:supertest@7": "7.0.0",
     "npm:typescript-eslint@^8.7.0": "8.12.2_@typescript-eslint+parser@8.12.2__eslint@9.13.0__typescript@5.6.3_eslint@9.13.0_typescript@5.6.3",
@@ -1186,6 +1187,9 @@
         "inherits",
         "safe-buffer@5.2.1"
       ]
+    },
+    "classnames@2.5.1": {
+      "integrity": "sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow=="
     },
     "clsx@2.1.1": {
       "integrity": "sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA=="
@@ -2418,6 +2422,12 @@
         "react"
       ]
     },
+    "react-intersection-observer@8.34.0_react@18.3.1": {
+      "integrity": "sha512-TYKh52Zc0Uptp5/b4N91XydfSGKubEhgZRtcg1rhTKABXijc4Sdr1uTp5lJ8TN27jwUsdXxjHXtHa0kPj704sw==",
+      "dependencies": [
+        "react"
+      ]
+    },
     "react-is@16.13.1": {
       "integrity": "sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ=="
     },
@@ -2469,6 +2479,14 @@
         "prop-types",
         "react",
         "react-dom"
+      ]
+    },
+    "react-vertical-timeline-component@3.6.0_react@18.3.1": {
+      "integrity": "sha512-l9zulqjIGlRuaQeplGzV4r/tG2RYBpYt84Il8w4IxnJze2cDIGI04MKo3F7f1sHT0Sih1ohEFts8UV23AJS15Q==",
+      "dependencies": [
+        "classnames",
+        "prop-types",
+        "react-intersection-observer"
       ]
     },
     "react@18.3.1": {
@@ -2894,6 +2912,7 @@
         "npm:@types/react-helmet@^6.1.11",
         "npm:@types/react-router-dom@^5.3.3",
         "npm:@types/react-transition-group@^4.4.11",
+        "npm:@types/react-vertical-timeline-component@^3.3.6",
         "npm:@types/react@^18.3.10",
         "npm:@types/supertest@^6.0.2",
         "npm:@types/uuid@10",
@@ -2919,6 +2938,7 @@
         "npm:react-router-dom@^6.27.0",
         "npm:react-svg@^16.1.34",
         "npm:react-transition-group@^4.4.5",
+        "npm:react-vertical-timeline-component@^3.6.0",
         "npm:react@^18.3.1",
         "npm:supertest@7",
         "npm:typescript-eslint@^8.7.0",
