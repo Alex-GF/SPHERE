@@ -143,12 +143,12 @@ export default function MobileHeaderItems({ headerRoutes }: { headerRoutes: Head
                 )}
               </ListItem>
             ))}
-            <ListItem>
+            {/* <ListItem>
               <ListItemText primary="Login" />
             </ListItem>
             <ListItem>
               <ListItemText primary="Register" />
-            </ListItem>
+            </ListItem> */}
           </List>
         </Box>
         <Box
