@@ -84,7 +84,7 @@ const Header = () => {
                 </Tooltip>
               ) : (
                 <>
-                  <Button
+                  {/* <Button
                     variant="outlined"
                     sx={{
                       color: primary[500],
@@ -114,7 +114,7 @@ const Header = () => {
                     aria-label="register"
                   >
                     Register
-                  </Button>
+                  </Button> */}
                 </>
               )}
             </NavItems>

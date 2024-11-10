@@ -6,31 +6,17 @@ import {
   IconButton,
   Tooltip,
   Box,
-  Chip,
   styled,
 } from '@mui/material';
 import { MdEmail, MdLanguage } from 'react-icons/md';
-import { FaLinkedin, FaTwitter, FaGithub, FaSchool } from 'react-icons/fa';
+import { FaLinkedin, FaTwitter, FaGithub, FaOrcid } from 'react-icons/fa';
+import {FaGoogleScholar} from 'react-icons/fa6';
 import { AiOutlineProject } from 'react-icons/ai';
+import { TeamMember } from '../../../../pages/team/data/team-data';
 
-interface TeamMember {
-  firstName: string;
-  lastName: string;
-  profilePicture?: string;
-  role: string;
-  email: string;
-  affiliation: string;
-  orcid?: string;
-  website?: string;
-  linkedin?: string;
-  twitter?: string;
-  github?: string;
-  googlescholar?: string;
-  researchGate?: string;
-}
-
-const StyledCard = styled(Card)(({ theme }) => ({
-  maxWidth: 500,
+const StyledCard = styled(Card)(() => ({
+  maxWidth: 400,
+  width: '90dvw',
   margin: 'auto',
   transition: '0.3s',
   boxShadow: '0 8px 40px -12px rgba(0,0,0,0.3)',
@@ -76,12 +62,7 @@ export default function TeamMemberCard({ member }: { member: TeamMember }) {
         <Typography variant="body2" color="text.secondary">
           {member.role}
         </Typography>
-        <Chip
-          label={member.affiliation}
-          variant="outlined"
-          size="small"
-          sx={{ mt: 1 }}
-        />
+        {member.affiliation}
         <SocialIcons>
           <Tooltip title="Email">
             <IconButton href={`mailto:${member.email}`} aria-label="Email">
@@ -119,7 +100,7 @@ export default function TeamMemberCard({ member }: { member: TeamMember }) {
           {member.googlescholar && (
             <Tooltip title="Google Scholar">
               <IconButton href={member.googlescholar} target="_blank" rel="noopener noreferrer" aria-label="Google Scholar">
-                <FaSchool />
+                <FaGoogleScholar />
               </IconButton>
             </Tooltip>
           )}
@@ -133,7 +114,7 @@ export default function TeamMemberCard({ member }: { member: TeamMember }) {
           {member.orcid && (
             <Tooltip title="ORCID">
               <IconButton href={`https://orcid.org/${member.orcid}`} target="_blank" rel="noopener noreferrer" aria-label="ORCID">
-                <img src="https://info.orcid.org/wp-content/uploads/2019/11/orcid_16x16.png" alt="ORCID" style={{ width: 20, height: 20 }} />
+                <FaOrcid/>
               </IconButton>
             </Tooltip>
           )}

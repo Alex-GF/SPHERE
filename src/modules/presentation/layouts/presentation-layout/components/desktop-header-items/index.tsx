@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { alpha, Box, IconButton, Stack } from '@mui/material';
-import { MdBrightness4, MdBrightness7 } from 'react-icons/md';
+import { alpha, Box, Stack } from '@mui/material';
 import { StyledButton } from '../styled-button';
 import { HeaderRoute } from '../../router/header-routes';
 import { useMode } from '../../../../../core/hooks/useTheme';
@@ -9,16 +8,12 @@ import { RiArrowDropDownFill } from 'react-icons/ri';
 import { useRouter } from '../../../../../core/hooks/useRouter';
 
 export default function DesktopHeaderItems({ headerRoutes }: { headerRoutes: HeaderRoute[] }) {
-  const { mode, setMode } = useMode();
+  const { mode } = useMode();
   const [openedMenuItemChildren, setOpenedMenuItemChildren] = useState<{ [key: string]: boolean }>(
     {}
   );
 
   const router = useRouter();
-
-  const toggleColorMode = () => {
-    setMode(mode === 'light' ? 'dark' : 'light');
-  };
 
   const handleMenuItemChildrenEnter = (e: any) => {
     const itemName = e.target.getAttribute('aria-label');
@@ -133,15 +128,6 @@ export default function DesktopHeaderItems({ headerRoutes }: { headerRoutes: Hea
           </Box>
         ))}
       </Stack>
-      <Box>
-        <IconButton sx={{ ml: 1 }} onClick={toggleColorMode} color="inherit">
-          {mode === 'dark' ? (
-            <MdBrightness4 fill={primary[100]} />
-          ) : (
-            <MdBrightness7 fill={primary[800]} />
-          )}
-        </IconButton>
-      </Box>
     </>
   );
 }
