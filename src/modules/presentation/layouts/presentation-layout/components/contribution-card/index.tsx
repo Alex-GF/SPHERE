@@ -3,9 +3,10 @@ import { Contribution } from '../../../../pages/contributions/data/contributions
 
 const CARD_HEIGHT = 400;
 
-export default function ContributionCard({ contribution }: { contribution: Contribution }) {
+export default function ContributionCard({ contribution, onClick }: { contribution: Contribution, onClick: () => void}) {
   return (
     <Card
+      onClick={onClick}
       sx={{
         borderRadius: 2,
         boxShadow: 3,
@@ -29,12 +30,12 @@ export default function ContributionCard({ contribution }: { contribution: Contr
         <Box
           sx={{
             position: 'relative',
-            maxHeight: 200 - Math.floor(contribution.title.length / 30) * 20,
+            maxHeight: 200,
             overflow: 'hidden',
             mt: 1,
           }}
         >
-          <Typography variant="body2" color="text.secondary" textAlign="justify" sx={{ mt: 1 }}>
+          <Typography variant="body2" color="text.secondary" textAlign="justify" sx={{ mt: 1, height: 200 }}>
             {contribution.description}
           </Typography>
           <Box
