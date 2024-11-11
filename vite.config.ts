@@ -1,15 +1,20 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
-import vitePluginString from 'vite-plugin-string';
 
 export default defineConfig({
   plugins: [
     nodePolyfills(),
     react(),
-    vitePluginString({
-      include: '**/*.md',
-    }),
+    {
+      name: "markdown-loader",
+      transform(code, id) {
+        if (id.slice(-3) === ".md") {
+          // For .md files, get the raw content
+          return `export default ${JSON.stringify(code)};`;
+        }
+      }
+    }
   ],
   publicDir: 'public',
 });

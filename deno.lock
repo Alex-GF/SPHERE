@@ -1,7 +1,6 @@
 {
   "version": "4",
   "specifiers": {
-    "npm:@babel/preset-react@^7.25.9": "7.25.9_@babel+core@7.26.0",
     "npm:@emotion/react@^11.13.3": "11.13.3_react@18.3.1",
     "npm:@emotion/styled@^11.13.0": "11.13.0_@emotion+react@11.13.3__react@18.3.1_react@18.3.1",
     "npm:@eslint/js@^9.11.1": "9.13.0",
@@ -53,7 +52,6 @@
     "npm:typescript@^5.5.3": "5.6.3",
     "npm:uuid@10": "10.0.0",
     "npm:vite-plugin-node-polyfills@0.22": "0.22.0_vite@5.4.10",
-    "npm:vite-plugin-string@^1.2.3": "1.2.3_vite@5.4.10",
     "npm:vite@^5.4.8": "5.4.10"
   },
   "npm": {
@@ -103,12 +101,6 @@
         "@jridgewell/gen-mapping",
         "@jridgewell/trace-mapping",
         "jsesc"
-      ]
-    },
-    "@babel/helper-annotate-as-pure@7.25.9": {
-      "integrity": "sha512-gv7320KBUFJz1RnylIg5WWYPRXKZ884AGkYpgpWW02TH66Dl+HaC1t1CKd0z3R4b6hdYEcmrNZHUmfCP+1u3/g==",
-      "dependencies": [
-        "@babel/types"
       ]
     },
     "@babel/helper-compilation-targets@7.25.9": {
@@ -162,27 +154,6 @@
         "@babel/types"
       ]
     },
-    "@babel/plugin-syntax-jsx@7.25.9_@babel+core@7.26.0": {
-      "integrity": "sha512-ld6oezHQMZsZfp6pWtbjaNDF2tiiCYYDqQszHt5VV437lewP9aSi2Of99CK0D0XB21k7FLgnLcmQKyKzynfeAA==",
-      "dependencies": [
-        "@babel/core",
-        "@babel/helper-plugin-utils"
-      ]
-    },
-    "@babel/plugin-transform-react-display-name@7.25.9_@babel+core@7.26.0": {
-      "integrity": "sha512-KJfMlYIUxQB1CJfO3e0+h0ZHWOTLCPP115Awhaz8U0Zpq36Gl/cXlpoyMRnUWlhNUBAzldnCiAZNvCDj7CrKxQ==",
-      "dependencies": [
-        "@babel/core",
-        "@babel/helper-plugin-utils"
-      ]
-    },
-    "@babel/plugin-transform-react-jsx-development@7.25.9_@babel+core@7.26.0": {
-      "integrity": "sha512-9mj6rm7XVYs4mdLIpbZnHOYdpW42uoiBCTVowg7sP1thUOiANgMb4UtpRivR0pp5iL+ocvUv7X4mZgFRpJEzGw==",
-      "dependencies": [
-        "@babel/core",
-        "@babel/plugin-transform-react-jsx"
-      ]
-    },
     "@babel/plugin-transform-react-jsx-self@7.25.9_@babel+core@7.26.0": {
       "integrity": "sha512-y8quW6p0WHkEhmErnfe58r7x0A70uKphQm8Sp8cV7tjNQwK56sNVK0M73LK3WuYmsuyrftut4xAkjjgU0twaMg==",
       "dependencies": [
@@ -195,37 +166,6 @@
       "dependencies": [
         "@babel/core",
         "@babel/helper-plugin-utils"
-      ]
-    },
-    "@babel/plugin-transform-react-jsx@7.25.9_@babel+core@7.26.0": {
-      "integrity": "sha512-s5XwpQYCqGerXl+Pu6VDL3x0j2d82eiV77UJ8a2mDHAW7j9SWRqQ2y1fNo1Z74CdcYipl5Z41zvjj4Nfzq36rw==",
-      "dependencies": [
-        "@babel/core",
-        "@babel/helper-annotate-as-pure",
-        "@babel/helper-module-imports",
-        "@babel/helper-plugin-utils",
-        "@babel/plugin-syntax-jsx",
-        "@babel/types"
-      ]
-    },
-    "@babel/plugin-transform-react-pure-annotations@7.25.9_@babel+core@7.26.0": {
-      "integrity": "sha512-KQ/Takk3T8Qzj5TppkS1be588lkbTp5uj7w6a0LeQaTMSckU/wK0oJ/pih+T690tkgI5jfmg2TqDJvd41Sj1Cg==",
-      "dependencies": [
-        "@babel/core",
-        "@babel/helper-annotate-as-pure",
-        "@babel/helper-plugin-utils"
-      ]
-    },
-    "@babel/preset-react@7.25.9_@babel+core@7.26.0": {
-      "integrity": "sha512-D3to0uSPiWE7rBrdIICCd0tJSIGpLaaGptna2+w7Pft5xMqLpA1sz99DK5TZ1TjGbdQ/VI1eCSZ06dv3lT4JOw==",
-      "dependencies": [
-        "@babel/core",
-        "@babel/helper-plugin-utils",
-        "@babel/helper-validator-option",
-        "@babel/plugin-transform-react-display-name",
-        "@babel/plugin-transform-react-jsx",
-        "@babel/plugin-transform-react-jsx-development",
-        "@babel/plugin-transform-react-pure-annotations"
       ]
     },
     "@babel/runtime@7.26.0": {
@@ -3699,13 +3639,6 @@
         "vite"
       ]
     },
-    "vite-plugin-string@1.2.3_vite@5.4.10": {
-      "integrity": "sha512-zw2jL0c4B6CAvxO8PshX04494jTcqJjNH2kW1AugBH+fImRY0evdNtVgmeS1i1VFdua/OFhL7fMqIPh0uF21/Q==",
-      "dependencies": [
-        "@rollup/pluginutils",
-        "vite"
-      ]
-    },
     "vite@5.4.10": {
       "integrity": "sha512-1hvaPshuPUtxeQ0hsVH3Mud0ZanOLwVTneA1EgbAM5LhaZEqyPWGRQ7BtaMvUrTDeEaC8pxtj6a6jku3x4z6SQ==",
       "dependencies": [
@@ -3762,7 +3695,6 @@
   "workspace": {
     "packageJson": {
       "dependencies": [
-        "npm:@babel/preset-react@^7.25.9",
         "npm:@emotion/react@^11.13.3",
         "npm:@emotion/styled@^11.13.0",
         "npm:@eslint/js@^9.11.1",
@@ -3814,7 +3746,6 @@
         "npm:typescript@^5.5.3",
         "npm:uuid@10",
         "npm:vite-plugin-node-polyfills@0.22",
-        "npm:vite-plugin-string@^1.2.3",
         "npm:vite@^5.4.8"
       ]
     }
