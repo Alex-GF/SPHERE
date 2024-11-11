@@ -103,7 +103,7 @@ export function PricingRenderer({ pricing, errors, style }: Readonly<PricingProp
           <tbody className='pricing-body'>
             {featuresWithoutTags.map(
               (
-                [name, values]: [string, { value: string | number | boolean; unit?: string }[]],
+                [name, values]: [string, { value: string | number | boolean; unit?: string; addonName: string | null, addonValue: string | number | boolean | null, addonExtension: boolean }[]],
                 key: number
               ) => (
                 <PricingElement name={name} values={values} style={style} key={`${name}-${key}`} />
