@@ -2,7 +2,7 @@ import { StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import { BrowserRouter } from "react-router-dom";
-import LoadingView from "./sections/loading/index.tsx";
+import LoadingView from "./modules/core/pages/loading";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
