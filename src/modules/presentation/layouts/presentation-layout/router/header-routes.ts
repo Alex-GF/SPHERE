@@ -16,6 +16,11 @@ export const headerRoutes: HeaderRoute[] = [
       disabled: false,
       to: "/activities"
     },
+    {
+      name: 'Contribute',
+      disabled: false,
+      to: "/contributions"
+    },
     // {
     //   name: 'Publications',
     //   disabled: false,
