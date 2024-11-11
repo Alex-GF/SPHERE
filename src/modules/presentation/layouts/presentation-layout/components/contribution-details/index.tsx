@@ -115,7 +115,7 @@ export default function ContributionDetailsModal({
                   }}
                 >
                   <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
-                    Supervisor:
+                    Supervisor/s:
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
                     {selectedContribution.supervisor}

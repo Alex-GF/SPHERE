@@ -3,7 +3,13 @@ import { Contribution } from '../../../../pages/contributions/data/contributions
 
 const CARD_HEIGHT = 400;
 
-export default function ContributionCard({ contribution, onClick }: { contribution: Contribution, onClick: () => void}) {
+export default function ContributionCard({
+  contribution,
+  onClick,
+}: {
+  contribution: Contribution;
+  onClick: () => void;
+}) {
   return (
     <Card
       onClick={onClick}
@@ -24,9 +30,11 @@ export default function ContributionCard({ contribution, onClick }: { contributi
       }}
     >
       <CardContent>
-        <Typography variant="h6" textAlign="center" sx={{ fontWeight: 'bold', mt: 1 }}>
-          {contribution.title}
-        </Typography>
+        <Stack justifyContent="center" height={65}>
+          <Typography variant="h6" textAlign="center" sx={{ fontWeight: 'bold', mt: 1 }}>
+            {contribution.title}
+          </Typography>
+        </Stack>
         <Box
           sx={{
             position: 'relative',
@@ -35,7 +43,12 @@ export default function ContributionCard({ contribution, onClick }: { contributi
             mt: 1,
           }}
         >
-          <Typography variant="body2" color="text.secondary" textAlign="justify" sx={{ mt: 1, height: 200 }}>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            textAlign="justify"
+            sx={{ mt: 1, height: 200 }}
+          >
             {contribution.description}
           </Typography>
           <Box
@@ -65,7 +78,7 @@ export default function ContributionCard({ contribution, onClick }: { contributi
         </Stack>
         <Typography variant="caption" color="text.secondary" sx={{ mt: 2, display: 'block' }}>
           <Box component="span" sx={{ fontWeight: 'bold' }}>
-            Supervisor:
+            Supervisor/s:
           </Box>{' '}
           {contribution.supervisor.length > 40
             ? `${contribution.supervisor.slice(0, 37)}...`
