@@ -160,6 +160,7 @@
     height: 200px;
     width: 100%;
     flex-wrap: wrap;
+    gap: 20px;
   }
   
   .add-on-element-container{
