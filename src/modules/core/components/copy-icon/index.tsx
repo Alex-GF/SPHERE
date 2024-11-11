@@ -8,7 +8,6 @@ export default function CopyToClipboardIcon({ value }: { value: string }) {
   
   const handleCopy = () => {
     navigator.clipboard.writeText(value).then(() => {
-      console.log(value);
       setLinkCopied(true);
       setTimeout(() => {
         setLinkCopied(false);

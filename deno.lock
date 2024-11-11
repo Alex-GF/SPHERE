@@ -33,7 +33,7 @@
     "npm:helmet@8": "8.0.0",
     "npm:lz-string@^1.5.0": "1.5.0",
     "npm:monaco-editor@0.52": "0.52.0",
-    "npm:pricing4ts@~0.2.3": "0.2.3",
+    "npm:pricing4ts@~0.2.4": "0.2.4",
     "npm:prop-types@^15.8.1": "15.8.1",
     "npm:react-dom@^18.3.1": "18.3.1_react@18.3.1",
     "npm:react-dropzone@^14.3.5": "14.3.5_react@18.3.1",
@@ -783,6 +783,12 @@
       "integrity": "sha512-FDuKUJQm/ju9fT/SeX/6+gBzoPzlVCzfzmGkwKvRHQVxi4BntVbyIwf6a4Xn62mrvndLiml6z/UBXIdEVjQLXg==",
       "dependencies": [
         "undici-types"
+      ]
+    },
+    "@types/papaparse@5.3.15": {
+      "integrity": "sha512-JHe6vF6x/8Z85nCX4yFdDslN11d+1pr12E526X8WAfhadOeaOTx5AuIkvDKIBopfvlzpzkdMx4YyvSKCM9oqtw==",
+      "dependencies": [
+        "@types/node"
       ]
     },
     "@types/parse-json@4.0.2": {
@@ -2828,6 +2834,9 @@
     "pako@1.0.11": {
       "integrity": "sha512-4hLB8Py4zZce5s4yd9XzopqwVv/yGNhV1Bl8NTmCq1763HeK2+EwVTv+leGeL13Dnh2wfbqowVPXCIO0z4taYw=="
     },
+    "papaparse@5.4.1": {
+      "integrity": "sha512-HipMsgJkZu8br23pW15uvo6sib6wne/4woLZPlFf3rpDyMe9ywEXUsuD7+6K9PRkJlVT51j/sCOYDKGGS3ZJrw=="
+    },
     "parent-module@1.0.1": {
       "integrity": "sha512-GQ2EWRpQV8/o+Aw8YqtfZZPfNRWZYkbidE9k5rpl/hC3vtHHBfGm2Ifi6qWV+coDGkrUKZAxE3Lot5kcsRlh+g==",
       "dependencies": [
@@ -2940,11 +2949,13 @@
     "prelude-ls@1.2.1": {
       "integrity": "sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g=="
     },
-    "pricing4ts@0.2.3": {
-      "integrity": "sha512-qpqPLAyY75I/mbCftFqye/ClcJO6nduicsh15iYWRtMVHj8Yy+nD9BubGs5wJrlKhYE+cTrNlc4opKQiln8h2A==",
+    "pricing4ts@0.2.4": {
+      "integrity": "sha512-v1MiL/eJejOIdrD3b27PNAIFesp7E3HVjU/kkrrBQ8fZ94+5ZBzMdTUnd3SFXqsnJHWuQa2UUe4TCmLTqIc2Cw==",
       "dependencies": [
+        "@types/papaparse",
         "assert",
         "js-yaml",
+        "papaparse",
         "semver@7.6.3",
         "uuid"
       ]
@@ -3727,7 +3738,7 @@
         "npm:helmet@8",
         "npm:lz-string@^1.5.0",
         "npm:monaco-editor@0.52",
-        "npm:pricing4ts@~0.2.3",
+        "npm:pricing4ts@~0.2.4",
         "npm:prop-types@^15.8.1",
         "npm:react-dom@^18.3.1",
         "npm:react-dropzone@^14.3.5",
