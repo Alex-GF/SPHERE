@@ -1,7 +1,8 @@
 import { MonetizationOn } from '@mui/icons-material';
 import { Button, ImageList, Link, Typography } from '@mui/material';
-import { Box, Container } from '@mui/system';
+import { Box, Container, styled } from '@mui/system';
 import { flex } from '../../../../../core/theme/css';
+import { StyledButtonLanding } from '../styled-button-landing';
 
 export default function FoundingLanding() {
   return (
@@ -43,11 +44,11 @@ export default function FoundingLanding() {
         >
           Discover the public entities, projects, and grants that have made SPHERE possible.
         </Typography>
-        <Button variant="contained" color="primary" size="large" sx={{ mt: 5 }} startIcon={<MonetizationOn />}>
-          Find Out Our Finantial Partners
-        </Button>
+        <StyledButtonLanding variant="contained" color="primary" size="large" sx={{ mt: 5 }} startIcon={<MonetizationOn />}>
+          Find Out Our Partners
+        </StyledButtonLanding>
         <ImageList cols={3} sx={{ mt: 5, align: 'center', justifyContent: 'center' }}>
-            <Link href="https://score.us.es">
+            <Link href="https://score.us.es" target="_blank">
               <img
                   alt="SCORE Lab"
                   src="assets/landing/score.png"
@@ -59,7 +60,7 @@ export default function FoundingLanding() {
                   }}
               />
             </Link>
-            <Link href="https://www.aei.gob.es">
+            <Link href="https://www.aei.gob.es" target="_blank">
               <img
                   alt="Spanish and European Government"
                   src="assets/landing/government.png"
@@ -71,7 +72,7 @@ export default function FoundingLanding() {
                   }}
               />
             </Link>
-            <Link href="https://www.us.es">
+            <Link href="https://www.us.es" target="_blank">
               <img
                   alt="US"
                   src="assets/landing/university.png"
