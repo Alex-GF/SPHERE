@@ -8,7 +8,7 @@ import AntonioRuiz from "./profile-pictures/antonio-ruiz.jpg";
 export interface TeamMember {
     firstName: string;
     lastName: string;
-    profilePicture: string;
+    profilePicture: string | null;
     role: string;
     email: string;
     affiliation: JSX.Element;
@@ -58,7 +58,7 @@ export const teamMembers: TeamMember[] = [
         firstName: 'Alejandro',
         lastName: 'García Fernández',
         profilePicture: AlejandroGarcia,
-        role: 'PhD Student',
+        role: 'Core Researcher',
         email: 'agarcia29@us.es',
         affiliation: getAffiliation('Universidad de Sevilla'),
         orcid: '0009-0000-0353-8891',
@@ -71,7 +71,7 @@ export const teamMembers: TeamMember[] = [
         firstName: 'Francisco Javier',
         lastName: 'Cavero López',
         profilePicture: FranciscoJavierCavero,
-        role: 'PhD Student',
+        role: 'Core Researcher',
         email: 'fcavero@us.es',
         affiliation: getAffiliation('Universidad de Sevilla'),
         orcid: '0009-0004-2453-8814',
@@ -84,7 +84,7 @@ export const teamMembers: TeamMember[] = [
         firstName: 'José Antonio',
         lastName: 'Parejo Maestre',
         profilePicture: JoseAntonioParejo,
-        role: 'Associate Professor',
+        role: 'Core Researcher',
         email: 'japarejo@us.es',
         affiliation: getAffiliation('Universidad de Sevilla'),
         orcid: '0000-0002-4708-4606',
@@ -97,7 +97,7 @@ export const teamMembers: TeamMember[] = [
         firstName: 'Antonio',
         lastName: 'Ruiz Cortés',
         profilePicture: AntonioRuiz,
-        role: 'Full Professor',
+        role: 'Core Researcher',
         email: 'aruiz@us.es',
         affiliation: getAffiliation('Universidad de Sevilla'),
         orcid: '0000-0001-9827-1834',
@@ -105,5 +105,70 @@ export const teamMembers: TeamMember[] = [
         linkedin: 'https://www.linkedin.com/in/antonioruizcortes/',
         github: 'https://github.com/antonioruizcortes',
         googlescholar: 'https://scholar.google.es/citations?user=Ka-FHBQAAAAJ'
+    },
+    {
+        firstName: 'Pablo',
+        lastName: 'Trinidad Martín-Arroyo',
+        profilePicture: null,
+        role: 'Core Researcher',
+        email: 'ptrinidad@us.es',
+        affiliation: getAffiliation('Universidad de Sevilla'),
+        // orcid: '0000-0001-9827-1834',
+        // website: 'https://prisma.us.es/investigador/3804',
+        // linkedin: 'https://www.linkedin.com/in/antonioruizcortes/',
+        // github: 'https://github.com/antonioruizcortes',
+        // googlescholar: 'https://scholar.google.es/citations?user=Ka-FHBQAAAAJ'
+    },
+    {
+        firstName: 'María Elena',
+        lastName: 'Molino Peña',
+        profilePicture: null,
+        role: 'Collaborator',
+        email: 'mmolino@us.es',
+        affiliation: getAffiliation('Universidad de Sevilla'),
+        // orcid: '0000-0001-9827-1834',
+        // website: 'https://prisma.us.es/investigador/3804',
+        // linkedin: 'https://www.linkedin.com/in/antonioruizcortes/',
+        // github: 'https://github.com/antonioruizcortes',
+        // googlescholar: 'https://scholar.google.es/citations?user=Ka-FHBQAAAAJ'
+    },
+    {
+        firstName: 'José María',
+        lastName: 'García Rodríguez',
+        profilePicture: null,
+        role: 'Collaborator',
+        email: 'josemgarcia@us.es',
+        affiliation: getAffiliation('Universidad de Sevilla'),
+        // orcid: '0000-0001-9827-1834',
+        // website: 'https://prisma.us.es/investigador/3804',
+        // linkedin: 'https://www.linkedin.com/in/antonioruizcortes/',
+        // github: 'https://github.com/antonioruizcortes',
+        // googlescholar: 'https://scholar.google.es/citations?user=Ka-FHBQAAAAJ'
+    },
+    {
+        firstName: 'Pedro',
+        lastName: 'González Marcos',
+        profilePicture: null,
+        role: 'Student Fellow',
+        email: 'youlakdar@alum.us.es',
+        affiliation: getAffiliation('Universidad de Sevilla'),
+        // orcid: '0000-0001-9827-1834',
+        // website: 'https://prisma.us.es/investigador/3804',
+        // linkedin: 'https://www.linkedin.com/in/antonioruizcortes/',
+        // github: 'https://github.com/antonioruizcortes',
+        // googlescholar: 'https://scholar.google.es/citations?user=Ka-FHBQAAAAJ'
+    },
+    {
+        firstName: 'Youssef',
+        lastName: 'Lakouifat Darkaoui',
+        profilePicture: null,
+        role: 'Student Fellow',
+        email: 'youlakdar@alum.us.es',
+        affiliation: getAffiliation('Universidad de Sevilla'),
+        // orcid: '0000-0001-9827-1834',
+        // website: 'https://prisma.us.es/investigador/3804',
+        // linkedin: 'https://www.linkedin.com/in/antonioruizcortes/',
+        // github: 'https://github.com/antonioruizcortes',
+        // googlescholar: 'https://scholar.google.es/citations?user=Ka-FHBQAAAAJ'
     },
 ]
