@@ -4,7 +4,7 @@ import { palette } from './palette';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { ModeContext } from '../contexts/modeContext';
 
-export default function MasspThemeProvider({ children }: { children: React.ReactNode }) {
+export default function SphereThemeProvider({ children }: { children: React.ReactNode }) {
   const memoizedValue = useMemo(
     () => ({
       palette: palette(),

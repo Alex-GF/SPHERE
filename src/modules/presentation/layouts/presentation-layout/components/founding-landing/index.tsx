@@ -48,7 +48,7 @@ export default function FoundingLanding() {
           Find Out Our Partners
         </StyledButtonLanding>
         <ImageList cols={3} sx={{ mt: 5, align: 'center', justifyContent: 'center' }}>
-            <Link href="https://score.us.es">
+            <Link href="https://score.us.es" target="_blank">
               <img
                   alt="SCORE Lab"
                   src="assets/landing/score.png"
@@ -60,7 +60,7 @@ export default function FoundingLanding() {
                   }}
               />
             </Link>
-            <Link href="https://www.aei.gob.es">
+            <Link href="https://www.aei.gob.es" target="_blank">
               <img
                   alt="Spanish and European Government"
                   src="assets/landing/government.png"
@@ -72,7 +72,7 @@ export default function FoundingLanding() {
                   }}
               />
             </Link>
-            <Link href="https://www.us.es">
+            <Link href="https://www.us.es" target="_blank">
               <img
                   alt="US"
                   src="assets/landing/university.png"
