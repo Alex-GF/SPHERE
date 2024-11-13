@@ -84,7 +84,7 @@ export default function StatsLanding() {
                         <Box sx={{ display: 'flex', justifyContent: 'center', ml: 5, my: { xs: 8, sm: 12 } }}>
                             <img
                             alt="Professional in a modern office setting"
-                            src="assets/globe/logo.png"
+                            src="assets/landing/woman.webp"
                             width={800}
                             height={600}
                             style={{

@@ -105,7 +105,7 @@ export default function FeaturesLanding() {
     <Box sx={{ width: '100dvw', ...flex({}) }}>
       <img
         alt=""
-        src="assets/globe/logo.png"
+        src="assets/landing/team.webp"
         width={350}
         height={700}
         style={{

@@ -38,14 +38,15 @@ export default function HeroLanding() {
     new THREE.TextureLoader().load('assets/globe/usd.png'),
     new THREE.TextureLoader().load('assets/globe/jpy.png'),
     new THREE.TextureLoader().load('assets/globe/gbp.png'),
-    new THREE.TextureLoader().load('assets/globe/microsoft.png'),
     new THREE.TextureLoader().load('assets/globe/github.png'),
-    new THREE.TextureLoader().load('assets/globe/buffer.svg'),
-    new THREE.TextureLoader().load('assets/globe/clockify.svg'),
-    new THREE.TextureLoader().load('assets/globe/jira.png'),
-    new THREE.TextureLoader().load('assets/globe/overleaf.png'),
-    new THREE.TextureLoader().load('assets/globe/slack.png'),
-    new THREE.TextureLoader().load('assets/globe/zoom.png'),
+    new THREE.TextureLoader().load('assets/globe/microsoft.jpg'),
+    new THREE.TextureLoader().load('assets/globe/zoom.jpg'),
+    new THREE.TextureLoader().load('assets/globe/overleaf.jpg'),
+    new THREE.TextureLoader().load('assets/globe/slack.jpg'),
+    new THREE.TextureLoader().load('assets/globe/jira.jpeg'),
+    new THREE.TextureLoader().load('assets/globe/canva.jpeg'),
+    new THREE.TextureLoader().load('assets/globe/salesforce.jpg'),
+    new THREE.TextureLoader().load('assets/globe/postman.jpg')
   ];
 
   myGlobe(globeRefState)
@@ -108,12 +109,12 @@ export default function HeroLanding() {
           {' '}
           Explore our suite of Pricing-driven tools and unleash the full potential of SaaS pricings{' '}
         </Typography>
-        <Box sx={{ minWidth: '50%', ...flex({ justify: 'space-between' }) }}>
-          <Button variant="contained">Get Started</Button>
-          <Button variant="outlined">About SPHERE</Button>
+        <Box sx={{ minWidth: '50%', ...flex({ justify: 'space-between' }), mt: 5 }}>
+          <Button variant="contained" size='large'>Get Started</Button>
+          <Button variant="outlined" size='large'>About SPHERE</Button>
         </Box>
       </Box>
-      {/* <Box ref={globeRef} /> */}
+      <Box ref={globeRef} />
     </Box>
   );
 }
