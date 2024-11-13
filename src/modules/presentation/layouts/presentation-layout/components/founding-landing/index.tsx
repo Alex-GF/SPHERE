@@ -1,7 +1,8 @@
 import { MonetizationOn } from '@mui/icons-material';
 import { Button, ImageList, Link, Typography } from '@mui/material';
-import { Box, Container } from '@mui/system';
+import { Box, Container, styled } from '@mui/system';
 import { flex } from '../../../../../core/theme/css';
+import { StyledButtonLanding } from '../styled-button-landing';
 
 export default function FoundingLanding() {
   return (
@@ -43,9 +44,9 @@ export default function FoundingLanding() {
         >
           Discover the public entities, projects, and grants that have made SPHERE possible.
         </Typography>
-        <Button variant="contained" color="primary" size="large" sx={{ mt: 5 }} startIcon={<MonetizationOn />}>
-          Find Out Our Finantial Partners
-        </Button>
+        <StyledButtonLanding variant="contained" color="primary" size="large" sx={{ mt: 5 }} startIcon={<MonetizationOn />}>
+          Find Out Our Partners
+        </StyledButtonLanding>
         <ImageList cols={3} sx={{ mt: 5, align: 'center', justifyContent: 'center' }}>
             <Link href="https://score.us.es">
               <img

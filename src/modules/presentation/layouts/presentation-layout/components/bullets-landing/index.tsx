@@ -1,9 +1,10 @@
 import { CheckCircleOutline } from "@mui/icons-material";
-import { List, ListItem, ListItemIcon, ListItemText, Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { List, ListItem, ListItemIcon, ListItemText, Typography, useTheme } from "@mui/material";
+import { alpha, Box } from "@mui/system";
 import { flex } from "../../../../../core/theme/css";
 
 export default function BulletsLanding() {
+    const theme = useTheme()
     return (
         <Box sx={{ width: '100dvw', ...flex({}), my: { xs: 8, sm: 12 } }}>
           <Typography component="h2"
@@ -39,7 +40,11 @@ export default function BulletsLanding() {
                   'Enjoy a platform that grows with your needs, incorporating new features and improvements regularly.',
               },
             ].map((feature, index) => (
-              <ListItem key={index}>
+              <ListItem key={index} sx={{'&:hover': {
+          backgroundColor: alpha(theme.palette.primary.main, 0.04),
+          cursor: 'pointer',
+        },
+        transition: 'background-color 0.3s ease',}}>
                 <ListItemIcon>
                   <CheckCircleOutline color="primary" />
                 </ListItemIcon>

@@ -4,6 +4,9 @@ import { Box } from '@mui/system';
 import * as THREE from 'three';
 import { Button, Typography } from '@mui/material';
 import { flex } from '../../../../../core/theme/css';
+import { StyledButtonLanding } from '../styled-button-landing';
+import LanguageIcon from '@mui/icons-material/Language';
+import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite';
 
 export default function HeroLanding() {
   const myGlobe = Globe();
@@ -110,8 +113,8 @@ export default function HeroLanding() {
           Explore our suite of Pricing-driven tools and unleash the full potential of SaaS pricings{' '}
         </Typography>
         <Box sx={{ minWidth: '50%', ...flex({ justify: 'space-between' }), mt: 5 }}>
-          <Button variant="contained" size='large'>Get Started</Button>
-          <Button variant="outlined" size='large'>About SPHERE</Button>
+          <StyledButtonLanding variant="contained" size='large' endIcon={<PlayCircleFilledWhiteIcon />}>Get Started</StyledButtonLanding>
+          <Button variant="outlined" size='large' endIcon={<LanguageIcon />}>About SPHERE</Button>
         </Box>
       </Box>
       <Box ref={globeRef} />

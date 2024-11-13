@@ -36,6 +36,7 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description }) =
         backgroundColor: 'transparent',
         '&:hover': {
           backgroundColor: alpha(theme.palette.primary.main, 0.04),
+          cursor: 'pointer',
         },
         transition: 'background-color 0.3s ease',
       }}

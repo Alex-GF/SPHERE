@@ -2,6 +2,7 @@ import { LibraryBooks, People } from '@mui/icons-material';
 import { Button, ButtonGroup, ImageList, Typography } from '@mui/material';
 import { Box, Container } from '@mui/system';
 import { flex } from '../../../../../core/theme/css';
+import { StyledButtonLanding } from '../styled-button-landing';
 
 export default function ResearchLanding() {
   return (
@@ -90,9 +91,9 @@ export default function ResearchLanding() {
             />
         </ImageList>
         <Box mt={5} sx={{...flex({ justify: 'center', align: 'center' })}} gap={3.5}>
-          <Button variant="contained" color="primary" startIcon={<LibraryBooks />} size="large" sx={{ width: 400, textAlign: 'center' }}>
+          <StyledButtonLanding variant="contained" color="primary" startIcon={<LibraryBooks />} size="large" sx={{ width: 400, textAlign: 'center' }}>
             Discover All Our Publications
-          </Button>
+          </StyledButtonLanding>
           <Button variant="outlined" color="primary" startIcon={<People />} size="large" sx={{ width: 400, textAlign: 'center' }}>
             Meet Our Team And Collaborators
           </Button>

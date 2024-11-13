@@ -16,26 +16,32 @@ export default function BoxesLanding({elements, title, description, isPrimary=tr
                     fontSize: { xs: 32, sm: 40 }}}>
                     {title}
                 </Typography>
-
-                {description && (
-                    <Typography
-                        variant="h6"
-                        align="center"
-                        color="text.secondary"
-                        sx={{
-                            maxWidth: 'md',
-                            mx: 'auto',
-                            lineHeight: 1.6,
-                        }}
-                    >
-                        {description}
-                    </Typography>
-                )}
+                
+                <Typography
+                variant="h6"
+                align="center"
+                color="text.secondary"
+                sx={{
+                    maxWidth: 'md',
+                    mx: 'auto',
+                    lineHeight: 1.6,
+                }}
+                >
+                {description}
+                </Typography>
             </Box>
             <Grid2 container spacing={3} sx={{mb: {xs: 8, sm: 12}}}>
                 {elements.map((e, index) => (
                 <Grid2 size={3} key={index}>
-                    <Card sx={{minHeight: "200px"}}>
+                    <Card sx={{
+                            minHeight: "200px",
+                            transition: 'transform 0.3s, box-shadow 0.3s',
+                            '&:hover': {
+                                transform: 'translateY(-25px)',
+                                boxShadow: 3,
+                                cursor: 'pointer'
+                            }
+                        }}>
                     <CardContent>
                         <Avatar sx={{ bgcolor: isPrimary?'primary.main':'secondary.main', mb: 2 }}>{e.icon}</Avatar>
                         <Typography variant="h6" component="h3" gutterBottom>
