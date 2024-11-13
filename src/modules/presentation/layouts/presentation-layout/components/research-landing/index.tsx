@@ -2,9 +2,12 @@ import { LibraryBooks, People } from '@mui/icons-material';
 import { Button, ButtonGroup, ImageList, Typography } from '@mui/material';
 import { Box, Container } from '@mui/system';
 import { flex } from '../../../../../core/theme/css';
-import { StyledButtonLanding } from '../styled-button-landing';
+import { useRouter } from '../../../../../core/hooks/useRouter';
 
 export default function ResearchLanding() {
+  
+  const router = useRouter();
+  
   return (
     <Box sx={{ width: '100dvw', my: { xs: 8, sm: 12 } }}>
       <Container maxWidth="xl" sx={{ ...flex({ direction: 'column', justify: 'center' })}}>
@@ -91,10 +94,10 @@ export default function ResearchLanding() {
             />
         </ImageList>
         <Box mt={5} sx={{...flex({ justify: 'center', align: 'center' })}} gap={3.5}>
-          <StyledButtonLanding variant="contained" color="primary" startIcon={<LibraryBooks />} size="large" sx={{ width: 400, textAlign: 'center' }}>
+          <Button variant="contained" color="primary" startIcon={<LibraryBooks />} size="large" sx={{ width: 400, textAlign: 'center' }} onClick={() => {window.location.href = "/activities"}}>
             Discover All Our Publications
-          </StyledButtonLanding>
-          <Button variant="outlined" color="primary" startIcon={<People />} size="large" sx={{ width: 400, textAlign: 'center' }}>
+          </Button>
+          <Button variant="outlined" color="primary" startIcon={<People />} size="large" sx={{ width: 400, textAlign: 'center' }} onClick={() => window.location.href = "/team"}>
             Meet Our Team And Collaborators
           </Button>
         </Box>
