@@ -1,10 +1,20 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import { nodePolyfills } from "vite-plugin-node-polyfills";
-import fs from "fs";
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import { nodePolyfills } from 'vite-plugin-node-polyfills';
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [nodePolyfills(), react()],
+  plugins: [
+    nodePolyfills(),
+    react(),
+    {
+      name: "markdown-loader",
+      transform(code, id) {
+        if (id.slice(-3) === ".md") {
+          // For .md files, get the raw content
+          return `export default ${JSON.stringify(code)};`;
+        }
+      }
+    }
+  ],
   publicDir: 'public',
-})
+});

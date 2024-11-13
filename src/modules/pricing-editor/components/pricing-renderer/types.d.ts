@@ -5,6 +5,9 @@ export type PricingData = {
     value: string | number | boolean;
     unit?: string;
     render: RenderMode;
+    addonName: string | null;
+    addonValue: string | number | boolean | null;
+    addonExtension: boolean;
   }[];
 };
 

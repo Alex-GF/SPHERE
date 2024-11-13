@@ -50,10 +50,10 @@ export default function TeamMemberCard({ member }: { member: TeamMember }) {
   return (
     <StyledCard>
       <StyledAvatar
-        src={member.profilePicture}
+        src={member.profilePicture!}
         alt={`${member.firstName} ${member.lastName}`}
       >
-        {!member.profilePicture && `${member.firstName[0]}${member.lastName[0]}`}
+        <Typography variant='h2'>{!member.profilePicture && `${member.firstName[0]}${member.lastName[0]}`}</Typography>
       </StyledAvatar>
       <StyledCardContent>
         <Typography gutterBottom variant="h5" component="div">
