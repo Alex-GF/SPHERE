@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 
 import RouterLink from '../../components/router-link';
 import Logo404 from '../../components/404-logo';
+import { Home } from '@mui/icons-material';
 
 export default function NotFoundPage() {
   return (
@@ -53,7 +54,13 @@ export default function NotFoundPage() {
             size="large"
             variant="contained"
             component={RouterLink}
-            sx={{ cursor: 'pointer' }}
+            startIcon={<Home />}
+            sx={{
+              cursor: 'pointer',
+              '&:hover': {
+                color: 'white',
+              },
+            }}
           >
             Return to Home
           </Button>
