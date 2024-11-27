@@ -54,6 +54,7 @@ export default function CardPage() {
     const [pricingData, setPricingData] = useState<AnalyticsDataEntry[]|null>(null);
     const [currentPricing, setCurrentPricing] = useState<AnalyticsDataEntry|null>(null);
     const [pricing, setPricing] = useState<Pricing|null>(null);
+    const [oldestPricingDate, setOldestPricingDate] = useState<string|null>(null);
     const [pricingDetails, setPricingDetails] = useState<{ size: string; lastModified: string }>({
       size: "Unknown size",
       lastModified: "Unknown modification date",
@@ -70,6 +71,7 @@ export default function CardPage() {
         setFullPricingData(SAAS_DATA[name]);
         setPricingData(SAAS_DATA[name]);
         setCurrentPricing(SAAS_DATA[name][0]);
+        setOldestPricingDate(SAAS_DATA[name][SAAS_DATA[name].length-1].date);
       } else {
         router.push('/error')
       }
@@ -171,7 +173,7 @@ export default function CardPage() {
               </Button>
             </Box>
 
-            <Box display="flex" flexWrap="wrap" gap={1} mb={2}>
+            {/* <Box display="flex" flexWrap="wrap" gap={1} mb={2}>
               <StyledChip label="Productivity" variant="outlined" />
               <StyledChip label="Freemium" variant="outlined" />
               <StyledChip label="Microsoft" variant="outlined" />
@@ -182,7 +184,7 @@ export default function CardPage() {
 
             <Typography variant="body2" color="text.secondary" mb={2}>
               More info
-            </Typography>
+            </Typography> */}
 
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
               <Tabs value={tabValue} onChange={(_, v) => setTabValue(v)}>
@@ -193,10 +195,13 @@ export default function CardPage() {
           </Box>
           <Box display="flex" flexDirection="column" gap={2}>
             <Box display="flex" gap={2}>
+              {oldestPricingDate && (
+                <>
               <TextField
               label="Start Date"
               type="date"
               fullWidth
+              defaultValue={new Date(oldestPricingDate).toISOString().split('T')[0]}
               slotProps={{ inputLabel: {shrink: true} }}
               onChange={handleInputDate}
               />
@@ -207,6 +212,9 @@ export default function CardPage() {
               slotProps={{ inputLabel: {shrink: true} }}
               onChange={handleOutputDate}
               />
+              </>
+              )
+            }
             </Box>
             <TextField
               label="Version"
@@ -258,9 +266,9 @@ export default function CardPage() {
                 <Analytics pricingData={pricingData} toggleModal={toggleModal} />
               </Paper>
             }
-            <Paper variant="outlined" sx={{ p: 2, mt: 2 }}>
+            {/* <Paper variant="outlined" sx={{ p: 2, mt: 2 }}>
               <Harvey />
-            </Paper>
+            </Paper> */}
 
             <Paper variant="outlined" sx={{ p: 2, mt: 2 }}>
               <PricingTree pricing={currentPricing} name={pricing?.saasName} />
