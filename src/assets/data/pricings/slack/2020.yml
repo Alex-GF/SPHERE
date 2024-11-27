@@ -1,0 +1,417 @@
+saasName: Slack
+version: '2.0'
+createdAt: '2020-10-21'
+currency: USD
+hasAnnualPayment: true
+features:
+  messagesAccess:
+    description: >-
+      The more you use Slack, the more useful it becomes. By being able to
+      search and access all messages in your organization, you can leverage the
+      context of previous decisions or onboard new team members faster.
+    defaultValue: true
+    valueType: BOOLEAN
+    type: DOMAIN
+  search:
+    description: Relevant people, channels, and files in search results
+    defaultValue: true
+    valueType: BOOLEAN
+    type: DOMAIN
+  appsAndServices:
+    description: >-
+      Receive notifications, find information, and take action without leaving
+      Slack, through integrations and tools you already use every day. You can
+      also create your own apps tailored to your specific needs.
+    defaultValue: true
+    valueType: BOOLEAN
+    type: DOMAIN
+  storageByAccount:
+    description: File storage per account (in total).
+    defaultValue: true
+    valueType: BOOLEAN
+    type: DOMAIN
+  storageByTeamMember:
+    description: File storage per team member.
+    defaultValue: false
+    valueType: BOOLEAN
+    type: DOMAIN
+  workspaces:
+    description: >-
+      Slack workspaces are the engine of your work, like a virtual office. It's
+      where your channels, direct messages, and tools reside.
+    defaultValue: false
+    valueType: BOOLEAN
+    type: DOMAIN
+  customSections:
+    description: >-
+      Keep your projects, teams, and priorities in order. Achieve this by
+      organizing your channels and conversations into customizable, collapsible
+      sections in the sidebar.
+    defaultValue: false
+    valueType: BOOLEAN
+    type: MANAGEMENT
+  slackConnect:
+    description: >-
+      Slack Connect enables smooth collaboration between departments of the
+      organization. Two organizations can work together from their own
+      workspaces in Slack.
+    defaultValue: false
+    valueType: BOOLEAN
+    type: DOMAIN
+  guestsAccounts:
+    description: >-
+      Reduce endless email exchanges, and even occasional emails, by bringing
+      contractors, freelancers, and vendors into Slack through guest accounts.
+    defaultValue: false
+    valueType: BOOLEAN
+    type: DOMAIN
+  dataCypher:
+    description: Data encryption at rest and in transit.
+    defaultValue: true
+    valueType: BOOLEAN
+    type: GUARANTEE
+  twoFactorAuthentication:
+    description: Two-factor authentication.
+    defaultValue: true
+    valueType: BOOLEAN
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  oAuthGoogle:
+    description: OAuth with Google.
+    defaultValue: false
+    valueType: BOOLEAN
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  singleSignOn:
+    description: SAML-based single sign-on (SSO).
+    defaultValue: false
+    valueType: BOOLEAN
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  adminSlackEnterpriseKeys:
+    description: Administration of Slack Enterprise Keys
+    defaultValue: false
+    valueType: BOOLEAN
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://docs.aws.amazon.com/kms/latest/developerguide/overview.html
+  enterpriseMobilitySecurity:
+    description: Integration with Enterprise Mobility Management (EMM)
+    defaultValue: false
+    valueType: BOOLEAN
+    type: GUARANTEE
+  customRules:
+    description: Custom message and file retention policies.
+    defaultValue: false
+    valueType: BOOLEAN
+    type: MANAGEMENT
+  exportMessages:
+    description: Data exports for all messages.
+    defaultValue: false
+    valueType: BOOLEAN
+    type: DOMAIN
+  complianceHIPAA:
+    description: Compliance with HIPAA requirements.
+    defaultValue: false
+    valueType: BOOLEAN
+    type: GUARANTEE
+  dataResidence:
+    description: Data residency
+    defaultValue: false
+    valueType: BOOLEAN
+    type: GUARANTEE
+  privilegesGeneralChannelManagement:
+    description: 'Manage posting permissions in the #general channel.'
+    defaultValue: true
+    valueType: BOOLEAN
+    type: MANAGEMENT
+  privilegesPrivateChannelManagement:
+    description: Manage posting permissions for an unlimited number of channels.
+    defaultValue: false
+    valueType: BOOLEAN
+    type: MANAGEMENT
+  customUserGroups:
+    description: >-
+      Custom user groups: Facilitate notifications and communication with entire
+      teams, departments, and groups.
+    defaultValue: false
+    valueType: BOOLEAN
+    type: MANAGEMENT
+  usersManagement:
+    description: User management.
+    defaultValue: false
+    valueType: BOOLEAN
+    type: MANAGEMENT
+  activeDirectorySync:
+    description: Real-time Active Directory sync with OneLogin, Okta, and Ping.
+    defaultValue: false
+    valueType: BOOLEAN
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://www.onelogin.com/pages/active-directory-sso
+      - https://www.okta.com/integrations/active-directory/
+      - >-
+        https://docs.pingidentity.com/r/en-us/pingoneforenterprise/p14e_connect_adc
+  usersManagementSCIM:
+    description: User management via SCIM.
+    defaultValue: false
+    valueType: BOOLEAN
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+  extraCompatibility:
+    description: >-
+      Compatibility with Data Loss Prevention (DLP) providers, eDiscovery, and
+      offline backups.
+    defaultValue: false
+    valueType: BOOLEAN
+    type: GUARANTEE
+  domainName:
+    description: Domain name claim.
+    defaultValue: false
+    valueType: BOOLEAN
+    type: DOMAIN
+  customSLAs:
+    description: Custom service level agreements.
+    defaultValue: false
+    valueType: BOOLEAN
+    type: GUARANTEE
+  voiceAndVideoCalls:
+    description: Voice and video calls
+    defaultValue: true
+    valueType: BOOLEAN
+    type: DOMAIN
+  screenSharing:
+    description: >-
+      In addition to being able to present your screen, everyone on the call can
+      write on the screen to add annotations.
+    defaultValue: false
+    valueType: BOOLEAN
+    type: DOMAIN
+  support:
+    description: Access to customer support.
+    defaultValue: Standard Support
+    valueType: TEXT
+    type: SUPPORT
+  availability:
+    description: 99.99% availability guaranteed in our SLA
+    defaultValue: false
+    valueType: BOOLEAN
+    type: GUARANTEE
+  personalTechnicalSupport:
+    description: Dedicated account and customer satisfaction team.
+    defaultValue: false
+    valueType: BOOLEAN
+    type: SUPPORT
+usageLimits:
+  useMessagesAccess:
+    description: The number of messages you can access
+    valueType: NUMERIC
+    defaultValue: 10000
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - messagesAccess
+  useAppsAndServices:
+    description: The limits of apps and services that can be used
+    valueType: NUMERIC
+    defaultValue: 10
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - appsAndServices
+  useVoiceAndVideoCalls:
+    description: >-
+      The number of people that can be in the same voice and video calls you
+      make
+    valueType: NUMERIC
+    defaultValue: 1
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - voiceAndVideoCalls
+  useStorageByAccount:
+    description: The storage limit by account
+    valueType: NUMERIC
+    defaultValue: 5
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - storageByAccount
+  useStorageByTeamMember:
+    description: The storage limit by team member
+    valueType: NUMERIC
+    defaultValue: 10
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - storageByTeamMember
+  useWorkspaces:
+    description: The number of workspaces you can use
+    valueType: NUMERIC
+    defaultValue: 1
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - workspaces
+plans:
+  FREE:
+    description: For small teams trying Slack for an unlimited period
+    monthlyPrice: 0
+    annualPrice: 0
+    unit: user/month
+    features: null
+    usageLimits: null
+    price: 0
+  STANDARD:
+    description: For small and medium-sized businesses
+    monthlyPrice: 8
+    annualPrice: 6.67
+    unit: user/month
+    features:
+      customSections:
+        value: true
+      storageByTeamMember:
+        value: true
+      slackConnect:
+        value: true
+      guestsAccounts:
+        value: true
+      oAuthGoogle:
+        value: true
+      customRules:
+        value: true
+      customUserGroups:
+        value: true
+      screenSharing:
+        value: true
+      support:
+        value: 24/7 support
+    usageLimits:
+      useMessagesAccess:
+        value: 10000000000000
+      useAppsAndServices:
+        value: 10000000000000
+      useVoiceAndVideoCalls:
+        value: 15
+      useStorageByTeamMember:
+        value: 10
+    price: 8
+  PLUS:
+    description: For slightly larger companies or those with advanced administrative needs
+    monthlyPrice: 15
+    annualPrice: 12.5
+    unit: user/month
+    features:
+      storageByTeamMember:
+        value: true
+      customSections:
+        value: true
+      slackConnect:
+        value: true
+      guestsAccounts:
+        value: true
+      oAuthGoogle:
+        value: true
+      singleSignOn:
+        value: true
+      customRules:
+        value: true
+      exportMessages:
+        value: true
+      dataResidence:
+        value: true
+      privilegesPrivateChannelManagement:
+        value: true
+      customUserGroups:
+        value: true
+      activeDirectorySync:
+        value: true
+      usersManagementSCIM:
+        value: true
+      screenSharing:
+        value: true
+      support:
+        value: 24/7 support with a 4-hour initial response time
+      availability:
+        value: true
+    usageLimits:
+      useMessagesAccess:
+        value: 10000000000000
+      useAppsAndServices:
+        value: 10000000000000
+      useVoiceAndVideoCalls:
+        value: 15
+      useStorageByTeamMember:
+        value: 20
+    price: 15
+  ENTERPRISE_GRID:
+    description: For large enterprises or those in regulated industries
+    monthlyPrice: Contact Sales
+    annualPrice: Contact Sales
+    unit: user/month
+    features:
+      storageByTeamMember:
+        value: true
+      customSections:
+        value: true
+      slackConnect:
+        value: true
+      guestsAccounts:
+        value: true
+      singleSignOn:
+        value: true
+      enterpriseMobilitySecurity:
+        value: true
+      customRules:
+        value: true
+      exportMessages:
+        value: true
+      complianceHIPAA:
+        value: true
+      dataResidence:
+        value: true
+      privilegesPrivateChannelManagement:
+        value: true
+      customUserGroups:
+        value: true
+      usersManagement:
+        value: true
+      activeDirectorySync:
+        value: true
+      usersManagementSCIM:
+        value: true
+      extraCompatibility:
+        value: true
+      domainName:
+        value: true
+      customSLAs:
+        value: true
+      screenSharing:
+        value: true
+      support:
+        value: Priority 24/7 support with a 4-hour initial response time
+      availability:
+        value: true
+      personalTechnicalSupport:
+        value: true
+    usageLimits:
+      useMessagesAccess:
+        value: 10000000000000
+      useAppsAndServices:
+        value: 10000000000000
+      useVoiceAndVideoCalls:
+        value: 15
+      useStorageByTeamMember:
+        value: 1024
+      useWorkspaces:
+        value: 10000000000000
+    price: Contact Sales
+addOns:
+  slackEnterpriseKeys:
+    availableFor:
+      - ENTERPRISE_GRID
+    monthlyPrice: Contact Sales
+    annualPrice: Contact Sales
+    unit: USD/user
+    features:
+      adminSlackEnterpriseKeys:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+    price: Contact Sales

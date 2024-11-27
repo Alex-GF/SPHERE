@@ -1,0 +1,143 @@
+saasName: Jira
+version: '2.0'
+createdAt: '2019-10-29'
+currency: USD
+hasAnnualPayment: false
+features:
+  advancedPermissions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  scrumAndKanbanBoards:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  backlog:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  agileReporting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  customizableWorkflows:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  roadmaps:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  appsAndIntegrations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  anonymousAccess:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  auditLogs:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  uptimeSLA:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  storage:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  communitySupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  localBusinessHoursSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  24x7Support:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+usageLimits:
+  usersLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 10
+    unit: user/site
+    type: NON_RENEWABLE
+    linkedFeatures: null
+  storageLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 2
+    unit: GB
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - storage
+plans:
+  FREE:
+    description: ''
+    monthlyPrice: 0
+    unit: user/month
+    features: null
+    usageLimits: null
+    price: 0
+  STANDARD:
+    description: ''
+    monthlyPrice: 7
+    unit: user/month
+    features:
+      advancedPermissions:
+        value: true
+      anonymousAccess:
+        value: true
+      auditLogs:
+        value: true
+      localBusinessHoursSupport:
+        value: true
+    usageLimits:
+      usersLimit:
+        value: 20000
+      storageLimit:
+        value: 250
+    price: 7
+  PREMIUM:
+    description: ''
+    monthlyPrice: 14
+    unit: user/month
+    features:
+      advancedPermissions:
+        value: true
+      anonymousAccess:
+        value: true
+      auditLogs:
+        value: true
+      uptimeSLA:
+        value: true
+      localBusinessHoursSupport:
+        value: true
+      24x7Support:
+        value: true
+    usageLimits:
+      usersLimit:
+        value: 20000
+      storageLimit:
+        value: .inf
+    price: 14

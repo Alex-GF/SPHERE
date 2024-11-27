@@ -1,0 +1,185 @@
+saasName: Crowdcast
+version: '2.0'
+createdAt: '2022-11-22'
+currency: USD
+hasAnnualPayment: true
+features:
+  liveStreaming:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  transactionFee:
+    description: ''
+    valueType: TEXT
+    defaultValue: "5%"
+    type: DOMAIN
+  hdLiveVideoWithRecording:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  multiSessionEvents:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  rtmpSudio:
+    description: Broadcast with OBS, Wirecast, Ecamm Live and StreamYard
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  emailSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  chatSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  stripeIntegration:
+    description: ''
+    valueType: TEXT
+    defaultValue:
+      - GATEWAY
+    type: PAYMENT
+  eventAnalytics:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  sessionAnalytics:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  zapierIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://zapier.com/pricing
+  exportEmailAddresses:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  exportChat:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  exportData:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  multistreaming:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  customRegistrationFields:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+usageLimits:
+  liveAttendeesLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 100
+    unit: attendee
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - liveStreaming
+  liveHoursPerMonthLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 10
+    unit: hour/month
+    type: RENEWABLE
+    linkedFeatures:
+      - liveStreaming
+  hostSeatsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: seat
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - liveStreaming
+  sessionsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 2
+    unit: hour/session
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - liveStreaming
+  multistreamLocationsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: location
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - multistreaming
+plans:
+  LITE:
+    description: For creators and small businesses looking to grow their audience
+    monthlyPrice: 49
+    annualPrice: 34
+    unit: /month
+    features: null
+    usageLimits: null
+    price: 49
+  PRO:
+    description: >-
+      For professional creators and businesses to consistently host live video
+      events
+    monthlyPrice: 89
+    annualPrice: 62
+    unit: /month
+    features:
+      multistreaming:
+        value: true
+      customRegistrationFields:
+        value: true
+    usageLimits:
+      liveAttendeesLimit:
+        value: 250
+      liveHoursPerMonthLimit:
+        value: 20
+      hostSeatsLimit:
+        value: 2
+    price: 89
+  BUSINESS:
+    description: For startups and companies looking to engage their customers
+    monthlyPrice: 195
+    annualPrice: 139
+    unit: /month
+    features:
+      multistreaming:
+        value: true
+      customRegistrationFields:
+        value: true
+      transactionFee:
+        value: "2%"
+    usageLimits:
+      liveAttendeesLimit:
+        value: 1000
+      liveHoursPerMonthLimit:
+        value: 40
+      hostSeatsLimit:
+        value: 4
+      multistreamLocationsLimit:
+        value: 3
+      sessionsLimit:
+        value: 6
+    price: 195

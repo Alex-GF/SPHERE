@@ -1,0 +1,470 @@
+saasName: Evernote
+version: '2.0'
+createdAt: '2019-11-29'
+currency: USD
+hasAnnualPayment: false
+features:
+  notes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  richFormatting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  webClippingsFromAnyBrowserOrDevice:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  webScreenshotsFromAnyBrowserOrDevice:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  recordAudioNotes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  toDoLists:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  takeNotesWithStylusOnMobileDevices:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  highlightOnImages:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  annotateOnImages:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  commentOnImages:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  attachPdfs:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  attachReceipts:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  attachFiles:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  attachDocuments:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  clipPagesImagesFromTheWeb:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  clipTextFromTheWeb:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  forwardEmailsIntoEvernote:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+  scanAndDigitalizeBusinessCardsToCreateContacts:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  annotatePdfs:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  searchNotes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  createNotebooks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  createTags:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  sortInformationByDate:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  sortInformationByTitle:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  sortInformationByTag:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  organizeInformationByDate:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  organizeInformationByTitle:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  organizeInformationByTag:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  searchTextInsideImages:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  searchTextInsidePdfs:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  searchTextInsideOfficeDocs:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  versionHistoryOfNotes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  shareNotesWithPeople:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  setPermissionsForEdittingNotes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  setPermissionsForEdittingNotebooks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  turnNotesIntoPresentations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  shareNotesWithinYourCompany:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  shareNotebooksWithinYourCompany:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  recommendRelatedNotes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: BOT
+  typpingSuggestions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: BOT
+  recommendRelatedNotesFromYourCompany:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: BOT
+  linkGoogleDriveFiles:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingUrls:
+      - https://one.google.com/about/plans
+  connectWithEmailProviders:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+  connectWithCommunicationTools:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingUrls:
+      - https://slack.com/pricing
+      - >-
+        https://www.microsoft.com/en-us/microsoft-365/microsoft-teams/group-chat-software
+  connectWithCrms:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingUrls:
+      - https://www.salesforce.com/products/sales-cloud/pricing/
+  collaborationSpacesForTeams:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  centralLocationForWork:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  permissionsBasedAccessToContent:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  virtualBulletinAboutNewsAccrossTheTeam:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  editNotesInRealTeamWithOthers:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  centralizedAccountAdministration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  centralizedUserManagement:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  singleSignOn:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  activityHistory:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  businessDataOwnership:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  offlineAccess:
+    description: ''
+    valueType: TEXT
+    defaultValue: Desktop
+    type: DOMAIN
+  customerSupport:
+    description: ''
+    valueType: TEXT
+    defaultValue: Community Support
+    type: SUPPORT
+usageLimits:
+  globalMonthlyUploadLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 60
+    unit: MB
+    type: RENEWABLE
+    linkedFeatures: null
+  monthlyUploadLimitByUser:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 0
+    unit: MB
+    type: RENEWABLE
+    linkedFeatures: null
+  maximumNoteSize:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 25
+    unit: MB/note
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - notes
+  collaborationSpacesLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 0
+    unit: space
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - collaborationSpacesForTeams
+  devicesOfDevicesWithOneAccount:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 2
+    unit: device
+    type: NON_RENEWABLE
+    linkedFeatures: null
+plans:
+  FREE:
+    description: Take great notes
+    monthlyPrice: 0
+    unit: /month
+    features: null
+    usageLimits: null
+    price: 0
+  PREMIUM:
+    description: Organize everything
+    monthlyPrice: 7.99
+    unit: /month
+    features:
+      forwardEmailsIntoEvernote:
+        value: true
+      scanAndDigitalizeBusinessCardsToCreateContacts:
+        value: true
+      annotatePdfs:
+        value: true
+      searchTextInsidePdfs:
+        value: true
+      searchTextInsideOfficeDocs:
+        value: true
+      versionHistoryOfNotes:
+        value: true
+      turnNotesIntoPresentations:
+        value: true
+      recommendRelatedNotes:
+        value: true
+      typpingSuggestions:
+        value: true
+      linkGoogleDriveFiles:
+        value: true
+      connectWithEmailProviders:
+        value: true
+      connectWithCommunicationTools:
+        value: true
+      offlineAccess:
+        value: Desktop & Mobile
+      customerSupport:
+        value: Email & Live Chat
+    usageLimits:
+      globalMonthlyUploadLimit:
+        value: 10240
+      maximumNoteSize:
+        value: 200
+      devicesOfDevicesWithOneAccount:
+        value: 1000000
+    price: 7.99
+  BUSINESS:
+    description: Bring your team together
+    monthlyPrice: 14.99
+    unit: user/month
+    features:
+      forwardEmailsIntoEvernote:
+        value: true
+      scanAndDigitalizeBusinessCardsToCreateContacts:
+        value: true
+      annotatePdfs:
+        value: true
+      searchTextInsidePdfs:
+        value: true
+      searchTextInsideOfficeDocs:
+        value: true
+      versionHistoryOfNotes:
+        value: true
+      turnNotesIntoPresentations:
+        value: true
+      shareNotesWithinYourCompany:
+        value: true
+      recommendRelatedNotes:
+        value: true
+      typpingSuggestions:
+        value: true
+      recommendRelatedNotesFromYourCompany:
+        value: true
+      linkGoogleDriveFiles:
+        value: true
+      connectWithEmailProviders:
+        value: true
+      connectWithCommunicationTools:
+        value: true
+      connectWithCrms:
+        value: true
+      collaborationSpacesForTeams:
+        value: true
+      centralLocationForWork:
+        value: true
+      permissionsBasedAccessToContent:
+        value: true
+      virtualBulletinAboutNewsAccrossTheTeam:
+        value: true
+      editNotesInRealTeamWithOthers:
+        value: true
+      centralizedAccountAdministration:
+        value: true
+      centralizedUserManagement:
+        value: true
+      singleSignOn:
+        value: true
+      activityHistory:
+        value: true
+      businessDataOwnership:
+        value: true
+      offlineAccess:
+        value: Desktop & Mobile
+      customerSupport:
+        value: Email & Live Chat
+    usageLimits:
+      globalMonthlyUploadLimit:
+        value: 20480
+      monthlyUploadLimitByUser:
+        value: 2096
+      maximumNoteSize:
+        value: 200
+      collaborationSpacesLimit:
+        value: 10000000
+      devicesOfDevicesWithOneAccount:
+        value: 1000000
+    price: 14.99

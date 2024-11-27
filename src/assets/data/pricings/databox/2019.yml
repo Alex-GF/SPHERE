@@ -1,0 +1,276 @@
+saasName: Databox
+version: '2.0'
+createdAt: '2019-12-10'
+currency: USD
+hasAnnualPayment: true
+features:
+  dataSources:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  databoards:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  dataRefresh:
+    description: ''
+    valueType: TEXT
+    defaultValue: daily
+    type: GUARANTEE
+  oneClickInteractions:
+    description: >-
+      Connect to your data from any of 70+ systems by logging in (using Auth) to
+      each system from within the Databox application. View our integrations
+      page for a full list.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  dashboardTemplates:
+    description: >-
+      Instantly use pre-built templates created by experts. Browse the available
+      templates on our website or inside our application.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  datablockLibrary:
+    description: >-
+      Quickly visualize common metrics with pre-built datablocks. Browse the
+      available datablocks from within our Designer in the Databox application.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  databoardDesigner:
+    description: >-
+      Create Databoards, no coding required. Use the Designer by starting with a
+      blank Databoard or choosing, then customizing a template. Use pre-built
+      datablocks or start with blank visualizations and choose vour datasource,
+      metric, time intervals and more. Re-arrange, resize, move and delete
+      datablocks.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  goalTracking:
+    description: >-
+      Set a daily, weekly, monthly or annual goal for any metric you're
+      tracking. Assign the goal to someone on your team and receive alerts when
+      you hit thegoal or if you are at risk of missing it. View progress to all
+      your Company's goals on one screen.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: TRACKING
+  alerts:
+    description: >-
+      Receive alerts via the mobile app. Slack or via email for any metric you
+      want to monitor more closely. Alerts can be triggered when numbers go
+      above or below any number or change by a set percentage over a specified
+      time interval.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: TRACKING
+  singleUrlDashboardCarousel:
+    description: >-
+      Create a single URL to send to others with a sequence of up to 10
+      Databoards.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  scheduleEmailSnapshots:
+    description: >-
+      Schedule a daily, weekly or monthly snapshot of any Databoard to any
+      user's email address. Include snapshots in presentation or just send it so
+      no one needs to login.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  nativeMobileApps:
+    description: >-
+      View all your Databoards, goals and receive alerts and scorecards on your
+      mobile device in our app. IOS and Android native apps available.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  tvDisplay:
+    description: >-
+      View any of your Databoards on a wall-mounted TV in your office. Broadcast
+      your data in the office to motivate your team and keep the metrics that
+      matter front and center.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  slackIntegration:
+    description: >-
+      Receive alerts in Slack. Share Databoards and datablocks in Slack. Use the
+      Databox Slackbot to ask questions about your data.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingsUrls:
+      - https://slack.com/pricing
+  annotations:
+    description: >-
+      Add notes to lines and charts to communicate why numbers have gone up or
+      down.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  pushDataViaAPI:
+    description: Push custom data sources into Databox via our API.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+  queryBuilder:
+    description: >-
+      Pull, filter and segment data from more advanced systems like Google
+      Analytics, Facebook Ads, Mixpanel, HubSpot and many more of our
+      connectors. To pull some metrics or specific time intervals, Query Builder
+      is required. Contact us with your needs and we'll tell you if you need
+      Query Builder.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  dataCalculations:
+    description: >-
+      Data Calculations enable you to create on-the-fly calculations, regardless
+      of whether the metrics originate from a single data source or different
+      data sources.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  sqlDatabaseIntegrations:
+    description: >-
+      Connect with many types of SQL databases. Once connected, use Query
+      Builder to write SQL to pull and visualize your data however you want.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  companyBranding:
+    description: >-
+      Host your Databoards on your own or a client's URL/Domain Name, brand our
+      mobile app with your logo amd replace the 'powered by Databox' with your
+      own. All plans allow you to change colors, background images and add your
+      logo to Databoards.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  additionalSecurity:
+    description: >-
+      Add password protection and limit access by IP address to ensure your
+      Databoards can only be seen by authorized people.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+usageLimits:
+  dataSourcesLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 3
+    unit: data source
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - dataSources
+  usersLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 3
+    unit: user
+    type: NON_RENEWABLE
+    linkedFeatures: null
+  databoardsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 3
+    unit: databoard
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - databoards
+plans:
+  FREE:
+    description: ''
+    monthlyPrice: 0
+    annualPrice: 0
+    unit: forever
+    features: null
+    usageLimits: null
+    price: 0
+  BASIC:
+    description: ''
+    monthlyPrice: 59
+    annualPrice: 49
+    unit: /month
+    features:
+      dataRefresh:
+        value: hourly
+      pushDataViaAPI:
+        value: true
+    usageLimits:
+      dataSourcesLimit:
+        value: 10
+      usersLimit:
+        value: 10
+      databoardsLimit:
+        value: 10
+    price: 59
+  PLUS:
+    description: ''
+    monthlyPrice: 119
+    annualPrice: 99
+    unit: /month
+    features:
+      dataRefresh:
+        value: hourly
+      pushDataViaAPI:
+        value: true
+      queryBuilder:
+        value: true
+      dataCalculations:
+        value: true
+      sqlDatabaseIntegrations:
+        value: true
+    usageLimits:
+      dataSourcesLimit:
+        value: 10
+      usersLimit:
+        value: 10
+      databoardsLimit:
+        value: 10
+    price: 119
+  BUSINESS:
+    description: ''
+    monthlyPrice: 299
+    annualPrice: 248
+    unit: user/month
+    features:
+      dataRefresh:
+        value: hourly
+      pushDataViaAPI:
+        value: true
+      queryBuilder:
+        value: true
+      dataCalculations:
+        value: true
+      sqlDatabaseIntegrations:
+        value: true
+      companyBranding:
+        value: true
+      additionalSecurity:
+        value: true
+    usageLimits:
+      dataSourcesLimit:
+        value: 50
+      usersLimit:
+        value: 20
+      databoardsLimit:
+        value: 50
+    price: 299

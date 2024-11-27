@@ -1,0 +1,408 @@
+saasName: HyperContext
+version: '2.0'
+createdAt: '2022-10-13'
+currency: USD
+hasAnnualPayment: true
+features:
+  oneToOneMeetings:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  teamMeetings:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  meetingNotes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  calendarIntegrationAndSync:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs: null
+  meetingArchives:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  meetingSearch:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  realTimeCollaboration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  realTimeEmployeesFeedback:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  conversationStarters:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  fileAttachments:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  cloudLinkIntegrations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  googleMeetAgendaOverlay:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://workspace.google.com/pricing
+  guestUsers:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  markdownEditor:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  privateMeetingScratchpad:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  publicMeetingScratchpad:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  nextSteps:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  favoriteItems:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  meetingInsights:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  itemVoting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  customPersonalAgendaTemplates:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  customOrgWideAgendaTemplates:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  goalSetting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  milestones:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  okrExampleLibrary:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  largeGroupDiscussions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  99%uptimeSLA:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  adminReporting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  engagementInsights:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  dedicatedCSM:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  dedicatedQBR:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  teamTraining:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  teamOnboarding:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  prioritySupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  googleSSO:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  slackSSO:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  microsoftSSO:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  azureSSO:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  emailSSO:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  customSSO:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  googleWorkspace:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://workspace.google.com/pricing
+  googleCalendar:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://workspace.google.com/pricing
+  googleMeet:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://workspace.google.com/pricing
+  chromeMeetingExtension:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTENSION
+  slackbot:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://slack.com/pricing
+  microsoftTeams:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - >-
+        https://www.microsoft.com/en-us/microsoft-teams/compare-microsoft-teams-business-options
+  outlookCalendar:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - >-
+        https://www.microsoft.com/en-us/microsoft-365/outlook/compare-microsoft-outlook-email-plans
+  mobileApps:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  zapier:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://zapier.com/pricing
+usageLimits:
+  meetingSearchThreshold:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 30
+    unit: day
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - meetingSearch
+  storageLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 2
+    unit: GB
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - fileAttachments
+      - cloudLinkIntegrations
+plans:
+  BASIC:
+    description: Best for people who want to take Hypercontext for a spin.
+    monthlyPrice: 0
+    annualPrice: 0
+    unit: person/month
+    features: null
+    usageLimits: null
+    price: 0
+  PRO:
+    description: Best for managers with too much on their plate.
+    monthlyPrice: 7
+    annualPrice: 5.6
+    unit: person/month
+    features:
+      realTimeCollaboration:
+        value: true
+      publicMeetingScratchpad:
+        value: true
+      nextSteps:
+        value: true
+      favoriteItems:
+        value: true
+      meetingInsights:
+        value: true
+      itemVoting:
+        value: true
+      customPersonalAgendaTemplates:
+        value: true
+      zapier:
+        value: true
+    usageLimits:
+      meetingSearchThreshold:
+        value: .inf
+      storageLimit:
+        value: 250
+    price: 7
+  BUSINESS:
+    description: Best for standardizing meetings and hitting goals.
+    monthlyPrice: 11
+    annualPrice: 8.8
+    unit: person/month
+    features:
+      realTimeCollaboration:
+        value: true
+      publicMeetingScratchpad:
+        value: true
+      nextSteps:
+        value: true
+      favoriteItems:
+        value: true
+      meetingInsights:
+        value: true
+      itemVoting:
+        value: true
+      customPersonalAgendaTemplates:
+        value: true
+      customOrgWideAgendaTemplates:
+        value: true
+      goalSetting:
+        value: true
+      milestones:
+        value: true
+      okrExampleLibrary:
+        value: true
+      largeGroupDiscussions:
+        value: true
+      99%uptimeSLA:
+        value: true
+      adminReporting:
+        value: true
+      engagementInsights:
+        value: true
+      dedicatedCSM:
+        value: true
+      dedicatedQBR:
+        value: true
+      teamTraining:
+        value: true
+      teamOnboarding:
+        value: true
+      prioritySupport:
+        value: true
+      zapier:
+        value: true
+    usageLimits:
+      meetingSearchThreshold:
+        value: .inf
+      storageLimit:
+        value: .inf
+    price: 11
+addOns:
+  customSSO:
+    availableFor:
+      - BUSINESS
+    price: Contact Sales
+    unit: /month
+    features:
+      customSSO:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null

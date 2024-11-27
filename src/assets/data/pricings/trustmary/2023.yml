@@ -1,0 +1,303 @@
+saasName: Trustmary - Collect
+version: '2.0'
+createdAt: '2023-10-30'
+currency: USD
+hasAnnualPayment: true
+features:
+  responses:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  apiAccess:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: API
+  requestsViaEmail:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+  automations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  zapierIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://zapier.com/pricing
+  hubspotIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://www.hubspot.com/pricing/marketing/starter
+  pipedriveIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://www.pipedrive.com/en/pricing
+  domains:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  widgets:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTENSION
+  reviews:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  removeTrustmaryBranding:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  views:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTENSION
+  reviewPlatform:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  manageReviews:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  tagReviews:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  syncReviewsAutomatically:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  addReviewsManually:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  importReviewsFromSpreadsheets:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  reviewSchema.orgMarkup:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  trustMaryAiScore:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  publicReviewProfilePage:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  goalTracking:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: TRACKING
+  reviewWidgets:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTENSION
+  formWidgets:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTENSION
+  badgeWidgets:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTENSION
+  popupWidgets:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTENSION
+  ctaWidgets:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTENSION
+  reviewFiltering:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: FILTERING
+  freeWidgetInstallationHelp:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  chatSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  phoneSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  dedicatedAccountManager:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+usageLimits:
+  responsesLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 5
+    unit: response/month
+    type: RENEWABLE
+  requestsViaEmailLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 0
+    unit: request/month
+    type: RENEWABLE
+  viewsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 200
+    unit: view/month
+    type: RENEWABLE
+  reviewPlatformConnectionsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: connection
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - reviewPlatform
+plans:
+  SOLO:
+    description: Essentials to get more reviews and feedback
+    monthlyPrice: 0
+    annualPrice: 0
+    unit: /month
+    features: null
+    usageLimits: null
+    price: 0
+  STARTER:
+    description: For smaller teams, more responses and automations
+    monthlyPrice: 29
+    annualPrice: 24
+    unit: /month
+    features:
+      automations:
+        value: true
+      zapierIntegration:
+        value: true
+    usageLimits:
+      responsesLimit:
+        value: 25
+      requestsViaEmailLimit:
+        value: 500
+      viewsLimit:
+        value: 5000
+      reviewPlatformConnectionsLimit:
+        value: 3
+    price: 29
+  BUSINESS:
+    description: ''
+    monthlyPrice: 79
+    annualPrice: 65.9
+    unit: /month
+    features:
+      automations:
+        value: true
+      zapierIntegration:
+        value: true
+      hubspotIntegration:
+        value: true
+      pipedriveIntegration:
+        value: true
+      removeTrustmaryBranding:
+        value: true
+      phoneSupport:
+        value: true
+    usageLimits:
+      responsesLimit:
+        value: 100
+      requestsViaEmailLimit:
+        value: 2000
+      viewsLimit:
+        value: 25000
+      reviewPlatformConnectionsLimit:
+        value: 10
+    price: 79
+  SCALE:
+    description: ''
+    monthlyPrice: 189
+    annualPrice: 157.5
+    unit: /month
+    features:
+      automations:
+        value: true
+      zapierIntegration:
+        value: true
+      hubspotIntegration:
+        value: true
+      pipedriveIntegration:
+        value: true
+      removeTrustmaryBranding:
+        value: true
+      phoneSupport:
+        value: true
+      dedicatedAccountManager:
+        value: true
+    usageLimits:
+      responsesLimit:
+        value: 500
+      requestsViaEmailLimit:
+        value: 10000
+      viewsLimit:
+        value: 100000
+      reviewPlatformConnectionsLimit:
+        value: 25
+    price: 189

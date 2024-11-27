@@ -1,0 +1,308 @@
+saasName: Trustmary
+version: '2.0'
+createdAt: '2022-11-29'
+currency: USD
+hasAnnualPayment: true
+features:
+  reviews:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  reviewForms:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  widgets:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTENSION
+  importTestimonials:
+    description: >-
+      Import testimonials from other platforms, such as: G2, Capterra, Google,
+      Facebook, Tripadvisor, Yelp, Trustpilot
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  embedReviews:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTENSION
+  qrReviews:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  urlReviews:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  widgetWhiteLabeling:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  abTesting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  zapierIntegrations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://zapier.com/pricing
+  hubspotIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://www.hubspot.com/pricing/marketing/starter
+  pipedriveIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://www.pipedrive.com/en/pricing
+  automations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  emailSending:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+    pricingURLs: null
+  smsSending:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+    pricingURLs: null
+  customerSuccess:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  comprehensiveSurveyTool:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  surveyTemplateLibrary:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  npsForms:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  csatForms:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  cesForms:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  customizableSurveys:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  conditionalSurveyQuestions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  customerFeedbackConvertedIntoReviews:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  crmIntegrations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs: null
+usageLimits:
+  publishedReviewsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 20
+    unit: review
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - reviews
+  reviewFormsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: form
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - reviewForms
+  activeWidgetsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: widget
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - widgets
+  usersLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: user
+    type: NON_RENEWABLE
+    linkedFeatures: null
+plans:
+  SOLO:
+    description: ''
+    monthlyPrice: 0
+    annualPrice: 0
+    unit: /month
+    features: null
+    usageLimits: null
+    price: 0
+  BUSINESS:
+    description: ''
+    monthlyPrice: 90
+    annualPrice: 82.5
+    unit: /month
+    features:
+      embedReviews:
+        value: true
+      qrReviews:
+        value: true
+      urlReviews:
+        value: true
+      widgetWhiteLabeling:
+        value: true
+    usageLimits:
+      publishedReviewsLimit:
+        value: .inf
+      activeWidgetsLimit:
+        value: .inf
+    price: 90
+  AUTOMATE:
+    description: ''
+    monthlyPrice: 290
+    annualPrice: 249
+    unit: /month
+    features:
+      embedReviews:
+        value: true
+      qrReviews:
+        value: true
+      urlReviews:
+        value: true
+      widgetWhiteLabeling:
+        value: true
+      abTesting:
+        value: true
+      zapierIntegrations:
+        value: true
+      hubspotIntegration:
+        value: true
+      pipedriveIntegration:
+        value: true
+      automations:
+        value: true
+      emailSending:
+        value: true
+      smsSending:
+        value: true
+      customerSuccess:
+        value: true
+    usageLimits:
+      publishedReviewsLimit:
+        value: .inf
+      activeWidgetsLimit:
+        value: .inf
+      usersLimit:
+        value: .inf
+    price: 290
+  PRO:
+    description: ''
+    monthlyPrice: 590
+    annualPrice: 499
+    unit: /month
+    features:
+      embedReviews:
+        value: true
+      qrReviews:
+        value: true
+      urlReviews:
+        value: true
+      widgetWhiteLabeling:
+        value: true
+      abTesting:
+        value: true
+      zapierIntegrations:
+        value: true
+      hubspotIntegration:
+        value: true
+      pipedriveIntegration:
+        value: true
+      automations:
+        value: true
+      emailSending:
+        value: true
+      smsSending:
+        value: true
+      customerSuccess:
+        value: true
+      comprehensiveSurveyTool:
+        value: true
+      surveyTemplateLibrary:
+        value: true
+      npsForms:
+        value: true
+      csatForms:
+        value: true
+      cesForms:
+        value: true
+      customizableSurveys:
+        value: true
+      conditionalSurveyQuestions:
+        value: true
+      customerFeedbackConvertedIntoReviews:
+        value: true
+      crmIntegrations:
+        value: true
+    usageLimits:
+      publishedReviewsLimit:
+        value: .inf
+      activeWidgetsLimit:
+        value: .inf
+      usersLimit:
+        value: .inf
+    price: 590

@@ -12,6 +12,8 @@ import EditorLayout from '../modules/pricing-editor/layouts';
 import ResearchPage from '../modules/presentation/pages/research';
 import ContributionsPage from '../modules/presentation/pages/contributions';
 
+export const CardPage =  lazy(() => import('../modules/pricing/pages/card'));
+
 export default function Router() {
   const routes = useRoutes([
     {
@@ -27,6 +29,18 @@ export default function Router() {
         {element: <TeamPage/>, path: "/team"},
         {element: <ResearchPage/>, path: "/research"},
         {element: <ContributionsPage/>, path: "/contributions"},
+      ],
+    },
+    {
+      element: (
+        <PresentationLayout>
+          <Suspense fallback={<LoadingView />}>
+            <Outlet />
+          </Suspense>
+        </PresentationLayout>
+      ),
+      children: [
+        {element: <CardPage/>, path: "/card"},
       ],
     },
     {

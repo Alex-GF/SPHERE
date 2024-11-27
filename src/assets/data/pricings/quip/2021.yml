@@ -1,0 +1,143 @@
+saasName: Quip
+version: '2.0'
+createdAt: '2021-11-29'
+currency: USD
+hasAnnualPayment: true
+features:
+  documents:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  spreadsheets:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  groupChat:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  1to1messages:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  desktopAccess:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  tabletAccess:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  mobileAccess:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  customAndAdvancedLiveApps:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+  singleSignOn:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  enterpriseAPI:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+  customization:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  integratedChatWithinSalesforce:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTENSION
+  spreadsheetsWithLiveSalesforceData:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  twoWaySyncWithLiveSalesforceData:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://www.salesforce.com/eu/sales/pricing/
+  embedDocumentsInAllSalesforceObjects:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTENSION
+plans:
+  STARTER:
+    description: Powerful collaboration for your team or small business.
+    monthlyPrice: 12
+    annualPrice: 10
+    unit: user/month
+    features: null
+    usageLimits: null
+    price: 12
+  PLUS:
+    description: Secure productivity platform for large and complex teams.
+    monthlyPrice: null
+    annualPrice: 25
+    unit: user/month
+    features:
+      customAndAdvancedLiveApps:
+        value: true
+      singleSignOn:
+        value: true
+      enterpriseAPI:
+        value: true
+      customization:
+        value: true
+    usageLimits: null
+    price: 25
+  ADVANCED:
+    description: >-
+      Real-time alerts and collaboration inside Salesforce for sales and service
+      teams.
+    monthlyPrice: null
+    annualPrice: 100
+    unit: user/month
+    features:
+      customAndAdvancedLiveApps:
+        value: true
+      singleSignOn:
+        value: true
+      enterpriseAPI:
+        value: true
+      customization:
+        value: true
+      integratedChatWithinSalesforce:
+        value: true
+      spreadsheetsWithLiveSalesforceData:
+        value: true
+      twoWaySyncWithLiveSalesforceData:
+        value: true
+      embedDocumentsInAllSalesforceObjects:
+        value: true
+    usageLimits: null
+    price: 100

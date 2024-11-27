@@ -1,0 +1,199 @@
+saasName: Deskera
+version: '2.0'
+createdAt: '2021-10-13'
+currency: USD
+hasAnnualPayment: true
+features:
+  allInOneDashboard:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  createInvoices:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  createBills:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  connectYourBanks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  runPayroll:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  createSalesPipelines:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  emailMarketing:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  emailSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  chatSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  accessToHelpCenter:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  deskeraAcademy:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  noCodeLandingPages:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  multiCurrency:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  applyLeaves:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  approveLeaves:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  dragAndDropCustomForms:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  addCustomFields:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  completeInventoryManagement:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  applyExpenses:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  approveExpenses:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  salesAutomation:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  automateTasksOnDealStages:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+usageLimits:
+  invoiceAndBillsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 30
+    unit: invoices/bills
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - createInvoices
+      - createBills
+  runPayrollLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 15
+    unit: employee
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - runPayroll
+plans:
+  STARTUP:
+    description: ''
+    monthlyPrice: 35
+    annualPrice: 29
+    unit: user/month
+    features: null
+    usageLimits: null
+    price: 35
+  ESSENTIAL:
+    description: ''
+    monthlyPrice: 58
+    annualPrice: 49
+    unit: user/month
+    features:
+      multiCurrency:
+        value: true
+      applyLeaves:
+        value: true
+      approveLeaves:
+        value: true
+      dragAndDropCustomForms:
+        value: true
+    usageLimits:
+      invoiceAndBillsLimit:
+        value: .inf
+      runPayrollLimit:
+        value: 30
+    price: 58
+  PROFESSIONAL:
+    description: ''
+    monthlyPrice: 119
+    annualPrice: 99
+    unit: user/month
+    features:
+      multiCurrency:
+        value: true
+      applyLeaves:
+        value: true
+      approveLeaves:
+        value: true
+      dragAndDropCustomForms:
+        value: true
+      addCustomFields:
+        value: true
+      completeInventoryManagement:
+        value: true
+      applyExpenses:
+        value: true
+      approveExpenses:
+        value: true
+      salesAutomation:
+        value: true
+      automateTasksOnDealStages:
+        value: true
+    usageLimits:
+      invoiceAndBillsLimit:
+        value: .inf
+      runPayrollLimit:
+        value: 100
+    price: 119
