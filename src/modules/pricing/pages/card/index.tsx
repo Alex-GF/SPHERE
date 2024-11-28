@@ -98,7 +98,7 @@ export default function CardPage() {
       const parsedPricing: Pricing = retrievePricingFromYaml(p);
       setPricing(parsedPricing);
     });
-  }, [pricingData]);
+  }, [pricingData, currentPricing]);
 
   const toggleModal = () => {
     setModalOpen(!isModalOpen);
@@ -235,15 +235,13 @@ export default function CardPage() {
             pricingData && <FileExplorer pricingData={pricingData} />
           ) : (
             <>
-              <Box flex={1}>
+              <Box flex={1} sx={{maxWidth: "66.7%"}}>
                 <Typography variant="h6" gutterBottom>
                   Pricing Information
                 </Typography>
-                <Typography variant="body1" paragraph>
-                  GitHub is where over 73 million developers shape the future of software, together.
-                  Contribute to the open source community, manage your Git repositories, review code
-                  like a pro, track bugs and features, power your CI/CD and DevOps workflows, and
-                  secure code before you commit it.
+                <Typography variant="body1" sx={{ mb: 4 }}>
+                  This is the pricing information for {pricing?.saasName}. The pricing version that is currently displayed is from {currentPricing?.date ? new Date(currentPricing.date).toLocaleDateString() : 'Unknown date'}.
+                  The prices are displayed with {pricing?.currency} currency. In future versions, more data will be provided in this card.
                 </Typography>
                 {pricing && <PricingRenderer pricing={pricing} errors={[]} />}
               </Box>
