@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "dev:api": "npx tsx --tsconfig tsconfig.node.json api/src/backend.ts",
     "dev:vite": "vite",
-    "test:api": "vitest",
+    "test:api": "vitest --run",
     "deploy:vercel": "vite build"
   },
   "dependencies": {
