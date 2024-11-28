@@ -23,7 +23,7 @@ import { useQueryParams } from '../../../core/hooks/useQueryParams';
 import { useRouter } from '../../../core/hooks/useRouter';
 import Stats from '../../components/stats';
 import Analytics from '../../components/analytics';
-import Harvey from '../../components/harvey';
+// import Harvey from '../../components/harvey';
 import AnalyticsModal from '../../components/analyticsModal';
 
 export const StyledChip = styled(Chip)(({ theme }) => ({
@@ -79,7 +79,7 @@ export default function CardPage() {
 
     let pricingYamlPath = currentPricing.yaml_path;
 
-    fetch('../src/assets/' + pricingYamlPath).then(async response => {
+    fetch("/"+pricingYamlPath).then(async response => {
       let p: string = '';
       p = await response.text();
 

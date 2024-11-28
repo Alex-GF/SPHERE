@@ -3,10 +3,10 @@ import { FaPlayCircle } from 'react-icons/fa';
 
 import { primary } from '../../../../core/theme/palette';
 
-const journalIconStyle = {
-  background: primary[900],
-  boxShadow: `0 0 0 4px ${primary[700]},inset 0 2px 0 rgba(0,0,0,.08),0 3px 0 4px rgba(0,0,0,.05)`,
-};
+// const journalIconStyle = {
+//   background: primary[900],
+//   boxShadow: `0 0 0 4px ${primary[700]},inset 0 2px 0 rgba(0,0,0,.08),0 3px 0 4px rgba(0,0,0,.05)`,
+// };
 const proceedingsIconStyle = {
   background: primary[800],
   boxShadow: `0 0 0 4px ${primary[700]},inset 0 2px 0 rgba(0,0,0,.08),0 3px 0 4px rgba(0,0,0,.05)`,
@@ -15,10 +15,10 @@ const demoIconStyle = {
   background: primary[700],
   boxShadow: `0 0 0 4px ${primary[700]},inset 0 2px 0 rgba(0,0,0,.08),0 3px 0 4px rgba(0,0,0,.05)`,
 };
-const posterIconStyle = {
-  background: primary[600],
-  boxShadow: `0 0 0 4px ${primary[700]},inset 0 2px 0 rgba(0,0,0,.08),0 3px 0 4px rgba(0,0,0,.05)`,
-};
+// const posterIconStyle = {
+//   background: primary[600],
+//   boxShadow: `0 0 0 4px ${primary[700]},inset 0 2px 0 rgba(0,0,0,.08),0 3px 0 4px rgba(0,0,0,.05)`,
+// };
 
 const timelineData = [
   {

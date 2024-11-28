@@ -10,7 +10,7 @@ export default function PricingCard({pricing, style, defaultStyle}: {pricing: Pr
           <div
             style={{ display: 'flex', justifyContent: 'center', gap: '2rem', marginTop: '1rem' }}>
             <div>
-              <strong>Plans:</strong> {pricing.plans.length}
+              <strong>Plans:</strong> {pricing.plans?.length}
             </div>
             <div>
               <strong>Add-ons:</strong> {pricing.addOns?.length || 0}

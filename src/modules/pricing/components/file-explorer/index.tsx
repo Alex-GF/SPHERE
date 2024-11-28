@@ -27,12 +27,10 @@ import { TreeItem2Icon } from '@mui/x-tree-view/TreeItem2Icon';
 import { TreeItem2Provider } from '@mui/x-tree-view/TreeItem2Provider';
 import { TreeItem2DragAndDropOverlay } from '@mui/x-tree-view/TreeItem2DragAndDropOverlay';
 import { TreeViewBaseItem } from '@mui/x-tree-view/models';
-import Button from '@mui/material/Button';
-import { AnalyticsData, AnalyticsDataEntry } from '../../../../assets/data/analytics';
+import { AnalyticsDataEntry } from '../../../../assets/data/analytics';
 import { IconButton } from '@mui/material';
 import { Download, OpenInNew } from '@mui/icons-material';
 import { parseStringYamlToEncodedYaml } from '../../../pricing-editor/services/export.service';
-import { useRouter } from '../../../core/hooks/useRouter';
 
 type FileType = 'image' | 'pdf' | 'doc' | 'video' | 'folder' | 'pinned' | 'trash';
 
@@ -42,40 +40,40 @@ type ExtendedTreeItemProps = {
   label: string;
 };
 
-const ITEMS: TreeViewBaseItem<ExtendedTreeItemProps>[] = [
-  {
-    id: '1',
-    label: 'Documents',
-    children: [
-      {
-        id: '1.1',
-        label: 'Company',
-        children: [
-          { id: '1.1.1', label: 'Invoice', fileType: 'pdf' },
-          { id: '1.1.2', label: 'Meeting notes', fileType: 'doc' },
-          { id: '1.1.3', label: 'Tasks list', fileType: 'doc' },
-          { id: '1.1.4', label: 'Equipment', fileType: 'pdf' },
-          { id: '1.1.5', label: 'Video conference', fileType: 'video' },
-        ],
-      },
-      { id: '1.2', label: 'Personal', fileType: 'folder' },
-      { id: '1.3', label: 'Group photo', fileType: 'image' },
-    ],
-  },
-  {
-    id: '2',
-    label: 'Bookmarked',
-    fileType: 'pinned',
-    children: [
-      { id: '2.1', label: 'Learning materials', fileType: 'folder' },
-      { id: '2.2', label: 'News', fileType: 'folder' },
-      { id: '2.3', label: 'Forums', fileType: 'folder' },
-      { id: '2.4', label: 'Travel documents', fileType: 'pdf' },
-    ],
-  },
-  { id: '3', label: 'History', fileType: 'folder' },
-  { id: '4', label: 'Trash', fileType: 'trash' },
-];
+// const ITEMS: TreeViewBaseItem<ExtendedTreeItemProps>[] = [
+//   {
+//     id: '1',
+//     label: 'Documents',
+//     children: [
+//       {
+//         id: '1.1',
+//         label: 'Company',
+//         children: [
+//           { id: '1.1.1', label: 'Invoice', fileType: 'pdf' },
+//           { id: '1.1.2', label: 'Meeting notes', fileType: 'doc' },
+//           { id: '1.1.3', label: 'Tasks list', fileType: 'doc' },
+//           { id: '1.1.4', label: 'Equipment', fileType: 'pdf' },
+//           { id: '1.1.5', label: 'Video conference', fileType: 'video' },
+//         ],
+//       },
+//       { id: '1.2', label: 'Personal', fileType: 'folder' },
+//       { id: '1.3', label: 'Group photo', fileType: 'image' },
+//     ],
+//   },
+//   {
+//     id: '2',
+//     label: 'Bookmarked',
+//     fileType: 'pinned',
+//     children: [
+//       { id: '2.1', label: 'Learning materials', fileType: 'folder' },
+//       { id: '2.2', label: 'News', fileType: 'folder' },
+//       { id: '2.3', label: 'Forums', fileType: 'folder' },
+//       { id: '2.4', label: 'Travel documents', fileType: 'pdf' },
+//     ],
+//   },
+//   { id: '3', label: 'History', fileType: 'folder' },
+//   { id: '4', label: 'Trash', fileType: 'trash' },
+// ];
 
 declare module 'react' {
   interface CSSProperties {
@@ -202,7 +200,7 @@ function CustomLabel({
       return;
     }
     const fileName = children.toString();
-    fetch("src/assets/"+fileName).then(async response => {
+    fetch("/"+fileName).then(async response => {
         const text = await response.text();
         let urlParam = parseStringYamlToEncodedYaml(text).split("pricing=")[1];
         window.open(`/editor?pricing=${urlParam}`, '_blank');

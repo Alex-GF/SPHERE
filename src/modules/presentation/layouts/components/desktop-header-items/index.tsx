@@ -29,7 +29,7 @@ export default function DesktopHeaderItems({ headerRoutes }: { headerRoutes: Hea
     setOpenedMenuItemChildren(updatedMenuItems);
   };
 
-  const handleMenuItemChildrenLeave = (e: any) => {
+  const handleMenuItemChildrenLeave = () => {
     const updatedMenuItems: { [key: string]: boolean } = Object.keys(openedMenuItemChildren).reduce(
       (acc: { [key: string]: boolean }, key: string) => {
         acc[key] = false;

@@ -11,7 +11,8 @@
     "dev:api": "npx tsx --tsconfig tsconfig.node.json api/src/backend.ts",
     "dev:vite": "vite",
     "test:api": "vitest --run",
-    "deploy:vercel": "vite build"
+    "deploy:vercel": "vite build",
+    "deploy:prod": "vite preview --host"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
