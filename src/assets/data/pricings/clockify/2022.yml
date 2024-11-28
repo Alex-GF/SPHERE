@@ -1,0 +1,693 @@
+saasName: Clockify
+version: '2.0'
+createdAt: '2022-11-15'
+currency: USD
+hasAnnualPayment: true
+features:
+  unlimitedTracking:
+    description: Track as much time as you want, without any limits.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  timeTracker:
+    description: Start and stop timer as you work, or enter hours manually.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  timesheet:
+    description: Log your weekly activities across tasks and projects in a timesheet.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  kiosk:
+    description: >-
+      Set up a shared time clock device from which employees can clock in and
+      out.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  autotracker:
+    description: >-
+      Track apps and websites you use and create timesheets based on the
+      activities (only you can see the auto tracked data).
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  calendar:
+    description: Visualize your tracked time and edit them in Calendar view.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  apps:
+    description: Track time using a mobile app, desktop app, and browser extension.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  pomodoroTimer:
+    description: Work in regular time intervals, followed by breaks.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  idleDetectionAndReminders:
+    description: Get reminded when you forget to start or stop the timer.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  trackingIntegrations:
+    description: >-
+      See events from Outlook & Google Calendar and track time inside other web
+      apps (Asana, Trello, Jira, Clickup, Salesforce, and 80+).
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  importTime:
+    description: Upload a file with time entries to Clockify.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  breaks:
+    description: Allow employees to track time they spend on breaks.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  requiredFields:
+    description: Don't allow saving time with missing fields and information.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  addTimeForOthers:
+    description: Edit your team's timesheet and calendar, and log time on their behalf.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  timeOff:
+    description: Track time off, holidays, and available days.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  targetsAndReminders:
+    description: Automatic emails when someone forgets to log time or tracks too much.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  lockTimesheets:
+    description: Prevent users from changing their past timesheets.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  customFields:
+    description: Add additional information to time entries.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  forceTimer:
+    description: Prevent users from entering time manually or changing start/end time.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  gpsTracking:
+    description: >-
+      Track your team's location and visited client sites while on the clock
+      (optional).
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  screenshots:
+    description: Take computer screenshots every 5 minutes while on the clock (optional).
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  teamActivity:
+    description: See where your team spends time and what they're currently working on.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  reports:
+    description: >-
+      See who worked on what, how much money you earn, and review your team's
+      time.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  exportAndShare:
+    description: Export reports (PDF, CSV, Excel) and share live links with others.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  billableRates:
+    description: Enter hourly rates for users and projects, and see how much you earn.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  projectStatus:
+    description: See how much time is tracked on projects and tasks.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  projectExport:
+    description: Export project data (CSV, Excel).
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  apiAndWebhooks:
+    description: Push and pull data to and from Clockify, and connect with your systems.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: API
+  decimalFormat:
+    description: See, enter, and export time in decimal format.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  timeAudit:
+    description: >-
+      Find entries without project and task, and with suspicious duration (too
+      short or too long).
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  customizeExports:
+    description: >-
+      Choose what you wish to see in your exports (name, logo, columns,
+      information).
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  historicalRates:
+    description: Apply new hourly rates to past time entries.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  rounding:
+    description: Round time up, down, or to nearest X minutes.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  quickBooksIntegration:
+    description: Sync users and project, and send time to QuickBooks.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingsUrls:
+      - https://quickbooks.intuit.com/global/pricing/
+  taskRates:
+    description: Enter a specific hourly rate on tasks.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  laborCostAndProfit:
+    description: Compare what you pay your team vs what you charge your clients.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  budgetAndEstimates:
+    description: Set time or money budget on projects and track progress.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  alerts:
+    description: Get notified when a project reaches its allocated budget or estimate.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  userFields:
+    description: >-
+      Add custom information to employees (eg. employee ID) and export along
+      with their time entries.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  assigmentReport:
+    description: Compare scheduled vs actual work hours across projects, users, and dates.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  expenseReport:
+    description: >-
+      See all expenses in one place, edit them, download receipts, and export
+      data.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  emailReports:
+    description: Receive a custom report via email each day, week, or month.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  unlimitedUsers:
+    description: Invite your whole team to track time.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  unlimitedProjects:
+    description: Organize time by project, client, task, and tag.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  importProjects:
+    description: Import projects, clients, tasks, and tags from a file.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  projectAccess:
+    description: Control who can track time on what projects and tasks.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  languages:
+    description: >-
+      Use Clockify in your native language (Deutsch, English, Español, Français,
+      Português, 日本, 한국어).
+    valueType: BOOLEAN
+    defaultValue: true
+    type: GUARANTEE
+  teamChat:
+    description: >-
+      Communicate with your team and share files via direct messages and
+      channels.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  hideTimeAndPages:
+    description: >-
+      Prevent users from seeing projects, reports, and other members and their
+      time entries.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  bulkEdit:
+    description: Update multiple time entries, projects, and users at once.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  projectTemplates:
+    description: Create new projects with the same structure from existing ones.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  editProfiles:
+    description: Edit your team's information (name, photo, and other).
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  kioskPIN:
+    description: Allow employees to log into kiosk with their PIN code.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  customizeKiosk:
+    description: >-
+      Put your company's logo on the kiosk and choose how long the kiosk is
+      opened when launched.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  invoicing:
+    description: Create invoices from tracked time and expenses.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  approval:
+    description: Submit timesheets for manager review and approval.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  managerRole:
+    description: >-
+      Give manager rights to users so they can manage projects and approve
+      timesheets.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  force2FA:
+    description: >-
+      Require everyone to have two-factor authentication enabled for better
+      security.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  scheduling:
+    description: >-
+      Plan projects on a timeline, see who's available, manage resources, and
+      give assignments.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  expenses:
+    description: Record fixed fees on projects and attach receipts.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  dataRegion:
+    description: Choose in which country you wish to host data.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  singleSignOn:
+    description: >-
+      Eliminate user-managed passwords and improve security by using your
+      company's authentication system (SAML, Office 365, Okta, Google, etc.).
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  customSubdomain:
+    description: >-
+      Move workspace to custom subdomain, prevent people from having multiple
+      workspaces, and let new users join your workspace automatically.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  controlAccounts:
+    description: Manage and edit accounts of your users by logging in as them.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  auditLog:
+    description: Record all changes and have a record of who did what and when.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+plans:
+  FREE:
+    description: ''
+    monthlyPrice: 0
+    annualPrice: 0
+    unit: user/month
+    features: null
+    usageLimits: null
+    price: 0
+  BASIC:
+    description: Administration
+    monthlyPrice: 4.99
+    annualPrice: 3.99
+    unit: user/month
+    features:
+      importTime:
+        value: true
+      breaks:
+        value: true
+      requiredFields:
+        value: true
+      addTimeForOthers:
+        value: true
+      decimalFormat:
+        value: true
+      timeAudit:
+        value: true
+      customizeExports:
+        value: true
+      historicalRates:
+        value: true
+      hideTimeAndPages:
+        value: true
+      bulkEdit:
+        value: true
+      projectTemplates:
+        value: true
+      editProfiles:
+        value: true
+      kioskPIN:
+        value: true
+    usageLimits: null
+    price: 4.99
+  STANDARD:
+    description: Timesheeting & billing
+    monthlyPrice: 6.99
+    annualPrice: 5.49
+    unit: user/month
+    features:
+      importTime:
+        value: true
+      breaks:
+        value: true
+      requiredFields:
+        value: true
+      addTimeForOthers:
+        value: true
+      timeOff:
+        value: true
+      targetsAndReminders:
+        value: true
+      lockTimesheets:
+        value: true
+      decimalFormat:
+        value: true
+      timeAudit:
+        value: true
+      customizeExports:
+        value: true
+      historicalRates:
+        value: true
+      rounding:
+        value: true
+      quickBooksIntegration:
+        value: true
+      taskRates:
+        value: true
+      hideTimeAndPages:
+        value: true
+      bulkEdit:
+        value: true
+      projectTemplates:
+        value: true
+      editProfiles:
+        value: true
+      kioskPIN:
+        value: true
+      customizeKiosk:
+        value: true
+      invoicing:
+        value: true
+      approval:
+        value: true
+      managerRole:
+        value: true
+      force2FA:
+        value: true
+    usageLimits: null
+    price: 6.99
+  PRO:
+    description: Profit & Productivity
+    monthlyPrice: 9.99
+    annualPrice: 7.99
+    unit: user/month
+    features:
+      importTime:
+        value: true
+      breaks:
+        value: true
+      requiredFields:
+        value: true
+      addTimeForOthers:
+        value: true
+      timeOff:
+        value: true
+      targetsAndReminders:
+        value: true
+      lockTimesheets:
+        value: true
+      customFields:
+        value: true
+      forceTimer:
+        value: true
+      gpsTracking:
+        value: true
+      screenshots:
+        value: true
+      decimalFormat:
+        value: true
+      timeAudit:
+        value: true
+      customizeExports:
+        value: true
+      historicalRates:
+        value: true
+      rounding:
+        value: true
+      quickBooksIntegration:
+        value: true
+      taskRates:
+        value: true
+      laborCostAndProfit:
+        value: true
+      budgetAndEstimates:
+        value: true
+      alerts:
+        value: true
+      userFields:
+        value: true
+      assigmentReport:
+        value: true
+      expenseReport:
+        value: true
+      emailReports:
+        value: true
+      hideTimeAndPages:
+        value: true
+      bulkEdit:
+        value: true
+      projectTemplates:
+        value: true
+      editProfiles:
+        value: true
+      kioskPIN:
+        value: true
+      customizeKiosk:
+        value: true
+      invoicing:
+        value: true
+      approval:
+        value: true
+      managerRole:
+        value: true
+      force2FA:
+        value: true
+      scheduling:
+        value: true
+      expenses:
+        value: true
+      dataRegion:
+        value: true
+    usageLimits: null
+    price: 9.99
+  ENTERPRISE:
+    description: ''
+    monthlyPrice: 14.99
+    annualPrice: 11.99
+    unit: user/month
+    features:
+      importTime:
+        value: true
+      breaks:
+        value: true
+      requiredFields:
+        value: true
+      addTimeForOthers:
+        value: true
+      timeOff:
+        value: true
+      targetsAndReminders:
+        value: true
+      lockTimesheets:
+        value: true
+      customFields:
+        value: true
+      forceTimer:
+        value: true
+      gpsTracking:
+        value: true
+      screenshots:
+        value: true
+      decimalFormat:
+        value: true
+      timeAudit:
+        value: true
+      customizeExports:
+        value: true
+      historicalRates:
+        value: true
+      rounding:
+        value: true
+      quickBooksIntegration:
+        value: true
+      taskRates:
+        value: true
+      laborCostAndProfit:
+        value: true
+      budgetAndEstimates:
+        value: true
+      alerts:
+        value: true
+      userFields:
+        value: true
+      assigmentReport:
+        value: true
+      expenseReport:
+        value: true
+      emailReports:
+        value: true
+      hideTimeAndPages:
+        value: true
+      bulkEdit:
+        value: true
+      projectTemplates:
+        value: true
+      editProfiles:
+        value: true
+      kioskPIN:
+        value: true
+      customizeKiosk:
+        value: true
+      invoicing:
+        value: true
+      approval:
+        value: true
+      managerRole:
+        value: true
+      force2FA:
+        value: true
+      scheduling:
+        value: true
+      expenses:
+        value: true
+      dataRegion:
+        value: true
+      singleSignOn:
+        value: true
+      customSubdomain:
+        value: true
+      controlAccounts:
+        value: true
+      auditLog:
+        value: true
+    usageLimits: null
+    price: 14.99
+addOns:
+  kioskBasic:
+    availableFor:
+      - BASIC
+    price: 0.99
+    unit: per kiosk user/month
+    features:
+      kiosk:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  kioskStandard:
+    availableFor:
+      - STANDARD
+    price: 1.49
+    unit: per kiosk user/month
+    features:
+      kiosk:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  kioskPro:
+    availableFor:
+      - PRO
+    price: 1.99
+    unit: per kiosk user/month
+    features:
+      kiosk:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  kioskEnterprise:
+    availableFor:
+      - ENTERPRISE
+    price: 2.99
+    unit: per kiosk user/month
+    features:
+      kiosk:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null

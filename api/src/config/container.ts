@@ -3,9 +3,9 @@ import { createContainer, asValue, asClass, AwilixContainer } from "awilix";
 import dotenv from "dotenv";
 import process from "node:process";
 
-import UserMockDB from "../repositories/mockDB/UserMockDB.ts";
+import UserMockDB from "../repositories/mockDB/UserMockDB";
 
-import UserService from "../services/UserService.ts";
+import UserService from "../services/UserService";
 
 dotenv.config();
 

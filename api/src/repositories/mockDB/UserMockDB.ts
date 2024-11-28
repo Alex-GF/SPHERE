@@ -1,6 +1,6 @@
-import RepositoryBase from '../RepositoryBase.ts';
-import {User} from './models/User.ts';
-import { userData } from './data/UserData.ts';
+import RepositoryBase from '../RepositoryBase';
+import {User} from './models/User';
+import { userData } from './data/UserData';
 
 class UserMockDB extends RepositoryBase {
   override async findAll(): Promise<User[]> {

@@ -1,0 +1,277 @@
+saasName: ClickUp
+version: '2.0'
+createdAt: '2019-10-31'
+currency: USD
+hasAnnualPayment: true
+features:
+  storage:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  tasks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  views:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  integrations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  reporting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  guests:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  permissions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  goals:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  portfolio:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  customFields:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  twoFactorAuthentication:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  googleSingleSignOn:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  goalFolders:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  customExporting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  privateViews:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  protectedViews:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  defaultViews:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  workload:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  extraGuests:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  singleSignOn:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  contractReview:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  hipaaCompliance:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  api:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: API
+  customOnboarding:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  dedicatedSuccessManager:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  advancedPermissions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+usageLimits:
+  increasedApiLimit:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: NON_RENEWABLE
+plans:
+  FREE:
+    description: Everything you need to be productive
+    monthlyPrice: 0
+    annualPrice: 0
+    unit: user/month
+    features: null
+    usageLimits: null
+    price: 0
+  UNLIMITED:
+    description: Unlimited storage and advanced features
+    monthlyPrice: 9
+    annualPrice: 5
+    unit: member/month
+    features:
+      views:
+        value: true
+      integrations:
+        value: true
+      reporting:
+        value: true
+      guests:
+        value: true
+      permissions:
+        value: true
+      goals:
+        value: true
+      portfolio:
+        value: true
+      customFields:
+        value: true
+    usageLimits: null
+    price: 9
+  BUSINESS:
+    description: Business class features and security
+    monthlyPrice: 19
+    annualPrice: 9
+    unit: member/month
+    features:
+      views:
+        value: true
+      integrations:
+        value: true
+      reporting:
+        value: true
+      guests:
+        value: true
+      permissions:
+        value: true
+      goals:
+        value: true
+      portfolio:
+        value: true
+      customFields:
+        value: true
+      twoFactorAuthentication:
+        value: true
+      googleSingleSignOn:
+        value: true
+      goalFolders:
+        value: true
+      customExporting:
+        value: true
+      privateViews:
+        value: true
+      protectedViews:
+        value: true
+      defaultViews:
+        value: true
+      workload:
+        value: true
+      extraGuests:
+        value: true
+    usageLimits: null
+    price: 19
+  ENTERPRISE:
+    description: ''
+    monthlyPrice: Contact Sales
+    annualPrice: Contact Sales
+    unit: member/month
+    features:
+      views:
+        value: true
+      integrations:
+        value: true
+      reporting:
+        value: true
+      guests:
+        value: true
+      permissions:
+        value: true
+      goals:
+        value: true
+      portfolio:
+        value: true
+      customFields:
+        value: true
+      twoFactorAuthentication:
+        value: true
+      googleSingleSignOn:
+        value: true
+      goalFolders:
+        value: true
+      customExporting:
+        value: true
+      privateViews:
+        value: true
+      protectedViews:
+        value: true
+      defaultViews:
+        value: true
+      workload:
+        value: true
+      extraGuests:
+        value: true
+      singleSignOn:
+        value: true
+      contractReview:
+        value: true
+      hipaaCompliance:
+        value: true
+      customOnboarding:
+        value: true
+      dedicatedSuccessManager:
+        value: true
+      advancedPermissions:
+        value: true
+    usageLimits:
+      increasedApiLimit:
+        value: true
+    price: Contact Sales

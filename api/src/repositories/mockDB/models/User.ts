@@ -1,4 +1,4 @@
-import { BaseModel } from './BaseModel.ts';
+import { BaseModel } from './BaseModel';
 
 export interface User extends BaseModel {
     email: string;

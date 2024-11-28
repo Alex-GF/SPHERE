@@ -1,0 +1,810 @@
+saasName: Salesforce - SalesCloud
+version: '2.0'
+createdAt: '2023-12-02'
+currency: EUR
+hasAnnualPayment: true
+features:
+  leadManagement:
+    description: Track, filter, and qualify new prospective customers.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  leadAssigmentAndRouting:
+    description: >-
+      Route hot leads to the right reps and view the impact of your marketing
+      activities on your sales pipeline.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  duplicateBlocking:
+    description: >-
+      Improve CRM data quality by preventing duplicates, so data is more usable,
+      reliable, and relevant.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  webToLeadCapture:
+    description: >-
+      Generate leads with the prospecting data from your company’s website
+      visitors.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  massEmail:
+    description: >-
+      Create targeted email lists for events. Provide updates and more for your
+      prospects and customers. Automatically track which leads or contacts
+      received emails.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  campaignManagement:
+    description: >-
+      Manage and track marketing campaigns across all channels. Make more
+      informed decisions and see their impact on your sales pipeline.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  emailTemplates:
+    description: >-
+      Create form emails to communicate consistently with customers and
+      prospects.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  leadRegistration:
+    description: >-
+      Let your partners register leads via your website with integrated
+      web-to-lead capture.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  campaignInfluence:
+    description: >-
+      Improve campaign ROI metrics. Allocate revenue share across campaign
+      touches on an opportunity.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  accountAndContactManagement:
+    description: >-
+      Get a complete view of your customers, including activity history, key
+      contacts, customer communications, and internal account discussions.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  opportunityManagement:
+    description: >-
+      Track key details about every deal, such as stage, quotes, products, and
+      more.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  customizableSalesProcess:
+    description: Easily personalise your team’s sales milestones with a sales path.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  taskManagementActivityFeed:
+    description: Get the complete view of all customer engagement in one place.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  personAccounts:
+    description: >-
+      Get a complete view of customers when they are individual people,
+      including activity history, and service and sales engagement.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  salesConsoleApps:
+    description: >-
+      Boost productivity in fast-paced sales environments with everything a rep
+      needs to close business faster, all on one screen.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  salesTeams:
+    description: Specify collaborators assigned to each deal.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  calendarAll:
+    description: >-
+      Create a calendar from any object to be able to visualize and act on
+      important sales data.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  inbox:
+    description: >-
+      Automatically capture every touchpoint and manage communications. Insert
+      real-time availability to scheduling with contacts, send emails later, and
+      show recommended in-network contacts.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  workQueue:
+    description: >-
+      See exactly who to reach out to and how, and easily manage the day with a
+      smart, prioritized to-do list.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  salesforceMobileApp:
+    description: >-
+      Run your business from your phone — collaborate with your team, close
+      deals, service customers, and deliver personalized marketing from
+      anywhere.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  fullOfflineMobileFunctionality:
+    description: >-
+      Continue using the Salesforce mobile app, including creating new records,
+      even without connectivity. Your data will sync once you’re back online.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  collaborativeForecasting:
+    description: See a complete view of your entire pipeline and your business.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  forecastingMobileApp:
+    description: View real-time forecasting on any mobile device.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  customOpportunityFieldsInForecasting:
+    description: Focus on data points unique to your business.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  opportunitySplits:
+    description: >-
+      Use opportunity splits and split types to help track the total effort of a
+      sales team and more easily divide commissions based on participation.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  enterpriseTerritoryManagement:
+    description: >-
+      Model your sales territories into a logical and flexible structure that
+      maps the right sales reps to the right customers.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  predictiveForeCasting:
+    description: >-
+      Take the guesswork out of forecasting using your company’s sales history.
+      Use automated machine learning to make predictions and share intuitive
+      insights behind the prediction.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: BOT
+  contacts:
+    description: Help your sales teams manage contract approvals and renewals.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  salesOrders:
+    description: Track and manage sales orders in one central location.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  productAndPriceBooks:
+    description: Save your product catalog and assign prices for every scenario.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  quotes:
+    description: >-
+      Easily create basic quotes by pulling in products and pricing to show
+      customers. 
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  configurableReportsAndDashboards:
+    description: >-
+      Make more informed, consistent decisions with real-time configurable
+      reports and dashboards.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  advancedReportingFeatures:
+    description: >-
+      Advanced reporting features include cross filters, joined reports,
+      bucketing, and history tracking.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  opportunityScoring:
+    description: >-
+      Analyze your data, predict which opportunities are most likely to convert,
+      and see the intuitive factors behind the scores allowing you to prioritize
+      the best deals to close.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  leadScoring:
+    description: >-
+      Analyze your data, predict which leads are the most likely to convert,
+      which allows for prioritization and increased lead conversion.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  pipelineInspection:
+    description: >-
+      Maintain a healthy pipeline in a robust consolidated view. Track real-time
+      pipeline movement, identify changes and de-risk deals with actionable
+      insights.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  conversationInsights:
+    description: >-
+      Gain actionable insights from your digital sales calls to accelerate win
+      rates. Identify trending topics, surface coachable moments, and scale
+      best-in-class conversations.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  files:
+    description: Share and collaborate on key files relevant to each deal.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  topicsAndRecommendations:
+    description: >-
+      Automatically get the most up-to-date content and recommendations on what
+      to follow and join.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  chatter:
+    description: Collaborate throughout your company and with outside parties.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  caseManagement:
+    description: >-
+      Automatically route inquiries to the right group or agent for faster, more
+      accurate case resolution.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  knowledge:
+    description: >-
+      Access knowledge articles and FAQ pages to provide excellent customer
+      service, faster.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  lightingFlowAutomation:
+    description: >-
+      Automate and manage any business process with a point-and-click Process
+      Builder tool.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  lightningAppBuilder:
+    description: >-
+      Build apps visually using a library of prebuilt and custom components in
+      this drag-and-drop environment.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  appExchange:
+    description: >-
+      Install prebuilt apps, flows, and components from AppExchange to
+      accelerate time to market.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  dataStoragePerUser:
+    description: >-
+      Each edition includes a stated minimum storage to be shared by all users.
+      Additional storage is available per-org.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  fileStoragePerUser:
+    description: >-
+      Each edition includes a stated minimum storage to be shared by all users.
+      Additional storage is available per-org.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  unlimitedCustomApplications:
+    description: >-
+      Build apps and customize Salesforce to meet your — and your customers’ —
+      needs.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  customizableProfilesAndPageLayouts:
+    description: >-
+      Manage read/write permissions for different user profiles, and control
+      which fields different users see on every record.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  rolesAndPermissions:
+    description: >-
+      Establish roles and permissions that set object/data access for different
+      users.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  recordTypes:
+    description: Tailor business processes, picklist values, and page layouts.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  developerSandbox:
+    description: >-
+      Develop and test in an isolated environment without compromising your live
+      Salesforce deployment.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  developerProSandbox:
+    description: >-
+      Develop and test without compromising your live Salesforce deployment.
+      Developer Pro can host larger datasets than a developer sandbox.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  partialSandbox:
+    description: >-
+      Replicate your production org, including all data. Handle performance
+      testing, load testing, and staging. 
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  fullSandbox:
+    description: >-
+      Test and code in separate environments without compromising your live
+      Salesforce deployment.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  platform:
+    description: The fastest way to build, extend, and manage apps — with clicks or code.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  workflowAndApproval:
+    description: >-
+      Automate workflow tasks, email alerts, automatic field updates, and much
+      more. Set up simple or sophisticated approval automation for virtually any
+      process.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  premiumActivityCapture:
+    description: >-
+      Eliminate manual activity logging. Automatically capture every Salesforce
+      touchpoint, prioritize customer communications, track engagement activity,
+      and more. 
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  salesCadences:
+    description: >-
+      Program best practices into structured, scheduled sequences of sales
+      activities.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  emailIntegrationWithOutlook:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingsUrls:
+      - >-
+        https://www.microsoft.com/en-us/microsoft-365/buy/compare-all-microsoft-365-products
+  googleAppsIntegration:
+    description: >-
+      Stay in sync with your favorite productivity apps, including Gmail,
+      Calendar, Sheets, and Slides.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingsUrls:
+      - https://workspace.google.com/pricing.html?hl=en
+  webServicesAPI:
+    description: >-
+      Connect external systems and data to Salesforce using web services APIs,
+      including REST, SOAP, and more.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+usageLimits:
+  numberOfCampaignsPerOportunity:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 3
+    unit: campaign/opportunity
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - campaignInfluence
+  numberOfCustomAppsPerOrg:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: customApp/Org
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - salesConsoleApps
+  numberOfProcessesAndFlows:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 5
+    unit: processesFlows/org
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - lightingFlowAutomation
+  numberOfCustomizableProfiles:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 2
+    unit: profile/org
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - customizableProfilesAndPageLayouts
+  numberOfRoles:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 2
+    unit: rol/org
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - rolesAndPermissions
+  numberOfRecordTypes:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 3
+    unit: type/object
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - recordTypes
+  numberOfPartialSandbox:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: partialSanbox/org
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - partialSandbox
+  numberOfFullSanbox:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: fullSanbox/org
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - fullSandbox
+plans:
+  STARTER:
+    description: Start fast with sales, service, and email outreach tools
+    monthlyPrice: 25
+    annualPrice: 300
+    unit: user/month
+    features:
+      inbox:
+        value: true
+      premiumActivityCapture:
+        value: true
+    usageLimits: null
+    price: 25
+  PROFESSIONAL:
+    description: Complete sales solution for any size team
+    monthlyPrice: 80
+    annualPrice: 960
+    unit: user/month
+    features:
+      leadRegistration:
+        value: true
+      campaignInfluence:
+        value: true
+      personAccounts:
+        value: true
+      salesConsoleApps:
+        value: true
+      collaborativeForecasting:
+        value: true
+      forecastingMobileApp:
+        value: true
+      contacts:
+        value: true
+      salesOrders:
+        value: true
+      productAndPriceBooks:
+        value: true
+      quotes:
+        value: true
+      unlimitedCustomApplications:
+        value: true
+      customizableProfilesAndPageLayouts:
+        value: true
+      rolesAndPermissions:
+        value: true
+      recordTypes:
+        value: true
+      developerSandbox:
+        value: true
+    usageLimits: null
+    price: 80
+  ENTERPRISE:
+    description: Deeply customizable sales CRM for your business
+    monthlyPrice: 165
+    annualPrice: 1980
+    unit: user/month
+    features:
+      leadRegistration:
+        value: true
+      campaignInfluence:
+        value: true
+      personAccounts:
+        value: true
+      salesConsoleApps:
+        value: true
+      salesTeams:
+        value: true
+      calendarAll:
+        value: true
+      collaborativeForecasting:
+        value: true
+      forecastingMobileApp:
+        value: true
+      customOpportunityFieldsInForecasting:
+        value: true
+      opportunitySplits:
+        value: true
+      enterpriseTerritoryManagement:
+        value: true
+      contacts:
+        value: true
+      salesOrders:
+        value: true
+      productAndPriceBooks:
+        value: true
+      quotes:
+        value: true
+      advancedReportingFeatures:
+        value: true
+      opportunityScoring:
+        value: true
+      unlimitedCustomApplications:
+        value: true
+      customizableProfilesAndPageLayouts:
+        value: true
+      rolesAndPermissions:
+        value: true
+      recordTypes:
+        value: true
+      developerSandbox:
+        value: true
+      partialSandbox:
+        value: true
+      platform:
+        value: true
+      workflowAndApproval:
+        value: true
+      webServicesAPI:
+        value: true
+    usageLimits:
+      numberOfCampaignsPerOportunity:
+        value: 5
+      numberOfCustomAppsPerOrg:
+        value: .inf
+      numberOfProcessesAndFlows:
+        value: .inf
+      numberOfCustomizableProfiles:
+        value: .inf
+      numberOfRoles:
+        value: .inf
+      numberOfRecordTypes:
+        value: .inf
+    price: 165
+  UNLIMITED:
+    description: The ultimate platform for growth
+    monthlyPrice: 330
+    annualPrice: 3960
+    unit: user/month
+    features:
+      leadRegistration:
+        value: true
+      campaignInfluence:
+        value: true
+      personAccounts:
+        value: true
+      salesConsoleApps:
+        value: true
+      salesTeams:
+        value: true
+      calendarAll:
+        value: true
+      inbox:
+        value: true
+      workQueue:
+        value: true
+      collaborativeForecasting:
+        value: true
+      forecastingMobileApp:
+        value: true
+      customOpportunityFieldsInForecasting:
+        value: true
+      opportunitySplits:
+        value: true
+      enterpriseTerritoryManagement:
+        value: true
+      predictiveForeCasting:
+        value: true
+      contacts:
+        value: true
+      salesOrders:
+        value: true
+      productAndPriceBooks:
+        value: true
+      quotes:
+        value: true
+      advancedReportingFeatures:
+        value: true
+      opportunityScoring:
+        value: true
+      leadScoring:
+        value: true
+      pipelineInspection:
+        value: true
+      conversationInsights:
+        value: true
+      unlimitedCustomApplications:
+        value: true
+      customizableProfilesAndPageLayouts:
+        value: true
+      rolesAndPermissions:
+        value: true
+      recordTypes:
+        value: true
+      developerSandbox:
+        value: true
+      developerProSandbox:
+        value: true
+      partialSandbox:
+        value: true
+      fullSandbox:
+        value: true
+      platform:
+        value: true
+      workflowAndApproval:
+        value: true
+      premiumActivityCapture:
+        value: true
+      salesCadences:
+        value: true
+      webServicesAPI:
+        value: true
+    usageLimits:
+      numberOfCampaignsPerOportunity:
+        value: 5
+      numberOfCustomAppsPerOrg:
+        value: .inf
+      numberOfProcessesAndFlows:
+        value: .inf
+      numberOfCustomizableProfiles:
+        value: .inf
+      numberOfRoles:
+        value: .inf
+      numberOfRecordTypes:
+        value: .inf
+      numberOfPartialSandbox:
+        value: 1
+      numberOfFullSanbox:
+        value: 1
+    price: 330
+addOns:
+  inbox:
+    availableFor:
+      - PROFESSIONAL
+      - ENTERPRISE
+    price: Contact sales
+    unit: user/month
+    features:
+      inbox:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  workQueue:
+    availableFor:
+      - ENTERPRISE
+    price: Contact sales
+    unit: user/month
+    features:
+      workQueue:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  predictiveForeCasting:
+    availableFor:
+      - ENTERPRISE
+    price: Contact sales
+    unit: user/month
+    features:
+      predictiveForeCasting:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  leadScoring:
+    availableFor:
+      - ENTERPRISE
+    price: Contact sales
+    unit: user/month
+    features:
+      leadScoring:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  pipelineInspection:
+    availableFor:
+      - ENTERPRISE
+    price: Contact sales
+    unit: user/month
+    features:
+      pipelineInspection:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  conversationInsights:
+    availableFor:
+      - ENTERPRISE
+    price: Contact sales
+    unit: user/month
+    features:
+      conversationInsights:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  developerProSandbox:
+    availableFor:
+      - PROFESSIONAL
+      - ENTERPRISE
+    price: Contact sales
+    unit: user/month
+    features:
+      developerProSandbox:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  premiumActivityCapture:
+    availableFor:
+      - PROFESSIONAL
+      - ENTERPRISE
+    price: Contact sales
+    unit: user/month
+    features:
+      premiumActivityCapture:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  salesCadences:
+    availableFor:
+      - ENTERPRISE
+    price: Contact sales
+    unit: user/month
+    features:
+      salesCadences:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null

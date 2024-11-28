@@ -1,0 +1,167 @@
+saasName: OpenPhone
+version: '2.0'
+createdAt: '2020-11-11'
+currency: USD
+hasAnnualPayment: false
+features:
+  usAndCanadaCalling:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  usAndCanadaMessaging:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  voicemailToText:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  phoneNumbers:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  portPhoneNumbersFromOtherCarriers:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  callRecording:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  sharedPhoneNumbers:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  ivrAutoAtendant:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: BOT
+  emailIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  slackIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://slack.com/pricing
+  crmIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+  analytics:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  reporting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  auditLog:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  emailSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  smsSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  phoneSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  dedicatedAccountManager:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+usageLimits:
+  phoneNumbersLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: phone number
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - phoneNumbers
+  usAndCanadCallsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 10000000000000
+    unit: call
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - usAndCanadaCalling
+  usAndCanadaMessagesLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 10000000000000
+    unit: message
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - usAndCanadaMessaging
+plans:
+  STANDARD:
+    description: For individuals, teams and companies.
+    monthlyPrice: 10
+    annualPrice: 10
+    unit: user/month
+    features: null
+    usageLimits: null
+    price: 10
+  ENTERPRISE:
+    description: For organizations with more requirements.
+    monthlyPrice: Contact Sales
+    annualPrice: Contact Sales
+    unit: user/month
+    features:
+      crmIntegration:
+        value: true
+      analytics:
+        value: true
+      reporting:
+        value: true
+      auditLog:
+        value: true
+      phoneSupport:
+        value: true
+      dedicatedAccountManager:
+        value: true
+    price: Contact Sales
+addOns:
+  aditionalPhoneNumbers:
+    availableFor:
+      - STANDARD
+      - ENTERPRISE
+    price: 5
+    unit: phoneNumber/month
+    features: null
+    usageLimits: null
+    usageLimitsExtensions:
+      phoneNumbersLimit:
+        value: 1

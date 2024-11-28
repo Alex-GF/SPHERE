@@ -1,0 +1,201 @@
+saasName: Planable
+version: '2.0'
+createdAt: '2020-11-25'
+currency: USD
+hasAnnualPayment: true
+features:
+  posts:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  pages:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  workspaces:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  selfService:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  realTimeSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  personalizedOnboarding:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  roleBasedAccessControl:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  unlimitedStorage:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  auditLogging:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  advancedSecurity:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  postPreviews:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  multipleViewOptions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  atAGlance:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  collaborationInContext:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  customerService:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  oneClickApprovals:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  centralizedPublishing:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  mediaLibrary:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+usageLimits:
+  usersLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 3
+    unit: user
+    type: NON_RENEWABLE
+    linkedFeatures: null
+  postsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1000000000000
+    unit: post
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - posts
+  pagesLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 10
+    unit: page
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - pages
+  workspacesLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: worspace
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - workspaces
+  storageCapacity:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1000000000
+    unit: GB
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - unlimitedStorage
+plans:
+  FREE:
+    description: For social media teams wanting to try out Planable
+    monthlyPrice: 0
+    annualPrice: 0
+    unit: user/month
+    features: null
+    usageLimits:
+      postsLimit:
+        value: 50
+      usersLimit:
+        value: 1000000000000
+      workspacesLimit:
+        value: 1000000000000
+      pagesLimit:
+        value: 1000000000000
+    price: 0
+  STARTER:
+    description: For freelancers & startups with up to 3 team members
+    monthlyPrice: 39
+    annualPrice: 33
+    unit: user/month
+    features: null
+    usageLimits: null
+    price: 39
+  PREMIUM:
+    description: For small agencies & brands
+    monthlyPrice: 99
+    annualPrice: 83
+    unit: user/month
+    features: null
+    usageLimits:
+      usersLimit:
+        value: 7
+      workspacesLimit:
+        value: 5
+      pagesLimit:
+        value: 1000000000000
+    price: 99
+  ENTERPRISE:
+    description: For large organizations
+    monthlyPrice: Custom
+    annualPrice: Custom
+    unit: user/month
+    features:
+      realTimeSupport:
+        value: true
+      personalizedOnboarding:
+        value: true
+      roleBasedAccessControl:
+        value: true
+      unlimitedStorage:
+        value: true
+      auditLogging:
+        value: true
+      advancedSecurity:
+        value: true
+    usageLimits:
+      usersLimit:
+        value: 1000000000000
+      workspacesLimit:
+        value: 1000000000000
+      pagesLimit:
+        value: 1000000000000
+    price: Custom

@@ -1,0 +1,918 @@
+saasName: Buffer
+version: '2.0'
+createdAt: '2023-11-29'
+currency: USD
+hasAnnualPayment: true
+features:
+  channels:
+    description: >-
+      Example: 2 Twitter profiles, 2 Facebook pages, and 2 Start Pages counts as
+      6 channels
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  schedulePosts:
+    description: >-
+      Free plans allow for 10 scheduled posts per channel at one time. *Paid
+      plan channels have a 2,000 scheduled post cap per our Fair Use Policy.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  facebookPages:
+    description: Facebook Pages
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+  facebookGroups:
+    description: Facebook Groups
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+  instagramCreatorAccounts:
+    description: Instagram Creator Accounts
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+  instagramBusinessAccounts:
+    description: Instagram Business Accounts
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+  twitterProfiles:
+    description: Twitter Profiles
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+  linkedinPages:
+    description: LinkedIn Pages
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+  linkedinProfiles:
+    description: LinkedIn Profiles
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+  pinterestBoards:
+    description: Pinterest Boards
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+  tiktokBusinessAccounts:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+  googleBusinessProfiles:
+    description: Google Business Profiles
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+  mastodonProfiles:
+    description: Profiles
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+  youtubeShorts:
+    description: Shorts
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+  startPage:
+    description: >-
+      A landing page for your brand where you can showcase the things that
+      matter
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  bufferAIAssistant:
+    description: >-
+      Generate new posts for your Buffer schedule, repurpose existing posts, and
+      come up with an endless new ideas.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: BOT
+  ideas:
+    description: Capture and store your great ideas whenever they come to you.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  drafts:
+    description: Save your content for later on mobile or desktop.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  canva:
+    description: Import content directly from Canva.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+  googleOneDriveDropboxIntegrations:
+    description: Import content directly from Google Drive, OneDrive, and Dropbox.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+  postPreviews:
+    description: See how your posts will appear on each channel.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  browserExtension:
+    description: Open the composer on any web page and add posts directly to your queue.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTENSION
+  contentScheduling:
+    description: Create posts and schedule their release for each channel.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  customSchedules:
+    description: Set time slots throughout each week for your content to be released.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  tailoredPosts:
+    description: Seamlessly iterate on content to customize posts for each channel.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  queueOrCalendarView:
+    description: View your content as a chronological feed or in a calendar view.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  mentions:
+    description: >-
+      Tag other Facebook, LinkedIn, Instagram, and TikTok Pages (some
+      restrictions apply).
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  twitterThreads:
+    description: >-
+      Draft and schedule threads on Twitter. *The Free plan offers one scheduled
+      Twitter Thread in Buffer at any time. Post the Twitter thread and schedule
+      again, as many times as you want
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  customVideoThumpnails:
+    description: Choose a custom thumbnail and title for your videos.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  hashtagManager:
+    description: >-
+      Create, save, reuse, and optimize groups of hashtags for your social
+      channels.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  instagramFirstComment:
+    description: >-
+      Schedule the first comment after your post. Include hashtags and/or other
+      information.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  shuffleQueue:
+    description: Shuffle the order of the posts in your queue.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  linkShorteners:
+    description: Shorten links to buff.ly, bit.ly, or your own domain (through bit.ly).
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  videoScheduling:
+    description: Schedule video to Reels, TikTok, YouTube Shorts and more.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  tags:
+    description: Organize, categorize, and keep track of different types of content.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  landingPage:
+    description: Build a simple, flexible landing page with Start Page.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  performanceOverview:
+    description: >-
+      See an overview of key metrics (impressions, engagements and new
+      followers, etc).
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  individualPostAnalytics:
+    description: See a history of all of your published posts, iterate, and evolve.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  instagramHistoricalDataAccess:
+    description: Backfill data from the past 6 months for Instagram.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  tiktokHistoricalDataAccess:
+    description: Backfill data from the past 6 months for TikTok.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  facebookHistoricalDataAccess:
+    description: Backfill data from the past 6 months for Facebook.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  twitterHistoricalDataAccess:
+    description: Backfill data from the past 28 days for Twitter.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  linkedinHistoricalDataAccess:
+    description: Backfill data from the past 6 months for LinkedIn.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  pinterestHistoricalDataAccess:
+    description: Backfill data from the past 6 months for Pinterest.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  googleHistoricalDataAccess:
+    description: Backfill data from the past 6 months for Google.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  mastodonHistoricalDataAccess:
+    description: Backfill data from the past 6 months for Mastodon.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  youtubeHistoricalDataAccess:
+    description: Backfill data from the past 6 months for YouTube.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  dataStorage:
+    description: Store, analyze, and export up to two years of data.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  tagAnalysis:
+    description: Get insights and reports for tagged content.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  boostedPostInsights:
+    description: >-
+      Analyze your boosted posts and compare with your organic results to
+      optimize your ad spend.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  hashtagPerformance:
+    description: >-
+      Get insight into how your hashtags could be affecting your reach and
+      engagement rates.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  audienceDemographics:
+    description: Age, gender, and location.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  machineLearningInsights:
+    description: >-
+      Get suggestions for what, when, and how often to post to maximize your
+      results.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: BOT
+  instagramStoriesAnalytics:
+    description: View completion rates and key metrics over time.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  shopifyPerformance:
+    description: >-
+      See your sales, top referrals, and top products alongside your social
+      media data.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  customReports:
+    description: White-labeled and annotated for easy analysis.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  exportableReports:
+    description: Available as a PDF, image, or CSV.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  brandedReports:
+    description: Add a custom logo to each of your reports.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  coverPage:
+    description: >-
+      Get an automatically generated cover page when you download your report as
+      a PDF..
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  gridView:
+    description: See which posts have unanswered comments and quickly jump in.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  importantCommentDetection:
+    description: >-
+      Machine-learning-powered alerts highlight open questions & comments on
+      sales or unhappiness.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: BOT
+  hotkeys:
+    description: Get through comments quickly without taking your hands off the keyboard.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  easyAccountSwitching:
+    description: >-
+      Seamlessly switch between multiple accounts and channels. No more logging
+      in and out.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  includedUsers:
+    description: >-
+      The number of users who can access and contribute content to your Buffer
+      account.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  draftPostManagement:
+    description: >-
+      Account owners can set post drafting, approval, and full posting access
+      across users.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  customAccessAndPermissions:
+    description: >-
+      Manage which social channels each user is invited to and their
+      post-approval status
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  approvalWorkflow:
+    description: Manage who can draft and approve posts across your team.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  notes:
+    description: Add internal comments to your content.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  mobileApps:
+    description: >-
+      Publish is available on iOS and Android, allowing you to plan,
+      collaborate, and publish on-the-go.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  thirdPartyIntegrations:
+    description: >-
+      Use Buffer with your favorite apps like Zapier, IFTTT, Quuu, Pocket,
+      Feedly, and more.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  twoFactorAuthentication:
+    description: >-
+      Enabling two factor authentication adds an extra layer of security to your
+      Buffer Publish account. Whenever you log into your account, after entering
+      your username and password, you'll be asked for a second authentication
+      code. Two factor authentication codes can be generated either via text
+      message (SMS) or Google Authenticator (available on iOS and Android).
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  googleAnalyticsIntegration:
+    description: Find in-depth insights on your posts and campaigns in Google Analytics.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+  customUTMParameters:
+    description: >-
+      Track the effectiveness of your posts and campaigns using custom UTM
+      parameters.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  selfServiceKnowledgeBase:
+    description: >-
+      Access to our FAQ where you’ll find how-to guides, most popular questions
+      and video tutorials.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  socialMediaSupport:
+    description: Fast support on Social Media via Twitter and Facebook.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  emailSupport:
+    description: >-
+      Fast and helpful support via email. We love lending a hand with social
+      media advice, sharing Buffer tips and tricks, and we’re always up to chat
+      through a technical challenge! Being a Buffer customer should feel like
+      having a whole team of people cheering for you.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+usageLimits:
+  socialChannelsLimit:
+    description: The number of social accounts/pages you can connect to Buffer.
+    valueType: NUMERIC
+    defaultValue: 3
+    unit: account
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - channels
+  postsPerScheduledQueuePerSocialAccountLimit:
+    description: >-
+      The number of posts you can store in your queue at any one time (per
+      social account). There is no daily, monthly, or yearly limit.
+    valueType: NUMERIC
+    defaultValue: 10
+    unit: post/channel
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - schedulePosts
+  ideasLimit:
+    description: The number of ideas you can store in Buffer.
+    valueType: NUMERIC
+    defaultValue: 100
+    unit: idea
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - ideas
+  useInstagramHistoricalDataAccess:
+    description: Backfill data from the past 6 months for Instagram.
+    valueType: NUMERIC
+    defaultValue: 6
+    unit: month
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - instagramHistoricalDataAccess
+  useTiktokHistoricalDataAccess:
+    description: Backfill data from the past 6 months for TikTok.
+    valueType: NUMERIC
+    defaultValue: 6
+    unit: month
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - tiktokHistoricalDataAccess
+  useFacebookHistoricalDataAccess:
+    description: Backfill data from the past 6 months for Facebook.
+    valueType: NUMERIC
+    defaultValue: 6
+    unit: month
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - facebookHistoricalDataAccess
+  useTwitterHistoricalDataAccess:
+    description: Backfill data from the past 28 days for Twitter.
+    valueType: NUMERIC
+    defaultValue: 28
+    unit: day
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - twitterHistoricalDataAccess
+  useLinkedinHistoricalDataAccess:
+    description: Backfill data from the past 6 months for LinkedIn.
+    valueType: NUMERIC
+    defaultValue: 6
+    unit: month
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - linkedinHistoricalDataAccess
+  usePinterestHistoricalDataAccess:
+    description: Backfill data from the past 6 months for Pinterest.
+    valueType: NUMERIC
+    defaultValue: 6
+    unit: month
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - pinterestHistoricalDataAccess
+  useGoogleHistoricalDataAccess:
+    description: Backfill data from the past 6 months for Google.
+    valueType: NUMERIC
+    defaultValue: 6
+    unit: month
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - googleHistoricalDataAccess
+  useMastodonHistoricalDataAccess:
+    description: Backfill data from the past 6 months for Mastodon.
+    valueType: NUMERIC
+    defaultValue: 6
+    unit: month
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - mastodonHistoricalDataAccess
+  useYoutubeHistoricalDataAccess:
+    description: Backfill data from the past 6 months for YouTube.
+    valueType: NUMERIC
+    defaultValue: 6
+    unit: month
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - youtubeHistoricalDataAccess
+  useDataStorage:
+    description: Store, analyze, and export up to two years of data.
+    valueType: NUMERIC
+    defaultValue: 2
+    unit: year
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - dataStorage
+  useTagsLimit:
+    description: The number of tags you can create.
+    valueType: NUMERIC
+    defaultValue: 3
+    unit: tag
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - tags
+  useIncludedUsersLimit:
+    description: >-
+      The number of users who can access and contribute content to your Buffer
+      account.
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: user
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - includedUsers
+  useTwitterThreadsLimit:
+    description: The number of Twitter threads you can create at a time.
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: thread at a time
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - twitterThreads
+plans:
+  FREE:
+    description: For individuals and businesses getting started with social media.
+    monthlyPrice: 0
+    annualPrice: 0
+    unit: channel/year
+    features: null
+    usageLimits: null
+    price: 0
+  ESSENTIALS:
+    description: For professionals who use publishing, analytics & engagement tools.
+    monthlyPrice: 6
+    annualPrice: 5
+    unit: channel/year
+    features:
+      hashtagManager:
+        value: true
+      instagramFirstComment:
+        value: true
+      shuffleQueue:
+        value: true
+      linkShorteners:
+        value: true
+      videoScheduling:
+        value: true
+      performanceOverview:
+        value: true
+      individualPostAnalytics:
+        value: true
+      instagramHistoricalDataAccess:
+        value: true
+      tiktokHistoricalDataAccess:
+        value: true
+      facebookHistoricalDataAccess:
+        value: true
+      twitterHistoricalDataAccess:
+        value: true
+      linkedinHistoricalDataAccess:
+        value: true
+      pinterestHistoricalDataAccess:
+        value: true
+      googleHistoricalDataAccess:
+        value: true
+      mastodonHistoricalDataAccess:
+        value: true
+      youtubeHistoricalDataAccess:
+        value: true
+      dataStorage:
+        value: true
+      tagAnalysis:
+        value: true
+      boostedPostInsights:
+        value: true
+      hashtagPerformance:
+        value: true
+      audienceDemographics:
+        value: true
+      machineLearningInsights:
+        value: true
+      instagramStoriesAnalytics:
+        value: true
+      shopifyPerformance:
+        value: true
+      customReports:
+        value: true
+      exportableReports:
+        value: true
+      gridView:
+        value: true
+      importantCommentDetection:
+        value: true
+      hotkeys:
+        value: true
+      easyAccountSwitching:
+        value: true
+      googleAnalyticsIntegration:
+        value: true
+      customUTMParameters:
+        value: true
+    usageLimits:
+      socialChannelsLimit:
+        value: 1
+      postsPerScheduledQueuePerSocialAccountLimit:
+        value: 10000000
+      ideasLimit:
+        value: 2000
+      useTagsLimit:
+        value: 250
+      useTwitterThreadsLimit:
+        value: 10000000
+    price: 6
+  TEAM:
+    description: For teams who want unlimited users, collaboration, and reporting.
+    monthlyPrice: 12
+    annualPrice: 10
+    unit: channel/year
+    features:
+      hashtagManager:
+        value: true
+      instagramFirstComment:
+        value: true
+      shuffleQueue:
+        value: true
+      linkShorteners:
+        value: true
+      videoScheduling:
+        value: true
+      performanceOverview:
+        value: true
+      individualPostAnalytics:
+        value: true
+      instagramHistoricalDataAccess:
+        value: true
+      tiktokHistoricalDataAccess:
+        value: true
+      facebookHistoricalDataAccess:
+        value: true
+      twitterHistoricalDataAccess:
+        value: true
+      linkedinHistoricalDataAccess:
+        value: true
+      pinterestHistoricalDataAccess:
+        value: true
+      googleHistoricalDataAccess:
+        value: true
+      mastodonHistoricalDataAccess:
+        value: true
+      youtubeHistoricalDataAccess:
+        value: true
+      dataStorage:
+        value: true
+      tagAnalysis:
+        value: true
+      boostedPostInsights:
+        value: true
+      hashtagPerformance:
+        value: true
+      audienceDemographics:
+        value: true
+      machineLearningInsights:
+        value: true
+      instagramStoriesAnalytics:
+        value: true
+      shopifyPerformance:
+        value: true
+      customReports:
+        value: true
+      exportableReports:
+        value: true
+      brandedReports:
+        value: true
+      coverPage:
+        value: true
+      gridView:
+        value: true
+      importantCommentDetection:
+        value: true
+      hotkeys:
+        value: true
+      easyAccountSwitching:
+        value: true
+      draftPostManagement:
+        value: true
+      customAccessAndPermissions:
+        value: true
+      approvalWorkflow:
+        value: true
+      googleAnalyticsIntegration:
+        value: true
+      customUTMParameters:
+        value: true
+    usageLimits:
+      socialChannelsLimit:
+        value: 1
+      postsPerScheduledQueuePerSocialAccountLimit:
+        value: 10000000
+      ideasLimit:
+        value: 2000
+      useTagsLimit:
+        value: 250
+      useTwitterThreadsLimit:
+        value: 10000000
+      useIncludedUsersLimit:
+        value: 10000000
+    price: 12
+  AGENCY:
+    description: For marketing agencies with 10 or more channels.
+    monthlyPrice: 120
+    annualPrice: 100
+    unit: channel/year
+    features:
+      hashtagManager:
+        value: true
+      instagramFirstComment:
+        value: true
+      shuffleQueue:
+        value: true
+      linkShorteners:
+        value: true
+      videoScheduling:
+        value: true
+      performanceOverview:
+        value: true
+      individualPostAnalytics:
+        value: true
+      instagramHistoricalDataAccess:
+        value: true
+      tiktokHistoricalDataAccess:
+        value: true
+      facebookHistoricalDataAccess:
+        value: true
+      twitterHistoricalDataAccess:
+        value: true
+      linkedinHistoricalDataAccess:
+        value: true
+      pinterestHistoricalDataAccess:
+        value: true
+      googleHistoricalDataAccess:
+        value: true
+      mastodonHistoricalDataAccess:
+        value: true
+      youtubeHistoricalDataAccess:
+        value: true
+      dataStorage:
+        value: true
+      tagAnalysis:
+        value: true
+      boostedPostInsights:
+        value: true
+      hashtagPerformance:
+        value: true
+      audienceDemographics:
+        value: true
+      machineLearningInsights:
+        value: true
+      instagramStoriesAnalytics:
+        value: true
+      shopifyPerformance:
+        value: true
+      customReports:
+        value: true
+      exportableReports:
+        value: true
+      brandedReports:
+        value: true
+      coverPage:
+        value: true
+      gridView:
+        value: true
+      importantCommentDetection:
+        value: true
+      hotkeys:
+        value: true
+      easyAccountSwitching:
+        value: true
+      draftPostManagement:
+        value: true
+      customAccessAndPermissions:
+        value: true
+      approvalWorkflow:
+        value: true
+      googleAnalyticsIntegration:
+        value: true
+      customUTMParameters:
+        value: true
+    usageLimits:
+      socialChannelsLimit:
+        value: 10
+      postsPerScheduledQueuePerSocialAccountLimit:
+        value: 10000000
+      ideasLimit:
+        value: 2000
+      useTagsLimit:
+        value: 250
+      useTwitterThreadsLimit:
+        value: 10000000
+      useIncludedUsersLimit:
+        value: 10000000
+    price: 120
+addOns:
+  essentialsExtraChannels:
+    availableFor:
+      - ESSENTIALS
+    monthlyPrice: 6
+    annualPrice: 5
+    unit: channel/year
+    features: null
+    usageLimits: null
+    usageLimitsExtensions:
+      socialChannelsLimit:
+        value: 1
+    price: 6
+  teamExtraChannels:
+    availableFor:
+      - TEAM
+    monthlyPrice: 12
+    annualPrice: 10
+    unit: channel/year
+    features: null
+    usageLimits: null
+    usageLimitsExtensions:
+      socialChannelsLimit:
+        value: 1
+    price: 12
+  agencyExtraChannels:
+    availableFor:
+      - AGENCY
+    monthlyPrice: 6
+    annualPrice: 5
+    unit: channel/year
+    features: null
+    usageLimits: null
+    usageLimitsExtensions:
+      socialChannelsLimit:
+        value: 1
+    price: 6

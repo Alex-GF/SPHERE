@@ -1,0 +1,496 @@
+saasName: Postman
+version: '2.0'
+createdAt: '2022-11-23'
+currency: USD
+hasAnnualPayment: true
+features:
+  apiClient:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  apiBuilder:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  apiTesting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  apiMockServer:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  apiMonitoringCalls:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  postmanAPI:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  integrations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  nativeGitSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://github.com/pricing
+  staticIpAddresses:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  publicApiDocumentation:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  privateApiDocumentation:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  imageEmbedding:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  customDomains:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  workspaces:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  privateWorkspaces:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  partnerWorkspaces:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  privateApiNetwork:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  reportingAndAnalytics:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  rolesAndPermissions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  googleSSO:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  otherProvidersSingleSignOn:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  samlSingleSignOn:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  userProvisioning:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  userGroups:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  domainCapture:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  recoverDeletedCollections:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  auditLogs:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  auditLogsAPI:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+  securityTokenScanner:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TRACKING
+  superAdminRole:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  deploymentControl:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  owaspRuleset:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  customRulesBuilder:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  requestValidationEngine:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  schemaValidationEngine:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  remediationGuidance:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  customerSuccess:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  emailSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  priorityEmailSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  paymentOptions:
+    description: ''
+    valueType: TEXT
+    defaultValue:
+      - CARD
+    type: PAYMENT
+usageLimits:
+  callsToPostmanApi:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1000
+    unit: calls/month
+    type: RENEWABLE
+    linkedFeatures:
+      - postmanAPI
+  numberOfIntegrations:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 5
+    unit: integration
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - integrations
+  imageEmbeddingLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 100
+    unit: MB
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - imageEmbedding
+  customDomainsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 0
+    unit: domain
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - customDomains
+  recoverDeletedCollectionsThreshold:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: day
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - recoverDeletedCollections
+  monitoringCallsFixedLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 0
+    unit: call
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - apiMonitoringCalls
+  monitoringCallsMonthlyLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 0
+    unit: call/month
+    type: RENEWABLE
+    linkedFeatures:
+      - apiMonitoringCalls
+  mockServerCallsFixedLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 0
+    unit: call
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - apiMockServer
+  mockServerCallsMonthlyLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 0
+    unit: call/month
+    type: RENEWABLE
+    linkedFeatures:
+      - apiMockServer
+plans:
+  FREE:
+    description: ''
+    monthlyPrice: 0
+    annualPrice: 0
+    unit: user/month
+    features: null
+    usageLimits: null
+    price: 0
+  BASIC:
+    description: ''
+    monthlyPrice: 15
+    annualPrice: 12
+    unit: user/month
+    features:
+      customDomains:
+        value: true
+      paymentOptions:
+        value:
+          - CARD
+    usageLimits:
+      callsToPostmanApi:
+        value: 10000
+      numberOfIntegrations:
+        value: 10
+      customDomainsLimit:
+        value: 1
+      recoverDeletedCollectionsThreshold:
+        value: 30
+    price: 15
+  PROFESSIONAL:
+    description: ''
+    monthlyPrice: 36
+    annualPrice: 29
+    unit: user/month
+    features:
+      nativeGitSupport:
+        value: true
+      staticIpAddresses:
+        value: true
+      customDomains:
+        value: true
+      privateWorkspaces:
+        value: true
+      rolesAndPermissions:
+        value: true
+      googleSSO:
+        value: true
+      auditLogs:
+        value: true
+      auditLogsAPI:
+        value: true
+      paymentOptions:
+        value:
+          - CARD
+    usageLimits:
+      callsToPostmanApi:
+        value: 100000
+      numberOfIntegrations:
+        value: 50
+      customDomainsLimit:
+        value: 5
+      recoverDeletedCollectionsThreshold:
+        value: 90
+    price: 36
+  ENTERPRISE:
+    description: ''
+    monthlyPrice: null
+    annualPrice: 99
+    unit: user/month
+    features:
+      nativeGitSupport:
+        value: true
+      staticIpAddresses:
+        value: true
+      customDomains:
+        value: true
+      privateWorkspaces:
+        value: true
+      partnerWorkspaces:
+        value: true
+      privateApiNetwork:
+        value: true
+      reportingAndAnalytics:
+        value: true
+      rolesAndPermissions:
+        value: true
+      googleSSO:
+        value: true
+      otherProvidersSingleSignOn:
+        value: true
+      samlSingleSignOn:
+        value: true
+      userProvisioning:
+        value: true
+      userGroups:
+        value: true
+      domainCapture:
+        value: true
+      auditLogs:
+        value: true
+      auditLogsAPI:
+        value: true
+      superAdminRole:
+        value: true
+      deploymentControl:
+        value: true
+      customRulesBuilder:
+        value: true
+      requestValidationEngine:
+        value: true
+      schemaValidationEngine:
+        value: true
+      remediationGuidance:
+        value: true
+      customerSuccess:
+        value: true
+      priorityEmailSupport:
+        value: true
+      paymentOptions:
+        value:
+          - CARD
+          - ACH
+          - WIRE_TRANSFER
+    usageLimits:
+      callsToPostmanApi:
+        value: 1000000
+      numberOfIntegrations:
+        value: 100
+      customDomainsLimit:
+        value: 25
+      recoverDeletedCollectionsThreshold:
+        value: 90
+    price: 99
+addOns:
+  monitoringPayAsYouGo:
+    availableFor:
+      - FREE
+      - BASIC
+      - PROFESSIONAL
+      - ENTERPRISE
+    price: 0.75
+    features:
+      apiMonitoringCalls:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions:
+      monitoringCallsFixedLimit:
+        value: 1000
+  monitoringMonthly:
+    availableFor:
+      - FREE
+      - BASIC
+      - PROFESSIONAL
+      - ENTERPRISE
+    price: 20
+    unit: block/month
+    features:
+      apiMonitoringCalls:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions:
+      monitoringCallsMonthlyLimit:
+        value: 50000
+  mockServersPayAsYouGo:
+    availableFor:
+      - FREE
+      - BASIC
+      - PROFESSIONAL
+      - ENTERPRISE
+    price: 0.75
+    features:
+      apiMockServer:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions:
+      mockServerCallsFixedLimit:
+        value: 1000
+  mockServersMonthly:
+    availableFor:
+      - FREE
+      - BASIC
+      - PROFESSIONAL
+      - ENTERPRISE
+    price: 20
+    unit: block/month
+    features:
+      apiMockServer:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions:
+      mockServerCallsMonthlyLimit:
+        value: 50000
+  customDomains:
+    availableFor:
+      - BASIC
+      - PROFESSIONAL
+      - ENTERPRISE
+    price: 10
+    unit: domain/month
+    features: null
+    usageLimits: null
+    usageLimitsExtensions:
+      customDomainsLimit:
+        value: 1

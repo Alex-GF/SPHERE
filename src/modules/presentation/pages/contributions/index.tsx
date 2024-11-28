@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Contribution, contributions } from './data/contributions-data';
-import ContributionCard from '../../layouts/presentation-layout/components/contribution-card';
+import ContributionCard from '../../layouts/components/contribution-card';
 import { Helmet } from 'react-helmet';
 import { Box, styled } from '@mui/material';
-import ContributionDetailsModal from '../../layouts/presentation-layout/components/contribution-details';
+import ContributionDetailsModal from '../../layouts/components/contribution-details';
 
 const ContributionsGrid = styled(Box)(() => ({
   width: '100dvw',

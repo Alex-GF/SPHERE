@@ -1,0 +1,616 @@
+saasName: Evernote
+version: '2.0'
+createdAt: '2023-11-23'
+currency: USD
+hasAnnualPayment: true
+features:
+  appForIOS:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  appForAndroid:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  appForWindows:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  appForMac:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  appForLinux:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  appForWeb:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  syncAcrossDevices:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  notes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  ad-free:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  tasks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  addDueDatesToTasks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  addRemindersToTasks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  addNotificationsToTasks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  createAndEditRecurringTasks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  tasksManagementView:
+    description: Edit, track, and manage tasks from a single view
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  customizeHomeWithTasksWidget:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTENSION
+  customizeHomeWithFilteredNotesWidget:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTENSION
+  connectWithPrimaryGoogleCalendar:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://workspace.google.com/pricing
+  getNotifiedWhenItsTimeToTakeNotes:
+    description: Get notified when it's time to take notes
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  openNotesForCalendarEvents:
+    description: Open notes for your calendar events
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  connectWithMultipleGoogleCalendarAccounts:
+    description: Connect your personal and workplace Google Calendar accounts to Evernote
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://workspace.google.com/pricing
+  assignTasksToOthers:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  trackOthersProgressOnTasks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TRACKING
+  customizeHomeWithPinnedNotesWidget:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTENSION
+  customizeHomeWithScratchPadWidget:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTENSION
+  useBooleanTermsToRefineSearch:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  findContentByLocation:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  exportNotebooksAsPDFs:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  homeDashboard:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  richFormatting:
+    description: Use a variety of fonts, highlight colors, and formatting tools
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  webClipper:
+    description: Clip, organize, and share web pages with Web Clipper
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTENSION
+  attachFilesToNotes:
+    description: >-
+      Attach photos, PDFs, spreadsheets, Google Docs, and other files to your
+      notes
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  scanHadWrittenNotes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  scanWhiteboards:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  scanReceipts:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  scanMore:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  recordAudioNotes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  playAudioNotes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  annotateImages:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  annotatePdfs:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  forwardEmailsIntoEvernote:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs: null
+  createCustomTemplates:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  saveCustomTemplates:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  scanAndDigitalizeBusinessCardsToCreateContacts:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  addRemindersToNotes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  searchNotes:
+    description: Find any note using search filters and get suggestions as you type
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  getSearchSugestionsAsYourType:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: BOT
+  saveSearches:
+    description: Save searches to grab results quickly for your most-used searches
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  createOwnFilingSystem:
+    description: Create your own filing system with notebooks and keyword tags
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  connectWithGmail:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://workspace.google.com/pricing
+  customizeHomeWithMoreWidgets:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  customizeHomeWithBackgroundImages:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  accessNotesOffline:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  connectWithGoogleDrive:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://one.google.com/about/plans
+  searchTextInsideImages:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  searchTextInsideHandwrittenNotes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  searchTextInsideDocuments:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  searchTextInsidePDFs:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  versionHistoryOfNotes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  restoreNotesFromOlderVersions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  quicklySwitchBetweenAccounts:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  shareNotesWithPeople:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  shareNotebooksWithPeople:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  setPermissionsForEdittingNotes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  setPermissionsForEdittingNotebooks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  setPermissionsForViewingNotes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  setPermissionsForViewingNotebooks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  sendEmailsWithNotesCopies:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs: null
+  advancedPdfExportControls:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  connectWithSlack:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingUrls:
+      - https://slack.com/pricing
+  connectWithTeams:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingUrls:
+      - >-
+        https://www.microsoft.com/en-us/microsoft-365/microsoft-teams/group-chat-software
+  dataNotForSale:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: GUARANTEE
+  twoStepVerification:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  forumSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  applyInNoteEncryption:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  supportTickets:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+usageLimits:
+  maximumNoteSize:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 25
+    unit: MB/note
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - notes
+  globalMonthlyUploadLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 60
+    unit: MB
+    type: RENEWABLE
+    linkedFeatures: null
+plans:
+  FREE:
+    description: Capture ideas and find them quickly
+    monthlyPrice: 0
+    annualPrice: 0
+    unit: /month
+    features: null
+    usageLimits: null
+    price: 0
+  PERSONAL:
+    description: Keep home and family on track
+    monthlyPrice: 12.99
+    annualPrice: 10.83
+    unit: /month
+    features:
+      addDueDatesToTasks:
+        value: true
+      addRemindersToTasks:
+        value: true
+      addNotificationsToTasks:
+        value: true
+      createAndEditRecurringTasks:
+        value: true
+      tasksManagementView:
+        value: true
+      customizeHomeWithTasksWidget:
+        value: true
+      customizeHomeWithFilteredNotesWidget:
+        value: true
+      connectWithPrimaryGoogleCalendar:
+        value: true
+      getNotifiedWhenItsTimeToTakeNotes:
+        value: true
+      annotateImages:
+        value: true
+      annotatePdfs:
+        value: true
+      forwardEmailsIntoEvernote:
+        value: true
+      createCustomTemplates:
+        value: true
+      saveCustomTemplates:
+        value: true
+      scanAndDigitalizeBusinessCardsToCreateContacts:
+        value: true
+      customizeHomeWithMoreWidgets:
+        value: true
+      customizeHomeWithBackgroundImages:
+        value: true
+      accessNotesOffline:
+        value: true
+      connectWithGoogleDrive:
+        value: true
+      searchTextInsideImages:
+        value: true
+      searchTextInsideHandwrittenNotes:
+        value: true
+      searchTextInsideDocuments:
+        value: true
+      searchTextInsidePDFs:
+        value: true
+      versionHistoryOfNotes:
+        value: true
+      restoreNotesFromOlderVersions:
+        value: true
+      quicklySwitchBetweenAccounts:
+        value: true
+      sendEmailsWithNotesCopies:
+        value: true
+      applyInNoteEncryption:
+        value: true
+      supportTickets:
+        value: true
+    usageLimits:
+      maximumNoteSize:
+        value: 200
+      globalMonthlyUploadLimit:
+        value: 10240
+    price: 12.99
+  PROFESIONAL:
+    description: Tackle any project, at work or at home
+    monthlyPrice: 16.99
+    annualPrice: 14.16
+    unit: /month
+    features:
+      addDueDatesToTasks:
+        value: true
+      addRemindersToTasks:
+        value: true
+      addNotificationsToTasks:
+        value: true
+      createAndEditRecurringTasks:
+        value: true
+      tasksManagementView:
+        value: true
+      customizeHomeWithTasksWidget:
+        value: true
+      customizeHomeWithFilteredNotesWidget:
+        value: true
+      connectWithPrimaryGoogleCalendar:
+        value: true
+      getNotifiedWhenItsTimeToTakeNotes:
+        value: true
+      connectWithMultipleGoogleCalendarAccounts:
+        value: true
+      assignTasksToOthers:
+        value: true
+      trackOthersProgressOnTasks:
+        value: true
+      customizeHomeWithPinnedNotesWidget:
+        value: true
+      customizeHomeWithScratchPadWidget:
+        value: true
+      useBooleanTermsToRefineSearch:
+        value: true
+      findContentByLocation:
+        value: true
+      exportNotebooksAsPDFs:
+        value: true
+      annotateImages:
+        value: true
+      annotatePdfs:
+        value: true
+      forwardEmailsIntoEvernote:
+        value: true
+      createCustomTemplates:
+        value: true
+      saveCustomTemplates:
+        value: true
+      scanAndDigitalizeBusinessCardsToCreateContacts:
+        value: true
+      customizeHomeWithMoreWidgets:
+        value: true
+      customizeHomeWithBackgroundImages:
+        value: true
+      accessNotesOffline:
+        value: true
+      connectWithGoogleDrive:
+        value: true
+      searchTextInsideImages:
+        value: true
+      searchTextInsideHandwrittenNotes:
+        value: true
+      searchTextInsideDocuments:
+        value: true
+      searchTextInsidePDFs:
+        value: true
+      versionHistoryOfNotes:
+        value: true
+      restoreNotesFromOlderVersions:
+        value: true
+      quicklySwitchBetweenAccounts:
+        value: true
+      sendEmailsWithNotesCopies:
+        value: true
+      advancedPdfExportControls:
+        value: true
+      connectWithSlack:
+        value: true
+      connectWithTeams:
+        value: true
+      applyInNoteEncryption:
+        value: true
+      supportTickets:
+        value: true
+    usageLimits:
+      maximumNoteSize:
+        value: 200
+      globalMonthlyUploadLimit:
+        value: 20480
+    price: 16.99

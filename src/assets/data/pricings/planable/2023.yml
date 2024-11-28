@@ -1,0 +1,376 @@
+saasName: Planable
+version: '2.0'
+createdAt: '2023-10-20'
+currency: USD
+hasAnnualPayment: true
+features:
+  posts:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  pages:
+    description: >-
+      Number of social media pages allowed in each workspace. It can be multiple
+      pages from the same platform.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  publishTweets:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  saveAsAnAd:
+    description: >-
+      The option to send your Facebook drafts as a dark post to your Ads
+      Manager.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  aiAssistant:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: BOT
+  workspaces:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  feedView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  calendarView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  gridView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  listView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  labels:
+    description: >-
+      Categorize posts per campaign, topic or content pillar with color-coded
+      labels.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  mediaStorage:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  syncPreviousContent:
+    description: Import content published outside of Planable.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs: null
+  publishedPostsStorage:
+    description: Published posts are archived after 1 year. Then permanently deleted.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  archivedPostsStorage:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  noneApprovalWorkflows:
+    description: Set workflows that do not require approval for publishing.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  optionalApprovalWorkflows:
+    description: >-
+      Set workflows that have approvals enabled, but aren't required for
+      publishing.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  requiredApprovalWorkflows:
+    description: Set workflows that require an approvals for publishing.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  multiLevelApprovalWorkflows:
+    description: Set workflows that require 2 or more approvals for publishing.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  internalAndExternalCollaboration:
+    description: >-
+      Have the option to hold conversations and posts behind the scenes, out of
+      approver’s sight.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  versionHistory:
+    description: >-
+      See who did what and when. Preview & restore previous versions of your
+      posts.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  helpCenter:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  prioritySupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  chatSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  personalizedOnboarding:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  dedicatedAccountManager:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  paymentOptions:
+    description: ''
+    valueType: TEXT
+    defaultValue:
+      - CARD
+    type: PAYMENT
+usageLimits:
+  postsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1000000000000
+    unit: posts
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - posts
+  postsPerMonthLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 10000000
+    unit: posts/month
+    type: RENEWABLE
+    linkedFeatures:
+      - posts
+  socialMediaPagesLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 4
+    unit: pages/workspace
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - pages
+  tweetsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: tweet/page/day
+    type: RENEWABLE
+    linkedFeatures:
+      - publishTweets
+  workspacesLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: worspace
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - workspaces
+  numberOfLabels:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 5
+    unit: label
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - labels
+  mediaStorageCapacity:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 10
+    unit: GB
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - mediaStorage
+  publishedPostsStorageLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 13
+    unit: month
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - publishedPostsStorage
+  archivedPostsStorageLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 30
+    unit: day
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - archivedPostsStorage
+  versionHistoryThreshold:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 7
+    unit: day
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - versionHistory
+plans:
+  FREE:
+    description: For anyone wanting to test Planable out
+    monthlyPrice: 0
+    annualPrice: 0
+    unit: /month
+    features:
+      saveAsAnAd:
+        value: true
+      gridView:
+        value: true
+      listView:
+        value: true
+      syncPreviousContent:
+        value: true
+      requiredApprovalWorkflows:
+        value: true
+      multiLevelApprovalWorkflows:
+        value: true
+      internalAndExternalCollaboration:
+        value: true
+    usageLimits:
+      postsLimit:
+        value: 50
+      postsPerMonthLimit:
+        value: 50
+      socialMediaPagesLimit:
+        value: 10
+      numberOfLabels:
+        value: 10000000
+      mediaStorageCapacity:
+        value: 1000000
+      versionHistoryThreshold:
+        value: 1000000
+    price: 0
+  BASIC:
+    description: For businesses getting started with social media
+    monthlyPrice: 13
+    annualPrice: 11
+    unit: user/month
+    features: null
+    usageLimits: null
+    price: 13
+  PRO:
+    description: For growing social media teams
+    monthlyPrice: 26
+    annualPrice: 22
+    unit: user/month
+    features:
+      saveAsAnAd:
+        value: true
+      gridView:
+        value: true
+      syncPreviousContent:
+        value: true
+      requiredApprovalWorkflows:
+        value: true
+      internalAndExternalCollaboration:
+        value: true
+      chatSupport:
+        value: true
+    usageLimits:
+      tweetsLimit:
+        value: 1000000000000
+      socialMediaPagesLimit:
+        value: 10
+      numberOfLabels:
+        value: 10
+      mediaStorageCapacity:
+        value: 50
+      versionHistoryThreshold:
+        value: 30
+    price: 26
+  ENTERPRISE:
+    description: For large social media teams wanting to scale
+    monthlyPrice: Custom
+    annualPrice: Custom
+    unit: user/month
+    features:
+      saveAsAnAd:
+        value: true
+      gridView:
+        value: true
+      listView:
+        value: true
+      syncPreviousContent:
+        value: true
+      requiredApprovalWorkflows:
+        value: true
+      multiLevelApprovalWorkflows:
+        value: true
+      internalAndExternalCollaboration:
+        value: true
+      prioritySupport:
+        value: true
+      chatSupport:
+        value: true
+      personalizedOnboarding:
+        value: true
+      dedicatedAccountManager:
+        value: true
+      paymentOptions:
+        value:
+          - CARD
+          - ACH
+          - WIRE_TRANSFER
+          - GATEWAY
+    usageLimits:
+      tweetsLimit:
+        value: 1000000000000
+      socialMediaPagesLimit:
+        value: 10
+      numberOfLabels:
+        value: 10000000
+      mediaStorageCapacity:
+        value: 1000000
+      publishedPostsStorageLimit:
+        value: 24
+      archivedPostsStorageLimit:
+        value: 365
+      versionHistoryThreshold:
+        value: 1000000
+    price: Custom
+addOns:
+  extraWorkspace:
+    description: Add an extra workspace to your account.
+    availableFor:
+      - BASIC
+      - PRO
+    monthlyPrice: 20
+    annualPrice: 17
+    unit: workspace/month
+    features: null
+    usageLimits: null
+    usageLimitsExtensions:
+      workspacesLimit:
+        value: 1
+    price: 20

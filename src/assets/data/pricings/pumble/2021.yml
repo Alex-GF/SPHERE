@@ -1,0 +1,208 @@
+saasName: Pumble
+version: '2.0'
+createdAt: '2021-09-19'
+currency: USD
+hasAnnualPayment: true
+features:
+  privateChannels:
+    description: Only invited users can send messages in a private channel.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  publicChannels:
+    description: Everyone can join and send messages in public channels.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  directMessages:
+    description: >-
+      Share business information, send files and images, or share links to
+      others, one-on-one.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  threads:
+    description: >-
+      Spin off side conversations into threads to keep the channel
+      distraction-free.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  mentions:
+    description: Mention others to notify them.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  reactions:
+    description: React to messages with emojis.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  pin:
+    description: Pin important messages so everyone can access them later.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  messageHistory:
+    description: >-
+      Access all your messages that have ever been sent to get context for past
+      decisions or get new team members up to speed faster.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  shareFilesAndLinks:
+    description: >-
+      Share images, videos, documents or links with your teammates and search
+      for them later via File browser.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  messageFormatting:
+    description: >-
+      Highlight important information within conversation or markup your code
+      blocks.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  fileStoragePerAccount:
+    description: Share images, documents, and other files, and access them later in Pumble.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  fileStoragePerUser:
+    description: Share images, documents, and other files, and access them later in Pumble.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  customizableSidebars:
+    description: >-
+      Organize channels and conversations into custom, collapsible sections in
+      your sidebar.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  userGroups:
+    description: Mention user group to notify everybody in the group.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  guestAccess:
+    description: >-
+      Work with people outside your company and give them access only to the
+      specific channels.
+    valueType: TEXT
+    defaultValue: None
+    type: DOMAIN
+  manageUserAccounts:
+    description: Assign roles to members and control what they can do in Pumble.
+    valueType: TEXT
+    defaultValue: None
+    type: MANAGEMENT
+  dataEncryption:
+    description: Pumble encrypts all data at rest and in transit.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: GUARANTEE
+  phoneSupport:
+    description: Contact Pumble’s customer support and get answer within 24 hours.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  chatSupport:
+    description: Contact Pumble’s customer support and get answer within 24 hours.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  emailSupport:
+    description: Contact Pumble’s customer support and get answer within 24 hours.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  priorityCustomerSupport:
+    description: Get a guaranteed answer from customer support within a few hours.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+usageLimits:
+  users:
+    description: The number of users who can use Pumble.
+    valueType: NUMERIC
+    defaultValue: 1000000000
+    unit: user
+    type: NON_RENEWABLE
+    linkedFeatures: null
+  useMessageHistory:
+    description: The number of days that can be searched for the messageHistory.
+    valueType: NUMERIC
+    defaultValue: 1000000000
+    unit: day
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - messageHistory
+  useFileStoragePerAccount:
+    description: The amount of storage that can be used per account.
+    valueType: NUMERIC
+    defaultValue: 10
+    unit: GB/account
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - fileStoragePerAccount
+  useFileStoragePerUser:
+    description: The amount of storage that can be used per user or team member.
+    valueType: NUMERIC
+    defaultValue: 10
+    unit: GB/user
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - fileStoragePerUser
+plans:
+  FREE:
+    description: ''
+    monthlyPrice: 0
+    annualPrice: 0
+    unit: user/month
+    features: null
+    usageLimits: null
+    price: 0
+  PRO:
+    description: ''
+    monthlyPrice: 1.99
+    annualPrice: 1.66
+    unit: user/month
+    features:
+      fileStoragePerUser:
+        value: true
+      customizableSidebars:
+        value: true
+      userGroups:
+        value: true
+      guestAccess:
+        value: Coming soon
+      manageUserAccounts:
+        value: Coming soon
+      priorityCustomerSupport:
+        value: true
+    usageLimits: null
+    price: 1.99
+  SERVER:
+    description: ''
+    monthlyPrice: Contact Sales
+    annualPrice: Contact Sales
+    unit: user/month
+    features:
+      fileStoragePerUser:
+        value: true
+      customizableSidebars:
+        value: true
+      userGroups:
+        value: true
+      guestAccess:
+        value: Coming soon
+      manageUserAccounts:
+        value: Coming soon
+      priorityCustomerSupport:
+        value: true
+    usageLimits:
+      useFileStoragePerUser:
+        value: 1000000000
+    price: Contact Sales
