@@ -90,7 +90,7 @@ export function PricingRenderer({ pricing, errors, style }: Readonly<PricingProp
           <thead>
             <tr>
               <th></th>
-              {pricing.plans.map((plan: Plan, key: number) => (
+              {pricing.plans && pricing.plans.map((plan: Plan, key: number) => (
                 <PlanHeader
                   plan={plan}
                   currency={pricing.currency}
@@ -120,7 +120,7 @@ export function PricingRenderer({ pricing, errors, style }: Readonly<PricingProp
                 features={features}
                 style={style}
                 key={tag}
-                plans={pricing.plans}
+                plans={pricing.plans ?? []}
                 currency={pricing.currency}
                 pricingData={pricingData}
               />

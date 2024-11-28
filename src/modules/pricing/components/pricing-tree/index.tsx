@@ -305,10 +305,10 @@ export default function PricingTree({ pricing, name }: PricingTreeProps) {
       <Box sx={{ minHeight: 200, minWidth: 350 }}>
         <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 1 }}>
             <Typography variant="h6" gutterBottom>
-                Pricing tree for {name}
+                Pricing tree for
             </Typography>
             <Typography variant="h6" gutterBottom color="text.secondary" fontFamily="monospace" letterSpacing={0.25}>
-                sphere/{pricing?.product}
+                sphere/{name}
             </Typography>
         </Box>
         <RichTreeView
