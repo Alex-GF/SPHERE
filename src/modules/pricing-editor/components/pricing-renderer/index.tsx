@@ -141,7 +141,7 @@ export function PricingRenderer({ pricing, errors, style }: Readonly<PricingProp
                 return (
                   <AddOnElement
                     addOn={addOn}
-                    currency={pricing.currency}
+                    currency={pricing.currency in CURRENCIES ? CURRENCIES[pricing.currency as keyof typeof CURRENCIES] : pricing.currency}
                     style={style}
                     key={index}
                   />

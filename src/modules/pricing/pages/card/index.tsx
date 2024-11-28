@@ -26,7 +26,7 @@ import Analytics from '../../components/analytics';
 import Harvey from '../../components/harvey';
 import AnalyticsModal from '../../components/analyticsModal';
 
-const StyledChip = styled(Chip)(({ theme }) => ({
+export const StyledChip = styled(Chip)(({ theme }) => ({
   margin: theme.spacing(0.5),
   borderRadius: '4px',
 }));
@@ -79,7 +79,7 @@ export default function CardPage() {
 
     let pricingYamlPath = currentPricing.yaml_path;
 
-    fetch('src/assets/' + pricingYamlPath).then(async response => {
+    fetch('../src/assets/' + pricingYamlPath).then(async response => {
       let p: string = '';
       p = await response.text();
 
