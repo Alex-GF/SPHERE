@@ -1,5 +1,5 @@
-import container from "../config/container.ts";
-import UserService from "../services/UserService.ts";
+import container from "../config/container";
+import UserService from "../services/UserService";
 import { Request, Response } from "express";
 
 class UserController {

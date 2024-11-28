@@ -1,14 +1,13 @@
-import type { Server } from "node:http";
-import { initializeServer, disconnectDatabase } from "../../src/app.ts";
-import process from "node:process";
-import express from "express";
+import type { Server } from 'http';
+import { initializeServer, disconnectDatabase } from '../../src/app';
+import { Application } from 'express';
 
 let testServer: Server | null = null;
-let testApp: express.Application | null = null;
+let testApp: Application | null = null;
 
 const getApp = async (): Promise<Server> => {
   if (!testServer) {
-    const {server, app} = await initializeServer();
+    const { server, app } = await initializeServer();
     testServer = server;
     testApp = app;
   }
@@ -26,10 +25,10 @@ const shutdownApp = async () => {
 
 const getIdType = () => {
   switch (process.env.DATABASE_TECHNOLOGY) {
-    case "mockDB":
+    case 'mockDB':
       return String;
     default:
-      throw new Error("Unsupported database technology");
+      throw new Error('Unsupported database technology');
   }
 };
 
