@@ -1,6 +1,6 @@
 import { Box, styled } from "@mui/material";
 import { Helmet } from "react-helmet";
-import { SAAS_DATA, AnalyticsDataEntry, AnalyticsData } from '../../../../assets/data/analytics';
+import { SAAS_DATA, AnalyticsData } from '../../../../assets/data/analytics';
 import { useEffect, useState } from "react";
 import PricingListCard from "../../components/pricing-list-card";
 

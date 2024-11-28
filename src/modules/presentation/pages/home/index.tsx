@@ -5,10 +5,8 @@ import { Divider } from '@mui/material';
 import HeroLanding from '../../components/hero-landing';
 import BulletsLanding from '../../components/bullets-landing';
 import ToolsLanding from '../../components/tools-landing';
-import SimplificationLanding from '../../components/simplification-landing';
 import StatsLanding from '../../components/stats-landing';
 import ResearchLanding from '../../components/research-landing';
-import FinalLanding from '../../components/final-landing';
 import FeaturesLanding from '../../components/features-landing';
 import FoundingLanding from '../../components/founding-landing';
 
