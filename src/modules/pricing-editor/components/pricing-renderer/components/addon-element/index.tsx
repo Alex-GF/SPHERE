@@ -39,16 +39,9 @@ export default function AddOnElement({
             className="plan-period"
             style={{ color: style.periodColor ?? DEFAULT_RENDERING_STYLES.periodColor }}
           >
-            /month
+            {addOn.unit ? addOn.unit : "/month"}
           </span>
         )}
-
-        <span
-          className="plan-period"
-          style={{ color: style.periodColor ?? DEFAULT_RENDERING_STYLES.periodColor }}
-        >
-          /{addOn.unit}
-        </span>
       </p>
     </div>
   );

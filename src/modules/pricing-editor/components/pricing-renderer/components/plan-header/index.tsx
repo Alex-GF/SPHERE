@@ -45,7 +45,7 @@ export default function PlanHeader({
                   className="plan-period"
                   style={{ color: style.periodColor ?? DEFAULT_RENDERING_STYLES.periodColor }}
                 >
-                  /month
+                  {plan.unit ? plan.unit : "/month"}
                 </span>
                 }
               </>
