@@ -45,7 +45,7 @@ export default function Stats({ pricingDetails, currentPricing, pricing } : Stat
                   </Box>
                   <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column">
                       <Typography variant="body1">
-                          {currentPricing?.analytics.minSubscriptionPrice}{pricing?getCurrency(pricing):''}-{currentPricing?.analytics.maxSubscriptionPrice}{pricing?getCurrency(pricing):''}
+                          Min {currentPricing?.analytics.minSubscriptionPrice}{pricing?getCurrency(pricing):''} - Max {currentPricing?.analytics.maxSubscriptionPrice}{pricing?getCurrency(pricing):''}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
                           monthly cost

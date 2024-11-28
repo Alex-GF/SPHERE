@@ -282,17 +282,18 @@ export default function PricingTree({ pricing, name }: PricingTreeProps) {
     }
     const updateTreeValues = (items: TreeItemType[]): TreeItemType[] => {
       return items.map(item => {
-      if (item.id !== 'pricing') {
+        const value = getProperValue(pricing, item.id);
+        if (item.id !== 'pricing') {
+          return {
+            ...item,
+            value: value,
+            children: value === 0 ? undefined : item.children ? updateTreeValues(item.children) : undefined,
+          };
+        }
         return {
-        ...item,
-        value: getProperValue(pricing, item.id),
-        children: item.children ? updateTreeValues(item.children) : undefined,
+          ...item,
+          children: item.children ? updateTreeValues(item.children) : undefined,
         };
-      }
-      return {
-        ...item,
-        children: item.children ? updateTreeValues(item.children) : undefined,
-      };
       });
     };
 
