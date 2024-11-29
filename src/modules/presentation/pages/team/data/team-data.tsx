@@ -4,6 +4,8 @@ import AlejandroGarcia from "./profile-pictures/alejandro-garcia.png";
 import FranciscoJavierCavero from "./profile-pictures/francisco-javier-cavero.jpeg";
 import JoseAntonioParejo from "./profile-pictures/jose-antonio-parejo.png";
 import AntonioRuiz from "./profile-pictures/antonio-ruiz.jpg";
+import YoussefLakouifat from "./profile-pictures/youssef-lakouifat.jpeg";
+import ElenaMolino from "./profile-pictures/elena-molino.jpg";
 
 export interface TeamMember {
     firstName: string;
@@ -122,15 +124,15 @@ export const teamMembers: TeamMember[] = [
     {
         firstName: 'María Elena',
         lastName: 'Molino Peña',
-        profilePicture: null,
+        profilePicture: ElenaMolino,
         role: 'Collaborator',
         email: 'mmolino@us.es',
         affiliation: getAffiliation('Universidad de Sevilla'),
-        // orcid: '0000-0001-9827-1834',
+        orcid: '0000-0001-7024-5300',
         // website: 'https://prisma.us.es/investigador/3804',
-        // linkedin: 'https://www.linkedin.com/in/antonioruizcortes/',
-        // github: 'https://github.com/antonioruizcortes',
-        // googlescholar: 'https://scholar.google.es/citations?user=Ka-FHBQAAAAJ'
+        linkedin: 'https://www.linkedin.com/in/mar%C3%ADa-elena-molino-pe%C3%B1a-7742211ba/',
+        github: 'https://github.com/elenamolino',
+        googlescholar: 'https://scholar.google.es/citations?hl=es&tzom=-60&user=3W_0AzgAAAAJ'
     },
     {
         firstName: 'José María',
@@ -161,14 +163,14 @@ export const teamMembers: TeamMember[] = [
     {
         firstName: 'Youssef',
         lastName: 'Lakouifat Darkaoui',
-        profilePicture: null,
+        profilePicture: YoussefLakouifat,
         role: 'Student Fellow',
         email: 'youlakdar@alum.us.es',
         affiliation: getAffiliation('Universidad de Sevilla'),
         // orcid: '0000-0001-9827-1834',
         // website: 'https://prisma.us.es/investigador/3804',
-        // linkedin: 'https://www.linkedin.com/in/antonioruizcortes/',
-        // github: 'https://github.com/antonioruizcortes',
+        linkedin: 'https://linkedin.com/in/youssefld',
+        github: 'https://github.com/youssefld',
         // googlescholar: 'https://scholar.google.es/citations?user=Ka-FHBQAAAAJ'
     },
 ]
