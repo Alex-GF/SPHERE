@@ -1,10 +1,9 @@
-import express from "express";
-import dotenv from "dotenv";
-import routes from "./routes/index.ts";
-import loadGlobalMiddlewares from "./middlewares/GlobalMiddlewaresLoader.ts";
-import process from "node:process";
-import type { Server } from "node:http";
-import type { AddressInfo } from "node:net";
+import express, {Application} from "express";
+import * as dotenv from "dotenv";
+import routes from "./routes/index";
+import loadGlobalMiddlewares from "./middlewares/GlobalMiddlewaresLoader";
+import type { Server } from "http";
+import type { AddressInfo } from "net";
 
 const green = "\x1b[32m"; // Color verde
 const blue = "\x1b[36m"; // Color azul
@@ -13,7 +12,7 @@ const bold = "\x1b[1m"; // Negrita
 
 const initializeApp = async () => {
   dotenv.config();
-  const app: express.Application = express();
+  const app: Application = express();
   loadGlobalMiddlewares(app);
   routes(app);
   // initPassport()
@@ -24,9 +23,9 @@ const initializeApp = async () => {
 
 const initializeServer = async (): Promise<{
   server: Server;
-  app: express.Application;
+  app: Application;
 }> => {
-  const app: express.Application = await initializeApp();
+  const app: Application = await initializeApp();
   const port = process.env.SERVER_PORT || 3000;
   // Using a promise to ensure the server is started before returning it
   const server: Server = await new Promise((resolve, reject) => {
@@ -62,7 +61,7 @@ const initializeDatabase = async () => {
   return connection
 }
 
-const disconnectDatabase = async (app: express.Application) => {
+const disconnectDatabase = async (app: Application) => {
   try {
     switch (process.env.DATABASE_TECHNOLOGY) {
       case "mockDB":

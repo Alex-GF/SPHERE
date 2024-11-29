@@ -11,7 +11,7 @@ type LogoProps = {
 };
 
 const Logo = forwardRef(
-  ({ disabledLink = false, sx, ...other }: InferProps<LogoProps>, ref) => {
+  ({ disabledLink = false, sx }: InferProps<LogoProps>) => {
     const logo = (
       <ReactSVG
         src="./assets/logo/SPHERE-logo.svg"

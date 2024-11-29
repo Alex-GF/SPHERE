@@ -1,0 +1,186 @@
+saasName: Overleaf
+version: '2.0'
+createdAt: '2021-11-27'
+currency: USD
+hasAnnualPayment: true
+features:
+  privateProjects:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  realTimeCollaboration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  templates:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  latexEditor:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  latexCompilation:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  realTimeTrackChanges:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  fullDocumentHistory:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  advancedReferenceSearch:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  referenceManagerSync:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  dropboxIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingUrls:
+      - https://www.dropbox.com/plans
+  gitIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingsURLs: null
+  githubIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingsURLs:
+      - https://github.com/pricing
+  prioritySupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+usageLimits:
+  maxCollaboratorsPerProject:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: collaborator
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - realTimeCollaboration
+  compileTimeoutLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: min
+    type: TIME_DRIVEN
+    linkedFeatures:
+      - latexCompilation
+plans:
+  FREE:
+    description: ''
+    monthlyPrice: 0
+    annualPrice: 0
+    unit: /month
+    features: null
+    usageLimits: null
+    price: 0
+  PERSONAL:
+    description: ''
+    monthlyPrice: 10
+    annualPrice: 10
+    unit: /month
+    features:
+      fullDocumentHistory:
+        value: true
+      advancedReferenceSearch:
+        value: true
+      referenceManagerSync:
+        value: true
+      dropboxIntegration:
+        value: true
+      gitIntegration:
+        value: true
+      githubIntegration:
+        value: true
+      prioritySupport:
+        value: true
+    usageLimits:
+      compileTimeoutLimit:
+        value: 4
+    price: 10
+  COLLABORATOR:
+    description: ''
+    monthlyPrice: 15
+    annualPrice: 15
+    unit: /month
+    features:
+      realTimeTrackChanges:
+        value: true
+      fullDocumentHistory:
+        value: true
+      advancedReferenceSearch:
+        value: true
+      referenceManagerSync:
+        value: true
+      dropboxIntegration:
+        value: true
+      gitIntegration:
+        value: true
+      githubIntegration:
+        value: true
+      prioritySupport:
+        value: true
+    usageLimits:
+      maxCollaboratorsPerProject:
+        value: 10
+      compileTimeoutLimit:
+        value: 4
+    price: 15
+  PROFESSIONAL:
+    description: ''
+    monthlyPrice: 30
+    annualPrice: 30
+    unit: /month
+    features:
+      realTimeTrackChanges:
+        value: true
+      fullDocumentHistory:
+        value: true
+      advancedReferenceSearch:
+        value: true
+      referenceManagerSync:
+        value: true
+      dropboxIntegration:
+        value: true
+      gitIntegration:
+        value: true
+      githubIntegration:
+        value: true
+      prioritySupport:
+        value: true
+    usageLimits:
+      maxCollaboratorsPerProject:
+        value: .inf
+      compileTimeoutLimit:
+        value: 4
+    price: 30

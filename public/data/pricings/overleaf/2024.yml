@@ -1,0 +1,238 @@
+saasName: Overleaf - Individual
+version: '2.0'
+createdAt: '2024-07-10'
+currency: USD
+hasAnnualPayment: true
+features:
+  fastCompileServers:
+    description: >-
+      Compiles for users on premium plans always run on a dedicated pool of the
+      fastest available servers.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  fastestCompileServers:
+    description: >-
+      Compiles for users on premium plans always run on a dedicated pool of the
+      fastest available servers.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  realTimeTrackChanges:
+    description: >-
+      Switch on track changes to see who made every change, accept or reject
+      others’ changes, and write comments.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  fullDocumentHistory:
+    description: >-
+      You can see all the edits in your project and who made every change. Add
+      labels to quickly access specific versions.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  advancedReferenceSearch:
+    description: >-
+      It’s easy to find your references - you can search by author, title, year
+      or journal. You can still search by citation key too.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  gitIntegration:
+    description: >-
+      You can clone your Overleaf project to a local repository, treating your
+      Overleaf project as a remote repository that changes can be pushed to and
+      pulled from.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+  latexEditor:
+    description: >-
+      Spell check, intelligent autocomplete, syntax highlighting, dozens of
+      color themes, vim and emacs bindings, help with LaTeX warnings and error
+      messages, and more. Everyone always has the latest version, and you can
+      see your collaborators’ cursors and changes in real time.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  realTimeCollaboration:
+    description: >-
+      Spell check, intelligent autocomplete, syntax highlighting, dozens of
+      color themes, vim and emacs bindings, help with LaTeX warnings and error
+      messages, and more. Everyone always has the latest version, and you can
+      see your collaborators’ cursors and changes in real time.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  projects:
+    description: >-
+      Your projects are private by default. This means that only you can view
+      them, and only you can allow other people to access them.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  templates:
+    description: >-
+      Produce beautiful documents starting from our gallery of LaTeX templates
+      for journals, conferences, theses, reports, CVs and much more.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  symbolPalette:
+    description: A quick and convenient way to insert math symbols into your document.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  githubIntegration:
+    description: >-
+      Link your Overleaf projects directly to a GitHub repository that acts as a
+      remote repository for your overleaf project. This allows you to share with
+      collaborators outside of Overleaf, and integrate Overleaf into more
+      complex workflows.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingsUrls:
+      - https://github.com/pricing
+  dropboxIntegration:
+    description: >-
+      Work online and offline seamlessly with two-way Dropbox sync. Changes you
+      make locally will be sent automatically to the version on Overleaf and
+      vice versa.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingsUrls:
+      - >-
+        https://www.dropbox.com/official-teams-page?_tk=paid_sem_goog_biz_b&_camp=1033325669&_kw=dropbox%20pricing|e&_ad=676038711282||c&gad_source=1&gclid=EAIaIQobChMI7MaBv4LsggMV3ZNoCR1L8QqkEAAYASAAEgI3x_D_BwE
+  mendeleyIntegration:
+    description: >-
+      Manage your reference library in Mendeley, and link it directly to .bib
+      files in Overleaf, so you can easily cite anything from your libraries.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingsUrls:
+      - https://www.mendeley.com/reference-management/premium
+  zoteroIntegration:
+    description: >-
+      Manage your reference library in Zotero, and link it directly to .bib
+      files in Overleaf, so you can easily cite anything from your libraries.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingsUrls:
+      - https://www.zotero.org/storage
+  prioritySupport:
+    description: >-
+      Our helpful Support team will prioritise and escalate your support
+      requests where necessary.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+usageLimits:
+  maxCollaboratorsPerProject:
+    description: >-
+      The number of people you can invite to work on each project. They just
+      need to have an Overleaf account. They can be different people in each
+      project.
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: collaborator
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - projects
+  compileTimeoutLimit:
+    description: >-
+      This is how much time you get to compile your project on the Overleaf
+      servers. You may need additional time for longer or more complex projects.
+    valueType: NUMERIC
+    defaultValue: 20
+    unit: second
+    type: TIME_DRIVEN
+    linkedFeatures:
+      - fastCompileServers
+      - fastestCompileServers
+plans:
+  FREE:
+    description: ''
+    monthlyPrice: 0
+    annualPrice: 0
+    unit: /month
+    features: null
+    usageLimits: null
+    price: 0
+  STANDARD:
+    description: ''
+    monthlyPrice: 21
+    annualPrice: 16.59
+    unit: /month
+    features:
+      fastestCompileServers:
+        value: true
+      realTimeTrackChanges:
+        value: true
+      fullDocumentHistory:
+        value: true
+      advancedReferenceSearch:
+        value: true
+      gitIntegration:
+        value: true
+      symbolPalette:
+        value: true
+      githubIntegration:
+        value: true
+      dropboxIntegration:
+        value: true
+      mendeleyIntegration:
+        value: true
+      zoteroIntegration:
+        value: true
+      prioritySupport:
+        value: true
+    usageLimits:
+      maxCollaboratorsPerProject:
+        value: 11
+      compileTimeoutLimit:
+        value: 240
+    price: 21
+  PROFESSIONAL:
+    description: ''
+    monthlyPrice: 42
+    annualPrice: 33.25
+    unit: /month
+    features:
+      fastestCompileServers:
+        value: true
+      realTimeTrackChanges:
+        value: true
+      fullDocumentHistory:
+        value: true
+      advancedReferenceSearch:
+        value: true
+      gitIntegration:
+        value: true
+      symbolPalette:
+        value: true
+      githubIntegration:
+        value: true
+      dropboxIntegration:
+        value: true
+      mendeleyIntegration:
+        value: true
+      zoteroIntegration:
+        value: true
+      prioritySupport:
+        value: true
+    usageLimits:
+      maxCollaboratorsPerProject:
+        value: .inf
+      compileTimeoutLimit:
+        value: 240
+    price: 42

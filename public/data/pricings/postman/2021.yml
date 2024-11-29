@@ -1,0 +1,369 @@
+saasName: Postman
+version: '2.0'
+createdAt: '2021-11-29'
+currency: USD
+hasAnnualPayment: true
+features:
+  collaboration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  singleSignOn:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  rolesAndPermissions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  userGroups:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  privateWorkspaces:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  apis:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  integrations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  postmanAPI:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  publicApiDocumentation:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  apiMockServer:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  apiMonitoringCalls:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  recoverDeletedCollections:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  customDomains:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  staticIpAddresses:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  auditLogs:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  reporting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  userProvisioning:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  domainCapture:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  trainingAndOnboarding:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  emailSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  priorityEmailSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  paymentOptions:
+    description: ''
+    valueType: TEXT
+    defaultValue:
+      - CARD
+    type: PAYMENT
+  standardEULA:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: GUARANTEE
+  customEULA:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+usageLimits:
+  teamMembersLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 3
+    unit: member
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - collaboration
+  maxNumberOfIntegrations:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 2
+    unit: integration
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - integrations
+  callsToPostmanApi:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1000
+    unit: call/month
+    type: RENEWABLE
+    linkedFeatures:
+      - postmanAPI
+  apiMockServerCallsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1000
+    unit: call/month
+    type: RENEWABLE
+    linkedFeatures:
+      - apiMockServer
+  apiMonitoringCallsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1000
+    unit: call/month
+    type: RENEWABLE
+    linkedFeatures:
+      - apiMockServer
+  customDomainsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 0
+    unit: domain
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - customDomains
+  recoverDeletedCollectionsThreshold:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: day
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - recoverDeletedCollections
+plans:
+  FREE:
+    description: ''
+    monthlyPrice: 0
+    annualPrice: 0
+    unit: user/month
+    features: null
+    usageLimits: null
+    price: 0
+  TEAM:
+    description: ''
+    monthlyPrice: 15
+    annualPrice: 12
+    unit: user/month
+    features:
+      customDomains:
+        value: true
+    usageLimits:
+      teamMembersLimit:
+        value: .inf
+      maxNumberOfIntegrations:
+        value: 10
+      callsToPostmanApi:
+        value: 10000
+      apiMockServerCallsLimit:
+        value: 10000
+      apiMonitoringCallsLimit:
+        value: 10000
+      customDomainsLimit:
+        value: 1
+      recoverDeletedCollectionsThreshold:
+        value: 30
+    price: 15
+  BUSINESS:
+    description: ''
+    monthlyPrice: 30
+    annualPrice: 24
+    unit: user/month
+    features:
+      singleSignOn:
+        value: true
+      rolesAndPermissions:
+        value: true
+      privateWorkspaces:
+        value: true
+      customDomains:
+        value: true
+      staticIpAddresses:
+        value: true
+      auditLogs:
+        value: true
+    usageLimits:
+      teamMembersLimit:
+        value: .inf
+      maxNumberOfIntegrations:
+        value: 50
+      callsToPostmanApi:
+        value: 100000
+      apiMockServerCallsLimit:
+        value: 10000
+      apiMonitoringCallsLimit:
+        value: 10000
+      customDomainsLimit:
+        value: 5
+      recoverDeletedCollectionsThreshold:
+        value: 90
+    price: 30
+  ENTERPRISE:
+    description: ''
+    monthlyPrice: null
+    annualPrice: 69
+    unit: user/month
+    features:
+      singleSignOn:
+        value: true
+      rolesAndPermissions:
+        value: true
+      userGroups:
+        value: true
+      privateWorkspaces:
+        value: true
+      customDomains:
+        value: true
+      staticIpAddresses:
+        value: true
+      auditLogs:
+        value: true
+      reporting:
+        value: true
+      userProvisioning:
+        value: true
+      domainCapture:
+        value: true
+      trainingAndOnboarding:
+        value: true
+      priorityEmailSupport:
+        value: true
+      paymentOptions:
+        value:
+          - CARD
+          - ACH
+          - WIRE_TRANSFER
+      customEULA:
+        value: true
+    usageLimits:
+      teamMembersLimit:
+        value: .inf
+      maxNumberOfIntegrations:
+        value: 100
+      callsToPostmanApi:
+        value: 1000000
+      apiMockServerCallsLimit:
+        value: 10000
+      apiMonitoringCallsLimit:
+        value: 10000
+      customDomainsLimit:
+        value: 25
+      recoverDeletedCollectionsThreshold:
+        value: 90
+    price: 69
+addOns:
+  monitoringPayAsYouGo:
+    availableFor:
+      - FREE
+      - TEAM
+      - BUSINESS
+      - ENTERPRISE
+    price: 0.75
+    features: null
+    usageLimits: null
+    usageLimitsExtensions:
+      apiMonitoringCallsLimit:
+        value: 1000
+  monitoringMonthly:
+    availableFor:
+      - FREE
+      - TEAM
+      - BUSINESS
+      - ENTERPRISE
+    price: 20
+    unit: block/month
+    features: null
+    usageLimits: null
+    usageLimitsExtensions:
+      apiMonitoringCallsLimit:
+        value: 50000
+  mockServersPayAsYouGo:
+    availableFor:
+      - FREE
+      - TEAM
+      - BUSINESS
+      - ENTERPRISE
+    price: 0.75
+    features: null
+    usageLimits: null
+    usageLimitsExtensions:
+      apiMockServerCallsLimit:
+        value: 1000
+  mockServersMonthly:
+    availableFor:
+      - FREE
+      - TEAM
+      - BUSINESS
+      - ENTERPRISE
+    price: 20
+    unit: block/month
+    features: null
+    usageLimits: null
+    usageLimitsExtensions:
+      apiMockServerCallsLimit:
+        value: 50000
+  customDomains:
+    availableFor:
+      - TEAM
+      - BUSINESS
+      - ENTERPRISE
+    price: 10
+    unit: domain/month
+    features: null
+    usageLimits: null
+    usageLimitsExtensions:
+      customDomainsLimit:
+        value: 1

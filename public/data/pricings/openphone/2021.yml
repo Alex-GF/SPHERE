@@ -1,0 +1,289 @@
+saasName: OpenPhone
+version: '2.0'
+createdAt: '2021-11-17'
+currency: USD
+hasAnnualPayment: false
+features:
+  usAndCanadaCalling:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  usAndCanadaMessaging:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  internationalCalling:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  internationalMessaging:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  groupMessaging:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  voicemailToText:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  phoneNumbers:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  portPhoneNumbersFromOtherCarriers:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  callRecording:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  sharedPhoneNumbers:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  snippets:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  autoReplies:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  standardAutoAtendant:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: BOT
+  advancedAutoAtendant:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: BOT
+  callTransfers:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  emailIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  slackIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://slack.com/pricing
+  zapierIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://zapier.com/pricing
+  smsViaZapier:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://zapier.com/pricing
+  hubSpotCRMIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://www.hubspot.com/pricing
+  adminDashboard:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  analytics:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  reporting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  auditLog:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  emailSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  smsSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  prioritySupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  dedicatedAccountManager:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+usageLimits:
+  phoneNumbersLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: phone number
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - phoneNumbers
+  usAndCanadCallsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 10000000000000
+    unit: call
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - usAndCanadaCalling
+  usAndCanadaMessagesLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 10000000000000
+    unit: message
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - usAndCanadaMessaging
+  smsViaZapierAddonLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 0
+    unit: message
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - smsViaZapier
+plans:
+  STANDARD:
+    description: The essentials to get you up and running.
+    monthlyPrice: 10
+    annualPrice: 10
+    unit: user/month
+    features: null
+    usageLimits: null
+    price: 10
+  PREMIUM:
+    description: >-
+      For power users and teams looking for more integrations and collaboration
+      features.
+    monthlyPrice: 25
+    annualPrice: 25
+    unit: user/month
+    features:
+      advancedAutoAtendant:
+        value: true
+      callTransfers:
+        value: true
+      hubSpotCRMIntegration:
+        value: true
+      analytics:
+        value: true
+      reporting:
+        value: true
+      prioritySupport:
+        value: true
+    price: 25
+  ENTERPRISE:
+    description: For organizations with complex requirements.
+    monthlyPrice: Contact Sales
+    annualPrice: Contact Sales
+    unit: user/month
+    features:
+      advancedAutoAtendant:
+        value: true
+      callTransfers:
+        value: true
+      hubSpotCRMIntegration:
+        value: true
+      analytics:
+        value: true
+      reporting:
+        value: true
+      auditLog:
+        value: true
+      prioritySupport:
+        value: true
+      dedicatedAccountManager:
+        value: true
+    price: Contact Sales
+addOns:
+  aditionalPhoneNumbers:
+    availableFor:
+      - STANDARD
+      - PREMIUM
+      - ENTERPRISE
+    price: 5
+    unit: phoneNumber/month
+    features: null
+    usageLimits: null
+    usageLimitsExtensions:
+      phoneNumbersLimit:
+        value: 1
+  internationalCallingAndMessaging:
+    availableFor:
+      - STANDARD
+      - PREMIUM
+      - ENTERPRISE
+    price: See Rates
+    unit: user/month
+    features:
+      internationalCalling:
+        value: true
+      internationalMessaging:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  smsViaZapierAddon:
+    availableFor:
+      - STANDARD
+      - PREMIUM
+      - ENTERPRISE
+    price: 0.01
+    unit: message
+    features:
+      smsViaZapier:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions:
+      smsViaZapierAddonLimit:
+        value: 1

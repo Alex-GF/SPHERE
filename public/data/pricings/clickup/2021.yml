@@ -1,0 +1,1378 @@
+saasName: ClickUp
+version: '2.0'
+createdAt: '2021-11-01'
+currency: USD
+hasAnnualPayment: true
+features:
+  tasks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  spaces:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  listsPerFolder:
+    description: 100 Lists per Space, includes Lists in Folders
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  foldersPerSpace:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  customViews:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  fileStorage:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  anytimeSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  privacy:
+    description: Hide Folders, Lists, or tasks from other users in your Workspace
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  sharing:
+    description: >-
+      Invite members to private items and invite guests to private or public
+      items
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  guests:
+    description: Invite guests to your Workspace
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  guestsPermissions:
+    description: Control what guests can see and do in your Workspace
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  customFields:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  templateEverything:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  listView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  boardView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  calendarView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  boxView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  ganttView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  activityView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  timelineView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  workloadView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  workloadViewCustomCapacityAndAdditionalGroups:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  tableView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  mapView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  mindMaps:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  docView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  chatView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  formView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  formViewBrandingAndCustomization:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  embedView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  customStatuses:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  customTasksIDs:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  superRichEditing:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  automations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  multipleActionsInAutomations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  portfolios:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  portfoliosPermissions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  futureRecurringTasksOnCalendar:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  multipleAssignees:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  multitaskToolbar:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  taskChecklists:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  dependencies:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  whiteLabeling:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  relationships:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  tags:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  priorities:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  columnCalculations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  apiCalls:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: API
+  imageMockups:
+    description: Comments and Task
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  publiclyShare:
+    description: Everything View
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  inAppVideoRecording:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  emailInClickUp:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  teams:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  teamSharing:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  guestVisibility:
+    description: Hide Time Tracking, Time Estimates and Tags from guests.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  naturalLanguageProcessing:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: BOT
+  smartNotifications:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: TRACKING
+  assignComments:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  delegateReminders:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  privateDocs:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  cloudStorage:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  tasksInMultipleLists:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  subtasksInMultipleLists:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  goals:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  goalFolders:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  dashboards:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  dashboardsWidget:
+    description: ''
+    valueType: TEXT
+    defaultValue: NONE
+    type: DOMAIN
+  timeTracking:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  granularTimeEstimates:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  sprints:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  sprintPoints:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  pulseLiveOverview:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  smartNotificationsHistoricalData:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  milestones:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  homeAndScheduling:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  workloadProfiles:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  everythingView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  workInProgressLimits:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  customExporting:
+    description: X exports of List Views and X exports of Table View
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  criticalPathAndSlackTime:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  nativeIntegrations:
+    description: 50+ Native Integrations
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  timeTrackingNotesLabelsAndBillableTime:
+    description: Notes, labels & billable time
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  timeSheets:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  zapier:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingUrls:
+      - https://zapier.com/app/planbuilder/pricing
+  integromat:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://www.make.com/en/pricing
+  googleDrive:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://one.google.com/about/plans
+  dropbox:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://www.dropbox.com/plans
+  boxCloudStorage:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://www.box.com/pricing
+  oneDriveCloudStorage:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - >-
+        https://www.microsoft.com/en-us/microsoft-365/onedrive/compare-onedrive-plans
+  tableauWebConnector:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTENSION
+  twoFactorAuthentication:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  smsTwoFactorAuthentication:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  requireTwoFactorAuthentication:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  googleSSO:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  microsoftSSO:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  customSamlSSO:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  oktaSSO:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  oktaSupportForCustomRoles:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  hipaaCompliance:
+    description: ''
+    valueType: TEXT
+    defaultValue: None
+    type: GUARANTEE
+  contractAndLegalReview:
+    description: ''
+    valueType: TEXT
+    defaultValue: None
+    type: SUPPORT
+  customPermissions:
+    description: Change the default settings for Guests, Members & Admins
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  customRoles:
+    description: Create unique roles to suit your team's needs
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  restrictPublicSharing:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  managePrivateSpaces:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  restrictWhoCanAddGuests:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  defaultPersonalViews:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  addAndRemoveUsersViaAPI:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+  prioritySupport:
+    description: >-
+      Receive an enhanced level of support to quickly resolve your highest
+      priority issues
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  dedicatedCustomerSuccessManager:
+    description: >-
+      Receive ongoing guidance from a dedicated ClickUp expert (conditional
+      based on contract value)
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  namedOnboardingAgent:
+    description: Receive guided onboarding from you and your workspace
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  personalizedAdminTraining:
+    description: >-
+      Schedule one-on-one training for your admins with a ClickUp expert and
+      access our monthly webinar!
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  accessToManagedServices:
+    description: Add on Admin Services or Enterprise Support for an additional fee
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+usageLimits:
+  useUsers:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1000000
+    unit: user
+    type: NON_RENEWABLE
+    linkedFeatures: null
+  useTasks:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1000000000000
+    unit: task
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - tasks
+  useSpaces:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 5
+    unit: space
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - spaces
+  useListsPerFolder:
+    description: X Lists per Space, includes Lists in Folders
+    valueType: NUMERIC
+    defaultValue: 100
+    unit: list
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - listsPerFolder
+  useFoldersPerSpace:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 400
+    unit: folder
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - foldersPerSpace
+  useCustomViews:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1000000000
+    unit: view
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - customViews
+  useFileStorage:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 100
+    unit: MB
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - fileStorage
+  useGuests:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1000000
+    unit: guest
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - guests
+  useGuestsPermissions:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 5
+    unit: guest
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - guestsPermissions
+  useGuestsPermissionsPerExtraSeat:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 2
+    unit: guest
+    type: RENEWABLE
+    linkedFeatures:
+      - guestsPermissions
+  useCustomFields:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 100
+    unit: use
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - customFields
+  useGanttView:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 100
+    unit: use
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - ganttView
+  useActivityView:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: day
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - activityView
+  useTimelineView:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 100
+    unit: use
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - timelineView
+  useWorkloadView:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 100
+    unit: use
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - workloadView
+  useMapView:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 100
+    unit: use
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - mapView
+  useMindMaps:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 100
+    unit: use
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - mindMaps
+  useChatView:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 100
+    unit: use
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - chatView
+  useAutomations:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 100
+    unit: automation/month
+    type: RENEWABLE
+    linkedFeatures:
+      - automations
+  usePortfolios:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 100
+    unit: use
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - portfolios
+  useApiCalls:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 100
+    unit: call/minute
+    type: RENEWABLE
+    linkedFeatures:
+      - apiCalls
+  useEmailInClickUp:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 100
+    unit: use
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - emailInClickUp
+  useEmailAccountsInClickUp:
+    description: The number of email accounts per Workspace
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: account
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - emailInClickUp
+  useTeams:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: team
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - teams
+  useTasksInMultipleLists:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1000000000
+    unit: use
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - tasksInMultipleLists
+  useSubtasksInMultipleLists:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 100
+    unit: use
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - subtasksInMultipleLists
+  useGoals:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 100
+    unit: use
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - goals
+  useDashboards:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 100
+    unit: use
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - dashboards
+  useSprintPoints:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 100
+    unit: use
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - sprintPoints
+  useSmartNotifications:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 100
+    unit: use
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - smartNotifications
+  useMilestones:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 10
+    unit: use
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - milestones
+  useCustomExporting:
+    description: X exports of List View and X exports of Table View
+    valueType: NUMERIC
+    defaultValue: 5
+    unit: export
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - customExporting
+  useCriticalPathAndSlackTime:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 100
+    unit: use
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - criticalPathAndSlackTime
+  useCustomRoles:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: role
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - customRoles
+plans:
+  FREE:
+    description: Best for personal use
+    monthlyPrice: 0
+    annualPrice: 0
+    unit: member/month
+    features: null
+    usageLimits: null
+    price: 0
+  UNLIMITED:
+    description: Best for small teams
+    monthlyPrice: 9
+    annualPrice: 5
+    unit: member/month
+    features:
+      guestsPermissions:
+        value: true
+      boxView:
+        value: true
+      formView:
+        value: true
+      futureRecurringTasksOnCalendar:
+        value: true
+      columnCalculations:
+        value: true
+      teams:
+        value: true
+      guestVisibility:
+        value: true
+      delegateReminders:
+        value: true
+      privateDocs:
+        value: true
+      dashboardsWidget:
+        value: LIMITED
+      criticalPathAndSlackTime:
+        value: true
+      googleDrive:
+        value: true
+      dropbox:
+        value: true
+      boxCloudStorage:
+        value: true
+      oneDriveCloudStorage:
+        value: true
+    usageLimits:
+      useSpaces:
+        value: 1000000
+      useListsPerFolder:
+        value: 400
+      useFileStorage:
+        value: 1000000000
+      useCustomFields:
+        value: 1000000000
+      useGanttView:
+        value: 1000000000
+      useActivityView:
+        value: 7
+      useMapView:
+        value: 1000000000
+      useChatView:
+        value: 1000000000
+      useAutomations:
+        value: 1000
+      useEmailInClickUp:
+        value: 1000000000
+      useSmartNotifications:
+        value: 1000000000
+      useMilestones:
+        value: 1000000000
+      useGoals:
+        value: 1000000000
+      useDashboards:
+        value: 1000000000
+    price: 9
+  BUSINESS:
+    description: Best for mid-sized teams
+    monthlyPrice: 19
+    annualPrice: 9
+    unit: member/month
+    features:
+      guestsPermissions:
+        value: true
+      boxView:
+        value: true
+      formView:
+        value: true
+      formViewBrandingAndCustomization:
+        value: true
+      customTasksIDs:
+        value: true
+      multipleActionsInAutomations:
+        value: true
+      portfoliosPermissions:
+        value: true
+      futureRecurringTasksOnCalendar:
+        value: true
+      columnCalculations:
+        value: true
+      publiclyShare:
+        value: true
+      teams:
+        value: true
+      guestVisibility:
+        value: true
+      delegateReminders:
+        value: true
+      privateDocs:
+        value: true
+      goalFolders:
+        value: true
+      dashboardsWidget:
+        value: FULL
+      granularTimeEstimates:
+        value: true
+      smartNotificationsHistoricalData:
+        value: true
+      workInProgressLimits:
+        value: true
+      criticalPathAndSlackTime:
+        value: true
+      timeTrackingNotesLabelsAndBillableTime:
+        value: true
+      timeSheets:
+        value: true
+      googleDrive:
+        value: true
+      dropbox:
+        value: true
+      boxCloudStorage:
+        value: true
+      oneDriveCloudStorage:
+        value: true
+      smsTwoFactorAuthentication:
+        value: true
+      requireTwoFactorAuthentication:
+        value: true
+      googleSSO:
+        value: true
+    usageLimits:
+      useSpaces:
+        value: 1000000
+      useListsPerFolder:
+        value: 400
+      useFileStorage:
+        value: 1000000000
+      useGuestsPermissions:
+        value: 10
+      useGuestsPermissionsPerExtraSeat:
+        value: 5
+      useCustomFields:
+        value: 1000000000
+      useGanttView:
+        value: 1000000000
+      useActivityView:
+        value: 1000000000
+      useTimelineView:
+        value: 1000000000
+      useWorkloadView:
+        value: 1000000000
+      useMapView:
+        value: 1000000000
+      useMindMaps:
+        value: 1000000000
+      useChatView:
+        value: 1000000000
+      useAutomations:
+        value: 10000
+      useEmailInClickUp:
+        value: 1000000000
+      useEmailAccountsInClickUp:
+        value: 2
+      useTeams:
+        value: 1000000000
+      useSubtasksInMultipleLists:
+        value: 1000
+      useSmartNotifications:
+        value: 1000000000
+      useGoals:
+        value: 1000000000
+      useDashboards:
+        value: 1000000000
+      useSprintPoints:
+        value: 1000000000
+      useMilestones:
+        value: 1000000000
+      useCustomExporting:
+        value: 1000000000
+      useCriticalPathAndSlackTime:
+        value: 1000000000
+    price: 19
+  BUSINESS_PLUS:
+    description: Best for multiple teams
+    monthlyPrice: 29
+    annualPrice: 19
+    unit: member/month
+    features:
+      guestsPermissions:
+        value: true
+      boxView:
+        value: true
+      workloadViewCustomCapacityAndAdditionalGroups:
+        value: true
+      formView:
+        value: true
+      formViewBrandingAndCustomization:
+        value: true
+      customTasksIDs:
+        value: true
+      multipleActionsInAutomations:
+        value: true
+      portfoliosPermissions:
+        value: true
+      futureRecurringTasksOnCalendar:
+        value: true
+      columnCalculations:
+        value: true
+      publiclyShare:
+        value: true
+      teams:
+        value: true
+      teamSharing:
+        value: true
+      guestVisibility:
+        value: true
+      delegateReminders:
+        value: true
+      privateDocs:
+        value: true
+      goalFolders:
+        value: true
+      dashboardsWidget:
+        value: FULL
+      granularTimeEstimates:
+        value: true
+      smartNotificationsHistoricalData:
+        value: true
+      workInProgressLimits:
+        value: true
+      criticalPathAndSlackTime:
+        value: true
+      timeTrackingNotesLabelsAndBillableTime:
+        value: true
+      timeSheets:
+        value: true
+      googleDrive:
+        value: true
+      dropbox:
+        value: true
+      boxCloudStorage:
+        value: true
+      oneDriveCloudStorage:
+        value: true
+      smsTwoFactorAuthentication:
+        value: true
+      requireTwoFactorAuthentication:
+        value: true
+      googleSSO:
+        value: true
+      customPermissions:
+        value: true
+      customRoles:
+        value: true
+      prioritySupport:
+        value: true
+    usageLimits:
+      useSpaces:
+        value: 1000000
+      useListsPerFolder:
+        value: 400
+      useFileStorage:
+        value: 1000000000
+      useGuestsPermissions:
+        value: 10
+      useGuestsPermissionsPerExtraSeat:
+        value: 5
+      useCustomFields:
+        value: 1000000000
+      useGanttView:
+        value: 1000000000
+      useActivityView:
+        value: 1000000000
+      useTimelineView:
+        value: 1000000000
+      useWorkloadView:
+        value: 1000000000
+      useMapView:
+        value: 1000000000
+      useMindMaps:
+        value: 1000000000
+      useChatView:
+        value: 1000000000
+      useAutomations:
+        value: 25000
+      useApiCalls:
+        value: 1000
+      useEmailInClickUp:
+        value: 1000000000
+      useEmailAccountsInClickUp:
+        value: 2
+      useTeams:
+        value: 1000000000
+      useSubtasksInMultipleLists:
+        value: 1000000000
+      useSmartNotifications:
+        value: 1000000000
+      useGoals:
+        value: 1000000000
+      useDashboards:
+        value: 1000000000
+      useSprintPoints:
+        value: 1000000000
+      useMilestones:
+        value: 1000000000
+      useCustomExporting:
+        value: 1000000000
+      useCriticalPathAndSlackTime:
+        value: 1000000000
+    price: 29
+  ENTERPRISE:
+    description: Best for many large teams
+    monthlyPrice: Contact Sales
+    annualPrice: Contact Sales
+    unit: member/month
+    features:
+      guestsPermissions:
+        value: true
+      boxView:
+        value: true
+      workloadViewCustomCapacityAndAdditionalGroups:
+        value: true
+      formView:
+        value: true
+      formViewBrandingAndCustomization:
+        value: true
+      customTasksIDs:
+        value: true
+      multipleActionsInAutomations:
+        value: true
+      portfoliosPermissions:
+        value: true
+      futureRecurringTasksOnCalendar:
+        value: true
+      whiteLabeling:
+        value: true
+      columnCalculations:
+        value: true
+      publiclyShare:
+        value: true
+      teams:
+        value: true
+      teamSharing:
+        value: true
+      guestVisibility:
+        value: true
+      delegateReminders:
+        value: true
+      privateDocs:
+        value: true
+      goalFolders:
+        value: true
+      dashboardsWidget:
+        value: FULL
+      granularTimeEstimates:
+        value: true
+      smartNotificationsHistoricalData:
+        value: true
+      workInProgressLimits:
+        value: true
+      criticalPathAndSlackTime:
+        value: true
+      timeTrackingNotesLabelsAndBillableTime:
+        value: true
+      timeSheets:
+        value: true
+      googleDrive:
+        value: true
+      dropbox:
+        value: true
+      boxCloudStorage:
+        value: true
+      oneDriveCloudStorage:
+        value: true
+      tableauWebConnector:
+        value: true
+      smsTwoFactorAuthentication:
+        value: true
+      requireTwoFactorAuthentication:
+        value: true
+      googleSSO:
+        value: true
+      microsoftSSO:
+        value: true
+      customSamlSSO:
+        value: true
+      oktaSSO:
+        value: true
+      oktaSupportForCustomRoles:
+        value: true
+      hipaaCompliance:
+        value: Contact Sales
+      contractAndLegalReview:
+        value: Contact Sales
+      customPermissions:
+        value: true
+      customRoles:
+        value: true
+      restrictPublicSharing:
+        value: true
+      managePrivateSpaces:
+        value: true
+      restrictWhoCanAddGuests:
+        value: true
+      defaultPersonalViews:
+        value: true
+      addAndRemoveUsersViaAPI:
+        value: true
+      prioritySupport:
+        value: true
+      dedicatedCustomerSuccessManager:
+        value: true
+      namedOnboardingAgent:
+        value: true
+      personalizedAdminTraining:
+        value: true
+      accessToManagedServices:
+        value: true
+    usageLimits:
+      useSpaces:
+        value: 1000000
+      useListsPerFolder:
+        value: 400
+      useFileStorage:
+        value: 1000000000
+      useGuestsPermissions:
+        value: 10
+      useGuestsPermissionsPerExtraSeat:
+        value: 5
+      useCustomFields:
+        value: 1000000000
+      useGanttView:
+        value: 1000000000
+      useActivityView:
+        value: 1000000000
+      useTimelineView:
+        value: 1000000000
+      useWorkloadView:
+        value: 1000000000
+      useMapView:
+        value: 1000000000
+      useMindMaps:
+        value: 1000000000
+      useChatView:
+        value: 1000000000
+      useAutomations:
+        value: 250000
+      useApiCalls:
+        value: 10000
+      useEmailInClickUp:
+        value: 1000000000
+      useEmailAccountsInClickUp:
+        value: 2
+      useTeams:
+        value: 1000000000
+      useSubtasksInMultipleLists:
+        value: 1000000000
+      useSmartNotifications:
+        value: 1000000000
+      useGoals:
+        value: 1000000000
+      useDashboards:
+        value: 1000000000
+      useSprintPoints:
+        value: 1000000000
+      useMilestones:
+        value: 1000000000
+      useCustomExporting:
+        value: 1000000000
+      useCriticalPathAndSlackTime:
+        value: 1000000000
+      useCustomRoles:
+        value: 1000000000
+    price: Contact Sales
+addOns:
+  extraEmailAccountInClickUp:
+    availableFor:
+      - UNLIMITED
+      - BUSINESS
+      - BUSINESS_PLUS
+      - ENTERPRISE
+    monthlyPrice: 2
+    annualPrice: 2
+    unit: account/month
+    features: null
+    usageLimits: null
+    usageLimitsExtensions:
+      useEmailAccountsInClickUp:
+        value: 1
+    price: 2

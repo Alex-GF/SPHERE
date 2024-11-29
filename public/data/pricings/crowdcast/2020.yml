@@ -1,0 +1,267 @@
+saasName: Crowdcast
+version: '2.0'
+createdAt: '2020-11-29'
+currency: USD
+hasAnnualPayment: true
+features:
+  liveStreaming:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  transactionFee:
+    description: ''
+    valueType: TEXT
+    defaultValue: "5%"
+    type: DOMAIN
+  hdLiveVideoWithRecording:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  multiSessionEvents:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  rtmpSudio:
+    description: Broadcast with OBS, Wirecast, Ecamm Live and StreamYard
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  emailSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  chatSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  patreonIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://www.patreon.com/pricing
+  stripeIntegration:
+    description: ''
+    valueType: TEXT
+    defaultValue:
+      - GATEWAY
+    type: PAYMENT
+  eventAnalytics:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  sessionAnalytics:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  zapierIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://zapier.com/pricing
+  convertKitIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://convertkit.com/pricing
+  dripIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://www.drip.com/pricing
+  exportEmailAddresses:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  exportChat:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  exportData:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  multistreaming:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  presentOnManyScreens:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  customRegistrationFields:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+usageLimits:
+  liveAttendeesLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 50
+    unit: attendee
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - liveStreaming
+  liveHoursPerMonthLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 5
+    unit: hour/month
+    type: RENEWABLE
+    linkedFeatures:
+      - liveStreaming
+  sessionsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 2
+    unit: hour/session
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - liveStreaming
+  multistreamLocationsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: location
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - multistreaming
+  screensLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: screen
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - liveStreaming
+      - presentOnManyScreens
+plans:
+  STARTER:
+    description: Perfect for creators just getting started with live video
+    monthlyPrice: 29
+    annualPrice: 20
+    unit: /month
+    features: null
+    usageLimits: null
+    price: 29
+  LITE:
+    description: For creators and small businesses looking to grow their audience
+    monthlyPrice: 49
+    annualPrice: 34
+    unit: /month
+    features:
+      zapierIntegration:
+        value: true
+      convertKitIntegration:
+        value: true
+      dripIntegration:
+        value: true
+      exportEmailAddresses:
+        value: true
+      exportChat:
+        value: true
+      exportData:
+        value: true
+    usageLimits:
+      liveAttendeesLimit:
+        value: 100
+      liveHoursPerMonthLimit:
+        value: 10
+    price: 49
+  PRO:
+    description: >-
+      For professional creators and businesses to consistently host live video
+      events
+    monthlyPrice: 89
+    annualPrice: 62
+    unit: /month
+    features:
+      zapierIntegration:
+        value: true
+      convertKitIntegration:
+        value: true
+      dripIntegration:
+        value: true
+      exportEmailAddresses:
+        value: true
+      exportChat:
+        value: true
+      exportData:
+        value: true
+      multistreaming:
+        value: true
+      presentOnManyScreens:
+        value: true
+      customRegistrationFields:
+        value: true
+    usageLimits:
+      liveAttendeesLimit:
+        value: 250
+      liveHoursPerMonthLimit:
+        value: 20
+      screensLimit:
+        value: 6
+    price: 89
+  BUSINESS:
+    description: For startups and companies looking to engage their customers
+    monthlyPrice: 199
+    annualPrice: 139
+    unit: /month
+    features:
+      zapierIntegration:
+        value: true
+      convertKitIntegration:
+        value: true
+      dripIntegration:
+        value: true
+      exportEmailAddresses:
+        value: true
+      exportChat:
+        value: true
+      exportData:
+        value: true
+      multistreaming:
+        value: true
+      presentOnManyScreens:
+        value: true
+      customRegistrationFields:
+        value: true
+      transactionFee:
+        value: "2%"
+    usageLimits:
+      liveAttendeesLimit:
+        value: 1000
+      liveHoursPerMonthLimit:
+        value: 40
+      screensLimit:
+        value: 6
+      multistreamLocationsLimit:
+        value: 3
+      sessionsLimit:
+        value: 6
+    price: 199

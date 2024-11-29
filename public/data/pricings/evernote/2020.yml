@@ -1,0 +1,389 @@
+saasName: Evernote
+version: '2.0'
+createdAt: '2020-11-29'
+currency: USD
+hasAnnualPayment: false
+features:
+  syncAcrossDevices:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  notes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  offlineAccess:
+    description: ''
+    valueType: TEXT
+    defaultValue: Desktop
+    type: DOMAIN
+  scanHadWrittenNotes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  scanWhiteboards:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  scanReceipts:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  scanMore:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  webClipper:
+    description: Clip, organize, and share web pages with Web Clipper
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTENSION
+  attachFilesToNotes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  richFormatting:
+    description: Use a variety of fonts, highlight colors, and formatting tools
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  recordAudioNotes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  toDoLists:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  annotateImages:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  applyTemplatesToNotes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  annotatePdfs:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  createCustomTemplates:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  saveCustomTemplates:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  scanAndDigitalizeBusinessCardsToCreateContacts:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  forwardEmailsIntoEvernote:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs: null
+  addRemindersToNotes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  createOwnFilingSystem:
+    description: Create your own filing system with notebooks and keyword tags
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  searchNotes:
+    description: Find any note using search filters and get suggestions as you type
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  connectWithSlack:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingUrls:
+      - https://slack.com/pricing
+  connectWithTeams:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingUrls:
+      - >-
+        https://www.microsoft.com/en-us/microsoft-365/microsoft-teams/group-chat-software
+  connectWithGmail:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://workspace.google.com/pricing
+  searchTextInsideImages:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  searchTextInsideHandwrittenNotes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  connectWithOutlook:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - >-
+        https://www.microsoft.com/en-us/microsoft-365/outlook/email-and-calendar-software-microsoft-outlook
+  searchTextInsideOfficeDocs:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  searchTextInsidePdfs:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  versionHistoryOfNotes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  restoreNotesFromOlderVersions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  shareNotesWithPeople:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  shareNotebooksWithPeople:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  setPermissionsForEdittingNotes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  setPermissionsForEdittingNotebooks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  setPermissionsForViewingNotes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  setPermissionsForViewingNotebooks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  sharedSpaces:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  twoStepVerification:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  forumSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  emailSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  chatSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  centralizedAccountAdministration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  userManagement:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  singleSignOn:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+    pricingUrls: null
+  activityHistory:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  businessDataOwnership:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+usageLimits:
+  syncDevicesLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 2
+    unit: device
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - syncAcrossDevices
+  maximumNoteSize:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 25
+    unit: MB/note
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - notes
+  globalMonthlyUploadLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 60
+    unit: MB
+    type: RENEWABLE
+    linkedFeatures: null
+  monthlyUploadLimitByUser:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 0
+    unit: MB
+    type: RENEWABLE
+    linkedFeatures: null
+plans:
+  BASIC:
+    description: TAKE GREAT NOTES.
+    monthlyPrice: 0
+    unit: /month
+    features: null
+    usageLimits: null
+    price: 0
+  PREMIUM:
+    description: BE MORE PRODUCTIVE.
+    monthlyPrice: 7.99
+    unit: /month
+    features:
+      annotatePdfs:
+        value: true
+      createCustomTemplates:
+        value: true
+      saveCustomTemplates:
+        value: true
+      scanAndDigitalizeBusinessCardsToCreateContacts:
+        value: true
+      forwardEmailsIntoEvernote:
+        value: true
+      connectWithOutlook:
+        value: true
+      searchTextInsideOfficeDocs:
+        value: true
+      searchTextInsidePdfs:
+        value: true
+      versionHistoryOfNotes:
+        value: true
+      emailSupport:
+        value: true
+      chatSupport:
+        value: true
+    usageLimits:
+      syncDevicesLimit:
+        value: 1000000
+      maximumNoteSize:
+        value: 200
+      globalMonthlyUploadLimit:
+        value: 10240
+    price: 7.99
+  BUSINESS:
+    description: COLLABORATE ACROSS YOUR COMPANY.
+    monthlyPrice: 14.99
+    unit: user/month
+    features:
+      annotatePdfs:
+        value: true
+      createCustomTemplates:
+        value: true
+      saveCustomTemplates:
+        value: true
+      scanAndDigitalizeBusinessCardsToCreateContacts:
+        value: true
+      forwardEmailsIntoEvernote:
+        value: true
+      connectWithOutlook:
+        value: true
+      searchTextInsideOfficeDocs:
+        value: true
+      searchTextInsidePdfs:
+        value: true
+      versionHistoryOfNotes:
+        value: true
+      sharedSpaces:
+        value: true
+      emailSupport:
+        value: true
+      chatSupport:
+        value: true
+      centralizedAccountAdministration:
+        value: true
+      userManagement:
+        value: true
+      singleSignOn:
+        value: true
+      activityHistory:
+        value: true
+      businessDataOwnership:
+        value: true
+    usageLimits:
+      syncDevicesLimit:
+        value: 1000000
+      maximumNoteSize:
+        value: 200
+      globalMonthlyUploadLimit:
+        value: 20480
+      monthlyUploadLimitByUser:
+        value: 2048
+    price: 14.99

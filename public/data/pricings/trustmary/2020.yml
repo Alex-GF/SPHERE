@@ -1,0 +1,296 @@
+saasName: Trustmary - Full
+version: '2.0'
+createdAt: '2020-10-31'
+currency: USD
+hasAnnualPayment: false
+features:
+  nps:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  csat:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  forms:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  collectingFeedback:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  standardForms:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  customForms:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  collectWithEmail:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs: null
+  shareablelink:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  qrCode:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  thirteenQuestionTypes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  importingContacts:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  smartContactLists:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  embedSurbeysToWebsite:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTENSION
+  textReviews:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  videoReviews:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  importReviewsFromGoogle:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://www.google.com/
+  importReviewsFromFacebook:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://www.facebook.com/
+  requestGoogleReviews:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  embedReviewsToWebsite:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTENSION
+  embedTestimonialsToWebsite:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTENSION
+  customizeEmbeds:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  socialMediaShare:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  popupNotifications:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTENSION
+  measureConversions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  emailSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  phoneSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  designatedExpert:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+usageLimits:
+  formsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 2
+    unit: form
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - forms
+  textReviewsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 50
+    unit: review
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - textReviews
+  embedsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 2
+    unit: embed
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - embedSurbeysToWebsite
+      - embedReviewsToWebsite
+      - embedTestimonialsToWebsite
+  usersLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 2
+    unit: user
+    type: NON_RENEWABLE
+    linkedFeatures: null
+  emailsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1000
+    unit: email/month
+    type: RENEWABLE
+    linkedFeatures:
+      - collectWithEmail
+plans:
+  LIGHT:
+    description: ''
+    monthlyPrice: Contact Sales
+    unit: /month
+    features: null
+    usageLimits: null
+    price: Contact Sales
+  PLUS:
+    description: ''
+    monthlyPrice: Contact Sales
+    unit: /month
+    features:
+      customForms:
+        value: true
+      thirteenQuestionTypes:
+        value: true
+      importingContacts:
+        value: true
+      smartContactLists:
+        value: true
+      embedSurbeysToWebsite:
+        value: true
+      videoReviews:
+        value: true
+      importReviewsFromGoogle:
+        value: true
+      importReviewsFromFacebook:
+        value: true
+      requestGoogleReviews:
+        value: true
+      customizeEmbeds:
+        value: true
+      socialMediaShare:
+        value: true
+      popupNotifications:
+        value: true
+      measureConversions:
+        value: true
+      phoneSupport:
+        value: true
+    usageLimits:
+      formsLimit:
+        value: 10
+      textReviewsLimit:
+        value: .inf
+      embedsLimit:
+        value: 5
+      usersLimit:
+        value: 5
+      emailsLimit:
+        value: 1000
+    price: Contact Sales
+  ENTERPRISE:
+    description: ''
+    monthlyPrice: Contact Sales
+    unit: /month
+    features:
+      customForms:
+        value: true
+      thirteenQuestionTypes:
+        value: true
+      importingContacts:
+        value: true
+      smartContactLists:
+        value: true
+      embedSurbeysToWebsite:
+        value: true
+      videoReviews:
+        value: true
+      importReviewsFromGoogle:
+        value: true
+      importReviewsFromFacebook:
+        value: true
+      requestGoogleReviews:
+        value: true
+      customizeEmbeds:
+        value: true
+      socialMediaShare:
+        value: true
+      popupNotifications:
+        value: true
+      measureConversions:
+        value: true
+      phoneSupport:
+        value: true
+      designatedExpert:
+        value: true
+    usageLimits:
+      formsLimit:
+        value: .inf
+      textReviewsLimit:
+        value: .inf
+      embedsLimit:
+        value: .inf
+      usersLimit:
+        value: .inf
+      emailsLimit:
+        value: .inf
+    price: Contact Sales

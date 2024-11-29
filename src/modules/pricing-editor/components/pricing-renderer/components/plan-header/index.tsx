@@ -38,14 +38,16 @@ export default function PlanHeader({
                   style={{ color: style.priceColor ?? DEFAULT_RENDERING_STYLES.priceColor }}
                 >
                   {plan.price}
-                  {currency}
+                  {typeof plan.price === 'number' ? currency : ''}
                 </span>
+                {typeof plan.price === 'number' &&
                 <span
                   className="plan-period"
                   style={{ color: style.periodColor ?? DEFAULT_RENDERING_STYLES.periodColor }}
                 >
-                  /month
+                  {plan.unit ? plan.unit : "/month"}
                 </span>
+                }
               </>
             )
           }

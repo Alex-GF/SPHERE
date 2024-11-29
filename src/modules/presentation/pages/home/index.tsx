@@ -2,15 +2,13 @@ import { flex } from '../../../core/theme/css';
 import { Helmet } from 'react-helmet';
 import { Box } from '@mui/system';
 import { Divider } from '@mui/material';
-import HeroLanding from '../../layouts/presentation-layout/components/hero-landing';
-import BulletsLanding from '../../layouts/presentation-layout/components/bullets-landing';
-import ToolsLanding from '../../layouts/presentation-layout/components/tools-landing';
-import SimplificationLanding from '../../layouts/presentation-layout/components/simplification-landing';
-import StatsLanding from '../../layouts/presentation-layout/components/stats-landing';
-import ResearchLanding from '../../layouts/presentation-layout/components/research-landing';
-import FinalLanding from '../../layouts/presentation-layout/components/final-landing';
-import FeaturesLanding from '../../layouts/presentation-layout/components/features-landing';
-import FoundingLanding from '../../layouts/presentation-layout/components/founding-landing';
+import HeroLanding from '../../components/hero-landing';
+import BulletsLanding from '../../components/bullets-landing';
+import ToolsLanding from '../../components/tools-landing';
+import StatsLanding from '../../components/stats-landing';
+import ResearchLanding from '../../components/research-landing';
+import FeaturesLanding from '../../components/features-landing';
+import FoundingLanding from '../../components/founding-landing';
 
 export default function HomePage() {
   return (

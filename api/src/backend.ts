@@ -1,3 +1,3 @@
-import { initializeServer } from './app.ts';
+import { initializeServer } from './app';
 
 initializeServer();

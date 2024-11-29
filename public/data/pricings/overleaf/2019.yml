@@ -1,0 +1,134 @@
+saasName: Overleaf
+version: '2.0'
+createdAt: '2019-11-03'
+currency: USD
+hasAnnualPayment: true
+features:
+  privateProjects:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  realTimeCollaboration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  templates:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  latexEditor:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  realTimeTrackChanges:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  advancedReferenceSearch:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  referenceManagerSync:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  fullDocumentHistory:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  dropboxIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingUrls:
+      - https://www.dropbox.com/plans
+  githubIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingsURLs:
+      - https://github.com/pricing
+  prioritySupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+usageLimits:
+  maxCollaboratorsPerProject:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: collaborator
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - realTimeCollaboration
+plans:
+  PERSONAL:
+    description: ''
+    monthlyPrice: 0
+    annualPrice: 0
+    unit: /month
+    features: null
+    usageLimits: null
+    price: 0
+  COLLABORATOR:
+    description: ''
+    monthlyPrice: 15
+    annualPrice: 15
+    unit: /month
+    features:
+      realTimeTrackChanges:
+        value: true
+      advancedReferenceSearch:
+        value: true
+      referenceManagerSync:
+        value: true
+      fullDocumentHistory:
+        value: true
+      dropboxIntegration:
+        value: true
+      githubIntegration:
+        value: true
+      prioritySupport:
+        value: true
+    usageLimits:
+      maxCollaboratorsPerProject:
+        value: 10
+    price: 15
+  PROFESSIONAL:
+    description: ''
+    monthlyPrice: 30
+    annualPrice: 30
+    unit: /month
+    features:
+      realTimeTrackChanges:
+        value: true
+      advancedReferenceSearch:
+        value: true
+      referenceManagerSync:
+        value: true
+      fullDocumentHistory:
+        value: true
+      dropboxIntegration:
+        value: true
+      githubIntegration:
+        value: true
+      prioritySupport:
+        value: true
+    usageLimits:
+      maxCollaboratorsPerProject:
+        value: .inf
+    price: 30

@@ -9,6 +9,7 @@ import PlanHeader from './components/plan-header';
 import PricingElement from './components/pricing-element';
 import { TagFeatureCard } from './components/tag-card';
 import PricingCard from './components/pricing-card';
+import { CURRENCIES } from '../../../pricing/pages/card';
 
 export const DEFAULT_RENDERING_STYLES: RenderingStyles = {
   plansColor: '#000000',
@@ -90,10 +91,10 @@ export function PricingRenderer({ pricing, errors, style }: Readonly<PricingProp
           <thead>
             <tr>
               <th></th>
-              {pricing.plans.map((plan: Plan, key: number) => (
+              {pricing.plans && pricing.plans.map((plan: Plan, key: number) => (
                 <PlanHeader
                   plan={plan}
-                  currency={pricing.currency}
+                  currency={pricing.currency in CURRENCIES ? CURRENCIES[pricing.currency as keyof typeof CURRENCIES] : pricing.currency}
                   style={style}
                   key={`${plan.name}-${key}`}
                 />
@@ -120,7 +121,7 @@ export function PricingRenderer({ pricing, errors, style }: Readonly<PricingProp
                 features={features}
                 style={style}
                 key={tag}
-                plans={pricing.plans}
+                plans={pricing.plans ?? []}
                 currency={pricing.currency}
                 pricingData={pricingData}
               />
@@ -140,7 +141,7 @@ export function PricingRenderer({ pricing, errors, style }: Readonly<PricingProp
                 return (
                   <AddOnElement
                     addOn={addOn}
-                    currency={pricing.currency}
+                    currency={pricing.currency in CURRENCIES ? CURRENCIES[pricing.currency as keyof typeof CURRENCIES] : pricing.currency}
                     style={style}
                     key={index}
                   />

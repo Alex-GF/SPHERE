@@ -1,0 +1,388 @@
+saasName: Zapier
+version: '2.0'
+createdAt: '2022-11-29'
+currency: USD
+hasAnnualPayment: true
+features:
+  tasks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  zaps:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  singleStepZaps:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  noCodeEditor:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  duplicateAndReorderSteps:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  transfer:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  infoDenseView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  subfolders:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  multiStepZaps:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  premiumApps:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  filters:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  formatters:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  connectionsViaWebhooks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  versions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  duplicatePaths:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  customLogicWithPaths:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  autoReplay:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  exportAllZaps:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  folderPermissions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  premierSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  sharedAppConnections:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  sharedWorkspace:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  ownerAccess:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  advancedAdminPermissions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  userProvisioning:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  appRestrictions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  samlSingleSignOn:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  customDataRetention:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  accountConsolidation:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  superAdmin:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  liveChat:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+usageLimits:
+  usersLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: user
+    type: NON_RENEWABLE
+    linkedFeatures: null
+  tasksLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 100
+    unit: task/month
+    type: RENEWABLE
+    linkedFeatures:
+      - tasks
+  zapsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 5
+    unit: zap/month
+    type: RENEWABLE
+    linkedFeatures:
+      - zaps
+  updateTimeThreshold:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 15
+    unit: min
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - tasks
+      - zaps
+  premiumAppsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 0
+    unit: app
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - premiumApps
+plans:
+  FREE:
+    description: Anyone can automate their work. Start with the basics.
+    monthlyPrice: 0
+    annualPrice: 0
+    unit: /month
+    features: null
+    usageLimits: null
+    price: 0
+  STARTER:
+    description: Unleash the power of automation.
+    monthlyPrice: 24.99
+    annualPrice: 19.99
+    unit: /month
+    features:
+      multiStepZaps:
+        value: true
+      premiumApps:
+        value: true
+      filters:
+        value: true
+      formatters:
+        value: true
+      connectionsViaWebhooks:
+        value: true
+      versions:
+        value: true
+    usageLimits:
+      tasksLimit:
+        value: 750
+      zapsLimit:
+        value: 20
+      updateTimeThreshold:
+        value: 15
+      premiumAppsLimit:
+        value: 3
+    price: 24.99
+  PROFESSIONAL:
+    description: Advanced tools to take your work to the next level.
+    monthlyPrice: 61.25
+    annualPrice: 49
+    unit: /month
+    features:
+      multiStepZaps:
+        value: true
+      premiumApps:
+        value: true
+      filters:
+        value: true
+      formatters:
+        value: true
+      connectionsViaWebhooks:
+        value: true
+      versions:
+        value: true
+      duplicatePaths:
+        value: true
+      customLogicWithPaths:
+        value: true
+      autoReplay:
+        value: true
+    usageLimits:
+      tasksLimit:
+        value: 2000
+      zapsLimit:
+        value: .inf
+      updateTimeThreshold:
+        value: 2
+      premiumAppsLimit:
+        value: .inf
+    price: 61.25
+  TEAM:
+    description: Bring your team together to collaborate on automation.
+    monthlyPrice: 373.75
+    annualPrice: 299
+    unit: /month
+    features:
+      multiStepZaps:
+        value: true
+      premiumApps:
+        value: true
+      filters:
+        value: true
+      formatters:
+        value: true
+      connectionsViaWebhooks:
+        value: true
+      versions:
+        value: true
+      duplicatePaths:
+        value: true
+      customLogicWithPaths:
+        value: true
+      autoReplay:
+        value: true
+      exportAllZaps:
+        value: true
+      folderPermissions:
+        value: true
+      premierSupport:
+        value: true
+      sharedAppConnections:
+        value: true
+      sharedWorkspace:
+        value: true
+      ownerAccess:
+        value: true
+    usageLimits:
+      usersLimit:
+        value: .inf
+      tasksLimit:
+        value: 50000
+      zapsLimit:
+        value: .inf
+      updateTimeThreshold:
+        value: 1
+      premiumAppsLimit:
+        value: .inf
+    price: 373.75
+  COMPANY:
+    description: Automation plus enterprise-grade features.
+    monthlyPrice: 748.75
+    annualPrice: 599
+    unit: /month
+    features:
+      multiStepZaps:
+        value: true
+      premiumApps:
+        value: true
+      filters:
+        value: true
+      formatters:
+        value: true
+      connectionsViaWebhooks:
+        value: true
+      versions:
+        value: true
+      duplicatePaths:
+        value: true
+      customLogicWithPaths:
+        value: true
+      autoReplay:
+        value: true
+      exportAllZaps:
+        value: true
+      folderPermissions:
+        value: true
+      premierSupport:
+        value: true
+      sharedAppConnections:
+        value: true
+      sharedWorkspace:
+        value: true
+      ownerAccess:
+        value: true
+      advancedAdminPermissions:
+        value: true
+      userProvisioning:
+        value: true
+      appRestrictions:
+        value: true
+      samlSingleSignOn:
+        value: true
+      customDataRetention:
+        value: true
+      accountConsolidation:
+        value: true
+      superAdmin:
+        value: true
+      liveChat:
+        value: true
+    usageLimits:
+      usersLimit:
+        value: .inf
+      tasksLimit:
+        value: 100000
+      zapsLimit:
+        value: .inf
+      updateTimeThreshold:
+        value: 1
+      premiumAppsLimit:
+        value: .inf
+    price: 748.75

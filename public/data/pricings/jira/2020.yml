@@ -1,0 +1,321 @@
+saasName: Jira
+version: '2.0'
+createdAt: '2020-11-29'
+currency: USD
+hasAnnualPayment: false
+features:
+  sites:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  scrumAndKanbanBoards:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  backlog:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  agileReporting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  customizableWorkflows:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  appsAndIntegrations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  roadmaps:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  advancedRoadmaps:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  automation:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  globalAndMultiProjectAutomation:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  advancedPermissions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  projectArchiving:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  atlassianAccess:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  passwordPolicies:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  domainVerification:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  accountCapture:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  sessionDurationManagement:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  encryptionInTransitAndAtRest:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: GUARANTEE
+  businessContinuityAndDisasterRecovery:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: GUARANTEE
+  auditLogs:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  anonymousAccess:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  adminInsights:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  ipAllowlisting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  sandbox:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  releaseTracks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  dataResidency:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  storage:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  communitySupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  localBusinessHoursSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  24x7Support:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  enterpriseSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  uptimeSLA:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  orgLevelBilling:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: PAYMENT
+usageLimits:
+  usersLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 10
+    unit: user/site
+    type: NON_RENEWABLE
+    linkedFeatures: null
+  sitesLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: site
+    type: NON_RENEWABLE
+    linkedFeatures: null
+  storageLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 2
+    unit: GB
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - storage
+plans:
+  FREE:
+    description: ''
+    monthlyPrice: 0
+    unit: user/month
+    features: null
+    usageLimits: null
+    price: 0
+  STANDARD:
+    description: ''
+    monthlyPrice: 7
+    unit: user/month
+    features:
+      advancedPermissions:
+        value: true
+      auditLogs:
+        value: true
+      anonymousAccess:
+        value: true
+      localBusinessHoursSupport:
+        value: true
+    usageLimits:
+      usersLimit:
+        value: 20000
+      storageLimit:
+        value: 250
+    price: 7
+  PREMIUM:
+    description: ''
+    monthlyPrice: 14
+    unit: user/month
+    features:
+      advancedRoadmaps:
+        value: true
+      globalAndMultiProjectAutomation:
+        value: true
+      advancedPermissions:
+        value: true
+      projectArchiving:
+        value: true
+      auditLogs:
+        value: true
+      anonymousAccess:
+        value: true
+      adminInsights:
+        value: true
+      ipAllowlisting:
+        value: true
+      sandbox:
+        value: true
+      releaseTracks:
+        value: true
+      localBusinessHoursSupport:
+        value: true
+      24x7Support:
+        value: true
+      uptimeSLA:
+        value: true
+    usageLimits:
+      usersLimit:
+        value: 20000
+      storageLimit:
+        value: .inf
+    price: 14
+  ENTERPRISE:
+    description: ''
+    monthlyPrice: Contact Sales
+    unit: user/month
+    features:
+      advancedRoadmaps:
+        value: true
+      globalAndMultiProjectAutomation:
+        value: true
+      advancedPermissions:
+        value: true
+      projectArchiving:
+        value: true
+      atlassianAccess:
+        value: true
+      auditLogs:
+        value: true
+      anonymousAccess:
+        value: true
+      adminInsights:
+        value: true
+      ipAllowlisting:
+        value: true
+      sandbox:
+        value: true
+      releaseTracks:
+        value: true
+      dataResidency:
+        value: true
+      localBusinessHoursSupport:
+        value: true
+      24x7Support:
+        value: true
+      enterpriseSupport:
+        value: true
+      uptimeSLA:
+        value: true
+      orgLevelBilling:
+        value: true
+    usageLimits:
+      usersLimit:
+        value: 20000
+      sitesLimit:
+        value: .inf
+      storageLimit:
+        value: .inf
+    price: Contact Sales
+addOns:
+  atlassianAccessAddOn:
+    availableFor:
+      - FREE
+      - STANDARD
+      - PREMIUM
+    price: Contact Sales
+    unit: user/month
+    features:
+      atlassianAccess:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null

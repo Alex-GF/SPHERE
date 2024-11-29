@@ -1,0 +1,764 @@
+saasName: Dropbox
+version: '2.0'
+createdAt: '2023-12-02'
+currency: USD
+hasAnnualPayment: false
+features:
+  storage:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  bestInClassSyncTechnology:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: GUARANTEE
+  easyAndSecureSharing:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: GUARANTEE
+  anytimeAccess:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: GUARANTEE
+  anywhereAccess:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: GUARANTEE
+  connectUnlimitedDevices:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: GUARANTEE
+  256BitAES:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: GUARANTEE
+  SSL/TLSEncryption:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: GUARANTEE
+  selfSigning:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  signatureRequest:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  industryLeadingSecurity:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: GUARANTEE
+  industryLeadingPrivacy:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: GUARANTEE
+  templates:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  branding:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  realTimeDocumentAnalytics:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  passcodeVerification:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  emailVerfication:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  viewerEngagementDashboard:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  backup:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  accountRecovery:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  versionHistory:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  restoreDeletedFiles:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  passwordManagement:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  multiFactorAuthentication:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  documentScanning:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  remoteDeviceWipe:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  watermarking:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  sharedLinkControls:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  accountTransferTool:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  granularPermissions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  enableHIPAACompliance:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  deviceApprovals:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  externalSharingControls:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  externalSharingReporting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  dataClassification:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  ransomwareDetectionAndRecovery:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TRACKING
+  suspiciusActivityAlerts:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TRACKING
+  dropboxCapture:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  videoTranscripts:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  closedCaptions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  videoEditing:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  videoCommenting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  dropboxReplay:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  largeFileDelivery:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  fileRequests:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  integratedCloudContent:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  onlineDocuments:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  onlineNoteTaking:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  webPreviews:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  webComments:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  plusButton:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  pdfEditing:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  advancedPdfEditing:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  annotatePDFs:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  signPDFs:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  imageEditing:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  imageSearch:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  fullTextSearch:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  brandedSharing:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  fileLocking:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  viewerHistory:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  adminConsole:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  multiTeamAdminLogin:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  centralizedBilling:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: PAYMENT
+  companyManagedGroups:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  apiAccessToSecurityPlatformPartners:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+  apiAccessToProductivityPlatformPartners:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: API
+  apiAccessToDataTransportPlatformPartners:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+  tieredAdminRoles:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  signInAsUser:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  auditLogsWithFileEventTracking:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TRACKING
+  singleSignOn:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  inviteEnforcement:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  priorityEmailSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  liveChatSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  phoneSupportDuringBusinessHours:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+usageLimits:
+  storageLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 2000
+    unit: GB
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - storage
+  usersLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: user
+    type: NON_RENEWABLE
+    linkedFeatures: null
+  signatureRequestLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 3
+    unit: signature/month
+    type: RENEWABLE
+    linkedFeatures:
+      - signatureRequest
+  templatesLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 0
+    unit: template
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - templates
+  accountRecoveryAndVersionHistoryThreshold:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 30
+    unit: day
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - accountRecovery
+      - versionHistory
+  restoreDeletedFilesThreshold:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 30
+    unit: day
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - restoreDeletedFiles
+  dropboxCaptureRecordingTimeLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 120
+    unit: min
+    type: TIME_DRIVEN
+    linkedFeatures:
+      - dropboxCapture
+  dropboxCaptureFullHDQuality:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - dropboxCapture
+  dropboxCapture4kQuality:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - dropboxCapture
+  dropboxCaptureAdvancedVideoEditing:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - dropboxCapture
+  dropboxReplayFileUploadsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 4
+    unit: file
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - dropboxReplay
+  dropboxReplayLiveReviews:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - dropboxReplay
+  dropboxReplayVersions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - dropboxReplay
+  dropboxReplayVideoCollaboration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - dropboxReplay
+  largeFileDeliveryLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 2
+    unit: GB/transfer
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - largeFileDelivery
+  apiAccessToDataTransportPlatformPartnersLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1000000000
+    unit: request/month
+    type: RENEWABLE
+    linkedFeatures:
+      - apiAccessToDataTransportPlatformPartners
+plans:
+  PLUS:
+    description: ''
+    monthlyPrice: 9.99
+    unit: /month
+    features: null
+    usageLimits: null
+    price: 9.99
+  ESSENTIALS:
+    description: ''
+    monthlyPrice: 16.58
+    unit: /month
+    features:
+      templates:
+        value: true
+      realTimeDocumentAnalytics:
+        value: true
+      passcodeVerification:
+        value: true
+      emailVerfication:
+        value: true
+      viewerEngagementDashboard:
+        value: true
+      watermarking:
+        value: true
+      sharedLinkControls:
+        value: true
+      videoCommenting:
+        value: true
+      brandedSharing:
+        value: true
+      fileLocking:
+        value: true
+      viewerHistory:
+        value: true
+      advancedPdfEditing:
+        value: true
+    usageLimits:
+      storageLimit:
+        value: 3000
+      signatureRequestLimit:
+        value: .inf
+      templatesLimit:
+        value: 5
+      accountRecoveryAndVersionHistoryThreshold:
+        value: 180
+      restoreDeletedFilesThreshold:
+        value: 180
+      dropboxCaptureRecordingTimeLimit:
+        value: .inf
+      dropboxCapture4kQuality:
+        value: true
+      dropboxCaptureAdvancedVideoEditing:
+        value: true
+      dropboxReplayFileUploadsLimit:
+        value: 10
+      largeFileDeliveryLimit:
+        value: 100
+    price: 16.58
+  BUSINESS:
+    description: ''
+    monthlyPrice: 15
+    unit: user/month
+    features:
+      templates:
+        value: true
+      branding:
+        value: true
+      realTimeDocumentAnalytics:
+        value: true
+      passcodeVerification:
+        value: true
+      emailVerfication:
+        value: true
+      viewerEngagementDashboard:
+        value: true
+      watermarking:
+        value: true
+      sharedLinkControls:
+        value: true
+      accountTransferTool:
+        value: true
+      granularPermissions:
+        value: true
+      enableHIPAACompliance:
+        value: true
+      deviceApprovals:
+        value: true
+      externalSharingControls:
+        value: true
+      externalSharingReporting:
+        value: true
+      videoCommenting:
+        value: true
+      brandedSharing:
+        value: true
+      fileLocking:
+        value: true
+      viewerHistory:
+        value: true
+      adminConsole:
+        value: true
+      multiTeamAdminLogin:
+        value: true
+      centralizedBilling:
+        value: true
+      companyManagedGroups:
+        value: true
+      apiAccessToSecurityPlatformPartners:
+        value: true
+      apiAccessToDataTransportPlatformPartners:
+        value: true
+      tieredAdminRoles:
+        value: true
+      signInAsUser:
+        value: true
+      auditLogsWithFileEventTracking:
+        value: true
+      singleSignOn:
+        value: true
+      inviteEnforcement:
+        value: true
+      phoneSupportDuringBusinessHours:
+        value: true
+      advancedPdfEditing:
+        value: true
+    usageLimits:
+      storageLimit:
+        value: 9000
+      usersLimit:
+        value: .inf
+      signatureRequestLimit:
+        value: .inf
+      templatesLimit:
+        value: 15
+      accountRecoveryAndVersionHistoryThreshold:
+        value: 180
+      restoreDeletedFilesThreshold:
+        value: 180
+      dropboxCaptureRecordingTimeLimit:
+        value: .inf
+      dropboxCapture4kQuality:
+        value: true
+      dropboxCaptureAdvancedVideoEditing:
+        value: true
+      dropboxReplayFileUploadsLimit:
+        value: 10
+      largeFileDeliveryLimit:
+        value: 100
+    price: 15
+  BUSINESS_PLUS:
+    description: ''
+    monthlyPrice: 24
+    unit: user/month
+    features:
+      templates:
+        value: true
+      branding:
+        value: true
+      realTimeDocumentAnalytics:
+        value: true
+      passcodeVerification:
+        value: true
+      emailVerfication:
+        value: true
+      viewerEngagementDashboard:
+        value: true
+      watermarking:
+        value: true
+      sharedLinkControls:
+        value: true
+      accountTransferTool:
+        value: true
+      granularPermissions:
+        value: true
+      enableHIPAACompliance:
+        value: true
+      deviceApprovals:
+        value: true
+      externalSharingControls:
+        value: true
+      externalSharingReporting:
+        value: true
+      dataClassification:
+        value: true
+      ransomwareDetectionAndRecovery:
+        value: true
+      suspiciusActivityAlerts:
+        value: true
+      videoCommenting:
+        value: true
+      brandedSharing:
+        value: true
+      fileLocking:
+        value: true
+      viewerHistory:
+        value: true
+      adminConsole:
+        value: true
+      multiTeamAdminLogin:
+        value: true
+      centralizedBilling:
+        value: true
+      companyManagedGroups:
+        value: true
+      apiAccessToSecurityPlatformPartners:
+        value: true
+      apiAccessToDataTransportPlatformPartners:
+        value: true
+      tieredAdminRoles:
+        value: true
+      signInAsUser:
+        value: true
+      auditLogsWithFileEventTracking:
+        value: true
+      singleSignOn:
+        value: true
+      inviteEnforcement:
+        value: true
+      phoneSupportDuringBusinessHours:
+        value: true
+      advancedPdfEditing:
+        value: true
+    usageLimits:
+      storageLimit:
+        value: .inf
+      usersLimit:
+        value: .inf
+      signatureRequestLimit:
+        value: .inf
+      templatesLimit:
+        value: 15
+      accountRecoveryAndVersionHistoryThreshold:
+        value: 365
+      restoreDeletedFilesThreshold:
+        value: 365
+      dropboxCaptureRecordingTimeLimit:
+        value: .inf
+      dropboxCapture4kQuality:
+        value: true
+      dropboxCaptureAdvancedVideoEditing:
+        value: true
+      dropboxReplayFileUploadsLimit:
+        value: .inf
+      largeFileDeliveryLimit:
+        value: 250
+    price: 24

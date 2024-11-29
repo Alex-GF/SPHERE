@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet";
 import { teamMembers } from "./data/team-data.tsx";
-import TeamMemberCard from "../../layouts/presentation-layout/components/team-member-card";
+import TeamMemberCard from "../../layouts/components/team-member-card";
 import { Box, styled } from "@mui/material";
 
 const TeamGrid = styled(Box)(() => ({

@@ -1,6 +1,6 @@
-import container from "../config/container.ts";
-import UserMockDB from "../repositories/mockDB/UserMockDB.ts";
-import { User } from "../repositories/mockDB/models/User.ts";
+import container from "../config/container";
+import UserMockDB from "../repositories/mockDB/UserMockDB";
+import { User } from "../repositories/mockDB/models/User";
 
 class UserService {
     

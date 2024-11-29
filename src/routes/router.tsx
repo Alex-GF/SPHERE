@@ -1,16 +1,19 @@
 import { Navigate, Outlet, useRoutes } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import LoadingView from '../modules/core/pages/loading';
-import PresentationLayout from '../modules/presentation/layouts/presentation-layout';
+import PresentationLayout from '../modules/presentation/layouts';
 
 export const HomePage = lazy(() => import('../modules/presentation/pages/home'));
 export const TeamPage = lazy(() => import('../modules/presentation/pages/team'));
 export const Page404 = lazy(() => import('../modules/core/pages/page-not-found'));
 
 import EditorPage from '../modules/pricing-editor/pages/pricing2yaml-editor';
-import EditorLayout from '../modules/pricing-editor/layouts/editor-layout';
-import ActivitiesPage from '../modules/presentation/pages/activities';
+import EditorLayout from '../modules/pricing-editor/layouts';
+import ResearchPage from '../modules/presentation/pages/research';
 import ContributionsPage from '../modules/presentation/pages/contributions';
+import PricingListPage from '../modules/pricing/pages/list';
+
+export const CardPage =  lazy(() => import('../modules/pricing/pages/card'));
 
 export default function Router() {
   const routes = useRoutes([
@@ -24,8 +27,10 @@ export default function Router() {
       ),
       children: [
         { element: <HomePage />, index: true },
+        {element: <PricingListPage/>, path: "/pricings"},
+        {element: <CardPage/>, path: "/pricings/card"},
         {element: <TeamPage/>, path: "/team"},
-        {element: <ActivitiesPage/>, path: "/activities"},
+        {element: <ResearchPage/>, path: "/research"},
         {element: <ContributionsPage/>, path: "/contributions"},
       ],
     },

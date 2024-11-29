@@ -1,0 +1,324 @@
+saasName: Notion
+version: '2.0'
+createdAt: '2021-11-01'
+currency: USD
+hasAnnualPayment: true
+features:
+  pages:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  blocks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  guests:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  fileUploads:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  versionHistory:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  realTimeCollaboration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  linkSharing:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  collaborativeWorkspace:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  webApp:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  desktopApp:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  mobileApp:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  blockContentTypes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  starterTemplates:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  wikis:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  docs:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  notes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  databases:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  tableView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  listView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  calendarView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  kanbanBoardView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  galleryView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  timelineView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  api:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: API
+  bulkExport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  adminTools:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  permissionGroups:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  advancedPermissions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  advancedSecurityControls:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  samlSso:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  userProvisioning:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  bulkPdfExport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  prioritySupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  dedicatedCustomerManager:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  customContract:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: PAYMENT
+  invoicing:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: PAYMENT
+  accessFeaturesEarly:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+usageLimits:
+  membersLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: member
+    type: NON_RENEWABLE
+    linkedFeatures: null
+  guestsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 5
+    unit: guest
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - guests
+  fileUploadsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 5
+    unit: MB
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - fileUploads
+  versionHistoryThreshold:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 30
+    unit: days
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - versionHistory
+plans:
+  PERSONAL:
+    description: ''
+    monthlyPrice: 0
+    annualPrice: 0
+    unit: user/month
+    features: null
+    usageLimits: null
+    price: 0
+  PERSONAL_PRO:
+    description: ''
+    monthlyPrice: 5
+    annualPrice: 4
+    unit: user/month
+    features:
+      versionHistory:
+        value: true
+      prioritySupport:
+        value: true
+    usageLimits:
+      guestsLimit:
+        value: .inf
+      fileUploadsLimit:
+        value: .inf
+    price: 5
+  TEAM:
+    description: ''
+    monthlyPrice: 10
+    annualPrice: 8
+    unit: user/month
+    features:
+      versionHistory:
+        value: true
+      collaborativeWorkspace:
+        value: true
+      adminTools:
+        value: true
+      permissionGroups:
+        value: true
+      advancedPermissions:
+        value: true
+      prioritySupport:
+        value: true
+    usageLimits:
+      membersLimit:
+        value: .inf
+      guestsLimit:
+        value: .inf
+      fileUploadsLimit:
+        value: .inf
+    price: 10
+  ENTERPRISE:
+    description: ''
+    monthlyPrice: Contact Sales
+    annualPrice: Contact Sales
+    unit: user/month
+    features:
+      versionHistory:
+        value: true
+      collaborativeWorkspace:
+        value: true
+      adminTools:
+        value: true
+      permissionGroups:
+        value: true
+      advancedPermissions:
+        value: true
+      advancedSecurityControls:
+        value: true
+      samlSso:
+        value: true
+      userProvisioning:
+        value: true
+      bulkPdfExport:
+        value: true
+      prioritySupport:
+        value: true
+      dedicatedCustomerManager:
+        value: true
+      customContract:
+        value: true
+      invoicing:
+        value: true
+      accessFeaturesEarly:
+        value: true
+    usageLimits:
+      membersLimit:
+        value: .inf
+      guestsLimit:
+        value: .inf
+      fileUploadsLimit:
+        value: .inf
+      versionHistoryThreshold:
+        value: .inf
+    price: Contact Sales

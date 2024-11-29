@@ -1,0 +1,805 @@
+saasName: Databox
+version: '2.0'
+createdAt: '2024-06-11'
+currency: USD
+hasAnnualPayment: true
+features:
+  dataSources:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  dataSyncFrequency:
+    description: ''
+    valueType: TEXT
+    defaultValue: daily
+    type: GUARANTEE
+  15minPriorityConnections:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+  historicalData:
+    description: >-
+      The maximum amount of historical data that you can access in your Databox
+      Account.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  warehouseDataStorage:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  databoxInteractions:
+    description: Choose between 60+ integrations
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  thirdPartyIntegrations:
+    description: Choose between 2000+ integrations
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  pushCustomDataToAPI:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+  customApiIntegrations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+  sqlIntegrations:
+    description: Choose between 7 SQL integrations
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  spreadsheetsIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  databoards:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  databoardTemplates:
+    description: >-
+      Instantly use pre-built templates created by experts. Browse the available
+      templates on our website or inside our application.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  databoardDesigner:
+    description: >-
+      Create Databoards, no coding required. Use the Designer by starting with a
+      blank Databoard or choosing, then customizing a template. Use pre-built
+      datablocks or start with blank visualizations and choose vour datasource,
+      metric, time intervals and more. Re-arrange, resize, move and delete
+      datablocks.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  customAccountDataboardTemplates:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  databoardLoops:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  metricBuilder:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  customMetrics:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  dataCalculations:
+    description: >-
+      Data Calculations enable you to create on-the-fly calculations, regardless
+      of whether the metrics originate from a single data source or different
+      data sources.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  customDateRanges:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  removableBrandingOnDataboards:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  fiscalCalendars:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  personalizedPerformanceScreen:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  metricsScreen:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  slackIntegration:
+    description: >-
+      Receive alerts in Slack. Share Databoards and datablocks in Slack. Use the
+      Databox Slackbot to ask questions about your data.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingsUrls:
+      - https://slack.com/pricing
+  streamToTv:
+    description: >-
+      View any of your Databoards on a wall-mounted TV in your office. Broadcast
+      your data in the office to motivate your team and keep the metrics that
+      matter front and center.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  mobileAppAccess:
+    description: >-
+      View all your Databoards, goals and receive alerts and scorecards on your
+      mobile device in our app. IOS and Android native apps available.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  goals:
+    description: >-
+      Set a daily, weekly, monthly or annual goal for any metric you're
+      tracking. Assign the goal to someone on your team and receive alerts when
+      you hit thegoal or if you are at risk of missing it. View progress to all
+      your Company's goals on one screen.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TRACKING
+  shareableDataboardLinks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  scheduleDataboardSnapshots:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  scorecards:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  weeklyDigest:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  databoardEmbedding:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTENSION
+  annotations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  alerts:
+    description: >-
+      Receive alerts via the mobile app. Slack or via email for any metric you
+      want to monitor more closely. Alerts can be triggered when numbers go
+      above or below any number or change by a set percentage over a specified
+      time interval.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TRACKING
+  basicReporting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  scheduleReports:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  publicReportTemplates:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  reportAccountTemplates:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  shareReportPDFs:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  downloadReportPDFs:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  archiveReports:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  removableBrandingOnReports:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  advancedSlideTypes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  reportsApprovalProcess:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  metricForecast:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: BOT
+  performanceSummaries:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  anomalyDetection:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TRACKING
+  advancedBenchmarks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  metricCorrelations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: BOT
+  clientAccounts:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  clientPerformanceOverview:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  clientGoalsOverview:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  whiteLabeling:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  chatSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  emailSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  prioritySupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  guidedOnboarding:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  dedicatedAnalyst:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  userManagement:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  twoFactorAuthentication:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  singleSignOn:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  advancedSecurity:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+usageLimits:
+  includedDataSources:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 3
+    unit: data source
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - dataSources
+  dataSourcesLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 3
+    unit: data source
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - dataSources
+  historicalDataThreshold:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 11
+    unit: month
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - historicalData
+  warehouseStorageLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 5
+    unit: GB
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - warehouseDataStorage
+  usersLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 3
+    unit: user
+    type: NON_RENEWABLE
+    linkedFeatures: null
+  guidedOnboardingLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 6
+    unit: hour
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - guidedOnboarding
+  dedicatedAnalystLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 2
+    unit: hour/month
+    type: RENEWABLE
+    linkedFeatures:
+      - dedicatedAnalyst
+  15minPriorityConnectionsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 0
+    unit: connection
+    type: RENEWABLE
+    linkedFeatures:
+      - 15minPriorityConnections
+plans:
+  FREE:
+    description: ''
+    monthlyPrice: 0
+    annualPrice: 0
+    unit: /month
+    features: null
+    usageLimits: null
+    price: 0
+  STARTER:
+    description: ''
+    monthlyPrice: 59
+    annualPrice: 47
+    unit: connection/month
+    features:
+      dataSyncFrequency:
+        value: every 4 hours
+      thirdPartyIntegrations:
+        value: true
+      pushCustomDataToAPI:
+        value: true
+      customAccountDataboardTemplates:
+        value: true
+      goals:
+        value: true
+      alerts:
+        value: true
+      basicReporting:
+        value: true
+      scheduleReports:
+        value: true
+      publicReportTemplates:
+        value: true
+      reportAccountTemplates:
+        value: true
+      shareReportPDFs:
+        value: true
+      downloadReportPDFs:
+        value: true
+      archiveReports:
+        value: true
+    usageLimits:
+      dataSourcesLimit:
+        value: 1000000000
+      warehouseStorageLimit:
+        value: 20
+      usersLimit:
+        value: 5
+    price: 59
+  PROFESSIONAL:
+    description: ''
+    monthlyPrice: 169
+    annualPrice: 135
+    unit: connection/month
+    features:
+      dataSyncFrequency:
+        value: hourly
+      thirdPartyIntegrations:
+        value: true
+      pushCustomDataToAPI:
+        value: true
+      customApiIntegrations:
+        value: true
+      sqlIntegrations:
+        value: true
+      spreadsheetsIntegration:
+        value: true
+      customAccountDataboardTemplates:
+        value: true
+      metricBuilder:
+        value: true
+      customMetrics:
+        value: true
+      dataCalculations:
+        value: true
+      customDateRanges:
+        value: true
+      removableBrandingOnDataboards:
+        value: true
+      goals:
+        value: true
+      alerts:
+        value: true
+      basicReporting:
+        value: true
+      scheduleReports:
+        value: true
+      publicReportTemplates:
+        value: true
+      reportAccountTemplates:
+        value: true
+      shareReportPDFs:
+        value: true
+      downloadReportPDFs:
+        value: true
+      archiveReports:
+        value: true
+      removableBrandingOnReports:
+        value: true
+    usageLimits:
+      historicalDataThreshold:
+        value: 24
+      warehouseStorageLimit:
+        value: 20
+      usersLimit:
+        value: 15
+    price: 169
+  GROWTH:
+    description: ''
+    monthlyPrice: 399
+    annualPrice: 319
+    unit: connection/month
+    features:
+      dataSyncFrequency:
+        value: hourly
+      thirdPartyIntegrations:
+        value: true
+      pushCustomDataToAPI:
+        value: true
+      customApiIntegrations:
+        value: true
+      sqlIntegrations:
+        value: true
+      spreadsheetsIntegration:
+        value: true
+      customAccountDataboardTemplates:
+        value: true
+      metricBuilder:
+        value: true
+      customMetrics:
+        value: true
+      dataCalculations:
+        value: true
+      customDateRanges:
+        value: true
+      removableBrandingOnDataboards:
+        value: true
+      goals:
+        value: true
+      alerts:
+        value: true
+      basicReporting:
+        value: true
+      scheduleReports:
+        value: true
+      publicReportTemplates:
+        value: true
+      reportAccountTemplates:
+        value: true
+      shareReportPDFs:
+        value: true
+      downloadReportPDFs:
+        value: true
+      archiveReports:
+        value: true
+      removableBrandingOnReports:
+        value: true
+      advancedSlideTypes:
+        value: true
+      reportsApprovalProcess:
+        value: true
+      metricForecast:
+        value: true
+      performanceSummaries:
+        value: true
+      anomalyDetection:
+        value: true
+      advancedBenchmarks:
+        value: true
+      metricCorrelations:
+        value: true
+      singleSignOn:
+        value: true
+    usageLimits:
+      historicalDataThreshold:
+        value: 1000000000
+      warehouseStorageLimit:
+        value: 20
+      usersLimit:
+        value: 1000000000
+    price: 399
+  PREMIUM:
+    description: ''
+    monthlyPrice: 999
+    annualPrice: 799
+    unit: connection/month
+    features:
+      dataSyncFrequency:
+        value: hourly
+      thirdPartyIntegrations:
+        value: true
+      pushCustomDataToAPI:
+        value: true
+      customApiIntegrations:
+        value: true
+      sqlIntegrations:
+        value: true
+      spreadsheetsIntegration:
+        value: true
+      customAccountDataboardTemplates:
+        value: true
+      metricBuilder:
+        value: true
+      customMetrics:
+        value: true
+      dataCalculations:
+        value: true
+      customDateRanges:
+        value: true
+      removableBrandingOnDataboards:
+        value: true
+      goals:
+        value: true
+      alerts:
+        value: true
+      basicReporting:
+        value: true
+      scheduleReports:
+        value: true
+      publicReportTemplates:
+        value: true
+      reportAccountTemplates:
+        value: true
+      shareReportPDFs:
+        value: true
+      downloadReportPDFs:
+        value: true
+      archiveReports:
+        value: true
+      removableBrandingOnReports:
+        value: true
+      fiscalCalendars:
+        value: true
+      advancedSlideTypes:
+        value: true
+      reportsApprovalProcess:
+        value: true
+      metricForecast:
+        value: true
+      performanceSummaries:
+        value: true
+      anomalyDetection:
+        value: true
+      advancedBenchmarks:
+        value: true
+      metricCorrelations:
+        value: true
+      prioritySupport:
+        value: true
+      guidedOnboarding:
+        value: true
+      dedicatedAnalyst:
+        value: true
+      singleSignOn:
+        value: true
+      advancedSecurity:
+        value: true
+    usageLimits:
+      includedDataSources:
+        value: 100
+      historicalDataThreshold:
+        value: 1000000000
+      warehouseStorageLimit:
+        value: 1000000000
+      usersLimit:
+        value: 1000000000
+    price: 999
+addOns:
+  brandingAndWhiteLabelling:
+    availableFor:
+      - STARTER
+      - PROFESSIONAL
+      - GROWTH
+      - PREMIUM
+    price: 250
+    unit: /month
+    features:
+      whiteLabeling:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  15minSync:
+    availableFor:
+      - FREE
+      - STARTER
+      - PROFESSIONAL
+      - GROWTH
+      - PREMIUM
+    price: 18
+    unit: /month
+    features:
+      dataSyncFrequency:
+        value: 15 minutes
+      15minPriorityConnections:
+        value: true
+    usageLimits:
+      15minPriorityConnectionsLimit:
+        value: 5
+    usageLimitsExtensions: null
+  fiscalCalendar:
+    availableFor:
+      - STARTER
+      - PROFESSIONAL
+      - GROWTH
+    price: 50
+    unit: /month
+    features:
+      fiscalCalendars:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  quickstartOnboarding:
+    availableFor:
+      - STARTER
+      - PROFESSIONAL
+      - GROWTH
+      - PREMIUM
+    price: 1000
+    unit: one time purchase
+    features: null
+    usageLimits: null
+    usageLimitsExtensions: null
+  guidedOnboarding:
+    availableFor:
+      - STARTER
+      - PROFESSIONAL
+      - GROWTH
+    price: 500
+    unit: one time purchase
+    features:
+      guidedOnboarding:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  dedicatedAnalyst:
+    availableFor:
+      - STARTER
+      - PROFESSIONAL
+      - GROWTH
+    price: 200
+    unit: /month
+    features:
+      dedicatedAnalyst:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  advancedSecurity:
+    availableFor:
+      - STARTER
+      - PROFESSIONAL
+      - GROWTH
+    price: 100
+    unit: /month
+    features:
+      advancedSecurity:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  prioritySupport:
+    availableFor:
+      - STARTER
+      - PROFESSIONAL
+      - GROWTH
+      - PREMIUM
+    price: Contact Sales
+    unit: /month
+    features:
+      prioritySupport:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null

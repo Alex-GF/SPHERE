@@ -45,7 +45,7 @@ function initializeData(
       }
     } else if (item.render.toUpperCase() === 'AUTO') {
       let formattedName = isUsageLimit
-        ? formatPricingComponentName((item as UsageLimit).linkedFeatures![0])
+        ? formatPricingComponentName((item as UsageLimit).linkedFeatures ? (item as UsageLimit).linkedFeatures![0] : item.name)
         : formatPricingComponentName(item.name);
 
       formattedNames[item.name] = formattedName;
@@ -127,9 +127,9 @@ function populateAddonsData(
         errors.push(`Missing value for '${formattedName}' in add-on ${addOnName}`);
       }
 
-      for (let i = 0; i < pricing.plans.length; i++) {
+      for (let i = 0; i < (pricing.plans ?? []).length; i++) {
         
-        const planName = pricing.plans[i].name;
+        const planName = pricing.plans![i].name;
         
         try {
           pricingData[formattedName][i] = {
@@ -166,9 +166,9 @@ function populateAddonsExtensionsData(
         errors.push(`Missing value for extension of '${formattedName}' in add-on ${addOnName}`);
       }
 
-      for (let i = 0; i < pricing.plans.length; i++) {
+      for (let i = 0; i < (pricing.plans ?? []).length; i++) {
 
-        const planName = pricing.plans[i].name;
+        const planName = pricing.plans![i].name;
         const addonValue = pricing.addOns!.find(a => a.name === addOnName)!.availableFor.includes(planName) ? item.value : 0
 
         try {
@@ -194,16 +194,16 @@ export function getPricingData(pricing: Pricing, errors: string[]) {
 
   initializeData(
     pricing.usageLimits ?? [],
-    pricing.plans.length,
+    (pricing.plans ?? []).length,
     pricingData,
     errors,
     formattedNames
   );
 
-  initializeData(pricing.features, pricing.plans.length, pricingData, errors, formattedNames);
+  initializeData(pricing.features, (pricing.plans ?? []).length, pricingData, errors, formattedNames);
 
-  for (let i = 0; i < pricing.plans.length; i++) {
-    let plan: Plan = pricing.plans[i];
+  for (let i = 0; i < (pricing.plans ?? []).length; i++) {
+    let plan: Plan = pricing.plans![i];
     populateData(plan.features, i, plan.name, pricingData, formattedNames, errors);
     populateData(plan.usageLimits ?? {}, i, plan.name, pricingData, formattedNames, errors);
   }

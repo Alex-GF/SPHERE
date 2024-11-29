@@ -1,0 +1,154 @@
+saasName: Quip
+version: '2.0'
+createdAt: '2019-11-25'
+currency: USD
+hasAnnualPayment: true
+features:
+  documents:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  spreadsheets:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  slides:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  basicLiveApps:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: API
+  groupChat:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  1to1messages:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  desktopAccess:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  tabletAccess:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  mobileAccess:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  teamManagement:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  secureProductivity:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: GUARANTEE
+    docURL: https://quip.com/security/governance-and-compliance
+  customAndAdvancedLiveApps:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+  singleSignOn:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  enterpriseAPI:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+  quipComponent:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTENSION
+  spreadsheetsWithLiveSalesforceData:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  salesforceRecordLiveApp:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+  embedQuipDocumentComponentsInSalesforce:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTENSION
+plans:
+  STARTER:
+    description: Powerful collaboration for your team or small business.
+    monthlyPrice: 12
+    annualPrice: 10
+    unit: user/month
+    features: null
+    usageLimits: null
+    price: 12
+  ENTERPRISE:
+    description: Secure productivity platform for large and complex teams.
+    monthlyPrice: null
+    annualPrice: 25
+    unit: user/month
+    features:
+      customAndAdvancedLiveApps:
+        value: true
+      singleSignOn:
+        value: true
+      enterpriseAPI:
+        value: true
+    usageLimits: null
+    price: 25
+  CUSTOMER360:
+    description: >-
+      Real-time alerts and collaboration inside Salesforce for sales and service
+      teams.
+    monthlyPrice: Contact Sales
+    annualPrice: Contact Sales
+    unit: user/month
+    features:
+      customAndAdvancedLiveApps:
+        value: true
+      singleSignOn:
+        value: true
+      enterpriseAPI:
+        value: true
+      quipComponent:
+        value: true
+      spreadsheetsWithLiveSalesforceData:
+        value: true
+      salesforceRecordLiveApp:
+        value: true
+      embedQuipDocumentComponentsInSalesforce:
+        value: true
+    usageLimits: null
+    price: Contact Sales

@@ -1,0 +1,311 @@
+saasName: Canva
+version: '2.0'
+createdAt: '2021-03-18'
+currency: USD
+hasAnnualPayment: true
+features:
+  freeTemplates:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  freeLogos:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  freeFonts:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  freePhotos:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  freeGraphics:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  premiumStockImages:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  createDesignsWithCustomDimesions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  exportDesignsAsPDF:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  exportDesignsAsPNG:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  exportDesignsAsJPG:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  builtInSocialSharing:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  presentationMode:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  canvaApp:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  oneClickDesignResizing:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  oneClickPhotoBackgroundRemoval:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  createCustomTemplates:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  uploadYourPhotosAndFonts:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  downloadDesignsWithTransparentBackground:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  customizeDownloadQuality:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  exportDesignsAsAnimatedGIF:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  exportDesignsAsMP4:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  createAndPublishToSocialMediaFromCanva:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+    pricingURLs: null
+  publishToSocialMediaOnlyAllowedToAdmins:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+    pricingURLs: null
+  teamSharing:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  shareView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  editAccessToDesigns:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  addCommentsToDesigns:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  bluitInCommenting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  approvalsWorkflow:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  brandKit:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  brandControls:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  advancedTemplateLocking:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  cloudStorage:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  folders:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  24/7support:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  twoFactorAuthentication:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  singleSignOn:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+usageLimits:
+  brandKitUnits:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 0
+    unit: Brand Kit
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - brandKit
+  cloudStorageLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 5
+    unit: GB
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - cloudStorage
+  foldersLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 2
+    unit: folder
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - folders
+plans:
+  FREE:
+    description: Everything you need to start designing
+    monthlyPrice: 0
+    annualPrice: 0
+    unit: user/month
+    features: null
+    usageLimits: null
+    price: 0
+  PRO:
+    description: >-
+      Designing together just got better. Professional design made easy with
+      unlimited access to premium tools and content.
+    monthlyPrice: 12.99
+    annualPrice: 9.99
+    unit: user/month
+    features:
+      premiumStockImages:
+        value: true
+      oneClickDesignResizing:
+        value: true
+      oneClickPhotoBackgroundRemoval:
+        value: true
+      createCustomTemplates:
+        value: true
+      uploadYourPhotosAndFonts:
+        value: true
+      downloadDesignsWithTransparentBackground:
+        value: true
+      customizeDownloadQuality:
+        value: true
+      createAndPublishToSocialMediaFromCanva:
+        value: true
+      brandKit:
+        value: true
+      24/7support:
+        value: true
+    usageLimits:
+      brandKitUnits:
+        value: 1
+      cloudStorageLimit:
+        value: 100
+      foldersLimit:
+        value: 1000000000
+    price: 12.99
+  ENTERPRISE:
+    description: >-
+      Empower your team, manage your brand, and scale your content all in one
+      place
+    monthlyPrice: Contact Sales
+    annualPrice: 30
+    unit: user/month
+    features:
+      premiumStockImages:
+        value: true
+      oneClickDesignResizing:
+        value: true
+      oneClickPhotoBackgroundRemoval:
+        value: true
+      createCustomTemplates:
+        value: true
+      uploadYourPhotosAndFonts:
+        value: true
+      downloadDesignsWithTransparentBackground:
+        value: true
+      customizeDownloadQuality:
+        value: true
+      createAndPublishToSocialMediaFromCanva:
+        value: true
+      publishToSocialMediaOnlyAllowedToAdmins:
+        value: true
+      approvalsWorkflow:
+        value: true
+      brandKit:
+        value: true
+      brandControls:
+        value: true
+      advancedTemplateLocking:
+        value: true
+      24/7support:
+        value: true
+      singleSignOn:
+        value: true
+    usageLimits:
+      brandKitUnits:
+        value: 1000000000
+      cloudStorageLimit:
+        value: 1000000000
+      foldersLimit:
+        value: 1000000000
+    price: Contact Sales
