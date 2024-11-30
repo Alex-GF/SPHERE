@@ -519,6 +519,23 @@ features:
     valueType: BOOLEAN
     defaultValue: false
     type: MANAGEMENT
+  wrikeIntegrate:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+  wrikeSync:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+  wrikeLock:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
 usageLimits:
   minNumberOfUsers:
     description: ''
@@ -958,7 +975,9 @@ addOns:
       - ENTERPRISE
       - PINNACLE
     price: Contact Sales
-    features: null
+    features:
+      wrikeIntegrate:
+        value: true
     usageLimits: null
     usageLimitsExtensions: null
   wrikeSync:
@@ -967,7 +986,9 @@ addOns:
       - ENTERPRISE
       - PINNACLE
     price: Contact Sales
-    features: null
+    features:
+      wrikeSync:
+        value: true
     usageLimits: null
     usageLimitsExtensions: null
   wrikeLock:
@@ -975,6 +996,8 @@ addOns:
       - ENTERPRISE
       - PINNACLE
     price: Contact Sales
-    features: null
+    features:
+      wrikeLock:
+        value: true
     usageLimits: null
     usageLimitsExtensions: null
