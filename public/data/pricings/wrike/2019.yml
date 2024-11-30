@@ -238,6 +238,43 @@ features:
     valueType: BOOLEAN
     defaultValue: false
     type: MANAGEMENT
+  wrikeResource:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  wrikeProof:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  wrikePublish:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  wrikeAnalyze:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  wrikeIntegrate:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+  wrikeTwoWaySync:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+  wrikeLock:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
 usageLimits:
   minNumberOfUsers:
     description: ''
@@ -422,7 +459,9 @@ addOns:
       - BUSINESS
       - ENTERPRISE
     price: Contact Sales
-    features: null
+    features:
+      wrikeResource:
+        value: true
     usageLimits: null
     usageLimitsExtensions: null
   wrikeProof:
@@ -430,7 +469,9 @@ addOns:
       - BUSINESS
       - ENTERPRISE
     price: Contact Sales
-    features: null
+    features:
+      wrikeProof:
+        value: true
     usageLimits: null
     usageLimitsExtensions: null
   wrikePublish:
@@ -438,7 +479,9 @@ addOns:
       - BUSINESS
       - ENTERPRISE
     price: Contact Sales
-    features: null
+    features:
+      wrikePublish:
+        value: true
     usageLimits: null
     usageLimitsExtensions: null
   wrikeAnalyze:
@@ -446,7 +489,9 @@ addOns:
       - BUSINESS
       - ENTERPRISE
     price: Contact Sales
-    features: null
+    features:
+      wrikeAnalyze:
+        value: true
     usageLimits: null
     usageLimitsExtensions: null
   wrikeIntegrate:
@@ -454,7 +499,9 @@ addOns:
       - BUSINESS
       - ENTERPRISE
     price: Contact Sales
-    features: null
+    features:
+      wrikeIntegrate:
+        value: true
     usageLimits: null
     usageLimitsExtensions: null
   wrikeTwoWaySync:
@@ -462,13 +509,17 @@ addOns:
       - BUSINESS
       - ENTERPRISE
     price: Contact Sales
-    features: null
+    features:
+      wrikeTwoWaySync:
+        value: true
     usageLimits: null
     usageLimitsExtensions: null
   wrikeLock:
     availableFor:
       - ENTERPRISE
     price: Contact Sales
-    features: null
+    features: 
+      wrikeLock:
+        value: true
     usageLimits: null
     usageLimitsExtensions: null

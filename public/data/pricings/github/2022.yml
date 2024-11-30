@@ -430,6 +430,14 @@ usageLimits:
     type: NON_RENEWABLE
     linkedFeatures:
       - githubPackages
+  githubCodespacesStorageLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: GB
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - githubCodespaces
 plans:
   FREE:
     description: The basics for individuals and organizations
@@ -498,6 +506,11 @@ addOns:
         value: true
     usageLimits: null
     usageLimitsExtensions: null
+    excludes:
+      - githubCodespaces4Core
+      - githubCodespaces8Core
+      - githubCodespaces16Core
+      - githubCodespaces32Core
   githubCodespaces4Core:
     availableFor:
       - FREE
@@ -510,6 +523,11 @@ addOns:
         value: true
     usageLimits: null
     usageLimitsExtensions: null
+    excludes:
+      - githubCodespaces2Core
+      - githubCodespaces8Core
+      - githubCodespaces16Core
+      - githubCodespaces32Core
   githubCodespaces8Core:
     availableFor:
       - FREE
@@ -522,6 +540,11 @@ addOns:
         value: true
     usageLimits: null
     usageLimitsExtensions: null
+    excludes:
+      - githubCodespaces2Core
+      - githubCodespaces4Core
+      - githubCodespaces16Core
+      - githubCodespaces32Core
   githubCodespaces16Core:
     availableFor:
       - FREE
@@ -534,6 +557,11 @@ addOns:
         value: true
     usageLimits: null
     usageLimitsExtensions: null
+    excludes:
+      - githubCodespaces2Core
+      - githubCodespaces4Core
+      - githubCodespaces8Core
+      - githubCodespaces32Core
   githubCodespaces32Core:
     availableFor:
       - FREE
@@ -546,6 +574,11 @@ addOns:
         value: true
     usageLimits: null
     usageLimitsExtensions: null
+    excludes:
+      - githubCodespaces2Core
+      - githubCodespaces4Core
+      - githubCodespaces8Core
+      - githubCodespaces16Core
   githubCodespacesStorage:
     availableFor:
       - FREE
@@ -553,11 +586,11 @@ addOns:
       - ENTERPRISE
     price: 0.07
     unit: GB/month
-    features:
-      githubCodespaces:
-        value: true
+    features: null
     usageLimits: null
-    usageLimitsExtensions: null
+    usageLimitsExtensions: 
+      githubCodespacesStorageLimit:
+        value: 1
   githubAdvancedSecurity:
     availableFor:
       - ENTERPRISE
