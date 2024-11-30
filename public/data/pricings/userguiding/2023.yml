@@ -360,7 +360,7 @@ plans:
         value: true
       dedicatedCustomerSuccessManager:
         value: true
-    usaeLimits:
+    usageLimits:
       activeGuidesLimit:
         value: 1000000000
       activeHotspotsLimit:
@@ -406,7 +406,7 @@ plans:
         value: true
       dedicatedCustomerSuccessManager:
         value: true
-    usaeLimits:
+    usageLimits:
       activeGuidesLimit:
         value: 1000000000
       activeHotspotsLimit:

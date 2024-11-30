@@ -412,7 +412,7 @@ features:
   accessToAllCake.comProducts:
     description: ''
     valueType: BOOLEAN
-    defaultValue: true
+    defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
     pricingURLs: null

@@ -438,7 +438,7 @@ plans:
         value: true
       employeeOnboardingModule:
         value: true
-    usaeLimits:
+    usageLimits:
       activeGuidesLimit:
         value: 1000000000
       activeHotspotsLimit:
@@ -494,18 +494,16 @@ plans:
         value: true
       singleSignOn:
         value: true
-    usaeLimits:
+    usageLimits:
       activeGuidesLimit:
         value: 1000000000
       activeHotspotsLimit:
         value: 1000000000
-      activeOnboardingChecklistsLimit:
+      activeChecklistsLimit:
         value: 1000000000
       activeResourceCentersLimit:
         value: 1000000000
       customizableThemesLimit:
-        value: 1000000000
-      activeUsersLimit:
         value: 1000000000
       teamMembersLimit:
         value: 1000000000

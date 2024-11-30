@@ -338,31 +338,3 @@ plans:
       usersLimit:
         value: 6
     price: 99
-  MEDIUM_BUSINESS:
-    description: >-
-      For medium-sized businesses that need to scale their social media
-      presence.
-    monthlyPrice: 199
-    annualPrice: null
-    unit: account/month
-    features: null
-    usageLimits: null
-    price: 199
-  LARGE_BUSINESS:
-    description: >-
-      For large businesses that need to manage a lot of social media accounts
-      and users.
-    monthlyPrice: 399
-    annualPrice: null
-    unit: account/month
-    features: null
-    usageLimits: null
-    price: 399
-  ENTERPRISE:
-    description: For enterprise-level businesses that need a custom solution.
-    monthlyPrice: Contact us
-    annualPrice: null
-    unit: null
-    features: null
-    usageLimits: null
-    price: Contact us

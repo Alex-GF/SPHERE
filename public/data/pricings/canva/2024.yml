@@ -617,7 +617,7 @@ plans:
       scale their productivity.
     monthlyPrice: 15
     annualPrice: 10
-    unit: user/month (only 1 user)
+    unit: user/month
     features:
       assets1:
         value: 127+ million
@@ -707,7 +707,7 @@ plans:
       features designed to allow teams of all sizes to collaborate with ease.
     monthlyPrice: 10
     annualPrice: 8.33
-    unit: user/month (min 3 users)
+    unit: user/month
     features:
       assets1:
         value: 127+ million
