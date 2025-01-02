@@ -40,8 +40,8 @@ Ensure you have **Deno 2.0** installed, as it is the package manager of the proj
    Once the `.env` file is set up, run the following commands in your terminal to install dependencies and start the development server:
 
    ```bash
-   deno install
-   deno task dev
+   npm run install
+   npm run dev
    ```
 
    🎉 After running these commands, the project should be up and running!
