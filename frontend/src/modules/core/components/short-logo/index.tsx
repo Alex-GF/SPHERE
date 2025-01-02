@@ -14,7 +14,7 @@ const ShortLogo = forwardRef(
   ({ disabledLink = false, sx, ...other }: InferProps<LogoProps>) => {
     const logo = (
       <ReactSVG
-        src="./assets/logo/SPHERE-logo-short.svg"
+        src="../../../../assets/logo/SPHERE-logo-short.svg"
         useRequestCache={true}
         style={{
           width: 75,

@@ -184,8 +184,8 @@ function CustomLabel({
 
     if (fileName) {
       const link = document.createElement('a');
-      link.href = "src/assets/"+fileName;
-      link.download = "src/assets/"+fileName;
+      link.href = "data/"+fileName;
+      link.download = "data/"+fileName;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);

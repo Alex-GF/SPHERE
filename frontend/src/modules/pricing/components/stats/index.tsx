@@ -30,7 +30,7 @@ export default function Stats({ pricingDetails, currentPricing, pricing } : Stat
               </Box>
               <Box display="flex" justifyContent="space-between" alignItems="center" mt={2}>
                   <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column">
-                        {currentPricing && formatDistanceToNow(parseISO(pricingDetails.lastModified.includes("/") ? pricingDetails.lastModified.split(",")[0].split("/").reverse().join("-") : currentPricing?.date))} ago
+                        {currentPricing && formatDistanceToNow(parseISO(currentPricing.date))} ago
                       <Typography variant="body2" color="text.secondary">
                           last updated
                       </Typography>

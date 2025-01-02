@@ -14,7 +14,7 @@ const Logo = forwardRef(
   ({ disabledLink = false, sx }: InferProps<LogoProps>) => {
     const logo = (
       <ReactSVG
-        src="./assets/logo/SPHERE-logo.svg"
+        src="../../../../assets/logo/SPHERE-logo.svg"
         useRequestCache={true}
         style={{
           width: 300,
