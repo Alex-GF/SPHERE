@@ -24,5 +24,5 @@ jobs:
       - name: Run Tests
         run: deno task test
         env:
-          DATABASE_TECHNOLOGY: "mockDB"
+          DATABASE_TECHNOLOGY: "mongoDB"
           SERVER_PORT: 8080

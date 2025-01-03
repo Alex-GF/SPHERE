@@ -8,7 +8,7 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      DATABASE_TECHNOLOGY: mockDB
+      DATABASE_TECHNOLOGY: mongoDB
       SERVER_PORT: 8080
     command: sh -c "npm run deploy:prod"
     ports:

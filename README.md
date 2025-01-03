@@ -25,14 +25,14 @@ Ensure you have **Deno 2.0** installed, as it is the package manager of the proj
    Create a `.env` file in the root directory of the project, using the provided `.env.example` as a reference. The `.env.example` file should look like this:
 
    ```plaintext
-   DATABASE_TECHNOLOGY=mockDB|sequelize
+   DATABASE_TECHNOLOGY=mongoDB|sequelize
    SERVER_PORT=1234
    ```
 
-   Currently, the only supported database option is `mockDB`. Here’s an example `.env` configuration:
+   Currently, the only supported database option is `mongoDB`. Here’s an example `.env` configuration:
 
    ```plaintext
-   DATABASE_TECHNOLOGY=mockDB
+   DATABASE_TECHNOLOGY=mongoDB
    SERVER_PORT=8080
    ```
 

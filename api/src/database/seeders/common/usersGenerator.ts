@@ -1,0 +1,66 @@
+import { faker } from '@faker-js/faker';
+import bcrypt from 'bcryptjs';
+
+export const generateUsers = async (nUsers: number) => {
+  const users = [];
+  users.push(await generateKnownUser());
+  users.push(await generateKnownAdmin());
+
+  for (let i = 0; i < nUsers; i++) {
+    users.push(await generateFakeUser());
+  }
+  return users;
+};
+
+const generateKnownUser = async () => {
+  const user = await generateFakeUser();
+  user.email = 'user1@user.com';
+  user.password = await encryptPassword('secret');
+  user.userType = 'user';
+
+  return user;
+};
+
+const generateKnownAdmin = async () => {
+  const admin = await generateFakeUser();
+  admin.email = 'admin1@admin.com';
+  admin.password = await encryptPassword('secret');
+  admin.userType = 'admin';
+
+  return admin;
+};
+const generateFakeUser = async () => {
+  const firstName = faker.person.firstName();
+  const lastName = faker.person.lastName();
+  const email = faker.internet.email({ firstName: firstName, lastName: lastName });
+  const password = await encryptPassword(faker.internet.password());
+  const phone = faker.phone.number();
+  const avatar = faker.image.avatar() + `?timestamp=${Math.floor(Math.random() * 100)}`;
+  const address = `${faker.location.streetAddress()}, ${faker.location.city()}, ${faker.location.country()}.`;
+  const postalCode = faker.location.zipCode();
+  const userType = faker.helpers.arrayElement(['user', 'admin']);
+  const createdAt = new Date();
+  const updatedAt = createdAt;
+  return {
+    firstName,
+    lastName,
+    email,
+    password,
+    phone,
+    avatar,
+    address,
+    postalCode,
+    userType,
+    createdAt,
+    updatedAt,
+  };
+};
+const encryptPassword = async (password: string) => {
+  try {
+    const salt = await bcrypt.genSalt(5);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    return hashedPassword;
+  } catch (err: any) {
+    throw new Error(err);
+  }
+};

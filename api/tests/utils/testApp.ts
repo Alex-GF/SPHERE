@@ -25,7 +25,7 @@ const shutdownApp = async () => {
 
 const getIdType = () => {
   switch (process.env.DATABASE_TECHNOLOGY) {
-    case 'mockDB':
+    case 'mongoDB':
       return String;
     default:
       throw new Error('Unsupported database technology');

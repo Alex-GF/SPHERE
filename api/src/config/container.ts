@@ -3,7 +3,7 @@ import { createContainer, asValue, asClass, AwilixContainer } from "awilix";
 import dotenv from "dotenv";
 import process from "node:process";
 
-import UserMockDB from "../repositories/mockDB/UserMockDB";
+import MongooseUserRepository from "../repositories/mongoose/UserRepository";
 
 import UserService from "../services/UserService";
 
@@ -13,8 +13,8 @@ function initContainer(databaseType: string): AwilixContainer {
   const container: AwilixContainer = createContainer();
   let userRepository;
   switch (databaseType) {
-    case "mockDB":
-      userRepository = new UserMockDB();
+    case "mongoDB":
+      userRepository = new MongooseUserRepository();
       break;
     default:
       throw new Error(`Unsupported database type: ${databaseType}`);
