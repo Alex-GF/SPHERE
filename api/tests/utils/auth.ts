@@ -6,9 +6,10 @@ import { User } from '../../src/types/database/User';
 let loggedInUser: User, loggedInAdmin: User;
 
 const getNewloggedInAdmin = async () => {
-  const fakeOwner = await generateFakeUser()
-  await request(await getApp()).post('/users/registerOwner').send(fakeOwner)
-  return (await request(await getApp()).post('/users/loginOwner').send({ email: fakeOwner.email, password: fakeOwner.password })).body
+  const fakeAdmin = await generateFakeUser("admin")
+  const loggedAdmin = await getLoggedInAdmin();
+  await request(await getApp()).post('/users/registerAdmin').set('Authorization', `Bearer ${loggedAdmin.token}`).send(fakeAdmin)
+  return (await request(await getApp()).post('/users/loginAdmin').send({ email: fakeAdmin.email, password: fakeAdmin.password })).body
 }
 
 const getLoggedInAdmin = async () => {
@@ -26,9 +27,9 @@ const getLoggedInUser = async () => {
 }
 
 const getNewloggedInUser = async (name: string) => {
-  const fakeCustomer = await generateFakeUser(name)
-  await request(await getApp()).post('/users/register').send(fakeCustomer)
-  const getloggedInUser = (await request(await getApp()).post('/users/login').send({ email: fakeCustomer.email, password: fakeCustomer.password })).body
+  const fakeUser = await generateFakeUser("user", name)
+  await request(await getApp()).post('/users/register').send(fakeUser)
+  const getloggedInUser = (await request(await getApp()).post('/users/login').send({ email: fakeUser.email, password: fakeUser.password })).body
   return getloggedInUser
 }
 

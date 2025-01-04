@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker';
 
 const adminCredentials = {
-  email: 'testAdmin@admin.com',
-  password: 'testUser',
+  email: 'admin1@admin.com',
+  password: 'secret',
 };
 
 const noEmailAdminCredentials = {
@@ -10,8 +10,8 @@ const noEmailAdminCredentials = {
 };
 
 const userCredentials = {
-  email: 'testUser@user.com',
-  password: 'testUser',
+  email: 'user1@user.com',
+  password: 'secret',
 };
 
 const noEmailUserCredentials = {
@@ -22,7 +22,7 @@ const invalidCredentials = {
   email: 'invalidCredential@customer.com',
   password: 'secret',
 };
-const generateFakeUser = async (name?: string) => {
+const generateFakeUser = (type: "user" | "admin", name?: string) => {
   const firstName = name || faker.person.firstName();
   const lastName = faker.person.lastName();
   const email = faker.internet.email({ firstName: firstName, lastName: lastName });
@@ -31,9 +31,7 @@ const generateFakeUser = async (name?: string) => {
   const avatar = faker.image.avatar() + `?timestamp=${Math.floor(Math.random() * 100)}`;
   const address = `${faker.location.streetAddress()}, ${faker.location.city()}, ${faker.location.country()}.`;
   const postalCode = faker.location.zipCode();
-  const userType = faker.helpers.arrayElement(['user', 'admin']);
-  const createdAt = new Date();
-  const updatedAt = createdAt;
+  const userType = type;
 
   return {
     firstName,
@@ -45,8 +43,6 @@ const generateFakeUser = async (name?: string) => {
     address,
     postalCode,
     userType,
-    createdAt,
-    updatedAt,
   };
 };
 

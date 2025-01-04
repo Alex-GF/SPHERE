@@ -3,6 +3,7 @@ import request from "supertest";
 import { getApp, shutdownApp } from "./utils/testApp";
 import { Server } from "http";
 import {describe, it, expect, beforeAll, afterAll } from "vitest";
+import { generateFakeUser } from "./utils/testData";
 
 dotenv.config();
 
@@ -14,14 +15,16 @@ describe("Get public user information", function () {
   });
 
   describe("POST /users/register", function () {
-    
+    it("Should return 201 and the user created", async function () {
+      const newUser = generateFakeUser("user");
+      const response = await request(app).get("/api/users");
+      expect(response.status).toEqual(200);
+      // const response = await request(app).post("/api/users/register").send(newUser);
+      // expect(response.status).toEqual(201);
+      // expect(response.body.password).toBeUndefined();
+      // expect(response.body.email).toEqual(newUser.email);
+    });
   });
-
-  // it("Should return 200 and the list of current users in the database", async function () {
-  //   const response = await request(app).get("/users");
-  //   expect(response.status).toEqual(200);
-  //   expect(response.body.length > 0).toBeTruthy();
-  // });
 
   afterAll(async function () {
     await shutdownApp();

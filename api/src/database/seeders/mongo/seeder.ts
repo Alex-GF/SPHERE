@@ -40,7 +40,7 @@ const seeder = new Seeder(config)
 
 const collections = seeder.readCollectionsFromPath(path.resolve(__dirname))
 
-const seedDatabase = async () => {
+export const seedDatabase = async () => {
   try {
     await seeder.import(collections)
     console.log('==== Mongo seeding successfull ====')
@@ -48,7 +48,3 @@ const seedDatabase = async () => {
     console.error(`Seeding error: ${err}`)
   }
 }
-
-seedDatabase()
-
-// copyFiles()

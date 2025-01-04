@@ -6,6 +6,7 @@ import type { Server } from "http";
 import type { AddressInfo } from "net";
 import { disconnectMongoose, initMongoose } from "./config/mongoose";
 import { initPassport } from "./config/passport";
+import { seedDatabase } from "./database/seeders/mongo/seeder";
 
 const green = "\x1b[32m"; // Color verde
 const blue = "\x1b[36m"; // Color azul
@@ -37,6 +38,10 @@ const initializeServer = async (): Promise<{
     });
   });
 
+  app._router.stack.forEach((r: any) => {
+    console.log(r.route ? r.route.path : "No path");
+  });
+
   const addressInfo: AddressInfo = server.address() as AddressInfo;
 
   console.log(
@@ -52,6 +57,10 @@ const initializeDatabase = async () => {
     switch (process.env.DATABASE_TECHNOLOGY) {
       case "mongoDB":
         connection = await initMongoose();
+        
+        if( process.argv.includes('--seed') ){
+          seedDatabase();
+        }
         break
       default:
         throw new Error("Unsupported database technology")
