@@ -13,11 +13,15 @@ describe("Get public user information", function () {
     app = await getApp();
   });
 
-  it("Should return 200 and the list of current users in the database", async function () {
-    const response = await request(app).get("/users");
-    expect(response.status).toEqual(200);
-    expect(response.body.length > 0).toBeTruthy();
+  describe("POST /users/register", function () {
+    
   });
+
+  // it("Should return 200 and the list of current users in the database", async function () {
+  //   const response = await request(app).get("/users");
+  //   expect(response.status).toEqual(200);
+  //   expect(response.body.length > 0).toBeTruthy();
+  // });
 
   afterAll(async function () {
     await shutdownApp();

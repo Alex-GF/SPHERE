@@ -11,6 +11,10 @@ class UserRepository extends RepositoryBase {
     }
   }
 
+  async findAll (...args: any) {
+    return UserMongoose.find({}, { password: 0 })
+  }
+
   async create (businessEntity: any, ...args: any) {
     return (new UserMongoose(businessEntity)).save()
   }
@@ -38,6 +42,10 @@ class UserRepository extends RepositoryBase {
 
   async findUserByEmail (email: string) {
     return this._findByEmailAndUserType(email, 'user')
+  }
+
+  async findByToken (token: string) {
+    return UserMongoose.findOne({ token })
   }
 
   async _findByEmailAndUserType (email: string, userType: "user" | "admin") {

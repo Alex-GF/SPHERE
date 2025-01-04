@@ -11,9 +11,13 @@ const loadFileRoutes = function (app: express.Application) {
   const userController = new UserController();
   const userService = container.resolve('userService');
   const upload = handleFileUpload(['avatar'], process.env.AVATARS_FOLDER!);
+  const baseUrl = process.env.BASE_URL_PATH;
 
   app
-    .route('/users')
+    .route(baseUrl + '/users')
+    .get(
+      userController.getAll
+    )
     .put(
       isLoggedIn,
       upload,
@@ -24,7 +28,7 @@ const loadFileRoutes = function (app: express.Application) {
     )
     .delete(isLoggedIn, userController.destroy);
   app
-    .route('/users/register')
+    .route(baseUrl + '/users/register')
     .post(
       upload,
       addFilenameToBody('avatar'),
@@ -33,7 +37,7 @@ const loadFileRoutes = function (app: express.Application) {
       userController.registerUser
     );
   app
-    .route('/users/registerAdmin')
+    .route(baseUrl + '/users/registerAdmin')
     .post(
       isLoggedIn,
       hasRole('admin'),
@@ -43,11 +47,14 @@ const loadFileRoutes = function (app: express.Application) {
       handleValidation,
       userController.registerAdmin
     );
-  app.route('/users/login').post(UserValidation.login, handleValidation, userController.loginUser);
+  app.route(baseUrl + '/users/login').post(
+    UserValidation.login, 
+    handleValidation, 
+    userController.loginUser);
   app
-    .route('/users/loginAdmin')
+    .route(baseUrl + '/users/loginAdmin')
     .post(UserValidation.login, handleValidation, userController.loginAdmin);
-  app.route('/users/isTokenValid').put(userController.loginByToken);
+  app.route(baseUrl + '/users/isTokenValid').put(userController.loginByToken);
   app
     .route('/users/:userId')
     .get(checkEntityExists(userService, 'userId'), isLoggedIn, userController.show);

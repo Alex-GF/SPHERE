@@ -7,6 +7,7 @@ class UserController {
 
   constructor () {
     this.userService = container.resolve('userService')
+    this.getAll = this.getAll.bind(this)
     this.loginAdmin = this.loginAdmin.bind(this)
     this.loginUser = this.loginUser.bind(this)
     this.loginByToken = this.loginByToken.bind(this)
@@ -15,6 +16,12 @@ class UserController {
     this.registerAdmin = this.registerAdmin.bind(this)
     this.destroy = this.destroy.bind(this)
     this.update = this.update.bind(this)
+  }
+
+  async getAll (req: any, res: any) {
+    const users = await this.userService.getAll()
+
+    res.status(200).json(users)
   }
 
   async registerUser (req: any, res: any) {
@@ -55,7 +62,7 @@ class UserController {
   async loginAdmin (req: any, res: any) {
     try {
       const user = await this.userService.loginAdmin(req.body.email, req.body.password)
-      res.json(user)
+      res.json({token: user!.token})
     } catch (err: any) {
       return res.status(401).send({ errors: err.message })
     }
@@ -64,7 +71,7 @@ class UserController {
   async loginUser (req: any, res: any) {
     try {
       const user = await this.userService.loginUser(req.body.email, req.body.password)
-      res.json(user)
+      res.json({token: user!.token})
     } catch (err: any) {
       return res.status(401).send({ errors: err.message })
     }

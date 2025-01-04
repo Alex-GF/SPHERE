@@ -29,6 +29,8 @@ class UserService {
     async _register (newUser: any, userType: "user" | "admin") {
       newUser.userType = userType
       newUser = { ...newUser, ...this._createUserTokenDTO() }
+      const salt = await bcrypt.genSalt(5)
+      newUser.password = await bcrypt.hash(newUser.password, salt)
       const registeredUser = await this.userRepository.create(newUser)
       processFileUris(registeredUser, ['avatar'])
       return registeredUser
