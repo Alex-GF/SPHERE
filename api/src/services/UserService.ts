@@ -29,6 +29,9 @@ class UserService {
     async _register (newUser: any, userType: "user" | "admin") {
       newUser.userType = userType
       newUser = { ...newUser, ...this._createUserTokenDTO() }
+      if (newUser.avatar) {
+        delete newUser.avatar;
+      }
       const salt = await bcrypt.genSalt(5)
       newUser.password = await bcrypt.hash(newUser.password, salt)
       const registeredUser = await this.userRepository.create(newUser)
@@ -100,6 +103,21 @@ class UserService {
     }
   
     async update (id: string, data: any) {
+      let userToUpdate = await this.userRepository.findById(id);
+      if (!userToUpdate) {
+        throw new Error('User not found')
+      }
+
+      if (data.password) {
+        const salt = await bcrypt.genSalt(5)
+        data.password = await bcrypt.hash(data.password, salt)
+      }
+
+      userToUpdate = {
+        ...userToUpdate,
+        ...data
+      }
+
       const user = await this.userRepository.update(id, data)
       if (!user) {
         throw new Error('User not found')
