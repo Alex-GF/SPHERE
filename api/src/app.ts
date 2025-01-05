@@ -4,8 +4,7 @@ import routes from "./routes/index";
 import loadGlobalMiddlewares from "./middlewares/GlobalMiddlewaresLoader";
 import type { Server } from "http";
 import type { AddressInfo } from "net";
-import { disconnectMongoose, getMongoDBConnectionURI, initMongoose } from "./config/mongoose";
-import { initPassport } from "./config/passport";
+import { disconnectMongoose, initMongoose } from "./config/mongoose";
 import { seedDatabase } from "./database/seeders/mongo/seeder";
 import bodyParser from "body-parser";
 
@@ -21,7 +20,6 @@ const initializeApp = async () => {
   app.use(bodyParser.urlencoded({limit: '2mb', extended: true}))
   loadGlobalMiddlewares(app);
   await routes(app);
-  initPassport()
   await initializeDatabase()
   // await postInitializeDatabase(app)
   return app;

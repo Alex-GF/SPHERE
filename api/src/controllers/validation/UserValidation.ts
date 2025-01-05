@@ -18,7 +18,7 @@ const create = [
     .isString()
     .withMessage('The lastName field must be a string')
     .isLength({ min: 1, max: 255 })
-    .withMessage('The last name must have between 3 and 255 characters long')
+    .withMessage('The last name must have between 1 and 255 characters long')
     .trim(),
   check('email')
     .exists()
@@ -81,7 +81,7 @@ const update = [
     .isString()
     .withMessage('The lastName field must be a string')
     .isLength({ min: 1, max: 255 })
-    .withMessage('The last name must have between 3 and 255 characters long')
+    .withMessage('The last name must have between 1 and 255 characters long')
     .trim(),
   check('email')
     .optional()

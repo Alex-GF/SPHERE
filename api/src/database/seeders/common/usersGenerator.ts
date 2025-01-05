@@ -1,5 +1,4 @@
 import { faker } from '@faker-js/faker';
-import bcrypt from 'bcryptjs';
 
 export const generateUsers = async (nUsers: number) => {
   const users = [];
@@ -15,7 +14,7 @@ export const generateUsers = async (nUsers: number) => {
 const generateKnownUser = async () => {
   const user = await generateFakeUser();
   user.email = 'user1@user.com';
-  user.password = await encryptPassword('secret');
+  user.password = 'secret';
   user.userType = 'user';
 
   return user;
@@ -24,7 +23,7 @@ const generateKnownUser = async () => {
 const generateKnownAdmin = async () => {
   const admin = await generateFakeUser();
   admin.email = 'admin1@admin.com';
-  admin.password = await encryptPassword('secret');
+  admin.password = 'secret';
   admin.userType = 'admin';
 
   return admin;
@@ -33,7 +32,7 @@ const generateFakeUser = async () => {
   const firstName = faker.person.firstName();
   const lastName = faker.person.lastName();
   const email = faker.internet.email({ firstName: firstName, lastName: lastName });
-  const password = await encryptPassword(faker.internet.password());
+  const password = faker.internet.password();
   const phone = faker.phone.number();
   const avatar = faker.image.avatar() + `?timestamp=${Math.floor(Math.random() * 100)}`;
   const address = `${faker.location.streetAddress()}, ${faker.location.city()}, ${faker.location.country()}.`;
@@ -54,13 +53,4 @@ const generateFakeUser = async () => {
     createdAt,
     updatedAt,
   };
-};
-const encryptPassword = async (password: string) => {
-  try {
-    const salt = await bcrypt.genSalt(5);
-    const hashedPassword = await bcrypt.hash(password, salt);
-    return hashedPassword;
-  } catch (err: any) {
-    throw new Error(err);
-  }
 };

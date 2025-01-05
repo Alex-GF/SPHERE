@@ -15,9 +15,6 @@ const loadFileRoutes = function (app: express.Application) {
 
   app
     .route(baseUrl + '/users')
-    .get(
-      userController.getAll
-    )
     .put(
       isLoggedIn,
       upload,

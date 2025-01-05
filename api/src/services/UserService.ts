@@ -12,12 +12,6 @@ class UserService {
     constructor () {
       this.userRepository = container.resolve('userRepository');
     }
-  
-    async getAll (): Promise<User[]> {
-      const userList = await this.userRepository.findAll()
-      
-      return userList;
-    }
 
     _createUserTokenDTO () {
       return {
@@ -32,8 +26,8 @@ class UserService {
       if (newUser.avatar) {
         delete newUser.avatar;
       }
-      const salt = await bcrypt.genSalt(5)
-      newUser.password = await bcrypt.hash(newUser.password, salt)
+      // const salt = await bcrypt.genSalt(5)
+      // newUser.password = await bcrypt.hash(newUser.password, salt)
       const registeredUser = await this.userRepository.create(newUser)
       processFileUris(registeredUser, ['avatar'])
       return registeredUser
@@ -108,10 +102,10 @@ class UserService {
         throw new Error('User not found')
       }
 
-      if (data.password) {
-        const salt = await bcrypt.genSalt(5)
-        data.password = await bcrypt.hash(data.password, salt)
-      }
+      // if (data.password) {
+      //   const salt = await bcrypt.genSalt(5)
+      //   data.password = await bcrypt.hash(data.password, salt)
+      // }
 
       userToUpdate = {
         ...userToUpdate,

@@ -1,6 +1,6 @@
 
 import { NextFunction } from 'express';
-import passport from 'passport';
+import container from '../config/container';
 
 const hasRole = (...roles: string[]) => (req: any, res: any, next: NextFunction) => {
   if (!req.user) {
@@ -12,8 +12,28 @@ const hasRole = (...roles: string[]) => (req: any, res: any, next: NextFunction)
   return next()
 }
 
-const isLoggedIn = (req: any, res: any, next: NextFunction) => {
-  passport.authenticate('bearer', { session: false })(req, res, next)
+const isLoggedIn = async (req: any, res: any, next: NextFunction) => {
+  const userService = container.resolve('userService');
+  
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return res.status(401).send({ error: 'No authorization header found' });
+  }
+
+  if (!authHeader.startsWith('Bearer ')) {
+    return res.status(401).send({ error: 'Invalid authorization header. Remeber to use `Bearer {token}`' });
+  }
+
+  const token = authHeader.split(' ')[1];
+
+  try{
+    const user = await userService.loginByToken(token);
+    req.user = user;
+    next();
+  }catch(err){
+    return res.status(401).send({ error: (err as Error).message });
+  }
+
 }
 
 export { hasRole, isLoggedIn }

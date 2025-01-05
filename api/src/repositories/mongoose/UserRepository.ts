@@ -11,10 +11,6 @@ class UserRepository extends RepositoryBase {
     }
   }
 
-  async findAll (...args: any) {
-    return UserMongoose.find({}, { password: 0 })
-  }
-
   async create (businessEntity: any, ...args: any) {
     return (new UserMongoose(businessEntity)).save()
   }
