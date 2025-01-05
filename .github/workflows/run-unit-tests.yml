@@ -30,9 +30,9 @@ jobs:
           envkey_MONGO_INITDB_DATABASE: ${{vars.CI_MONGO_INITDB_DATABASE}}
           envkey_MONGO_INITDB_ROOT_USERNAME: ${{vars.CI_MONGO_INITDB_ROOT_USERNAME}}
           envkey_MONGO_INITDB_ROOT_PASSWORD: ${{vars.CI_MONGO_INITDB_ROOT_PASSWORD}}
-          envkey_DATABASE_NAME: ${{vars.CI_DATABASE_NAME}}
-          envkey_DATABASE_USERNAME: ${{vars.CI_DATABASE_USERNAME}}
-          envkey_DATABASE_PASSWORD: ${{vars.CI_DATABASE_PASSWORD}}
+          envkey_DATABASE_NAME: ${{vars.CI_MONGO_INITDB_DATABASE}}
+          envkey_DATABASE_USERNAME: ${{vars.CI_MONGO_INITDB_ROOT_USERNAME}}
+          envkey_DATABASE_PASSWORD: ${{vars.CI_MONGO_INITDB_ROOT_PASSWORD}}
           envkey_SERVER_PORT: ${{vars.CI_SERVER_PORT}}
           envkey_APP_HOST: ${{vars.CI_APP_HOST}}
           envkey_AVATARS_FOLDER: ${{vars.CI_AVATARS_FOLDER}}
@@ -50,14 +50,6 @@ jobs:
           mongodb-password: ${{ vars.CI_MONGO_INITDB_ROOT_PASSWORD }}
           mongodb-db: ${{ vars.CI_MONGO_INITDB_DATABASE }}
           mongodb-port: ${{ vars.CI_MONGO_PORT }}
-
-      - name: Connect to MongoDB and run script
-        run: |
-          mongo --host ${{ vars.CI_MONGO_HOST }} 
-          --port ${{ vars.CI_MONGO_PORT }} 
-          -u ${{ vars.CI_MONGO_INITDB_ROOT_USERNAME }} 
-          -p ${{ vars.CI_MONGO_INITDB_ROOT_PASSWORD }} 
-          --authenticationDatabase admin ${{ vars.CI_MONGO_INITDB_DATABASE }} < ./api/init-mongo.sh
 
       - name: Install dependencies
         run: npm run install
