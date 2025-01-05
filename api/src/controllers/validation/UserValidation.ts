@@ -6,7 +6,7 @@ const maxFileSize = 2000000; // around 2Mb
 const create = [
   check('firstName').exists().isString().isLength({ min: 1, max: 255 }).trim(),
   check('lastName').exists().isString().isLength({ min: 1, max: 255 }).trim(),
-  check('email').exists().isString().isEmail().normalizeEmail(),
+  check('email').exists().isString().isEmail(),
   check('password')
     .exists()
     .isString()

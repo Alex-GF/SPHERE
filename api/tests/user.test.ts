@@ -17,12 +17,10 @@ describe("Get public user information", function () {
   describe("POST /users/register", function () {
     it("Should return 201 and the user created", async function () {
       const newUser = generateFakeUser("user");
-      const response = await request(app).get("/api/users");
-      expect(response.status).toEqual(200);
-      // const response = await request(app).post("/api/users/register").send(newUser);
-      // expect(response.status).toEqual(201);
-      // expect(response.body.password).toBeUndefined();
-      // expect(response.body.email).toEqual(newUser.email);
+      const response = await request(app).post("/api/users/register").send(newUser);
+      expect(response.status).toEqual(201);
+      expect(response.body.password).toBeUndefined();
+      expect(response.body.email).toEqual(newUser.email);
     });
   });
 

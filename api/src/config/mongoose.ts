@@ -24,9 +24,10 @@ const initMongoose = () => {
   return mongoose.connect(mongoDbConnectionURI)
 }
 
-const disconnectMongoose = async (connection: Mongoose) => {
+const disconnectMongoose = async () => {
   console.log('Disconnecting from MongoDB')
-  return connection.disconnect();
+  mongoose.connection.db!.dropDatabase();
+  return mongoose.disconnect();
 }
 
 export { initMongoose, getMongoDBConnectionURI, disconnectMongoose }

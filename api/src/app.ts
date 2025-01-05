@@ -4,7 +4,7 @@ import routes from "./routes/index";
 import loadGlobalMiddlewares from "./middlewares/GlobalMiddlewaresLoader";
 import type { Server } from "http";
 import type { AddressInfo } from "net";
-import { disconnectMongoose, initMongoose } from "./config/mongoose";
+import { disconnectMongoose, getMongoDBConnectionURI, initMongoose } from "./config/mongoose";
 import { initPassport } from "./config/passport";
 import { seedDatabase } from "./database/seeders/mongo/seeder";
 
@@ -17,7 +17,7 @@ const initializeApp = async () => {
   dotenv.config();
   const app: Application = express();
   loadGlobalMiddlewares(app);
-  routes(app);
+  await routes(app);
   initPassport()
   await initializeDatabase()
   // await postInitializeDatabase(app)
@@ -36,10 +36,6 @@ const initializeServer = async (): Promise<{
       if (err) return reject(err);
       resolve(server);
     });
-  });
-
-  app._router.stack.forEach((r: any) => {
-    console.log(r.route ? r.route.path : "No path");
   });
 
   const addressInfo: AddressInfo = server.address() as AddressInfo;
@@ -71,11 +67,11 @@ const initializeDatabase = async () => {
   return connection
 }
 
-const disconnectDatabase = async (app: any) => {
+const disconnectDatabase = async () => {
   try {
     switch (process.env.DATABASE_TECHNOLOGY) {
       case "mongoDB":
-        await disconnectMongoose(app.connection)
+        await disconnectMongoose()
         break
       default:
         throw new Error("Unsupported database technology");

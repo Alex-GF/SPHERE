@@ -11,7 +11,7 @@
     "create-db-containers": "cd docker && docker-compose up -d",
     "dev:api": "cd api && npx tsx --tsconfig tsconfig.json --watch src/backend.ts --seed",
     "dev:vite": "cd frontend && npx vite",
-    "test:api": "cd api && npx vitest --run",
+    "test:api": "cd api && npx vitest --run && cd .. && npm run seed:mongo-local:small",
     "deploy:vercel": "cd frontend && vite build",
     "deploy:prod": "cd frontend && vite preview --host",
     "seed:mongo-local:small": "cd api && npx tsx --tsconfig tsconfig.json scripts/seedMongo.ts"

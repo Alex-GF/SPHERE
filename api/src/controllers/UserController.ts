@@ -40,7 +40,7 @@ class UserController {
       } else if (userType === 'user') {
         registeredUser = await this.userService.registerUser(req.body)
       }
-      res.json(registeredUser)
+      res.status(201).json(registeredUser)
     } catch (err: any) {
       if (err.name.includes('ValidationError') || err.code === 11000) {
         res.status(422).send(err)
