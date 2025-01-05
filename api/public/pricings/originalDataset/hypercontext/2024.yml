@@ -1,0 +1,600 @@
+saasName: HyperContext
+version: '2.0'
+createdAt: '2024-07-15'
+currency: USD
+hasAnnualPayment: true
+features:
+  agendaSharing:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  coEditing:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  nextSteps:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  embeddedMedia:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTENSION
+  fileAttachment:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  linkIntegrations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  largeGroupDiscussions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  1to1Meeting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  teamMeeting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  collaborativeAgenda:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  customPersonalMeetingTemplates:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  shareableNotes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  privateNotes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  exportableNotes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  searchableNotes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  commentsOnAgendaItems:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  embeddedMediaInMeetings:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  boardViewForMeetingItems:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  aiManagerCopilot:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: BOT
+  reportingOnMeetingMetrics:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  customOrgWideMeetingTemplates:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  goalTemplates:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  individualGoals:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  teamGoals:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  companyGoals:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  goalRelationships:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  meetingIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTENSION
+  reportsOnGoals:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  analyticsOnGoals:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  shareableLiveReports:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  goalProgressNotifications:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TRACKING
+  performanceReviewIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTENSION
+  360PerformanceReviews:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  cutomQuestionTemplates:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  competencyBasedReviewQuestions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  aiWritingCoPilot:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: BOT
+  aiConsolidatedReview:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: BOT
+  employeePraiseIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTENSION
+  employeeRecognisionIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTENSION
+  reviewCycleAutomation:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  dynamiReviewAsignments:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  9BoxReporting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  calibrationReporting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  aiInsightsOnPerformanceTrends:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: BOT
+  exportToExcelForReporting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  crossCycleAnalytics:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  basicCollaborationToolsIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  mediaToolsIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  designToolsIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  personalProductivityToolsIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  projectManagementToolsIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  productManagementToolsIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  directorySync:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+  hrisIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  customApiAccess:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+  inAppSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  prioritySupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  sso:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  advancedSecurityFeatures:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  dedicatedAccountManager:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  customizableDataRetentionPolicies:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  auditLogs:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  complianceReports:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+plans:
+  FREE:
+    description: Best for people who want to take Hypercontext for a spin.
+    monthlyPrice: 0
+    annualPrice: 0
+    unit: person/month
+    features: null
+    usageLimits: null
+    price: 0
+  PRO:
+    description: Best for managers with too much on their plate.
+    monthlyPrice: 7
+    annualPrice: 5.6
+    unit: person/month
+    features:
+      nextSteps:
+        value: true
+      embeddedMedia:
+        value: true
+      fileAttachment:
+        value: true
+      linkIntegrations:
+        value: true
+      largeGroupDiscussions:
+        value: true
+      shareableNotes:
+        value: true
+      privateNotes:
+        value: true
+      exportableNotes:
+        value: true
+      searchableNotes:
+        value: true
+      commentsOnAgendaItems:
+        value: true
+      embeddedMediaInMeetings:
+        value: true
+      boardViewForMeetingItems:
+        value: true
+      aiManagerCopilot:
+        value: true
+      basicCollaborationToolsIntegration:
+        value: true
+      mediaToolsIntegration:
+        value: true
+      designToolsIntegration:
+        value: true
+      personalProductivityToolsIntegration:
+        value: true
+      projectManagementToolsIntegration:
+        value: true
+      productManagementToolsIntegration:
+        value: true
+      inAppSupport:
+        value: true
+    usageLimits: null
+    price: 7
+  BUSINESS:
+    description: Best for standardizing meetings and hitting goals.
+    monthlyPrice: 11
+    annualPrice: 8.8
+    unit: person/month
+    features:
+      nextSteps:
+        value: true
+      embeddedMedia:
+        value: true
+      fileAttachment:
+        value: true
+      linkIntegrations:
+        value: true
+      largeGroupDiscussions:
+        value: true
+      shareableNotes:
+        value: true
+      privateNotes:
+        value: true
+      exportableNotes:
+        value: true
+      searchableNotes:
+        value: true
+      commentsOnAgendaItems:
+        value: true
+      embeddedMediaInMeetings:
+        value: true
+      boardViewForMeetingItems:
+        value: true
+      aiManagerCopilot:
+        value: true
+      reportingOnMeetingMetrics:
+        value: true
+      customOrgWideMeetingTemplates:
+        value: true
+      goalTemplates:
+        value: true
+      individualGoals:
+        value: true
+      teamGoals:
+        value: true
+      companyGoals:
+        value: true
+      goalRelationships:
+        value: true
+      meetingIntegration:
+        value: true
+      reportsOnGoals:
+        value: true
+      analyticsOnGoals:
+        value: true
+      shareableLiveReports:
+        value: true
+      goalProgressNotifications:
+        value: true
+      basicCollaborationToolsIntegration:
+        value: true
+      mediaToolsIntegration:
+        value: true
+      designToolsIntegration:
+        value: true
+      personalProductivityToolsIntegration:
+        value: true
+      projectManagementToolsIntegration:
+        value: true
+      productManagementToolsIntegration:
+        value: true
+      directorySync:
+        value: true
+      inAppSupport:
+        value: true
+      prioritySupport:
+        value: true
+      sso:
+        value: true
+      advancedSecurityFeatures:
+        value: true
+    usageLimits: null
+    price: 11
+  ENTERPRISE:
+    description: Best for standardizing meetings and hitting goals.
+    annualPrice: 12.8
+    unit: person/month
+    features:
+      nextSteps:
+        value: true
+      embeddedMedia:
+        value: true
+      fileAttachment:
+        value: true
+      linkIntegrations:
+        value: true
+      largeGroupDiscussions:
+        value: true
+      shareableNotes:
+        value: true
+      privateNotes:
+        value: true
+      exportableNotes:
+        value: true
+      searchableNotes:
+        value: true
+      commentsOnAgendaItems:
+        value: true
+      embeddedMediaInMeetings:
+        value: true
+      boardViewForMeetingItems:
+        value: true
+      aiManagerCopilot:
+        value: true
+      reportingOnMeetingMetrics:
+        value: true
+      customOrgWideMeetingTemplates:
+        value: true
+      goalTemplates:
+        value: true
+      individualGoals:
+        value: true
+      teamGoals:
+        value: true
+      companyGoals:
+        value: true
+      goalRelationships:
+        value: true
+      meetingIntegration:
+        value: true
+      reportsOnGoals:
+        value: true
+      analyticsOnGoals:
+        value: true
+      shareableLiveReports:
+        value: true
+      goalProgressNotifications:
+        value: true
+      performanceReviewIntegration:
+        value: true
+      360PerformanceReviews:
+        value: true
+      cutomQuestionTemplates:
+        value: true
+      competencyBasedReviewQuestions:
+        value: true
+      aiWritingCoPilot:
+        value: true
+      aiConsolidatedReview:
+        value: true
+      employeePraiseIntegration:
+        value: true
+      employeeRecognisionIntegration:
+        value: true
+      reviewCycleAutomation:
+        value: true
+      dynamiReviewAsignments:
+        value: true
+      9BoxReporting:
+        value: true
+      calibrationReporting:
+        value: true
+      aiInsightsOnPerformanceTrends:
+        value: true
+      exportToExcelForReporting:
+        value: true
+      crossCycleAnalytics:
+        value: true
+      basicCollaborationToolsIntegration:
+        value: true
+      mediaToolsIntegration:
+        value: true
+      designToolsIntegration:
+        value: true
+      personalProductivityToolsIntegration:
+        value: true
+      projectManagementToolsIntegration:
+        value: true
+      productManagementToolsIntegration:
+        value: true
+      directorySync:
+        value: true
+      hrisIntegration:
+        value: true
+      customApiAccess:
+        value: true
+      inAppSupport:
+        value: true
+      prioritySupport:
+        value: true
+      sso:
+        value: true
+      advancedSecurityFeatures:
+        value: true
+      dedicatedAccountManager:
+        value: true
+      customizableDataRetentionPolicies:
+        value: true
+      auditLogs:
+        value: true
+      complianceReports:
+        value: true
+    usageLimits: null
+    price: 12.8

@@ -1,0 +1,340 @@
+saasName: Buffer - Publish
+version: '2.0'
+createdAt: '2020-11-29'
+currency: USD
+hasAnnualPayment: true
+features:
+  socialChannels:
+    description: >-
+      The number of social channels/pages you can connect to Buffer. For
+      example: 5 Twitter profiles, 3 Facebook pages, and 2 Instagram accounts
+      would count as 10 social channels in total.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  schedulePosts:
+    description: >-
+      Scheduling your social media posts couldn't be easier! Our vision is for
+      users to have a unique voice on social media, and to be able increase
+      engagement and reach of posts by targeting the message to the right
+      audience on each social network.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  instagram:
+    description: Personal accounts and Business profiles.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingsUrls: null
+  facebook:
+    description: Pages and Groups.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingsUrls: null
+  twitter:
+    description: Profiles.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingsUrls: null
+  linkedin:
+    description: Profiles and pages.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingsUrls: null
+  pinterest:
+    description: Pinterest.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingsUrls: null
+  pinterestBoards:
+    description: Boards (only on our Pro and Business Plans).
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingsUrls: null
+  tailoredPostComposer:
+    description: >-
+      Using the Tailored Posts composer, you're able to customize your post for
+      each social network that you're sharing to.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  calendarView:
+    description: >-
+      This allows you to see both your published posts and your scheduled posts.
+      You can toggle between a week or month view, see engagement metrics on
+      posts that have already been shared, move posts around, edit posts, and
+      add new posts.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  customVideoThumpnails:
+    description: >-
+      Choose a custom thumbnail and title for your videos on Instagram,
+      Facebook, Twitter, LinkedIn, Pinterest. Thumbnails are generated at 15
+      second intervals of the video. By default, the first frame of the video (0
+      seconds) will be used as the thumbnail.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  instagramFirstComment:
+    description: >-
+      When creating your Instagram posts, you can now create the first comment
+      for your post, which is great for hashtags and other less relevant
+      information you may not want to show initially with your post and caption.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  instagramHashtagManager:
+    description: >-
+      Hashtag Manager makes it easy to create and save groups of hashtags to use
+      in your Instagram first comments. Experiment with different variations.
+      Reuse your top performing groups. Build a library of options. Hashtag
+      Manager helps you get more reach for every post.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  instagramStories:
+    description: Prepare and schedule your Stories on web or mobile.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  instagramShopGrid:
+    description: >-
+      Shop Grid allows you to add links to each of your posts, which will then
+      be displayed on a unique page that can be used as the permanent link in
+      your bio.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  draftPosts:
+    description: >-
+      All users, regardless of permissions, are able to create posts within
+      Drafts. For account owners and users with Full Posting Access, drafts can
+      be moved to the Queue at any time. For users with Approval Required
+      Access, approval will need to be requested before the post is moved to the
+      Queue.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  postsReport:
+    description: >-
+      See the posts you have published with some basic information about when
+      they were published and how they have performed.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  inviteAdditionalUsers:
+    description: >-
+      Invite additional users to contribute to the content that is shared on
+      social media. All users will be able to create and share draft posts, and
+      you can define which users will need to have their posts approved.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  assignAccessAndPermissions:
+    description: >-
+      Manage which social channels each user should be invited to and whether
+      their posts require approval before publishing.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  approvalWorkflow:
+    description: >-
+      Posts added by users with 'Approval Required Access' will automatically be
+      added to the Drafts area. From there, they can request approval on their
+      post, which will move it over to the Awaiting Approval area. Both the
+      account owner and users with Full Posting Access will be able to review
+      and approve such posts.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  browserExtension:
+    description: >-
+      The Buffer Browser Extension makes sharing content even quicker and
+      easier! It allows you to open the composer on any web page and add posts
+      right to your queue, without having to go back to your dashboard.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTENSION
+  mobileApps:
+    description: >-
+      Publish is available on iOS and Android, allowing you to plan,
+      collaborate, and publish on-the-go.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  thirdPartyIntegrations:
+    description: >-
+      Use Buffer with your favorite apps like Zapier, IFTTT, Quuu, Pocket,
+      Feedly, and more.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  twoFactorAuthentication:
+    description: >-
+      Enabling two factor authentication adds an extra layer of security to your
+      Buffer Publish account. Whenever you log into your account, after entering
+      your username and password, you'll be asked for a second authentication
+      code. Two factor authentication codes can be generated either via text
+      message (SMS) or Google Authenticator (available on iOS and Android).
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  selfServiceKnowledgeBase:
+    description: >-
+      Access to our FAQ where you’ll find how-to guides, most popular questions
+      and video tutorials.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  socialMediaSupport:
+    description: Fast support on Social Media via Twitter and Facebook.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  emailSupport:
+    description: >-
+      Fast and helpful support via email. We love lending a hand with social
+      media advice, sharing Buffer tips and tricks, and we’re always up to chat
+      through a technical challenge! Being a Buffer customer should feel like
+      having a whole team of people cheering for you.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  bufferCommunity:
+    description: >-
+      As a Buffer user, you'll have access to the Buffer Community: a
+      knowledge-base of marketing advice, strategies and resources. We built
+      this online space to offer you learning experiences that help you build
+      your brands, keep up with marketing trends, and build meaningful
+      connections with other awesome marketers from around the world.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  engagementGridView:
+    description: >-
+      The familiar grid view allows you to see which posts have unanswered
+      comments and to jump to a post quickly.
+    valueType: TEXT
+    defaultValue: Coming soon
+    type: INFORMATION
+  commentSentiment:
+    description: >-
+      Labels let you know at a glance if a post has questions, unhappy comments,
+      or comments about a purchase.
+    valueType: TEXT
+    defaultValue: Coming soon
+    type: INFORMATION
+  hotkeys:
+    description: Get through comments quickly without taking your hands off the keyboard.
+    valueType: TEXT
+    defaultValue: Coming soon
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+usageLimits:
+  socialChannelsLimit:
+    description: The number of social accounts/pages you can connect to Buffer.
+    valueType: NUMERIC
+    defaultValue: 8
+    unit: account
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - socialChannels
+  postsPerScheduledQueuePerSocialAccountLimit:
+    description: >-
+      The number of posts you can store in your queue at any one time (per
+      social account). There is no daily, monthly, or yearly limit.
+    valueType: NUMERIC
+    defaultValue: 10000000
+    unit: post/account
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - schedulePosts
+  usersLimit:
+    description: >-
+      The number of users who can access and contribute content to your Buffer
+      account.
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: user
+    type: NON_RENEWABLE
+    linkedFeatures: null
+plans:
+  PRO:
+    description: Ideal for getting started
+    monthlyPrice: 15
+    annualPrice: 12
+    unit: account/month
+    features: null
+    usageLimits: null
+    price: 15
+  PREMIUM:
+    description: Ideal for growing brands
+    monthlyPrice: 65
+    annualPrice: 56
+    unit: account/month
+    features:
+      instagramHashtagManager:
+        value: true
+      instagramStories:
+        value: true
+      instagramShopGrid:
+        value: true
+      draftPosts:
+        value: true
+      inviteAdditionalUsers:
+        value: true
+      assignAccessAndPermissions:
+        value: true
+      approvalWorkflow:
+        value: true
+    usageLimits:
+      postsPerScheduledQueuePerSocialAccountLimit:
+        value: 2000
+      usersLimit:
+        value: 2
+    price: 65
+  BUSINESS:
+    description: Ideal for larger teams
+    monthlyPrice: 99
+    annualPrice: 85
+    unit: account/month
+    features:
+      instagramHashtagManager:
+        value: true
+      instagramStories:
+        value: true
+      instagramShopGrid:
+        value: true
+      draftPosts:
+        value: true
+      inviteAdditionalUsers:
+        value: true
+      assignAccessAndPermissions:
+        value: true
+      approvalWorkflow:
+        value: true
+    usageLimits:
+      socialChannelsLimit:
+        value: 25
+      postsPerScheduledQueuePerSocialAccountLimit:
+        value: 2000
+      usersLimit:
+        value: 6
+    price: 99

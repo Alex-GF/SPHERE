@@ -1,0 +1,647 @@
+saasName: Github
+version: '2.0'
+createdAt: '2022-11-29'
+currency: EUR
+hasAnnualPayment: true
+features:
+  publicRepositories:
+    description: >-
+      Host open source projects in public GitHub repositories, accessible via
+      web or command line. Public repositories are accessible to anyone at
+      GitHub.com.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  privateRepositories:
+    description: >-
+      Host code in private GitHub repositories, accessible via appliance, web,
+      and command line. Private repositories are only accessible to you and
+      people you share them with.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  githubCodespaces:
+    description: >-
+      Spin up fully configured dev environments in the cloud with the power of
+      your favorite editor. A "core hour" denotes compute usage. On a 2-core
+      machine, you would get 60 hours free. On a 4-core machine, you would get
+      30 hours free, etc. Free hours are assigned to personal accounts, rather
+      than free organizations.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  githubActions:
+    description: >-
+      Use execution minutes with GitHub Actions to automate your software
+      development workflows. Write tasks and combine them to build, test, and
+      deploy any code project on GitHub. Minutes are free for public
+      repositories.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  githubPackages:
+    description: >-
+      Host your own software packages or use them as dependencies in other
+      projects. Both private and public hosting available. Packages are free for
+      public repositories.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  codeReviews:
+    description: >-
+      Review new code, see visual code changes, and confidently merge code
+      changes with automated status checks.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  pullRequests:
+    description: >-
+      Allow contributors to easily notify you of changes they've pushed to a
+      repository with access limited to the contributors you specify. Easily
+      merge changes you accept.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  protectedBranches:
+    description: >-
+      Enforce restrictions on how code branches are merged, including requiring
+      reviews by selected collaborators, or allowing only specific contributors
+      to work on a particular branch.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  codeOwners:
+    description: >-
+      Automatically request reviews or require approval by selected contributors
+      when changes are made to sections of code that they own.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: TRACKING
+  draftPullRequests:
+    description: >-
+      Easily discuss and collaborate on pull requests before submitting to
+      formal review.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  multiplePullRequestsAssignees:
+    description: Assign more than one person to a pull request.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  repositoryInsights:
+    description: >-
+      See data about activity and contributions within your repositories,
+      including trends. You can use this data to improve collaboration and make
+      development faster and more effective.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  scheduledReminders:
+    description: Send scheduled messages to you or your team listing open pull requests.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  automaticCodeReviewAssigment:
+    description: >-
+      Automatically assign code reviews to members of your team based on one of
+      two algorithms.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  enviromentProtectionRules:
+    description: >-
+      When a workflow job references an environment, the job won't start until
+      all of the environment's protection rules pass.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  enviromentDeploymentBranchesAndSecrets:
+    description: >-
+      A job cannot access secrets that are defined in an environment unless it
+      is running on the specified branch.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  collaboratorsForPublicRepositories:
+    description: >-
+      Invite any GitHub member, or all GitHub members, to work with you on code
+      in a public repository you control including making changes and opening
+      issues.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  collaboratorsForPrivateRepositories:
+    description: >-
+      Invite any GitHub member, or all GitHub members, to work with you on code
+      in a private repository you control including making changes and opening
+      issues.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  issues:
+    description: >-
+      Track bugs, enhancements, and other requests, prioritize work, and
+      communicate with stakeholders as changes are proposed and merged.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  projects:
+    description: >-
+      Visualize and manage issues and pull requests across tables, boards, and
+      roadmaps with custom fields and views that you can arrange to suit your
+      workflow.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  milestones:
+    description: >-
+      Track progress on groups of issues or pull requests in a repository, and
+      map groups to overall project goals.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  teamDiscussions:
+    description: >-
+      Discuss any topic, unattached to a specific project or issue. Control who
+      has access, notify discussion participants with updates, and link from
+      anywhere.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  organizationAndTeamManagement:
+    description: Manage access to projects on a team-by-team, or individual user, basis.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  pagesAndWikis:
+    description: >-
+      Host documentation and simple websites for your project in a wiki format
+      that contributors can easily edit either on the web or command line.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  multipleIssueAssignees:
+    description: Assign more than one person to an issue.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  codeScanning:
+    description: >-
+      Integrate automated security review into your pull requests with CodeQL.
+      Find, prioritize, and fix vulnerabilities in your repositories without
+      disrupting your workflow.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: TRACKING
+  secretScanning:
+    description: >-
+      Detect credentials exposed in your git history, comments, or discussions.
+      Prevent further exposures with push protection, which proactively blocks
+      secrets from being pushed into your code.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: TRACKING
+  dependencyReview:
+    description: >-
+      Understand the security impact of newly introduced dependencies during
+      pull requests, before they get merged.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  dependabotAlerts:
+    description: >-
+      Get notified when there are new vulnerabilities affecting dependencies in
+      your repositories.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: TRACKING
+  dependabotSecurityUpdates:
+    description: >-
+      Keep projects secure by automatically opening pull requests that update
+      vulnerable dependencies to secure versions.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  dependabotVersionUpdates:
+    description: >-
+      Keep projects up-to-date by automatically opening pull requests that
+      update out-of-date dependencies.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  requiredReviews:
+    description: >-
+      Ensure that pull requests have a specific number of approving reviews
+      before collaborators can make changes to a protected branch.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  requiredStatusChecks:
+    description: >-
+      Ensure that all required CI tests are passing before collaborators can
+      make changes to a protected branch.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  githubSecurityAdvisories:
+    description: >-
+      Privately discuss, fix, and publish information about security
+      vulnerabilities found in your repository.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  roleBasedAccessControl:
+    description: Define users' level of access to your code, data and settings.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  required2FA:
+    description: >-
+      Use an extra layer of security with two factor authentication (2FA) when
+      logging into GitHub.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  auditLog:
+    description: Quickly review the actions performed by members of your organization.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  auditLogAPI:
+    description: >-
+      Keep copies of audit log data to ensure secure IP and maintain compliance
+      for your organization.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+  githubConnect:
+    description: >-
+      Share features and workflows between your GitHub Enterprise Server
+      instance and GitHub Enterprise Cloud.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  singleSignOn:
+    description: >-
+      Use an identity provider to manage the identities of GitHub users and
+      applications.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  ldap:
+    description: >-
+      Access GitHub Enterprise Server using your existing accounts and centrally
+      manage repository access.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  ipAllowList:
+    description: Limit access to known allowed IP addresses.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  githubApps:
+    description: >-
+      Install apps that integrate directly with GitHub's API to improve
+      development workflows – or build your own for private use or publication
+      in the GitHub Marketplace.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  statusChecks:
+    description: >-
+      Define tests that GitHub automatically runs against code being committed
+      to your repository, and get details about failures and what is causing
+      them.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  preReceiveHooks:
+    description: >-
+      Create requirements for automatically accepting or rejecting a push based
+      on the contents of the push.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  communitySupport:
+    description: >-
+      Get help with most of your GitHub questions and issues in our Community
+      Forum.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  standardSupport:
+    description: >-
+      GitHub Support can help you troubleshoot issues you run into while using
+      GitHub. Get support via the web.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  premiumAndPremiumPlusSupport:
+    description: >-
+      With Premium, get a 30-minute SLA on Urgent tickets and 24/7 web and phone
+      support via callback request. With Premium Plus, get everything in
+      Premium, assigned Customer Reliability Engineer and more.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  phoneSupport:
+    description: Get help with your GitHub questions and issues via phone.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  invoiceBilling:
+    description: Pay bills via invoice, rather than using your credit card.
+    valueType: TEXT
+    defaultValue:
+      - CARD
+    type: PAYMENT
+  selfHostedDeployment:
+    description: Self-hosted GitHub for on-prem appliances or self-managed cloud tenants.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+usageLimits:
+  githubOnlyForPublicRepositoriesFreeTier:
+    description: Free tier usage limit for public repositories
+    valueType: BOOLEAN
+    defaultValue: true
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - protectedBranches
+      - codeOwners
+      - draftPullRequests
+      - multiplePullRequestsAssignees
+      - repositoryInsights
+      - scheduledReminders
+      - automaticCodeReviewAssigment
+      - enviromentProtectionRules
+      - enviromentDeploymentBranchesAndSecrets
+      - pagesAndWikis
+      - multipleIssueAssignees
+      - codeScanning
+      - secretScanning
+      - dependencyReview
+      - requiredReviews
+      - requiredStatusChecks
+      - githubSecurityAdvisories
+  githubOnlyForPublicRepositoriesTeamTier:
+    description: Team tear usage limit for public repositories
+    valueType: BOOLEAN
+    defaultValue: true
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - enviromentProtectionRules
+      - codeScanning
+      - secretScanning
+      - dependencyReview
+      - githubSecurityAdvisories
+  githubActionsQuota:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 2000
+    unit: minute/month
+    type: TIME_DRIVEN
+    linkedFeatures:
+      - githubActions
+  diskSpaceForGithubPackages:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 0.5
+    unit: GB
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - githubPackages
+  githubCodespacesStorageLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: GB
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - githubCodespaces
+plans:
+  FREE:
+    description: The basics for individuals and organizations
+    monthlyPrice: 0
+    annualPrice: 0
+    unit: user/month
+    features: null
+    usageLimits:
+      githubOnlyForPublicRepositoriesFreeTier:
+        value: true
+    price: 0
+  TEAM:
+    description: Advanced collaboration for individuals and organizations
+    monthlyPrice: 4
+    annualPrice: 4
+    unit: user/month
+    features:
+      githubCodespaces:
+        value: true
+      standardSupport:
+        value: true
+    usageLimits:
+      githubOnlyForPublicRepositoriesTeamTier:
+        value: true
+      githubActionsQuota:
+        value: 3000
+      diskSpaceForGithubPackages:
+        value: 2
+    price: 4
+  ENTERPRISE:
+    description: Security, compliance, and flexible deployment
+    monthlyPrice: 21
+    annualPrice: 21
+    unit: user/month
+    features:
+      auditLogAPI:
+        value: true
+      githubConnect:
+        value: true
+      singleSignOn:
+        value: true
+      ldap:
+        value: true
+      standardSupport:
+        value: true
+      invoiceBilling:
+        value:
+          - CARD
+          - INVOICE
+    usageLimits:
+      githubActionsQuota:
+        value: 50000
+      diskSpaceForGithubPackages:
+        value: 50
+    price: 21
+addOns:
+  githubCodespaces2Core:
+    availableFor:
+      - FREE
+      - TEAM
+      - ENTERPRISE
+    price: 0.18
+    unit: activeHour
+    features:
+      githubCodespaces:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+    excludes:
+      - githubCodespaces4Core
+      - githubCodespaces8Core
+      - githubCodespaces16Core
+      - githubCodespaces32Core
+  githubCodespaces4Core:
+    availableFor:
+      - FREE
+      - TEAM
+      - ENTERPRISE
+    price: 0.36
+    unit: activeHour
+    features:
+      githubCodespaces:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+    excludes:
+      - githubCodespaces2Core
+      - githubCodespaces8Core
+      - githubCodespaces16Core
+      - githubCodespaces32Core
+  githubCodespaces8Core:
+    availableFor:
+      - FREE
+      - TEAM
+      - ENTERPRISE
+    price: 0.72
+    unit: activeHour
+    features:
+      githubCodespaces:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+    excludes:
+      - githubCodespaces2Core
+      - githubCodespaces4Core
+      - githubCodespaces16Core
+      - githubCodespaces32Core
+  githubCodespaces16Core:
+    availableFor:
+      - FREE
+      - TEAM
+      - ENTERPRISE
+    price: 1.44
+    unit: activeHour
+    features:
+      githubCodespaces:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+    excludes:
+      - githubCodespaces2Core
+      - githubCodespaces4Core
+      - githubCodespaces8Core
+      - githubCodespaces32Core
+  githubCodespaces32Core:
+    availableFor:
+      - FREE
+      - TEAM
+      - ENTERPRISE
+    price: 2.88
+    unit: activeHour
+    features:
+      githubCodespaces:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+    excludes:
+      - githubCodespaces2Core
+      - githubCodespaces4Core
+      - githubCodespaces8Core
+      - githubCodespaces16Core
+  githubCodespacesStorage:
+    availableFor:
+      - FREE
+      - TEAM
+      - ENTERPRISE
+    price: 0.07
+    unit: GB/month
+    features: null
+    usageLimits: null
+    usageLimitsExtensions: 
+      githubCodespacesStorageLimit:
+        value: 1
+  githubAdvancedSecurity:
+    availableFor:
+      - ENTERPRISE
+    price: 49
+    unit: activeCommiter/month
+    features:
+      codeScanning:
+        value: true
+      secretScanning:
+        value: true
+      dependencyReview:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  premiumSupport:
+    availableFor:
+      - ENTERPRISE
+    price: Contact Sales
+    unit: user/month
+    features:
+      premiumAndPremiumPlusSupport:
+        value: true
+      phoneSupport:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  enterpriseServer:
+    availableFor:
+      - ENTERPRISE
+    price: Contact Sales
+    unit: user/month
+    features:
+      preReceiveHooks:
+        value: true
+      selfHostedDeployment:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  enterpriseCloud:
+    availableFor:
+      - ENTERPRISE
+    price: Contact Sales
+    unit: user/month
+    features:
+      dependabotSecurityUpdates:
+        value: true
+      dependabotVersionUpdates:
+        value: true
+      githubSecurityAdvisories:
+        value: true
+      ipAllowList:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null

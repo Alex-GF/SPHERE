@@ -1,0 +1,539 @@
+saasName: Zapier
+version: '2.0'
+createdAt: '2024-07-02'
+currency: USD
+hasAnnualPayment: true
+features:
+  tasks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  twoFactorAuthentication:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  payPerTaskForOverageTasks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  auditLogs:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  staticIp:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  ownerAccess:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  samlSingleSignOn:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  userProvisioning:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  domainCapture:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  superAdmin:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  advancedAdminPermissions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  appRestrictions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  actionRestrictions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  customDataRetention:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  observabilityAPI:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+  analytics:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  annualTaskLimits:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TRACKING
+  sharedAppConnections:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  sharedWorkspace:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  folderPermissions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  approvalRequests:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  emailSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  liveChat:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  premierSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  designatedTechnicalSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  zapierInterfaces:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  zapierTables:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  zapierChatbots:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: BOT
+  zaps:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  twoStepsZaps:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  multiStepZaps:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  visualEditor:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  aiPowerUps:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: BOT
+  customTestRecords:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  filters:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  paths:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  formatter:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  drafts:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  autoReplay:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  customizedErrorSettings:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TRACKING
+  customizedPollingTime:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  floodProtectionSetting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TRACKING
+  versions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  compareVersions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  alerts:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TRACKING
+  customActions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  premiumApps:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  connectionsViaWebhooks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+  tablesPremium:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  interfacesPremium:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  chatBotsPremium:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: BOT
+usageLimits:
+  usersLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: user
+    type: NON_RENEWABLE
+    linkedFeatures: null
+  tasksLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 100
+    unit: task/month
+    type: RENEWABLE
+    linkedFeatures:
+      - tasks
+  pollingTimeThreshold:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 15
+    unit: min
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - tasks
+      - zaps
+plans:
+  FREE:
+    description: Anyone can automate their work. Start with the basics.
+    monthlyPrice: 0
+    annualPrice: 0
+    unit: /month
+    features: null
+    usageLimits: null
+    price: 0
+  PROFESSIONAL:
+    description: Advanced tools to take your work to the next level.
+    monthlyPrice: 61.25
+    annualPrice: 49
+    unit: /month
+    features:
+      payPerTaskForOverageTasks:
+        value: true
+      emailSupport:
+        value: true
+      liveChat:
+        value: true
+      multiStepZaps:
+        value: true
+      filters:
+        value: true
+      paths:
+        value: true
+      formatter:
+        value: true
+      autoReplay:
+        value: true
+      customizedErrorSettings:
+        value: true
+      customizedPollingTime:
+        value: true
+      floodProtectionSetting:
+        value: true
+      versions:
+        value: true
+      premiumApps:
+        value: true
+      connectionsViaWebhooks:
+        value: true
+    usageLimits:
+      tasksLimit:
+        value: 2000
+      pollingTimeThreshold:
+        value: 2
+    price: 61.25
+  TEAM:
+    description: Bring your team together to collaborate on automation.
+    monthlyPrice: 446.27
+    annualPrice: 299
+    unit: /month
+    features:
+      payPerTaskForOverageTasks:
+        value: true
+      auditLogs:
+        value: true
+      staticIp:
+        value: true
+      ownerAccess:
+        value: true
+      sharedAppConnections:
+        value: true
+      sharedWorkspace:
+        value: true
+      folderPermissions:
+        value: true
+      emailSupport:
+        value: true
+      liveChat:
+        value: true
+      premierSupport:
+        value: true
+      multiStepZaps:
+        value: true
+      filters:
+        value: true
+      paths:
+        value: true
+      formatter:
+        value: true
+      autoReplay:
+        value: true
+      customizedErrorSettings:
+        value: true
+      customizedPollingTime:
+        value: true
+      floodProtectionSetting:
+        value: true
+      versions:
+        value: true
+      premiumApps:
+        value: true
+      connectionsViaWebhooks:
+        value: true
+    usageLimits:
+      usersLimit:
+        value: .inf
+      tasksLimit:
+        value: 50000
+      pollingTimeThreshold:
+        value: 1
+    price: 446.27
+  ENTERPRISE:
+    description: Automation plus enterprise-grade features.
+    monthlyPrice: Contact Sales
+    annualPrice: Contact Sales
+    unit: /month
+    features:
+      payPerTaskForOverageTasks:
+        value: true
+      auditLogs:
+        value: true
+      staticIp:
+        value: true
+      ownerAccess:
+        value: true
+      samlSingleSignOn:
+        value: true
+      userProvisioning:
+        value: true
+      domainCapture:
+        value: true
+      superAdmin:
+        value: true
+      advancedAdminPermissions:
+        value: true
+      appRestrictions:
+        value: true
+      actionRestrictions:
+        value: true
+      customDataRetention:
+        value: true
+      observabilityAPI:
+        value: true
+      analytics:
+        value: true
+      annualTaskLimits:
+        value: true
+      sharedAppConnections:
+        value: true
+      sharedWorkspace:
+        value: true
+      folderPermissions:
+        value: true
+      approvalRequests:
+        value: true
+      emailSupport:
+        value: true
+      liveChat:
+        value: true
+      premierSupport:
+        value: true
+      designatedTechnicalSupport:
+        value: true
+      multiStepZaps:
+        value: true
+      filters:
+        value: true
+      paths:
+        value: true
+      formatter:
+        value: true
+      autoReplay:
+        value: true
+      customizedErrorSettings:
+        value: true
+      customizedPollingTime:
+        value: true
+      floodProtectionSetting:
+        value: true
+      versions:
+        value: true
+      compareVersions:
+        value: true
+      alerts:
+        value: true
+      premiumApps:
+        value: true
+      connectionsViaWebhooks:
+        value: true
+    usageLimits:
+      usersLimit:
+        value: .inf
+      tasksLimit:
+        value: .inf
+      pollingTimeThreshold:
+        value: 1
+    price: Contact Sales
+addOns:
+  samlSingleSignOnAddOn:
+    availableFor:
+      - TEAM
+    price: Contact Sales
+    unit: /month
+    features:
+      samlSingleSignOn:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  tablesPremiumAddOn:
+    availableFor:
+      - FREE
+      - PROFESSIONAL
+      - TEAM
+      - ENTERPRISE
+    price: Contact Sales
+    unit: /month
+    features:
+      tablesPremium:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  interfacesPremiumAddOn:
+    availableFor:
+      - FREE
+      - PROFESSIONAL
+      - TEAM
+      - ENTERPRISE
+    price: Contact Sales
+    unit: /month
+    features:
+      interfacesPremium:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  chatBotsPremiumAddOn:
+    availableFor:
+      - FREE
+      - PROFESSIONAL
+      - TEAM
+      - ENTERPRISE
+    price: Contact Sales
+    unit: /month
+    features:
+      chatBotsPremium:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null

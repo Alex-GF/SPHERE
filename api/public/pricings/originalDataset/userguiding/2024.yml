@@ -1,0 +1,525 @@
+saasName: UserGuiding
+version: '2.0'
+createdAt: '2024-11-09'
+currency: USD
+hasAnnualPayment: true
+features:
+  guides:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  hotspots:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  checklists:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  resourceCenters:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  surveys:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  nps:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  productUpdates:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  materialEngagementAnalytics:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  userDetails:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  userActivityFeed:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  goalTracking:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: TRACKING
+  abtesting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  dailyPerformanceReports:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  weeklyPerformanceReports:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  userIdentification:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  userTracking:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  audienceSegmentation:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  customAttributes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  customEvents:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  dataManagement:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  companyLevelData:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  customizableThemes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  dynamicMaterialPersonalization:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  appearanceCustomization:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  materialDisplayPrioritization:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  onboardMaterialAccessibility:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  cssCustomization:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  localization:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  removeUserGuidingBranding:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  materialScheduling:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  rateLimiting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  troubleShooterAccess:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  helpCenter:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  userGuidingUniversity:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  emailSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  liveChatSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  dedicatedCustomerSuccessManager:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  euDataHosting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  serviceLevelAgreement:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  customInvoicing:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: PAYMENT
+  securityQuestionnaire:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  teams:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  domains:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  twoFactorAuthentication:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  roleManagement:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  employeeOnboardingModule:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  teamMemberActivityLog:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  singleSignOn:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  googleAnalytics:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://marketingplatform.google.com/about/analytics/
+  webhooks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: API
+  segment:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://segment.com/pricing/
+  mixpanel:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://mixpanel.com/pricing/
+  amplitude:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: API
+    pricingURLs:
+      - https://amplitude.com/pricing
+  hubspot:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://www.hubspot.com/pricing/marketing/starter
+  intercom:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://www.intercom.com/pricing
+  slack:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://slack.com/pricing
+  woopra:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://www.woopra.com/pricing/
+  knowledBaseIntegrations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  liveChatSoftwareIntegrations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+usageLimits:
+  activeGuidesLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 20
+    unit: guide
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - guides
+  activeHotspotsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 20
+    unit: hotspot
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - hotspots
+  activeChecklistsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 2
+    unit: checklist
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - checklists
+  activeResourceCentersLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: resource center
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - resourceCenters
+  activeSurveysLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: survey
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - surveys
+  customizableThemesLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: theme
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - customizableThemes
+  teamMembersLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: member
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - teams
+  domainsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 2
+    unit: domain
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - domains
+plans:
+  BASIC:
+    description: >-
+      Onboard new users and engage customers throughout their lifecycles. Ideal
+      for startups and SMBs.
+    monthlyPrice: 129
+    annualPrice: 89
+    unit: /month
+    features: null
+    usageLimits: null
+    price: 129
+  PROFESSIONAL:
+    description: >-
+      Maximize activation, customer revenue, and retention. Ideal for rapidly
+      growing companies.
+    monthlyPrice: 399
+    annualPrice: 249
+    unit: /month
+    features:
+      companyLevelData:
+        value: true
+      cssCustomization:
+        value: true
+      localization:
+        value: true
+      removeUserGuidingBranding:
+        value: true
+      materialScheduling:
+        value: true
+      rateLimiting:
+        value: true
+      dedicatedCustomerSuccessManager:
+        value: true
+      euDataHosting:
+        value: true
+      serviceLevelAgreement:
+        value: true
+      customInvoicing:
+        value: true
+      securityQuestionnaire:
+        value: true
+      roleManagement:
+        value: true
+      employeeOnboardingModule:
+        value: true
+    usageLimits:
+      activeGuidesLimit:
+        value: 1000000000
+      activeHotspotsLimit:
+        value: 1000000000
+      activeChecklistsLimit:
+        value: 1000000000
+      activeResourceCentersLimit:
+        value: 1000000000
+      activeSurveysLimit:
+        value: 3
+      customizableThemesLimit:
+        value: 5
+      teamMembersLimit:
+        value: 5
+      domainsLimit:
+        value: 5
+    price: 399
+  CORPORATE:
+    description: >-
+      Transform your product experience. Ideal for enterprises with multiple
+      products.
+    monthlyPrice: Let's Talk
+    annualPrice: Let's Talk
+    unit: /month
+    features:
+      companyLevelData:
+        value: true
+      cssCustomization:
+        value: true
+      localization:
+        value: true
+      removeUserGuidingBranding:
+        value: true
+      materialScheduling:
+        value: true
+      rateLimiting:
+        value: true
+      dedicatedCustomerSuccessManager:
+        value: true
+      euDataHosting:
+        value: true
+      serviceLevelAgreement:
+        value: true
+      customInvoicing:
+        value: true
+      securityQuestionnaire:
+        value: true
+      roleManagement:
+        value: true
+      employeeOnboardingModule:
+        value: true
+      teamMemberActivityLog:
+        value: true
+      singleSignOn:
+        value: true
+    usageLimits:
+      activeGuidesLimit:
+        value: 1000000000
+      activeHotspotsLimit:
+        value: 1000000000
+      activeChecklistsLimit:
+        value: 1000000000
+      activeResourceCentersLimit:
+        value: 1000000000
+      customizableThemesLimit:
+        value: 1000000000
+      teamMembersLimit:
+        value: 1000000000
+      domainsLimit:
+        value: 1000000000
+    price: Let's Talk
+addOns:
+  euDataHostingAddOn:
+    availableFor:
+      - BASIC
+    monthlyPrice: Contact Sales
+    annualPrice: Contact Sales
+    unit: /month
+    features:
+      euDataHosting:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+    price: Contact Sales

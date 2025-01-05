@@ -1,0 +1,218 @@
+saasName: UserGuiding
+version: '2.0'
+createdAt: '2020-11-24'
+currency: USD
+hasAnnualPayment: true
+features:
+  users:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  userGuidingBranding:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  teams:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  guides:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  hotspots:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  onboardingChecklist:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  customization:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  npsSurveys:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  personalization:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  segmentation:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  userIdentification:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  userGuidingAPI:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: API
+  usageAnalytics:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  usageReporting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  integrations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  emailSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  chatSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  successCoaching:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  customCSS:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  sla:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  singleSignOn:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+usageLimits:
+  activeUsersLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 20000
+    unit: user
+    type: NON_RENEWABLE
+    linkedFeatures: null
+  teamMembersLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: member
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - teams
+  activeGuidesLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 10
+    unit: guide
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - guides
+  activeHotspotsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 10
+    unit: hotspot
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - hotspots
+  activeOnboardingChecklistsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: checklist
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - onboardingChecklist
+  limitedCustomization:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: RENEWABLE
+    linkedFeatures:
+      - customization
+plans:
+  STARTUP:
+    description: ''
+    monthlyPrice: 199
+    annualPrice: 165.83
+    unit: /month
+    features: null
+    usageLimits: null
+    price: 199
+  GROWTH:
+    description: ''
+    monthlyPrice: 399
+    annualPrice: 332.5
+    unit: /month
+    features:
+      successCoaching:
+        value: true
+    usaeLimits:
+      activeUsersLimit:
+        value: 30000
+      teamMembersLimit:
+        value: 5
+      activeGuidesLimit:
+        value: 1000000000
+      activeHotspotsLimit:
+        value: 1000000000
+      activeOnboardingChecklistsLimit:
+        value: 1000000000
+      limitedCustomization:
+        value: false
+    price: 399
+  ENTERPRISE:
+    description: ''
+    monthlyPrice: 999
+    annualPrice: 832.5
+    unit: /month
+    features:
+      successCoaching:
+        value: true
+      customCSS:
+        value: true
+      sla:
+        value: true
+      singleSignOn:
+        value: true
+    usageLimits:
+      activeUsersLimit:
+        value: 50000
+      teamMembersLimit:
+        value: 1000000000
+      activeGuidesLimit:
+        value: 1000000000
+      activeHotspotsLimit:
+        value: 1000000000
+      activeOnboardingChecklistsLimit:
+        value: 1000000000
+    price: 999

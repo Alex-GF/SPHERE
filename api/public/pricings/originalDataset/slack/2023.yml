@@ -1,0 +1,572 @@
+saasName: Slack
+version: '2.0'
+createdAt: '2023-10-23'
+currency: USD
+hasAnnualPayment: true
+features:
+  messagesAccess:
+    description: >-
+      Message and File History: The more you use Slack, the more valuable it
+      becomes. By being able to search and access all messages from your
+      organization, you can leverage context from previous decisions or quickly
+      bring new team members up to speed.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  voiceAndVideoCalls:
+    description: >-
+      Slack Calls: Take a break from typing and start live audio conversations
+      (with video, screen sharing, conversation threading, and fun
+      reactions/effects) in a channel or direct message. Brainstorm, make
+      decisions, or catch up, all at your fingertips.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  audioAndVideoClips:
+    description: >-
+      Audio and Video Clips: Use audio and video clips to showcase your work.
+      Record a quick idea in an audio clip or share your screen in a video clip,
+      all from Slack. Coworkers can respond whenever they like.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  slackConnect:
+    description: >-
+      External Collaboration: Slack Connect enables seamless collaboration
+      between organizational departments. Two organizations can work together
+      from their own Slack workspaces.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  canvas:
+    description: >-
+      Slack Canvas: Keep your entire team in sync with canvases, the
+      collaborative surface for organizing critical documentation in a channel,
+      direct message, or project. Create action item checklists, channel FAQs,
+      onboarding guides, and more. You can even integrate workflows directly
+      into a canvas. Can be LIMITED (channels and direct messages only) or FULL.
+    valueType: TEXT
+    defaultValue: LIMITED
+    type: DOMAIN
+  customizableSections:
+    description: >-
+      Customizable Sections: Keep your projects, teams, and priorities organized
+      by organizing your channels and conversations into collapsible,
+      customizable sections in the sidebar.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  appsAndServices:
+    description: >-
+      Integrations with Other Applications: There are over 2600 applications
+      waiting for you in the Slack App Directory to perform all kinds of tasks,
+      such as Salesforce, Jira, Google Drive, ChatGPT, and many more.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  workflowBuilder:
+    description: >-
+      Workflow Builder: Automate tasks and routine processes directly in Slack
+      without needing to program anything. Workflows can be as simple or complex
+      as you like and can also connect to other tools and applications you use
+      for work.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  customWorkflowSteps:
+    description: >-
+      Custom Workflow Steps: Custom workflow steps allow you to incorporate your
+      organization's own business systems and logic into a workflow. Developers
+      create these using Slack APIs.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  deployApps:
+    description: >-
+      Deploying Apps for Slack Infrastructure: Developers can deploy custom
+      features to Slack's managed secure infrastructures at no additional cost.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  standardWorkflows:
+    description: >-
+      Standard Workflows: Standard workflows are designed with Slack steps and a
+      maximum of one connector step. With the connector step, you can
+      incorporate other tools into your workflow (Salesforce, Google Sheets,
+      Jira, and many more).
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  premiumWorkflows:
+    description: >-
+      Premium Workflows: Premium workflows include at least one custom step or
+      two or more connector steps. Connector steps allow you to incorporate
+      other tools into your workflow (Salesforce, Google Sheets, Jira, and many
+      more). If you exceed your monthly premium workflow allocation, you won't
+      be charged until the promotional period ends on October 31, 2023.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  singleSignOn:
+    description: SAML-based Single Sign-On (SSO).
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  dataCypher:
+    description: Data Encryption at Rest and in Transit.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: GUARANTEE
+  twoFactorAuthentication:
+    description: Two-Factor Authentication.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  oAuthGoogle:
+    description: OAuth with Google.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  complianceHIPAA:
+    description: HIPAA Compliance Requirements.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  dataResidence:
+    description: Data Residence.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  adminSlackEnterpriseKeys:
+    description: Slack Enterprise Key Management (EKM) Administration.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - >-
+        https://docs.aws.amazon.com/en_us/kms/latest/developerguide/overview.html
+  enterpriseMobilitySecurity:
+    description: Integration with Enterprise Mobility Management (EMM).
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  auditLogs:
+    description: >-
+      Audit Logs: Audit logs provide a record of changes and usage in the
+      Enterprise Grid plan. You can view audit logs directly in Slack, export
+      them as CSV files, and use the Audit Logs API to create custom monitoring
+      tools.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  identityProvidersGroups:
+    description: >-
+      Identity Provider Groups: Sync groups created in your identity provider
+      with workspaces and channels in your Enterprise Grid organization. If your
+      identity provider doesn't support group syncing, you can use our SCIM API
+      and do it manually.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  customRules:
+    description: Custom Message and File Retention Policies.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  exportMessages:
+    description: Data Exports for all Messages.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  slackConnectLostPrevention:
+    description: >-
+      Native Data Loss Prevention for Slack Connect: Slack Connect data loss
+      prevention analyzes messages and files sent by members of your
+      organization to reduce the risk of sharing confidential information,
+      malicious content, or personally identifiable information with external
+      organizations.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  informationBarriers:
+    description: >-
+      Information Barriers: Create information barriers between identity
+      provider groups to prevent certain members from sending direct messages or
+      starting calls with each other to avoid conflicts of interest and protect
+      confidential information.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  legalRetentionHold:
+    description: >-
+      Legal Retentions: In an Enterprise Grid organization, you can assign a
+      legal retention to a specific member to retain their messages and files in
+      Slack. This means messages and files sent by all conversation members will
+      be retained regardless of retention settings or member modifications or
+      deletions.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  workspaces:
+    description: >-
+      Workspaces: Slack workspaces are the engine of your work, like a virtual
+      office. It's where your channels, direct messages, and tools reside.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  domainName:
+    description: Domain Name Claim.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  customSLAs:
+    description: Custom Service Level Agreements.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  privilegesGeneralChannelManagement:
+    description: 'Manage posting permissions in the #general channel.'
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  privilegesPrivateChannelManagement:
+    description: Manage posting permissions for an unlimited number of channels.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  customUserGroups:
+    description: >-
+      Custom User Groups: Facilitate receiving notifications and communication
+      with entire teams, departments, and groups.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  usersManagementSCIM:
+    description: User Management via SCIM.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+  extraCompatibility:
+    description: >-
+      Compatibility with Data Loss Prevention (DLP), eDiscovery, and offline
+      backup providers.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  support:
+    description: Access to customer support.
+    valueType: TEXT
+    defaultValue: Standard Support
+    type: SUPPORT
+  availability:
+    description: 99.99% Availability Guaranteed in our SLA.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  granularRoles:
+    description: >-
+      Detailed Roles: Assign system roles to individual members or identity
+      provider groups, or assign members to multiple system roles. Granular
+      controls allow you to choose whether members can manage administrative
+      tasks across all workspaces or only some in your Enterprise Grid
+      organization.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  adminAnalyticsAPI:
+    description: >-
+      Admin Data Analytics API: Retrieve analytics data from a specific date in
+      a compressed JSON file format.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+  adminAnalyticsDashboard:
+    description: >-
+      Admin Data Analytics Dashboard: The Slack data analytics dashboard lets
+      you gain insights into how your organization uses Slack. Easily search and
+      sort data to better understand messages, channels, and workspace members
+      in your Enterprise Grid organization.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  messageActivityAnalytics:
+    description: >-
+      Message Activity Analytics: With message activity analytics, owners,
+      administrators, and members with necessary permissions can see how many
+      people have interacted with each Slack message. Use message activity to
+      measure the impact of announcements and internal communication campaigns
+      in your organization.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+usageLimits:
+  useMessagesAccess:
+    description: Number of days you can access message and file information.
+    valueType: NUMERIC
+    defaultValue: 90
+    unit: message
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - messagesAccess
+  useAppsAndServices:
+    description: Limits on applications and services that can be integrated.
+    valueType: NUMERIC
+    defaultValue: 10
+    unit: app
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - appsAndServices
+  useVoiceAndVideoCalls:
+    description: Number of people who can be on the same voice and video calls you make.
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: people
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - voiceAndVideoCalls
+  useWorkspaces:
+    description: Number of workspaces you can use.
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: workspace
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - workspaces
+  useWorkflowsPremium:
+    description: Monthly executions allowed with premium workflows.
+    valueType: NUMERIC
+    defaultValue: 1000
+    unit: execution/month
+    type: RENEWABLE
+    linkedFeatures:
+      - premiumWorkflows
+  useWorkflows:
+    description: Number of workflows that can be published, both standard and premium.
+    valueType: NUMERIC
+    defaultValue: 10000000000000
+    unit: workflow
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - standardWorkflows
+      - premiumWorkflows
+  useSlackConnect:
+    description: >-
+      Number of people from other organizations you can collaborate with on
+      Slack Connect.
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: persons
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - slackConnect
+plans:
+  FREE:
+    description: The fastest and easiest way to try Slack
+    monthlyPrice: 0
+    annualPrice: 0
+    unit: user/month
+    features: null
+    usageLimits: null
+    price: 0
+  PRO:
+    description: More control for small teams looking to enhance collaboration
+    monthlyPrice: 8.75
+    annualPrice: 7.25
+    unit: user/month
+    features:
+      canvas:
+        value: FULL
+      customizableSections:
+        value: true
+      workflowBuilder:
+        value: true
+      customWorkflowSteps:
+        value: true
+      deployApps:
+        value: true
+      standardWorkflows:
+        value: true
+      premiumWorkflows:
+        value: true
+      oAuthGoogle:
+        value: true
+      customRules:
+        value: true
+      customUserGroups:
+        value: true
+      adminAnalyticsDashboard:
+        value: true
+      support:
+        value: Support available 24/7 from Monday to Sunday.
+    usageLimits:
+      useMessagesAccess:
+        value: 10000000000000
+      useAppsAndServices:
+        value: 10000000000000
+      useVoiceAndVideoCalls:
+        value: 50
+      useSlackConnect:
+        value: 10000000000000
+    price: 8.75
+  BUSINESS_PLUS:
+    description: Expand your business, increase productivity, and keep your teams connected
+    monthlyPrice: 15
+    annualPrice: 12.5
+    unit: user/month
+    features:
+      canvas:
+        value: FULL
+      customizableSections:
+        value: true
+      workflowBuilder:
+        value: true
+      customWorkflowSteps:
+        value: true
+      deployApps:
+        value: true
+      standardWorkflows:
+        value: true
+      premiumWorkflows:
+        value: true
+      oAuthGoogle:
+        value: true
+      singleSignOn:
+        value: true
+      customRules:
+        value: true
+      exportMessages:
+        value: true
+      dataResidence:
+        value: true
+      privilegesPrivateChannelManagement:
+        value: true
+      customUserGroups:
+        value: true
+      usersManagementSCIM:
+        value: true
+      adminAnalyticsAPI:
+        value: true
+      adminAnalyticsDashboard:
+        value: true
+      messageActivityAnalytics:
+        value: true
+      support:
+        value: >-
+          Support available 24/7 from Monday to Sunday, with an initial response
+          time of 4 hours.
+      availability:
+        value: true
+    usageLimits:
+      useMessagesAccess:
+        value: 10000000000000
+      useAppsAndServices:
+        value: 10000000000000
+      useVoiceAndVideoCalls:
+        value: 50
+      useWorkflowsPremium:
+        value: 2000
+      useSlackConnect:
+        value: 10000000000000
+    price: 15
+  ENTERPRISE_GRID:
+    description: >-
+      Slack's plan for the most demanding enterprises. Includes the flexibility
+      to meet regulatory requirements and the power to support your performance
+      every step of the way.
+    monthlyPrice: Contact Sales
+    annualPrice: Contact Sales
+    unit: user/month
+    features:
+      canvas:
+        value: FULL
+      customizableSections:
+        value: true
+      workflowBuilder:
+        value: true
+      customWorkflowSteps:
+        value: true
+      deployApps:
+        value: true
+      standardWorkflows:
+        value: true
+      premiumWorkflows:
+        value: true
+      oAuthGoogle:
+        value: true
+      singleSignOn:
+        value: true
+      enterpriseMobilitySecurity:
+        value: true
+      auditLogs:
+        value: true
+      identityProvidersGroups:
+        value: true
+      complianceHIPAA:
+        value: true
+      slackConnectLostPrevention:
+        value: true
+      informationBarriers:
+        value: true
+      legalRetentionHold:
+        value: true
+      privilegesPrivateChannelManagement:
+        value: true
+      customUserGroups:
+        value: true
+      usersManagementSCIM:
+        value: true
+      extraCompatibility:
+        value: true
+      granularRoles:
+        value: true
+      domainName:
+        value: true
+      customSLAs:
+        value: true
+      adminAnalyticsAPI:
+        value: true
+      adminAnalyticsDashboard:
+        value: true
+      messageActivityAnalytics:
+        value: true
+      support:
+        value: >-
+          Priority support, available 24/7 from Monday to Sunday, with an
+          initial response time of 4 hours.
+      availability:
+        value: true
+    usageLimits:
+      useMessagesAccess:
+        value: 10000000000000
+      useAppsAndServices:
+        value: 10000000000000
+      useVoiceAndVideoCalls:
+        value: 50
+      useWorkflowsPremium:
+        value: 5000
+      useSlackConnect:
+        value: 10000000000000
+    price: Contact Sales
+addOns:
+  slackEnterpriseKeys:
+    availableFor:
+      - ENTERPRISE_GRID
+    monthlyPrice: Contact Sales
+    annualPrice: Contact Sales
+    unit: USD/user
+    features:
+      adminSlackEnterpriseKeys:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+    price: Contact Sales

@@ -1,0 +1,256 @@
+saasName: Figma
+version: '2.0'
+createdAt: '2019-10-17'
+currency: USD
+hasAnnualPayment: true
+features:
+  versionHistory:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  figmaEditor:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  advancedDrawingTools:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  styles:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  plugins:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+    pricingUrls: null
+  fileStorage:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  crossPlatform:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  sketchImport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  interactivePrototypes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  overlays:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  transitions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  advancedAnimations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  developerHandoff:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  pdfPngJpgSvgExport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  multiplayer:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  shareableLinks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  onCanvasCommenting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  observationMode:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  privateProjects:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  teams:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  components:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  teamLibraries:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  organizationWideDesignSystems:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  sharedFonts:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  restApis:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  thirdPartyIntegrations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  liveEmbeds:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTENSION
+  privatePlugins:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  pluginManagement:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  centralizedAdministration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  domainCapture:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  linkAccessControls:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  fullContentOwnership:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  singleSignOn:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  activityLogs:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+usageLimits:
+  versionHistoryDepth:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 30
+    unit: day
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - versionHistory
+plans:
+  STARTER:
+    description: ''
+    monthlyPrice: 0
+    annualPrice: 0
+    unit: editor/month
+    features: null
+    usageLimits: null
+    price: 0
+  PROFESSIONAL:
+    description: ''
+    monthlyPrice: null
+    annualPrice: 12
+    unit: editor/month
+    features:
+      privateProjects:
+        value: true
+      teamLibraries:
+        value: true
+    usageLimits:
+      versionHistoryDepth:
+        value: .inf
+    price: 12
+  ORGANIZATION:
+    description: ''
+    monthlyPrice: null
+    annualPrice: 45
+    unit: editor/month
+    features:
+      privateProjects:
+        value: true
+      teams:
+        value: true
+      teamLibraries:
+        value: true
+      organizationWideDesignSystems:
+        value: true
+      sharedFonts:
+        value: true
+      privatePlugins:
+        value: true
+      pluginManagement:
+        value: true
+      centralizedAdministration:
+        value: true
+      domainCapture:
+        value: true
+      linkAccessControls:
+        value: true
+      fullContentOwnership:
+        value: true
+      singleSignOn:
+        value: true
+      activityLogs:
+        value: true
+    usageLimits:
+      versionHistoryDepth:
+        value: .inf
+    price: 45

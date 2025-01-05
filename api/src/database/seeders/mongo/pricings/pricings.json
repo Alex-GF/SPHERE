@@ -1,0 +1,46 @@
+[
+  {
+    "_id": {
+      "$oid": "63f74bf8eeed64054274b52d"
+    },
+    "name": "Box",
+    "extractionDate": "2024-07-15",
+    "url": "https://www.box.com",
+    "yaml": "public/pricings/originalDataset/box/2024.yml",
+    "analytics": {
+      "numberOfFeatures": 50,
+      "numberOfInformationFeatures": 2,
+      "numberOfIntegrationFeatures": 9,
+      "numberOfIntegrationApiFeatures": 1,
+      "numberOfIntegrationExtensionFeatures": 0,
+      "numberOfIntegrationIdentityProviderFeatures": 1,
+      "numberOfIntegrationWebSaaSFeatures": 5,
+      "numberOfIntegrationMarketplaceFeatures": 1,
+      "numberOfIntegrationExternalDeviceFeatures": 1,
+      "numberOfDomainFeatures": 21,
+      "numberOfAutomationFeatures": 1,
+      "numberOfBotAutomationFeatures": 0,
+      "numberOfFilteringAutomationFeatures": 0,
+      "numberOfTrackingAutomationFeatures": 1,
+      "numberOfTaskAutomationFeatures": 0,
+      "numberOfManagementFeatures": 9,
+      "numberOfGuaranteeFeatures": 7,
+      "numberOfSupportFeatures": 1,
+      "numberOfPaymentFeatures": 0,
+      "numberOfUsageLimits": 9,
+      "numberOfRenewableUsageLimits": 2,
+      "numberOfNonRenewableUsageLimits": 7,
+      "numberOfResponseDrivenUsageLimits": 0,
+      "numberOfTimeDrivenUsageLimits": 0,
+      "numberOfPlans": 5,
+      "numberOfFreePlans": 0,
+      "numberOfPaidPlans": 5,
+      "numberOfAddOns": 0,
+      "numberOfReplacementAddons": 0,
+      "numberOfExtensionAddons": 0,
+      "configurationSpaceSize": 5,
+      "minSubscriptionPrice": 8,
+      "maxSubscriptionPrice": 420
+    }
+  }
+]

@@ -1,0 +1,947 @@
+saasName: Canva
+version: "2.0"
+createdAt: "2024-07-07"
+currency: EUR
+hasAnnualPayment: true
+features:
+  assets1:
+    description: Free stock photos, font, graphics, videos and audio
+    valueType: TEXT
+    defaultValue: 3.2+ million
+    type: DOMAIN
+  templates:
+    description: ""
+    valueType: TEXT
+    defaultValue: 2.1+ million
+    type: DOMAIN
+  customDimensionDesigns:
+    description: Create designs with custom dimensions
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  export1:
+    description: Export designs as PDF, JPG, PNG
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  export2:
+    description: Export designs print ready designs / as CMYK
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  multiplePresentationModes:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  socialSharing:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs: null
+  customTemplates:
+    description: Custom templates
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  saveDesingsAsTemplates:
+    description: Save designs as templates (incluede template locking)
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  basicDesignInsights:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  advancedDesignInsights:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  socialContentPlanner:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  soundEffects:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  magicDesign:
+    description: From idea to design, instantly
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: BOT
+  magicWrite:
+    description: Magic write with brand voice. AI powered writing assistant
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: BOT
+  magicMediaText2Image:
+    description: Text to image
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: BOT
+  magicMediaText2Video:
+    description: Text to Video
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: BOT
+  magicMorph:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: BOT
+  resize:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  magicSwitch:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: BOT
+  translator:
+    description: Translate text in your designs to over 100 languages
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: BOT
+  magicAnimate:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: BOT
+  magicEdit:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: BOT
+  magicEraser:
+    description: Remove unwanted details in images
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: BOT
+  magicGrab:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: BOT
+  magicExpand:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: BOT
+  mockups:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  backgroundRemover:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  manualBeatSync:
+    description: Sync your video footage to your soundtrack
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  automaticBeatSync:
+    description: Sync your video footage to your soundtrack
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  highlights:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  enhanceVoice:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: BOT
+  socialMedia:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  print:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  presentations:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  video:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  websites:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  whiteboards:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  documents:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  courses:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  recordings:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  realTimeCollaboration:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  comments:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  assignTasks:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  linkSharing:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  anonymousCollaboration:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  teamOnlyLinks:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  brandControls:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  brandTemplates:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  brandKits:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  foldersInBrandKits:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  elementLocking:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  replaceLogosAndImagery:
+    description: Easily replace logos and imagery across existing designs instantly
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  approvals:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  approvalWorkflows:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  orgWideBrandKitsAndTemplates:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  inviteTeamMembers:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  roleAssignments:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  ownerShipTransfer:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  reports:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  multiTeamOrganizations:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  aiAdminControls:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  restrictedSharedControls:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  templateLibraryPermissions:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  granularElementControls:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  ipIndemnityContentControl:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  privateEmbeds:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTENSION
+  appsMarketplace:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  appsSDKsAccess:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  connectApiForCustomIntegrations:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+  multiFactorAuthentication:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  iso27001CertificationAndCompliance:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: GUARANTEE
+  soc2TypeII:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: GUARANTEE
+  canvaShield:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: GUARANTEE
+  domainReports:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  singleSignOn:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  crossDomainIdentityManagement:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  auditLogs:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  folders:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  mediaTagging:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  cloudStorage:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  tutorials:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  certifications:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  selfHelp:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  aiChatBot:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  supportTickets:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  liveChat:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  priorityHandling:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  dedicatedSupportCaseManagement:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  dedicatedCustomerSuccessManager:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  creativeServices:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  payAsYouGrowBilling:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: PAYMENT
+usageLimits:
+  minimumUsersRequired:
+    description: ""
+    valueType: NUMERIC
+    defaultValue: 0
+    unit: user
+    type: NON_RENEWABLE
+    linkedFeatures: null
+  usersLimit:
+    description: ""
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: user
+    type: NON_RENEWABLE
+    linkedFeatures: null
+  magicDesignUsageTokens:
+    description: ""
+    valueType: NUMERIC
+    defaultValue: 10
+    unit: use
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - magicDesign
+  magicWriteTotalUsages:
+    description: ""
+    valueType: NUMERIC
+    defaultValue: 50
+    unit: use
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - magicWrite
+  magicWriteReusableTokens:
+    description: ""
+    valueType: NUMERIC
+    defaultValue: 0
+    unit: use
+    type: RENEWABLE
+    linkedFeatures:
+      - magicWrite
+  magicText2ImageTotalTokens:
+    description: ""
+    valueType: NUMERIC
+    defaultValue: 50
+    unit: use
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - magicMediaText2Image
+  magicText2ImageReusableTokens:
+    description: ""
+    valueType: NUMERIC
+    defaultValue: 0
+    unit: use
+    type: RENEWABLE
+    linkedFeatures:
+      - magicMediaText2Image
+  magicText2VideoTotalTokens:
+    description: ""
+    valueType: NUMERIC
+    defaultValue: 5
+    unit: use
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - magicMediaText2Video
+  magicText2VideoReusableTokens:
+    description: ""
+    valueType: NUMERIC
+    defaultValue: 0
+    unit: use
+    type: RENEWABLE
+    linkedFeatures:
+      - magicMediaText2Video
+  translatorTotalPages:
+    description: ""
+    valueType: NUMERIC
+    defaultValue: 50
+    unit: page
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - translator
+  translatorReusablePages:
+    description: ""
+    valueType: NUMERIC
+    defaultValue: 0
+    unit: page
+    type: RENEWABLE
+    linkedFeatures:
+      - translator
+  brandKitsUnits:
+    description: ""
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: kit
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - brandKits
+  cloudStorageLimit:
+    description: ""
+    valueType: NUMERIC
+    defaultValue: 5
+    unit: GB
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - cloudStorage
+  availableOnlyIfMoreThan100SeatsInvoiced:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - ipIndemnityContentControl
+      - dedicatedCustomerSuccessManager
+      - creativeServices
+plans:
+  FREE:
+    description: >-
+      For anyone to design anything, on their own or with family, friends, or
+      others. No experience required.
+    monthlyPrice: 0
+    annualPrice: 0
+    unit: user/month
+    features: null
+    usageLimits: null
+    price: 0
+  PRO:
+    description: >-
+      For individuals, solopreneurs and freelance designers who want unlimited
+      access to premium content, to create professional designs with ease and
+      scale their productivity.
+    monthlyPrice: 15
+    annualPrice: 10
+    unit: user/month
+    features:
+      assets1:
+        value: 127+ million
+      templates:
+        value: 3.8+ million
+      export2:
+        value: true
+      customTemplates:
+        value: true
+      saveDesingsAsTemplates:
+        value: true
+      advancedDesignInsights:
+        value: true
+      socialContentPlanner:
+        value: true
+      soundEffects:
+        value: true
+      magicMorph:
+        value: true
+      resize:
+        value: true
+      magicSwitch:
+        value: true
+      magicAnimate:
+        value: true
+      magicEraser:
+        value: true
+      magicGrab:
+        value: true
+      magicExpand:
+        value: true
+      backgroundRemover:
+        value: true
+      automaticBeatSync:
+        value: true
+      highlights:
+        value: true
+      enhanceVoice:
+        value: true
+      brandControls:
+        value: true
+      brandTemplates:
+        value: true
+      elementLocking:
+        value: true
+      replaceLogosAndImagery:
+        value: true
+      approvals:
+        value: true
+      inviteTeamMembers:
+        value: true
+      mediaTagging:
+        value: true
+      supportTickets:
+        value: true
+      liveChat:
+        value: true
+      brandKits:
+        value: true
+    usageLimits:
+      magicDesignUsageTokens:
+        value: .inf
+      magicWriteTotalUsages:
+        value: .inf
+      magicWriteReusableTokens:
+        value: 500
+      magicText2ImageTotalTokens:
+        value: .inf
+      magicText2ImageReusableTokens:
+        value: 500
+      magicText2VideoTotalTokens:
+        value: .inf
+      magicText2VideoReusableTokens:
+        value: 50
+      translatorTotalPages:
+        value: .inf
+      translatorReusablePages:
+        value: 500
+      brandKitsUnits:
+        value: 1000
+      cloudStorageLimit:
+        value: 1024
+    price: 15
+  TEAMS:
+    description: >-
+      All the great features of Canva Pro, plus we think you'll love these
+      features designed to allow teams of all sizes to collaborate with ease.
+    monthlyPrice: 10
+    annualPrice: 8.33
+    unit: user/month
+    features:
+      assets1:
+        value: 127+ million
+      templates:
+        value: 3.8+ million
+      export2:
+        value: true
+      customTemplates:
+        value: true
+      saveDesingsAsTemplates:
+        value: true
+      advancedDesignInsights:
+        value: true
+      socialContentPlanner:
+        value: true
+      soundEffects:
+        value: true
+      magicMorph:
+        value: true
+      resize:
+        value: true
+      magicSwitch:
+        value: true
+      magicAnimate:
+        value: true
+      magicEraser:
+        value: true
+      magicGrab:
+        value: true
+      magicExpand:
+        value: true
+      backgroundRemover:
+        value: true
+      automaticBeatSync:
+        value: true
+      highlights:
+        value: true
+      enhanceVoice:
+        value: true
+      teamOnlyLinks:
+        value: true
+      brandControls:
+        value: true
+      brandTemplates:
+        value: true
+      foldersInBrandKits:
+        value: true
+      elementLocking:
+        value: true
+      replaceLogosAndImagery:
+        value: true
+      approvals:
+        value: true
+      inviteTeamMembers:
+        value: true
+      roleAssignments:
+        value: true
+      ownerShipTransfer:
+        value: true
+      reports:
+        value: true
+      aiAdminControls:
+        value: true
+      domainReports:
+        value: true
+      mediaTagging:
+        value: true
+      supportTickets:
+        value: true
+      liveChat:
+        value: true
+      payAsYouGrowBilling:
+        value: true
+    usageLimits:
+      usersLimit:
+        value: .inf
+      minimumUsersRequired:
+        value: 3
+      magicDesignUsageTokens:
+        value: .inf
+      magicWriteTotalUsages:
+        value: .inf
+      magicWriteReusableTokens:
+        value: 500
+      magicText2ImageTotalTokens:
+        value: .inf
+      magicText2ImageReusableTokens:
+        value: 500
+      magicText2VideoTotalTokens:
+        value: .inf
+      magicText2VideoReusableTokens:
+        value: 50
+      translatorTotalPages:
+        value: .inf
+      translatorReusablePages:
+        value: 500
+      brandKitsUnits:
+        value: 1000
+      cloudStorageLimit:
+        value: 1024
+    price: 10
+  ENTERPRISE:
+    description: Empower your organization
+    monthlyPrice: Contact Sales
+    annualPrice: Contact Sales
+    unit: user/month
+    features:
+      assets1:
+        value: 127+ million
+      templates:
+        value: 3.8+ million
+      export2:
+        value: true
+      customTemplates:
+        value: true
+      saveDesingsAsTemplates:
+        value: true
+      advancedDesignInsights:
+        value: true
+      socialContentPlanner:
+        value: true
+      soundEffects:
+        value: true
+      magicMorph:
+        value: true
+      resize:
+        value: true
+      magicSwitch:
+        value: true
+      magicAnimate:
+        value: true
+      magicEraser:
+        value: true
+      magicGrab:
+        value: true
+      magicExpand:
+        value: true
+      backgroundRemover:
+        value: true
+      automaticBeatSync:
+        value: true
+      highlights:
+        value: true
+      enhanceVoice:
+        value: true
+      teamOnlyLinks:
+        value: true
+      brandControls:
+        value: true
+      brandTemplates:
+        value: true
+      foldersInBrandKits:
+        value: true
+      elementLocking:
+        value: true
+      replaceLogosAndImagery:
+        value: true
+      approvals:
+        value: true
+      approvalWorkflows:
+        value: true
+      orgWideBrandKitsAndTemplates:
+        value: true
+      inviteTeamMembers:
+        value: true
+      roleAssignments:
+        value: true
+      ownerShipTransfer:
+        value: true
+      reports:
+        value: true
+      multiTeamOrganizations:
+        value: true
+      aiAdminControls:
+        value: true
+      restrictedSharedControls:
+        value: true
+      templateLibraryPermissions:
+        value: true
+      granularElementControls:
+        value: true
+      ipIndemnityContentControl:
+        value: true
+      privateEmbeds:
+        value: true
+      connectApiForCustomIntegrations:
+        value: true
+      domainReports:
+        value: true
+      singleSignOn:
+        value: true
+      crossDomainIdentityManagement:
+        value: true
+      auditLogs:
+        value: true
+      mediaTagging:
+        value: true
+      supportTickets:
+        value: true
+      liveChat:
+        value: true
+      priorityHandling:
+        value: true
+      dedicatedSupportCaseManagement:
+        value: true
+      dedicatedCustomerSuccessManager:
+        value: true
+      creativeServices:
+        value: true
+      payAsYouGrowBilling:
+        value: true
+    usageLimits:
+      magicDesignUsageTokens:
+        value: .inf
+      magicWriteTotalUsages:
+        value: .inf
+      magicWriteReusableTokens:
+        value: 500
+      magicText2ImageTotalTokens:
+        value: .inf
+      magicText2ImageReusableTokens:
+        value: 500
+      magicText2VideoTotalTokens:
+        value: .inf
+      magicText2VideoReusableTokens:
+        value: 50
+      translatorTotalPages:
+        value: .inf
+      translatorReusablePages:
+        value: 500
+      brandKitsUnits:
+        value: 1000
+      cloudStorageLimit:
+        value: 1024
+      availableOnlyIfMoreThan100SeatsInvoiced:
+        value: true
+    price: Contact Sales

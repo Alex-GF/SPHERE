@@ -1,0 +1,410 @@
+saasName: Box
+version: '2.0'
+createdAt: '2019-11-13'
+currency: USD
+hasAnnualPayment: false
+features:
+  secureStorage:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  accessAndDetailedControls:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  desktopAccessToBoxFiles:
+    valueType: BOOLEAN
+    description: ''
+    defaultValue: true
+    type: DOMAIN
+  mobileAccess:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  versionHistory:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  sslEncryption:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  atRestEncryption:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  twoFactorAuthentication:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  standardEnterpriseSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  userManagement:
+    description: User management
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  boxApi:
+    description: API
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: API
+  advancedSecurityReporting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  advancedUserReporting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  activeDirectoryIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+  singleSignOn:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  customBranding:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  mobileSecurityControls:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  emmIntegrations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  dataLossPrevention:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  unlimitedExternalCollaborators:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  completeContentVisibility:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  completeContentManagement:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  userActivityTracking:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TRACKING
+  adminRoleDelegation:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  customMetadata:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  customTemplates:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  customTermsOfService:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  pciDssCompliance:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  boxGovernance:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  boxKeySafe:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  boxZones:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  hipaaCompliance:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  hitechCompliance:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  fedrampCompliance:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  unlimitedIntegrations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  usersGroup:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  workAutomation:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  deviceTrust:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  passwordPolicy:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  documentWatermark:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+usageLimits:
+  secureStorageLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 100
+    unit: GB
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - secureStorage
+  uploadSizeLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 2
+    unit: GB
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - secureStorage
+  minUsers:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 3
+    type: NON_RENEWABLE
+    linkedFeatures: null
+  maxUsers:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 10
+    type: NON_RENEWABLE
+    linkedFeatures: null
+  apiCallsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 25000
+    unit: calls/month
+    type: RENEWABLE
+    linkedFeatures:
+      - boxApi
+plans:
+  STARTER:
+    description: ''
+    monthlyPrice: 5
+    unit: user/month
+    features: null
+    usageLimits: null
+    price: 5
+  BUSINESS:
+    description: ''
+    monthlyPrice: 15
+    unit: user/month
+    features:
+      advancedSecurityReporting:
+        value: true
+      advancedUserReporting:
+        value: true
+      activeDirectoryIntegration:
+        value: true
+      singleSignOn:
+        value: true
+      customBranding:
+        value: true
+      mobileSecurityControls:
+        value: true
+      emmIntegrations:
+        value: true
+      dataLossPrevention:
+        value: true
+    usageLimits:
+      secureStorageLimit:
+        value: .inf
+      uploadSizeLimit:
+        value: 5
+      maxUsers:
+        value: .inf
+      apiCallsLimit:
+        value: 50000
+    price: 15
+  BUSINESS_PLUS:
+    description: ''
+    monthlyPrice: 25
+    unit: user/month
+    features:
+      advancedSecurityReporting:
+        value: true
+      advancedUserReporting:
+        value: true
+      activeDirectoryIntegration:
+        value: true
+      singleSignOn:
+        value: true
+      customBranding:
+        value: true
+      mobileSecurityControls:
+        value: true
+      emmIntegrations:
+        value: true
+      dataLossPrevention:
+        value: true
+      unlimitedExternalCollaborators:
+        value: true
+      completeContentVisibility:
+        value: true
+      completeContentManagement:
+        value: true
+      userActivityTracking:
+        value: true
+      adminRoleDelegation:
+        value: true
+      customMetadata:
+        value: true
+      customTemplates:
+        value: true
+      customTermsOfService:
+        value: true
+      pciDssCompliance:
+        value: true
+      boxGovernance:
+        value: true
+      boxKeySafe:
+        value: true
+      boxZones:
+        value: true
+    usageLimits:
+      secureStorageLimit:
+        value: .inf
+      uploadSizeLimit:
+        value: 5
+      maxUsers:
+        value: .inf
+      apiCallsLimit:
+        value: 50000
+    price: 25
+  ENTERPRISE:
+    description: ''
+    monthlyPrice: Contact Sales
+    unit: user/month
+    features:
+      advancedSecurityReporting:
+        value: true
+      advancedUserReporting:
+        value: true
+      activeDirectoryIntegration:
+        value: true
+      singleSignOn:
+        value: true
+      customBranding:
+        value: true
+      mobileSecurityControls:
+        value: true
+      emmIntegrations:
+        value: true
+      dataLossPrevention:
+        value: true
+      hipaaCompliance:
+        value: true
+      hitechCompliance:
+        value: true
+      fedrampCompliance:
+        value: true
+      unlimitedExternalCollaborators:
+        value: true
+      completeContentVisibility:
+        value: true
+      completeContentManagement:
+        value: true
+      unlimitedIntegrations:
+        value: true
+      usersGroup:
+        value: true
+      workAutomation:
+        value: true
+      deviceTrust:
+        value: true
+      passwordPolicy:
+        value: true
+      documentWatermark:
+        value: true
+      customMetadata:
+        value: true
+      customTemplates:
+        value: true
+      boxGovernance:
+        value: true
+      boxKeySafe:
+        value: true
+      boxZones:
+        value: true
+    usageLimits:
+      secureStorageLimit:
+        value: .inf
+      uploadSizeLimit:
+        value: 5
+      maxUsers:
+        value: .inf
+      apiCallsLimit:
+        value: 100000
+    price: Contact Sales

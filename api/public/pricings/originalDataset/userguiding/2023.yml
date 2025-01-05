@@ -1,0 +1,426 @@
+saasName: UserGuiding
+version: '2.0'
+createdAt: '2023-12-09'
+currency: USD
+hasAnnualPayment: true
+features:
+  guides:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  hotspots:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  onboardingChecklist:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  resourceCenters:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  npsSurveys:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  engagementAnalytics:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  userIdentification:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  userTracking:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  adoptionTracker:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TRACKING
+  audienceSegmentation:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  customAttributes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  userDetails:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  userActivityFeed:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  customEvents:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  weeklyReports:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  errorLogging:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  customizableThemes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  languageLocalization:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  dynamicMaterialPersonalization:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  removeUserGuidingBranding:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  customCSS:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  materialScheduling:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  appearanceCustomization:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  googleAnalytics:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://marketingplatform.google.com/about/analytics/
+  webhooks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: API
+  segment:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://segment.com/pricing/
+  mixpanel:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://mixpanel.com/pricing/
+  zapier:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+    pricingURLs:
+      - https://zapier.com/pricing/
+  hubspot:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://www.hubspot.com/pricing/marketing/starter
+  intercom:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://www.intercom.com/pricing
+  slack:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://slack.com/pricing
+  woopra:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://www.woopra.com/pricing/
+  knowledBaseIntegrations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  liveChatSoftwareIntegrations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  roleManagement:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  permissionManagement:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  teams:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  domains:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  employeeOnboardingModule:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  troubleShooterAccess:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  helpCenter:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  userGuidingUniversity:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  emailSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  liveChatSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  dedicatedCustomerSuccessManager:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+usageLimits:
+  activeGuidesLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 20
+    unit: guide
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - guides
+  activeHotspotsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 20
+    unit: hotspot
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - hotspots
+  activeOnboardingChecklistsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 2
+    unit: checklist
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - onboardingChecklist
+  activeResourceCentersLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: resource center
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - resourceCenters
+  customizableThemesLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: theme
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - customizableThemes
+  activeUsersLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 2500
+    unit: user/month
+    type: RENEWABLE
+    linkedFeatures: null
+  teamMembersLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: member
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - teams
+  domainsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 2
+    unit: domain
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - domains
+plans:
+  BASIC:
+    description: >-
+      Onboard new users and engage customers throughout their lifecycles. Ideal
+      for startups and SMBs.
+    monthlyPrice: 129
+    annualPrice: 89
+    unit: /month
+    features: null
+    usageLimits: null
+    price: 129
+  PROFESSIONAL:
+    description: >-
+      Maximize activation, customer revenue, and retention. Ideal for rapidly
+      growing companies.
+    monthlyPrice: 499
+    annualPrice: 389
+    unit: /month
+    features:
+      adoptionTracker:
+        value: true
+      errorLogging:
+        value: true
+      languageLocalization:
+        value: true
+      removeUserGuidingBranding:
+        value: true
+      materialScheduling:
+        value: true
+      zapier:
+        value: true
+      roleManagement:
+        value: true
+      permissionManagement:
+        value: true
+      employeeOnboardingModule:
+        value: true
+      dedicatedCustomerSuccessManager:
+        value: true
+    usageLimits:
+      activeGuidesLimit:
+        value: 1000000000
+      activeHotspotsLimit:
+        value: 1000000000
+      activeOnboardingChecklistsLimit:
+        value: 1000000000
+      activeResourceCentersLimit:
+        value: 1000000000
+      customizableThemesLimit:
+        value: 5
+      activeUsersLimit:
+        value: 20000
+      teamMembersLimit:
+        value: 5
+      domainsLimit:
+        value: 5
+    price: 499
+  CORPORATE:
+    description: >-
+      Transform your product experience. Ideal for enterprises with multiple
+      products.
+    monthlyPrice: 999
+    annualPrice: 689
+    unit: /month
+    features:
+      adoptionTracker:
+        value: true
+      errorLogging:
+        value: true
+      languageLocalization:
+        value: true
+      removeUserGuidingBranding:
+        value: true
+      materialScheduling:
+        value: true
+      zapier:
+        value: true
+      roleManagement:
+        value: true
+      permissionManagement:
+        value: true
+      employeeOnboardingModule:
+        value: true
+      dedicatedCustomerSuccessManager:
+        value: true
+    usageLimits:
+      activeGuidesLimit:
+        value: 1000000000
+      activeHotspotsLimit:
+        value: 1000000000
+      activeOnboardingChecklistsLimit:
+        value: 1000000000
+      activeResourceCentersLimit:
+        value: 1000000000
+      customizableThemesLimit:
+        value: 1000000000
+      activeUsersLimit:
+        value: 1000000000
+      teamMembersLimit:
+        value: 1000000000
+      domainsLimit:
+        value: 1000000000
+    price: 999

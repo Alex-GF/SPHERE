@@ -1,0 +1,635 @@
+saasName: Box
+version: '2.0'
+createdAt: '2024-07-15'
+currency: EUR
+hasAnnualPayment: true
+features:
+  secureStorage:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  industryAppsIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  versionHistory:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  unlimitedExternalCollaborators:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  boxApi:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: API
+  boxSign:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  boxSignViaWebApp:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  boxSignVia3rdPartyAndCustomApps:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  granularSharedPermissions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  accessControls:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  microsoft365Integration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - >-
+        https://www.microsoft.com/en-us/microsoft-365/buy/compare-all-microsoft-365-products
+  googleWorkspaceIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://workspace.google.com/pricing
+  slackIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://slack.com/pricing
+  desktopAccess:
+    valueType: BOOLEAN
+    description: ''
+    defaultValue: true
+    type: DOMAIN
+  mobileAccess:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  sslEncryption:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  atRestEncryption:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  twoFactorAuthentication:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  standardBusinessSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  userManagement:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  dataLossProtection:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  advancedSecurityReporting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  advancedUserReporting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  singleSignOn:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  activeDirectoryIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+  customBranding:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  mobileSecurityControls:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  boxRelay:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+  advancedAdmin:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  advancedControls:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  fullContentVisibility:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  fullContentManagement:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  userActivityTracking:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TRACKING
+  adminRoleDelegation:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  metadata:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  customTemplates:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  customTermsOfService:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  pciDssCompliance:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  boxGovernance:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  boxZones:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  boxKeySafe:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  boxShield:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  hipaaCompliance:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  hitechCompliance:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  fedrampCompliance:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  deviceTrust:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  passwordPolicyEnforcement:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  documentWatermark:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  boxSignBatchSend:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  boxSignReadySignLinks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+usageLimits:
+  storageLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 100
+    unit: GB
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - secureStorage
+  uploadSizeLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 2
+    unit: GB
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - secureStorage
+  industryAppsIntegrationLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: integration
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - industryAppsIntegration
+  versionHistoryThreshold:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 25
+    unit: day
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - versionHistory
+  minUsers:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 3
+    type: NON_RENEWABLE
+    linkedFeatures: null
+  maxUsers:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 10
+    type: NON_RENEWABLE
+    linkedFeatures: null
+  apiCallsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 25000
+    unit: calls/month
+    type: RENEWABLE
+    linkedFeatures:
+      - boxApi
+  boxSignLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 10
+    unit: document/user/month
+    type: RENEWABLE
+    linkedFeatures:
+      - boxSignViaWebApp
+  includedDocumentsFor3rdPartyAndCustomApps:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 100
+    unit: document
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - boxSignVia3rdPartyAndCustomApps
+plans:
+  BUSINESS_STARTER:
+    description: ''
+    monthlyPrice: 8
+    annualPrice: 5.5
+    unit: user/month
+    features: null
+    usageLimits: null
+    price: 8
+  BUSINESS:
+    description: ''
+    monthlyPrice: 18
+    annualPrice: 13.5
+    unit: user/month
+    features:
+      industryAppsIntegration:
+        value: true
+      boxSignVia3rdPartyAndCustomApps:
+        value: true
+      advancedSecurityReporting:
+        value: true
+      advancedUserReporting:
+        value: true
+      singleSignOn:
+        value: true
+      activeDirectoryIntegration:
+        value: true
+      customBranding:
+        value: true
+      mobileSecurityControls:
+        value: true
+      boxRelay:
+        value: true
+    usageLimits:
+      storageLimit:
+        value: .inf
+      uploadSizeLimit:
+        value: 5
+      industryAppsIntegrationLimit:
+        value: 1
+      versionHistoryThreshold:
+        value: 50
+      maxUsers:
+        value: .inf
+      apiCallsLimit:
+        value: 50000
+      boxSignLimit:
+        value: .inf
+      includedDocumentsFor3rdPartyAndCustomApps:
+        value: 100
+    price: 18
+  BUSINESS_PLUS:
+    description: ''
+    monthlyPrice: 30
+    annualPrice: 22.5
+    unit: user/month
+    features:
+      industryAppsIntegration:
+        value: true
+      unlimitedExternalCollaborators:
+        value: true
+      boxSignVia3rdPartyAndCustomApps:
+        value: true
+      advancedSecurityReporting:
+        value: true
+      advancedUserReporting:
+        value: true
+      singleSignOn:
+        value: true
+      activeDirectoryIntegration:
+        value: true
+      customBranding:
+        value: true
+      mobileSecurityControls:
+        value: true
+      boxRelay:
+        value: true
+      advancedAdmin:
+        value: true
+      advancedControls:
+        value: true
+      fullContentVisibility:
+        value: true
+      fullContentManagement:
+        value: true
+      userActivityTracking:
+        value: true
+      adminRoleDelegation:
+        value: true
+      metadata:
+        value: true
+      customTemplates:
+        value: true
+      customTermsOfService:
+        value: true
+      pciDssCompliance:
+        value: true
+      boxGovernance:
+        value: true
+      boxKeySafe:
+        value: true
+      boxZones:
+        value: true
+    usageLimits:
+      storageLimit:
+        value: .inf
+      uploadSizeLimit:
+        value: 15
+      industryAppsIntegrationLimit:
+        value: 10
+      versionHistoryThreshold:
+        value: 50
+      maxUsers:
+        value: .inf
+      apiCallsLimit:
+        value: 50000
+      boxSignLimit:
+        value: .inf
+      includedDocumentsFor3rdPartyAndCustomApps:
+        value: 150
+    price: 30
+  ENTERPRISE:
+    description: ''
+    monthlyPrice: 42
+    annualPrice: 31.5
+    unit: user/month
+    features:
+      industryAppsIntegration:
+        value: true
+      unlimitedExternalCollaborators:
+        value: true
+      boxSignVia3rdPartyAndCustomApps:
+        value: true
+      advancedSecurityReporting:
+        value: true
+      advancedUserReporting:
+        value: true
+      singleSignOn:
+        value: true
+      activeDirectoryIntegration:
+        value: true
+      customBranding:
+        value: true
+      mobileSecurityControls:
+        value: true
+      boxRelay:
+        value: true
+      advancedAdmin:
+        value: true
+      advancedControls:
+        value: true
+      fullContentVisibility:
+        value: true
+      fullContentManagement:
+        value: true
+      userActivityTracking:
+        value: true
+      adminRoleDelegation:
+        value: true
+      metadata:
+        value: true
+      customTemplates:
+        value: true
+      customTermsOfService:
+        value: true
+      pciDssCompliance:
+        value: true
+      boxGovernance:
+        value: true
+      boxZones:
+        value: true
+      boxKeySafe:
+        value: true
+      boxShield:
+        value: true
+      hipaaCompliance:
+        value: true
+      hitechCompliance:
+        value: true
+      fedrampCompliance:
+        value: true
+      deviceTrust:
+        value: true
+      passwordPolicyEnforcement:
+        value: true
+      documentWatermark:
+        value: true
+    usageLimits:
+      storageLimit:
+        value: .inf
+      uploadSizeLimit:
+        value: 50
+      industryAppsIntegrationLimit:
+        value: .inf
+      versionHistoryThreshold:
+        value: 100
+      maxUsers:
+        value: .inf
+      apiCallsLimit:
+        value: 100000
+      boxSignLimit:
+        value: .inf
+      includedDocumentsFor3rdPartyAndCustomApps:
+        value: 250
+    price: 42
+  ENTERPRISE_PLUS:
+    description: ''
+    monthlyPrice: Contact Sales
+    annualPrice: Contact Sales
+    unit: user/month
+    features:
+      industryAppsIntegration:
+        value: true
+      unlimitedExternalCollaborators:
+        value: true
+      boxSignVia3rdPartyAndCustomApps:
+        value: true
+      advancedSecurityReporting:
+        value: true
+      advancedUserReporting:
+        value: true
+      singleSignOn:
+        value: true
+      activeDirectoryIntegration:
+        value: true
+      customBranding:
+        value: true
+      mobileSecurityControls:
+        value: true
+      boxRelay:
+        value: true
+      advancedAdmin:
+        value: true
+      advancedControls:
+        value: true
+      fullContentVisibility:
+        value: true
+      fullContentManagement:
+        value: true
+      userActivityTracking:
+        value: true
+      adminRoleDelegation:
+        value: true
+      metadata:
+        value: true
+      customTemplates:
+        value: true
+      customTermsOfService:
+        value: true
+      pciDssCompliance:
+        value: true
+      boxGovernance:
+        value: true
+      boxZones:
+        value: true
+      boxKeySafe:
+        value: true
+      boxShield:
+        value: true
+      hipaaCompliance:
+        value: true
+      hitechCompliance:
+        value: true
+      fedrampCompliance:
+        value: true
+      deviceTrust:
+        value: true
+      passwordPolicyEnforcement:
+        value: true
+      documentWatermark:
+        value: true
+      boxSignBatchSend:
+        value: true
+      boxSignReadySignLinks:
+        value: true
+    usageLimits:
+      storageLimit:
+        value: .inf
+      uploadSizeLimit:
+        value: 150
+      industryAppsIntegrationLimit:
+        value: .inf
+      versionHistoryThreshold:
+        value: .inf
+      maxUsers:
+        value: .inf
+      apiCallsLimit:
+        value: 100000
+      boxSignLimit:
+        value: .inf
+      includedDocumentsFor3rdPartyAndCustomApps:
+        value: 1000
+    price: Contact Sales

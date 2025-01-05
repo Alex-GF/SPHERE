@@ -1,0 +1,1003 @@
+saasName: Wrike
+version: '2.0'
+createdAt: '2023-12-02'
+currency: USD
+hasAnnualPayment: false
+features:
+  multiLanguageSupport:
+    description: >-
+      Wrike supports multiple languages: German, English, French, Italian,
+      Japanese, Portuguese, Spanish, and Russian.
+    valueType: TEXT
+    defaultValue: "German, English, French, Italian, Japanese, Portuguese, Spanish, and Russian"
+    type: GUARANTEE
+    docUrl: https://www.wrike.com/comparison-table/
+  wrikeForWindowsAndMac:
+    description: https://www.wrike.com/apps/mobile-and-desktop/desktop-app/
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  wrikeIOSAndAndroidApps:
+    description: https://www.wrike.com/apps/mobile-and-desktop/desktop-app/
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  brandedWorkspace:
+    description: Align the look and feel of your Wrike workspace with your own logo
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  storageAccount:
+    description: The storage/account
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  storageSpace:
+    description: The storage/user
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  taskManagement:
+    description: https://www.wrike.com/features/task-management/
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  subtaskManagement:
+    description: https://www.wrike.com/features/subtask-management/
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  folderHierachy:
+    description: >-
+      Configure the unlimited folder structure to one that makes the most sense
+      for your processes and teams.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  accountWideWorkSchedules:
+    description: >-
+      Designate your team’s work week and see when you or your teammates are
+      scheduled to work.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  personalWorkSchedules:
+    description: >-
+      Create additional work schedules and assign them to teammates. Mark
+      vacation or PTO days and designate additional working days for yourself or
+      for team members.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  customFieldsWorkflows&Statuses:
+    description: >-
+      Track anything related to your work. Customize workflow stages to fit your
+      process.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  projectPortfolioManagement:
+    description: >-
+      Use projects, folders, and customizable groups (spaces) to create a
+      hierarchy for projects that works for your teams.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  emailIntegration&Notifications:
+    description: https://www.wrike.com/apps/email-integration/
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingsUrls:
+      - https://developers.google.com/gmail/api/guides/
+      - https://learn.microsoft.com/es-es/outlook/rest/
+  customWorkViews:
+    description: https://www.wrike.com/features/custom-views/
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  calendars:
+    description: https://www.wrike.com/features/team-project-calendar/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  dynamicGanttChart:
+    description: https://www.wrike.com/features/gantt-chart/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  dashboards:
+    description: https://www.wrike.com/features/dashboards/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  realTimeReports:
+    description: >-
+      Powerful and easy-to-use report builder lets you visualize and share
+      project status. Subscribe to scheduled notifications and get regular
+      report updates and reviews.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  analyticsView:
+    description: >-
+      Enable customizable 360 bird-eye view of your team’s work with Anlytics
+      view. See task statuses by assignee or team in real-time.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  chartView:
+    description: >-
+      Enable customizable 360 bird-eye view of your team’s work with Chart view.
+      See task statuses by assignee or team in real-time.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  tableauIntegration:
+    description: https://www.wrike.com/apps/business-intelligence/tableau/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingsUrls:
+      - https://www.tableau.com/es-es/data-insights/business-intelligence
+  businessIntelligenceAPI:
+    description: https://developers.wrike.com/export-data/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+  advancedAnalytics&DataVisualizations:
+    description: https://www.wrike.com/features/advanced-analytics/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  smarthSearch:
+    description: >-
+      Narrow or extend search results based on the location. Get quick search
+      preview results accross multiple tools and items.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  voiceAssistantInteraction:
+    description: https://www.wrike.com/features/work-intelligence/
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: BOT
+  smartRepliesAndQuickReactions:
+    description: https://www.wrike.com/features/work-intelligence/
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: BOT
+  documentProcessingAndTextRecognition:
+    description: https://www.wrike.com/features/work-intelligence/
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: BOT
+  generativeAI:
+    description: https://www.wrike.com/features/work-intelligence/
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: BOT
+  aiRecommendedTasks:
+    description: https://www.wrike.com/features/work-intelligence/
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: BOT
+  aiSubitemCreation:
+    description: https://www.wrike.com/features/work-intelligence/
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: BOT
+  aiProjectRiskPrediction:
+    description: https://www.wrike.com/features/work-intelligence/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: BOT
+  useCaseProjectTemplates:
+    description: https://www.wrike.com/templates/
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  automations:
+    description: https://www.wrike.com/apps/automation-engine/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  teamSpecificAdministration:
+    description: >-
+      Configure team specific workflows, statuses, automations, custom fields &
+      request forms.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  requestForms:
+    description: >-
+      Provide the structure and automation you need for work intake so you get
+      the right information from the start.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  dynamicRequestForms:
+    description: https://www.wrike.com/features/custom-request-forms/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  companyWideAdministration:
+    description: Centralized permission and workflow administration
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  customTemplatesAndBlueprints:
+    description: >-
+      Manage project, folder, and task templates and plan activities while
+      keeping it separated from the ongoing work.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  customItemTypes:
+    description: https://www.wrike.com/features/custom-item-types/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  taskAndProjectApproval:
+    description: https://www.wrike.com/features/approvals/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  customApprovalFlows:
+    description: >-
+      Setup any approval workflow to enable stakeholders to quickly take actions
+      all within Wrike
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  resourcesView:
+    description: >-
+      See a centralized view of all resources associated with a project. Ensure
+      the right resources are available for the project, and balance resource
+      coverage across the entire portfolio.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  workloadCharts:
+    description: >-
+      Allocate work based on team capacity. Plan work allocation, re-prioritize
+      projects, and distribute hours flexibly and in real time across assignees.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  effortAllocation:
+    description: >-
+      Determine how many hours it takes to complete each task, or estimate what
+      percentage of a team member's time you need dedicated to a task.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  resourceAssigment:
+    description: >-
+      Intuitively drag and drop to add, move, or adjust tasks based on
+      individuals’ capacity and work schedule in real time.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  timeTracking:
+    description: https://www.wrike.com/features/time-tracking-software/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  timeSheets:
+    description: >-
+      Find all the time you've tracked and update time for your work in a single
+      place on a daily or weekly basis.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  jobRoles:
+    description: >-
+      Assign team members job roles to streamline planning and work allocation
+      based on functional area.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  budgeting:
+    description: >-
+      Plan and monitor project, portfolio and client budgets based on team
+      member or job role bill and cost rates.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  resourceBookings:
+    description: >-
+      Estimate project effort by team member or job role without creating a
+      detailed work breakdown structure.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  teamUtilizationAndPerformanceDashboard:
+    description: Measure planned vs. actual utilization of individuals or teams over time.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  collaborators:
+    description: >-
+      Involve team mates from other departments, clients, and contractors for
+      free.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  guestApprovals:
+    description: >-
+      Get approvals from different stakeholders in your business ecosystem such
+      as partners and clients.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  fileProofingAndApproval:
+    description: https://www.wrike.com/features/online-proofing/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  advancedProfingInHTML5AndSharepoint:
+    description: Advanced proofing in HTML5 and Sharepoint
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingsUrls:
+      - >-
+        https://www.microsoft.com/en-us/microsoft-365/sharepoint/compare-sharepoint-plans
+  extensionForAdobeCreativeCloud:
+    description: https://www.wrike.com/apps/extensions/adobe/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTENSION
+  digitalAssetManagementIntegration:
+    description: >-
+      https://www.wrike.com/features/digital-asset-management-software-integration/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  cloudContentConnector:
+    description: https://www.wrike.com/cloud-content-connector/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  openRESTfulAPI:
+    description: https://developers.wrike.com/
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: API
+  cloudStoragePlatforms:
+    description: https://www.wrike.com/apps/file-storage/
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingsUrls:
+      - https://skyvia.com/pricing/
+      - https://www.mediavalet.com/pricing-request
+      - https://cloud.google.com/storage/pricing?hl=es-419
+      - >-
+        https://www.microsoft.com/en-us/microsoft-365/sharepoint/compare-sharepoint-plans
+      - >-
+        https://www.microsoft.com/en-us/microsoft-365/onedrive/compare-onedrive-plans-b
+      - >-
+        https://tenovos.com/digital-asset-management-roi-productivity/?utm_campaign=website&utm_medium=banner&utm_source=website&utm_content=homepage-hero
+      - https://www.dropbox.com/en/plans
+      - https://www.box.com/pricing
+  productivityAppsAndTools:
+    description: Integration with G Suite, Office 365, MS Project, Excel and Slack
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingsUrls:
+      - https://workspace.google.com/intl/es/pricing.html
+      - >-
+        https://www.microsoft.com/en-us/microsoft-365/buy/compare-all-microsoft-365-products
+      - >-
+        https://www.microsoft.com/en-us/microsoft-365/project/compare-microsoft-project-management-software#x06415cfb9b3a424ab32e1d5521decc9a
+      - https://slack.com/pricing
+  salesForceIntegration:
+    description: https://www.wrike.com/apps/crm/salesforce/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingsUrls:
+      - https://www.salesforce.com/eu/
+  netSuiteAndQuickBookIntegrations:
+    description: NetSuite & QuickBook integrations (via Wrike Integrate)
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingsUrls:
+      - >-
+        https://www.netsuite.com/portal/products/erp/order-management/pricing.shtml
+  adobeCreativeCloudExtension:
+    description: https://www.wrike.com/apps/extensions/adobe/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingsUrls:
+      - https://www.adobe.com/creativecloud/plans.html
+  powerBIIntegration:
+    description: https://www.wrike.com/apps/power-bi/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingsUrls:
+      - https://powerbi.microsoft.com/en-us/pricing/
+  enterpriseGradeSecurity:
+    description: https://www.wrike.com/features/admin-security/
+    valueType: BOOLEAN
+    defaultValue: true
+    type: GUARANTEE
+    docUrl: https://www.wrike.com/features/admin-security/
+  authenticationViaGSuite:
+    description: https://www.wrike.com/apps/single-sign-on/google-sso/
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  folderAndProjectPermissions:
+    description: https://www.wrike.com/features/admin-security/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  userAuditReports:
+    description: >-
+      An on-demand report tracks activity of regular users and Wrike account
+      admins.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  singleSignOn:
+    description: https://www.wrike.com/apps/single-sign-on/saml/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  twoStepVerification:
+    description: >-
+      Add an extra layer of security, requiring a time-sensitive verification
+      code along with a username and password.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  controlledAdminPermission:
+    description: https://www.wrike.com/features/admin-security/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  networkAccess:
+    description: Lock down access to Wrike to a list of approved IP addresses only.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  passwordPolicySettings:
+    description: >-
+      Implement password policy to ensure that passwords meet minimum strength
+      requirements and users change them regularly.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  advancedUserAccessControls:
+    description: >-
+      Customize and add new access roles, selectively share subfolders and
+      subprojects by keeping them from inheriting permissions, and run access
+      reports to see who has access to folders, projects, and tasks.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  customizableUserTypes:
+    description: https://www.wrike.com/features/admin-security/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  lockedSpaces:
+    description: https://www.wrike.com/features/admin-security/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  wrikeIntegrate:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+  wrikeSync:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+  wrikeLock:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+usageLimits:
+  minNumberOfUsers:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: user
+    type: NON_RENEWABLE
+    linkedFeatures: null
+  maxNumberOfUsers:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 10000000000
+    unit: user
+    type: NON_RENEWABLE
+    linkedFeatures: null
+  useStorageAccount:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 2
+    unit: GB/account
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - storageAccount
+  useStorage:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 2
+    unit: GB/user
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - storageSpace
+  useAutomations:
+    description: Renewed per month
+    valueType: NUMERIC
+    defaultValue: 50
+    unit: action/seat
+    type: RENEWABLE
+    linkedFeatures:
+      - automations
+plans:
+  FREE:
+    description: Intelligent task management
+    monthlyPrice: 0
+    annualPrice: 0
+    unit: user/month
+    features:
+      folderHierachy:
+        value: true
+    usageLimits: null
+    price: 0
+  TEAM:
+    description: Effective team management
+    monthlyPrice: 9.8
+    annualPrice: 9.8
+    unit: user/month
+    features:
+      storageSpace:
+        value: true
+      personalWorkSchedules:
+        value: true
+      customFieldsWorkflows&Statuses:
+        value: true
+      calendars:
+        value: true
+      dynamicGanttChart:
+        value: true
+      dashboards:
+        value: true
+      analyticsView:
+        value: true
+      chartView:
+        value: true
+      automations:
+        value: true
+      teamSpecificAdministration:
+        value: true
+      requestForms:
+        value: true
+      productivityAppsAndTools:
+        value: true
+    usageLimits:
+      minNumberOfUsers:
+        value: 3
+      maxNumberOfUsers:
+        value: 25
+    price: 9.8
+  BUSINESS:
+    description: Customizable platform for any use case
+    monthlyPrice: 24.8
+    annualPrice: 24.8
+    unit: user/month
+    features:
+      brandedWorkspace:
+        value: true
+      storageSpace:
+        value: true
+      folderHierachy:
+        value: true
+      personalWorkSchedules:
+        value: true
+      customFieldsWorkflows&Statuses:
+        value: true
+      projectPortfolioManagement:
+        value: true
+      calendars:
+        value: true
+      dynamicGanttChart:
+        value: true
+      dashboards:
+        value: true
+      realTimeReports:
+        value: true
+      aiProjectRiskPrediction:
+        value: true
+      automations:
+        value: true
+      teamSpecificAdministration:
+        value: true
+      requestForms:
+        value: true
+      dynamicRequestForms:
+        value: true
+      companyWideAdministration:
+        value: true
+      customTemplatesAndBlueprints:
+        value: true
+      customItemTypes:
+        value: true
+      taskAndProjectApproval:
+        value: true
+      customApprovalFlows:
+        value: true
+      resourcesView:
+        value: true
+      workloadCharts:
+        value: true
+      effortAllocation:
+        value: true
+      resourceAssigment:
+        value: true
+      timeTracking:
+        value: true
+      timeSheets:
+        value: true
+      guestApprovals:
+        value: true
+      fileProofingAndApproval:
+        value: true
+      extensionForAdobeCreativeCloud:
+        value: true
+      digitalAssetManagementIntegration:
+        value: true
+      cloudContentConnector:
+        value: true
+      productivityAppsAndTools:
+        value: true
+      salesForceIntegration:
+        value: true
+      netSuiteAndQuickBookIntegrations:
+        value: true
+      adobeCreativeCloudExtension:
+        value: true
+      folderAndProjectPermissions:
+        value: true
+    usageLimits:
+      minNumberOfUsers:
+        value: 5
+      maxNumberOfUsers:
+        value: 200
+      useStorage:
+        value: 5
+      useAutomations:
+        value: 200
+    price: 24.8
+  ENTERPRISE:
+    description: Enterprise-grade security and scalability
+    monthlyPrice: Contact Sales
+    annualPrice: Contact Sales
+    features:
+      brandedWorkspace:
+        value: true
+      storageSpace:
+        value: true
+      folderHierachy:
+        value: true
+      personalWorkSchedules:
+        value: true
+      customFieldsWorkflows&Statuses:
+        value: true
+      projectPortfolioManagement:
+        value: true
+      calendars:
+        value: true
+      dynamicGanttChart:
+        value: true
+      dashboards:
+        value: true
+      realTimeReports:
+        value: true
+      analyticsView:
+        value: true
+      chartView:
+        value: true
+      tableauIntegration:
+        value: true
+      businessIntelligenceAPI:
+        value: true
+      aiProjectRiskPrediction:
+        value: true
+      automations:
+        value: true
+      teamSpecificAdministration:
+        value: true
+      requestForms:
+        value: true
+      dynamicRequestForms:
+        value: true
+      companyWideAdministration:
+        value: true
+      customTemplatesAndBlueprints:
+        value: true
+      customItemTypes:
+        value: true
+      taskAndProjectApproval:
+        value: true
+      customApprovalFlows:
+        value: true
+      resourcesView:
+        value: true
+      workloadCharts:
+        value: true
+      effortAllocation:
+        value: true
+      resourceAssigment:
+        value: true
+      timeTracking:
+        value: true
+      timeSheets:
+        value: true
+      guestApprovals:
+        value: true
+      fileProofingAndApproval:
+        value: true
+      extensionForAdobeCreativeCloud:
+        value: true
+      digitalAssetManagementIntegration:
+        value: true
+      cloudContentConnector:
+        value: true
+      productivityAppsAndTools:
+        value: true
+      salesForceIntegration:
+        value: true
+      netSuiteAndQuickBookIntegrations:
+        value: true
+      adobeCreativeCloudExtension:
+        value: true
+      folderAndProjectPermissions:
+        value: true
+      userAuditReports:
+        value: true
+      singleSignOn:
+        value: true
+      twoStepVerification:
+        value: true
+      controlledAdminPermission:
+        value: true
+      networkAccess:
+        value: true
+      passwordPolicySettings:
+        value: true
+      advancedUserAccessControls:
+        value: true
+      customizableUserTypes:
+        value: true
+    usageLimits:
+      minNumberOfUsers:
+        value: 5
+      useStorage:
+        value: 10
+      useAutomations:
+        value: 1000
+    price: Contact Sales
+  PINNACLE:
+    description: Advanced tools and analytics for complex work
+    monthlyPrice: Contact sales
+    annualPrice: Contact sales
+    features:
+      brandedWorkspace:
+        value: true
+      storageSpace:
+        value: true
+      folderHierachy:
+        value: true
+      personalWorkSchedules:
+        value: true
+      customFieldsWorkflows&Statuses:
+        value: true
+      projectPortfolioManagement:
+        value: true
+      calendars:
+        value: true
+      dynamicGanttChart:
+        value: true
+      dashboards:
+        value: true
+      realTimeReports:
+        value: true
+      analyticsView:
+        value: true
+      chartView:
+        value: true
+      tableauIntegration:
+        value: true
+      businessIntelligenceAPI:
+        value: true
+      advancedAnalytics&DataVisualizations:
+        value: true
+      aiProjectRiskPrediction:
+        value: true
+      automations:
+        value: true
+      teamSpecificAdministration:
+        value: true
+      requestForms:
+        value: true
+      dynamicRequestForms:
+        value: true
+      companyWideAdministration:
+        value: true
+      customTemplatesAndBlueprints:
+        value: true
+      customItemTypes:
+        value: true
+      taskAndProjectApproval:
+        value: true
+      customApprovalFlows:
+        value: true
+      resourcesView:
+        value: true
+      workloadCharts:
+        value: true
+      effortAllocation:
+        value: true
+      resourceAssigment:
+        value: true
+      timeTracking:
+        value: true
+      timeSheets:
+        value: true
+      jobRoles:
+        value: true
+      budgeting:
+        value: true
+      resourceBookings:
+        value: true
+      teamUtilizationAndPerformanceDashboard:
+        value: true
+      guestApprovals:
+        value: true
+      fileProofingAndApproval:
+        value: true
+      advancedProfingInHTML5AndSharepoint:
+        value: true
+      extensionForAdobeCreativeCloud:
+        value: true
+      digitalAssetManagementIntegration:
+        value: true
+      cloudContentConnector:
+        value: true
+      productivityAppsAndTools:
+        value: true
+      salesForceIntegration:
+        value: true
+      netSuiteAndQuickBookIntegrations:
+        value: true
+      adobeCreativeCloudExtension:
+        value: true
+      powerBIIntegration:
+        value: true
+      folderAndProjectPermissions:
+        value: true
+      userAuditReports:
+        value: true
+      singleSignOn:
+        value: true
+      twoStepVerification:
+        value: true
+      controlledAdminPermission:
+        value: true
+      networkAccess:
+        value: true
+      passwordPolicySettings:
+        value: true
+      advancedUserAccessControls:
+        value: true
+      customizableUserTypes:
+        value: true
+      lockedSpaces:
+        value: true
+    usageLimits:
+      minNumberOfUsers:
+        value: 5
+      useStorage:
+        value: 15
+      useAutomations:
+        value: 1500
+    price: Contact sales
+addOns:
+  additional500GBStorage:
+    availableFor:
+      - TEAM
+      - BUSINESS
+      - ENTERPRISE
+      - PINNACLE
+    price: Contact Sales
+    features: null
+    usageLimits: null
+    usageLimitsExtensions:
+      useStorage:
+        value: 500
+  additional1TBStorage:
+    availableFor:
+      - TEAM
+      - BUSINESS
+      - ENTERPRISE
+      - PINNACLE
+    price: Contact Sales
+    features: null
+    usageLimits: null
+    usageLimitsExtensions:
+      useStorage:
+        value: 1000
+  wrikeIntegrate:
+    availableFor:
+      - BUSINESS
+      - ENTERPRISE
+      - PINNACLE
+    price: Contact Sales
+    features:
+      wrikeIntegrate:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  wrikeSync:
+    availableFor:
+      - BUSINESS
+      - ENTERPRISE
+      - PINNACLE
+    price: Contact Sales
+    features:
+      wrikeSync:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  wrikeLock:
+    availableFor:
+      - ENTERPRISE
+      - PINNACLE
+    price: Contact Sales
+    features:
+      wrikeLock:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null

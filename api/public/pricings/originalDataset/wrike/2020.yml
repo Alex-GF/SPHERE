@@ -1,0 +1,543 @@
+saasName: Wrike
+version: '2.0'
+createdAt: '2020-11-23'
+currency: USD
+hasAnnualPayment: false
+features:
+  boardView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  taskManagement:
+    description: https://www.wrike.com/features/task-management/
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  fileSharing:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  realTimeActivityStream:
+    description: https://www.wrike.com/features/activity-stream/
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  spreadsheetView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  wrikeForWindowsAndMac:
+    description: https://www.wrike.com/apps/mobile-and-desktop/desktop-app/
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  wrikeIOSAndAndroidApps:
+    description: https://www.wrike.com/apps/mobile-and-desktop/desktop-app/
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  basicIntegrations:
+    description: Google Drive, Dropbox, Box, MSFT Office 365 and OneDrive
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingsUrls:
+      - https://skyvia.com/pricing/
+      - https://www.mediavalet.com/pricing-request
+      - https://cloud.google.com/storage/pricing?hl=es-419
+      - >-
+        https://www.microsoft.com/en-us/microsoft-365/sharepoint/compare-sharepoint-plans
+      - >-
+        https://www.microsoft.com/en-us/microsoft-365/onedrive/compare-onedrive-plans-b
+      - >-
+        https://tenovos.com/digital-asset-management-roi-productivity/?utm_campaign=website&utm_medium=banner&utm_source=website&utm_content=homepage-hero
+      - https://www.dropbox.com/en/plans
+      - https://www.box.com/pricing
+  cloudStoragePlatforms:
+    description: Google Drive, Dropbox, Box, OneDrive
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingsUrls:
+      - https://skyvia.com/pricing/
+      - https://www.mediavalet.com/pricing-request
+      - https://cloud.google.com/storage/pricing?hl=es-419
+      - >-
+        https://www.microsoft.com/en-us/microsoft-365/onedrive/compare-onedrive-plans-b
+      - >-
+        https://tenovos.com/digital-asset-management-roi-productivity/?utm_campaign=website&utm_medium=banner&utm_source=website&utm_content=homepage-hero
+      - https://www.dropbox.com/en/plans
+      - https://www.box.com/pricing
+  storageSpace:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  subtaskManagement:
+    description: https://www.wrike.com/features/subtask-management/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  ganttChart:
+    description: https://www.wrike.com/features/gantt-chart/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  advancedIntegrations:
+    description: Integration with MS Project, Excel and RSS
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingsUrls:
+      - >-
+        https://www.microsoft.com/en-us/microsoft-365/buy/compare-all-microsoft-365-products
+      - >-
+        https://www.microsoft.com/en-us/microsoft-365/project/compare-microsoft-project-management-software#x06415cfb9b3a424ab32e1d5521decc9a
+  shareableDashboards:
+    description: https://www.wrike.com/features/dashboards/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  collaborators:
+    description: >-
+      Involve team mates from other departments, clients, and contractors for
+      free.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  videoUploads:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  customFields:
+    description: Track anything related to your work.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  customWorkflows:
+    description: Customize workflow stages to fit your process.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  sharedRealTimeReportsWithScheduledNotifications:
+    description: >-
+      Powerful and easy-to-use report builder lets you visualize and share
+      project status. Subscribe to scheduled notifications and get regular
+      report updates and reviews.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  reportTemplates:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  graphicalAnalytics:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  calendars:
+    description: https://www.wrike.com/features/team-project-calendar/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  requestForms:
+    description: https://www.wrike.com/features/custom-request-forms/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  taskAndProjectApproval:
+    description: https://www.wrike.com/features/approvals/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  timeTracking:
+    description: https://www.wrike.com/features/time-tracking-software/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  userGroupsAndPermissions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  salesForceIntegration:
+    description: https://www.wrike.com/apps/crm/salesforce/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingsUrls:
+      - https://www.salesforce.com/eu/
+  brandedWorkspace:
+    description: Align the look and feel of your Wrike workspace with your own logo
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  automationEngine:
+    description: https://www.wrike.com/features/automation/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  activeDirectoryIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  singleSignOn:
+    description: https://www.wrike.com/apps/single-sign-on/saml/
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  twoFactorVerification:
+    description: >-
+      Add an extra layer of security, requiring a time-sensitive verification
+      code along with a username and password.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  passwordPolicies:
+    description: >-
+      Implement password policy to ensure that passwords meet minimum strength
+      requirements and users change them regularly.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  itControlAdminPermissions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  userAuditReports:
+    description: >-
+      An on-demand report tracks activity of regular users and Wrike account
+      admins.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  networkAccess&CompliancePolicies:
+    description: Lock down access to Wrike to a list of approved IP addresses only.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  businessIntelligenceIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  advancedUserAccessControls:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  wrikeResource:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  wrikeProof:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  wrikePublish:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  wrikeAnalyze:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  wrikeIntegrate:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+  wrikeTwoWaySync:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+  wrikeLock:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+usageLimits:
+  minNumberOfUsers:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 5
+    unit: user
+    type: NON_RENEWABLE
+    linkedFeatures: null
+  maxNumberOfUsers:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 5
+    unit: user
+    type: NON_RENEWABLE
+    linkedFeatures: null
+  useStorage:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 2
+    unit: GB
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - storageSpace
+  useStorageAccount:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 15
+    unit: GB/month
+    type: RENEWABLE
+    linkedFeatures:
+      - videoUploads
+  useAutomations:
+    description: Renewed per month
+    valueType: NUMERIC
+    defaultValue: 10000000000
+    unit: action/user/month
+    type: RENEWABLE
+    linkedFeatures:
+      - automationEngine
+plans:
+  FREE:
+    description: A simple, shared task list for small teams
+    monthlyPrice: 0
+    annualPrice: 0
+    unit: user/month
+    features: null
+    usageLimits: null
+    price: 0
+  PROFESSIONAL:
+    description: Full project planning & collaboration
+    monthlyPrice: 9.8
+    annualPrice: 9.8
+    unit: user/month
+    features:
+      subtaskManagement:
+        value: true
+      ganttChart:
+        value: true
+      advancedIntegrations:
+        value: true
+      shareableDashboards:
+        value: true
+      collaborators:
+        value: true
+      videoUploads:
+        value: true
+    usageLimits:
+      maxNumberOfUsers:
+        value: 15
+      useStorage:
+        value: 5
+    price: 9.8
+  BUSINESS:
+    description: Robust work management with customization & exec reporting
+    monthlyPrice: 24.8
+    annualPrice: 24.8
+    unit: user/month
+    features:
+      subtaskManagement:
+        value: true
+      ganttChart:
+        value: true
+      advancedIntegrations:
+        value: true
+      shareableDashboards:
+        value: true
+      collaborators:
+        value: true
+      videoUploads:
+        value: true
+      customFields:
+        value: true
+      customWorkflows:
+        value: true
+      sharedRealTimeReportsWithScheduledNotifications:
+        value: true
+      reportTemplates:
+        value: true
+      graphicalAnalytics:
+        value: true
+      calendars:
+        value: true
+      requestForms:
+        value: true
+      taskAndProjectApproval:
+        value: true
+      timeTracking:
+        value: true
+      userGroupsAndPermissions:
+        value: true
+      salesForceIntegration:
+        value: true
+      brandedWorkspace:
+        value: true
+      automationEngine:
+        value: true
+    usageLimits:
+      maxNumberOfUsers:
+        value: 200
+      useStorage:
+        value: 50
+    price: 24.8
+  ENTERPRISE:
+    description: Comprehensive solution with advanced security & controls
+    monthlyPrice: Contact Sales
+    annualPrice: Contact Sales
+    unit: user/month
+    features:
+      subtaskManagement:
+        value: true
+      ganttChart:
+        value: true
+      advancedIntegrations:
+        value: true
+      shareableDashboards:
+        value: true
+      collaborators:
+        value: true
+      videoUploads:
+        value: true
+      customFields:
+        value: true
+      customWorkflows:
+        value: true
+      sharedRealTimeReportsWithScheduledNotifications:
+        value: true
+      reportTemplates:
+        value: true
+      graphicalAnalytics:
+        value: true
+      calendars:
+        value: true
+      requestForms:
+        value: true
+      taskAndProjectApproval:
+        value: true
+      timeTracking:
+        value: true
+      userGroupsAndPermissions:
+        value: true
+      salesForceIntegration:
+        value: true
+      brandedWorkspace:
+        value: true
+      automationEngine:
+        value: true
+      activeDirectoryIntegration:
+        value: true
+      singleSignOn:
+        value: true
+      twoFactorVerification:
+        value: true
+      passwordPolicies:
+        value: true
+      itControlAdminPermissions:
+        value: true
+      userAuditReports:
+        value: true
+      networkAccess&CompliancePolicies:
+        value: true
+      businessIntelligenceIntegration:
+        value: true
+      advancedUserAccessControls:
+        value: true
+    usageLimits:
+      maxNumberOfUsers:
+        value: 10000000000
+      useStorage:
+        value: 100
+    price: Contact Sales
+addOns:
+  wrikeResource:
+    availableFor:
+      - BUSINESS
+      - ENTERPRISE
+    price: Contact Sales
+    features:
+      wrikeResource:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  wrikeProof:
+    availableFor:
+      - BUSINESS
+      - ENTERPRISE
+    price: Contact Sales
+    features:
+      wrikeProof:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  wrikePublish:
+    availableFor:
+      - BUSINESS
+      - ENTERPRISE
+    price: Contact Sales
+    features:
+      wrikePublish:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  wrikeAnalyze:
+    availableFor:
+      - BUSINESS
+      - ENTERPRISE
+    price: Contact Sales
+    features:
+      wrikeAnalyze:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  wrikeIntegrate:
+    availableFor:
+      - BUSINESS
+      - ENTERPRISE
+    price: Contact Sales
+    features:
+      wrikeIntegrate:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  wrikeTwoWaySync:
+    availableFor:
+      - BUSINESS
+      - ENTERPRISE
+    price: Contact Sales
+    features:
+      wrikeTwoWaySync:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  wrikeLock:
+    availableFor:
+      - ENTERPRISE
+    price: Contact Sales
+    features: 
+      wrikeLock:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null

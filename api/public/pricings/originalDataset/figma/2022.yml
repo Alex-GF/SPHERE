@@ -1,0 +1,434 @@
+saasName: Figma
+version: '2.0'
+createdAt: '2022-11-29'
+currency: USD
+hasAnnualPayment: true
+features:
+  versionHistory:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  figmaEditor:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  advancedDrawingTools:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  autoLayout:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  styles:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  pluginsAndWidgets:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+    pricingUrls: null
+  fileStorage:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  crossPlatform:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  sketchImport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  interactivePrototypes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  videosInPrototypes:
+    description: ''
+    valueType: TEXT
+    defaultValue: Choose videos from the Figma Community
+    type: DOMAIN
+  overlays:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  transitions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  advancedAnimations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  pdfPngJpgSvgExport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  multiplayer:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  shareableLinks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  onCanvasCommenting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  observationMode:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  privateProjects:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  prototypeSharingPermissions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  audioConversations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  teams:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  unlimitedTeams:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  branchingAndMerging:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  customWorkspaces:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  components:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  teamLibraries:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  organizationWideDesignSystems:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  sharedFonts:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  designSystemAnalytics:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  restApis:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  thirdPartyIntegrations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  liveEmbeds:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTENSION
+  privatePluginsAndWidgets:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  webhooks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  passwordProtection:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  pluginAndWidgetManagement:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  centralizedAdministration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  domainCapture:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  linkAccessControls:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  centralizedContentManagent:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  singleSignOn:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  activityLogs:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  workspaceAdministration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  guestAccessControls:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  defaultRoles:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  defaultTeams:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  roleAssigmentViaSCIM:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  passwordProtectionRequired:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  figmaSupportForum:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  figmaHelpCenter:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  onboardingPlanningAndSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  dedicatedAccountManager:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+usageLimits:
+  versionHistoryDepth:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 30
+    unit: day
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - versionHistory
+plans:
+  STARTER:
+    description: ''
+    monthlyPrice: 0
+    annualPrice: 0
+    unit: editor/month
+    features: null
+    usageLimits: null
+    price: 0
+  PROFESSIONAL:
+    description: ''
+    monthlyPrice: 15
+    annualPrice: 12
+    unit: editor/month
+    features:
+      privateProjects:
+        value: true
+      prototypeSharingPermissions:
+        value: true
+      audioConversations:
+        value: true
+      teamLibraries:
+        value: true
+      passwordProtection:
+        value: true
+    usageLimits:
+      versionHistoryDepth:
+        value: .inf
+    price: 15
+  ORGANIZATION:
+    description: ''
+    monthlyPrice: null
+    annualPrice: 45
+    unit: editor/month
+    features:
+      privateProjects:
+        value: true
+      prototypeSharingPermissions:
+        value: true
+      audioConversations:
+        value: true
+      branchingAndMerging:
+        value: true
+      teamLibraries:
+        value: true
+      organizationWideDesignSystems:
+        value: true
+      sharedFonts:
+        value: true
+      designSystemAnalytics:
+        value: true
+      privatePluginsAndWidgets:
+        value: true
+      webhooks:
+        value: true
+      passwordProtection:
+        value: true
+      pluginAndWidgetManagement:
+        value: true
+      centralizedAdministration:
+        value: true
+      domainCapture:
+        value: true
+      linkAccessControls:
+        value: true
+      centralizedContentManagent:
+        value: true
+      singleSignOn:
+        value: true
+      activityLogs:
+        value: true
+      unlimitedTeams:
+        value: true
+    usageLimits:
+      versionHistoryDepth:
+        value: .inf
+    price: 45
+  ENTERPRISE:
+    description: ''
+    monthlyPrice: null
+    annualPrice: 75
+    unit: editor/month
+    features:
+      privateProjects:
+        value: true
+      prototypeSharingPermissions:
+        value: true
+      audioConversations:
+        value: true
+      branchingAndMerging:
+        value: true
+      teamLibraries:
+        value: true
+      organizationWideDesignSystems:
+        value: true
+      sharedFonts:
+        value: true
+      designSystemAnalytics:
+        value: true
+      privatePluginsAndWidgets:
+        value: true
+      webhooks:
+        value: true
+      passwordProtection:
+        value: true
+      pluginAndWidgetManagement:
+        value: true
+      centralizedAdministration:
+        value: true
+      domainCapture:
+        value: true
+      linkAccessControls:
+        value: true
+      centralizedContentManagent:
+        value: true
+      singleSignOn:
+        value: true
+      activityLogs:
+        value: true
+      workspaceAdministration:
+        value: true
+      guestAccessControls:
+        value: true
+      defaultRoles:
+        value: true
+      defaultTeams:
+        value: true
+      roleAssigmentViaSCIM:
+        value: true
+      passwordProtectionRequired:
+        value: true
+      onboardingPlanningAndSupport:
+        value: true
+      dedicatedAccountManager:
+        value: true
+      unlimitedTeams:
+        value: true
+    usageLimits:
+      versionHistoryDepth:
+        value: .inf
+    price: 75

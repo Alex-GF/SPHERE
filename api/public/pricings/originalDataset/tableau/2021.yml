@@ -1,0 +1,409 @@
+saasName: Tableau
+version: '2.0'
+createdAt: '2021-11-28'
+currency: USD
+hasAnnualPayment: true
+features:
+  manageUserPermissions:
+    description: Manage site roles, content ownership, and user permissions.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  curateDataSources:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  shareDataSources:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  manageContent:
+    description: Manage projects and workbooks.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  certifyDataSources:
+    description: Manage data sources certification
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  authorFromCuratedData:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  viewLineageAndImpact:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  setDataQualityWarnings:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  advancedServerDeploymentMonitoring:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TRACKING
+  programmaticContentMigration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+  interactWithVisualizations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  interactWithDashboards:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  createCustomViews:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  shareCustomViews:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  downloadVisualizationAsImages:
+    description: >-
+      Download a snapshot of a visualization or dashboard as either a .pdf or
+      .png file.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  downloadSummaryData:
+    description: Download only the aggregate data used by the visualization or dashboard.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  downloadFullData:
+    description: Download the full data set associated with the visualization or dashboard.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  seeDataQualityWarnings:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  consumePredictiveModels:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: BOT
+  commentOnDashboard:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  commentOnVisualization:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  createASubscriptionForYourself:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: TRACKING
+  receiveDataDrivenAlerts:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: TRACKING
+  createSubscriptionsForOthers:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TRACKING
+  createDataDrivenAlerts:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TRACKING
+  editExistingWorkbooks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  editExistingVisualizations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  createAndPublishNewWorkbookFromExistingDataSource:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  askData:
+    description: >-
+      Explore an existing data source published to Tableau Server or Tableau
+      Online with Ask Data.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: BOT
+  createAndPublishNewWorkbookFromNewDataSources:
+    description: >-
+      Create and share content by connecting to a new data source, including raw
+      data. You're not restricted to existing, published data sources.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  createAndPublishNewDataSources:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  createNewWorkbooksBasedOnPreBuiltDashboardStarters:
+    description: >-
+      Dashboard Starters allow you to connect prebuilt dashboards to common
+      enterprise applications.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  createNewDataFlows:
+    description: Combine, shape and clean data, and save the process as a data flow.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  editDataFlow:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  exportData:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  publishFlows:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  runFlows:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  scheduleFlows:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  monitorFlowPerformance:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  monitorFlowHealth:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+usageLimits:
+  flowsLimit:
+    description: The maximum number of flows that can be created and run by a user.
+    valueType: NUMERIC
+    defaultValue: 0
+    unit: flow
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - runFlows
+plans:
+  VIEWER:
+    description: >-
+      View and interact with dashboards and visualizations in a secure,
+      easy-to-use platform.
+    monthlyPrice: null
+    annualPrice: 12
+    unit: user/month
+    features: null
+    usageLimits: null
+    price: 12
+  EXPLORER:
+    description: >-
+      Explore trusted data and answer your own questions faster with full
+      self-service analytics.
+    monthlyPrice: null
+    annualPrice: 35
+    unit: user/month
+    features:
+      manageUserPermissions:
+        value: true
+      manageContent:
+        value: true
+      certifyDataSources:
+        value: true
+      authorFromCuratedData:
+        value: true
+      downloadFullData:
+        value: true
+      createSubscriptionsForOthers:
+        value: true
+      createDataDrivenAlerts:
+        value: true
+      editExistingWorkbooks:
+        value: true
+      editExistingVisualizations:
+        value: true
+      createAndPublishNewWorkbookFromExistingDataSource:
+        value: true
+    usageLimits: null
+    price: 35
+  CREATOR:
+    description: >-
+      Discover insights with a powerful suite of products that support your
+      end-to-end analytics workflow.
+    monthlyPrice: null
+    annualPrice: 70
+    unit: user/month
+    features:
+      manageUserPermissions:
+        value: true
+      curateDataSources:
+        value: true
+      shareDataSources:
+        value: true
+      manageContent:
+        value: true
+      certifyDataSources:
+        value: true
+      authorFromCuratedData:
+        value: true
+      downloadFullData:
+        value: true
+      createSubscriptionsForOthers:
+        value: true
+      createDataDrivenAlerts:
+        value: true
+      editExistingWorkbooks:
+        value: true
+      editExistingVisualizations:
+        value: true
+      createAndPublishNewWorkbookFromExistingDataSource:
+        value: true
+      createAndPublishNewWorkbookFromNewDataSources:
+        value: true
+      createAndPublishNewDataSources:
+        value: true
+      createNewWorkbooksBasedOnPreBuiltDashboardStarters:
+        value: true
+      createNewDataFlows:
+        value: true
+      editDataFlow:
+        value: true
+      exportData:
+        value: true
+    usageLimits: null
+    price: 70
+addOns:
+  dataManagementViewer:
+    availableFor:
+      - VIEWER
+    price: Contact Sales
+    unit: user/month
+    features:
+      viewLineageAndImpact:
+        value: true
+      seeDataQualityWarnings:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  dataManagementExplorer:
+    availableFor:
+      - EXPLORER
+    price: Contact Sales
+    unit: user/month
+    features:
+      viewLineageAndImpact:
+        value: true
+      setDataQualityWarnings:
+        value: true
+      seeDataQualityWarnings:
+        value: true
+      scheduleFlows:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  dataManagementCreator:
+    availableFor:
+      - CREATOR
+    price: Contact Sales
+    unit: user/month
+    features:
+      viewLineageAndImpact:
+        value: true
+      setDataQualityWarnings:
+        value: true
+      seeDataQualityWarnings:
+        value: true
+      publishFlows:
+        value: true
+      runFlows:
+        value: true
+      scheduleFlows:
+        value: true
+      monitorFlowPerformance:
+        value: true
+      monitorFlowHealth:
+        value: true
+    usageLimits:
+      flowsLimit:
+        value: 1
+    usageLimitsExtensions: null
+  resourceBlocks:
+    availableFor:
+      - CREATOR
+    price: 250
+    unit: block/month
+    features: null
+    usageLimits: null
+    usageLimitsExtensions:
+      flowsLimit:
+        value: 1
+  serverManagement:
+    availableFor:
+      - CREATOR
+    price: Contact Sales
+    unit: user/month
+    features:
+      advancedServerDeploymentMonitoring:
+        value: true
+      programmaticContentMigration:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  einsteinDiscovery:
+    availableFor:
+      - VIEWER
+      - EXPLORER
+      - CREATOR
+    price: Contact Sales
+    unit: user/month
+    features:
+      consumePredictiveModels:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null

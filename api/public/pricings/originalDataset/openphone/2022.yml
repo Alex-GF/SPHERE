@@ -1,0 +1,420 @@
+saasName: OpenPhone
+version: '2.0'
+createdAt: '2022-11-28'
+currency: USD
+hasAnnualPayment: true
+features:
+  usAndCanadaCalling:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  usAndCanadaMessaging:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  internationalCalling:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  internationalMessaging:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  phoneNumbers:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  portPhoneNumbersFromOtherCarriers:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  sharedPhoneNumbers:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  snippets:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  internalThreads:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  sharedContacts:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  contactNotes:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  businessHours:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  voicemailToText:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  callRecording:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  autoReplies:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  scheduledMessages:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  basicAutoAtendant:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: BOT
+  advancedAutoAtendant:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: BOT
+  userGroups:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  callerID:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  groupCalling:
+    description: Coming Soon
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  callMonitoring:
+    description: Coming Soon
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TRACKING
+  callWhispering:
+    description: Coming Soon
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  callTransfers:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  roundRobin:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  emailIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  slackIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://slack.com/pricing
+  zapierIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://zapier.com/pricing
+  smsViaZapier:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://zapier.com/pricing
+  googleContactsIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://workspace.google.com/pricing
+  hubSpotCRMIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://www.hubspot.com/pricing
+  webhooksIntegration:
+    description: Beta
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: API
+  salesforceIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://www.salesforce.com/products/sales-cloud/pricing/
+  gongIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://www.gong.io/pricing/
+  userRoles:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  userManagement:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  supervisorRoles:
+    description: Coming Soon
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  analytics:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  reporting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  auditLog:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  samlSSO:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  emailSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  prioritySupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  dedicatedAccountManager:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+usageLimits:
+  phoneNumbersLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: phone number
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - phoneNumbers
+  sharedPhoneNumbersLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 10
+    unit: user
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - sharedPhoneNumbers
+  smsViaZapierAddonLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 0
+    unit: message
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - smsViaZapier
+plans:
+  STANDARD:
+    description: ''
+    monthlyPrice: 13
+    annualPrice: 10
+    unit: user/month
+    features: null
+    usageLimits: null
+    price: 13
+  PREMIUM:
+    description: ''
+    monthlyPrice: 25
+    annualPrice: 20
+    unit: user/month
+    features:
+      advancedAutoAtendant:
+        value: true
+      groupCalling:
+        value: true
+      callMonitoring:
+        value: true
+      callWhispering:
+        value: true
+      callTransfers:
+        value: true
+      roundRobin:
+        value: true
+      hubSpotCRMIntegration:
+        value: true
+      salesforceIntegration:
+        value: true
+      gongIntegration:
+        value: true
+      supervisorRoles:
+        value: true
+      analytics:
+        value: true
+      reporting:
+        value: true
+    usageLimits:
+      sharedPhoneNumbersLimit:
+        value: .inf
+    price: 25
+  ENTERPRISE:
+    description: ''
+    monthlyPrice: Contact Sales
+    annualPrice: Contact Sales
+    unit: user/month
+    features:
+      advancedAutoAtendant:
+        value: true
+      groupCalling:
+        value: true
+      callMonitoring:
+        value: true
+      callWhispering:
+        value: true
+      callTransfers:
+        value: true
+      roundRobin:
+        value: true
+      hubSpotCRMIntegration:
+        value: true
+      salesforceIntegration:
+        value: true
+      gongIntegration:
+        value: true
+      supervisorRoles:
+        value: true
+      analytics:
+        value: true
+      reporting:
+        value: true
+      auditLog:
+        value: true
+      samlSSO:
+        value: true
+      prioritySupport:
+        value: true
+      dedicatedAccountManager:
+        value: true
+    usageLimits:
+      sharedPhoneNumbersLimit:
+        value: .inf
+    price: Contact Sales
+addOns:
+  aditionalPhoneNumbers:
+    availableFor:
+      - STANDARD
+      - PREMIUM
+      - ENTERPRISE
+    price: 5
+    unit: phoneNumber/month
+    features: null
+    usageLimits: null
+    usageLimitsExtensions:
+      phoneNumbersLimit:
+        value: 1
+  internationalCallingAndMessaging:
+    availableFor:
+      - STANDARD
+      - PREMIUM
+      - ENTERPRISE
+    price: See Rates
+    unit: user/month
+    features:
+      internationalCalling:
+        value: true
+      internationalMessaging:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  smsViaZapierAddon:
+    availableFor:
+      - STANDARD
+      - PREMIUM
+      - ENTERPRISE
+    price: 0.01
+    unit: message
+    features:
+      smsViaZapier:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions:
+      smsViaZapierAddonLimit:
+        value: 1
+  extraSmsViaZapier:
+    availableFor:
+      - STANDARD
+      - PREMIUM
+      - ENTERPRISE
+    dependsOn:
+      - smsViaZapierAddon
+    price: 0.01
+    unit: message
+    features: null
+    usageLimits: null
+    usageLimitsExtensions:
+      smsViaZapierAddonLimit:
+        value: 1

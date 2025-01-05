@@ -1,0 +1,542 @@
+saasName: Notion
+version: '2.0'
+createdAt: '2024-07-16'
+currency: USD
+hasAnnualPayment: true
+features:
+  pages:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  blocks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  fileUploads:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  pageHistory:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  basicPageAnalytics:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  advancedPageAnalytics:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  collaborativeWorkspace:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  guests:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  permissionGroups:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  openTeamSpaces:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  closeTeamSpaces:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  privateTeamSpaces:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  advancedTeamSpacePermissions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  notionCalendar:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  views:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  subtasks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  tasksDependency:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  customProperties:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  filtering:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  formulas:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  basicAutomations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  customDatabaseAutomations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  publishedPages:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  notionSiteDomain:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  basicSEO:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  advancedSEO:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  siteCustomization:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  googleAnalyticsIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://analytics.google.com/analytics/web/
+  customDomainAndBranding:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  syncDatabases:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  dynamicLinkPreviews:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  slackIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://slack.com/pricing
+  zapierIntegration:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs:
+      - https://zapier.com/pricing
+  publicApi:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: API
+  exportEntireWorkspaceAsHTML:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  exportEntireWorkspaceAsMarkdown:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  exportEntireWorkspaceAsCSV:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  twoStepVerification:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  exportEntireWorkspaceAsPDF:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  samlSso:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  userProvisioning:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  advancedWorkspaceSecurityControls:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  advancedTeamspaceSecurityControls:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  workspaceAnalytics:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  granularAdminRoles:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  auditLog:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  adminContentSearch:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  domainManagement:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  workspaceConsolidation:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  managedUsersDashboard:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  managedUsersControls:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  securityIntegrations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  complianceIntegrations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  hipaaCompliance:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  guestInviteRequests:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  customDataRetentionPolicies:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  prioritySupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  customerSuccessManager:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+usageLimits:
+  fileUploadsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 5
+    unit: MB
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - fileUploads
+  pageHistoryThreshold:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 7
+    unit: days
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - pageHistory
+  notionSiteDomainLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: domain
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - notionSiteDomain
+  guestsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 10
+    unit: guest
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - guests
+  customDomainsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 0
+    unit: domain
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - customDomainAndBranding
+  syncDatabasesLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: database
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - syncDatabases
+  rowLimitPerSyncedDatabase:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 100
+    unit: row
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - syncDatabases
+plans:
+  FREE:
+    description: ''
+    monthlyPrice: 0
+    annualPrice: 0
+    unit: user/month
+    features: null
+    usageLimits: null
+    price: 0
+  PLUS:
+    description: ''
+    monthlyPrice: 12
+    annualPrice: 10
+    unit: user/month
+    features:
+      customDatabaseAutomations:
+        value: true
+      advancedSEO:
+        value: true
+      siteCustomization:
+        value: true
+      googleAnalyticsIntegration:
+        value: true
+      prioritySupport:
+        value: true
+    usageLimits:
+      fileUploadsLimit:
+        value: .inf
+      pageHistoryThreshold:
+        value: 30
+      guestsLimit:
+        value: 100
+      notionSiteDomainLimit:
+        value: 5
+      syncDatabasesLimit:
+        value: .inf
+      rowLimitPerSyncedDatabase:
+        value: 20000
+    price: 12
+  BUSINESS:
+    description: ''
+    monthlyPrice: 18
+    annualPrice: 15
+    unit: user/month
+    features:
+      privateTeamSpaces:
+        value: true
+      customDatabaseAutomations:
+        value: true
+      advancedSEO:
+        value: true
+      siteCustomization:
+        value: true
+      googleAnalyticsIntegration:
+        value: true
+      exportEntireWorkspaceAsPDF:
+        value: true
+      samlSso:
+        value: true
+      prioritySupport:
+        value: true
+    usageLimits:
+      fileUploadsLimit:
+        value: .inf
+      pageHistoryThreshold:
+        value: 90
+      guestsLimit:
+        value: 250
+      notionSiteDomainLimit:
+        value: 5
+      syncDatabasesLimit:
+        value: .inf
+      rowLimitPerSyncedDatabase:
+        value: 20000
+    price: 18
+  ENTERPRISE:
+    description: ''
+    monthlyPrice: Contact Sales
+    annualPrice: Contact Sales
+    unit: user/month
+    features:
+      privateTeamSpaces:
+        value: true
+      customDatabaseAutomations:
+        value: true
+      advancedSEO:
+        value: true
+      siteCustomization:
+        value: true
+      googleAnalyticsIntegration:
+        value: true
+      exportEntireWorkspaceAsPDF:
+        value: true
+      samlSso:
+        value: true
+      userProvisioning:
+        value: true
+      advancedWorkspaceSecurityControls:
+        value: true
+      advancedTeamspaceSecurityControls:
+        value: true
+      workspaceAnalytics:
+        value: true
+      granularAdminRoles:
+        value: true
+      auditLog:
+        value: true
+      adminContentSearch:
+        value: true
+      domainManagement:
+        value: true
+      workspaceConsolidation:
+        value: true
+      managedUsersDashboard:
+        value: true
+      managedUsersControls:
+        value: true
+      securityIntegrations:
+        value: true
+      complianceIntegrations:
+        value: true
+      hipaaCompliance:
+        value: true
+      guestInviteRequests:
+        value: true
+      customDataRetentionPolicies:
+        value: true
+      prioritySupport:
+        value: true
+      customerSuccessManager:
+        value: true
+    usageLimits:
+      fileUploadsLimit:
+        value: .inf
+      pageHistoryThreshold:
+        value: .inf
+      guestsLimit:
+        value: 250
+      syncDatabasesLimit:
+        value: .inf
+      rowLimitPerSyncedDatabase:
+        value: 20000
+    price: Contact Sales
+addOns:
+  customDomain:
+    availableFor:
+      - PLUS
+      - BUSINESS
+      - ENTERPRISE
+    price: Contact Sales
+    unit: domain/month
+    features:
+      customDomainAndBranding:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions:
+      customDomainsLimit:
+        value: 1
+  extraCustomDomain:
+    availableFor:
+      - PLUS
+      - BUSINESS
+      - ENTERPRISE
+    dependsOn:
+      - customDomain
+    price: Contact Sales
+    unit: domain/month
+    features:
+    usageLimits: null
+    usageLimitsExtensions:
+      customDomainsLimit:
+        value: 1

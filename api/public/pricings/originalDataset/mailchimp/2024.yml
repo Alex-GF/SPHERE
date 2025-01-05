@@ -1,0 +1,881 @@
+saasName: MailChimp - Marketing
+version: '2.0'
+createdAt: '2024-07-12'
+currency: USD
+hasAnnualPayment: false
+features:
+  ownerRole:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  adminRole:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  authorRole:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  viewerRole:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  managerRole:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  contacts:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  audiences:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  basicSegmentation:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  advancedSegmentation:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  contactProfiles:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  tags:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  inbox:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  mailchipMobileApp:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  audienceDashboard:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  surveys:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  predictedDemographics:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: BOT
+  customerLifetimeValue:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  purchaseLikelihood:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  addressFinder:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  campainEngagement:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  purchaseBehavior:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  appEngagement:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  siteViewsWebsiteEngagement:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  pageViewsWebsiteEngagement:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  contentStudio:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  basicTemplates:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  prebuiltTemplates:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  customCodedTemplates:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  removeMailchimpFooter:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  publishDesignsFromMailchimp:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  downloadDesigns:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  emailMarketing:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  emailScheduling:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  landingPages:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  socialPosting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  socialPostScheduling:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  campaignManager:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  postCards:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  popupForms:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTENSION
+  retargetingAds:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  marketingCalendar:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  singleStepAutomations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  multiStepAutomations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  customerJourneyBuilder:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  multipleStartingPoints:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  branchingPoints:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  smsMarketing:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  mmsMarketing:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  sendSmsFromCustomerJourneyBuiler:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  sendMmsFromCustomerJourneyBuiler:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  smsAutomation:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  smsAndMmsAddOnContentTemplates:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  smsAndMmsAddOnRealTimeReporting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TRACKING
+  smsAndMmsAddOnBulkConversations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  smsAndMmsAddOnTwoWayConversations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  smsAndMmsAddOnTextToJoin:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  smsAndMmsAddOnTapToText:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  smsAndMmsAddOnMultiStepPopUpForm:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTENSION
+  autoVetting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  standardVetting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  basicReports:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  customReports:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  anomalyDetection:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TRACKING
+  comparativeReporting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  abTesting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  multivarianteTesting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  personalizedProductRecommendations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  nextBestAction:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: BOT
+  subjectLineHelper:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  contentOptimizer:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  dynamicContent:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  sendTimeOptimization:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  deliveryByTimezone:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  integrations:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  guides:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  tutorials:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  30DayEmailSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  24/7EmailSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  liveChatSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  personalizedOnboarding:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  phoneSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  premiumMigrationServices:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  transactionalEmails:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: API
+  buildAndPublishWebsite:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  pages:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  unlimitedBandwidth:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  seoTools:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  sslCertificate:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: GUARANTEE
+  siteVisitAnalytics:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  freeMailchimpDomain:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+usageLimits:
+  contactsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 500
+    unit: contact
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - contacts
+  audiencesLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: audience
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - audiences
+  seatsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: seat
+    type: NON_RENEWABLE
+    linkedFeatures: null
+  appEngagementThreshold:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: month
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - appEngagement
+  monthlyEmailSends:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 2500
+    unit: email/month
+    type: RENEWABLE
+    linkedFeatures:
+      - emailMarketing
+  dailyEmailSends:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 500
+    unit: email/day
+    type: RENEWABLE
+    linkedFeatures:
+      - emailMarketing
+  standardVettingIncludedCredits:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 5000
+    unit: credit
+    type: RESPONSE_DRIVEN
+    linkedFeatures:
+      - standardVetting
+  personalizedOnboardingSessionsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 0
+    unit: session
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - personalizedOnboarding
+plans:
+  FREE:
+    description: All the basics for businesses that are just getting started.
+    monthlyPrice: 0
+    unit: /month
+    features: null
+    usageLimits: null
+    price: 0
+  ESSENTIALS:
+    description: Must-have features for email senders who want added support.
+    monthlyPrice: 13
+    unit: 500 users/month
+    features:
+      adminRole:
+        value: true
+      prebuiltTemplates:
+        value: true
+      removeMailchimpFooter:
+        value: true
+      emailScheduling:
+        value: true
+      customerJourneyBuilder:
+        value: true
+      abTesting:
+        value: true
+      24/7EmailSupport:
+        value: true
+      liveChatSupport:
+        value: true
+    usageLimits:
+      contactsLimit:
+        value: 50000
+      audiencesLimit:
+        value: 3
+      seatsLimit:
+        value: 3
+      monthlyEmailSends:
+        value: 500000
+      dailyEmailSends:
+        value: .inf
+    price: 13
+  STANDARD:
+    description: Better insights for growing businesses that want more customers.
+    monthlyPrice: 20
+    unit: 500 users/month
+    features:
+      adminRole:
+        value: true
+      authorRole:
+        value: true
+      viewerRole:
+        value: true
+      advancedSegmentation:
+        value: true
+      predictedDemographics:
+        value: true
+      customerLifetimeValue:
+        value: true
+      purchaseLikelihood:
+        value: true
+      addressFinder:
+        value: true
+      pageViewsWebsiteEngagement:
+        value: true
+      prebuiltTemplates:
+        value: true
+      customCodedTemplates:
+        value: true
+      removeMailchimpFooter:
+        value: true
+      downloadDesigns:
+        value: true
+      emailScheduling:
+        value: true
+      socialPostScheduling:
+        value: true
+      campaignManager:
+        value: true
+      retargetingAds:
+        value: true
+      marketingCalendar:
+        value: true
+      multiStepAutomations:
+        value: true
+      customerJourneyBuilder:
+        value: true
+      multipleStartingPoints:
+        value: true
+      branchingPoints:
+        value: true
+      customReports:
+        value: true
+      anomalyDetection:
+        value: true
+      comparativeReporting:
+        value: true
+      abTesting:
+        value: true
+      multivarianteTesting:
+        value: true
+      contentOptimizer:
+        value: true
+      dynamicContent:
+        value: true
+      sendTimeOptimization:
+        value: true
+      deliveryByTimezone:
+        value: true
+      24/7EmailSupport:
+        value: true
+      liveChatSupport:
+        value: true
+      personalizedOnboarding:
+        value: true
+    usageLimits:
+      contactsLimit:
+        value: 100000
+      audiencesLimit:
+        value: 5
+      appEngagementThreshold:
+        value: 3
+      seatsLimit:
+        value: 5
+      monthlyEmailSends:
+        value: 1200000
+      personalizedOnboardingSessionsLimit:
+        value: 1
+    price: 20
+  PREMIUM:
+    description: Advanced features for pros who need more customization.
+    monthlyPrice: 350
+    unit: 500 users/month
+    features:
+      adminRole:
+        value: true
+      authorRole:
+        value: true
+      viewerRole:
+        value: true
+      managerRole:
+        value: true
+      advancedSegmentation:
+        value: true
+      predictedDemographics:
+        value: true
+      customerLifetimeValue:
+        value: true
+      purchaseLikelihood:
+        value: true
+      addressFinder:
+        value: true
+      pageViewsWebsiteEngagement:
+        value: true
+      prebuiltTemplates:
+        value: true
+      customCodedTemplates:
+        value: true
+      removeMailchimpFooter:
+        value: true
+      downloadDesigns:
+        value: true
+      emailScheduling:
+        value: true
+      socialPostScheduling:
+        value: true
+      campaignManager:
+        value: true
+      retargetingAds:
+        value: true
+      marketingCalendar:
+        value: true
+      multiStepAutomations:
+        value: true
+      customerJourneyBuilder:
+        value: true
+      multipleStartingPoints:
+        value: true
+      branchingPoints:
+        value: true
+      customReports:
+        value: true
+      anomalyDetection:
+        value: true
+      comparativeReporting:
+        value: true
+      abTesting:
+        value: true
+      multivarianteTesting:
+        value: true
+      contentOptimizer:
+        value: true
+      dynamicContent:
+        value: true
+      sendTimeOptimization:
+        value: true
+      deliveryByTimezone:
+        value: true
+      24/7EmailSupport:
+        value: true
+      liveChatSupport:
+        value: true
+      personalizedOnboarding:
+        value: true
+      phoneSupport:
+        value: true
+    usageLimits:
+      contactsLimit:
+        value: .inf
+      audiencesLimit:
+        value: .inf
+      appEngagementThreshold:
+        value: 18
+      seatsLimit:
+        value: .inf
+      monthlyEmailSends:
+        value: .inf
+      personalizedOnboardingSessionsLimit:
+        value: 4
+    price: 350
+addOns:
+  premiumMigrationServicesAddOn:
+    availableFor:
+      - PREMIUM
+    price: Contact Sales
+    unit: /month
+    features:
+      premiumMigrationServices:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  transactionalEmailsAddOn:
+    availableFor:
+      - STANDARD
+      - PREMIUM
+    price: Contact Sales
+    unit: /month
+    features:
+      transactionalEmails:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  smsAndMmsMarketingAddOnForEssentialsTier:
+    availableFor:
+      - ESSENTIALS
+    price: Contact Sales
+    unit: /month
+    features:
+      smsMarketing:
+        value: true
+      smsAutomation:
+        value: true
+      smsAndMmsAddOnContentTemplates:
+        value: true
+      smsAndMmsAddOnBulkConversations:
+        value: true
+      smsAndMmsAddOnTwoWayConversations:
+        value: true
+      smsAndMmsAddOnTextToJoin:
+        value: true
+      smsAndMmsAddOnTapToText:
+        value: true
+      smsAndMmsAddOnMultiStepPopUpForm:
+        value: true
+      autoVetting:
+        value: true
+      standardVetting:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  smsAndMmsMarketingAddOnForStandardTier:
+    availableFor:
+      - STANDARD
+    price: Contact Sales
+    unit: /month
+    features:
+      smsMarketing:
+        value: true
+      mmsMarketing:
+        value: true
+      sendSmsFromCustomerJourneyBuiler:
+        value: true
+      sendMmsFromCustomerJourneyBuiler:
+        value: true
+      smsAutomation:
+        value: true
+      smsAndMmsAddOnContentTemplates:
+        value: true
+      smsAndMmsAddOnRealTimeReporting:
+        value: true
+      smsAndMmsAddOnBulkConversations:
+        value: true
+      smsAndMmsAddOnTwoWayConversations:
+        value: true
+      smsAndMmsAddOnTextToJoin:
+        value: true
+      smsAndMmsAddOnTapToText:
+        value: true
+      smsAndMmsAddOnMultiStepPopUpForm:
+        value: true
+      autoVetting:
+        value: true
+      standardVetting:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
+  smsAndMmsMarketingAddOnForPremiumTier:
+    availableFor:
+      - PREMIUM
+    price: Contact Sales
+    unit: /month
+    features:
+      smsMarketing:
+        value: true
+      mmsMarketing:
+        value: true
+      sendSmsFromCustomerJourneyBuiler:
+        value: true
+      sendMmsFromCustomerJourneyBuiler:
+        value: true
+      smsAutomation:
+        value: true
+      smsAndMmsAddOnContentTemplates:
+        value: true
+      smsAndMmsAddOnRealTimeReporting:
+        value: true
+      smsAndMmsAddOnBulkConversations:
+        value: true
+      smsAndMmsAddOnTwoWayConversations:
+        value: true
+      smsAndMmsAddOnTextToJoin:
+        value: true
+      smsAndMmsAddOnTapToText:
+        value: true
+      smsAndMmsAddOnMultiStepPopUpForm:
+        value: true
+      autoVetting:
+        value: true
+      standardVetting:
+        value: true
+    usageLimits:
+      standardVettingIncludedCredits:
+        value: .inf
+    usageLimitsExtensions: null

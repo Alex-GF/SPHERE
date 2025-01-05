@@ -1,0 +1,546 @@
+saasName: Jira
+version: '2.0'
+createdAt: '2024-07-07'
+currency: USD
+hasAnnualPayment: false
+features:
+  goals:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  issues:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  projects:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  forms:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  customizableWorkflows:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  projectTemplates:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  backlogView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  listView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  timelineView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  calendarView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  summaryView:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  dashboards:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  reportingAndInsights:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INFORMATION
+  iosAndAndroidApps:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  sites:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  storage:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  emailNotifications:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingURLs: null
+  userRolesAndPermissions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  anonymousAccess:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  advancedPlanning:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  singleProjectDependencyManagement:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  crossProjectDependencyManagement:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  capacityManagement:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  expandableIssueHierarchy:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  scenarioModelling:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  approvals:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  atlassianIntelligence:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: BOT
+  communication:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  employeeDirectory:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  automation:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  atlassianAnalytics:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  atlassianDataLake:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  dataConnectors:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  domainVerification:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  accountCapture:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  sessionDurationManagement:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  adminInsights:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  sandbox:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  releaseTracks:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  projectArchiving:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  userCounts:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  centralizedUserSubscriptions:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: PAYMENT
+  productRequests:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  atlassianGuard:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  passwordPolicies:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  encryptionInTransitAndAtRest:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: GUARANTEE
+  businessContinuityAndDisasterRecovery:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: GUARANTEE
+  mobileDeviceManagement:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  auditLogs:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  dataResidency:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  issueLevelsecurity:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  ipAllowlisting:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  multipleIdp:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  auditLogsForUsersActivity:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  byokEncryption:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  communitySupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  localBusinessHoursSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  24x7Support:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  enterpriseSupport:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  uptimeSLA:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+usageLimits:
+  usersLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 10
+    unit: user/site
+    type: NON_RENEWABLE
+    linkedFeatures: null
+  sitesLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: site
+    type: NON_RENEWABLE
+    linkedFeatures: null
+  totalAutomationLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 100
+    unit: rule/month
+    type: RENEWABLE
+    linkedFeatures:
+      - automation
+  perUserAutomationLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 0
+    unit: rule/month
+    type: RENEWABLE
+    linkedFeatures:
+      - automation
+  storageLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 2
+    unit: GB
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - storage
+  emailNotificationsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 100
+    unit: email/day
+    type: RENEWABLE
+    linkedFeatures:
+      - emailNotifications
+plans:
+  FREE:
+    description: ''
+    monthlyPrice: 0
+    unit: user/month
+    features: null
+    usageLimits: null
+    price: 0
+  STANDARD:
+    description: ''
+    monthlyPrice: 7.16
+    unit: user/month
+    features:
+      userRolesAndPermissions:
+        value: true
+      anonymousAccess:
+        value: true
+      auditLogs:
+        value: true
+      dataResidency:
+        value: true
+      issueLevelsecurity:
+        value: true
+      localBusinessHoursSupport:
+        value: true
+    usageLimits:
+      usersLimit:
+        value: 50000
+      totalAutomationLimit:
+        value: 1700
+      storageLimit:
+        value: 250
+      emailNotificationsLimit:
+        value: .inf
+    price: 7.16
+  PREMIUM:
+    description: ''
+    monthlyPrice: 12.48
+    unit: user/month
+    features:
+      userRolesAndPermissions:
+        value: true
+      anonymousAccess:
+        value: true
+      advancedPlanning:
+        value: true
+      crossProjectDependencyManagement:
+        value: true
+      capacityManagement:
+        value: true
+      expandableIssueHierarchy:
+        value: true
+      scenarioModelling:
+        value: true
+      approvals:
+        value: true
+      atlassianIntelligence:
+        value: true
+      adminInsights:
+        value: true
+      sandbox:
+        value: true
+      releaseTracks:
+        value: true
+      projectArchiving:
+        value: true
+      auditLogs:
+        value: true
+      dataResidency:
+        value: true
+      issueLevelsecurity:
+        value: true
+      ipAllowlisting:
+        value: true
+      localBusinessHoursSupport:
+        value: true
+      24x7Support:
+        value: true
+      uptimeSLA:
+        value: true
+    usageLimits:
+      usersLimit:
+        value: 50000
+      emailNotificationsLimit:
+        value: .inf
+      totalAutomationLimit:
+        value: .inf
+      perUserAutomationLimit:
+        value: 1000
+      storageLimit:
+        value: .inf
+    price: 12.48
+  ENTERPRISE:
+    description: ''
+    monthlyPrice: Contact Sales
+    unit: user/month
+    features:
+      userRolesAndPermissions:
+        value: true
+      anonymousAccess:
+        value: true
+      advancedPlanning:
+        value: true
+      crossProjectDependencyManagement:
+        value: true
+      capacityManagement:
+        value: true
+      expandableIssueHierarchy:
+        value: true
+      scenarioModelling:
+        value: true
+      approvals:
+        value: true
+      atlassianIntelligence:
+        value: true
+      atlassianAnalytics:
+        value: true
+      atlassianDataLake:
+        value: true
+      dataConnectors:
+        value: true
+      adminInsights:
+        value: true
+      sandbox:
+        value: true
+      releaseTracks:
+        value: true
+      projectArchiving:
+        value: true
+      userCounts:
+        value: true
+      centralizedUserSubscriptions:
+        value: true
+      productRequests:
+        value: true
+      atlassianGuard:
+        value: true
+      auditLogs:
+        value: true
+      dataResidency:
+        value: true
+      issueLevelsecurity:
+        value: true
+      ipAllowlisting:
+        value: true
+      multipleIdp:
+        value: true
+      auditLogsForUsersActivity:
+        value: true
+      byokEncryption:
+        value: true
+      localBusinessHoursSupport:
+        value: true
+      24x7Support:
+        value: true
+      enterpriseSupport:
+        value: true
+      uptimeSLA:
+        value: true
+    usageLimits:
+      usersLimit:
+        value: 50000
+      sitesLimit:
+        value: 150
+      emailNotificationsLimit:
+        value: .inf
+      totalAutomationLimit:
+        value: .inf
+      perUserAutomationLimit:
+        value: .inf
+      storageLimit:
+        value: .inf
+    price: Contact Sales
+addOns:
+  atlassianGuardAddOn:
+    availableFor:
+      - FREE
+      - STANDARD
+      - PREMIUM
+    price: Contact Sales
+    unit: user/month
+    features:
+      atlassianGuard:
+        value: true
+    usageLimits: null
+    usageLimitsExtensions: null
