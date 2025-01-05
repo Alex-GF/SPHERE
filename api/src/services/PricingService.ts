@@ -1,4 +1,5 @@
 import container from "../config/container";
+import { Pricing } from "../types/database/Pricing";
 import { PricingRepository } from "../types/repositories/PricingRepository";
 import { processFileUris } from "./FileService";
 
@@ -15,12 +16,14 @@ class PricingService {
       return pricings
     }
   
-    async show (id: string) {
-      const pricing = await this.pricingRepository.findById(id)
+    async show (name: string) {
+      const pricing: {name: string, versions: Pricing[]} | null = await this.pricingRepository.findByName(name)
       if (!pricing) {
         throw new Error('Pricing not found')
       }
-      processFileUris(pricing, ['yaml'])
+      for (const version of pricing.versions) {
+        processFileUris(version, ['yaml'])
+      }
       const pricingObject = Object.assign({}, pricing)
       return pricingObject
     }

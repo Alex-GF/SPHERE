@@ -23,7 +23,7 @@ class PricingController {
 
   async show (req: any, res: any) {
     try {
-      const pricing = await this.pricingService.show(req.params.pricingId)
+      const pricing = await this.pricingService.show(req.params.pricingName)
       res.json(pricing)
     } catch (err: any) {
       res.status(500).send(err.message)

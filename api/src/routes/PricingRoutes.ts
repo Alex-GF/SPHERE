@@ -17,9 +17,9 @@ const loadFileRoutes = function (app: express.Application) {
     .get(isLoggedIn, pricingController.index)
 
   app
-    .route(baseUrl + '/pricings/:pricingId')
-    .get(isLoggedIn, checkEntityExists(pricingService, 'pricingId'), pricingController.show)
-    .delete(isLoggedIn, checkEntityExists(pricingService, 'pricingId'), pricingController.destroy);
+    .route(baseUrl + '/pricings/:pricingName')
+    .get(isLoggedIn, pricingController.show)
+    .delete(isLoggedIn, pricingController.destroy);
 }
 
 export default loadFileRoutes;

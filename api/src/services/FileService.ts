@@ -2,7 +2,7 @@ import os from 'os'
 import dotenv from 'dotenv'
 dotenv.config()
 
-const appPort = process.env.APP_HOST || 3000
+const appPort = process.env.SERVER_PORT || 3000
 
 const processFileUris = (object: any, uriPropertyNames: any) => {
   uriPropertyNames.forEach((prop: any) => {

@@ -1,8 +1,10 @@
 import mongoose, { Schema } from 'mongoose';
+import { version } from 'node:os';
 
 const pricingSchema = new Schema(
   {
     name: { type: String, required: true },
+    version: { type: String, required: true },
     extractionDate: { type: Date, required: true },
     url: { type: String, required: true },
     yaml: { type: String, required: true },

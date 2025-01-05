@@ -13,10 +13,50 @@ class PricingRepository extends RepositoryBase {
     }
   }
 
-  async findById(id: string, ...args: any) {
+  async findByName(name: string, ...args: any) {
     try {
-      const pricing = await PricingMongoose.findById(id, { password: 0 });
-      return pricing!.toObject({ getters: true, virtuals: true, versionKey: false });
+      const pricing = await PricingMongoose.aggregate(
+        [
+          {
+            $match: {
+              $expr: {
+                $eq: [{$toLower: "$name"}, {$toLower: name}]
+              }
+            }
+          },
+          {
+            $group:
+              {
+                _id: {
+                  name: "$name"
+                },
+                versions: {
+                  $push: {
+                    version: "$version",
+                    extractionDate: "$extractionDate",
+                    url: "$url",
+                    yaml: "$yaml",
+                    analytics: "$analytics"
+                  }
+                }
+              }
+          },
+          {
+            $project:
+              {
+                _id: 0,
+                name: "$_id.name",
+                versions: 1
+              }
+          }
+        ]
+      );
+
+      if (!pricing || pricing.length === 0) {
+        return null;
+      }
+
+      return pricing[0];
     } catch (err) {
       return null;
     }
