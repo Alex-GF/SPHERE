@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.2.0",
   "scripts": {
-    "install": "cd frontend && npm install && cd api && npm install",
+    "install": "cd frontend && npm install && cd ../api && npm install",
     "dev": "npm run dev:api & npm run dev:vite",
     "test": "npm run test:api",
     "build": "cd frontend && tsc -b && vite build",
