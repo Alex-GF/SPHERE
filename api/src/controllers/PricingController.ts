@@ -1,3 +1,4 @@
+import multer from 'multer';
 import container from '../config/container.js'
 import PricingService from '../services/PricingService';
 
@@ -9,7 +10,7 @@ class PricingController {
     this.pricingService = container.resolve('pricingService');
     this.index = this.index.bind(this);
     this.show = this.show.bind(this);
-    this.destroy = this.destroy.bind(this);
+    this.create = this.create.bind(this);
   }
 
   async index (req: any, res: any) {
@@ -30,15 +31,24 @@ class PricingController {
     }
   }
 
-  async destroy (req: any, res: any) {
+  async create (req: any, res: any) {
     try {
-      const result = await this.pricingService.destroy(req.params.pricingId)
-      const message = result ? 'Successfully deleted.' : 'Could not delete pricing.'
-      res.json(message)
+      const pricing = await this.pricingService.create(req.file)
+      res.json(pricing)
     } catch (err: any) {
       res.status(500).send(err.message)
     }
   }
+
+  // async destroy (req: any, res: any) {
+  //   try {
+  //     const result = await this.pricingService.destroy(req.params.pricingId)
+  //     const message = result ? 'Successfully deleted.' : 'Could not delete pricing.'
+  //     res.json(message)
+  //   } catch (err: any) {
+  //     res.status(500).send(err.message)
+  //   }
+  // }
 }
 
 export default PricingController

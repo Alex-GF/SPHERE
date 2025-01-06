@@ -1,0 +1,155 @@
+saasName: Zoom
+version: "2.0"
+createdAt: 2024-11-04
+currency: $
+hasAnnualPayment: false
+features:
+  meetings:
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  cloudRecordings:
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  automatedSubtitles:
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: BOT
+  reports:
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  votingInMeetings:
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  phoneDialing:
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  ltiIntegration:
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: MARKETPLACE
+  administratorPortal:
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  end2EndExcryption:
+    valueType: BOOLEAN
+    defaultValue: true
+    type: GUARANTEE
+  chatSupport:
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  translatedCaptions:
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: BOT
+usageLimits:
+  maxAssistantsPerMeeting:
+    valueType: NUMERIC
+    defaultValue: 2
+    unit: use/month
+    type: RENEWABLE
+    linkedFeatures:
+      - meetings
+  maxTimePerMeeting:
+    valueType: NUMERIC
+    defaultValue: 40
+    unit: min/meeting
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - meetings
+  recordingsCloudStorage:
+    valueType: NUMERIC
+    defaultValue: 0
+    unit: GB
+    type: NON_RENEWABLE
+    linkedFeatures:
+      - cloudRecordings
+plans:
+  BASIC:
+    description: Basic plan
+    price: 0.0
+    unit: user/month
+    features: null
+    usageLimits: null
+  PRO:
+    description: Advanced plan
+    price: 15.99
+    unit: user/month
+    features:
+      cloudRecordings:
+        value: true
+      reports:
+        value: true
+      votingInMeetings:
+        value: true
+      chatSupport:
+        value: true
+    usageLimits:
+      maxTimePerMeeting:
+        value: 1800
+      recordingsCloudStorage:
+        value: 5
+  BUSINESS:
+    description: Advanced plan
+    price: 21.99
+    unit: user/month
+    features:
+      cloudRecordings:
+        value: true
+      reports:
+        value: true
+      votingInMeetings:
+        value: true
+      ltiIntegration:
+        value: true
+      administratorPortal:
+        value: true
+      chatSupport:
+        value: true
+    usageLimits:
+      maxAssistantsPerMeeting:
+        value: 300
+      maxTimePerMeeting:
+        value: 1800
+      recordingsCloudStorage:
+        value: 5
+addOns:
+  hugeMeetings:
+    availableFor:
+      - BASIC
+      - PRO
+      - BUSINESS
+    price: 50.00
+    unit: /month
+    usageLimits:
+      maxAssistantsPerMeeting:
+        value: 1000
+  translatedCaptions:
+    availableFor:
+      - BASIC
+      - PRO
+      - BUSINESS
+    price: 5.00
+    unit: /month
+    features:
+      translatedCaptions:
+        value: true
+  phoneDialing:
+    availableFor:
+      - PRO
+      - BUSINESS
+    price: 100.00
+    unit: /month
+    features:
+      phoneDialing:
+        value: true

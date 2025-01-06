@@ -60,8 +60,6 @@ const userSchema = new Schema({
   }
 })
 
-userSchema.index({ email: 1 })
-
 userSchema.pre('save', function (callback) {
   const user = this
   // Break out if the password hasn't changed

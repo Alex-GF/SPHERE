@@ -1,55 +1,57 @@
 import mongoose, { Schema } from 'mongoose';
-import { version } from 'node:os';
 
 const pricingSchema = new Schema(
   {
     name: { type: String, required: true },
     version: { type: String, required: true },
     extractionDate: { type: Date, required: true },
-    url: { type: String, required: true },
+    url: { type: String, required: false },
     yaml: { type: String, required: true },
     analytics: {
-      numberOfFeatures: { type: Number, required: true },
-      numberOfInformationFeatures: { type: Number, required: true },
-      numberOfIntegrationFeatures: { type: Number, required: true },
-      numberOfIntegrationApiFeatures: { type: Number, required: true },
-      numberOfIntegrationExtensionFeatures: { type: Number, required: true },
-      numberOfIntegrationIdentityProviderFeatures: { type: Number, required: true },
-      numberOfIntegrationWebSaaSFeatures: { type: Number, required: true },
-      numberOfIntegrationMarketplaceFeatures: { type: Number, required: true },
-      numberOfIntegrationExternalDeviceFeatures: { type: Number, required: true },
-      numberOfDomainFeatures: { type: Number, required: true },
-      numberOfAutomationFeatures: { type: Number, required: true },
-      numberOfBotAutomationFeatures: { type: Number, required: true },
-      numberOfFilteringAutomationFeatures: { type: Number, required: true },
-      numberOfTrackingAutomationFeatures: { type: Number, required: true },
-      numberOfTaskAutomationFeatures: { type: Number, required: true },
-      numberOfManagementFeatures: { type: Number, required: true },
-      numberOfGuaranteeFeatures: { type: Number, required: true },
-      numberOfSupportFeatures: { type: Number, required: true },
-      numberOfPaymentFeatures: { type: Number, required: true },
-      numberOfUsageLimits: { type: Number, required: true },
-      numberOfRenewableUsageLimits: { type: Number, required: true },
-      numberOfNonRenewableUsageLimits: { type: Number, required: true },
-      numberOfResponseDrivenUsageLimits: { type: Number, required: true },
-      numberOfTimeDrivenUsageLimits: { type: Number, required: true },
-      numberOfPlans: { type: Number, required: true },
-      numberOfFreePlans: { type: Number, required: true },
-      numberOfPaidPlans: { type: Number, required: true },
-      numberOfAddOns: { type: Number, required: true },
-      numberOfReplacementAddons: { type: Number, required: true },
-      numberOfExtensionAddons: { type: Number, required: true },
-      configurationSpaceSize: { type: Number, required: true },
-      minSubscriptionPrice: { type: Number, required: true },
-      maxSubscriptionPrice: { type: Number, required: true }
+      numberOfFeatures: { type: Number, required: false },
+      numberOfInformationFeatures: { type: Number, required: false },
+      numberOfIntegrationFeatures: { type: Number, required: false },
+      numberOfIntegrationApiFeatures: { type: Number, required: false },
+      numberOfIntegrationExtensionFeatures: { type: Number, required: false },
+      numberOfIntegrationIdentityProviderFeatures: { type: Number, required: false },
+      numberOfIntegrationWebSaaSFeatures: { type: Number, required: false },
+      numberOfIntegrationMarketplaceFeatures: { type: Number, required: false },
+      numberOfIntegrationExternalDeviceFeatures: { type: Number, required: false },
+      numberOfDomainFeatures: { type: Number, required: false },
+      numberOfAutomationFeatures: { type: Number, required: false },
+      numberOfBotAutomationFeatures: { type: Number, required: false },
+      numberOfFilteringAutomationFeatures: { type: Number, required: false },
+      numberOfTrackingAutomationFeatures: { type: Number, required: false },
+      numberOfTaskAutomationFeatures: { type: Number, required: false },
+      numberOfManagementFeatures: { type: Number, required: false },
+      numberOfGuaranteeFeatures: { type: Number, required: false },
+      numberOfSupportFeatures: { type: Number, required: false },
+      numberOfPaymentFeatures: { type: Number, required: false },
+      numberOfUsageLimits: { type: Number, required: false },
+      numberOfRenewableUsageLimits: { type: Number, required: false },
+      numberOfNonRenewableUsageLimits: { type: Number, required: false },
+      numberOfResponseDrivenUsageLimits: { type: Number, required: false },
+      numberOfTimeDrivenUsageLimits: { type: Number, required: false },
+      numberOfPlans: { type: Number, required: false },
+      numberOfFreePlans: { type: Number, required: false },
+      numberOfPaidPlans: { type: Number, required: false },
+      numberOfAddOns: { type: Number, required: false },
+      numberOfReplacementAddons: { type: Number, required: false },
+      numberOfExtensionAddons: { type: Number, required: false },
+      configurationSpaceSize: { type: Number, required: false },
+      minSubscriptionPrice: { type: Number, required: false },
+      maxSubscriptionPrice: { type: Number, required: false }
+    }
+  }, {
+    toJSON: {
+      virtuals: true,
+      transform: function (doc, resultObject, options) {
+        delete resultObject._id
+        delete resultObject.__v
+        return resultObject
+      }
     }
   });
-
-pricingSchema.virtual('pricingAnalytics', {
-  ref: 'PricingAnalytics',
-  localField: '_pricingAnalyticsId',
-  foreignField: '_id',
-});
 
 const pricingModel = mongoose.model('Pricing', pricingSchema, 'pricings')
 

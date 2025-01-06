@@ -10,6 +10,7 @@ const loadGlobalMiddlewares = (app: express.Application) => {
       crossOriginResourcePolicy: false // allows loading of files from /public
     }
   ))
+  app.use(express.static('public'))
 //   app.use(measurePerformance)
 }
 

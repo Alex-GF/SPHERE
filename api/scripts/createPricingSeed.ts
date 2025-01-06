@@ -16,7 +16,7 @@ interface OutputData {
 }
 
 const transformData = (data: AnalyticsData): OutputData[] => {
-  const publicYamlPath = 'public/pricings/originalDataset';
+  const publicYamlPath = 'assets/pricings/originalDataset';
 
   return Object.entries(data).flatMap(([name, pricingArray]) =>
     pricingArray.map((pricing) => ({

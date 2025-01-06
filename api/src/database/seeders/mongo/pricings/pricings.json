@@ -1,13 +1,13 @@
 [
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288af"
+      "$oid": "677c4750a5956cfdb323b3ee"
     },
     "name": "Box",
     "version": "2024",
     "extractionDate": "2024-07-15T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/box/2024.yml",
+    "yaml": "assets/pricings/originalDataset/box/2024.yml",
     "analytics": {
       "numberOfFeatures": 50,
       "numberOfInformationFeatures": 2,
@@ -46,13 +46,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288b0"
+      "$oid": "677c4750a5956cfdb323b3ef"
     },
     "name": "Box",
     "version": "2023",
     "extractionDate": "2023-11-19T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/box/2023.yml",
+    "yaml": "assets/pricings/originalDataset/box/2023.yml",
     "analytics": {
       "numberOfFeatures": 50,
       "numberOfInformationFeatures": 2,
@@ -91,13 +91,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288b1"
+      "$oid": "677c4750a5956cfdb323b3f0"
     },
     "name": "Box",
     "version": "2022",
     "extractionDate": "2022-11-28T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/box/2022.yml",
+    "yaml": "assets/pricings/originalDataset/box/2022.yml",
     "analytics": {
       "numberOfFeatures": 50,
       "numberOfInformationFeatures": 2,
@@ -136,13 +136,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288b2"
+      "$oid": "677c4750a5956cfdb323b3f1"
     },
     "name": "Box",
     "version": "2021",
     "extractionDate": "2021-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/box/2021.yml",
+    "yaml": "assets/pricings/originalDataset/box/2021.yml",
     "analytics": {
       "numberOfFeatures": 45,
       "numberOfInformationFeatures": 2,
@@ -181,13 +181,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288b3"
+      "$oid": "677c4750a5956cfdb323b3f2"
     },
     "name": "Box",
     "version": "2020",
     "extractionDate": "2020-11-28T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/box/2020.yml",
+    "yaml": "assets/pricings/originalDataset/box/2020.yml",
     "analytics": {
       "numberOfFeatures": 42,
       "numberOfInformationFeatures": 2,
@@ -226,13 +226,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288b4"
+      "$oid": "677c4750a5956cfdb323b3f3"
     },
     "name": "Box",
     "version": "2019",
     "extractionDate": "2019-11-13T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/box/2019.yml",
+    "yaml": "assets/pricings/originalDataset/box/2019.yml",
     "analytics": {
       "numberOfFeatures": 40,
       "numberOfInformationFeatures": 2,
@@ -271,13 +271,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288b5"
+      "$oid": "677c4750a5956cfdb323b3f4"
     },
     "name": "Buffer",
     "version": "2024",
     "extractionDate": "2024-07-02T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/buffer/2024.yml",
+    "yaml": "assets/pricings/originalDataset/buffer/2024.yml",
     "analytics": {
       "numberOfFeatures": 76,
       "numberOfInformationFeatures": 22,
@@ -316,13 +316,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288b6"
+      "$oid": "677c4750a5956cfdb323b3f5"
     },
     "name": "Buffer",
     "version": "2023",
     "extractionDate": "2023-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/buffer/2023.yml",
+    "yaml": "assets/pricings/originalDataset/buffer/2023.yml",
     "analytics": {
       "numberOfFeatures": 76,
       "numberOfInformationFeatures": 22,
@@ -361,13 +361,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288b7"
+      "$oid": "677c4750a5956cfdb323b3f6"
     },
     "name": "Buffer",
     "version": "2022",
     "extractionDate": "2022-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/buffer/2022.yml",
+    "yaml": "assets/pricings/originalDataset/buffer/2022.yml",
     "analytics": {
       "numberOfFeatures": 71,
       "numberOfInformationFeatures": 17,
@@ -406,13 +406,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288b8"
+      "$oid": "677c4750a5956cfdb323b3f7"
     },
     "name": "Buffer",
     "version": "2021",
     "extractionDate": "2021-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/buffer/2021.yml",
+    "yaml": "assets/pricings/originalDataset/buffer/2021.yml",
     "analytics": {
       "numberOfFeatures": 62,
       "numberOfInformationFeatures": 16,
@@ -451,13 +451,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288b9"
+      "$oid": "677c4750a5956cfdb323b3f8"
     },
     "name": "Buffer",
     "version": "2020",
     "extractionDate": "2020-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/buffer/2020.yml",
+    "yaml": "assets/pricings/originalDataset/buffer/2020.yml",
     "analytics": {
       "numberOfFeatures": 31,
       "numberOfInformationFeatures": 4,
@@ -496,13 +496,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288ba"
+      "$oid": "677c4750a5956cfdb323b3f9"
     },
     "name": "Buffer",
     "version": "2019",
     "extractionDate": "2019-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/buffer/2019.yml",
+    "yaml": "assets/pricings/originalDataset/buffer/2019.yml",
     "analytics": {
       "numberOfFeatures": 28,
       "numberOfInformationFeatures": 2,
@@ -541,13 +541,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288bb"
+      "$oid": "677c4750a5956cfdb323b3fa"
     },
     "name": "Canva",
     "version": "2024",
     "extractionDate": "2024-07-07T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/canva/2024.yml",
+    "yaml": "assets/pricings/originalDataset/canva/2024.yml",
     "analytics": {
       "numberOfFeatures": 92,
       "numberOfInformationFeatures": 5,
@@ -586,13 +586,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288bc"
+      "$oid": "677c4750a5956cfdb323b3fb"
     },
     "name": "Canva",
     "version": "2023",
     "extractionDate": "2023-11-24T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/canva/2023.yml",
+    "yaml": "assets/pricings/originalDataset/canva/2023.yml",
     "analytics": {
       "numberOfFeatures": 61,
       "numberOfInformationFeatures": 3,
@@ -631,13 +631,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288bd"
+      "$oid": "677c4750a5956cfdb323b3fc"
     },
     "name": "Canva",
     "version": "2022",
     "extractionDate": "2022-02-08T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/canva/2022.yml",
+    "yaml": "assets/pricings/originalDataset/canva/2022.yml",
     "analytics": {
       "numberOfFeatures": 37,
       "numberOfInformationFeatures": 0,
@@ -676,13 +676,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288be"
+      "$oid": "677c4750a5956cfdb323b3fd"
     },
     "name": "Canva",
     "version": "2021",
     "extractionDate": "2021-03-18T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/canva/2021.yml",
+    "yaml": "assets/pricings/originalDataset/canva/2021.yml",
     "analytics": {
       "numberOfFeatures": 37,
       "numberOfInformationFeatures": 0,
@@ -721,13 +721,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288bf"
+      "$oid": "677c4750a5956cfdb323b3fe"
     },
     "name": "Canva",
     "version": "2020",
     "extractionDate": "2020-06-19T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/canva/2020.yml",
+    "yaml": "assets/pricings/originalDataset/canva/2020.yml",
     "analytics": {
       "numberOfFeatures": 33,
       "numberOfInformationFeatures": 0,
@@ -766,13 +766,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288c0"
+      "$oid": "677c4750a5956cfdb323b3ff"
     },
     "name": "Canva",
     "version": "2019",
     "extractionDate": "2019-09-05T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/canva/2019.yml",
+    "yaml": "assets/pricings/originalDataset/canva/2019.yml",
     "analytics": {
       "numberOfFeatures": 19,
       "numberOfInformationFeatures": 0,
@@ -811,13 +811,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288c1"
+      "$oid": "677c4750a5956cfdb323b400"
     },
     "name": "Clickup",
     "version": "2024",
     "extractionDate": "2024-07-04T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/clickup/2024.yml",
+    "yaml": "assets/pricings/originalDataset/clickup/2024.yml",
     "analytics": {
       "numberOfFeatures": 135,
       "numberOfInformationFeatures": 1,
@@ -856,13 +856,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288c2"
+      "$oid": "677c4750a5956cfdb323b401"
     },
     "name": "Clickup",
     "version": "2023",
     "extractionDate": "2023-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/clickup/2023.yml",
+    "yaml": "assets/pricings/originalDataset/clickup/2023.yml",
     "analytics": {
       "numberOfFeatures": 136,
       "numberOfInformationFeatures": 1,
@@ -901,13 +901,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288c3"
+      "$oid": "677c4750a5956cfdb323b402"
     },
     "name": "Clickup",
     "version": "2022",
     "extractionDate": "2022-11-27T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/clickup/2022.yml",
+    "yaml": "assets/pricings/originalDataset/clickup/2022.yml",
     "analytics": {
       "numberOfFeatures": 121,
       "numberOfInformationFeatures": 0,
@@ -946,13 +946,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288c4"
+      "$oid": "677c4750a5956cfdb323b403"
     },
     "name": "Clickup",
     "version": "2021",
     "extractionDate": "2021-11-01T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/clickup/2021.yml",
+    "yaml": "assets/pricings/originalDataset/clickup/2021.yml",
     "analytics": {
       "numberOfFeatures": 112,
       "numberOfInformationFeatures": 0,
@@ -991,13 +991,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288c5"
+      "$oid": "677c4750a5956cfdb323b404"
     },
     "name": "Clickup",
     "version": "2020",
     "extractionDate": "2020-10-01T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/clickup/2020.yml",
+    "yaml": "assets/pricings/originalDataset/clickup/2020.yml",
     "analytics": {
       "numberOfFeatures": 80,
       "numberOfInformationFeatures": 3,
@@ -1036,13 +1036,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288c6"
+      "$oid": "677c4750a5956cfdb323b405"
     },
     "name": "Clickup",
     "version": "2019",
     "extractionDate": "2019-10-31T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/clickup/2019.yml",
+    "yaml": "assets/pricings/originalDataset/clickup/2019.yml",
     "analytics": {
       "numberOfFeatures": 26,
       "numberOfInformationFeatures": 1,
@@ -1081,13 +1081,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288c7"
+      "$oid": "677c4750a5956cfdb323b406"
     },
     "name": "Clockify",
     "version": "2024",
     "extractionDate": "2024-07-05T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/clockify/2024.yml",
+    "yaml": "assets/pricings/originalDataset/clockify/2024.yml",
     "analytics": {
       "numberOfFeatures": 72,
       "numberOfInformationFeatures": 9,
@@ -1126,13 +1126,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288c8"
+      "$oid": "677c4750a5956cfdb323b407"
     },
     "name": "Clockify",
     "version": "2023",
     "extractionDate": "2023-12-02T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/clockify/2023.yml",
+    "yaml": "assets/pricings/originalDataset/clockify/2023.yml",
     "analytics": {
       "numberOfFeatures": 68,
       "numberOfInformationFeatures": 9,
@@ -1171,13 +1171,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288c9"
+      "$oid": "677c4750a5956cfdb323b408"
     },
     "name": "Clockify",
     "version": "2022",
     "extractionDate": "2022-11-15T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/clockify/2022.yml",
+    "yaml": "assets/pricings/originalDataset/clockify/2022.yml",
     "analytics": {
       "numberOfFeatures": 65,
       "numberOfInformationFeatures": 7,
@@ -1216,13 +1216,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288ca"
+      "$oid": "677c4750a5956cfdb323b409"
     },
     "name": "Clockify",
     "version": "2021",
     "extractionDate": "2021-11-24T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/clockify/2021.yml",
+    "yaml": "assets/pricings/originalDataset/clockify/2021.yml",
     "analytics": {
       "numberOfFeatures": 38,
       "numberOfInformationFeatures": 2,
@@ -1261,13 +1261,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288cb"
+      "$oid": "677c4750a5956cfdb323b40a"
     },
     "name": "Clockify",
     "version": "2020",
     "extractionDate": "2020-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/clockify/2020.yml",
+    "yaml": "assets/pricings/originalDataset/clockify/2020.yml",
     "analytics": {
       "numberOfFeatures": 31,
       "numberOfInformationFeatures": 2,
@@ -1306,13 +1306,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288cc"
+      "$oid": "677c4750a5956cfdb323b40b"
     },
     "name": "Clockify",
     "version": "2019",
     "extractionDate": "2019-11-11T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/clockify/2019.yml",
+    "yaml": "assets/pricings/originalDataset/clockify/2019.yml",
     "analytics": {
       "numberOfFeatures": 24,
       "numberOfInformationFeatures": 1,
@@ -1351,13 +1351,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288cd"
+      "$oid": "677c4750a5956cfdb323b40c"
     },
     "name": "Crowdcast",
     "version": "2024",
     "extractionDate": "2024-07-14T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/crowdcast/2024.yml",
+    "yaml": "assets/pricings/originalDataset/crowdcast/2024.yml",
     "analytics": {
       "numberOfFeatures": 16,
       "numberOfInformationFeatures": 2,
@@ -1396,13 +1396,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288ce"
+      "$oid": "677c4750a5956cfdb323b40d"
     },
     "name": "Crowdcast",
     "version": "2023",
     "extractionDate": "2023-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/crowdcast/2023.yml",
+    "yaml": "assets/pricings/originalDataset/crowdcast/2023.yml",
     "analytics": {
       "numberOfFeatures": 16,
       "numberOfInformationFeatures": 2,
@@ -1441,13 +1441,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288cf"
+      "$oid": "677c4750a5956cfdb323b40e"
     },
     "name": "Crowdcast",
     "version": "2022",
     "extractionDate": "2022-11-22T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/crowdcast/2022.yml",
+    "yaml": "assets/pricings/originalDataset/crowdcast/2022.yml",
     "analytics": {
       "numberOfFeatures": 16,
       "numberOfInformationFeatures": 2,
@@ -1486,13 +1486,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288d0"
+      "$oid": "677c4750a5956cfdb323b40f"
     },
     "name": "Crowdcast",
     "version": "2021",
     "extractionDate": "2021-11-27T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/crowdcast/2021.yml",
+    "yaml": "assets/pricings/originalDataset/crowdcast/2021.yml",
     "analytics": {
       "numberOfFeatures": 20,
       "numberOfInformationFeatures": 2,
@@ -1531,13 +1531,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288d1"
+      "$oid": "677c4750a5956cfdb323b410"
     },
     "name": "Crowdcast",
     "version": "2020",
     "extractionDate": "2020-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/crowdcast/2020.yml",
+    "yaml": "assets/pricings/originalDataset/crowdcast/2020.yml",
     "analytics": {
       "numberOfFeatures": 20,
       "numberOfInformationFeatures": 2,
@@ -1576,13 +1576,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288d2"
+      "$oid": "677c4750a5956cfdb323b411"
     },
     "name": "Databox",
     "version": "2024",
     "extractionDate": "2024-06-11T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/databox/2024.yml",
+    "yaml": "assets/pricings/originalDataset/databox/2024.yml",
     "analytics": {
       "numberOfFeatures": 63,
       "numberOfInformationFeatures": 4,
@@ -1621,13 +1621,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288d3"
+      "$oid": "677c4750a5956cfdb323b412"
     },
     "name": "Databox",
     "version": "2023",
     "extractionDate": "2023-12-11T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/databox/2023.yml",
+    "yaml": "assets/pricings/originalDataset/databox/2023.yml",
     "analytics": {
       "numberOfFeatures": 66,
       "numberOfInformationFeatures": 4,
@@ -1666,13 +1666,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288d4"
+      "$oid": "677c4750a5956cfdb323b413"
     },
     "name": "Databox",
     "version": "2022",
     "extractionDate": "2022-11-07T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/databox/2022.yml",
+    "yaml": "assets/pricings/originalDataset/databox/2022.yml",
     "analytics": {
       "numberOfFeatures": 43,
       "numberOfInformationFeatures": 0,
@@ -1711,13 +1711,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288d5"
+      "$oid": "677c4750a5956cfdb323b414"
     },
     "name": "Databox",
     "version": "2021",
     "extractionDate": "2021-11-22T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/databox/2021.yml",
+    "yaml": "assets/pricings/originalDataset/databox/2021.yml",
     "analytics": {
       "numberOfFeatures": 32,
       "numberOfInformationFeatures": 0,
@@ -1756,13 +1756,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288d6"
+      "$oid": "677c4750a5956cfdb323b415"
     },
     "name": "Databox",
     "version": "2020",
     "extractionDate": "2020-11-30T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/databox/2020.yml",
+    "yaml": "assets/pricings/originalDataset/databox/2020.yml",
     "analytics": {
       "numberOfFeatures": 22,
       "numberOfInformationFeatures": 0,
@@ -1801,13 +1801,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288d7"
+      "$oid": "677c4750a5956cfdb323b416"
     },
     "name": "Databox",
     "version": "2019",
     "extractionDate": "2019-12-10T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/databox/2019.yml",
+    "yaml": "assets/pricings/originalDataset/databox/2019.yml",
     "analytics": {
       "numberOfFeatures": 21,
       "numberOfInformationFeatures": 0,
@@ -1846,13 +1846,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288d8"
+      "$oid": "677c4750a5956cfdb323b417"
     },
     "name": "Deskera",
     "version": "2024",
     "extractionDate": "2024-07-15T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/deskera/2024.yml",
+    "yaml": "assets/pricings/originalDataset/deskera/2024.yml",
     "analytics": {
       "numberOfFeatures": 100,
       "numberOfInformationFeatures": 8,
@@ -1891,13 +1891,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288d9"
+      "$oid": "677c4750a5956cfdb323b418"
     },
     "name": "Deskera",
     "version": "2023",
     "extractionDate": "2023-03-23T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/deskera/2023.yml",
+    "yaml": "assets/pricings/originalDataset/deskera/2023.yml",
     "analytics": {
       "numberOfFeatures": 63,
       "numberOfInformationFeatures": 2,
@@ -1936,13 +1936,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288da"
+      "$oid": "677c4750a5956cfdb323b419"
     },
     "name": "Deskera",
     "version": "2022",
     "extractionDate": "2022-12-04T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/deskera/2022.yml",
+    "yaml": "assets/pricings/originalDataset/deskera/2022.yml",
     "analytics": {
       "numberOfFeatures": 63,
       "numberOfInformationFeatures": 2,
@@ -1981,13 +1981,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288db"
+      "$oid": "677c4750a5956cfdb323b41a"
     },
     "name": "Deskera",
     "version": "2021",
     "extractionDate": "2021-10-13T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/deskera/2021.yml",
+    "yaml": "assets/pricings/originalDataset/deskera/2021.yml",
     "analytics": {
       "numberOfFeatures": 22,
       "numberOfInformationFeatures": 0,
@@ -2026,13 +2026,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288dc"
+      "$oid": "677c4750a5956cfdb323b41b"
     },
     "name": "Dropbox",
     "version": "2024",
     "extractionDate": "2024-07-15T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/dropbox/2024.yml",
+    "yaml": "assets/pricings/originalDataset/dropbox/2024.yml",
     "analytics": {
       "numberOfFeatures": 83,
       "numberOfInformationFeatures": 4,
@@ -2071,13 +2071,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288dd"
+      "$oid": "677c4750a5956cfdb323b41c"
     },
     "name": "Dropbox",
     "version": "2023",
     "extractionDate": "2023-12-02T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/dropbox/2023.yml",
+    "yaml": "assets/pricings/originalDataset/dropbox/2023.yml",
     "analytics": {
       "numberOfFeatures": 76,
       "numberOfInformationFeatures": 4,
@@ -2116,13 +2116,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288de"
+      "$oid": "677c4750a5956cfdb323b41d"
     },
     "name": "Dropbox",
     "version": "2022",
     "extractionDate": "2022-11-15T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/dropbox/2022.yml",
+    "yaml": "assets/pricings/originalDataset/dropbox/2022.yml",
     "analytics": {
       "numberOfFeatures": 54,
       "numberOfInformationFeatures": 2,
@@ -2161,13 +2161,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288df"
+      "$oid": "677c4750a5956cfdb323b41e"
     },
     "name": "Dropbox",
     "version": "2021",
     "extractionDate": "2021-11-19T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/dropbox/2021.yml",
+    "yaml": "assets/pricings/originalDataset/dropbox/2021.yml",
     "analytics": {
       "numberOfFeatures": 52,
       "numberOfInformationFeatures": 2,
@@ -2206,13 +2206,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288e0"
+      "$oid": "677c4750a5956cfdb323b41f"
     },
     "name": "Evernote",
     "version": "2024",
     "extractionDate": "2024-07-06T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/evernote/2024.yml",
+    "yaml": "assets/pricings/originalDataset/evernote/2024.yml",
     "analytics": {
       "numberOfFeatures": 32,
       "numberOfInformationFeatures": 1,
@@ -2251,13 +2251,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288e1"
+      "$oid": "677c4750a5956cfdb323b420"
     },
     "name": "Evernote",
     "version": "2023",
     "extractionDate": "2023-11-23T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/evernote/2023.yml",
+    "yaml": "assets/pricings/originalDataset/evernote/2023.yml",
     "analytics": {
       "numberOfFeatures": 76,
       "numberOfInformationFeatures": 0,
@@ -2296,13 +2296,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288e2"
+      "$oid": "677c4750a5956cfdb323b421"
     },
     "name": "Evernote",
     "version": "2022",
     "extractionDate": "2022-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/evernote/2022.yml",
+    "yaml": "assets/pricings/originalDataset/evernote/2022.yml",
     "analytics": {
       "numberOfFeatures": 77,
       "numberOfInformationFeatures": 0,
@@ -2341,13 +2341,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288e3"
+      "$oid": "677c4750a5956cfdb323b422"
     },
     "name": "Evernote",
     "version": "2021",
     "extractionDate": "2021-11-28T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/evernote/2021.yml",
+    "yaml": "assets/pricings/originalDataset/evernote/2021.yml",
     "analytics": {
       "numberOfFeatures": 80,
       "numberOfInformationFeatures": 1,
@@ -2386,13 +2386,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288e4"
+      "$oid": "677c4750a5956cfdb323b423"
     },
     "name": "Evernote",
     "version": "2020",
     "extractionDate": "2020-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/evernote/2020.yml",
+    "yaml": "assets/pricings/originalDataset/evernote/2020.yml",
     "analytics": {
       "numberOfFeatures": 48,
       "numberOfInformationFeatures": 1,
@@ -2431,13 +2431,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288e5"
+      "$oid": "677c4750a5956cfdb323b424"
     },
     "name": "Evernote",
     "version": "2019",
     "extractionDate": "2019-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/evernote/2019.yml",
+    "yaml": "assets/pricings/originalDataset/evernote/2019.yml",
     "analytics": {
       "numberOfFeatures": 57,
       "numberOfInformationFeatures": 1,
@@ -2476,13 +2476,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288e6"
+      "$oid": "677c4750a5956cfdb323b425"
     },
     "name": "Figma",
     "version": "2024",
     "extractionDate": "2024-07-05T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/figma/2024.yml",
+    "yaml": "assets/pricings/originalDataset/figma/2024.yml",
     "analytics": {
       "numberOfFeatures": 91,
       "numberOfInformationFeatures": 4,
@@ -2521,13 +2521,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288e7"
+      "$oid": "677c4750a5956cfdb323b426"
     },
     "name": "Figma",
     "version": "2023",
     "extractionDate": "2023-11-08T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/figma/2023.yml",
+    "yaml": "assets/pricings/originalDataset/figma/2023.yml",
     "analytics": {
       "numberOfFeatures": 73,
       "numberOfInformationFeatures": 3,
@@ -2566,13 +2566,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288e8"
+      "$oid": "677c4750a5956cfdb323b427"
     },
     "name": "Figma",
     "version": "2022",
     "extractionDate": "2022-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/figma/2022.yml",
+    "yaml": "assets/pricings/originalDataset/figma/2022.yml",
     "analytics": {
       "numberOfFeatures": 54,
       "numberOfInformationFeatures": 2,
@@ -2611,13 +2611,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288e9"
+      "$oid": "677c4750a5956cfdb323b428"
     },
     "name": "Figma",
     "version": "2021",
     "extractionDate": "2021-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/figma/2021.yml",
+    "yaml": "assets/pricings/originalDataset/figma/2021.yml",
     "analytics": {
       "numberOfFeatures": 40,
       "numberOfInformationFeatures": 2,
@@ -2656,13 +2656,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288ea"
+      "$oid": "677c4750a5956cfdb323b429"
     },
     "name": "Figma",
     "version": "2020",
     "extractionDate": "2020-11-26T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/figma/2020.yml",
+    "yaml": "assets/pricings/originalDataset/figma/2020.yml",
     "analytics": {
       "numberOfFeatures": 38,
       "numberOfInformationFeatures": 2,
@@ -2701,13 +2701,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288eb"
+      "$oid": "677c4750a5956cfdb323b42a"
     },
     "name": "Figma",
     "version": "2019",
     "extractionDate": "2019-10-17T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/figma/2019.yml",
+    "yaml": "assets/pricings/originalDataset/figma/2019.yml",
     "analytics": {
       "numberOfFeatures": 35,
       "numberOfInformationFeatures": 1,
@@ -2746,13 +2746,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288ec"
+      "$oid": "677c4750a5956cfdb323b42b"
     },
     "name": "Github",
     "version": "2024",
     "extractionDate": "2024-06-07T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/github/2024.yml",
+    "yaml": "assets/pricings/originalDataset/github/2024.yml",
     "analytics": {
       "numberOfFeatures": 81,
       "numberOfInformationFeatures": 5,
@@ -2791,13 +2791,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288ed"
+      "$oid": "677c4750a5956cfdb323b42c"
     },
     "name": "Github",
     "version": "2023",
     "extractionDate": "2023-11-20T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/github/2023.yml",
+    "yaml": "assets/pricings/originalDataset/github/2023.yml",
     "analytics": {
       "numberOfFeatures": 73,
       "numberOfInformationFeatures": 6,
@@ -2836,13 +2836,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288ee"
+      "$oid": "677c4750a5956cfdb323b42d"
     },
     "name": "Github",
     "version": "2022",
     "extractionDate": "2022-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/github/2022.yml",
+    "yaml": "assets/pricings/originalDataset/github/2022.yml",
     "analytics": {
       "numberOfFeatures": 51,
       "numberOfInformationFeatures": 4,
@@ -2881,13 +2881,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288ef"
+      "$oid": "677c4750a5956cfdb323b42e"
     },
     "name": "Github",
     "version": "2021",
     "extractionDate": "2021-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/github/2021.yml",
+    "yaml": "assets/pricings/originalDataset/github/2021.yml",
     "analytics": {
       "numberOfFeatures": 49,
       "numberOfInformationFeatures": 4,
@@ -2926,13 +2926,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288f0"
+      "$oid": "677c4750a5956cfdb323b42f"
     },
     "name": "Github",
     "version": "2020",
     "extractionDate": "2020-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/github/2020.yml",
+    "yaml": "assets/pricings/originalDataset/github/2020.yml",
     "analytics": {
       "numberOfFeatures": 47,
       "numberOfInformationFeatures": 3,
@@ -2971,13 +2971,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288f1"
+      "$oid": "677c4750a5956cfdb323b430"
     },
     "name": "Github",
     "version": "2019",
     "extractionDate": "2019-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/github/2019.yml",
+    "yaml": "assets/pricings/originalDataset/github/2019.yml",
     "analytics": {
       "numberOfFeatures": 38,
       "numberOfInformationFeatures": 3,
@@ -3016,13 +3016,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288f2"
+      "$oid": "677c4750a5956cfdb323b431"
     },
     "name": "Hypercontext",
     "version": "2024",
     "extractionDate": "2024-07-15T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/hypercontext/2024.yml",
+    "yaml": "assets/pricings/originalDataset/hypercontext/2024.yml",
     "analytics": {
       "numberOfFeatures": 63,
       "numberOfInformationFeatures": 8,
@@ -3061,13 +3061,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288f3"
+      "$oid": "677c4750a5956cfdb323b432"
     },
     "name": "Hypercontext",
     "version": "2023",
     "extractionDate": "2023-10-24T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/hypercontext/2023.yml",
+    "yaml": "assets/pricings/originalDataset/hypercontext/2023.yml",
     "analytics": {
       "numberOfFeatures": 49,
       "numberOfInformationFeatures": 2,
@@ -3106,13 +3106,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288f4"
+      "$oid": "677c4750a5956cfdb323b433"
     },
     "name": "Hypercontext",
     "version": "2022",
     "extractionDate": "2022-10-13T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/hypercontext/2022.yml",
+    "yaml": "assets/pricings/originalDataset/hypercontext/2022.yml",
     "analytics": {
       "numberOfFeatures": 49,
       "numberOfInformationFeatures": 2,
@@ -3151,13 +3151,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288f5"
+      "$oid": "677c4750a5956cfdb323b434"
     },
     "name": "Hypercontext",
     "version": "2021",
     "extractionDate": "2021-10-09T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/hypercontext/2021.yml",
+    "yaml": "assets/pricings/originalDataset/hypercontext/2021.yml",
     "analytics": {
       "numberOfFeatures": 50,
       "numberOfInformationFeatures": 2,
@@ -3196,13 +3196,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288f6"
+      "$oid": "677c4750a5956cfdb323b435"
     },
     "name": "Jira",
     "version": "2024",
     "extractionDate": "2024-07-07T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/jira/2024.yml",
+    "yaml": "assets/pricings/originalDataset/jira/2024.yml",
     "analytics": {
       "numberOfFeatures": 60,
       "numberOfInformationFeatures": 6,
@@ -3241,13 +3241,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288f7"
+      "$oid": "677c4750a5956cfdb323b436"
     },
     "name": "Jira",
     "version": "2023",
     "extractionDate": "2023-11-16T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/jira/2023.yml",
+    "yaml": "assets/pricings/originalDataset/jira/2023.yml",
     "analytics": {
       "numberOfFeatures": 46,
       "numberOfInformationFeatures": 6,
@@ -3286,13 +3286,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288f8"
+      "$oid": "677c4750a5956cfdb323b437"
     },
     "name": "Jira",
     "version": "2022",
     "extractionDate": "2022-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/jira/2022.yml",
+    "yaml": "assets/pricings/originalDataset/jira/2022.yml",
     "analytics": {
       "numberOfFeatures": 40,
       "numberOfInformationFeatures": 4,
@@ -3331,13 +3331,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288f9"
+      "$oid": "677c4750a5956cfdb323b438"
     },
     "name": "Jira",
     "version": "2021",
     "extractionDate": "2021-09-24T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/jira/2021.yml",
+    "yaml": "assets/pricings/originalDataset/jira/2021.yml",
     "analytics": {
       "numberOfFeatures": 37,
       "numberOfInformationFeatures": 3,
@@ -3376,13 +3376,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288fa"
+      "$oid": "677c4750a5956cfdb323b439"
     },
     "name": "Jira",
     "version": "2020",
     "extractionDate": "2020-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/jira/2020.yml",
+    "yaml": "assets/pricings/originalDataset/jira/2020.yml",
     "analytics": {
       "numberOfFeatures": 33,
       "numberOfInformationFeatures": 3,
@@ -3421,13 +3421,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288fb"
+      "$oid": "677c4750a5956cfdb323b43a"
     },
     "name": "Jira",
     "version": "2019",
     "extractionDate": "2019-10-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/jira/2019.yml",
+    "yaml": "assets/pricings/originalDataset/jira/2019.yml",
     "analytics": {
       "numberOfFeatures": 14,
       "numberOfInformationFeatures": 2,
@@ -3466,13 +3466,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288fc"
+      "$oid": "677c4750a5956cfdb323b43b"
     },
     "name": "Mailchimp",
     "version": "2024",
     "extractionDate": "2024-07-12T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/mailchimp/2024.yml",
+    "yaml": "assets/pricings/originalDataset/mailchimp/2024.yml",
     "analytics": {
       "numberOfFeatures": 90,
       "numberOfInformationFeatures": 5,
@@ -3511,13 +3511,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288fd"
+      "$oid": "677c4750a5956cfdb323b43c"
     },
     "name": "Mailchimp",
     "version": "2023",
     "extractionDate": "2023-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/mailchimp/2023.yml",
+    "yaml": "assets/pricings/originalDataset/mailchimp/2023.yml",
     "analytics": {
       "numberOfFeatures": 80,
       "numberOfInformationFeatures": 4,
@@ -3556,13 +3556,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288fe"
+      "$oid": "677c4750a5956cfdb323b43d"
     },
     "name": "Mailchimp",
     "version": "2022",
     "extractionDate": "2022-11-30T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/mailchimp/2022.yml",
+    "yaml": "assets/pricings/originalDataset/mailchimp/2022.yml",
     "analytics": {
       "numberOfFeatures": 89,
       "numberOfInformationFeatures": 5,
@@ -3601,13 +3601,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b2288ff"
+      "$oid": "677c4750a5956cfdb323b43e"
     },
     "name": "Mailchimp",
     "version": "2021",
     "extractionDate": "2021-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/mailchimp/2021.yml",
+    "yaml": "assets/pricings/originalDataset/mailchimp/2021.yml",
     "analytics": {
       "numberOfFeatures": 90,
       "numberOfInformationFeatures": 5,
@@ -3646,13 +3646,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228900"
+      "$oid": "677c4750a5956cfdb323b43f"
     },
     "name": "Mailchimp",
     "version": "2020",
     "extractionDate": "2020-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/mailchimp/2020.yml",
+    "yaml": "assets/pricings/originalDataset/mailchimp/2020.yml",
     "analytics": {
       "numberOfFeatures": 69,
       "numberOfInformationFeatures": 4,
@@ -3691,13 +3691,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228901"
+      "$oid": "677c4750a5956cfdb323b440"
     },
     "name": "Mailchimp",
     "version": "2019",
     "extractionDate": "2019-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/mailchimp/2019.yml",
+    "yaml": "assets/pricings/originalDataset/mailchimp/2019.yml",
     "analytics": {
       "numberOfFeatures": 48,
       "numberOfInformationFeatures": 4,
@@ -3736,13 +3736,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228902"
+      "$oid": "677c4750a5956cfdb323b441"
     },
     "name": "Office",
     "version": "2019",
     "extractionDate": "2019-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/microsoft365Business/2019.yml",
+    "yaml": "assets/pricings/originalDataset/microsoft365Business/2019.yml",
     "analytics": {
       "numberOfFeatures": 44,
       "numberOfInformationFeatures": 1,
@@ -3781,13 +3781,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228903"
+      "$oid": "677c4750a5956cfdb323b442"
     },
     "name": "Microsoft",
     "version": "2024",
     "extractionDate": "2024-07-16T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/microsoft365Business/2024.yml",
+    "yaml": "assets/pricings/originalDataset/microsoft365Business/2024.yml",
     "analytics": {
       "numberOfFeatures": 60,
       "numberOfInformationFeatures": 1,
@@ -3826,13 +3826,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228904"
+      "$oid": "677c4750a5956cfdb323b443"
     },
     "name": "Microsoft",
     "version": "2023",
     "extractionDate": "2023-11-24T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/microsoft365Business/2023.yml",
+    "yaml": "assets/pricings/originalDataset/microsoft365Business/2023.yml",
     "analytics": {
       "numberOfFeatures": 54,
       "numberOfInformationFeatures": 1,
@@ -3871,13 +3871,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228905"
+      "$oid": "677c4750a5956cfdb323b444"
     },
     "name": "Microsoft",
     "version": "2022",
     "extractionDate": "2022-11-23T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/microsoft365Business/2022.yml",
+    "yaml": "assets/pricings/originalDataset/microsoft365Business/2022.yml",
     "analytics": {
       "numberOfFeatures": 60,
       "numberOfInformationFeatures": 0,
@@ -3916,13 +3916,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228906"
+      "$oid": "677c4750a5956cfdb323b445"
     },
     "name": "Microsoft",
     "version": "2021",
     "extractionDate": "2021-11-18T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/microsoft365Business/2021.yml",
+    "yaml": "assets/pricings/originalDataset/microsoft365Business/2021.yml",
     "analytics": {
       "numberOfFeatures": 54,
       "numberOfInformationFeatures": 0,
@@ -3961,13 +3961,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228907"
+      "$oid": "677c4750a5956cfdb323b446"
     },
     "name": "Microsoft",
     "version": "2020",
     "extractionDate": "2020-11-11T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/microsoft365Business/2020.yml",
+    "yaml": "assets/pricings/originalDataset/microsoft365Business/2020.yml",
     "analytics": {
       "numberOfFeatures": 55,
       "numberOfInformationFeatures": 1,
@@ -4006,13 +4006,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228908"
+      "$oid": "677c4750a5956cfdb323b447"
     },
     "name": "Notion",
     "version": "2024",
     "extractionDate": "2024-07-16T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/notion/2024.yml",
+    "yaml": "assets/pricings/originalDataset/notion/2024.yml",
     "analytics": {
       "numberOfFeatures": 58,
       "numberOfInformationFeatures": 4,
@@ -4051,13 +4051,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228909"
+      "$oid": "677c4750a5956cfdb323b448"
     },
     "name": "Notion",
     "version": "2023",
     "extractionDate": "2023-11-28T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/notion/2023.yml",
+    "yaml": "assets/pricings/originalDataset/notion/2023.yml",
     "analytics": {
       "numberOfFeatures": 43,
       "numberOfInformationFeatures": 4,
@@ -4096,13 +4096,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b22890a"
+      "$oid": "677c4750a5956cfdb323b449"
     },
     "name": "Notion",
     "version": "2022",
     "extractionDate": "2022-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/notion/2022.yml",
+    "yaml": "assets/pricings/originalDataset/notion/2022.yml",
     "analytics": {
       "numberOfFeatures": 45,
       "numberOfInformationFeatures": 1,
@@ -4141,13 +4141,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b22890b"
+      "$oid": "677c4750a5956cfdb323b44a"
     },
     "name": "Notion",
     "version": "2021",
     "extractionDate": "2021-11-01T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/notion/2021.yml",
+    "yaml": "assets/pricings/originalDataset/notion/2021.yml",
     "analytics": {
       "numberOfFeatures": 37,
       "numberOfInformationFeatures": 0,
@@ -4186,13 +4186,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b22890c"
+      "$oid": "677c4750a5956cfdb323b44b"
     },
     "name": "Openphone",
     "version": "2024",
     "extractionDate": "2024-07-16T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/openphone/2024.yml",
+    "yaml": "assets/pricings/originalDataset/openphone/2024.yml",
     "analytics": {
       "numberOfFeatures": 48,
       "numberOfInformationFeatures": 4,
@@ -4231,13 +4231,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b22890d"
+      "$oid": "677c4750a5956cfdb323b44c"
     },
     "name": "Openphone",
     "version": "2023",
     "extractionDate": "2023-11-19T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/openphone/2023.yml",
+    "yaml": "assets/pricings/originalDataset/openphone/2023.yml",
     "analytics": {
       "numberOfFeatures": 45,
       "numberOfInformationFeatures": 4,
@@ -4276,13 +4276,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b22890e"
+      "$oid": "677c4750a5956cfdb323b44d"
     },
     "name": "Openphone",
     "version": "2022",
     "extractionDate": "2022-11-28T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/openphone/2022.yml",
+    "yaml": "assets/pricings/originalDataset/openphone/2022.yml",
     "analytics": {
       "numberOfFeatures": 44,
       "numberOfInformationFeatures": 3,
@@ -4321,13 +4321,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b22890f"
+      "$oid": "677c4750a5956cfdb323b44e"
     },
     "name": "Openphone",
     "version": "2021",
     "extractionDate": "2021-11-17T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/openphone/2021.yml",
+    "yaml": "assets/pricings/originalDataset/openphone/2021.yml",
     "analytics": {
       "numberOfFeatures": 28,
       "numberOfInformationFeatures": 3,
@@ -4366,13 +4366,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228910"
+      "$oid": "677c4750a5956cfdb323b44f"
     },
     "name": "Openphone",
     "version": "2020",
     "extractionDate": "2020-11-11T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/openphone/2020.yml",
+    "yaml": "assets/pricings/originalDataset/openphone/2020.yml",
     "analytics": {
       "numberOfFeatures": 18,
       "numberOfInformationFeatures": 3,
@@ -4411,13 +4411,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228911"
+      "$oid": "677c4750a5956cfdb323b450"
     },
     "name": "Overleaf",
     "version": "2024",
     "extractionDate": "2024-07-10T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/overleaf/2024.yml",
+    "yaml": "assets/pricings/originalDataset/overleaf/2024.yml",
     "analytics": {
       "numberOfFeatures": 16,
       "numberOfInformationFeatures": 1,
@@ -4456,13 +4456,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228912"
+      "$oid": "677c4750a5956cfdb323b451"
     },
     "name": "Overleaf",
     "version": "2023",
     "extractionDate": "2023-11-27T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/overleaf/2023.yml",
+    "yaml": "assets/pricings/originalDataset/overleaf/2023.yml",
     "analytics": {
       "numberOfFeatures": 16,
       "numberOfInformationFeatures": 1,
@@ -4501,13 +4501,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228913"
+      "$oid": "677c4750a5956cfdb323b452"
     },
     "name": "Overleaf",
     "version": "2022",
     "extractionDate": "2022-11-27T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/overleaf/2022.yml",
+    "yaml": "assets/pricings/originalDataset/overleaf/2022.yml",
     "analytics": {
       "numberOfFeatures": 13,
       "numberOfInformationFeatures": 0,
@@ -4546,13 +4546,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228914"
+      "$oid": "677c4750a5956cfdb323b453"
     },
     "name": "Overleaf",
     "version": "2021",
     "extractionDate": "2021-11-27T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/overleaf/2021.yml",
+    "yaml": "assets/pricings/originalDataset/overleaf/2021.yml",
     "analytics": {
       "numberOfFeatures": 13,
       "numberOfInformationFeatures": 0,
@@ -4591,13 +4591,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228915"
+      "$oid": "677c4750a5956cfdb323b454"
     },
     "name": "Overleaf",
     "version": "2020",
     "extractionDate": "2020-11-24T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/overleaf/2020.yml",
+    "yaml": "assets/pricings/originalDataset/overleaf/2020.yml",
     "analytics": {
       "numberOfFeatures": 13,
       "numberOfInformationFeatures": 0,
@@ -4636,13 +4636,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228916"
+      "$oid": "677c4750a5956cfdb323b455"
     },
     "name": "Overleaf",
     "version": "2019",
     "extractionDate": "2019-11-03T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/overleaf/2019.yml",
+    "yaml": "assets/pricings/originalDataset/overleaf/2019.yml",
     "analytics": {
       "numberOfFeatures": 11,
       "numberOfInformationFeatures": 0,
@@ -4681,13 +4681,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228917"
+      "$oid": "677c4750a5956cfdb323b456"
     },
     "name": "Planable",
     "version": "2024",
     "extractionDate": "2024-07-18T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/planable/2024.yml",
+    "yaml": "assets/pricings/originalDataset/planable/2024.yml",
     "analytics": {
       "numberOfFeatures": 41,
       "numberOfInformationFeatures": 1,
@@ -4726,13 +4726,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228918"
+      "$oid": "677c4750a5956cfdb323b457"
     },
     "name": "Planable",
     "version": "2023",
     "extractionDate": "2023-10-20T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/planable/2023.yml",
+    "yaml": "assets/pricings/originalDataset/planable/2023.yml",
     "analytics": {
       "numberOfFeatures": 27,
       "numberOfInformationFeatures": 0,
@@ -4771,13 +4771,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228919"
+      "$oid": "677c4750a5956cfdb323b458"
     },
     "name": "Planable",
     "version": "2022",
     "extractionDate": "2022-10-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/planable/2022.yml",
+    "yaml": "assets/pricings/originalDataset/planable/2022.yml",
     "analytics": {
       "numberOfFeatures": 23,
       "numberOfInformationFeatures": 0,
@@ -4816,13 +4816,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b22891a"
+      "$oid": "677c4750a5956cfdb323b459"
     },
     "name": "Planable",
     "version": "2021",
     "extractionDate": "2021-11-18T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/planable/2021.yml",
+    "yaml": "assets/pricings/originalDataset/planable/2021.yml",
     "analytics": {
       "numberOfFeatures": 18,
       "numberOfInformationFeatures": 0,
@@ -4861,13 +4861,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b22891b"
+      "$oid": "677c4750a5956cfdb323b45a"
     },
     "name": "Planable",
     "version": "2020",
     "extractionDate": "2020-11-25T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/planable/2020.yml",
+    "yaml": "assets/pricings/originalDataset/planable/2020.yml",
     "analytics": {
       "numberOfFeatures": 18,
       "numberOfInformationFeatures": 0,
@@ -4906,13 +4906,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b22891c"
+      "$oid": "677c4750a5956cfdb323b45b"
     },
     "name": "Planable",
     "version": "2019",
     "extractionDate": "2019-05-23T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/planable/2019.yml",
+    "yaml": "assets/pricings/originalDataset/planable/2019.yml",
     "analytics": {
       "numberOfFeatures": 5,
       "numberOfInformationFeatures": 0,
@@ -4951,13 +4951,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b22891d"
+      "$oid": "677c4750a5956cfdb323b45c"
     },
     "name": "Postman",
     "version": "2024",
     "extractionDate": "2024-06-28T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/postman/2024.yml",
+    "yaml": "assets/pricings/originalDataset/postman/2024.yml",
     "analytics": {
       "numberOfFeatures": 100,
       "numberOfInformationFeatures": 5,
@@ -4996,13 +4996,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b22891e"
+      "$oid": "677c4750a5956cfdb323b45d"
     },
     "name": "Postman",
     "version": "2023",
     "extractionDate": "2023-11-04T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/postman/2023.yml",
+    "yaml": "assets/pricings/originalDataset/postman/2023.yml",
     "analytics": {
       "numberOfFeatures": 39,
       "numberOfInformationFeatures": 5,
@@ -5041,13 +5041,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b22891f"
+      "$oid": "677c4750a5956cfdb323b45e"
     },
     "name": "Postman",
     "version": "2022",
     "extractionDate": "2022-11-23T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/postman/2022.yml",
+    "yaml": "assets/pricings/originalDataset/postman/2022.yml",
     "analytics": {
       "numberOfFeatures": 40,
       "numberOfInformationFeatures": 2,
@@ -5086,13 +5086,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228920"
+      "$oid": "677c4750a5956cfdb323b45f"
     },
     "name": "Postman",
     "version": "2021",
     "extractionDate": "2021-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/postman/2021.yml",
+    "yaml": "assets/pricings/originalDataset/postman/2021.yml",
     "analytics": {
       "numberOfFeatures": 24,
       "numberOfInformationFeatures": 0,
@@ -5131,13 +5131,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228921"
+      "$oid": "677c4750a5956cfdb323b460"
     },
     "name": "Postman",
     "version": "2020",
     "extractionDate": "2020-11-24T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/postman/2020.yml",
+    "yaml": "assets/pricings/originalDataset/postman/2020.yml",
     "analytics": {
       "numberOfFeatures": 22,
       "numberOfInformationFeatures": 0,
@@ -5176,13 +5176,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228922"
+      "$oid": "677c4750a5956cfdb323b461"
     },
     "name": "Pumble",
     "version": "2024",
     "extractionDate": "2024-07-15T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/pumble/2024.yml",
+    "yaml": "assets/pricings/originalDataset/pumble/2024.yml",
     "analytics": {
       "numberOfFeatures": 34,
       "numberOfInformationFeatures": 0,
@@ -5221,13 +5221,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228923"
+      "$oid": "677c4750a5956cfdb323b462"
     },
     "name": "Pumble",
     "version": "2023",
     "extractionDate": "2023-09-30T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/pumble/2023.yml",
+    "yaml": "assets/pricings/originalDataset/pumble/2023.yml",
     "analytics": {
       "numberOfFeatures": 28,
       "numberOfInformationFeatures": 0,
@@ -5266,13 +5266,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228924"
+      "$oid": "677c4750a5956cfdb323b463"
     },
     "name": "Pumble",
     "version": "2022",
     "extractionDate": "2022-11-27T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/pumble/2022.yml",
+    "yaml": "assets/pricings/originalDataset/pumble/2022.yml",
     "analytics": {
       "numberOfFeatures": 25,
       "numberOfInformationFeatures": 0,
@@ -5311,13 +5311,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228925"
+      "$oid": "677c4750a5956cfdb323b464"
     },
     "name": "Pumble",
     "version": "2021",
     "extractionDate": "2021-09-19T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/pumble/2021.yml",
+    "yaml": "assets/pricings/originalDataset/pumble/2021.yml",
     "analytics": {
       "numberOfFeatures": 21,
       "numberOfInformationFeatures": 0,
@@ -5356,13 +5356,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228926"
+      "$oid": "677c4750a5956cfdb323b465"
     },
     "name": "Quip",
     "version": "2024",
     "extractionDate": "2024-07-01T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/quip/2024.yml",
+    "yaml": "assets/pricings/originalDataset/quip/2024.yml",
     "analytics": {
       "numberOfFeatures": 15,
       "numberOfInformationFeatures": 1,
@@ -5401,13 +5401,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228927"
+      "$oid": "677c4750a5956cfdb323b466"
     },
     "name": "Quip",
     "version": "2023",
     "extractionDate": "2023-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/quip/2023.yml",
+    "yaml": "assets/pricings/originalDataset/quip/2023.yml",
     "analytics": {
       "numberOfFeatures": 15,
       "numberOfInformationFeatures": 1,
@@ -5446,13 +5446,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228928"
+      "$oid": "677c4750a5956cfdb323b467"
     },
     "name": "Quip",
     "version": "2022",
     "extractionDate": "2022-11-28T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/quip/2022.yml",
+    "yaml": "assets/pricings/originalDataset/quip/2022.yml",
     "analytics": {
       "numberOfFeatures": 15,
       "numberOfInformationFeatures": 1,
@@ -5491,13 +5491,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228929"
+      "$oid": "677c4750a5956cfdb323b468"
     },
     "name": "Quip",
     "version": "2021",
     "extractionDate": "2021-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/quip/2021.yml",
+    "yaml": "assets/pricings/originalDataset/quip/2021.yml",
     "analytics": {
       "numberOfFeatures": 15,
       "numberOfInformationFeatures": 1,
@@ -5536,13 +5536,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b22892a"
+      "$oid": "677c4750a5956cfdb323b469"
     },
     "name": "Quip",
     "version": "2020",
     "extractionDate": "2020-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/quip/2020.yml",
+    "yaml": "assets/pricings/originalDataset/quip/2020.yml",
     "analytics": {
       "numberOfFeatures": 16,
       "numberOfInformationFeatures": 1,
@@ -5581,13 +5581,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b22892b"
+      "$oid": "677c4750a5956cfdb323b46a"
     },
     "name": "Quip",
     "version": "2019",
     "extractionDate": "2019-11-25T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/quip/2019.yml",
+    "yaml": "assets/pricings/originalDataset/quip/2019.yml",
     "analytics": {
       "numberOfFeatures": 18,
       "numberOfInformationFeatures": 1,
@@ -5626,13 +5626,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b22892c"
+      "$oid": "677c4750a5956cfdb323b46b"
     },
     "name": "Salesforce",
     "version": "2024",
     "extractionDate": "2024-07-15T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/salesforce/2024.yml",
+    "yaml": "assets/pricings/originalDataset/salesforce/2024.yml",
     "analytics": {
       "numberOfFeatures": 111,
       "numberOfInformationFeatures": 3,
@@ -5671,13 +5671,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b22892d"
+      "$oid": "677c4750a5956cfdb323b46c"
     },
     "name": "Salesforce",
     "version": "2023",
     "extractionDate": "2023-12-02T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/salesforce/2023.yml",
+    "yaml": "assets/pricings/originalDataset/salesforce/2023.yml",
     "analytics": {
       "numberOfFeatures": 62,
       "numberOfInformationFeatures": 0,
@@ -5716,13 +5716,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b22892e"
+      "$oid": "677c4750a5956cfdb323b46d"
     },
     "name": "Salesforce",
     "version": "2022",
     "extractionDate": "2022-11-26T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/salesforce/2022.yml",
+    "yaml": "assets/pricings/originalDataset/salesforce/2022.yml",
     "analytics": {
       "numberOfFeatures": 67,
       "numberOfInformationFeatures": 0,
@@ -5761,13 +5761,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b22892f"
+      "$oid": "677c4750a5956cfdb323b46e"
     },
     "name": "Salesforce",
     "version": "2021",
     "extractionDate": "2021-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/salesforce/2021.yml",
+    "yaml": "assets/pricings/originalDataset/salesforce/2021.yml",
     "analytics": {
       "numberOfFeatures": 60,
       "numberOfInformationFeatures": 0,
@@ -5806,13 +5806,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228930"
+      "$oid": "677c4750a5956cfdb323b46f"
     },
     "name": "Salesforce",
     "version": "2020",
     "extractionDate": "2020-11-25T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/salesforce/2020.yml",
+    "yaml": "assets/pricings/originalDataset/salesforce/2020.yml",
     "analytics": {
       "numberOfFeatures": 60,
       "numberOfInformationFeatures": 0,
@@ -5851,13 +5851,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228931"
+      "$oid": "677c4750a5956cfdb323b470"
     },
     "name": "Salesforce",
     "version": "2019",
     "extractionDate": "2019-11-25T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/salesforce/2019.yml",
+    "yaml": "assets/pricings/originalDataset/salesforce/2019.yml",
     "analytics": {
       "numberOfFeatures": 60,
       "numberOfInformationFeatures": 0,
@@ -5896,13 +5896,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228932"
+      "$oid": "677c4750a5956cfdb323b471"
     },
     "name": "Slack",
     "version": "2024",
     "extractionDate": "2024-07-02T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/slack/2024.yml",
+    "yaml": "assets/pricings/originalDataset/slack/2024.yml",
     "analytics": {
       "numberOfFeatures": 44,
       "numberOfInformationFeatures": 4,
@@ -5941,13 +5941,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228933"
+      "$oid": "677c4750a5956cfdb323b472"
     },
     "name": "Slack",
     "version": "2023",
     "extractionDate": "2023-10-23T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/slack/2023.yml",
+    "yaml": "assets/pricings/originalDataset/slack/2023.yml",
     "analytics": {
       "numberOfFeatures": 41,
       "numberOfInformationFeatures": 3,
@@ -5986,13 +5986,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228934"
+      "$oid": "677c4750a5956cfdb323b473"
     },
     "name": "Slack",
     "version": "2020",
     "extractionDate": "2020-10-21T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/slack/2020.yml",
+    "yaml": "assets/pricings/originalDataset/slack/2020.yml",
     "analytics": {
       "numberOfFeatures": 33,
       "numberOfInformationFeatures": 0,
@@ -6031,13 +6031,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228935"
+      "$oid": "677c4750a5956cfdb323b474"
     },
     "name": "Slack",
     "version": "2019",
     "extractionDate": "2019-10-30T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/slack/2019.yml",
+    "yaml": "assets/pricings/originalDataset/slack/2019.yml",
     "analytics": {
       "numberOfFeatures": 25,
       "numberOfInformationFeatures": 0,
@@ -6076,13 +6076,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228936"
+      "$oid": "677c4750a5956cfdb323b475"
     },
     "name": "Tableau",
     "version": "2024",
     "extractionDate": "2024-06-30T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/tableau/2024.yml",
+    "yaml": "assets/pricings/originalDataset/tableau/2024.yml",
     "analytics": {
       "numberOfFeatures": 41,
       "numberOfInformationFeatures": 2,
@@ -6121,13 +6121,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228937"
+      "$oid": "677c4750a5956cfdb323b476"
     },
     "name": "Tableau",
     "version": "2023",
     "extractionDate": "2023-11-28T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/tableau/2023.yml",
+    "yaml": "assets/pricings/originalDataset/tableau/2023.yml",
     "analytics": {
       "numberOfFeatures": 40,
       "numberOfInformationFeatures": 2,
@@ -6166,13 +6166,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228938"
+      "$oid": "677c4750a5956cfdb323b477"
     },
     "name": "Tableau",
     "version": "2022",
     "extractionDate": "2022-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/tableau/2022.yml",
+    "yaml": "assets/pricings/originalDataset/tableau/2022.yml",
     "analytics": {
       "numberOfFeatures": 40,
       "numberOfInformationFeatures": 2,
@@ -6211,13 +6211,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228939"
+      "$oid": "677c4750a5956cfdb323b478"
     },
     "name": "Tableau",
     "version": "2021",
     "extractionDate": "2021-11-28T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/tableau/2021.yml",
+    "yaml": "assets/pricings/originalDataset/tableau/2021.yml",
     "analytics": {
       "numberOfFeatures": 40,
       "numberOfInformationFeatures": 2,
@@ -6256,13 +6256,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b22893a"
+      "$oid": "677c4750a5956cfdb323b479"
     },
     "name": "Tableau",
     "version": "2020",
     "extractionDate": "2020-11-25T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/tableau/2020.yml",
+    "yaml": "assets/pricings/originalDataset/tableau/2020.yml",
     "analytics": {
       "numberOfFeatures": 37,
       "numberOfInformationFeatures": 2,
@@ -6301,13 +6301,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b22893b"
+      "$oid": "677c4750a5956cfdb323b47a"
     },
     "name": "Tableau",
     "version": "2019",
     "extractionDate": "2019-08-12T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/tableau/2019.yml",
+    "yaml": "assets/pricings/originalDataset/tableau/2019.yml",
     "analytics": {
       "numberOfFeatures": 35,
       "numberOfInformationFeatures": 2,
@@ -6346,13 +6346,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b22893c"
+      "$oid": "677c4750a5956cfdb323b47b"
     },
     "name": "Trustmary",
     "version": "2024",
     "extractionDate": "2024-07-14T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/trustmary/2024.yml",
+    "yaml": "assets/pricings/originalDataset/trustmary/2024.yml",
     "analytics": {
       "numberOfFeatures": 45,
       "numberOfInformationFeatures": 1,
@@ -6391,13 +6391,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b22893d"
+      "$oid": "677c4750a5956cfdb323b47c"
     },
     "name": "Trustmary",
     "version": "2023",
     "extractionDate": "2023-10-30T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/trustmary/2023.yml",
+    "yaml": "assets/pricings/originalDataset/trustmary/2023.yml",
     "analytics": {
       "numberOfFeatures": 32,
       "numberOfInformationFeatures": 0,
@@ -6436,13 +6436,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b22893e"
+      "$oid": "677c4750a5956cfdb323b47d"
     },
     "name": "Trustmary",
     "version": "2022",
     "extractionDate": "2022-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/trustmary/2022.yml",
+    "yaml": "assets/pricings/originalDataset/trustmary/2022.yml",
     "analytics": {
       "numberOfFeatures": 25,
       "numberOfInformationFeatures": 0,
@@ -6481,13 +6481,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b22893f"
+      "$oid": "677c4750a5956cfdb323b47e"
     },
     "name": "Trustmary",
     "version": "2021",
     "extractionDate": "2021-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/trustmary/2021.yml",
+    "yaml": "assets/pricings/originalDataset/trustmary/2021.yml",
     "analytics": {
       "numberOfFeatures": 14,
       "numberOfInformationFeatures": 0,
@@ -6526,13 +6526,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228940"
+      "$oid": "677c4750a5956cfdb323b47f"
     },
     "name": "Userguiding",
     "version": "2024",
     "extractionDate": "2024-11-09T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/userguiding/2024.yml",
+    "yaml": "assets/pricings/originalDataset/userguiding/2024.yml",
     "analytics": {
       "numberOfFeatures": 59,
       "numberOfInformationFeatures": 3,
@@ -6571,13 +6571,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228941"
+      "$oid": "677c4750a5956cfdb323b480"
     },
     "name": "Userguiding",
     "version": "2023",
     "extractionDate": "2023-12-09T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/userguiding/2023.yml",
+    "yaml": "assets/pricings/originalDataset/userguiding/2023.yml",
     "analytics": {
       "numberOfFeatures": 45,
       "numberOfInformationFeatures": 2,
@@ -6616,13 +6616,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228942"
+      "$oid": "677c4750a5956cfdb323b481"
     },
     "name": "Userguiding",
     "version": "2022",
     "extractionDate": "2022-11-22T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/userguiding/2022.yml",
+    "yaml": "assets/pricings/originalDataset/userguiding/2022.yml",
     "analytics": {
       "numberOfFeatures": 43,
       "numberOfInformationFeatures": 2,
@@ -6661,13 +6661,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228943"
+      "$oid": "677c4750a5956cfdb323b482"
     },
     "name": "Userguiding",
     "version": "2021",
     "extractionDate": "2021-10-28T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/userguiding/2021.yml",
+    "yaml": "assets/pricings/originalDataset/userguiding/2021.yml",
     "analytics": {
       "numberOfFeatures": 43,
       "numberOfInformationFeatures": 2,
@@ -6706,13 +6706,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228944"
+      "$oid": "677c4750a5956cfdb323b483"
     },
     "name": "Userguiding",
     "version": "2020",
     "extractionDate": "2020-11-24T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/userguiding/2020.yml",
+    "yaml": "assets/pricings/originalDataset/userguiding/2020.yml",
     "analytics": {
       "numberOfFeatures": 21,
       "numberOfInformationFeatures": 2,
@@ -6751,13 +6751,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228945"
+      "$oid": "677c4750a5956cfdb323b484"
     },
     "name": "Wrike",
     "version": "2024",
     "extractionDate": "2024-07-09T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/wrike/2024.yml",
+    "yaml": "assets/pricings/originalDataset/wrike/2024.yml",
     "analytics": {
       "numberOfFeatures": 81,
       "numberOfInformationFeatures": 2,
@@ -6796,13 +6796,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228946"
+      "$oid": "677c4750a5956cfdb323b485"
     },
     "name": "Wrike",
     "version": "2023",
     "extractionDate": "2023-12-02T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/wrike/2023.yml",
+    "yaml": "assets/pricings/originalDataset/wrike/2023.yml",
     "analytics": {
       "numberOfFeatures": 81,
       "numberOfInformationFeatures": 2,
@@ -6841,13 +6841,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228947"
+      "$oid": "677c4750a5956cfdb323b486"
     },
     "name": "Wrike",
     "version": "2022",
     "extractionDate": "2022-10-03T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/wrike/2022.yml",
+    "yaml": "assets/pricings/originalDataset/wrike/2022.yml",
     "analytics": {
       "numberOfFeatures": 75,
       "numberOfInformationFeatures": 3,
@@ -6886,13 +6886,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228948"
+      "$oid": "677c4750a5956cfdb323b487"
     },
     "name": "Wrike",
     "version": "2021",
     "extractionDate": "2021-11-23T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/wrike/2021.yml",
+    "yaml": "assets/pricings/originalDataset/wrike/2021.yml",
     "analytics": {
       "numberOfFeatures": 53,
       "numberOfInformationFeatures": 4,
@@ -6931,13 +6931,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b228949"
+      "$oid": "677c4750a5956cfdb323b488"
     },
     "name": "Wrike",
     "version": "2020",
     "extractionDate": "2020-11-23T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/wrike/2020.yml",
+    "yaml": "assets/pricings/originalDataset/wrike/2020.yml",
     "analytics": {
       "numberOfFeatures": 45,
       "numberOfInformationFeatures": 4,
@@ -6976,13 +6976,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b22894a"
+      "$oid": "677c4750a5956cfdb323b489"
     },
     "name": "Wrike",
     "version": "2019",
     "extractionDate": "2019-11-28T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/wrike/2019.yml",
+    "yaml": "assets/pricings/originalDataset/wrike/2019.yml",
     "analytics": {
       "numberOfFeatures": 44,
       "numberOfInformationFeatures": 4,
@@ -7021,13 +7021,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b22894b"
+      "$oid": "677c4750a5956cfdb323b48a"
     },
     "name": "Zapier",
     "version": "2024",
     "extractionDate": "2024-07-02T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/zapier/2024.yml",
+    "yaml": "assets/pricings/originalDataset/zapier/2024.yml",
     "analytics": {
       "numberOfFeatures": 51,
       "numberOfInformationFeatures": 2,
@@ -7066,13 +7066,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b22894c"
+      "$oid": "677c4750a5956cfdb323b48b"
     },
     "name": "Zapier",
     "version": "2023",
     "extractionDate": "2023-11-28T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/zapier/2023.yml",
+    "yaml": "assets/pricings/originalDataset/zapier/2023.yml",
     "analytics": {
       "numberOfFeatures": 51,
       "numberOfInformationFeatures": 1,
@@ -7111,13 +7111,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b22894d"
+      "$oid": "677c4750a5956cfdb323b48c"
     },
     "name": "Zapier",
     "version": "2022",
     "extractionDate": "2022-11-29T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/zapier/2022.yml",
+    "yaml": "assets/pricings/originalDataset/zapier/2022.yml",
     "analytics": {
       "numberOfFeatures": 31,
       "numberOfInformationFeatures": 1,
@@ -7156,13 +7156,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b22894e"
+      "$oid": "677c4750a5956cfdb323b48d"
     },
     "name": "Zapier",
     "version": "2020",
     "extractionDate": "2020-11-16T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/zapier/2020.yml",
+    "yaml": "assets/pricings/originalDataset/zapier/2020.yml",
     "analytics": {
       "numberOfFeatures": 21,
       "numberOfInformationFeatures": 0,
@@ -7201,13 +7201,13 @@
   },
   {
     "_id": {
-      "$oid": "677b0af6d54b76e03b22894f"
+      "$oid": "677c4750a5956cfdb323b48e"
     },
     "name": "Zapier",
     "version": "2019",
     "extractionDate": "2019-11-12T00:00:00.000Z",
     "url": null,
-    "yaml": "public/pricings/originalDataset/zapier/2019.yml",
+    "yaml": "assets/pricings/originalDataset/zapier/2019.yml",
     "analytics": {
       "numberOfFeatures": 19,
       "numberOfInformationFeatures": 0,
