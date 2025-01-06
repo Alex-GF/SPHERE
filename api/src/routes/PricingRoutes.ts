@@ -11,21 +11,16 @@ const loadFileRoutes = function (app: express.Application) {
   const pricingController = new PricingController();
   const pricingService = container.resolve('pricingService');
   const upload = handleFileUpload(['yaml'], './public/assets/pricings/uploadedDataset');
-  
+
   const baseUrl = process.env.BASE_URL_PATH;
 
   app
     .route(baseUrl + '/pricings')
     .get(isLoggedIn, pricingController.index)
-    .post(
-      // isLoggedIn, 
-      //     hasRole('admin'), 
-          upload,
-          pricingController.create);
+    // Falta añadir campo pricingVersion a Pricing2Yaml para versionar los pricings.
+    .post(isLoggedIn, hasRole('admin'), upload, pricingController.create);
 
-  app
-    .route(baseUrl + '/pricings/:pricingName')
-    .get(isLoggedIn, pricingController.show);
-}
+  app.route(baseUrl + '/pricings/:pricingName').get(isLoggedIn, pricingController.show);
+};
 
 export default loadFileRoutes;
