@@ -3,6 +3,7 @@ import { Pricing as PricingModel } from "../types/database/Pricing";
 import container from "../config/container";
 import { PricingRepository } from "../types/repositories/PricingRepository";
 import { processFileUris } from "./FileService";
+import { PricingService as PricingAnalytics } from "pricing4ts/server";
 import fs from 'fs';
 
 class PricingService {
@@ -44,8 +45,15 @@ class PricingService {
         };
 
         const pricing = await this.pricingRepository.create(pricingData);
-        const result = Object.prototype.hasOwnProperty.call(pricing, "yaml")
+
         processFileUris(pricing, ['yaml'])
+
+        const pricingAnalytics = new PricingAnalytics(uploadedPricing);
+
+        pricingAnalytics.getAnalytics()
+          .then((analytics) => {
+            this.pricingRepository.updateAnalytics(pricing.id, analytics);
+          });
 
         return pricing;
       }catch(err){

@@ -1,6 +1,8 @@
 import RepositoryBase from '../RepositoryBase';
 import PricingMongoose from './models/PricingMongoose';
 import PricingAnalyticsMongoose from './models/PricingAnalyticsMongoose';
+import { PricingAnalytics } from '../../types/database/Pricing';
+import { ObjectId } from 'mongoose';
 
 class PricingRepository extends RepositoryBase {
   async findAll(...args: any) {
@@ -62,6 +64,18 @@ class PricingRepository extends RepositoryBase {
   async create(data: any, ...args: any) {
     const pricing = new PricingMongoose(data);
     await pricing.save()
+
+    return pricing.toJSON();
+  }
+
+  async updateAnalytics(pricingId: string, analytics: PricingAnalytics, ...args: any) {
+    const pricing = await PricingMongoose.findOne({ _id: pricingId });
+    if (!pricing) {
+      return null;
+    }
+
+    pricing.set({analytics: analytics});
+    await pricing.save();
 
     return pricing.toJSON();
   }
