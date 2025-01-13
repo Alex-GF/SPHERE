@@ -12,6 +12,7 @@ import EditorLayout from '../modules/pricing-editor/layouts';
 import ResearchPage from '../modules/presentation/pages/research';
 import ContributionsPage from '../modules/presentation/pages/contributions';
 import PricingListPage from '../modules/pricing/pages/list';
+import LoginPage from '../modules/auth/pages/login-page';
 
 export const CardPage =  lazy(() => import('../modules/pricing/pages/card'));
 
@@ -27,6 +28,7 @@ export default function Router() {
       ),
       children: [
         { element: <HomePage />, index: true },
+        { element: <LoginPage />, path: "/login" },
         {element: <PricingListPage/>, path: "/pricings"},
         {element: <CardPage/>, path: "/pricings/card"},
         {element: <TeamPage/>, path: "/team"},

@@ -1,6 +1,7 @@
 import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
+import bodyParser from "body-parser";
 
 const loadGlobalMiddlewares = (app: express.Application) => {
   app.use(express.json())
@@ -11,7 +12,8 @@ const loadGlobalMiddlewares = (app: express.Application) => {
     }
   ))
   app.use(express.static('public'))
-//   app.use(measurePerformance)
+  app.use(bodyParser.json({limit: '2mb'}))
+  app.use(bodyParser.urlencoded({limit: '2mb', extended: true}))
 }
 
 export default loadGlobalMiddlewares

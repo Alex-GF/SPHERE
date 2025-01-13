@@ -6,7 +6,6 @@ import type { Server } from "http";
 import type { AddressInfo } from "net";
 import { disconnectMongoose, initMongoose } from "./config/mongoose";
 import { seedDatabase } from "./database/seeders/mongo/seeder";
-import bodyParser from "body-parser";
 
 const green = "\x1b[32m"; // Color verde
 const blue = "\x1b[36m"; // Color azul
@@ -16,8 +15,6 @@ const bold = "\x1b[1m"; // Negrita
 const initializeApp = async () => {
   dotenv.config();
   const app: Application = express();
-  app.use(bodyParser.json({limit: '2mb'}))
-  app.use(bodyParser.urlencoded({limit: '2mb', extended: true}))
   loadGlobalMiddlewares(app);
   await routes(app);
   await initializeDatabase()

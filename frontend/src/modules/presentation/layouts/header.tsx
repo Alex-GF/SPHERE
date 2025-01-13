@@ -11,16 +11,17 @@ import {
   Tooltip,
   MenuItem,
   useTheme,
-  useMediaQuery
+  useMediaQuery,
+  Button
 } from '@mui/material';
 import { styled } from '@mui/system';
-import { FaUser } from 'react-icons/fa';
 import Logo from '../../core/components/logo';
 import { grey, primary } from '../../core/theme/palette';
 import { useAuth } from '../../auth/hooks/useAuth';
 import MobileHeaderItems from './components/mobile-header-items';
 import DesktopHeaderItems from './components/desktop-header-items';
 import { headerRoutes } from './router/header-routes';
+import { useRouter } from '../../core/hooks/useRouter';
 
 const StyledAppBar = styled(AppBar)(() => ({
   background: grey[100],
@@ -48,6 +49,7 @@ const Header = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const { authUser } = useAuth();
+  const router = useRouter();
 
   const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
@@ -76,14 +78,12 @@ const Header = () => {
               {authUser.isAuthenticated ? (
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} aria-label="user settings">
-                    <Avatar sx={{ bgcolor: primary[900] }}>
-                      <FaUser />
-                    </Avatar>
+                    <Avatar sx={{ bgcolor: primary[900] }} src={authUser.user?.avatar}/>
                   </IconButton>
                 </Tooltip>
               ) : (
                 <>
-                  {/* <Button
+                  <Button
                     variant="outlined"
                     sx={{
                       color: primary[500],
@@ -95,6 +95,7 @@ const Header = () => {
                       textTransform: 'none',
                     }}
                     aria-label="login"
+                    onClick={() => router.push('/login')}
                   >
                     Login
                   </Button>
@@ -113,7 +114,7 @@ const Header = () => {
                     aria-label="register"
                   >
                     Register
-                  </Button> */}
+                  </Button>
                 </>
               )}
             </NavItems>

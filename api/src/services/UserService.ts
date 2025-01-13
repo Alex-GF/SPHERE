@@ -51,6 +51,21 @@ class UserService {
       throw new Error(errorMessage)
     }
 
+    async updateToken (token: string) {
+      const user = await this.userRepository.findByToken(token);
+      if (!user) {
+        throw new Error('Token not valid');
+      }
+
+      const timeLeft = user.tokenExpiration!.getTime() - Date.now();
+      if (timeLeft < 60 * 60 * 1000) { // less than 1 hour
+        const updatedUser = await this.userRepository.updateToken(user.id, this._createUserTokenDTO());
+        return {token: updatedUser!.token, tokenExpiration: updatedUser!.tokenExpiration};
+      }
+
+      return {token: user.token, tokenExpiration: user.tokenExpiration};
+    }
+
     async _login (email: string, password: string, userType: "user" | "admin") {
     
       let user
