@@ -12,7 +12,7 @@ import {
   MenuItem,
   useTheme,
   useMediaQuery,
-  Button
+  Button,
 } from '@mui/material';
 import { styled } from '@mui/system';
 import Logo from '../../core/components/logo';
@@ -48,15 +48,24 @@ const Header = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  const { authUser } = useAuth();
+  const { authUser, logout } = useAuth();
   const router = useRouter();
 
-  const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+  const settings = [
+    {
+      name: 'Logout',
+      onClick: () => {
+        logout();
+        handleCloseUserMenu();
+        router.push('/');
+      },
+    },
+  ];
 
   const handleOpenUserMenu = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
-  
+
   const handleCloseUserMenu = () => {
     setAnchorEl(null);
   };
@@ -77,9 +86,11 @@ const Header = () => {
             <NavItems>
               {authUser.isAuthenticated ? (
                 <Tooltip title="Open settings">
-                  <IconButton onClick={handleOpenUserMenu} aria-label="user settings">
-                    <Avatar sx={{ bgcolor: primary[900] }} src={authUser.user?.avatar}/>
-                  </IconButton>
+                  <>
+                    <IconButton onClick={handleOpenUserMenu} aria-label="user settings">
+                      <Avatar sx={{ bgcolor: primary[900] }} src={authUser.user?.avatar} />
+                    </IconButton>
+                  </>
                 </Tooltip>
               ) : (
                 <>
@@ -112,6 +123,7 @@ const Header = () => {
                       textTransform: 'none',
                     }}
                     aria-label="register"
+                    onClick={() => router.push('/register')}
                   >
                     Register
                   </Button>
@@ -125,9 +137,30 @@ const Header = () => {
               transformOrigin={{ horizontal: 'right', vertical: 'top' }}
               anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
+              <MenuItem
+                sx={{
+                  cursor: 'default',
+                  width: 200,
+                  textAlign: 'center',
+                  marginBottom: 1,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                <Typography fontSize={16} fontWeight="bold" marginBottom={2}>
+                  {authUser.user?.firstName}
+                </Typography>
+                <Box sx={{
+                  cursor: 'default',
+                  width: '90%',
+                  height: '1px',
+                  backgroundColor: grey[500],
+                }}/>
+              </MenuItem>
               {settings.map(setting => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                <MenuItem key={setting.name} onClick={setting.onClick}>
+                  <Typography textAlign="center">{setting.name}</Typography>
                 </MenuItem>
               ))}
             </Menu>

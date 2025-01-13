@@ -194,7 +194,7 @@ const LoginForm: React.FC = () => {
         </Link>
       </Typography>
 
-      <Box
+      {/* <Box
         sx={{
           display: 'flex',
           flexDirection: 'column',
@@ -231,7 +231,7 @@ const LoginForm: React.FC = () => {
         >
           Log in with Google
         </Button>
-      </Box>
+      </Box> */}
     </Box>
   );
 };
