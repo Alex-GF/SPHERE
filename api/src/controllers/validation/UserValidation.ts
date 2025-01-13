@@ -52,16 +52,14 @@ const create = [
     .withMessage('The phone must have between 1 and 255 characters long')
     .trim(),
   check('address')
-    .exists()
-    .withMessage('A address must be specified in order to create the user')
+    .optional()
     .isString()
     .withMessage('The field address must be a string')
     .isLength({ min: 1, max: 255 })
     .withMessage('The address must have between 1 and 255 characters long')
     .trim(),
   check('postalCode')
-    .exists()
-    .withMessage('A postalCode must be specified in order to create the user')
+    .optional()
     .isString()
     .withMessage('The field postalCode must be a string')
     .isLength({ min: 1, max: 255 })
