@@ -1,7 +1,7 @@
 import { Box, Card, CardContent, Stack, Typography } from '@mui/material';
 import { useRouter } from '../../../core/hooks/useRouter';
-import { AnalyticsDataEntry } from '../../../../assets/data/analytics';
 import { StyledChip } from '../../pages/card';
+import { PricingEntry } from '../../pages/list';
 
 // const CARD_HEIGHT = 400;
 const CARD_HEIGHT = 250;
@@ -11,7 +11,7 @@ export default function PricingListCard({
   dataEntry,
 }: {
   name: string;
-  dataEntry: AnalyticsDataEntry;
+  dataEntry: PricingEntry;
 }) {
   const router = useRouter();
 
@@ -57,7 +57,7 @@ export default function PricingListCard({
             sx={{ mt: 1, height: 200 }}
           >
             This is the pricing information for {name}. The pricing version that is currently
-            displayed is from {new Date(dataEntry.date).toLocaleDateString()}. The prices are
+            displayed is from {new Date(dataEntry.extractionDate).toLocaleDateString()}. The prices are
             displayed with EUR currency. In future versions, more data will be provided in this
             card.
           </Typography>

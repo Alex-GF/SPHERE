@@ -1,16 +1,36 @@
 import RepositoryBase from '../RepositoryBase';
 import PricingMongoose from './models/PricingMongoose';
-import PricingAnalyticsMongoose from './models/PricingAnalyticsMongoose';
 import { PricingAnalytics } from '../../types/database/Pricing';
-import { ObjectId } from 'mongoose';
 
 class PricingRepository extends RepositoryBase {
   async findAll(...args: any) {
     try {
-      const pricings = await PricingMongoose.find();
-      return pricings.map(pricing =>
-        pricing.toObject({ getters: true, virtuals: true, versionKey: false })
-      );
+      const pricings = await PricingMongoose.aggregate([
+        {
+          $group: {
+            _id: {
+              name: '$name',
+            },
+            versions: {
+              $push: {
+                version: '$version',
+                extractionDate: '$extractionDate',
+                url: '$url',
+                yaml: '$yaml',
+                analytics: '$analytics',
+              },
+            },
+          },
+        },
+        {
+          $project: {
+            _id: 0,
+            name: '$_id.name',
+            versions: 1,
+          },
+        },
+      ]);
+      return pricings;
     } catch (err) {
       return [];
     }

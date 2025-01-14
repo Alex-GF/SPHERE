@@ -1,4 +1,3 @@
-import { ObjectId } from "mongoose";
 import { Pricing, PricingAnalytics } from "../database/Pricing";
 
 export interface PricingRepository{
