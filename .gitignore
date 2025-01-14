@@ -27,3 +27,6 @@ dist-ssr
 .env
 
 deno.lock
+
+# Locally uploaded pricings
+api/public/assets/pricings/uploadedDataset/
