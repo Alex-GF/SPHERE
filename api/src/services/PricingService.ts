@@ -1,10 +1,9 @@
-import { Pricing, retrievePricingFromPath } from "pricing4ts";
+import { Pricing } from "pricing4ts";
 import { Pricing as PricingModel } from "../types/database/Pricing";
 import container from "../config/container";
 import { PricingRepository } from "../types/repositories/PricingRepository";
 import { processFileUris } from "./FileService";
-import { PricingService as PricingAnalytics } from "pricing4ts/server";
-import fs from 'fs';
+import { PricingService as PricingAnalytics, retrievePricingFromPath } from "pricing4ts/server";
 
 class PricingService {
     
@@ -37,7 +36,7 @@ class PricingService {
         
         const pricingData = {
           name: uploadedPricing.saasName,
-          version: 1.0,
+          version: uploadedPricing.version,
           extractionDate: new Date(uploadedPricing.createdAt),
           url: '',
           yaml: pricingFile.path.split('/').slice(1).join('/'),

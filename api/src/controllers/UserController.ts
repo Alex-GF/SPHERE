@@ -36,9 +36,9 @@ class UserController {
       res.status(201).json(registeredUser);
     } catch (err: any) {
       if (err.name.includes('ValidationError') || err.code === 11000) {
-        res.status(422).send(err);
+        res.status(422).send({error: err.message});
       } else {
-        res.status(500).send(err.message);
+        res.status(500).send({error: err.message});
       }
     }
   }
@@ -59,10 +59,10 @@ class UserController {
           });
         })
         .catch(err => {
-          res.status(401).send({ errors: err.message });
+          res.status(401).send({ error: err.message });
         });
     } catch (err: any) {
-      return res.status(401).send({ errors: err.message });
+      return res.status(401).send({ error: err.message });
     }
   }
 
@@ -71,7 +71,7 @@ class UserController {
       const user = await this.userService.loginAdmin(req.body.email, req.body.password);
       res.json({ token: user!.token });
     } catch (err: any) {
-      return res.status(401).send({ errors: err.message });
+      return res.status(401).send({ error: err.message });
     }
   }
 
@@ -88,7 +88,7 @@ class UserController {
         tokenExpiration: user!.tokenExpiration,
       });
     } catch (err: any) {
-      return res.status(401).send({ errors: err.message });
+      return res.status(401).send({ error: err.message });
     }
   }
 
@@ -98,7 +98,7 @@ class UserController {
       const user = await this.userService.show(req.params.userId);
       res.json(user);
     } catch (err: any) {
-      res.status(500).send(err.message);
+      res.status(500).send({error: err.message});
     }
   }
 
@@ -107,7 +107,7 @@ class UserController {
       const user = await this.userService.update((req as any).user.id, req.body);
       res.json(user);
     } catch (err: any) {
-      res.status(500).send(err.message);
+      res.status(500).send({error: err.message});
     }
   }
 
@@ -116,7 +116,7 @@ class UserController {
       const token = await this.userService.updateToken((req as any).user.id);
       res.json(token);
     } catch (err: any) {
-      res.status(500).send(err.message);
+      res.status(500).send({error: err.message});
     }
   }
 
@@ -126,7 +126,7 @@ class UserController {
       const message = result ? 'Successfully deleted.' : 'Could not delete user.';
       res.json(message);
     } catch (err: any) {
-      res.status(500).send(err.message);
+      res.status(500).send({error: err.message});
     }
   }
 }

@@ -31,4 +31,23 @@ const handleFileUpload = (imageFieldNames: string[], folder: string) => {
     return multer({ storage }).fields(fields)
   }
 }
-export { handleFileUpload, addFilenameToBody }
+
+const handlePricingUpload = (pricingFieldNames: string[], folder: string) => {
+  const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      fs.mkdirSync(folder + `/${req.body.saasName}`, { recursive: true })
+      cb(null, folder)
+    },
+    filename: function (req, file, cb) {
+      cb(null, req.body.saasName + "/" + req.body.version + '.' + file.originalname.split('.').pop())
+    }
+  })
+
+  if (pricingFieldNames.length === 1) {
+    return multer({ storage }).single(pricingFieldNames[0])
+  } else {
+    const fields = pricingFieldNames.map(pricingFieldNames => { return { name: pricingFieldNames, maxCount: 1 } })
+    return multer({ storage }).fields(fields)
+  }
+}
+export { handleFileUpload, addFilenameToBody, handlePricingUpload }

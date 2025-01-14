@@ -1,26 +1,22 @@
 import express from 'express';
-import container from '../config/container';
-import { addFilenameToBody, handleFileUpload } from '../middlewares/FileHandlerMiddleware';
-import { hasRole, isLoggedIn } from '../middlewares/AuthMiddleware';
-import { handleValidation } from '../middlewares/ValidationHandlingMiddleware';
-import { checkEntityExists } from '../middlewares/EntityMiddleware';
+import { isLoggedIn } from '../middlewares/AuthMiddleware';
 import PricingController from '../controllers/PricingController';
-import multer from 'multer';
+import { handlePricingUpload } from '../middlewares/FileHandlerMiddleware';
 
 const loadFileRoutes = function (app: express.Application) {
   const pricingController = new PricingController();
-  const pricingService = container.resolve('pricingService');
-  const upload = handleFileUpload(['yaml'], './public/assets/pricings/uploadedDataset');
+  const upload = handlePricingUpload(['yaml'], './public/assets/pricings/uploadedDataset');
 
   const baseUrl = process.env.BASE_URL_PATH;
 
   app
     .route(baseUrl + '/pricings')
     .get(isLoggedIn, pricingController.index)
-    // Falta añadir campo pricingVersion a Pricing2Yaml para versionar los pricings.
-    .post(isLoggedIn, hasRole('admin'), upload, pricingController.create);
+    .post(// isLoggedIn, 
+      upload, pricingController.create);
 
   app.route(baseUrl + '/pricings/:pricingName').get(isLoggedIn, pricingController.show);
 };
 
 export default loadFileRoutes;
+

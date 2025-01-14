@@ -1,8 +1,9 @@
 saasName: PetClinic
-version: "2.0"
-createdAt: "2024-01-15"
+syntaxVersion: '2.1'
+version: 2024-1-15
+createdAt: '2024-01-15'
 currency: EUR
-hasAnnualPayment: false
+variables: {}
 features:
   pets:
     description: Pets description
@@ -15,7 +16,9 @@ features:
     description: visits description
     valueType: BOOLEAN
     defaultValue: true
-    expression: userContext['visits'] < planContext['usageLimits']['maxVisitsPerMonthAndPet']
+    expression: >-
+      userContext['visits'] <
+      planContext['usageLimits']['maxVisitsPerMonthAndPet']
     type: DOMAIN
   supportPriority:
     description: supportPriority description
@@ -67,7 +70,7 @@ usageLimits:
     unit: pet
     type: NON_RENEWABLE
     linkedFeatures:
-    - pets
+      - pets
   maxVisitsPerMonthAndPet:
     description: ''
     valueType: NUMERIC
@@ -75,17 +78,17 @@ usageLimits:
     unit: visit
     type: RENEWABLE
     linkedFeatures:
-    - visits
+      - visits
 plans:
   BASIC:
     description: Basic plan
-    price: 0.0
+    price: 0
     unit: user/month
     features: null
     usageLimits: null
   GOLD:
     description: Advanced plan
-    price: 5.0
+    price: 5
     unit: user/month
     features:
       supportPriority:
@@ -94,8 +97,6 @@ plans:
         value: true
       haveVetSelection:
         value: true
-      consultations:
-        value: false
     usageLimits:
       maxPets:
         value: 4
@@ -103,7 +104,7 @@ plans:
         value: 3
   PLATINUM:
     description: Pro plan
-    price: 10.0
+    price: 10
     unit: user/month
     features:
       supportPriority:

@@ -1,6 +1,7 @@
-import multer from 'multer';
+import fs from 'fs';
 import container from '../config/container.js'
 import PricingService from '../services/PricingService';
+import path from 'path';
 
 class PricingController {
 
@@ -15,10 +16,11 @@ class PricingController {
 
   async index (req: any, res: any) {
     try {
+      // const queryParams = req.query;
       const pricings = await this.pricingService.index()
       res.json(pricings)
     } catch (err: any) {
-      res.status(500).send(err.message)
+      res.status(500).send({error: err.message})
     }
   }
 
@@ -27,7 +29,7 @@ class PricingController {
       const pricing = await this.pricingService.show(req.params.pricingName)
       res.json(pricing)
     } catch (err: any) {
-      res.status(500).send(err.message)
+      res.status(500).send({error: err.message})
     }
   }
 
@@ -36,7 +38,14 @@ class PricingController {
       const pricing = await this.pricingService.create(req.file)
       res.json(pricing)
     } catch (err: any) {
-      res.status(500).send(err.message)
+      const file = req.file;
+      const directory = path.dirname(file.path);
+      if (fs.readdirSync(directory).length === 1) {
+        fs.rmdirSync(directory, { recursive: true });
+      }else{
+        fs.rmSync(file.path);
+      }
+      res.status(500).send({error: err.message})
     }
   }
 
