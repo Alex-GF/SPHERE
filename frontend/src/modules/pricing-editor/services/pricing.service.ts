@@ -127,18 +127,19 @@ function populateAddonsData(
         errors.push(`Missing value for '${formattedName}' in add-on ${addOnName}`);
       }
 
-      for (let i = 0; i < (pricing.plans ?? []).length; i++) {
-        
-        const planName = pricing.plans![i].name;
-        
+      let i = 0;
+
+      for (let planName in pricing.plans) {
         try {
           pricingData[formattedName][i] = {
             ...pricingData[formattedName][i],
             addonName: addOnName,
-            addonValue: pricing.addOns!.find(a => a.name === addOnName)!.availableFor.includes(planName) ? item.value : null,
+            addonValue: Object.values(pricing.addOns!).find(a => a.name === addOnName)!.availableFor.includes(planName) ? item.value : null,
             addonExtension: false
           };
+          i++;
         } catch (e) {
+          i++;
           continue;
         }
       }
@@ -166,10 +167,10 @@ function populateAddonsExtensionsData(
         errors.push(`Missing value for extension of '${formattedName}' in add-on ${addOnName}`);
       }
 
-      for (let i = 0; i < (pricing.plans ?? []).length; i++) {
+      for (let i = 0; i < (Object.values(pricing.plans!) ?? []).length; i++) {
 
         const planName = pricing.plans![i].name;
-        const addonValue = pricing.addOns!.find(a => a.name === addOnName)!.availableFor.includes(planName) ? item.value : 0
+        const addonValue = Object.values(pricing.addOns!).find(a => a.name === addOnName)!.availableFor.includes(planName) ? item.value : 0
 
         try {
           pricingData[formattedName][i] = {
@@ -193,24 +194,28 @@ export function getPricingData(pricing: Pricing, errors: string[]) {
   let formattedNames: FormattedNamesProp = {};
 
   initializeData(
-    pricing.usageLimits ?? [],
-    (pricing.plans ?? []).length,
+    Object.values(pricing.usageLimits!) ?? [],
+    (Object.values(pricing.plans!) ?? []).length,
     pricingData,
     errors,
     formattedNames
   );
 
-  initializeData(pricing.features, (pricing.plans ?? []).length, pricingData, errors, formattedNames);
+  initializeData(Object.values(pricing.features), (Object.values(pricing.plans!) ?? []).length, pricingData, errors, formattedNames);
 
-  for (let i = 0; i < (pricing.plans ?? []).length; i++) {
-    let plan: Plan = pricing.plans![i];
+  let i = 0;
+
+  for (let planName in pricing.plans) {
+    let plan: Plan = pricing.plans[planName];
+    
     populateData(plan.features, i, plan.name, pricingData, formattedNames, errors);
     populateData(plan.usageLimits ?? {}, i, plan.name, pricingData, formattedNames, errors);
+    i++;
   }
 
   if (pricing.addOns) {
-    for (let i = 0; i < pricing.addOns.length; i++) {
-      let addon: AddOn = pricing.addOns[i];
+    for (let addOnName in pricing.addOns) {
+      let addon: AddOn = pricing.addOns[addOnName];
       populateAddonsData(addon.features ?? {}, addon.name, pricing, pricingData, formattedNames, errors);
       populateAddonsData(addon.usageLimits ?? {}, addon.name, pricing, pricingData, formattedNames, errors);
       populateAddonsExtensionsData(
