@@ -25,10 +25,20 @@ export default function PricingFilters({
   textFilterValue: string;
   setFilterValues: Function;
 }) {
+  const [sort, setSort] = useState<string>('asc');
   const [sortBy, setSortBy] = useState<string>('');
-  const [subscriptionRange, setSubscriptionRange] = useState<number[]>([filterLimits.configurationSpaceSize.min, filterLimits.configurationSpaceSize.max]);
-  const [minPriceRange, setMinPriceRange] = useState<number[]>([filterLimits.minPrice.min, filterLimits.minPrice.max]);
-  const [maxPriceRange, setMaxPriceRange] = useState<number[]>([filterLimits.maxPrice.min, filterLimits.maxPrice.max]);
+  const [subscriptionRange, setSubscriptionRange] = useState<number[]>([
+    filterLimits.configurationSpaceSize.min,
+    filterLimits.configurationSpaceSize.max,
+  ]);
+  const [minPriceRange, setMinPriceRange] = useState<number[]>([
+    filterLimits.minPrice.min,
+    filterLimits.minPrice.max,
+  ]);
+  const [maxPriceRange, setMaxPriceRange] = useState<number[]>([
+    filterLimits.maxPrice.min,
+    filterLimits.maxPrice.max,
+  ]);
   const [owners, setOwners] = useState<Record<string, number>>({});
   const [selectedOwners, setSelectedOwners] = useState<string[]>([]);
 
@@ -40,6 +50,7 @@ export default function PricingFilters({
 
   const handleFilter = () => {
     const filterValues = {
+      sort,
       sortBy,
       subscriptionRange,
       minPriceRange,
@@ -61,9 +72,9 @@ export default function PricingFilters({
   };
 
   useEffect(() => {
-    if (textFilterValue){
+    if (textFilterValue) {
       setOwners(receivedOwners);
-    }else{
+    } else {
       setOwners({});
       setSelectedOwners([]);
     }
@@ -75,7 +86,7 @@ export default function PricingFilters({
       setMinPriceRange([filterLimits.minPrice.min, filterLimits.minPrice.max]);
       setMaxPriceRange([filterLimits.maxPrice.min, filterLimits.maxPrice.max]);
     }
-  }, [textFilterValue, filterLimits])
+  }, [textFilterValue, filterLimits]);
 
   return (
     <Box
@@ -111,6 +122,25 @@ export default function PricingFilters({
           <MenuItem value="maxPrice">Max price</MenuItem>
         </Select>
       </FormControl>
+
+      {/* Sort Order */}
+      {sortBy !== '' && (
+        <FormControl fullWidth sx={{ mb: 3 }}>
+          <InputLabel
+            id="sort-order-label"
+            sx={{
+              backgroundColor: 'white',
+              padding: '0 5px',
+            }}
+          >
+            Sort Order
+          </InputLabel>
+          <Select labelId="sort-order-label" value={sort} onChange={e => setSort(e.target.value)}>
+            <MenuItem value="asc">Ascending</MenuItem>
+            <MenuItem value="desc">Descending</MenuItem>
+          </Select>
+        </FormControl>
+      )}
 
       {/* Filter: Configuration Space */}
       {filterLimits && (
@@ -149,7 +179,7 @@ export default function PricingFilters({
       {textFilterValue !== '' && (
         <Box sx={{ width: '100%', padding: '16px', maxWidth: '500px', margin: 'auto' }}>
           <Typography variant="h6" gutterBottom>
-            Owner          
+            Owner
           </Typography>
           {Object.entries(owners).map(([owner, count]) => (
             <FormControlLabel

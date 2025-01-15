@@ -64,6 +64,8 @@ class PricingController {
   _transformIndexQueryParams(indexQueryParams: Record<string, string | number>): PricingIndexQueryParams{
     const transformedData: PricingIndexQueryParams = {
       name: indexQueryParams.name as string,
+      sortBy: indexQueryParams.sortBy as string,
+      sort: indexQueryParams.sort as string,
       subscriptions: {
         min: parseFloat(indexQueryParams["min-subscription"] as string),
         max: parseFloat(indexQueryParams["max-subscription"] as string)
@@ -79,10 +81,10 @@ class PricingController {
       selectedOwners: indexQueryParams.selectedOwners ? (indexQueryParams.selectedOwners as string).split(",") : undefined
     }
 
-    const optionalFields = ['name', 'subscriptions', 'minPrice', 'maxPrice', 'selectedOwners'] as const;
+    const optionalFields = ['name', 'subscriptions', 'minPrice', 'maxPrice', 'selectedOwners', 'sortBy', 'sort'] as const;
 
     optionalFields.forEach(field => {
-      if (field === 'name' || field === 'selectedOwners') {
+      if (['name', 'selectedOwners', 'sortBy', 'sort'].includes(field)) {
       if (!transformedData[field]) {
         delete transformedData[field];
       }

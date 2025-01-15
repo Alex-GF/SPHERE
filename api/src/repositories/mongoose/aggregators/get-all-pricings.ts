@@ -1,10 +1,11 @@
-export function getAllPricingsAggregator(filteringAggregators: any) {
+export function getAllPricingsAggregator(filteringAggregators: any, sortAggregator: any) {
   return [
     latestPricingsByNameAggregator,
     refactorRootAggregator,
     ...filteringAggregators,
     computeFiltersDataAggregator,
     refactorOutputAggregator,
+    ...sortAggregator
   ];
 }
 

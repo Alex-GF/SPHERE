@@ -10,9 +10,10 @@ class PricingRepository extends RepositoryBase {
     const queryParams: PricingIndexQueryParams = args[0];
 
     let filteringAggregators = [];
+    let sortAggregator = [];
 
     if (Object.keys(queryParams).length > 0){
-      const { name, subscriptions, minPrice, maxPrice, selectedOwners } = queryParams;
+      const { name, subscriptions, minPrice, maxPrice, selectedOwners, sortBy, sort } = queryParams;
 
       if (name){
         filteringAggregators.push({
@@ -74,10 +75,52 @@ class PricingRepository extends RepositoryBase {
           },
         });
       }
+      if (sortBy && sort){
+
+        let sortParameter = "";
+        let sortOrder = sort === "asc" ? 1 : -1;
+
+        switch (sortBy) {
+          case 'configurationSpaceSize':
+            sortParameter = "analytics.configurationSpaceSize";
+            break;
+          case 'featuresCount':
+            sortParameter = "analytics.numberOfFeatures";
+            break;
+          case 'usageLimitsCount':
+            sortParameter = "analytics.numberOfUsageLimits";
+            break;
+          case 'plansCount':
+            sortParameter = "analytics.numberOfPlans";
+            break;
+          case 'addonsCount':
+            sortParameter = "analytics.numberOfAddons";
+            break;
+          case 'minPrice':
+            sortParameter = "analytics.minSubscriptionPrice";
+            break;
+          case 'maxPrice':
+            sortParameter = "analytics.maxSubscriptionPrice";
+            break;
+        };
+        sortAggregator.push({
+          $addFields: {
+              pricings: {
+                $sortArray: {
+                  input: "$pricings",
+                  sortBy: {
+                    [sortParameter]: sortOrder
+                  }
+                }
+              }
+            }
+        });
+      }
     }
 
+
     try {
-      const aggregator = getAllPricingsAggregator(filteringAggregators);
+      const aggregator = getAllPricingsAggregator(filteringAggregators, sortAggregator);
       const pricings = await PricingMongoose.aggregate(aggregator);
       return pricings[0];
     } catch (err) {
