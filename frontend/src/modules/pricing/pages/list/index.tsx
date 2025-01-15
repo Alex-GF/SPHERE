@@ -29,8 +29,20 @@ export type PricingEntry = {
   };
 };
 
+export type FilterLimits = {
+  [key: string]: { 
+    max: number; 
+    min: number; 
+    data: { 
+      value: string; 
+      count: number 
+    }[] 
+  };
+};
+
 export default function PricingListPage() {
   const [pricingsList, setPricingsList] = useState<PricingEntry[]>([]);
+  const [filterLimits, setFilterLimits] = useState<FilterLimits | null>(null);
   const [filterValues, setFilterValues] = useState({});
   const [textFilterValue, setTextFilterValue] = useState('');
 
@@ -39,8 +51,12 @@ export default function PricingListPage() {
   useEffect(() => {
     getPricings()
       .then(data => {
-        console.log(data);
-        setPricingsList(data);
+        setPricingsList(data.pricings);
+        setFilterLimits({
+          minPrice: data.minPrice,
+          maxPrice: data.maxPrice,
+          configurationSpaceSize: data.configurationSpaceSize,
+        });
       })
       .catch(error => {
         console.error('Error:', error);
@@ -51,7 +67,7 @@ export default function PricingListPage() {
     const filters = {
       name: textFilterValue,
       ...filterValues,
-    }
+    };
     console.log('Filters:', filters);
   }, [textFilterValue, filterValues]);
 
@@ -70,7 +86,7 @@ export default function PricingListPage() {
         <Box
           component="div"
           sx={{
-            ...flex({ direction: 'column', justify: "start" }),
+            ...flex({ direction: 'column', justify: 'start' }),
             maxWidth: '600px',
             height: '100%',
             margin: 'auto',
@@ -80,7 +96,8 @@ export default function PricingListPage() {
           }}
         >
           <Box component="div" width="20vw"></Box>
-          <PricingFilters 
+          <PricingFilters
+            filterLimits={filterLimits}
             textFilterValue={textFilterValue}
             setFilterValues={setFilterValues}
           />
@@ -93,9 +110,7 @@ export default function PricingListPage() {
             flexGrow: 1,
           }}
         >
-          <SearchBar 
-            setTextFilterValue={setTextFilterValue}
-          />
+          <SearchBar setTextFilterValue={setTextFilterValue} />
           <PricingsGrid>
             {Object.values(pricingsList).map((pricing, index) => {
               return (

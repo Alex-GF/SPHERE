@@ -5,7 +5,6 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  Slider,
   Typography,
   Checkbox,
   FormControlLabel,
@@ -13,6 +12,7 @@ import {
 } from '@mui/material';
 import { primary } from '../../../core/theme/palette';
 import SliderFilter from '../slider-filter';
+import { FilterLimits } from '../../pages/list';
 
 // Tipo para los datos de los "dueños"
 type Owner = {
@@ -27,24 +27,12 @@ const owners: Owner[] = [
   { name: 'Bob', count: 3 },
 ];
 
-// Datos de ejemplo para el histograma
-const histogramData: { value: string; count: number }[] = [
-  { value: '0-100', count: 50 },
-  { value: '100-200', count: 80 },
-  { value: '200-300', count: 120 },
-  { value: '300-400', count: 60 },
-  { value: '400-500', count: 40 },
-  { value: '500-600', count: 30 },
-  { value: '600-700', count: 20 },
-  { value: '700-800', count: 10 },
-  { value: '800-900', count: 5 },
-  { value: '900-1000', count: 2 },
-];
-
 export default function PricingFilters({
+  filterLimits,
   textFilterValue,
   setFilterValues,
 }: {
+  filterLimits: FilterLimits | null;
   textFilterValue: string;
   setFilterValues: Function;
 }) {
@@ -74,9 +62,14 @@ export default function PricingFilters({
 
   const handleClear = () => {
     setSortBy('');
-    setSubscriptionRange([0, 100]);
-    setMinPriceRange([0, 100]);
-    setMaxPriceRange([0, 100]);
+    if (filterLimits) {
+      setSubscriptionRange([
+        filterLimits.configurationSpaceSize.min,
+        filterLimits.configurationSpaceSize.max,
+      ]);
+      setMinPriceRange([filterLimits.minPrice.min, filterLimits.minPrice.max]);
+      setMaxPriceRange([filterLimits.maxPrice.min, filterLimits.maxPrice.max]);
+    }
     setSelectedOwners([]);
   };
 
@@ -116,31 +109,37 @@ export default function PricingFilters({
       </FormControl>
 
       {/* Filter: Configuration Space */}
-      <SliderFilter
-        label="Configuration Space Size"
-        min={0}
-        max={1000}
-        data={histogramData}
-        onChange={(value: number[]) => setSubscriptionRange(value)}
-      />
+      {filterLimits && (
+        <SliderFilter
+          label="Configuration Space Size"
+          min={filterLimits.configurationSpaceSize.min}
+          max={filterLimits.configurationSpaceSize.max}
+          data={filterLimits.configurationSpaceSize.data}
+          onChange={(value: number[]) => setSubscriptionRange(value)}
+        />
+      )}
 
       {/* Filter: Min Price */}
-      <SliderFilter
-        label="Min Price"
-        min={0}
-        max={1000}
-        data={histogramData}
-        onChange={(value: number[]) => setMinPriceRange(value)}
-      />
+      {filterLimits && (
+        <SliderFilter
+          label="Min Price"
+          min={filterLimits.minPrice.min}
+          max={filterLimits.minPrice.max}
+          data={filterLimits.minPrice.data}
+          onChange={(value: number[]) => setMinPriceRange(value)}
+        />
+      )}
 
       {/* Filter: Max Price */}
-      <SliderFilter
-        label="Max Price"
-        min={0}
-        max={1000}
-        data={histogramData}
-        onChange={(value: number[]) => setMaxPriceRange(value)}
-      />
+      {filterLimits && (
+        <SliderFilter
+          label="Max Price"
+          min={filterLimits.maxPrice.min}
+          max={filterLimits.maxPrice.max}
+          data={filterLimits.maxPrice.data}
+          onChange={(value: number[]) => setMaxPriceRange(value)}
+        />
+      )}
 
       {/* Filter: Owners */}
       {textFilterValue !== '' && (
