@@ -37,6 +37,11 @@ const LoginForm: React.FC = () => {
       loginUser(formValues)
         .then((response: any) => {
 
+          if (response.error) {
+            setErrors([response.error]);
+            return;
+          }
+
           const loggedUser = {
             id: response.id,
             firstName: response.firstName,
@@ -48,7 +53,7 @@ const LoginForm: React.FC = () => {
           login(loggedUser, response.token, response.tokenExpiration);
 
           router.push('/');
-        });
+        })
     }
   }
   
