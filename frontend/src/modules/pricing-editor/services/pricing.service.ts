@@ -169,7 +169,7 @@ function populateAddonsExtensionsData(
 
       for (let i = 0; i < (Object.values(pricing.plans!) ?? []).length; i++) {
 
-        const planName = pricing.plans![i].name;
+        const planName = Object.values(pricing.plans!)[i].name;
         const addonValue = Object.values(pricing.addOns!).find(a => a.name === addOnName)!.availableFor.includes(planName) ? item.value : 0
 
         try {

@@ -18,8 +18,9 @@ class PricingRepository extends RepositoryBase {
       if (name){
         filteringAggregators.push({
           $match: {
-            $expr: {
-              $eq: [{ $toLower: '$name' }, { $toLower: name }],
+            name: {
+              $regex: name,
+              $options: 'i', // case-insensitive
             },
           },
         });
