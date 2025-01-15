@@ -147,6 +147,7 @@ class PricingRepository extends RepositoryBase {
             versions: {
               $push: {
                 version: '$version',
+                owner: '$owner',
                 extractionDate: '$extractionDate',
                 url: '$url',
                 yaml: '$yaml',
@@ -159,7 +160,12 @@ class PricingRepository extends RepositoryBase {
           $project: {
             _id: 0,
             name: '$_id.name',
-            versions: 1,
+            versions: {
+              $sortArray: {
+                input: '$versions',
+                sortBy: { extractionDate: -1 },
+              },
+            }
           },
         },
       ]);

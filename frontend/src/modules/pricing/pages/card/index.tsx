@@ -17,13 +17,14 @@ import PricingTree from '../../components/pricing-tree';
 import { PricingRenderer } from '../../../pricing-editor/components/pricing-renderer';
 import { Pricing, retrievePricingFromYaml } from 'pricing4ts';
 import FileExplorer from '../../components/file-explorer';
-import { SAAS_DATA, AnalyticsDataEntry } from '../../../../assets/data/analytics';
+import { AnalyticsDataEntry } from '../../../../assets/data/analytics';
 import { usePathname } from '../../../core/hooks/usePathname';
 import { useRouter } from '../../../core/hooks/useRouter';
 import Stats from '../../components/stats';
 import Analytics from '../../components/analytics';
 // import Harvey from '../../components/harvey';
 import AnalyticsModal from '../../components/analyticsModal';
+import { usePricingsApi } from '../../api/pricingsApi';
 
 export const StyledChip = styled(Chip)(({ theme }) => ({
   margin: theme.spacing(0.5),
@@ -49,25 +50,26 @@ export default function CardPage() {
   const [currentPricing, setCurrentPricing] = useState<AnalyticsDataEntry | null>(null);
   const [pricing, setPricing] = useState<Pricing | null>(null);
   const [oldestPricingDate, setOldestPricingDate] = useState<string | null>(null);
-  const [pricingDetails, setPricingDetails] = useState<{ size: string; lastModified: string }>({
-    size: 'Unknown size',
-    lastModified: 'Unknown modification date',
-  });
 
   const pathname = usePathname();
+  const { getPricingByName } = usePricingsApi();
   const router = useRouter();
 
   useEffect(() => {
     let name = pathname.split('/').pop() as string;
 
-    if (name in SAAS_DATA) {
-      setFullPricingData(SAAS_DATA[name]);
-      setPricingData(SAAS_DATA[name]);
-      setCurrentPricing(SAAS_DATA[name][0]);
-      setOldestPricingDate(SAAS_DATA[name][SAAS_DATA[name].length - 1].date);
-    } else {
-      router.push('/error');
-    }
+    getPricingByName(name).then(pricing => {
+      if (pricing.versions && pricing.versions.length > 0) {
+        const currentPricing = pricing.versions[0];
+        const oldestPricing = pricing.versions[pricing.versions.length - 1];
+        setFullPricingData(pricing.versions);
+        setPricingData(pricing.versions);
+        setCurrentPricing(currentPricing);
+        setOldestPricingDate(oldestPricing.extractionDate);
+      } else {
+        router.push('/error');
+      }
+    });
   }, [pathname]);
 
   useEffect(() => {
@@ -75,23 +77,11 @@ export default function CardPage() {
       return;
     }
 
-    let pricingYamlPath = currentPricing.yaml_path;
+    let pricingYamlPath = currentPricing.yaml;
 
-    fetch("/"+pricingYamlPath).then(async response => {
+    fetch(pricingYamlPath).then(async response => {
       let p: string = '';
       p = await response.text();
-
-      const contentLength = response.headers.get('content-length')
-        ? parseInt(response.headers.get('content-length') ?? '0')
-        : null;
-      const lastModified = response.headers.get('last-modified');
-
-      setPricingDetails({
-        size: contentLength ? `${(contentLength / 1024).toFixed(2)} KB` : 'Unknown size',
-        lastModified: lastModified
-          ? new Date(lastModified).toLocaleString()
-          : 'Unknown modification date',
-      });
 
       const parsedPricing: Pricing = retrievePricingFromYaml(p);
       setPricing(parsedPricing);
@@ -104,7 +94,7 @@ export default function CardPage() {
 
   const handleInputDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newPricingData = fullPricingData?.filter(
-      entry => new Date(entry.date) >= new Date(e.target.value)
+      entry => new Date(entry.extractionDate) >= new Date(e.target.value)
     );
     if (newPricingData) {
       setPricingData(newPricingData);
@@ -115,7 +105,7 @@ export default function CardPage() {
 
   const handleOutputDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newPricingData = fullPricingData?.filter(
-      entry => new Date(entry.date) <= new Date(e.target.value)
+      entry => new Date(entry.extractionDate) <= new Date(e.target.value)
     );
     if (newPricingData) {
       setPricingData(newPricingData);
@@ -125,7 +115,7 @@ export default function CardPage() {
   };
 
   const handleVersionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newPricing = pricingData?.find(entry => entry.yaml_path == e.target.value);
+    const newPricing = pricingData?.find(entry => entry.yaml == e.target.value);
     if (newPricing) {
       setCurrentPricing(newPricing);
     }
@@ -143,7 +133,7 @@ export default function CardPage() {
               <Box display="flex" alignItems="center" gap={2} mb={2}>
                 <Typography variant="h5" letterSpacing={1}>
                   <Box component="span" sx={{ color: 'text.secondary', mr: 0.25 }}>
-                    sphere
+                    {currentPricing?.owner}
                   </Box>
                   <Box component="span" sx={{ color: 'text.secondary', mr: 0.25 }}>
                     /
@@ -219,8 +209,8 @@ export default function CardPage() {
                 onChange={handleVersionChange}
               >
                 {pricingData?.map((entry, index) => (
-                  <option key={index} value={entry.yaml_path}>
-                    {entry.yaml_path.split('/')[entry.yaml_path.split('/').length - 1]}
+                  <option key={index} value={entry.yaml}>
+                    {entry.yaml.split('/')[entry.yaml.split('/').length - 1].replace('.yaml', '').replace('.yml', ' ')}
                   </option>
                 ))}
               </TextField>
@@ -233,13 +223,18 @@ export default function CardPage() {
             pricingData && <FileExplorer pricingData={pricingData} />
           ) : (
             <>
-              <Box flex={1} sx={{maxWidth: "66.7%"}}>
+              <Box flex={1} sx={{ maxWidth: '66.7%' }}>
                 <Typography variant="h6" gutterBottom>
                   Pricing Information
                 </Typography>
                 <Typography variant="body1" sx={{ mb: 4 }}>
-                  This is the pricing information for {pricing?.saasName}. The pricing version that is currently displayed is from {currentPricing?.date ? new Date(currentPricing.date).toLocaleDateString() : 'Unknown date'}.
-                  The prices are displayed with {pricing?.currency} currency. In future versions, more data will be provided in this card.
+                  This is the pricing information for {pricing?.saasName}. The pricing version that
+                  is currently displayed is from{' '}
+                  {currentPricing?.extractionDate
+                    ? new Date(currentPricing.extractionDate).toLocaleDateString()
+                    : 'Unknown date'}
+                  . The prices are displayed with {pricing?.currency} currency. In future versions,
+                  more data will be provided in this card.
                 </Typography>
                 {pricing && <PricingRenderer pricing={pricing} errors={[]} />}
               </Box>
@@ -247,11 +242,7 @@ export default function CardPage() {
               <Box sx={{ minWidth: '33.3%' }}>
                 {currentPricing && pricing && (
                   <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
-                    <Stats
-                      pricingDetails={pricingDetails}
-                      currentPricing={currentPricing}
-                      pricing={pricing}
-                    />
+                    <Stats currentPricing={currentPricing} pricing={pricing} />
                   </Paper>
                 )}
 

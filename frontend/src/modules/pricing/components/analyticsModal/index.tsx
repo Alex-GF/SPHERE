@@ -41,7 +41,7 @@ export default function AnalyticsModal({ open, onClose, pricingData } : Analytic
                 width={500}
                 height={300}
                 series={[{ data: pricingData?.map((entry) => entry.analytics.configurationSpaceSize).reverse() ?? [], area: false, showMark: true, label: 'Available Subscriptions' }]}
-                xAxis={[{ scaleType: 'point', data: pricingData?.map((entry) => new Date(entry.date).getFullYear().toString()).reverse() ?? [] }]}
+                xAxis={[{ scaleType: 'point', data: pricingData?.map((entry) => new Date(entry.extractionDate).getFullYear().toString()).reverse() ?? [] }]}
                 />
             </Box>
 
@@ -55,7 +55,7 @@ export default function AnalyticsModal({ open, onClose, pricingData } : Analytic
                 series={[
                         { data: pricingData?.map((entry) => entry.analytics.minSubscriptionPrice).reverse() ?? [], area: false, showMark: true, label: 'Min Price' },
                         { data: pricingData?.map((entry) => entry.analytics.maxSubscriptionPrice).reverse() ?? [], area: false, showMark: true, label: 'Max Price' }]}
-                xAxis={[{ scaleType: 'point', data: pricingData?.map((entry) => new Date(entry.date).getFullYear().toString()).reverse() ?? [] }]}
+                xAxis={[{ scaleType: 'point', data: pricingData?.map((entry) => new Date(entry.extractionDate).getFullYear().toString()).reverse() ?? [] }]}
                 />
             </Box>
 
@@ -67,7 +67,7 @@ export default function AnalyticsModal({ open, onClose, pricingData } : Analytic
                 width={500}
                 height={300}
                 series={[{ data: pricingData?.map((entry) => entry.analytics.numberOfPlans).reverse() ?? [], area: false, showMark: true, label: 'Plans' }]}
-                xAxis={[{ scaleType: 'point', data: pricingData?.map((entry) => new Date(entry.date).getFullYear().toString()).reverse() ?? [] }]}
+                xAxis={[{ scaleType: 'point', data: pricingData?.map((entry) => new Date(entry.extractionDate).getFullYear().toString()).reverse() ?? [] }]}
                 />
             </Box>
             
@@ -79,7 +79,7 @@ export default function AnalyticsModal({ open, onClose, pricingData } : Analytic
                 width={500}
                 height={300}
                 series={[{ data: pricingData?.map((entry) => entry.analytics.numberOfFeatures).reverse() ?? [], area: false, showMark: true, label: 'Features' }]}
-                xAxis={[{ scaleType: 'point', data: pricingData?.map((entry) => new Date(entry.date).getFullYear().toString()).reverse() ?? [] }]}
+                xAxis={[{ scaleType: 'point', data: pricingData?.map((entry) => new Date(entry.extractionDate).getFullYear().toString()).reverse() ?? [] }]}
                 />
             </Box>
 
@@ -91,7 +91,7 @@ export default function AnalyticsModal({ open, onClose, pricingData } : Analytic
                 width={500}
                 height={300}
                 series={[{ data: pricingData?.map((entry) => entry.analytics.numberOfUsageLimits).reverse() ?? [], area: false, showMark: true, label: 'Usage Limits' }]}
-                xAxis={[{ scaleType: 'point', data: pricingData?.map((entry) => new Date(entry.date).getFullYear().toString()).reverse() ?? [] }]}
+                xAxis={[{ scaleType: 'point', data: pricingData?.map((entry) => new Date(entry.extractionDate).getFullYear().toString()).reverse() ?? [] }]}
                 />
             </Box>
 
@@ -103,7 +103,7 @@ export default function AnalyticsModal({ open, onClose, pricingData } : Analytic
                 width={500}
                 height={300}
                 series={[{ data: pricingData?.map((entry) => entry.analytics.numberOfAddOns).reverse() ?? [], area: false, showMark: true, label: 'Add-Ons' }]}
-                xAxis={[{ scaleType: 'point', data: pricingData?.map((entry) => new Date(entry.date).getFullYear().toString()).reverse() ?? [] }]}
+                xAxis={[{ scaleType: 'point', data: pricingData?.map((entry) => new Date(entry.extractionDate).getFullYear().toString()).reverse() ?? [] }]}
                 />
             </Box>
             

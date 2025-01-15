@@ -49,5 +49,16 @@ export function usePricingsApi() {
       });
   };
 
-  return { getPricings };
+  const getPricingByName = async (name: string) => {
+    return fetchWithInterceptor(`${PRICINGS_BASE_PATH}/${name}`, {
+      method: 'GET',
+      headers: basicHeaders,
+    })
+      .then(response => response.json())
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  };
+
+  return { getPricings, getPricingByName };
 }

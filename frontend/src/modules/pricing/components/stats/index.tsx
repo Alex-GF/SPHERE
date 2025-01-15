@@ -6,10 +6,6 @@ import { formatDistanceToNow, parseISO } from 'date-fns';
 import { CURRENCIES } from "../../pages/card";
 
 interface StatsProps {
-    pricingDetails: {
-        size: string;
-        lastModified: string;
-    };
     currentPricing: AnalyticsDataEntry;
     pricing: Pricing;
 }
@@ -19,7 +15,7 @@ export const getCurrency = (currency: string) => {
     return currency in CURRENCIES ? CURRENCIES[parsedCurrency] : CURRENCIES['USD'];
 };
 
-export default function Stats({ pricingDetails, currentPricing, pricing } : StatsProps) {
+export default function Stats({ currentPricing, pricing } : StatsProps) {
     return (
         <>
               <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -29,7 +25,7 @@ export default function Stats({ pricingDetails, currentPricing, pricing } : Stat
               </Box>
               <Box display="flex" justifyContent="space-between" alignItems="center" mt={2}>
                   <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column">
-                        {currentPricing && formatDistanceToNow(parseISO(currentPricing.date))} ago
+                        {currentPricing && formatDistanceToNow(parseISO(currentPricing.extractionDate))} ago
                       <Typography variant="body2" color="text.secondary">
                           last updated
                       </Typography>

@@ -183,12 +183,24 @@ function CustomLabel({
     const fileName = children.toString();
 
     if (fileName) {
-      const link = document.createElement('a');
-      link.href = "data/"+fileName;
-      link.download = "data/"+fileName;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+
+      const saasName = fileName.split("/")[fileName.split("/").length-2];
+      const version = fileName.split("/")[fileName.split("/").length-1];
+
+      fetch(fileName)
+        .then(async (response) => {
+          const blob = await response.blob()
+          const objectURL = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = objectURL;
+          link.download = `${saasName}-${version}`;
+          document.body.appendChild(link);
+          link.click();
+
+          // Clean DOM and revoke object URL
+          document.body.removeChild(link);
+          URL.revokeObjectURL(objectURL);
+        });
     } else {
       alert(`File path for ${fileName} not found.`);
     }
@@ -200,7 +212,8 @@ function CustomLabel({
       return;
     }
     const fileName = children.toString();
-    fetch("/"+fileName).then(async response => {
+    
+    fetch(fileName).then(async response => {
         const text = await response.text();
         let urlParam = parseStringYamlToEncodedYaml(text).split("pricing=")[1];
         window.open(`/editor?pricing=${urlParam}`, '_blank');
@@ -350,7 +363,7 @@ export default function FileExplorer({ pricingData }: { pricingData: AnalyticsDa
 React.useEffect(() => {
     const pricingItems = pricingData.map((entry, index) => ({
         id: `pricing-${index}`,
-        label: entry.yaml_path,
+        label: entry.yaml,
         fileType: 'doc' as FileType,
     }));
 
