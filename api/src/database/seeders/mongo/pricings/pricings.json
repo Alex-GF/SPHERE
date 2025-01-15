@@ -1,11 +1,13 @@
 [
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b3ee"
+      "$oid": "6787d0facaeb2b25748bc01c"
     },
     "name": "Box",
+    "owner": "sphere",
     "version": "2024",
     "extractionDate": "2024-07-15T00:00:00.000Z",
+    "currency": "EUR",
     "url": null,
     "yaml": "assets/pricings/originalDataset/box/2024.yml",
     "analytics": {
@@ -46,11 +48,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b3ef"
+      "$oid": "6787d0facaeb2b25748bc01d"
     },
     "name": "Box",
+    "owner": "sphere",
     "version": "2023",
     "extractionDate": "2023-11-19T00:00:00.000Z",
+    "currency": "EUR",
     "url": null,
     "yaml": "assets/pricings/originalDataset/box/2023.yml",
     "analytics": {
@@ -91,11 +95,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b3f0"
+      "$oid": "6787d0facaeb2b25748bc01e"
     },
     "name": "Box",
+    "owner": "sphere",
     "version": "2022",
     "extractionDate": "2022-11-28T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/box/2022.yml",
     "analytics": {
@@ -136,11 +142,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b3f1"
+      "$oid": "6787d0facaeb2b25748bc01f"
     },
     "name": "Box",
+    "owner": "sphere",
     "version": "2021",
     "extractionDate": "2021-11-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/box/2021.yml",
     "analytics": {
@@ -181,11 +189,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b3f2"
+      "$oid": "6787d0facaeb2b25748bc020"
     },
     "name": "Box",
+    "owner": "sphere",
     "version": "2020",
     "extractionDate": "2020-11-28T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/box/2020.yml",
     "analytics": {
@@ -226,11 +236,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b3f3"
+      "$oid": "6787d0facaeb2b25748bc021"
     },
     "name": "Box",
+    "owner": "sphere",
     "version": "2019",
     "extractionDate": "2019-11-13T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/box/2019.yml",
     "analytics": {
@@ -271,11 +283,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b3f4"
+      "$oid": "6787d0facaeb2b25748bc022"
     },
     "name": "Buffer",
+    "owner": "sphere",
     "version": "2024",
     "extractionDate": "2024-07-02T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/buffer/2024.yml",
     "analytics": {
@@ -316,11 +330,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b3f5"
+      "$oid": "6787d0facaeb2b25748bc023"
     },
     "name": "Buffer",
+    "owner": "sphere",
     "version": "2023",
     "extractionDate": "2023-11-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/buffer/2023.yml",
     "analytics": {
@@ -361,11 +377,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b3f6"
+      "$oid": "6787d0facaeb2b25748bc024"
     },
     "name": "Buffer",
+    "owner": "sphere",
     "version": "2022",
     "extractionDate": "2022-11-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/buffer/2022.yml",
     "analytics": {
@@ -406,11 +424,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b3f7"
+      "$oid": "6787d0facaeb2b25748bc025"
     },
     "name": "Buffer",
+    "owner": "sphere",
     "version": "2021",
     "extractionDate": "2021-11-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/buffer/2021.yml",
     "analytics": {
@@ -451,11 +471,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b3f8"
+      "$oid": "6787d0facaeb2b25748bc026"
     },
     "name": "Buffer",
+    "owner": "sphere",
     "version": "2020",
     "extractionDate": "2020-11-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/buffer/2020.yml",
     "analytics": {
@@ -496,11 +518,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b3f9"
+      "$oid": "6787d0facaeb2b25748bc027"
     },
     "name": "Buffer",
+    "owner": "sphere",
     "version": "2019",
     "extractionDate": "2019-11-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/buffer/2019.yml",
     "analytics": {
@@ -541,11 +565,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b3fa"
+      "$oid": "6787d0facaeb2b25748bc028"
     },
     "name": "Canva",
+    "owner": "sphere",
     "version": "2024",
     "extractionDate": "2024-07-07T00:00:00.000Z",
+    "currency": "EUR",
     "url": null,
     "yaml": "assets/pricings/originalDataset/canva/2024.yml",
     "analytics": {
@@ -586,11 +612,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b3fb"
+      "$oid": "6787d0facaeb2b25748bc029"
     },
     "name": "Canva",
+    "owner": "sphere",
     "version": "2023",
     "extractionDate": "2023-11-24T00:00:00.000Z",
+    "currency": "EUR",
     "url": null,
     "yaml": "assets/pricings/originalDataset/canva/2023.yml",
     "analytics": {
@@ -631,11 +659,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b3fc"
+      "$oid": "6787d0facaeb2b25748bc02a"
     },
     "name": "Canva",
+    "owner": "sphere",
     "version": "2022",
     "extractionDate": "2022-02-08T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/canva/2022.yml",
     "analytics": {
@@ -676,11 +706,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b3fd"
+      "$oid": "6787d0facaeb2b25748bc02b"
     },
     "name": "Canva",
+    "owner": "sphere",
     "version": "2021",
     "extractionDate": "2021-03-18T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/canva/2021.yml",
     "analytics": {
@@ -721,11 +753,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b3fe"
+      "$oid": "6787d0facaeb2b25748bc02c"
     },
     "name": "Canva",
+    "owner": "sphere",
     "version": "2020",
     "extractionDate": "2020-06-19T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/canva/2020.yml",
     "analytics": {
@@ -766,11 +800,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b3ff"
+      "$oid": "6787d0facaeb2b25748bc02d"
     },
     "name": "Canva",
+    "owner": "sphere",
     "version": "2019",
     "extractionDate": "2019-09-05T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/canva/2019.yml",
     "analytics": {
@@ -811,11 +847,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b400"
+      "$oid": "6787d0facaeb2b25748bc02e"
     },
     "name": "Clickup",
+    "owner": "sphere",
     "version": "2024",
     "extractionDate": "2024-07-04T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/clickup/2024.yml",
     "analytics": {
@@ -856,11 +894,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b401"
+      "$oid": "6787d0facaeb2b25748bc02f"
     },
     "name": "Clickup",
+    "owner": "sphere",
     "version": "2023",
     "extractionDate": "2023-11-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/clickup/2023.yml",
     "analytics": {
@@ -901,11 +941,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b402"
+      "$oid": "6787d0facaeb2b25748bc030"
     },
     "name": "Clickup",
+    "owner": "sphere",
     "version": "2022",
     "extractionDate": "2022-11-27T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/clickup/2022.yml",
     "analytics": {
@@ -946,11 +988,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b403"
+      "$oid": "6787d0facaeb2b25748bc031"
     },
     "name": "Clickup",
+    "owner": "sphere",
     "version": "2021",
     "extractionDate": "2021-11-01T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/clickup/2021.yml",
     "analytics": {
@@ -991,11 +1035,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b404"
+      "$oid": "6787d0facaeb2b25748bc032"
     },
     "name": "Clickup",
+    "owner": "sphere",
     "version": "2020",
     "extractionDate": "2020-10-01T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/clickup/2020.yml",
     "analytics": {
@@ -1036,11 +1082,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b405"
+      "$oid": "6787d0facaeb2b25748bc033"
     },
     "name": "Clickup",
+    "owner": "sphere",
     "version": "2019",
     "extractionDate": "2019-10-31T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/clickup/2019.yml",
     "analytics": {
@@ -1081,11 +1129,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b406"
+      "$oid": "6787d0facaeb2b25748bc034"
     },
     "name": "Clockify",
+    "owner": "sphere",
     "version": "2024",
     "extractionDate": "2024-07-05T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/clockify/2024.yml",
     "analytics": {
@@ -1126,11 +1176,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b407"
+      "$oid": "6787d0facaeb2b25748bc035"
     },
     "name": "Clockify",
+    "owner": "sphere",
     "version": "2023",
     "extractionDate": "2023-12-02T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/clockify/2023.yml",
     "analytics": {
@@ -1171,11 +1223,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b408"
+      "$oid": "6787d0facaeb2b25748bc036"
     },
     "name": "Clockify",
+    "owner": "sphere",
     "version": "2022",
     "extractionDate": "2022-11-15T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/clockify/2022.yml",
     "analytics": {
@@ -1216,11 +1270,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b409"
+      "$oid": "6787d0facaeb2b25748bc037"
     },
     "name": "Clockify",
+    "owner": "sphere",
     "version": "2021",
     "extractionDate": "2021-11-24T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/clockify/2021.yml",
     "analytics": {
@@ -1261,11 +1317,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b40a"
+      "$oid": "6787d0facaeb2b25748bc038"
     },
     "name": "Clockify",
+    "owner": "sphere",
     "version": "2020",
     "extractionDate": "2020-11-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/clockify/2020.yml",
     "analytics": {
@@ -1306,11 +1364,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b40b"
+      "$oid": "6787d0facaeb2b25748bc039"
     },
     "name": "Clockify",
+    "owner": "sphere",
     "version": "2019",
     "extractionDate": "2019-11-11T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/clockify/2019.yml",
     "analytics": {
@@ -1351,11 +1411,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b40c"
+      "$oid": "6787d0facaeb2b25748bc03a"
     },
     "name": "Crowdcast",
+    "owner": "sphere",
     "version": "2024",
     "extractionDate": "2024-07-14T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/crowdcast/2024.yml",
     "analytics": {
@@ -1396,11 +1458,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b40d"
+      "$oid": "6787d0facaeb2b25748bc03b"
     },
     "name": "Crowdcast",
+    "owner": "sphere",
     "version": "2023",
     "extractionDate": "2023-11-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/crowdcast/2023.yml",
     "analytics": {
@@ -1441,11 +1505,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b40e"
+      "$oid": "6787d0facaeb2b25748bc03c"
     },
     "name": "Crowdcast",
+    "owner": "sphere",
     "version": "2022",
     "extractionDate": "2022-11-22T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/crowdcast/2022.yml",
     "analytics": {
@@ -1486,11 +1552,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b40f"
+      "$oid": "6787d0facaeb2b25748bc03d"
     },
     "name": "Crowdcast",
+    "owner": "sphere",
     "version": "2021",
     "extractionDate": "2021-11-27T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/crowdcast/2021.yml",
     "analytics": {
@@ -1531,11 +1599,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b410"
+      "$oid": "6787d0facaeb2b25748bc03e"
     },
     "name": "Crowdcast",
+    "owner": "sphere",
     "version": "2020",
     "extractionDate": "2020-11-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/crowdcast/2020.yml",
     "analytics": {
@@ -1576,11 +1646,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b411"
+      "$oid": "6787d0facaeb2b25748bc03f"
     },
     "name": "Databox",
+    "owner": "sphere",
     "version": "2024",
     "extractionDate": "2024-06-11T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/databox/2024.yml",
     "analytics": {
@@ -1621,11 +1693,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b412"
+      "$oid": "6787d0facaeb2b25748bc040"
     },
     "name": "Databox",
+    "owner": "sphere",
     "version": "2023",
     "extractionDate": "2023-12-11T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/databox/2023.yml",
     "analytics": {
@@ -1666,11 +1740,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b413"
+      "$oid": "6787d0facaeb2b25748bc041"
     },
     "name": "Databox",
+    "owner": "sphere",
     "version": "2022",
     "extractionDate": "2022-11-07T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/databox/2022.yml",
     "analytics": {
@@ -1711,11 +1787,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b414"
+      "$oid": "6787d0facaeb2b25748bc042"
     },
     "name": "Databox",
+    "owner": "sphere",
     "version": "2021",
     "extractionDate": "2021-11-22T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/databox/2021.yml",
     "analytics": {
@@ -1756,11 +1834,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b415"
+      "$oid": "6787d0facaeb2b25748bc043"
     },
     "name": "Databox",
+    "owner": "sphere",
     "version": "2020",
     "extractionDate": "2020-11-30T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/databox/2020.yml",
     "analytics": {
@@ -1801,11 +1881,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b416"
+      "$oid": "6787d0facaeb2b25748bc044"
     },
     "name": "Databox",
+    "owner": "sphere",
     "version": "2019",
     "extractionDate": "2019-12-10T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/databox/2019.yml",
     "analytics": {
@@ -1846,11 +1928,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b417"
+      "$oid": "6787d0facaeb2b25748bc045"
     },
     "name": "Deskera",
+    "owner": "sphere",
     "version": "2024",
     "extractionDate": "2024-07-15T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/deskera/2024.yml",
     "analytics": {
@@ -1891,11 +1975,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b418"
+      "$oid": "6787d0facaeb2b25748bc046"
     },
     "name": "Deskera",
+    "owner": "sphere",
     "version": "2023",
     "extractionDate": "2023-03-23T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/deskera/2023.yml",
     "analytics": {
@@ -1936,11 +2022,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b419"
+      "$oid": "6787d0facaeb2b25748bc047"
     },
     "name": "Deskera",
+    "owner": "sphere",
     "version": "2022",
     "extractionDate": "2022-12-04T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/deskera/2022.yml",
     "analytics": {
@@ -1981,11 +2069,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b41a"
+      "$oid": "6787d0facaeb2b25748bc048"
     },
     "name": "Deskera",
+    "owner": "sphere",
     "version": "2021",
     "extractionDate": "2021-10-13T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/deskera/2021.yml",
     "analytics": {
@@ -2026,11 +2116,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b41b"
+      "$oid": "6787d0facaeb2b25748bc049"
     },
     "name": "Dropbox",
+    "owner": "sphere",
     "version": "2024",
     "extractionDate": "2024-07-15T00:00:00.000Z",
+    "currency": "EUR",
     "url": null,
     "yaml": "assets/pricings/originalDataset/dropbox/2024.yml",
     "analytics": {
@@ -2071,11 +2163,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b41c"
+      "$oid": "6787d0facaeb2b25748bc04a"
     },
     "name": "Dropbox",
+    "owner": "sphere",
     "version": "2023",
     "extractionDate": "2023-12-02T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/dropbox/2023.yml",
     "analytics": {
@@ -2116,11 +2210,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b41d"
+      "$oid": "6787d0facaeb2b25748bc04b"
     },
     "name": "Dropbox",
+    "owner": "sphere",
     "version": "2022",
     "extractionDate": "2022-11-15T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/dropbox/2022.yml",
     "analytics": {
@@ -2161,11 +2257,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b41e"
+      "$oid": "6787d0facaeb2b25748bc04c"
     },
     "name": "Dropbox",
+    "owner": "sphere",
     "version": "2021",
     "extractionDate": "2021-11-19T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/dropbox/2021.yml",
     "analytics": {
@@ -2206,11 +2304,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b41f"
+      "$oid": "6787d0facaeb2b25748bc04d"
     },
     "name": "Evernote",
+    "owner": "sphere",
     "version": "2024",
     "extractionDate": "2024-07-06T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/evernote/2024.yml",
     "analytics": {
@@ -2251,11 +2351,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b420"
+      "$oid": "6787d0facaeb2b25748bc04e"
     },
     "name": "Evernote",
+    "owner": "sphere",
     "version": "2023",
     "extractionDate": "2023-11-23T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/evernote/2023.yml",
     "analytics": {
@@ -2296,11 +2398,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b421"
+      "$oid": "6787d0facaeb2b25748bc04f"
     },
     "name": "Evernote",
+    "owner": "sphere",
     "version": "2022",
     "extractionDate": "2022-11-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/evernote/2022.yml",
     "analytics": {
@@ -2341,11 +2445,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b422"
+      "$oid": "6787d0facaeb2b25748bc050"
     },
     "name": "Evernote",
+    "owner": "sphere",
     "version": "2021",
     "extractionDate": "2021-11-28T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/evernote/2021.yml",
     "analytics": {
@@ -2386,11 +2492,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b423"
+      "$oid": "6787d0facaeb2b25748bc051"
     },
     "name": "Evernote",
+    "owner": "sphere",
     "version": "2020",
     "extractionDate": "2020-11-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/evernote/2020.yml",
     "analytics": {
@@ -2431,11 +2539,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b424"
+      "$oid": "6787d0facaeb2b25748bc052"
     },
     "name": "Evernote",
+    "owner": "sphere",
     "version": "2019",
     "extractionDate": "2019-11-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/evernote/2019.yml",
     "analytics": {
@@ -2476,11 +2586,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b425"
+      "$oid": "6787d0facaeb2b25748bc053"
     },
     "name": "Figma",
+    "owner": "sphere",
     "version": "2024",
     "extractionDate": "2024-07-05T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/figma/2024.yml",
     "analytics": {
@@ -2521,11 +2633,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b426"
+      "$oid": "6787d0facaeb2b25748bc054"
     },
     "name": "Figma",
+    "owner": "sphere",
     "version": "2023",
     "extractionDate": "2023-11-08T00:00:00.000Z",
+    "currency": "EUR",
     "url": null,
     "yaml": "assets/pricings/originalDataset/figma/2023.yml",
     "analytics": {
@@ -2566,11 +2680,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b427"
+      "$oid": "6787d0facaeb2b25748bc055"
     },
     "name": "Figma",
+    "owner": "sphere",
     "version": "2022",
     "extractionDate": "2022-11-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/figma/2022.yml",
     "analytics": {
@@ -2611,11 +2727,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b428"
+      "$oid": "6787d0facaeb2b25748bc056"
     },
     "name": "Figma",
+    "owner": "sphere",
     "version": "2021",
     "extractionDate": "2021-11-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/figma/2021.yml",
     "analytics": {
@@ -2656,11 +2774,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b429"
+      "$oid": "6787d0facaeb2b25748bc057"
     },
     "name": "Figma",
+    "owner": "sphere",
     "version": "2020",
     "extractionDate": "2020-11-26T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/figma/2020.yml",
     "analytics": {
@@ -2701,11 +2821,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b42a"
+      "$oid": "6787d0facaeb2b25748bc058"
     },
     "name": "Figma",
+    "owner": "sphere",
     "version": "2019",
     "extractionDate": "2019-10-17T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/figma/2019.yml",
     "analytics": {
@@ -2746,11 +2868,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b42b"
+      "$oid": "6787d0facaeb2b25748bc059"
     },
     "name": "Github",
+    "owner": "sphere",
     "version": "2024",
     "extractionDate": "2024-06-07T00:00:00.000Z",
+    "currency": "EUR",
     "url": null,
     "yaml": "assets/pricings/originalDataset/github/2024.yml",
     "analytics": {
@@ -2791,11 +2915,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b42c"
+      "$oid": "6787d0facaeb2b25748bc05a"
     },
     "name": "Github",
+    "owner": "sphere",
     "version": "2023",
     "extractionDate": "2023-11-20T00:00:00.000Z",
+    "currency": "EUR",
     "url": null,
     "yaml": "assets/pricings/originalDataset/github/2023.yml",
     "analytics": {
@@ -2836,11 +2962,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b42d"
+      "$oid": "6787d0facaeb2b25748bc05b"
     },
     "name": "Github",
+    "owner": "sphere",
     "version": "2022",
     "extractionDate": "2022-11-29T00:00:00.000Z",
+    "currency": "EUR",
     "url": null,
     "yaml": "assets/pricings/originalDataset/github/2022.yml",
     "analytics": {
@@ -2881,11 +3009,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b42e"
+      "$oid": "6787d0facaeb2b25748bc05c"
     },
     "name": "Github",
+    "owner": "sphere",
     "version": "2021",
     "extractionDate": "2021-11-29T00:00:00.000Z",
+    "currency": "EUR",
     "url": null,
     "yaml": "assets/pricings/originalDataset/github/2021.yml",
     "analytics": {
@@ -2926,11 +3056,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b42f"
+      "$oid": "6787d0facaeb2b25748bc05d"
     },
     "name": "Github",
+    "owner": "sphere",
     "version": "2020",
     "extractionDate": "2020-11-29T00:00:00.000Z",
+    "currency": "EUR",
     "url": null,
     "yaml": "assets/pricings/originalDataset/github/2020.yml",
     "analytics": {
@@ -2971,11 +3103,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b430"
+      "$oid": "6787d0facaeb2b25748bc05e"
     },
     "name": "Github",
+    "owner": "sphere",
     "version": "2019",
     "extractionDate": "2019-11-29T00:00:00.000Z",
+    "currency": "EUR",
     "url": null,
     "yaml": "assets/pricings/originalDataset/github/2019.yml",
     "analytics": {
@@ -3016,11 +3150,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b431"
+      "$oid": "6787d0facaeb2b25748bc05f"
     },
     "name": "Hypercontext",
+    "owner": "sphere",
     "version": "2024",
     "extractionDate": "2024-07-15T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/hypercontext/2024.yml",
     "analytics": {
@@ -3061,11 +3197,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b432"
+      "$oid": "6787d0facaeb2b25748bc060"
     },
     "name": "Hypercontext",
+    "owner": "sphere",
     "version": "2023",
     "extractionDate": "2023-10-24T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/hypercontext/2023.yml",
     "analytics": {
@@ -3106,11 +3244,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b433"
+      "$oid": "6787d0facaeb2b25748bc061"
     },
     "name": "Hypercontext",
+    "owner": "sphere",
     "version": "2022",
     "extractionDate": "2022-10-13T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/hypercontext/2022.yml",
     "analytics": {
@@ -3151,11 +3291,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b434"
+      "$oid": "6787d0facaeb2b25748bc062"
     },
     "name": "Hypercontext",
+    "owner": "sphere",
     "version": "2021",
     "extractionDate": "2021-10-09T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/hypercontext/2021.yml",
     "analytics": {
@@ -3196,11 +3338,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b435"
+      "$oid": "6787d0facaeb2b25748bc063"
     },
     "name": "Jira",
+    "owner": "sphere",
     "version": "2024",
     "extractionDate": "2024-07-07T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/jira/2024.yml",
     "analytics": {
@@ -3241,11 +3385,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b436"
+      "$oid": "6787d0facaeb2b25748bc064"
     },
     "name": "Jira",
+    "owner": "sphere",
     "version": "2023",
     "extractionDate": "2023-11-16T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/jira/2023.yml",
     "analytics": {
@@ -3286,11 +3432,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b437"
+      "$oid": "6787d0facaeb2b25748bc065"
     },
     "name": "Jira",
+    "owner": "sphere",
     "version": "2022",
     "extractionDate": "2022-11-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/jira/2022.yml",
     "analytics": {
@@ -3331,11 +3479,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b438"
+      "$oid": "6787d0facaeb2b25748bc066"
     },
     "name": "Jira",
+    "owner": "sphere",
     "version": "2021",
     "extractionDate": "2021-09-24T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/jira/2021.yml",
     "analytics": {
@@ -3376,11 +3526,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b439"
+      "$oid": "6787d0facaeb2b25748bc067"
     },
     "name": "Jira",
+    "owner": "sphere",
     "version": "2020",
     "extractionDate": "2020-11-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/jira/2020.yml",
     "analytics": {
@@ -3421,11 +3573,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b43a"
+      "$oid": "6787d0facaeb2b25748bc068"
     },
     "name": "Jira",
+    "owner": "sphere",
     "version": "2019",
     "extractionDate": "2019-10-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/jira/2019.yml",
     "analytics": {
@@ -3466,11 +3620,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b43b"
+      "$oid": "6787d0facaeb2b25748bc069"
     },
     "name": "Mailchimp",
+    "owner": "sphere",
     "version": "2024",
     "extractionDate": "2024-07-12T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/mailchimp/2024.yml",
     "analytics": {
@@ -3511,11 +3667,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b43c"
+      "$oid": "6787d0facaeb2b25748bc06a"
     },
     "name": "Mailchimp",
+    "owner": "sphere",
     "version": "2023",
     "extractionDate": "2023-11-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/mailchimp/2023.yml",
     "analytics": {
@@ -3556,11 +3714,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b43d"
+      "$oid": "6787d0facaeb2b25748bc06b"
     },
     "name": "Mailchimp",
+    "owner": "sphere",
     "version": "2022",
     "extractionDate": "2022-11-30T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/mailchimp/2022.yml",
     "analytics": {
@@ -3601,11 +3761,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b43e"
+      "$oid": "6787d0facaeb2b25748bc06c"
     },
     "name": "Mailchimp",
+    "owner": "sphere",
     "version": "2021",
     "extractionDate": "2021-11-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/mailchimp/2021.yml",
     "analytics": {
@@ -3646,11 +3808,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b43f"
+      "$oid": "6787d0facaeb2b25748bc06d"
     },
     "name": "Mailchimp",
+    "owner": "sphere",
     "version": "2020",
     "extractionDate": "2020-11-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/mailchimp/2020.yml",
     "analytics": {
@@ -3691,11 +3855,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b440"
+      "$oid": "6787d0facaeb2b25748bc06e"
     },
     "name": "Mailchimp",
+    "owner": "sphere",
     "version": "2019",
     "extractionDate": "2019-11-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/mailchimp/2019.yml",
     "analytics": {
@@ -3736,11 +3902,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b441"
+      "$oid": "6787d0facaeb2b25748bc06f"
     },
     "name": "Office",
+    "owner": "sphere",
     "version": "2019",
     "extractionDate": "2019-11-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/microsoft365Business/2019.yml",
     "analytics": {
@@ -3781,11 +3949,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b442"
+      "$oid": "6787d0facaeb2b25748bc070"
     },
     "name": "Microsoft",
+    "owner": "sphere",
     "version": "2024",
     "extractionDate": "2024-07-16T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/microsoft365Business/2024.yml",
     "analytics": {
@@ -3826,11 +3996,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b443"
+      "$oid": "6787d0facaeb2b25748bc071"
     },
     "name": "Microsoft",
+    "owner": "sphere",
     "version": "2023",
     "extractionDate": "2023-11-24T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/microsoft365Business/2023.yml",
     "analytics": {
@@ -3871,11 +4043,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b444"
+      "$oid": "6787d0facaeb2b25748bc072"
     },
     "name": "Microsoft",
+    "owner": "sphere",
     "version": "2022",
     "extractionDate": "2022-11-23T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/microsoft365Business/2022.yml",
     "analytics": {
@@ -3916,11 +4090,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b445"
+      "$oid": "6787d0facaeb2b25748bc073"
     },
     "name": "Microsoft",
+    "owner": "sphere",
     "version": "2021",
     "extractionDate": "2021-11-18T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/microsoft365Business/2021.yml",
     "analytics": {
@@ -3961,11 +4137,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b446"
+      "$oid": "6787d0facaeb2b25748bc074"
     },
     "name": "Microsoft",
+    "owner": "sphere",
     "version": "2020",
     "extractionDate": "2020-11-11T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/microsoft365Business/2020.yml",
     "analytics": {
@@ -4006,11 +4184,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b447"
+      "$oid": "6787d0facaeb2b25748bc075"
     },
     "name": "Notion",
+    "owner": "sphere",
     "version": "2024",
     "extractionDate": "2024-07-16T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/notion/2024.yml",
     "analytics": {
@@ -4051,11 +4231,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b448"
+      "$oid": "6787d0facaeb2b25748bc076"
     },
     "name": "Notion",
+    "owner": "sphere",
     "version": "2023",
     "extractionDate": "2023-11-28T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/notion/2023.yml",
     "analytics": {
@@ -4096,11 +4278,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b449"
+      "$oid": "6787d0facaeb2b25748bc077"
     },
     "name": "Notion",
+    "owner": "sphere",
     "version": "2022",
     "extractionDate": "2022-11-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/notion/2022.yml",
     "analytics": {
@@ -4141,11 +4325,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b44a"
+      "$oid": "6787d0facaeb2b25748bc078"
     },
     "name": "Notion",
+    "owner": "sphere",
     "version": "2021",
     "extractionDate": "2021-11-01T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/notion/2021.yml",
     "analytics": {
@@ -4186,11 +4372,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b44b"
+      "$oid": "6787d0facaeb2b25748bc079"
     },
     "name": "Openphone",
+    "owner": "sphere",
     "version": "2024",
     "extractionDate": "2024-07-16T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/openphone/2024.yml",
     "analytics": {
@@ -4231,11 +4419,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b44c"
+      "$oid": "6787d0facaeb2b25748bc07a"
     },
     "name": "Openphone",
+    "owner": "sphere",
     "version": "2023",
     "extractionDate": "2023-11-19T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/openphone/2023.yml",
     "analytics": {
@@ -4276,11 +4466,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b44d"
+      "$oid": "6787d0facaeb2b25748bc07b"
     },
     "name": "Openphone",
+    "owner": "sphere",
     "version": "2022",
     "extractionDate": "2022-11-28T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/openphone/2022.yml",
     "analytics": {
@@ -4321,11 +4513,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b44e"
+      "$oid": "6787d0facaeb2b25748bc07c"
     },
     "name": "Openphone",
+    "owner": "sphere",
     "version": "2021",
     "extractionDate": "2021-11-17T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/openphone/2021.yml",
     "analytics": {
@@ -4366,11 +4560,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b44f"
+      "$oid": "6787d0facaeb2b25748bc07d"
     },
     "name": "Openphone",
+    "owner": "sphere",
     "version": "2020",
     "extractionDate": "2020-11-11T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/openphone/2020.yml",
     "analytics": {
@@ -4411,11 +4607,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b450"
+      "$oid": "6787d0facaeb2b25748bc07e"
     },
     "name": "Overleaf",
+    "owner": "sphere",
     "version": "2024",
     "extractionDate": "2024-07-10T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/overleaf/2024.yml",
     "analytics": {
@@ -4456,11 +4654,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b451"
+      "$oid": "6787d0facaeb2b25748bc07f"
     },
     "name": "Overleaf",
+    "owner": "sphere",
     "version": "2023",
     "extractionDate": "2023-11-27T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/overleaf/2023.yml",
     "analytics": {
@@ -4501,11 +4701,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b452"
+      "$oid": "6787d0facaeb2b25748bc080"
     },
     "name": "Overleaf",
+    "owner": "sphere",
     "version": "2022",
     "extractionDate": "2022-11-27T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/overleaf/2022.yml",
     "analytics": {
@@ -4546,11 +4748,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b453"
+      "$oid": "6787d0facaeb2b25748bc081"
     },
     "name": "Overleaf",
+    "owner": "sphere",
     "version": "2021",
     "extractionDate": "2021-11-27T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/overleaf/2021.yml",
     "analytics": {
@@ -4591,11 +4795,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b454"
+      "$oid": "6787d0facaeb2b25748bc082"
     },
     "name": "Overleaf",
+    "owner": "sphere",
     "version": "2020",
     "extractionDate": "2020-11-24T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/overleaf/2020.yml",
     "analytics": {
@@ -4636,11 +4842,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b455"
+      "$oid": "6787d0facaeb2b25748bc083"
     },
     "name": "Overleaf",
+    "owner": "sphere",
     "version": "2019",
     "extractionDate": "2019-11-03T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/overleaf/2019.yml",
     "analytics": {
@@ -4681,11 +4889,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b456"
+      "$oid": "6787d0facaeb2b25748bc084"
     },
     "name": "Planable",
+    "owner": "sphere",
     "version": "2024",
     "extractionDate": "2024-07-18T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/planable/2024.yml",
     "analytics": {
@@ -4726,11 +4936,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b457"
+      "$oid": "6787d0facaeb2b25748bc085"
     },
     "name": "Planable",
+    "owner": "sphere",
     "version": "2023",
     "extractionDate": "2023-10-20T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/planable/2023.yml",
     "analytics": {
@@ -4771,11 +4983,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b458"
+      "$oid": "6787d0facaeb2b25748bc086"
     },
     "name": "Planable",
+    "owner": "sphere",
     "version": "2022",
     "extractionDate": "2022-10-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/planable/2022.yml",
     "analytics": {
@@ -4816,11 +5030,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b459"
+      "$oid": "6787d0facaeb2b25748bc087"
     },
     "name": "Planable",
+    "owner": "sphere",
     "version": "2021",
     "extractionDate": "2021-11-18T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/planable/2021.yml",
     "analytics": {
@@ -4861,11 +5077,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b45a"
+      "$oid": "6787d0facaeb2b25748bc088"
     },
     "name": "Planable",
+    "owner": "sphere",
     "version": "2020",
     "extractionDate": "2020-11-25T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/planable/2020.yml",
     "analytics": {
@@ -4906,11 +5124,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b45b"
+      "$oid": "6787d0facaeb2b25748bc089"
     },
     "name": "Planable",
+    "owner": "sphere",
     "version": "2019",
     "extractionDate": "2019-05-23T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/planable/2019.yml",
     "analytics": {
@@ -4951,11 +5171,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b45c"
+      "$oid": "6787d0facaeb2b25748bc08a"
     },
     "name": "Postman",
+    "owner": "sphere",
     "version": "2024",
     "extractionDate": "2024-06-28T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/postman/2024.yml",
     "analytics": {
@@ -4996,11 +5218,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b45d"
+      "$oid": "6787d0facaeb2b25748bc08b"
     },
     "name": "Postman",
+    "owner": "sphere",
     "version": "2023",
     "extractionDate": "2023-11-04T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/postman/2023.yml",
     "analytics": {
@@ -5041,11 +5265,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b45e"
+      "$oid": "6787d0facaeb2b25748bc08c"
     },
     "name": "Postman",
+    "owner": "sphere",
     "version": "2022",
     "extractionDate": "2022-11-23T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/postman/2022.yml",
     "analytics": {
@@ -5086,11 +5312,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b45f"
+      "$oid": "6787d0facaeb2b25748bc08d"
     },
     "name": "Postman",
+    "owner": "sphere",
     "version": "2021",
     "extractionDate": "2021-11-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/postman/2021.yml",
     "analytics": {
@@ -5131,11 +5359,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b460"
+      "$oid": "6787d0facaeb2b25748bc08e"
     },
     "name": "Postman",
+    "owner": "sphere",
     "version": "2020",
     "extractionDate": "2020-11-24T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/postman/2020.yml",
     "analytics": {
@@ -5176,11 +5406,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b461"
+      "$oid": "6787d0facaeb2b25748bc08f"
     },
     "name": "Pumble",
+    "owner": "sphere",
     "version": "2024",
     "extractionDate": "2024-07-15T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/pumble/2024.yml",
     "analytics": {
@@ -5221,11 +5453,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b462"
+      "$oid": "6787d0facaeb2b25748bc090"
     },
     "name": "Pumble",
+    "owner": "sphere",
     "version": "2023",
     "extractionDate": "2023-09-30T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/pumble/2023.yml",
     "analytics": {
@@ -5266,11 +5500,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b463"
+      "$oid": "6787d0facaeb2b25748bc091"
     },
     "name": "Pumble",
+    "owner": "sphere",
     "version": "2022",
     "extractionDate": "2022-11-27T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/pumble/2022.yml",
     "analytics": {
@@ -5311,11 +5547,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b464"
+      "$oid": "6787d0facaeb2b25748bc092"
     },
     "name": "Pumble",
+    "owner": "sphere",
     "version": "2021",
     "extractionDate": "2021-09-19T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/pumble/2021.yml",
     "analytics": {
@@ -5356,11 +5594,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b465"
+      "$oid": "6787d0facaeb2b25748bc093"
     },
     "name": "Quip",
+    "owner": "sphere",
     "version": "2024",
     "extractionDate": "2024-07-01T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/quip/2024.yml",
     "analytics": {
@@ -5401,11 +5641,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b466"
+      "$oid": "6787d0facaeb2b25748bc094"
     },
     "name": "Quip",
+    "owner": "sphere",
     "version": "2023",
     "extractionDate": "2023-11-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/quip/2023.yml",
     "analytics": {
@@ -5446,11 +5688,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b467"
+      "$oid": "6787d0facaeb2b25748bc095"
     },
     "name": "Quip",
+    "owner": "sphere",
     "version": "2022",
     "extractionDate": "2022-11-28T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/quip/2022.yml",
     "analytics": {
@@ -5491,11 +5735,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b468"
+      "$oid": "6787d0facaeb2b25748bc096"
     },
     "name": "Quip",
+    "owner": "sphere",
     "version": "2021",
     "extractionDate": "2021-11-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/quip/2021.yml",
     "analytics": {
@@ -5536,11 +5782,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b469"
+      "$oid": "6787d0facaeb2b25748bc097"
     },
     "name": "Quip",
+    "owner": "sphere",
     "version": "2020",
     "extractionDate": "2020-11-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/quip/2020.yml",
     "analytics": {
@@ -5581,11 +5829,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b46a"
+      "$oid": "6787d0facaeb2b25748bc098"
     },
     "name": "Quip",
+    "owner": "sphere",
     "version": "2019",
     "extractionDate": "2019-11-25T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/quip/2019.yml",
     "analytics": {
@@ -5626,11 +5876,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b46b"
+      "$oid": "6787d0facaeb2b25748bc099"
     },
     "name": "Salesforce",
+    "owner": "sphere",
     "version": "2024",
     "extractionDate": "2024-07-15T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/salesforce/2024.yml",
     "analytics": {
@@ -5671,11 +5923,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b46c"
+      "$oid": "6787d0facaeb2b25748bc09a"
     },
     "name": "Salesforce",
+    "owner": "sphere",
     "version": "2023",
     "extractionDate": "2023-12-02T00:00:00.000Z",
+    "currency": "EUR",
     "url": null,
     "yaml": "assets/pricings/originalDataset/salesforce/2023.yml",
     "analytics": {
@@ -5716,11 +5970,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b46d"
+      "$oid": "6787d0facaeb2b25748bc09b"
     },
     "name": "Salesforce",
+    "owner": "sphere",
     "version": "2022",
     "extractionDate": "2022-11-26T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/salesforce/2022.yml",
     "analytics": {
@@ -5761,11 +6017,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b46e"
+      "$oid": "6787d0facaeb2b25748bc09c"
     },
     "name": "Salesforce",
+    "owner": "sphere",
     "version": "2021",
     "extractionDate": "2021-11-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/salesforce/2021.yml",
     "analytics": {
@@ -5806,11 +6064,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b46f"
+      "$oid": "6787d0facaeb2b25748bc09d"
     },
     "name": "Salesforce",
+    "owner": "sphere",
     "version": "2020",
     "extractionDate": "2020-11-25T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/salesforce/2020.yml",
     "analytics": {
@@ -5851,11 +6111,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b470"
+      "$oid": "6787d0facaeb2b25748bc09e"
     },
     "name": "Salesforce",
+    "owner": "sphere",
     "version": "2019",
     "extractionDate": "2019-11-25T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/salesforce/2019.yml",
     "analytics": {
@@ -5896,11 +6158,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b471"
+      "$oid": "6787d0facaeb2b25748bc09f"
     },
     "name": "Slack",
+    "owner": "sphere",
     "version": "2024",
     "extractionDate": "2024-07-02T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/slack/2024.yml",
     "analytics": {
@@ -5941,11 +6205,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b472"
+      "$oid": "6787d0facaeb2b25748bc0a0"
     },
     "name": "Slack",
+    "owner": "sphere",
     "version": "2023",
     "extractionDate": "2023-10-23T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/slack/2023.yml",
     "analytics": {
@@ -5986,11 +6252,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b473"
+      "$oid": "6787d0facaeb2b25748bc0a1"
     },
     "name": "Slack",
+    "owner": "sphere",
     "version": "2020",
     "extractionDate": "2020-10-21T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/slack/2020.yml",
     "analytics": {
@@ -6031,11 +6299,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b474"
+      "$oid": "6787d0facaeb2b25748bc0a2"
     },
     "name": "Slack",
+    "owner": "sphere",
     "version": "2019",
     "extractionDate": "2019-10-30T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/slack/2019.yml",
     "analytics": {
@@ -6076,11 +6346,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b475"
+      "$oid": "6787d0facaeb2b25748bc0a3"
     },
     "name": "Tableau",
+    "owner": "sphere",
     "version": "2024",
     "extractionDate": "2024-06-30T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/tableau/2024.yml",
     "analytics": {
@@ -6121,11 +6393,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b476"
+      "$oid": "6787d0facaeb2b25748bc0a4"
     },
     "name": "Tableau",
+    "owner": "sphere",
     "version": "2023",
     "extractionDate": "2023-11-28T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/tableau/2023.yml",
     "analytics": {
@@ -6166,11 +6440,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b477"
+      "$oid": "6787d0facaeb2b25748bc0a5"
     },
     "name": "Tableau",
+    "owner": "sphere",
     "version": "2022",
     "extractionDate": "2022-11-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/tableau/2022.yml",
     "analytics": {
@@ -6211,11 +6487,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b478"
+      "$oid": "6787d0facaeb2b25748bc0a6"
     },
     "name": "Tableau",
+    "owner": "sphere",
     "version": "2021",
     "extractionDate": "2021-11-28T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/tableau/2021.yml",
     "analytics": {
@@ -6256,11 +6534,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b479"
+      "$oid": "6787d0facaeb2b25748bc0a7"
     },
     "name": "Tableau",
+    "owner": "sphere",
     "version": "2020",
     "extractionDate": "2020-11-25T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/tableau/2020.yml",
     "analytics": {
@@ -6301,11 +6581,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b47a"
+      "$oid": "6787d0facaeb2b25748bc0a8"
     },
     "name": "Tableau",
+    "owner": "sphere",
     "version": "2019",
     "extractionDate": "2019-08-12T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/tableau/2019.yml",
     "analytics": {
@@ -6346,11 +6628,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b47b"
+      "$oid": "6787d0facaeb2b25748bc0a9"
     },
     "name": "Trustmary",
+    "owner": "sphere",
     "version": "2024",
     "extractionDate": "2024-07-14T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/trustmary/2024.yml",
     "analytics": {
@@ -6391,11 +6675,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b47c"
+      "$oid": "6787d0facaeb2b25748bc0aa"
     },
     "name": "Trustmary",
+    "owner": "sphere",
     "version": "2023",
     "extractionDate": "2023-10-30T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/trustmary/2023.yml",
     "analytics": {
@@ -6436,11 +6722,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b47d"
+      "$oid": "6787d0facaeb2b25748bc0ab"
     },
     "name": "Trustmary",
+    "owner": "sphere",
     "version": "2022",
     "extractionDate": "2022-11-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/trustmary/2022.yml",
     "analytics": {
@@ -6481,11 +6769,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b47e"
+      "$oid": "6787d0facaeb2b25748bc0ac"
     },
     "name": "Trustmary",
+    "owner": "sphere",
     "version": "2021",
     "extractionDate": "2021-11-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/trustmary/2021.yml",
     "analytics": {
@@ -6526,11 +6816,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b47f"
+      "$oid": "6787d0facaeb2b25748bc0ad"
     },
     "name": "Userguiding",
+    "owner": "sphere",
     "version": "2024",
     "extractionDate": "2024-11-09T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/userguiding/2024.yml",
     "analytics": {
@@ -6571,11 +6863,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b480"
+      "$oid": "6787d0facaeb2b25748bc0ae"
     },
     "name": "Userguiding",
+    "owner": "sphere",
     "version": "2023",
     "extractionDate": "2023-12-09T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/userguiding/2023.yml",
     "analytics": {
@@ -6616,11 +6910,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b481"
+      "$oid": "6787d0facaeb2b25748bc0af"
     },
     "name": "Userguiding",
+    "owner": "sphere",
     "version": "2022",
     "extractionDate": "2022-11-22T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/userguiding/2022.yml",
     "analytics": {
@@ -6661,11 +6957,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b482"
+      "$oid": "6787d0facaeb2b25748bc0b0"
     },
     "name": "Userguiding",
+    "owner": "sphere",
     "version": "2021",
     "extractionDate": "2021-10-28T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/userguiding/2021.yml",
     "analytics": {
@@ -6706,11 +7004,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b483"
+      "$oid": "6787d0facaeb2b25748bc0b1"
     },
     "name": "Userguiding",
+    "owner": "sphere",
     "version": "2020",
     "extractionDate": "2020-11-24T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/userguiding/2020.yml",
     "analytics": {
@@ -6751,11 +7051,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b484"
+      "$oid": "6787d0facaeb2b25748bc0b2"
     },
     "name": "Wrike",
+    "owner": "sphere",
     "version": "2024",
     "extractionDate": "2024-07-09T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/wrike/2024.yml",
     "analytics": {
@@ -6796,11 +7098,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b485"
+      "$oid": "6787d0facaeb2b25748bc0b3"
     },
     "name": "Wrike",
+    "owner": "sphere",
     "version": "2023",
     "extractionDate": "2023-12-02T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/wrike/2023.yml",
     "analytics": {
@@ -6841,11 +7145,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b486"
+      "$oid": "6787d0facaeb2b25748bc0b4"
     },
     "name": "Wrike",
+    "owner": "sphere",
     "version": "2022",
     "extractionDate": "2022-10-03T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/wrike/2022.yml",
     "analytics": {
@@ -6886,11 +7192,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b487"
+      "$oid": "6787d0facaeb2b25748bc0b5"
     },
     "name": "Wrike",
+    "owner": "sphere",
     "version": "2021",
     "extractionDate": "2021-11-23T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/wrike/2021.yml",
     "analytics": {
@@ -6931,11 +7239,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b488"
+      "$oid": "6787d0facaeb2b25748bc0b6"
     },
     "name": "Wrike",
+    "owner": "sphere",
     "version": "2020",
     "extractionDate": "2020-11-23T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/wrike/2020.yml",
     "analytics": {
@@ -6976,11 +7286,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b489"
+      "$oid": "6787d0facaeb2b25748bc0b7"
     },
     "name": "Wrike",
+    "owner": "sphere",
     "version": "2019",
     "extractionDate": "2019-11-28T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/wrike/2019.yml",
     "analytics": {
@@ -7021,11 +7333,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b48a"
+      "$oid": "6787d0facaeb2b25748bc0b8"
     },
     "name": "Zapier",
+    "owner": "sphere",
     "version": "2024",
     "extractionDate": "2024-07-02T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/zapier/2024.yml",
     "analytics": {
@@ -7066,11 +7380,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b48b"
+      "$oid": "6787d0facaeb2b25748bc0b9"
     },
     "name": "Zapier",
+    "owner": "sphere",
     "version": "2023",
     "extractionDate": "2023-11-28T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/zapier/2023.yml",
     "analytics": {
@@ -7111,11 +7427,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b48c"
+      "$oid": "6787d0facaeb2b25748bc0ba"
     },
     "name": "Zapier",
+    "owner": "sphere",
     "version": "2022",
     "extractionDate": "2022-11-29T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/zapier/2022.yml",
     "analytics": {
@@ -7156,11 +7474,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b48d"
+      "$oid": "6787d0facaeb2b25748bc0bb"
     },
     "name": "Zapier",
+    "owner": "sphere",
     "version": "2020",
     "extractionDate": "2020-11-16T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/zapier/2020.yml",
     "analytics": {
@@ -7201,11 +7521,13 @@
   },
   {
     "_id": {
-      "$oid": "677c4750a5956cfdb323b48e"
+      "$oid": "6787d0facaeb2b25748bc0bc"
     },
     "name": "Zapier",
+    "owner": "sphere",
     "version": "2019",
     "extractionDate": "2019-11-12T00:00:00.000Z",
+    "currency": "USD",
     "url": null,
     "yaml": "assets/pricings/originalDataset/zapier/2019.yml",
     "analytics": {

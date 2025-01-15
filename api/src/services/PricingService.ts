@@ -4,6 +4,7 @@ import container from "../config/container";
 import { PricingRepository } from "../types/repositories/PricingRepository";
 import { processFileUris } from "./FileService";
 import { PricingService as PricingAnalytics, retrievePricingFromPath } from "pricing4ts/server";
+import { PricingIndexQueryParams } from "../types/services/PricingService";
 
 class PricingService {
     
@@ -13,8 +14,8 @@ class PricingService {
       this.pricingRepository = container.resolve('pricingRepository');
     }
 
-    async index () {
-      const pricings = await this.pricingRepository.findAll()
+    async index (queryParams: PricingIndexQueryParams) {
+      const pricings = await this.pricingRepository.findAll(queryParams)
       return pricings
     }
   

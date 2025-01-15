@@ -1,8 +1,9 @@
 saasName: Canva
-version: '2.0'
+syntaxVersion: '2.1'
+version: 2021-3-18
 createdAt: '2021-03-18'
 currency: USD
-hasAnnualPayment: true
+variables: {}
 features:
   freeTemplates:
     description: ''

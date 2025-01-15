@@ -1,8 +1,9 @@
 saasName: Tableau
-version: '2.0'
+syntaxVersion: '2.1'
+version: 2024-6-30
 createdAt: '2024-06-30'
 currency: USD
-hasAnnualPayment: true
+variables: {}
 features:
   manageUserPermissions:
     description: Manage site roles, content ownership, and user permissions.

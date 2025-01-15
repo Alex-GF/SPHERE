@@ -1,8 +1,9 @@
 saasName: Canva
-version: "2.0"
-createdAt: "2024-07-07"
+syntaxVersion: '2.1'
+version: 2024-7-7
+createdAt: '2024-07-07'
 currency: EUR
-hasAnnualPayment: true
+variables: {}
 features:
   assets1:
     description: Free stock photos, font, graphics, videos and audio
@@ -10,7 +11,7 @@ features:
     defaultValue: 3.2+ million
     type: DOMAIN
   templates:
-    description: ""
+    description: ''
     valueType: TEXT
     defaultValue: 2.1+ million
     type: DOMAIN
@@ -30,12 +31,12 @@ features:
     defaultValue: false
     type: DOMAIN
   multiplePresentationModes:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   socialSharing:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
@@ -52,22 +53,22 @@ features:
     defaultValue: false
     type: DOMAIN
   basicDesignInsights:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: INFORMATION
   advancedDesignInsights:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: INFORMATION
   socialContentPlanner:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
   soundEffects:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
@@ -96,18 +97,18 @@ features:
     type: AUTOMATION
     automationType: BOT
   magicMorph:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: AUTOMATION
     automationType: BOT
   resize:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
   magicSwitch:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: AUTOMATION
@@ -119,13 +120,13 @@ features:
     type: AUTOMATION
     automationType: BOT
   magicAnimate:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: AUTOMATION
     automationType: BOT
   magicEdit:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: AUTOMATION
@@ -137,24 +138,24 @@ features:
     type: AUTOMATION
     automationType: BOT
   magicGrab:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: AUTOMATION
     automationType: BOT
   magicExpand:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: AUTOMATION
     automationType: BOT
   mockups:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
   backgroundRemover:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
@@ -170,114 +171,114 @@ features:
     type: AUTOMATION
     automationType: TASK_AUTOMATION
   highlights:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: AUTOMATION
     automationType: TASK_AUTOMATION
   enhanceVoice:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: AUTOMATION
     automationType: BOT
   socialMedia:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   print:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   presentations:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   video:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   websites:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   whiteboards:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   documents:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   courses:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   recordings:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   realTimeCollaboration:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   comments:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   assignTasks:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: MANAGEMENT
   linkSharing:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: MANAGEMENT
   anonymousCollaboration:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: MANAGEMENT
   teamOnlyLinks:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: MANAGEMENT
   brandControls:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
   brandTemplates:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
   brandKits:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   foldersInBrandKits:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
   elementLocking:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: MANAGEMENT
@@ -287,223 +288,223 @@ features:
     defaultValue: false
     type: DOMAIN
   approvals:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: MANAGEMENT
   approvalWorkflows:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: MANAGEMENT
   orgWideBrandKitsAndTemplates:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: MANAGEMENT
   inviteTeamMembers:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: MANAGEMENT
   roleAssignments:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: MANAGEMENT
   ownerShipTransfer:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: MANAGEMENT
   reports:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: INFORMATION
   multiTeamOrganizations:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: MANAGEMENT
   aiAdminControls:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: MANAGEMENT
   restrictedSharedControls:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: MANAGEMENT
   templateLibraryPermissions:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: MANAGEMENT
   granularElementControls:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: MANAGEMENT
   ipIndemnityContentControl:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: MANAGEMENT
   privateEmbeds:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: EXTENSION
   appsMarketplace:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
     integrationType: MARKETPLACE
   appsSDKsAccess:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
     integrationType: MARKETPLACE
   connectApiForCustomIntegrations:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: API
   multiFactorAuthentication:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: MANAGEMENT
   iso27001CertificationAndCompliance:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: GUARANTEE
   soc2TypeII:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: GUARANTEE
   canvaShield:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: GUARANTEE
   domainReports:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: INFORMATION
   singleSignOn:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: IDENTITY_PROVIDER
   crossDomainIdentityManagement:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: IDENTITY_PROVIDER
   auditLogs:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: INFORMATION
   folders:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   mediaTagging:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
   cloudStorage:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   tutorials:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: SUPPORT
   certifications:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: SUPPORT
   selfHelp:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: SUPPORT
   aiChatBot:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: SUPPORT
   supportTickets:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: SUPPORT
   liveChat:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: SUPPORT
   priorityHandling:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: SUPPORT
   dedicatedSupportCaseManagement:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: SUPPORT
   dedicatedCustomerSuccessManager:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: SUPPORT
   creativeServices:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: SUPPORT
   payAsYouGrowBilling:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: PAYMENT
 usageLimits:
   minimumUsersRequired:
-    description: ""
+    description: ''
     valueType: NUMERIC
     defaultValue: 0
     unit: user
     type: NON_RENEWABLE
     linkedFeatures: null
   usersLimit:
-    description: ""
+    description: ''
     valueType: NUMERIC
     defaultValue: 1
     unit: user
     type: NON_RENEWABLE
     linkedFeatures: null
   magicDesignUsageTokens:
-    description: ""
+    description: ''
     valueType: NUMERIC
     defaultValue: 10
     unit: use
@@ -511,7 +512,7 @@ usageLimits:
     linkedFeatures:
       - magicDesign
   magicWriteTotalUsages:
-    description: ""
+    description: ''
     valueType: NUMERIC
     defaultValue: 50
     unit: use
@@ -519,7 +520,7 @@ usageLimits:
     linkedFeatures:
       - magicWrite
   magicWriteReusableTokens:
-    description: ""
+    description: ''
     valueType: NUMERIC
     defaultValue: 0
     unit: use
@@ -527,7 +528,7 @@ usageLimits:
     linkedFeatures:
       - magicWrite
   magicText2ImageTotalTokens:
-    description: ""
+    description: ''
     valueType: NUMERIC
     defaultValue: 50
     unit: use
@@ -535,7 +536,7 @@ usageLimits:
     linkedFeatures:
       - magicMediaText2Image
   magicText2ImageReusableTokens:
-    description: ""
+    description: ''
     valueType: NUMERIC
     defaultValue: 0
     unit: use
@@ -543,7 +544,7 @@ usageLimits:
     linkedFeatures:
       - magicMediaText2Image
   magicText2VideoTotalTokens:
-    description: ""
+    description: ''
     valueType: NUMERIC
     defaultValue: 5
     unit: use
@@ -551,7 +552,7 @@ usageLimits:
     linkedFeatures:
       - magicMediaText2Video
   magicText2VideoReusableTokens:
-    description: ""
+    description: ''
     valueType: NUMERIC
     defaultValue: 0
     unit: use
@@ -559,7 +560,7 @@ usageLimits:
     linkedFeatures:
       - magicMediaText2Video
   translatorTotalPages:
-    description: ""
+    description: ''
     valueType: NUMERIC
     defaultValue: 50
     unit: page
@@ -567,7 +568,7 @@ usageLimits:
     linkedFeatures:
       - translator
   translatorReusablePages:
-    description: ""
+    description: ''
     valueType: NUMERIC
     defaultValue: 0
     unit: page
@@ -575,7 +576,7 @@ usageLimits:
     linkedFeatures:
       - translator
   brandKitsUnits:
-    description: ""
+    description: ''
     valueType: NUMERIC
     defaultValue: 1
     unit: kit
@@ -583,7 +584,7 @@ usageLimits:
     linkedFeatures:
       - brandKits
   cloudStorageLimit:
-    description: ""
+    description: ''
     valueType: NUMERIC
     defaultValue: 5
     unit: GB
@@ -591,7 +592,7 @@ usageLimits:
     linkedFeatures:
       - cloudStorage
   availableOnlyIfMoreThan100SeatsInvoiced:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: NON_RENEWABLE

@@ -1,8 +1,9 @@
 saasName: Pumble
-version: '2.0'
+syntaxVersion: '2.1'
+version: 2023-9-30
 createdAt: '2023-09-30'
 currency: USD
-hasAnnualPayment: true
+variables: {}
 features:
   privateChannels:
     description: Only invited users can send messages in a private channel.

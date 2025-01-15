@@ -1,8 +1,9 @@
 saasName: Crowdcast
-version: '2.0'
+syntaxVersion: '2.1'
+version: 2024-7-14
 createdAt: '2024-07-14'
 currency: USD
-hasAnnualPayment: true
+variables: {}
 features:
   liveStreaming:
     description: ''
@@ -12,7 +13,7 @@ features:
   transactionFee:
     description: ''
     valueType: TEXT
-    defaultValue: "5%"
+    defaultValue: 5%
     type: DOMAIN
   hdLiveVideoWithRecording:
     description: ''
@@ -170,7 +171,7 @@ plans:
       customRegistrationFields:
         value: true
       transactionFee:
-        value: "2%"
+        value: 2%
     usageLimits:
       liveAttendeesLimit:
         value: 1000

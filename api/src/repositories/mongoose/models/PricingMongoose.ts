@@ -3,9 +3,11 @@ import mongoose, { Schema } from 'mongoose';
 const pricingSchema = new Schema(
   {
     name: { type: String, required: true },
+    owner: { type: String, required: true },
     version: { type: String, required: true },
     extractionDate: { type: Date, required: true },
     url: { type: String, required: false },
+    currency: { type: String, required: true },
     yaml: { type: String, required: true },
     analytics: {
       numberOfFeatures: { type: Number, required: false },

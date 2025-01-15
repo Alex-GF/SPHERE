@@ -1,8 +1,9 @@
 saasName: Github
-version: '2.0'
+syntaxVersion: '2.1'
+version: '2022-11-29'
 createdAt: '2022-11-29'
 currency: EUR
-hasAnnualPayment: true
+variables: {}
 features:
   publicRepositories:
     description: >-
@@ -588,7 +589,7 @@ addOns:
     unit: GB/month
     features: null
     usageLimits: null
-    usageLimitsExtensions: 
+    usageLimitsExtensions:
       githubCodespacesStorageLimit:
         value: 1
   githubAdvancedSecurity:

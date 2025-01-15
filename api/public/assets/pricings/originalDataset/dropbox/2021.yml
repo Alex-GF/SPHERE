@@ -1,8 +1,9 @@
 saasName: Dropbox
-version: '2.0'
+syntaxVersion: '2.1'
+version: '2021-11-19'
 createdAt: '2021-11-19'
 currency: USD
-hasAnnualPayment: false
+variables: {}
 features:
   storage:
     description: ''

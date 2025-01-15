@@ -1,8 +1,9 @@
 saasName: Notion
-version: '2.0'
+syntaxVersion: '2.1'
+version: 2024-7-16
 createdAt: '2024-07-16'
 currency: USD
-hasAnnualPayment: true
+variables: {}
 features:
   pages:
     description: ''
@@ -535,7 +536,7 @@ addOns:
       - customDomain
     price: Contact Sales
     unit: domain/month
-    features:
+    features: null
     usageLimits: null
     usageLimitsExtensions:
       customDomainsLimit:

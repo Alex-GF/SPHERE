@@ -1,15 +1,18 @@
 saasName: Wrike
-version: '2.0'
+syntaxVersion: '2.1'
+version: 2022-10-3
 createdAt: '2022-10-03'
 currency: USD
-hasAnnualPayment: false
+variables: {}
 features:
   multiLanguageSupport:
     description: >-
       Wrike supports multiple languages: German, English, French, Italian,
       Japanese, Portuguese, Spanish, and Russian.
     valueType: TEXT
-    defaultValue: "German, English, French, Italian, Japanese, Portuguese, Spanish, and Russian"
+    defaultValue: >-
+      German, English, French, Italian, Japanese, Portuguese, Spanish, and
+      Russian
     type: GUARANTEE
     docUrl: https://www.wrike.com/comparison-table/
   wrikeForWindowsAndMac:
@@ -476,24 +479,24 @@ features:
     defaultValue: false
     type: MANAGEMENT
   wrikeMarketingInsights:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: INFORMATION
   wrikeIntegrate:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: API
   wrikeTwoWaySync:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: API
   wrikeLock:
-    description: ""
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: MANAGEMENT

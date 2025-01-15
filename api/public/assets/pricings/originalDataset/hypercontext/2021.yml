@@ -1,8 +1,9 @@
 saasName: HyperContext
-version: '2.0'
+syntaxVersion: '2.1'
+version: 2021-10-9
 createdAt: '2021-10-09'
 currency: USD
-hasAnnualPayment: true
+variables: {}
 features:
   oneToOneMeetings:
     description: ''

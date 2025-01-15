@@ -19,7 +19,6 @@ import { Pricing, retrievePricingFromYaml } from 'pricing4ts';
 import FileExplorer from '../../components/file-explorer';
 import { SAAS_DATA, AnalyticsDataEntry } from '../../../../assets/data/analytics';
 import { usePathname } from '../../../core/hooks/usePathname';
-import { useQueryParams } from '../../../core/hooks/useQueryParams';
 import { useRouter } from '../../../core/hooks/useRouter';
 import Stats from '../../components/stats';
 import Analytics from '../../components/analytics';
@@ -57,10 +56,9 @@ export default function CardPage() {
 
   const pathname = usePathname();
   const router = useRouter();
-  const queryParams = useQueryParams();
 
   useEffect(() => {
-    let name = queryParams.get('name') ?? '';
+    let name = pathname.split('/').pop() as string;
 
     if (name in SAAS_DATA) {
       setFullPricingData(SAAS_DATA[name]);

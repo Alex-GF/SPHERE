@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, Slider, Typography } from '@mui/material';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { grey, primary } from '../../../core/theme/palette';
@@ -11,23 +11,22 @@ export default function SliderFilter({
   onChange,
 }: {
   label: string;
-  min: number; // Mínimo global como float
-  max: number; // Máximo global como float
+  min: number;
+  max: number;
   data: { value: string; count: number }[];
   onChange: Function;
 }) {
-  // Extraer las marcas del histograma
-  const marks = data.map(d => d.value);
+  const [marks, setMarks] = useState(data.map(d => d.value));
   const [range, setRange] = useState<number[]>([0, max]);
-  const [activeThumb, setActiveThumb] = useState<number>(0); // Trackea qué thumb está activo (0 = izquierda, 1 = derecha)
+  const [activeThumb, setActiveThumb] = useState<number>(0); // Tracks the active thump (0 = left, 1 = right)
 
-
-  // Calcular el intervalo actual
   const calculateInterval = () => {
     const selectedMarks = marks.filter(value => {
       const numericValue = parseFloat(value.replace('+', ''));
       return numericValue >= range[0] && numericValue <= range[1];
     });
+    
+    // if(selectedMarks.length === 0) return `${min} — ${data[data.length - 1].value}`;
 
     const lowerLimit = selectedMarks[0].split('-')[0];
     const upperLimit = selectedMarks[selectedMarks.length - 1].split('-')[1] || `${selectedMarks[selectedMarks.length - 1]}`;
@@ -36,7 +35,7 @@ export default function SliderFilter({
   };
 
   const handleSliderChange = (event: Event, newValue: number | number[], thumbIndex: number) => {
-    const [start, end] = newValue as number[];
+    let [start, end] = newValue as number[];
 
     // Ajustar el rango a las marcas más cercanas
     const nearestStart = marks.reduce((prev, curr) =>
@@ -44,20 +43,21 @@ export default function SliderFilter({
         ? curr
         : prev
     );
-    const nearestEnd = marks.reduce((prev, curr) =>
+    let nearestEnd: string | undefined = marks.reduce((prev, curr) =>
       Math.abs(parseFloat(curr.replace('+', '')) - end) < Math.abs(parseFloat(prev.replace('+', '')) - end)
         ? curr
         : prev
     );
 
-    const updatedRange = [
-      parseFloat(nearestStart.replace('+', '')),
-      parseFloat(nearestEnd.replace('+', '')),
-    ];
-    onChange(updatedRange);
-    setRange(updatedRange);
+    onChange([parseFloat(nearestStart.replace('+', '')), undefined]);
+    setRange([parseFloat(nearestStart.replace('+', '')), parseFloat(nearestEnd.replace('+', ''))]);
     setActiveThumb(thumbIndex);
   };
+
+  useEffect(() => {
+    setMarks(data.map(d => d.value));
+    setRange([range[0], max]);
+  }, [data])
 
   return (
     <Box sx={{ width: '100%', padding: '16px', maxWidth: '500px', margin: 'auto' }}>
@@ -98,7 +98,7 @@ export default function SliderFilter({
         marks={marks.map(value => ({
           value: parseFloat(value.replace('+', ''))
         }))}
-        valueLabelDisplay="auto"
+        valueLabelDisplay="off"
         valueLabelFormat={value => {
             if (activeThumb === 0) {
               // Tooltip min

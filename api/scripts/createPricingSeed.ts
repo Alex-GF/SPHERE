@@ -1,6 +1,7 @@
 import fs from 'fs';
 import {AnalyticsData, SAAS_DATA} from '../../frontend/src/assets/data/analytics';
 import mongoose, { ObjectId } from 'mongoose';
+import {retrievePricingFromPath} from 'pricing4ts/server';
 
 interface Analytics {
   [key: string]: number;
@@ -17,19 +18,26 @@ interface OutputData {
 
 const transformData = (data: AnalyticsData): OutputData[] => {
   const publicYamlPath = 'assets/pricings/originalDataset';
+  const pricingsDirectory = 'api/public/' + publicYamlPath;
 
   return Object.entries(data).flatMap(([name, pricingArray]) =>
-    pricingArray.map((pricing) => ({
+    pricingArray.map((pricing) => {
+      
+      const pricingData = retrievePricingFromPath(`${pricingsDirectory}/${pricing.yaml_path.split('/').slice(2).join('/')}`);
+
+      return {
       _id: {
         $oid: new mongoose.Types.ObjectId()
       },
       name,
+      owner: "sphere",
       version: pricing.date.split('-')[0],
       extractionDate: new Date(pricing.date),
+      currency: pricingData.currency,
       url: null,
       yaml: `${publicYamlPath}/${pricing.yaml_path.split('/').slice(2).join('/')}`,
       analytics: pricing.analytics,
-    }))
+    }})
   );
 };
 

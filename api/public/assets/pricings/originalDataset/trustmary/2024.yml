@@ -1,8 +1,9 @@
 saasName: Trustmary - Collect
-version: '2.0'
+syntaxVersion: '2.1'
+version: 2024-7-14
 createdAt: '2024-07-14'
 currency: USD
-hasAnnualPayment: true
+variables: {}
 features:
   3in1Surveys:
     description: ''

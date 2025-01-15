@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Box,
   FormControl,
@@ -14,32 +14,22 @@ import { primary } from '../../../core/theme/palette';
 import SliderFilter from '../slider-filter';
 import { FilterLimits } from '../../pages/list';
 
-// Tipo para los datos de los "dueños"
-type Owner = {
-  name: string;
-  count: number;
-};
-
-const owners: Owner[] = [
-  { name: 'John', count: 10 },
-  { name: 'Doe', count: 5 },
-  { name: 'Alice', count: 8 },
-  { name: 'Bob', count: 3 },
-];
-
 export default function PricingFilters({
   filterLimits,
+  receivedOwners,
   textFilterValue,
   setFilterValues,
 }: {
-  filterLimits: FilterLimits | null;
+  filterLimits: FilterLimits;
+  receivedOwners: Record<string, number>;
   textFilterValue: string;
   setFilterValues: Function;
 }) {
   const [sortBy, setSortBy] = useState<string>('');
-  const [subscriptionRange, setSubscriptionRange] = useState<number[]>([0, 1000]);
-  const [minPriceRange, setMinPriceRange] = useState<number[]>([0, 1000]);
-  const [maxPriceRange, setMaxPriceRange] = useState<number[]>([0, 1000]);
+  const [subscriptionRange, setSubscriptionRange] = useState<number[]>([filterLimits.configurationSpaceSize.min, filterLimits.configurationSpaceSize.max]);
+  const [minPriceRange, setMinPriceRange] = useState<number[]>([filterLimits.minPrice.min, filterLimits.minPrice.max]);
+  const [maxPriceRange, setMaxPriceRange] = useState<number[]>([filterLimits.maxPrice.min, filterLimits.maxPrice.max]);
+  const [owners, setOwners] = useState<Record<string, number>>({});
   const [selectedOwners, setSelectedOwners] = useState<string[]>([]);
 
   const handleOwnerChange = (owner: string) => {
@@ -62,6 +52,21 @@ export default function PricingFilters({
 
   const handleClear = () => {
     setSortBy('');
+    setSelectedOwners([]);
+    setFilterValues({
+      subscriptionRange: [0, Number.MAX_SAFE_INTEGER],
+      minPriceRange: [0, Number.MAX_SAFE_INTEGER],
+      maxPriceRange: [0, Number.MAX_SAFE_INTEGER],
+    });
+  };
+
+  useEffect(() => {
+    if (textFilterValue){
+      setOwners(receivedOwners);
+    }else{
+      setOwners({});
+      setSelectedOwners([]);
+    }
     if (filterLimits) {
       setSubscriptionRange([
         filterLimits.configurationSpaceSize.min,
@@ -70,8 +75,7 @@ export default function PricingFilters({
       setMinPriceRange([filterLimits.minPrice.min, filterLimits.minPrice.max]);
       setMaxPriceRange([filterLimits.maxPrice.min, filterLimits.maxPrice.max]);
     }
-    setSelectedOwners([]);
-  };
+  }, [textFilterValue, filterLimits])
 
   return (
     <Box
@@ -122,7 +126,7 @@ export default function PricingFilters({
       {/* Filter: Min Price */}
       {filterLimits && (
         <SliderFilter
-          label="Min Price"
+          label="Min Price (€)"
           min={filterLimits.minPrice.min}
           max={filterLimits.minPrice.max}
           data={filterLimits.minPrice.data}
@@ -133,7 +137,7 @@ export default function PricingFilters({
       {/* Filter: Max Price */}
       {filterLimits && (
         <SliderFilter
-          label="Max Price"
+          label="Max Price (€)"
           min={filterLimits.maxPrice.min}
           max={filterLimits.maxPrice.max}
           data={filterLimits.maxPrice.data}
@@ -143,21 +147,23 @@ export default function PricingFilters({
 
       {/* Filter: Owners */}
       {textFilterValue !== '' && (
-        <>
-          <Typography gutterBottom>Owner</Typography>
-          {owners.map(owner => (
+        <Box sx={{ width: '100%', padding: '16px', maxWidth: '500px', margin: 'auto' }}>
+          <Typography variant="h6" gutterBottom>
+            Owner          
+          </Typography>
+          {Object.entries(owners).map(([owner, count]) => (
             <FormControlLabel
-              key={owner.name}
+              key={owner}
               control={
                 <Checkbox
-                  checked={selectedOwners.includes(owner.name)}
-                  onChange={() => handleOwnerChange(owner.name)}
+                  checked={selectedOwners.includes(owner)}
+                  onChange={() => handleOwnerChange(owner)}
                 />
               }
-              label={`${owner.name} (${owner.count})`}
+              label={`${owner} (${count})`}
             />
           ))}
-        </>
+        </Box>
       )}
       <Box sx={{ display: 'flex', justifyContent: 'space-evenly', marginTop: '16px' }}>
         <Button variant="outlined" color="primary" onClick={handleClear}>

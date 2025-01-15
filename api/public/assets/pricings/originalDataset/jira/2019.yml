@@ -1,8 +1,9 @@
 saasName: Jira
-version: '2.0'
+syntaxVersion: '2.1'
+version: '2019-10-29'
 createdAt: '2019-10-29'
 currency: USD
-hasAnnualPayment: false
+variables: {}
 features:
   advancedPermissions:
     description: ''

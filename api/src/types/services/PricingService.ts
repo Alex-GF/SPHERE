@@ -1,0 +1,1 @@
+export type PricingIndexQueryParams = Record<string, string | string[] | {min: number, max: number} | undefined>

@@ -1,8 +1,9 @@
 saasName: Deskera
-version: '2.0'
+syntaxVersion: '2.1'
+version: 2023-3-23
 createdAt: '2023-03-23'
 currency: USD
-hasAnnualPayment: false
+variables: {}
 features:
   dedicatedSuccessManager:
     description: ''

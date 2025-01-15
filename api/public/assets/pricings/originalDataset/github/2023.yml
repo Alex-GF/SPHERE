@@ -1,8 +1,9 @@
 saasName: github
-version: '2.0'
+syntaxVersion: '2.1'
+version: '2023-11-20'
 createdAt: '2023-11-20'
 currency: EUR
-hasAnnualPayment: true
+variables: {}
 features:
   publicRepositories:
     description: >-
@@ -874,7 +875,7 @@ addOns:
     unit: GB/month
     features: null
     usageLimits: null
-    usageLimitsExtensions: 
+    usageLimitsExtensions:
       githubCodepacesStorage:
         value: 1
   gitLFSDataPack:

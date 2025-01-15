@@ -1,8 +1,9 @@
 saasName: Databox
-version: '2.0'
+syntaxVersion: '2.1'
+version: '2019-12-10'
 createdAt: '2019-12-10'
 currency: USD
-hasAnnualPayment: true
+variables: {}
 features:
   dataSources:
     description: ''

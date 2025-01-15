@@ -1,8 +1,9 @@
 saasName: Box
-version: '2.0'
+syntaxVersion: '2.1'
+version: '2023-11-19'
 createdAt: '2023-11-19'
 currency: EUR
-hasAnnualPayment: true
+variables: {}
 features:
   secureStorage:
     description: ''

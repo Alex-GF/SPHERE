@@ -1,601 +1,88 @@
 import RepositoryBase from '../RepositoryBase';
 import PricingMongoose from './models/PricingMongoose';
 import { PricingAnalytics } from '../../types/database/Pricing';
+import { getAllPricingsAggregator } from './aggregators/get-all-pricings';
+import { PricingIndexQueryParams } from '../../types/services/PricingService';
 
 class PricingRepository extends RepositoryBase {
   async findAll(...args: any) {
+
+    const queryParams: PricingIndexQueryParams = args[0];
+
+    let filteringAggregators = [];
+
+    if (Object.keys(queryParams).length > 0){
+      const { name, subscriptions, minPrice, maxPrice, selectedOwners } = queryParams;
+
+      if (name){
+        filteringAggregators.push({
+          $match: {
+            $expr: {
+              $eq: [{ $toLower: '$name' }, { $toLower: name }],
+            },
+          },
+        });
+      }
+
+      if (subscriptions){
+        const subscriptionsFilter = subscriptions as {min: number, max: number};
+
+        filteringAggregators.push({
+          $match: {
+            "analytics.configurationSpaceSize": {
+              $gte: !Number.isNaN(subscriptionsFilter.min) ? subscriptionsFilter.min : 0,
+              $lte: !Number.isNaN(subscriptionsFilter.max) ? subscriptionsFilter.max : Number.MAX_SAFE_INTEGER,
+            },
+          },
+        });
+      }
+
+      if (minPrice){
+        const minPriceFilter = minPrice as {min: number, max: number};
+
+        filteringAggregators.push({
+          $match: {
+            "analytics.minSubscriptionPrice": {
+              $gte: !Number.isNaN(minPriceFilter.min) ? minPriceFilter.min : 0,
+              $lte: !Number.isNaN(minPriceFilter.max) ? minPriceFilter.max : Number.MAX_SAFE_INTEGER,
+            },
+          },
+        });
+      }
+
+      if (maxPrice){
+        const maxPriceFilter = maxPrice as {min: number, max: number};
+
+        filteringAggregators.push({
+          $match: {
+            "analytics.maxSubscriptionPrice": {
+              $gte: !Number.isNaN(maxPriceFilter.min) ? maxPriceFilter.min : 0,
+              $lte: !Number.isNaN(maxPriceFilter.max) ? maxPriceFilter.max : Number.MAX_SAFE_INTEGER,
+            },
+          },
+        });
+      }
+
+      if (selectedOwners) {
+        const selectedOwnersFilter = selectedOwners as string[];
+
+        filteringAggregators.push({
+          $match: {
+            owner: {
+              $in: selectedOwnersFilter,
+            },
+          },
+        });
+      }
+    }
+
     try {
-      const pricings = await PricingMongoose.aggregate([
-        {
-          '$group': {
-            '_id': '$name', 
-            'latestPricing': {
-              '$first': '$$ROOT'
-            }, 
-            'latestExtractionDate': {
-              '$max': '$extractionDate'
-            }
-          }
-        }, {
-          '$replaceRoot': {
-            'newRoot': '$latestPricing'
-          }
-        }, {
-          '$facet': {
-            'pricings': [
-              {
-                '$project': {
-                  '_id': 0, 
-                  'name': 1, 
-                  'version': 1, 
-                  'analytics': 1
-                }
-              }
-            ], 
-            'minPrice': [
-              {
-                '$group': {
-                  '_id': null, 
-                  'min': {
-                    '$min': '$analytics.minSubscriptionPrice'
-                  }, 
-                  'max': {
-                    '$max': '$analytics.minSubscriptionPrice'
-                  }, 
-                  'data': {
-                    '$push': '$analytics.minSubscriptionPrice'
-                  }
-                }
-              }, {
-                '$set': {
-                  'data': {
-                    '$sortArray': {
-                      'input': '$data', 
-                      'sortBy': 1
-                    }
-                  }
-                }
-              }, {
-                '$set': {
-                  'percentileIndex': {
-                    '$floor': {
-                      '$multiply': [
-                        {
-                          '$size': '$data'
-                        }, 0.8
-                      ]
-                    }
-                  }
-                }
-              }, {
-                '$set': {
-                  'percentile90': {
-                    '$arrayElemAt': [
-                      '$data', '$percentileIndex'
-                    ]
-                  }
-                }
-              }, {
-                '$addFields': {
-                  'data': {
-                    '$map': {
-                      'input': {
-                        '$range': [
-                          0, 9
-                        ]
-                      }, 
-                      'as': 'index', 
-                      'in': {
-                        'value': {
-                          '$concat': [
-                            {
-                              '$toString': {
-                                '$round': [
-                                  {
-                                    '$multiply': [
-                                      '$$index', {
-                                        '$divide': [
-                                          '$percentile90', 9
-                                        ]
-                                      }
-                                    ]
-                                  }, 2
-                                ]
-                              }
-                            }, '-', {
-                              '$toString': {
-                                '$round': [
-                                  {
-                                    '$multiply': [
-                                      {
-                                        '$add': [
-                                          '$$index', 1
-                                        ]
-                                      }, {
-                                        '$divide': [
-                                          '$percentile90', 9
-                                        ]
-                                      }
-                                    ]
-                                  }, 2
-                                ]
-                              }
-                            }
-                          ]
-                        }, 
-                        'count': {
-                          '$size': {
-                            '$filter': {
-                              'input': '$data', 
-                              'as': 'price', 
-                              'cond': {
-                                '$and': [
-                                  {
-                                    '$gte': [
-                                      '$$price', {
-                                        '$multiply': [
-                                          '$$index', {
-                                            '$divide': [
-                                              '$percentile90', 9
-                                            ]
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  }, {
-                                    '$lt': [
-                                      '$$price', {
-                                        '$multiply': [
-                                          {
-                                            '$add': [
-                                              '$$index', 1
-                                            ]
-                                          }, {
-                                            '$divide': [
-                                              '$percentile90', 9
-                                            ]
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  }
-                                ]
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }, 
-                  'outlierRange': {
-                    'value': {
-                      '$concat': [
-                        {
-                          '$toString': {
-                            '$round': [
-                              '$percentile90', 2
-                            ]
-                          }
-                        }, '+'
-                      ]
-                    }, 
-                    'count': {
-                      '$size': {
-                        '$filter': {
-                          'input': '$data', 
-                          'as': 'price', 
-                          'cond': {
-                            '$gt': [
-                              '$$price', '$percentile90'
-                            ]
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }, {
-                '$addFields': {
-                  'data': {
-                    '$concatArrays': [
-                      '$data', [
-                        '$outlierRange'
-                      ]
-                    ]
-                  }
-                }
-              }, {
-                '$project': {
-                  '_id': 0, 
-                  'percentiles': 0, 
-                  'outlierRange': 0, 
-                  'percentile90': 0
-                }
-              }
-            ], 
-            'maxPrice': [
-              {
-                '$group': {
-                  '_id': null, 
-                  'min': {
-                    '$min': '$analytics.maxSubscriptionPrice'
-                  }, 
-                  'max': {
-                    '$max': '$analytics.maxSubscriptionPrice'
-                  }, 
-                  'data': {
-                    '$push': '$analytics.maxSubscriptionPrice'
-                  }
-                }
-              }, {
-                '$set': {
-                  'data': {
-                    '$sortArray': {
-                      'input': '$data', 
-                      'sortBy': 1
-                    }
-                  }
-                }
-              }, {
-                '$set': {
-                  'percentileIndex': {
-                    '$floor': {
-                      '$multiply': [
-                        {
-                          '$size': '$data'
-                        }, 0.8
-                      ]
-                    }
-                  }
-                }
-              }, {
-                '$set': {
-                  'percentile90': {
-                    '$arrayElemAt': [
-                      '$data', '$percentileIndex'
-                    ]
-                  }
-                }
-              }, {
-                '$addFields': {
-                  'data': {
-                    '$map': {
-                      'input': {
-                        '$range': [
-                          0, 9
-                        ]
-                      }, 
-                      'as': 'index', 
-                      'in': {
-                        'value': {
-                          '$concat': [
-                            {
-                              '$toString': {
-                                '$round': [
-                                  {
-                                    '$multiply': [
-                                      '$$index', {
-                                        '$divide': [
-                                          '$percentile90', 9
-                                        ]
-                                      }
-                                    ]
-                                  }, 2
-                                ]
-                              }
-                            }, '-', {
-                              '$toString': {
-                                '$round': [
-                                  {
-                                    '$multiply': [
-                                      {
-                                        '$add': [
-                                          '$$index', 1
-                                        ]
-                                      }, {
-                                        '$divide': [
-                                          '$percentile90', 9
-                                        ]
-                                      }
-                                    ]
-                                  }, 2
-                                ]
-                              }
-                            }
-                          ]
-                        }, 
-                        'count': {
-                          '$size': {
-                            '$filter': {
-                              'input': '$data', 
-                              'as': 'price', 
-                              'cond': {
-                                '$and': [
-                                  {
-                                    '$gte': [
-                                      '$$price', {
-                                        '$multiply': [
-                                          '$$index', {
-                                            '$divide': [
-                                              '$percentile90', 9
-                                            ]
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  }, {
-                                    '$lt': [
-                                      '$$price', {
-                                        '$multiply': [
-                                          {
-                                            '$add': [
-                                              '$$index', 1
-                                            ]
-                                          }, {
-                                            '$divide': [
-                                              '$percentile90', 9
-                                            ]
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  }
-                                ]
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }, 
-                  'outlierRange': {
-                    'value': {
-                      '$concat': [
-                        {
-                          '$toString': {
-                            '$round': [
-                              '$percentile90', 2
-                            ]
-                          }
-                        }, '+'
-                      ]
-                    }, 
-                    'count': {
-                      '$size': {
-                        '$filter': {
-                          'input': '$data', 
-                          'as': 'price', 
-                          'cond': {
-                            '$gt': [
-                              '$$price', '$percentile90'
-                            ]
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }, {
-                '$addFields': {
-                  'data': {
-                    '$concatArrays': [
-                      '$data', [
-                        '$outlierRange'
-                      ]
-                    ]
-                  }
-                }
-              }, {
-                '$project': {
-                  '_id': 0, 
-                  'percentiles': 0, 
-                  'outlierRange': 0, 
-                  'percentile90': 0
-                }
-              }
-            ], 
-            'configurationSpaceSize': [
-              {
-                '$group': {
-                  '_id': null, 
-                  'min': {
-                    '$min': '$analytics.configurationSpaceSize'
-                  }, 
-                  'max': {
-                    '$max': '$analytics.configurationSpaceSize'
-                  }, 
-                  'data': {
-                    '$push': '$analytics.configurationSpaceSize'
-                  }
-                }
-              }, {
-                '$set': {
-                  'data': {
-                    '$sortArray': {
-                      'input': '$data', 
-                      'sortBy': 1
-                    }
-                  }
-                }
-              }, {
-                '$set': {
-                  'percentileIndex': {
-                    '$floor': {
-                      '$multiply': [
-                        {
-                          '$size': '$data'
-                        }, 0.8
-                      ]
-                    }
-                  }
-                }
-              }, {
-                '$set': {
-                  'percentile90': {
-                    '$arrayElemAt': [
-                      '$data', '$percentileIndex'
-                    ]
-                  }
-                }
-              }, {
-                '$addFields': {
-                  'data': {
-                    '$map': {
-                      'input': {
-                        '$range': [
-                          0, 9
-                        ]
-                      }, 
-                      'as': 'index', 
-                      'in': {
-                        'value': {
-                          '$concat': [
-                            {
-                              '$toString': {
-                                '$trunc': {
-                                  '$multiply': [
-                                    '$$index', {
-                                      '$divide': [
-                                        '$percentile90', 9
-                                      ]
-                                    }
-                                  ]
-                                }
-                              }
-                            }, '-', {
-                              '$toString': {
-                                '$trunc': {
-                                  '$multiply': [
-                                    {
-                                      '$add': [
-                                        '$$index', 1
-                                      ]
-                                    }, {
-                                      '$divide': [
-                                        '$percentile90', 9
-                                      ]
-                                    }
-                                  ]
-                                }
-                              }
-                            }
-                          ]
-                        }, 
-                        'count': {
-                          '$size': {
-                            '$filter': {
-                              'input': '$data', 
-                              'as': 'size', 
-                              'cond': {
-                                '$and': [
-                                  {
-                                    '$gte': [
-                                      '$$size', {
-                                        '$multiply': [
-                                          '$$index', {
-                                            '$divide': [
-                                              '$percentile90', 9
-                                            ]
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  }, {
-                                    '$lt': [
-                                      '$$size', {
-                                        '$multiply': [
-                                          {
-                                            '$add': [
-                                              '$$index', 1
-                                            ]
-                                          }, {
-                                            '$divide': [
-                                              '$percentile90', 9
-                                            ]
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  }
-                                ]
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }, 
-                  'outlierRange': {
-                    'value': {
-                      '$concat': [
-                        {
-                          '$toString': {
-                            '$trunc': [
-                              '$percentile90'
-                            ]
-                          }
-                        }, '+'
-                      ]
-                    }, 
-                    'count': {
-                      '$size': {
-                        '$filter': {
-                          'input': '$data', 
-                          'as': 'size', 
-                          'cond': {
-                            '$gt': [
-                              '$$size', '$percentile90'
-                            ]
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }, {
-                '$addFields': {
-                  'data': {
-                    '$concatArrays': [
-                      '$data', [
-                        '$outlierRange'
-                      ]
-                    ]
-                  }
-                }
-              }, {
-                '$project': {
-                  '_id': 0, 
-                  'percentiles': 0, 
-                  'outlierRange': 0, 
-                  'percentile90': 0
-                }
-              }
-            ]
-          }
-        }, {
-          '$project': {
-            'pricings': '$pricings', 
-            'minPrice': {
-              '$arrayElemAt': [
-                '$minPrice', 0
-              ]
-            }, 
-            'maxPrice': {
-              '$arrayElemAt': [
-                '$maxPrice', 0
-              ]
-            }, 
-            'configurationSpaceSize': {
-              '$arrayElemAt': [
-                '$configurationSpaceSize', 0
-              ]
-            }
-          }
-        }
-      ]);
+      const aggregator = getAllPricingsAggregator(filteringAggregators);
+      const pricings = await PricingMongoose.aggregate(aggregator);
       return pricings[0];
     } catch (err) {
-      return [];
+      console.log(err);
+      return {pricings: []};
     }
   }
 

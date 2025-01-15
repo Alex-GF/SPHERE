@@ -2,6 +2,7 @@ import fs from 'fs';
 import container from '../config/container.js'
 import PricingService from '../services/PricingService';
 import path from 'path';
+import { PricingIndexQueryParams } from '../types/services/PricingService.js';
 
 class PricingController {
 
@@ -16,8 +17,9 @@ class PricingController {
 
   async index (req: any, res: any) {
     try {
-      // const queryParams = req.query;
-      const pricings = await this.pricingService.index()
+      const queryParams: PricingIndexQueryParams = this._transformIndexQueryParams(req.query);
+      
+      const pricings = await this.pricingService.index(queryParams)
       res.json(pricings)
     } catch (err: any) {
       res.status(500).send({error: err.message})
@@ -58,6 +60,45 @@ class PricingController {
   //     res.status(500).send(err.message)
   //   }
   // }
+
+  _transformIndexQueryParams(indexQueryParams: Record<string, string | number>): PricingIndexQueryParams{
+    const transformedData: PricingIndexQueryParams = {
+      name: indexQueryParams.name as string,
+      subscriptions: {
+        min: parseFloat(indexQueryParams["min-subscription"] as string),
+        max: parseFloat(indexQueryParams["max-subscription"] as string)
+      },
+      minPrice: {
+        min: parseFloat(indexQueryParams["min-minPrice"] as string),
+        max: parseFloat(indexQueryParams["max-minPrice"] as string)
+      },
+      maxPrice: {
+        min: parseFloat(indexQueryParams["min-maxPrice"] as string),
+        max: parseFloat(indexQueryParams["max-maxPrice"] as string)
+      },
+      selectedOwners: indexQueryParams.selectedOwners ? (indexQueryParams.selectedOwners as string).split(",") : undefined
+    }
+
+    const optionalFields = ['name', 'subscriptions', 'minPrice', 'maxPrice', 'selectedOwners'] as const;
+
+    optionalFields.forEach(field => {
+      if (field === 'name' || field === 'selectedOwners') {
+      if (!transformedData[field]) {
+        delete transformedData[field];
+      }
+      } else {
+      if (this._containsNaN(transformedData[field]!)) {
+        delete transformedData[field];
+      }
+      }
+    });
+
+    return transformedData;
+  }
+
+  _containsNaN(attr: any): boolean{
+    return Object.values(attr).every((value) => Number.isNaN(value));
+  }
 }
 
 export default PricingController

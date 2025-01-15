@@ -1,8 +1,9 @@
 saasName: Figma
-version: '2.0'
+syntaxVersion: '2.1'
+version: 2023-11-8
 createdAt: '2023-11-08'
 currency: EUR
-hasAnnualPayment: true
+variables: {}
 features:
   versionHistory:
     description: ''

@@ -1,8 +1,9 @@
 saasName: Wrike
-version: '2.0'
+syntaxVersion: '2.1'
+version: '2020-11-23'
 createdAt: '2020-11-23'
 currency: USD
-hasAnnualPayment: false
+variables: {}
 features:
   boardView:
     description: ''
@@ -536,7 +537,7 @@ addOns:
     availableFor:
       - ENTERPRISE
     price: Contact Sales
-    features: 
+    features:
       wrikeLock:
         value: true
     usageLimits: null

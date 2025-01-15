@@ -1,8 +1,9 @@
 saasName: Evernote
-version: '2.0'
+syntaxVersion: '2.1'
+version: 2024-7-6
 createdAt: '2024-07-06'
 currency: USD
-hasAnnualPayment: true
+variables: {}
 features:
   notes:
     description: ''

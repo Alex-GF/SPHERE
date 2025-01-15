@@ -20,24 +20,28 @@ const PricingsGrid = styled(Box)(() => ({
 
 export type PricingEntry = {
   name: string;
-  extractionDate: Date;
-  yaml: string;
-  publicAnalytics: {
+  owner: string;
+  version: string;
+  extractionDate: string;
+  currency: string;
+  analytics: {
     configurationSpaceSize: number;
     minSubscriptionPrice: number;
     maxSubscriptionPrice: number;
   };
 };
 
+export type FilterValues = {
+  max: number;
+  min: number;
+  data: {
+    value: string;
+    count: number;
+  }[];
+};
+
 export type FilterLimits = {
-  [key: string]: { 
-    max: number; 
-    min: number; 
-    data: { 
-      value: string; 
-      count: number 
-    }[] 
-  };
+  [key: string]: FilterValues;
 };
 
 export default function PricingListPage() {
@@ -52,11 +56,21 @@ export default function PricingListPage() {
     getPricings()
       .then(data => {
         setPricingsList(data.pricings);
-        setFilterLimits({
-          minPrice: data.minPrice,
-          maxPrice: data.maxPrice,
-          configurationSpaceSize: data.configurationSpaceSize,
-        });
+        if (data.pricings.length > 0) {
+          setFilterLimits({
+            minPrice: data.minPrice,
+            maxPrice: data.maxPrice,
+            configurationSpaceSize: data.configurationSpaceSize,
+            owners: data.pricings.map((pricing: PricingEntry) => pricing.owner),
+          });
+        }else{
+          setFilterLimits({
+            minPrice: {min: 0, max: 0, data: []},
+            maxPrice: {min:0, max: 0, data: []},
+            configurationSpaceSize: {min: 0, max: 0, data: []},
+            owners: data.pricings.map((pricing: PricingEntry) => pricing.owner),
+          });
+        }
       })
       .catch(error => {
         console.error('Error:', error);
@@ -68,7 +82,23 @@ export default function PricingListPage() {
       name: textFilterValue,
       ...filterValues,
     };
-    console.log('Filters:', filters);
+
+    getPricings(filters)
+      .then(data => {
+        setPricingsList(data.pricings);
+        
+        if (data.pricings.length > 0) {
+          setFilterLimits({
+            minPrice: data.minPrice,
+            maxPrice: data.maxPrice,
+            configurationSpaceSize: data.configurationSpaceSize,
+            owners: data.pricings.map((pricing: PricingEntry) => pricing.owner),
+          });
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
   }, [textFilterValue, filterValues]);
 
   return (
@@ -79,6 +109,7 @@ export default function PricingListPage() {
       <Box
         sx={{
           ...flex({}),
+          width: '100vw',
           maxWidth: '2000px',
           height: '100%',
         }}
@@ -96,11 +127,17 @@ export default function PricingListPage() {
           }}
         >
           <Box component="div" width="20vw"></Box>
-          <PricingFilters
-            filterLimits={filterLimits}
-            textFilterValue={textFilterValue}
-            setFilterValues={setFilterValues}
-          />
+          {filterLimits && (
+            <PricingFilters
+              filterLimits={filterLimits}
+              receivedOwners={pricingsList.reduce((acc, pricing) => {
+                acc[pricing.owner] = (acc[pricing.owner] || 0) + 1;
+                return acc;
+              }, {} as Record<string, number>)}
+              textFilterValue={textFilterValue}
+              setFilterValues={setFilterValues}
+            />
+          )}
         </Box>
         <Box
           component="div"
@@ -112,11 +149,11 @@ export default function PricingListPage() {
         >
           <SearchBar setTextFilterValue={setTextFilterValue} />
           <PricingsGrid>
-            {Object.values(pricingsList).map((pricing, index) => {
+            {pricingsList.length > 0 ? Object.values(pricingsList).map((pricing, index) => {
               return (
                 <PricingListCard key={`pricing-${index}`} name={pricing.name} dataEntry={pricing} />
               );
-            })}
+            }): <Box>No pricings found</Box>}
           </PricingsGrid>
         </Box>
       </Box>

@@ -1,8 +1,9 @@
 saasName: Github
-version: '2.0'
+syntaxVersion: '2.1'
+version: '2019-11-29'
 createdAt: '2019-11-29'
 currency: EUR
-hasAnnualPayment: false
+variables: {}
 features:
   publicRepositories:
     description: >-

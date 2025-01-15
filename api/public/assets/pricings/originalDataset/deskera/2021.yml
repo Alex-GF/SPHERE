@@ -1,8 +1,9 @@
 saasName: Deskera
-version: '2.0'
+syntaxVersion: '2.1'
+version: '2021-10-13'
 createdAt: '2021-10-13'
 currency: USD
-hasAnnualPayment: true
+variables: {}
 features:
   allInOneDashboard:
     description: ''
