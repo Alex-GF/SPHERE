@@ -11,7 +11,10 @@ export function getAllPricingsAggregator(filteringAggregators: any, sortAggregat
 
 const latestPricingsByNameAggregator = {
   $group: {
-    _id: '$name',
+    _id: {
+      name: '$name',
+      owner: '$owner',
+    },
     latestPricing: {
       $first: '$$ROOT',
     },

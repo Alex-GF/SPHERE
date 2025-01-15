@@ -57,8 +57,9 @@ export default function CardPage() {
 
   useEffect(() => {
     let name = pathname.split('/').pop() as string;
+    let owner = pathname.split('/')[pathname.split('/').length - 2] as string;
 
-    getPricingByName(name).then(pricing => {
+    getPricingByName(name, owner).then(pricing => {
       if (pricing.versions && pricing.versions.length > 0) {
         const currentPricing = pricing.versions[0];
         const oldestPricing = pricing.versions[pricing.versions.length - 1];

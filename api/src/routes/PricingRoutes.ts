@@ -14,7 +14,7 @@ const loadFileRoutes = function (app: express.Application) {
     .get(pricingController.index)
     .post(isLoggedIn, upload, pricingController.create);
 
-  app.route(baseUrl + '/pricings/:pricingName').get(pricingController.show);
+  app.route(baseUrl + '/pricings/:owner/:pricingName').get(pricingController.show);
 };
 
 export default loadFileRoutes;

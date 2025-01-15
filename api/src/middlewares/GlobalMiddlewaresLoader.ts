@@ -2,6 +2,9 @@ import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
 import bodyParser from "body-parser";
+import multer from "multer";
+
+const upload = multer();
 
 const loadGlobalMiddlewares = (app: express.Application) => {
   app.use(express.json())

@@ -130,20 +130,24 @@ class PricingRepository extends RepositoryBase {
     }
   }
 
-  async findByName(name: string, ...args: any) {
+  async findByName(name: string, owner: string, ...args: any) {
     try {
       const pricing = await PricingMongoose.aggregate([
         {
           $match: {
             $expr: {
-              $eq: [{ $toLower: '$name' }, { $toLower: name }],
-            },
+              $and: [
+                { $eq: [{ $toLower: '$name' }, { $toLower: name }] },
+                { $eq: [{ $toLower: '$owner' }, { $toLower: owner }] }
+              ]
+            }
           },
         },
         {
           $group: {
             _id: {
               name: '$name',
+              owner: '$owner',
             },
             versions: {
               $push: {
@@ -161,6 +165,7 @@ class PricingRepository extends RepositoryBase {
           $project: {
             _id: 0,
             name: '$_id.name',
+            owner: '$_id.owner',
             versions: {
               $sortArray: {
                 input: '$versions',

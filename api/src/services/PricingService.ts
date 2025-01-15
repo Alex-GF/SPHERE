@@ -19,8 +19,8 @@ class PricingService {
       return pricings
     }
   
-    async show (name: string) {
-      const pricing: {name: string, versions: PricingModel[]} | null = await this.pricingRepository.findByName(name)
+    async show (name: string, owner: string) {
+      const pricing: {name: string, versions: PricingModel[]} | null = await this.pricingRepository.findByName(name, owner)
       if (!pricing) {
         throw new Error('Pricing not found')
       }
@@ -31,13 +31,15 @@ class PricingService {
       return pricingObject
     }
 
-    async create (pricingFile: any) {
+    async create (pricingFile: any, owner: string) {
       try{
         const uploadedPricing: Pricing = retrievePricingFromPath(pricingFile.path);
         
         const pricingData = {
           name: uploadedPricing.saasName,
           version: uploadedPricing.version,
+          owner: owner,
+          currency: uploadedPricing.currency,
           extractionDate: new Date(uploadedPricing.createdAt),
           url: '',
           yaml: pricingFile.path.split('/').slice(1).join('/'),

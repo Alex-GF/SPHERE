@@ -49,8 +49,8 @@ export function usePricingsApi() {
       });
   };
 
-  const getPricingByName = async (name: string) => {
-    return fetchWithInterceptor(`${PRICINGS_BASE_PATH}/${name}`, {
+  const getPricingByName = async (name: string, owner: string) => {
+    return fetchWithInterceptor(`${PRICINGS_BASE_PATH}/${owner}/${name}`, {
       method: 'GET',
       headers: basicHeaders,
     })
@@ -60,5 +60,19 @@ export function usePricingsApi() {
       });
   };
 
-  return { getPricings, getPricingByName };
+  const createPricing = async (formData: FormData) => {
+    return fetchWithInterceptor(PRICINGS_BASE_PATH, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${authUser.token}`,
+      },
+      body: formData,
+    })
+      .then(response => response.json())
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  };
+
+  return { getPricings, getPricingByName, createPricing };
 }

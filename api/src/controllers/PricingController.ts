@@ -28,7 +28,7 @@ class PricingController {
 
   async show (req: any, res: any) {
     try {
-      const pricing = await this.pricingService.show(req.params.pricingName)
+      const pricing = await this.pricingService.show(req.params.pricingName, req.params.owner)
       res.json(pricing)
     } catch (err: any) {
       res.status(500).send({error: err.message})
@@ -37,7 +37,7 @@ class PricingController {
 
   async create (req: any, res: any) {
     try {
-      const pricing = await this.pricingService.create(req.file)
+      const pricing = await this.pricingService.create(req.file, req.user.email.split('@')[0])
       res.json(pricing)
     } catch (err: any) {
       const file = req.file;

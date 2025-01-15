@@ -31,7 +31,7 @@ export default function Router() {
         { element: <LoginPage />, path: "/login" },
         { element: <RegisterPage />, path: "/register" },
         {element: <PricingListPage/>, path: "/pricings"},
-        {element: <CardPage/>, path: "/pricings/:name"},
+        {element: <CardPage/>, path: "/pricings/:owner/:name"},
         {element: <TeamPage/>, path: "/team"},
         {element: <ResearchPage/>, path: "/research"},
         {element: <ContributionsPage/>, path: "/contributions"},

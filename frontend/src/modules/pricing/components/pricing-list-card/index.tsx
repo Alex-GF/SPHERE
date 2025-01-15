@@ -20,9 +20,11 @@ const StatsDivider = styled(Box)(() => ({
 
 export default function PricingListCard({
   name,
+  owner,
   dataEntry,
 }: {
   name: string;
+  owner: string;
   dataEntry: PricingEntry;
 }) {
   const router = useRouter();
@@ -30,7 +32,7 @@ export default function PricingListCard({
   return (
     <Card
       onClick={() => {
-        router.push(`/pricings/${name}`);
+        router.push(`/pricings/${owner}/${name}`);
       }}
       sx={{
         borderRadius: 2,

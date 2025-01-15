@@ -50,7 +50,7 @@ export const useAuth = () => {
         const token = getItem('token')
 
         if (token) {
-            fetch(`http://localhost:8080${USERS_BASE_PATH}/tokenLogin`, {
+            fetch(`${USERS_BASE_PATH}/tokenLogin`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -104,7 +104,7 @@ export const useAuth = () => {
             const timeDifference = expirationTime - currentTime
 
             if (timeDifference < 60*60*1000 && timeDifference > 0) { // 1 hour
-                fetch(`${import.meta.env.VITE_API_URL}${USERS_BASE_PATH}/tokenLogin`, {
+                fetch(`${USERS_BASE_PATH}/tokenLogin`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

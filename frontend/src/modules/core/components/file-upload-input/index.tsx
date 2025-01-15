@@ -5,7 +5,6 @@ import { FaUpload } from 'react-icons/fa';
 import { useDropzone } from 'react-dropzone';
 import { MdDeleteForever } from 'react-icons/md';
 import { error, grey, primary } from '../../theme/palette';
-import { useEditorValue } from '../../../pricing-editor/hooks/useEditorValue';
 
 const UploadBox = styled(Paper)({
   padding: '10px',
@@ -18,10 +17,8 @@ const UploadBox = styled(Paper)({
   },
 });
 
-export default function FileUpload() {
+export default function FileUpload({onSubmit}: {onSubmit: (file: File) => void}) {
   const [file, setFile] = useState<File | null>(null);
-
-  const {setEditorValue} = useEditorValue();
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const uploadedFile = acceptedFiles[0];
@@ -51,16 +48,8 @@ export default function FileUpload() {
   const handleSubmit = () => {
     // set editor's value with the contents of the file as a string
 
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setEditorValue(reader.result as string);
-      };
-      reader.readAsText(file);
-      handleDelete();
-    } else {
-      alert('No file selected');
-    }
+    onSubmit(file as File);
+    handleDelete();
   };
 
   return (

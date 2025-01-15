@@ -151,7 +151,7 @@ export default function PricingListPage() {
           <PricingsGrid>
             {pricingsList.length > 0 ? Object.values(pricingsList).map((pricing, index) => {
               return (
-                <PricingListCard key={`pricing-${index}`} name={pricing.name} dataEntry={pricing} />
+                <PricingListCard key={`pricing-${index}`} name={pricing.name} owner={pricing.owner} dataEntry={pricing} />
               );
             }): <Box>No pricings found</Box>}
           </PricingsGrid>

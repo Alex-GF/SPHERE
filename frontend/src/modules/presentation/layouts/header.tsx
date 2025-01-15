@@ -42,7 +42,7 @@ const NavItems = styled(Box)(({ theme }) => ({
   },
 }));
 
-const Header = () => {
+const Header = ({setUploadModalOpen}: {setUploadModalOpen: (state: boolean) => void}) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const theme = useTheme();
@@ -52,6 +52,12 @@ const Header = () => {
   const router = useRouter();
 
   const settings = [
+    {
+      name: 'Upload pricing',
+      onClick: () => {
+        setUploadModalOpen(true);
+      },
+    },
     {
       name: 'Logout',
       onClick: () => {
