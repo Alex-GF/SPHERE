@@ -1,4 +1,4 @@
-// deno-lint-ignore-file require-await no-unused-vars no-explicit-any
+import mongoose from 'mongoose'
 
 class RepositoryBase {
   async findById (id: string, ...args: any[]): Promise<any> {
@@ -19,6 +19,14 @@ class RepositoryBase {
 
   async destroy (id: any, ...args: any[]): Promise<any> {
     throw new Error('Not Implemented Exception')
+  }
+
+  isValidObjectId (id: string) {
+    if (mongoose.Types.ObjectId.isValid(id)) {
+      if ((String)(new mongoose.Types.ObjectId(id)) === id) { return true }
+      return false
+    }
+    return false
   }
 }
 

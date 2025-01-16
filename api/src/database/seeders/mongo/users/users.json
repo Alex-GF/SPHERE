@@ -1,0 +1,38 @@
+[
+  {
+    "_id": {
+      "$oid": "63f74bf8eeed64054274b52d"
+    },
+    "firstName": "Admin",
+    "lastName": "1",
+    "email": "admin1@admin.com",
+    "password": "$2a$05$OGiO5p4b/dThwb/HeBm0w.cWuzJaj2gvIfRmBq7HbTrzHb.QYwrQq",
+    "token": "aa8b184a5b0b48737cfdfdbef8cc4990f3821c8b",
+    "tokenExpiration": {"$date": "2023-02-23T11:10:52.000Z"},
+    "phone": "+34666777888",
+    "avatar": "avatars/maleAvatar.png",
+    "address": "Fake street 123",
+    "postalCode": "41010",
+    "userType": "admin",
+    "createdAt": {"$date": "2023-02-20T11:22:04.000Z"},
+    "updatedAt": {"$date": "2023-02-23T10:09:58.000Z"}
+  },
+  {
+    "_id": {
+      "$oid": "63f74bf8eeed64054274b529"
+    },
+    "firstName": "Test",
+    "lastName": "User",
+    "email": "test_user@test.com",
+    "password": "$2a$05$1ODkvjiWy7PPEMXGcbh2yujBvGmwlqTr2zz/fo1oNiqgdpzMA/UGa",
+    "token": "39b27fde450fd1b1304bdd3bbd686ff41158e609",
+    "tokenExpiration": {"$date": "2023-02-23T11:10:14.000Z"},
+    "phone": "+34666777888",
+    "avatar": "avatars/maleAvatar.png",
+    "address": "Fake street 123",
+    "postalCode": "41001",
+    "userType": "user",
+    "createdAt": {"$date": "2023-02-20T11:22:04.000Z"},
+    "updatedAt": {"$date": "2023-02-23T10:09:58.000Z"}
+  }
+]

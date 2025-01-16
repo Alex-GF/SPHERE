@@ -17,7 +17,7 @@ const getApp = async (): Promise<Server> => {
 const shutdownApp = async () => {
   if (testServer) {
     await testServer.close();
-    await disconnectDatabase(testApp!);
+    await disconnectDatabase();
     testApp = null;
     testServer = null;
   }
@@ -25,7 +25,7 @@ const shutdownApp = async () => {
 
 const getIdType = () => {
   switch (process.env.DATABASE_TECHNOLOGY) {
-    case 'mockDB':
+    case 'mongoDB':
       return String;
     default:
       throw new Error('Unsupported database technology');

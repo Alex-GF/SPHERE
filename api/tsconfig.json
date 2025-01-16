@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    /* Target and Module */
+    "target": "ES2022",                      // Mantiene ES2022 como target
+    "lib": ["ES2023"],                       // Librerías modernas, manteniendo ES2023
+    "module": "ES2022",                      // Mantiene ESNext como módulo
+    "moduleResolution": "bundler",             // Cambiado a "node" para una mejor resolución en entornos Node.js
+
+    /* TypeScript Module Interoperability */
+    "esModuleInterop": true,                // Necesario para importar módulos CommonJS
+    "allowSyntheticDefaultImports": true,   // Complementa esModuleInterop
+    "resolveJsonModule": true,              // Permite importar archivos JSON
+    "isolatedModules": true,                // Requiere que cada archivo actúe como módulo independiente
+
+    /* Emisión de Código */
+    "outDir": "./dist",                     // Salida en carpeta `dist`
+    "rootDir": "./src",                     // Código fuente en carpeta `src`
+    "noEmitOnError": true,                  // Previene emisión en caso de errores
+    "declaration": true,                    // Genera archivos de definición `.d.ts`
+
+    /* Strict Mode */
+    "strict": true,                         // Activa todas las opciones de chequeo estricto
+    "noUnusedLocals": false,                 // Detecta variables locales no usadas
+    "noUnusedParameters": false,             // Detecta parámetros no usados
+    "noImplicitReturns": false,              // Obliga a manejar todos los caminos de retorno
+    "noFallthroughCasesInSwitch": false,     // Previene caídas no intencionales en `switch`
+
+    /* Linting and Debugging */
+    "skipLibCheck": true,                   // Evita chequeos en dependencias externas
+    "sourceMap": true,                      // Genera mapas de fuente para debugging
+
+    /* Compatibility */
+    // "allowImportingTsExtensions": true,     // Permite importar archivos TypeScript con extensiones
+    "forceConsistentCasingInFileNames": true, // Asegura nombres de archivo consistentes
+
+    /* Module Detection */
+    "moduleDetection": "force",              // Obliga a detectar módulos correctamente
+  },
+  "include": ["src"],               // Archivos incluidos
+  "exclude": ["node_modules", "dist"]        // Excluye dependencias y salida
+}

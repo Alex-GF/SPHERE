@@ -13,7 +13,6 @@ dist-ssr
 *.local
 
 # Editor directories and files
-.vscode/*
 !.vscode/extensions.json
 .idea
 .DS_Store
@@ -27,3 +26,6 @@ dist-ssr
 .env
 
 deno.lock
+
+# Locally uploaded pricings
+api/public/static/pricings/uploadedDataset/
