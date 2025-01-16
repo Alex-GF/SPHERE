@@ -9,7 +9,7 @@
     "extractionDate": "2024-07-15T00:00:00.000Z",
     "currency": "EUR",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/box/2024.yml",
+    "yaml": "static/pricings/originalDataset/box/2024.yml",
     "analytics": {
       "numberOfFeatures": 50,
       "numberOfInformationFeatures": 2,
@@ -56,7 +56,7 @@
     "extractionDate": "2023-11-19T00:00:00.000Z",
     "currency": "EUR",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/box/2023.yml",
+    "yaml": "static/pricings/originalDataset/box/2023.yml",
     "analytics": {
       "numberOfFeatures": 50,
       "numberOfInformationFeatures": 2,
@@ -103,7 +103,7 @@
     "extractionDate": "2022-11-28T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/box/2022.yml",
+    "yaml": "static/pricings/originalDataset/box/2022.yml",
     "analytics": {
       "numberOfFeatures": 50,
       "numberOfInformationFeatures": 2,
@@ -150,7 +150,7 @@
     "extractionDate": "2021-11-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/box/2021.yml",
+    "yaml": "static/pricings/originalDataset/box/2021.yml",
     "analytics": {
       "numberOfFeatures": 45,
       "numberOfInformationFeatures": 2,
@@ -197,7 +197,7 @@
     "extractionDate": "2020-11-28T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/box/2020.yml",
+    "yaml": "static/pricings/originalDataset/box/2020.yml",
     "analytics": {
       "numberOfFeatures": 42,
       "numberOfInformationFeatures": 2,
@@ -244,7 +244,7 @@
     "extractionDate": "2019-11-13T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/box/2019.yml",
+    "yaml": "static/pricings/originalDataset/box/2019.yml",
     "analytics": {
       "numberOfFeatures": 40,
       "numberOfInformationFeatures": 2,
@@ -291,7 +291,7 @@
     "extractionDate": "2024-07-02T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/buffer/2024.yml",
+    "yaml": "static/pricings/originalDataset/buffer/2024.yml",
     "analytics": {
       "numberOfFeatures": 76,
       "numberOfInformationFeatures": 22,
@@ -338,7 +338,7 @@
     "extractionDate": "2023-11-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/buffer/2023.yml",
+    "yaml": "static/pricings/originalDataset/buffer/2023.yml",
     "analytics": {
       "numberOfFeatures": 76,
       "numberOfInformationFeatures": 22,
@@ -385,7 +385,7 @@
     "extractionDate": "2022-11-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/buffer/2022.yml",
+    "yaml": "static/pricings/originalDataset/buffer/2022.yml",
     "analytics": {
       "numberOfFeatures": 71,
       "numberOfInformationFeatures": 17,
@@ -432,7 +432,7 @@
     "extractionDate": "2021-11-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/buffer/2021.yml",
+    "yaml": "static/pricings/originalDataset/buffer/2021.yml",
     "analytics": {
       "numberOfFeatures": 62,
       "numberOfInformationFeatures": 16,
@@ -479,7 +479,7 @@
     "extractionDate": "2020-11-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/buffer/2020.yml",
+    "yaml": "static/pricings/originalDataset/buffer/2020.yml",
     "analytics": {
       "numberOfFeatures": 31,
       "numberOfInformationFeatures": 4,
@@ -526,7 +526,7 @@
     "extractionDate": "2019-11-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/buffer/2019.yml",
+    "yaml": "static/pricings/originalDataset/buffer/2019.yml",
     "analytics": {
       "numberOfFeatures": 28,
       "numberOfInformationFeatures": 2,
@@ -573,7 +573,7 @@
     "extractionDate": "2024-07-07T00:00:00.000Z",
     "currency": "EUR",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/canva/2024.yml",
+    "yaml": "static/pricings/originalDataset/canva/2024.yml",
     "analytics": {
       "numberOfFeatures": 92,
       "numberOfInformationFeatures": 5,
@@ -620,7 +620,7 @@
     "extractionDate": "2023-11-24T00:00:00.000Z",
     "currency": "EUR",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/canva/2023.yml",
+    "yaml": "static/pricings/originalDataset/canva/2023.yml",
     "analytics": {
       "numberOfFeatures": 61,
       "numberOfInformationFeatures": 3,
@@ -667,7 +667,7 @@
     "extractionDate": "2022-02-08T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/canva/2022.yml",
+    "yaml": "static/pricings/originalDataset/canva/2022.yml",
     "analytics": {
       "numberOfFeatures": 37,
       "numberOfInformationFeatures": 0,
@@ -714,7 +714,7 @@
     "extractionDate": "2021-03-18T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/canva/2021.yml",
+    "yaml": "static/pricings/originalDataset/canva/2021.yml",
     "analytics": {
       "numberOfFeatures": 37,
       "numberOfInformationFeatures": 0,
@@ -761,7 +761,7 @@
     "extractionDate": "2020-06-19T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/canva/2020.yml",
+    "yaml": "static/pricings/originalDataset/canva/2020.yml",
     "analytics": {
       "numberOfFeatures": 33,
       "numberOfInformationFeatures": 0,
@@ -808,7 +808,7 @@
     "extractionDate": "2019-09-05T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/canva/2019.yml",
+    "yaml": "static/pricings/originalDataset/canva/2019.yml",
     "analytics": {
       "numberOfFeatures": 19,
       "numberOfInformationFeatures": 0,
@@ -855,7 +855,7 @@
     "extractionDate": "2024-07-04T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/clickup/2024.yml",
+    "yaml": "static/pricings/originalDataset/clickup/2024.yml",
     "analytics": {
       "numberOfFeatures": 135,
       "numberOfInformationFeatures": 1,
@@ -902,7 +902,7 @@
     "extractionDate": "2023-11-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/clickup/2023.yml",
+    "yaml": "static/pricings/originalDataset/clickup/2023.yml",
     "analytics": {
       "numberOfFeatures": 136,
       "numberOfInformationFeatures": 1,
@@ -949,7 +949,7 @@
     "extractionDate": "2022-11-27T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/clickup/2022.yml",
+    "yaml": "static/pricings/originalDataset/clickup/2022.yml",
     "analytics": {
       "numberOfFeatures": 121,
       "numberOfInformationFeatures": 0,
@@ -996,7 +996,7 @@
     "extractionDate": "2021-11-01T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/clickup/2021.yml",
+    "yaml": "static/pricings/originalDataset/clickup/2021.yml",
     "analytics": {
       "numberOfFeatures": 112,
       "numberOfInformationFeatures": 0,
@@ -1043,7 +1043,7 @@
     "extractionDate": "2020-10-01T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/clickup/2020.yml",
+    "yaml": "static/pricings/originalDataset/clickup/2020.yml",
     "analytics": {
       "numberOfFeatures": 80,
       "numberOfInformationFeatures": 3,
@@ -1090,7 +1090,7 @@
     "extractionDate": "2019-10-31T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/clickup/2019.yml",
+    "yaml": "static/pricings/originalDataset/clickup/2019.yml",
     "analytics": {
       "numberOfFeatures": 26,
       "numberOfInformationFeatures": 1,
@@ -1137,7 +1137,7 @@
     "extractionDate": "2024-07-05T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/clockify/2024.yml",
+    "yaml": "static/pricings/originalDataset/clockify/2024.yml",
     "analytics": {
       "numberOfFeatures": 72,
       "numberOfInformationFeatures": 9,
@@ -1184,7 +1184,7 @@
     "extractionDate": "2023-12-02T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/clockify/2023.yml",
+    "yaml": "static/pricings/originalDataset/clockify/2023.yml",
     "analytics": {
       "numberOfFeatures": 68,
       "numberOfInformationFeatures": 9,
@@ -1231,7 +1231,7 @@
     "extractionDate": "2022-11-15T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/clockify/2022.yml",
+    "yaml": "static/pricings/originalDataset/clockify/2022.yml",
     "analytics": {
       "numberOfFeatures": 65,
       "numberOfInformationFeatures": 7,
@@ -1278,7 +1278,7 @@
     "extractionDate": "2021-11-24T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/clockify/2021.yml",
+    "yaml": "static/pricings/originalDataset/clockify/2021.yml",
     "analytics": {
       "numberOfFeatures": 38,
       "numberOfInformationFeatures": 2,
@@ -1325,7 +1325,7 @@
     "extractionDate": "2020-11-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/clockify/2020.yml",
+    "yaml": "static/pricings/originalDataset/clockify/2020.yml",
     "analytics": {
       "numberOfFeatures": 31,
       "numberOfInformationFeatures": 2,
@@ -1372,7 +1372,7 @@
     "extractionDate": "2019-11-11T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/clockify/2019.yml",
+    "yaml": "static/pricings/originalDataset/clockify/2019.yml",
     "analytics": {
       "numberOfFeatures": 24,
       "numberOfInformationFeatures": 1,
@@ -1419,7 +1419,7 @@
     "extractionDate": "2024-07-14T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/crowdcast/2024.yml",
+    "yaml": "static/pricings/originalDataset/crowdcast/2024.yml",
     "analytics": {
       "numberOfFeatures": 16,
       "numberOfInformationFeatures": 2,
@@ -1466,7 +1466,7 @@
     "extractionDate": "2023-11-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/crowdcast/2023.yml",
+    "yaml": "static/pricings/originalDataset/crowdcast/2023.yml",
     "analytics": {
       "numberOfFeatures": 16,
       "numberOfInformationFeatures": 2,
@@ -1513,7 +1513,7 @@
     "extractionDate": "2022-11-22T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/crowdcast/2022.yml",
+    "yaml": "static/pricings/originalDataset/crowdcast/2022.yml",
     "analytics": {
       "numberOfFeatures": 16,
       "numberOfInformationFeatures": 2,
@@ -1560,7 +1560,7 @@
     "extractionDate": "2021-11-27T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/crowdcast/2021.yml",
+    "yaml": "static/pricings/originalDataset/crowdcast/2021.yml",
     "analytics": {
       "numberOfFeatures": 20,
       "numberOfInformationFeatures": 2,
@@ -1607,7 +1607,7 @@
     "extractionDate": "2020-11-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/crowdcast/2020.yml",
+    "yaml": "static/pricings/originalDataset/crowdcast/2020.yml",
     "analytics": {
       "numberOfFeatures": 20,
       "numberOfInformationFeatures": 2,
@@ -1654,7 +1654,7 @@
     "extractionDate": "2024-06-11T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/databox/2024.yml",
+    "yaml": "static/pricings/originalDataset/databox/2024.yml",
     "analytics": {
       "numberOfFeatures": 63,
       "numberOfInformationFeatures": 4,
@@ -1701,7 +1701,7 @@
     "extractionDate": "2023-12-11T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/databox/2023.yml",
+    "yaml": "static/pricings/originalDataset/databox/2023.yml",
     "analytics": {
       "numberOfFeatures": 66,
       "numberOfInformationFeatures": 4,
@@ -1748,7 +1748,7 @@
     "extractionDate": "2022-11-07T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/databox/2022.yml",
+    "yaml": "static/pricings/originalDataset/databox/2022.yml",
     "analytics": {
       "numberOfFeatures": 43,
       "numberOfInformationFeatures": 0,
@@ -1795,7 +1795,7 @@
     "extractionDate": "2021-11-22T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/databox/2021.yml",
+    "yaml": "static/pricings/originalDataset/databox/2021.yml",
     "analytics": {
       "numberOfFeatures": 32,
       "numberOfInformationFeatures": 0,
@@ -1842,7 +1842,7 @@
     "extractionDate": "2020-11-30T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/databox/2020.yml",
+    "yaml": "static/pricings/originalDataset/databox/2020.yml",
     "analytics": {
       "numberOfFeatures": 22,
       "numberOfInformationFeatures": 0,
@@ -1889,7 +1889,7 @@
     "extractionDate": "2019-12-10T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/databox/2019.yml",
+    "yaml": "static/pricings/originalDataset/databox/2019.yml",
     "analytics": {
       "numberOfFeatures": 21,
       "numberOfInformationFeatures": 0,
@@ -1936,7 +1936,7 @@
     "extractionDate": "2024-07-15T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/deskera/2024.yml",
+    "yaml": "static/pricings/originalDataset/deskera/2024.yml",
     "analytics": {
       "numberOfFeatures": 100,
       "numberOfInformationFeatures": 8,
@@ -1983,7 +1983,7 @@
     "extractionDate": "2023-03-23T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/deskera/2023.yml",
+    "yaml": "static/pricings/originalDataset/deskera/2023.yml",
     "analytics": {
       "numberOfFeatures": 63,
       "numberOfInformationFeatures": 2,
@@ -2030,7 +2030,7 @@
     "extractionDate": "2022-12-04T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/deskera/2022.yml",
+    "yaml": "static/pricings/originalDataset/deskera/2022.yml",
     "analytics": {
       "numberOfFeatures": 63,
       "numberOfInformationFeatures": 2,
@@ -2077,7 +2077,7 @@
     "extractionDate": "2021-10-13T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/deskera/2021.yml",
+    "yaml": "static/pricings/originalDataset/deskera/2021.yml",
     "analytics": {
       "numberOfFeatures": 22,
       "numberOfInformationFeatures": 0,
@@ -2124,7 +2124,7 @@
     "extractionDate": "2024-07-15T00:00:00.000Z",
     "currency": "EUR",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/dropbox/2024.yml",
+    "yaml": "static/pricings/originalDataset/dropbox/2024.yml",
     "analytics": {
       "numberOfFeatures": 83,
       "numberOfInformationFeatures": 4,
@@ -2171,7 +2171,7 @@
     "extractionDate": "2023-12-02T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/dropbox/2023.yml",
+    "yaml": "static/pricings/originalDataset/dropbox/2023.yml",
     "analytics": {
       "numberOfFeatures": 76,
       "numberOfInformationFeatures": 4,
@@ -2218,7 +2218,7 @@
     "extractionDate": "2022-11-15T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/dropbox/2022.yml",
+    "yaml": "static/pricings/originalDataset/dropbox/2022.yml",
     "analytics": {
       "numberOfFeatures": 54,
       "numberOfInformationFeatures": 2,
@@ -2265,7 +2265,7 @@
     "extractionDate": "2021-11-19T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/dropbox/2021.yml",
+    "yaml": "static/pricings/originalDataset/dropbox/2021.yml",
     "analytics": {
       "numberOfFeatures": 52,
       "numberOfInformationFeatures": 2,
@@ -2312,7 +2312,7 @@
     "extractionDate": "2024-07-06T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/evernote/2024.yml",
+    "yaml": "static/pricings/originalDataset/evernote/2024.yml",
     "analytics": {
       "numberOfFeatures": 32,
       "numberOfInformationFeatures": 1,
@@ -2359,7 +2359,7 @@
     "extractionDate": "2023-11-23T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/evernote/2023.yml",
+    "yaml": "static/pricings/originalDataset/evernote/2023.yml",
     "analytics": {
       "numberOfFeatures": 76,
       "numberOfInformationFeatures": 0,
@@ -2406,7 +2406,7 @@
     "extractionDate": "2022-11-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/evernote/2022.yml",
+    "yaml": "static/pricings/originalDataset/evernote/2022.yml",
     "analytics": {
       "numberOfFeatures": 77,
       "numberOfInformationFeatures": 0,
@@ -2453,7 +2453,7 @@
     "extractionDate": "2021-11-28T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/evernote/2021.yml",
+    "yaml": "static/pricings/originalDataset/evernote/2021.yml",
     "analytics": {
       "numberOfFeatures": 80,
       "numberOfInformationFeatures": 1,
@@ -2500,7 +2500,7 @@
     "extractionDate": "2020-11-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/evernote/2020.yml",
+    "yaml": "static/pricings/originalDataset/evernote/2020.yml",
     "analytics": {
       "numberOfFeatures": 48,
       "numberOfInformationFeatures": 1,
@@ -2547,7 +2547,7 @@
     "extractionDate": "2019-11-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/evernote/2019.yml",
+    "yaml": "static/pricings/originalDataset/evernote/2019.yml",
     "analytics": {
       "numberOfFeatures": 57,
       "numberOfInformationFeatures": 1,
@@ -2594,7 +2594,7 @@
     "extractionDate": "2024-07-05T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/figma/2024.yml",
+    "yaml": "static/pricings/originalDataset/figma/2024.yml",
     "analytics": {
       "numberOfFeatures": 91,
       "numberOfInformationFeatures": 4,
@@ -2641,7 +2641,7 @@
     "extractionDate": "2023-11-08T00:00:00.000Z",
     "currency": "EUR",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/figma/2023.yml",
+    "yaml": "static/pricings/originalDataset/figma/2023.yml",
     "analytics": {
       "numberOfFeatures": 73,
       "numberOfInformationFeatures": 3,
@@ -2688,7 +2688,7 @@
     "extractionDate": "2022-11-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/figma/2022.yml",
+    "yaml": "static/pricings/originalDataset/figma/2022.yml",
     "analytics": {
       "numberOfFeatures": 54,
       "numberOfInformationFeatures": 2,
@@ -2735,7 +2735,7 @@
     "extractionDate": "2021-11-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/figma/2021.yml",
+    "yaml": "static/pricings/originalDataset/figma/2021.yml",
     "analytics": {
       "numberOfFeatures": 40,
       "numberOfInformationFeatures": 2,
@@ -2782,7 +2782,7 @@
     "extractionDate": "2020-11-26T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/figma/2020.yml",
+    "yaml": "static/pricings/originalDataset/figma/2020.yml",
     "analytics": {
       "numberOfFeatures": 38,
       "numberOfInformationFeatures": 2,
@@ -2829,7 +2829,7 @@
     "extractionDate": "2019-10-17T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/figma/2019.yml",
+    "yaml": "static/pricings/originalDataset/figma/2019.yml",
     "analytics": {
       "numberOfFeatures": 35,
       "numberOfInformationFeatures": 1,
@@ -2876,7 +2876,7 @@
     "extractionDate": "2024-06-07T00:00:00.000Z",
     "currency": "EUR",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/github/2024.yml",
+    "yaml": "static/pricings/originalDataset/github/2024.yml",
     "analytics": {
       "numberOfFeatures": 81,
       "numberOfInformationFeatures": 5,
@@ -2923,7 +2923,7 @@
     "extractionDate": "2023-11-20T00:00:00.000Z",
     "currency": "EUR",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/github/2023.yml",
+    "yaml": "static/pricings/originalDataset/github/2023.yml",
     "analytics": {
       "numberOfFeatures": 73,
       "numberOfInformationFeatures": 6,
@@ -2970,7 +2970,7 @@
     "extractionDate": "2022-11-29T00:00:00.000Z",
     "currency": "EUR",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/github/2022.yml",
+    "yaml": "static/pricings/originalDataset/github/2022.yml",
     "analytics": {
       "numberOfFeatures": 51,
       "numberOfInformationFeatures": 4,
@@ -3017,7 +3017,7 @@
     "extractionDate": "2021-11-29T00:00:00.000Z",
     "currency": "EUR",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/github/2021.yml",
+    "yaml": "static/pricings/originalDataset/github/2021.yml",
     "analytics": {
       "numberOfFeatures": 49,
       "numberOfInformationFeatures": 4,
@@ -3064,7 +3064,7 @@
     "extractionDate": "2020-11-29T00:00:00.000Z",
     "currency": "EUR",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/github/2020.yml",
+    "yaml": "static/pricings/originalDataset/github/2020.yml",
     "analytics": {
       "numberOfFeatures": 47,
       "numberOfInformationFeatures": 3,
@@ -3111,7 +3111,7 @@
     "extractionDate": "2019-11-29T00:00:00.000Z",
     "currency": "EUR",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/github/2019.yml",
+    "yaml": "static/pricings/originalDataset/github/2019.yml",
     "analytics": {
       "numberOfFeatures": 38,
       "numberOfInformationFeatures": 3,
@@ -3158,7 +3158,7 @@
     "extractionDate": "2024-07-15T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/hypercontext/2024.yml",
+    "yaml": "static/pricings/originalDataset/hypercontext/2024.yml",
     "analytics": {
       "numberOfFeatures": 63,
       "numberOfInformationFeatures": 8,
@@ -3205,7 +3205,7 @@
     "extractionDate": "2023-10-24T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/hypercontext/2023.yml",
+    "yaml": "static/pricings/originalDataset/hypercontext/2023.yml",
     "analytics": {
       "numberOfFeatures": 49,
       "numberOfInformationFeatures": 2,
@@ -3252,7 +3252,7 @@
     "extractionDate": "2022-10-13T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/hypercontext/2022.yml",
+    "yaml": "static/pricings/originalDataset/hypercontext/2022.yml",
     "analytics": {
       "numberOfFeatures": 49,
       "numberOfInformationFeatures": 2,
@@ -3299,7 +3299,7 @@
     "extractionDate": "2021-10-09T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/hypercontext/2021.yml",
+    "yaml": "static/pricings/originalDataset/hypercontext/2021.yml",
     "analytics": {
       "numberOfFeatures": 50,
       "numberOfInformationFeatures": 2,
@@ -3346,7 +3346,7 @@
     "extractionDate": "2024-07-07T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/jira/2024.yml",
+    "yaml": "static/pricings/originalDataset/jira/2024.yml",
     "analytics": {
       "numberOfFeatures": 60,
       "numberOfInformationFeatures": 6,
@@ -3393,7 +3393,7 @@
     "extractionDate": "2023-11-16T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/jira/2023.yml",
+    "yaml": "static/pricings/originalDataset/jira/2023.yml",
     "analytics": {
       "numberOfFeatures": 46,
       "numberOfInformationFeatures": 6,
@@ -3440,7 +3440,7 @@
     "extractionDate": "2022-11-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/jira/2022.yml",
+    "yaml": "static/pricings/originalDataset/jira/2022.yml",
     "analytics": {
       "numberOfFeatures": 40,
       "numberOfInformationFeatures": 4,
@@ -3487,7 +3487,7 @@
     "extractionDate": "2021-09-24T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/jira/2021.yml",
+    "yaml": "static/pricings/originalDataset/jira/2021.yml",
     "analytics": {
       "numberOfFeatures": 37,
       "numberOfInformationFeatures": 3,
@@ -3534,7 +3534,7 @@
     "extractionDate": "2020-11-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/jira/2020.yml",
+    "yaml": "static/pricings/originalDataset/jira/2020.yml",
     "analytics": {
       "numberOfFeatures": 33,
       "numberOfInformationFeatures": 3,
@@ -3581,7 +3581,7 @@
     "extractionDate": "2019-10-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/jira/2019.yml",
+    "yaml": "static/pricings/originalDataset/jira/2019.yml",
     "analytics": {
       "numberOfFeatures": 14,
       "numberOfInformationFeatures": 2,
@@ -3628,7 +3628,7 @@
     "extractionDate": "2024-07-12T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/mailchimp/2024.yml",
+    "yaml": "static/pricings/originalDataset/mailchimp/2024.yml",
     "analytics": {
       "numberOfFeatures": 90,
       "numberOfInformationFeatures": 5,
@@ -3675,7 +3675,7 @@
     "extractionDate": "2023-11-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/mailchimp/2023.yml",
+    "yaml": "static/pricings/originalDataset/mailchimp/2023.yml",
     "analytics": {
       "numberOfFeatures": 80,
       "numberOfInformationFeatures": 4,
@@ -3722,7 +3722,7 @@
     "extractionDate": "2022-11-30T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/mailchimp/2022.yml",
+    "yaml": "static/pricings/originalDataset/mailchimp/2022.yml",
     "analytics": {
       "numberOfFeatures": 89,
       "numberOfInformationFeatures": 5,
@@ -3769,7 +3769,7 @@
     "extractionDate": "2021-11-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/mailchimp/2021.yml",
+    "yaml": "static/pricings/originalDataset/mailchimp/2021.yml",
     "analytics": {
       "numberOfFeatures": 90,
       "numberOfInformationFeatures": 5,
@@ -3816,7 +3816,7 @@
     "extractionDate": "2020-11-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/mailchimp/2020.yml",
+    "yaml": "static/pricings/originalDataset/mailchimp/2020.yml",
     "analytics": {
       "numberOfFeatures": 69,
       "numberOfInformationFeatures": 4,
@@ -3863,7 +3863,7 @@
     "extractionDate": "2019-11-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/mailchimp/2019.yml",
+    "yaml": "static/pricings/originalDataset/mailchimp/2019.yml",
     "analytics": {
       "numberOfFeatures": 48,
       "numberOfInformationFeatures": 4,
@@ -3910,7 +3910,7 @@
     "extractionDate": "2019-11-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/microsoft365Business/2019.yml",
+    "yaml": "static/pricings/originalDataset/microsoft365Business/2019.yml",
     "analytics": {
       "numberOfFeatures": 44,
       "numberOfInformationFeatures": 1,
@@ -3957,7 +3957,7 @@
     "extractionDate": "2024-07-16T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/microsoft365Business/2024.yml",
+    "yaml": "static/pricings/originalDataset/microsoft365Business/2024.yml",
     "analytics": {
       "numberOfFeatures": 60,
       "numberOfInformationFeatures": 1,
@@ -4004,7 +4004,7 @@
     "extractionDate": "2023-11-24T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/microsoft365Business/2023.yml",
+    "yaml": "static/pricings/originalDataset/microsoft365Business/2023.yml",
     "analytics": {
       "numberOfFeatures": 54,
       "numberOfInformationFeatures": 1,
@@ -4051,7 +4051,7 @@
     "extractionDate": "2022-11-23T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/microsoft365Business/2022.yml",
+    "yaml": "static/pricings/originalDataset/microsoft365Business/2022.yml",
     "analytics": {
       "numberOfFeatures": 60,
       "numberOfInformationFeatures": 0,
@@ -4098,7 +4098,7 @@
     "extractionDate": "2021-11-18T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/microsoft365Business/2021.yml",
+    "yaml": "static/pricings/originalDataset/microsoft365Business/2021.yml",
     "analytics": {
       "numberOfFeatures": 54,
       "numberOfInformationFeatures": 0,
@@ -4145,7 +4145,7 @@
     "extractionDate": "2020-11-11T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/microsoft365Business/2020.yml",
+    "yaml": "static/pricings/originalDataset/microsoft365Business/2020.yml",
     "analytics": {
       "numberOfFeatures": 55,
       "numberOfInformationFeatures": 1,
@@ -4192,7 +4192,7 @@
     "extractionDate": "2024-07-16T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/notion/2024.yml",
+    "yaml": "static/pricings/originalDataset/notion/2024.yml",
     "analytics": {
       "numberOfFeatures": 58,
       "numberOfInformationFeatures": 4,
@@ -4239,7 +4239,7 @@
     "extractionDate": "2023-11-28T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/notion/2023.yml",
+    "yaml": "static/pricings/originalDataset/notion/2023.yml",
     "analytics": {
       "numberOfFeatures": 43,
       "numberOfInformationFeatures": 4,
@@ -4286,7 +4286,7 @@
     "extractionDate": "2022-11-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/notion/2022.yml",
+    "yaml": "static/pricings/originalDataset/notion/2022.yml",
     "analytics": {
       "numberOfFeatures": 45,
       "numberOfInformationFeatures": 1,
@@ -4333,7 +4333,7 @@
     "extractionDate": "2021-11-01T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/notion/2021.yml",
+    "yaml": "static/pricings/originalDataset/notion/2021.yml",
     "analytics": {
       "numberOfFeatures": 37,
       "numberOfInformationFeatures": 0,
@@ -4380,7 +4380,7 @@
     "extractionDate": "2024-07-16T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/openphone/2024.yml",
+    "yaml": "static/pricings/originalDataset/openphone/2024.yml",
     "analytics": {
       "numberOfFeatures": 48,
       "numberOfInformationFeatures": 4,
@@ -4427,7 +4427,7 @@
     "extractionDate": "2023-11-19T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/openphone/2023.yml",
+    "yaml": "static/pricings/originalDataset/openphone/2023.yml",
     "analytics": {
       "numberOfFeatures": 45,
       "numberOfInformationFeatures": 4,
@@ -4474,7 +4474,7 @@
     "extractionDate": "2022-11-28T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/openphone/2022.yml",
+    "yaml": "static/pricings/originalDataset/openphone/2022.yml",
     "analytics": {
       "numberOfFeatures": 44,
       "numberOfInformationFeatures": 3,
@@ -4521,7 +4521,7 @@
     "extractionDate": "2021-11-17T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/openphone/2021.yml",
+    "yaml": "static/pricings/originalDataset/openphone/2021.yml",
     "analytics": {
       "numberOfFeatures": 28,
       "numberOfInformationFeatures": 3,
@@ -4568,7 +4568,7 @@
     "extractionDate": "2020-11-11T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/openphone/2020.yml",
+    "yaml": "static/pricings/originalDataset/openphone/2020.yml",
     "analytics": {
       "numberOfFeatures": 18,
       "numberOfInformationFeatures": 3,
@@ -4615,7 +4615,7 @@
     "extractionDate": "2024-07-10T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/overleaf/2024.yml",
+    "yaml": "static/pricings/originalDataset/overleaf/2024.yml",
     "analytics": {
       "numberOfFeatures": 16,
       "numberOfInformationFeatures": 1,
@@ -4662,7 +4662,7 @@
     "extractionDate": "2023-11-27T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/overleaf/2023.yml",
+    "yaml": "static/pricings/originalDataset/overleaf/2023.yml",
     "analytics": {
       "numberOfFeatures": 16,
       "numberOfInformationFeatures": 1,
@@ -4709,7 +4709,7 @@
     "extractionDate": "2022-11-27T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/overleaf/2022.yml",
+    "yaml": "static/pricings/originalDataset/overleaf/2022.yml",
     "analytics": {
       "numberOfFeatures": 13,
       "numberOfInformationFeatures": 0,
@@ -4756,7 +4756,7 @@
     "extractionDate": "2021-11-27T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/overleaf/2021.yml",
+    "yaml": "static/pricings/originalDataset/overleaf/2021.yml",
     "analytics": {
       "numberOfFeatures": 13,
       "numberOfInformationFeatures": 0,
@@ -4803,7 +4803,7 @@
     "extractionDate": "2020-11-24T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/overleaf/2020.yml",
+    "yaml": "static/pricings/originalDataset/overleaf/2020.yml",
     "analytics": {
       "numberOfFeatures": 13,
       "numberOfInformationFeatures": 0,
@@ -4850,7 +4850,7 @@
     "extractionDate": "2019-11-03T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/overleaf/2019.yml",
+    "yaml": "static/pricings/originalDataset/overleaf/2019.yml",
     "analytics": {
       "numberOfFeatures": 11,
       "numberOfInformationFeatures": 0,
@@ -4897,7 +4897,7 @@
     "extractionDate": "2024-07-18T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/planable/2024.yml",
+    "yaml": "static/pricings/originalDataset/planable/2024.yml",
     "analytics": {
       "numberOfFeatures": 41,
       "numberOfInformationFeatures": 1,
@@ -4944,7 +4944,7 @@
     "extractionDate": "2023-10-20T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/planable/2023.yml",
+    "yaml": "static/pricings/originalDataset/planable/2023.yml",
     "analytics": {
       "numberOfFeatures": 27,
       "numberOfInformationFeatures": 0,
@@ -4991,7 +4991,7 @@
     "extractionDate": "2022-10-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/planable/2022.yml",
+    "yaml": "static/pricings/originalDataset/planable/2022.yml",
     "analytics": {
       "numberOfFeatures": 23,
       "numberOfInformationFeatures": 0,
@@ -5038,7 +5038,7 @@
     "extractionDate": "2021-11-18T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/planable/2021.yml",
+    "yaml": "static/pricings/originalDataset/planable/2021.yml",
     "analytics": {
       "numberOfFeatures": 18,
       "numberOfInformationFeatures": 0,
@@ -5085,7 +5085,7 @@
     "extractionDate": "2020-11-25T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/planable/2020.yml",
+    "yaml": "static/pricings/originalDataset/planable/2020.yml",
     "analytics": {
       "numberOfFeatures": 18,
       "numberOfInformationFeatures": 0,
@@ -5132,7 +5132,7 @@
     "extractionDate": "2019-05-23T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/planable/2019.yml",
+    "yaml": "static/pricings/originalDataset/planable/2019.yml",
     "analytics": {
       "numberOfFeatures": 5,
       "numberOfInformationFeatures": 0,
@@ -5179,7 +5179,7 @@
     "extractionDate": "2024-06-28T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/postman/2024.yml",
+    "yaml": "static/pricings/originalDataset/postman/2024.yml",
     "analytics": {
       "numberOfFeatures": 100,
       "numberOfInformationFeatures": 5,
@@ -5226,7 +5226,7 @@
     "extractionDate": "2023-11-04T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/postman/2023.yml",
+    "yaml": "static/pricings/originalDataset/postman/2023.yml",
     "analytics": {
       "numberOfFeatures": 39,
       "numberOfInformationFeatures": 5,
@@ -5273,7 +5273,7 @@
     "extractionDate": "2022-11-23T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/postman/2022.yml",
+    "yaml": "static/pricings/originalDataset/postman/2022.yml",
     "analytics": {
       "numberOfFeatures": 40,
       "numberOfInformationFeatures": 2,
@@ -5320,7 +5320,7 @@
     "extractionDate": "2021-11-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/postman/2021.yml",
+    "yaml": "static/pricings/originalDataset/postman/2021.yml",
     "analytics": {
       "numberOfFeatures": 24,
       "numberOfInformationFeatures": 0,
@@ -5367,7 +5367,7 @@
     "extractionDate": "2020-11-24T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/postman/2020.yml",
+    "yaml": "static/pricings/originalDataset/postman/2020.yml",
     "analytics": {
       "numberOfFeatures": 22,
       "numberOfInformationFeatures": 0,
@@ -5414,7 +5414,7 @@
     "extractionDate": "2024-07-15T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/pumble/2024.yml",
+    "yaml": "static/pricings/originalDataset/pumble/2024.yml",
     "analytics": {
       "numberOfFeatures": 34,
       "numberOfInformationFeatures": 0,
@@ -5461,7 +5461,7 @@
     "extractionDate": "2023-09-30T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/pumble/2023.yml",
+    "yaml": "static/pricings/originalDataset/pumble/2023.yml",
     "analytics": {
       "numberOfFeatures": 28,
       "numberOfInformationFeatures": 0,
@@ -5508,7 +5508,7 @@
     "extractionDate": "2022-11-27T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/pumble/2022.yml",
+    "yaml": "static/pricings/originalDataset/pumble/2022.yml",
     "analytics": {
       "numberOfFeatures": 25,
       "numberOfInformationFeatures": 0,
@@ -5555,7 +5555,7 @@
     "extractionDate": "2021-09-19T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/pumble/2021.yml",
+    "yaml": "static/pricings/originalDataset/pumble/2021.yml",
     "analytics": {
       "numberOfFeatures": 21,
       "numberOfInformationFeatures": 0,
@@ -5602,7 +5602,7 @@
     "extractionDate": "2024-07-01T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/quip/2024.yml",
+    "yaml": "static/pricings/originalDataset/quip/2024.yml",
     "analytics": {
       "numberOfFeatures": 15,
       "numberOfInformationFeatures": 1,
@@ -5649,7 +5649,7 @@
     "extractionDate": "2023-11-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/quip/2023.yml",
+    "yaml": "static/pricings/originalDataset/quip/2023.yml",
     "analytics": {
       "numberOfFeatures": 15,
       "numberOfInformationFeatures": 1,
@@ -5696,7 +5696,7 @@
     "extractionDate": "2022-11-28T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/quip/2022.yml",
+    "yaml": "static/pricings/originalDataset/quip/2022.yml",
     "analytics": {
       "numberOfFeatures": 15,
       "numberOfInformationFeatures": 1,
@@ -5743,7 +5743,7 @@
     "extractionDate": "2021-11-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/quip/2021.yml",
+    "yaml": "static/pricings/originalDataset/quip/2021.yml",
     "analytics": {
       "numberOfFeatures": 15,
       "numberOfInformationFeatures": 1,
@@ -5790,7 +5790,7 @@
     "extractionDate": "2020-11-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/quip/2020.yml",
+    "yaml": "static/pricings/originalDataset/quip/2020.yml",
     "analytics": {
       "numberOfFeatures": 16,
       "numberOfInformationFeatures": 1,
@@ -5837,7 +5837,7 @@
     "extractionDate": "2019-11-25T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/quip/2019.yml",
+    "yaml": "static/pricings/originalDataset/quip/2019.yml",
     "analytics": {
       "numberOfFeatures": 18,
       "numberOfInformationFeatures": 1,
@@ -5884,7 +5884,7 @@
     "extractionDate": "2024-07-15T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/salesforce/2024.yml",
+    "yaml": "static/pricings/originalDataset/salesforce/2024.yml",
     "analytics": {
       "numberOfFeatures": 111,
       "numberOfInformationFeatures": 3,
@@ -5931,7 +5931,7 @@
     "extractionDate": "2023-12-02T00:00:00.000Z",
     "currency": "EUR",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/salesforce/2023.yml",
+    "yaml": "static/pricings/originalDataset/salesforce/2023.yml",
     "analytics": {
       "numberOfFeatures": 62,
       "numberOfInformationFeatures": 0,
@@ -5978,7 +5978,7 @@
     "extractionDate": "2022-11-26T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/salesforce/2022.yml",
+    "yaml": "static/pricings/originalDataset/salesforce/2022.yml",
     "analytics": {
       "numberOfFeatures": 67,
       "numberOfInformationFeatures": 0,
@@ -6025,7 +6025,7 @@
     "extractionDate": "2021-11-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/salesforce/2021.yml",
+    "yaml": "static/pricings/originalDataset/salesforce/2021.yml",
     "analytics": {
       "numberOfFeatures": 60,
       "numberOfInformationFeatures": 0,
@@ -6072,7 +6072,7 @@
     "extractionDate": "2020-11-25T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/salesforce/2020.yml",
+    "yaml": "static/pricings/originalDataset/salesforce/2020.yml",
     "analytics": {
       "numberOfFeatures": 60,
       "numberOfInformationFeatures": 0,
@@ -6119,7 +6119,7 @@
     "extractionDate": "2019-11-25T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/salesforce/2019.yml",
+    "yaml": "static/pricings/originalDataset/salesforce/2019.yml",
     "analytics": {
       "numberOfFeatures": 60,
       "numberOfInformationFeatures": 0,
@@ -6166,7 +6166,7 @@
     "extractionDate": "2024-07-02T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/slack/2024.yml",
+    "yaml": "static/pricings/originalDataset/slack/2024.yml",
     "analytics": {
       "numberOfFeatures": 44,
       "numberOfInformationFeatures": 4,
@@ -6213,7 +6213,7 @@
     "extractionDate": "2023-10-23T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/slack/2023.yml",
+    "yaml": "static/pricings/originalDataset/slack/2023.yml",
     "analytics": {
       "numberOfFeatures": 41,
       "numberOfInformationFeatures": 3,
@@ -6260,7 +6260,7 @@
     "extractionDate": "2020-10-21T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/slack/2020.yml",
+    "yaml": "static/pricings/originalDataset/slack/2020.yml",
     "analytics": {
       "numberOfFeatures": 33,
       "numberOfInformationFeatures": 0,
@@ -6307,7 +6307,7 @@
     "extractionDate": "2019-10-30T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/slack/2019.yml",
+    "yaml": "static/pricings/originalDataset/slack/2019.yml",
     "analytics": {
       "numberOfFeatures": 25,
       "numberOfInformationFeatures": 0,
@@ -6354,7 +6354,7 @@
     "extractionDate": "2024-06-30T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/tableau/2024.yml",
+    "yaml": "static/pricings/originalDataset/tableau/2024.yml",
     "analytics": {
       "numberOfFeatures": 41,
       "numberOfInformationFeatures": 2,
@@ -6401,7 +6401,7 @@
     "extractionDate": "2023-11-28T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/tableau/2023.yml",
+    "yaml": "static/pricings/originalDataset/tableau/2023.yml",
     "analytics": {
       "numberOfFeatures": 40,
       "numberOfInformationFeatures": 2,
@@ -6448,7 +6448,7 @@
     "extractionDate": "2022-11-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/tableau/2022.yml",
+    "yaml": "static/pricings/originalDataset/tableau/2022.yml",
     "analytics": {
       "numberOfFeatures": 40,
       "numberOfInformationFeatures": 2,
@@ -6495,7 +6495,7 @@
     "extractionDate": "2021-11-28T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/tableau/2021.yml",
+    "yaml": "static/pricings/originalDataset/tableau/2021.yml",
     "analytics": {
       "numberOfFeatures": 40,
       "numberOfInformationFeatures": 2,
@@ -6542,7 +6542,7 @@
     "extractionDate": "2020-11-25T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/tableau/2020.yml",
+    "yaml": "static/pricings/originalDataset/tableau/2020.yml",
     "analytics": {
       "numberOfFeatures": 37,
       "numberOfInformationFeatures": 2,
@@ -6589,7 +6589,7 @@
     "extractionDate": "2019-08-12T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/tableau/2019.yml",
+    "yaml": "static/pricings/originalDataset/tableau/2019.yml",
     "analytics": {
       "numberOfFeatures": 35,
       "numberOfInformationFeatures": 2,
@@ -6636,7 +6636,7 @@
     "extractionDate": "2024-07-14T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/trustmary/2024.yml",
+    "yaml": "static/pricings/originalDataset/trustmary/2024.yml",
     "analytics": {
       "numberOfFeatures": 45,
       "numberOfInformationFeatures": 1,
@@ -6683,7 +6683,7 @@
     "extractionDate": "2023-10-30T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/trustmary/2023.yml",
+    "yaml": "static/pricings/originalDataset/trustmary/2023.yml",
     "analytics": {
       "numberOfFeatures": 32,
       "numberOfInformationFeatures": 0,
@@ -6730,7 +6730,7 @@
     "extractionDate": "2022-11-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/trustmary/2022.yml",
+    "yaml": "static/pricings/originalDataset/trustmary/2022.yml",
     "analytics": {
       "numberOfFeatures": 25,
       "numberOfInformationFeatures": 0,
@@ -6777,7 +6777,7 @@
     "extractionDate": "2021-11-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/trustmary/2021.yml",
+    "yaml": "static/pricings/originalDataset/trustmary/2021.yml",
     "analytics": {
       "numberOfFeatures": 14,
       "numberOfInformationFeatures": 0,
@@ -6824,7 +6824,7 @@
     "extractionDate": "2024-11-09T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/userguiding/2024.yml",
+    "yaml": "static/pricings/originalDataset/userguiding/2024.yml",
     "analytics": {
       "numberOfFeatures": 59,
       "numberOfInformationFeatures": 3,
@@ -6871,7 +6871,7 @@
     "extractionDate": "2023-12-09T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/userguiding/2023.yml",
+    "yaml": "static/pricings/originalDataset/userguiding/2023.yml",
     "analytics": {
       "numberOfFeatures": 45,
       "numberOfInformationFeatures": 2,
@@ -6918,7 +6918,7 @@
     "extractionDate": "2022-11-22T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/userguiding/2022.yml",
+    "yaml": "static/pricings/originalDataset/userguiding/2022.yml",
     "analytics": {
       "numberOfFeatures": 43,
       "numberOfInformationFeatures": 2,
@@ -6965,7 +6965,7 @@
     "extractionDate": "2021-10-28T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/userguiding/2021.yml",
+    "yaml": "static/pricings/originalDataset/userguiding/2021.yml",
     "analytics": {
       "numberOfFeatures": 43,
       "numberOfInformationFeatures": 2,
@@ -7012,7 +7012,7 @@
     "extractionDate": "2020-11-24T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/userguiding/2020.yml",
+    "yaml": "static/pricings/originalDataset/userguiding/2020.yml",
     "analytics": {
       "numberOfFeatures": 21,
       "numberOfInformationFeatures": 2,
@@ -7059,7 +7059,7 @@
     "extractionDate": "2024-07-09T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/wrike/2024.yml",
+    "yaml": "static/pricings/originalDataset/wrike/2024.yml",
     "analytics": {
       "numberOfFeatures": 81,
       "numberOfInformationFeatures": 2,
@@ -7106,7 +7106,7 @@
     "extractionDate": "2023-12-02T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/wrike/2023.yml",
+    "yaml": "static/pricings/originalDataset/wrike/2023.yml",
     "analytics": {
       "numberOfFeatures": 81,
       "numberOfInformationFeatures": 2,
@@ -7153,7 +7153,7 @@
     "extractionDate": "2022-10-03T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/wrike/2022.yml",
+    "yaml": "static/pricings/originalDataset/wrike/2022.yml",
     "analytics": {
       "numberOfFeatures": 75,
       "numberOfInformationFeatures": 3,
@@ -7200,7 +7200,7 @@
     "extractionDate": "2021-11-23T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/wrike/2021.yml",
+    "yaml": "static/pricings/originalDataset/wrike/2021.yml",
     "analytics": {
       "numberOfFeatures": 53,
       "numberOfInformationFeatures": 4,
@@ -7247,7 +7247,7 @@
     "extractionDate": "2020-11-23T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/wrike/2020.yml",
+    "yaml": "static/pricings/originalDataset/wrike/2020.yml",
     "analytics": {
       "numberOfFeatures": 45,
       "numberOfInformationFeatures": 4,
@@ -7294,7 +7294,7 @@
     "extractionDate": "2019-11-28T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/wrike/2019.yml",
+    "yaml": "static/pricings/originalDataset/wrike/2019.yml",
     "analytics": {
       "numberOfFeatures": 44,
       "numberOfInformationFeatures": 4,
@@ -7341,7 +7341,7 @@
     "extractionDate": "2024-07-02T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/zapier/2024.yml",
+    "yaml": "static/pricings/originalDataset/zapier/2024.yml",
     "analytics": {
       "numberOfFeatures": 51,
       "numberOfInformationFeatures": 2,
@@ -7388,7 +7388,7 @@
     "extractionDate": "2023-11-28T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/zapier/2023.yml",
+    "yaml": "static/pricings/originalDataset/zapier/2023.yml",
     "analytics": {
       "numberOfFeatures": 51,
       "numberOfInformationFeatures": 1,
@@ -7435,7 +7435,7 @@
     "extractionDate": "2022-11-29T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/zapier/2022.yml",
+    "yaml": "static/pricings/originalDataset/zapier/2022.yml",
     "analytics": {
       "numberOfFeatures": 31,
       "numberOfInformationFeatures": 1,
@@ -7482,7 +7482,7 @@
     "extractionDate": "2020-11-16T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/zapier/2020.yml",
+    "yaml": "static/pricings/originalDataset/zapier/2020.yml",
     "analytics": {
       "numberOfFeatures": 21,
       "numberOfInformationFeatures": 0,
@@ -7529,7 +7529,7 @@
     "extractionDate": "2019-11-12T00:00:00.000Z",
     "currency": "USD",
     "url": null,
-    "yaml": "assets/pricings/originalDataset/zapier/2019.yml",
+    "yaml": "static/pricings/originalDataset/zapier/2019.yml",
     "analytics": {
       "numberOfFeatures": 19,
       "numberOfInformationFeatures": 0,

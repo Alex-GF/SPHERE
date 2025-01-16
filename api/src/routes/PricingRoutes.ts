@@ -5,7 +5,7 @@ import { handlePricingUpload } from '../middlewares/FileHandlerMiddleware';
 
 const loadFileRoutes = function (app: express.Application) {
   const pricingController = new PricingController();
-  const upload = handlePricingUpload(['yaml'], './public/assets/pricings/uploadedDataset');
+  const upload = handlePricingUpload(['yaml'], './public/static/pricings/uploadedDataset');
 
   const baseUrl = process.env.BASE_URL_PATH;
 

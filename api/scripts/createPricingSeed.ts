@@ -1,5 +1,4 @@
 import fs from 'fs';
-import {AnalyticsData, SAAS_DATA} from '../../frontend/src/assets/data/analytics';
 import mongoose, { ObjectId } from 'mongoose';
 import {retrievePricingFromPath} from 'pricing4ts/server';
 
@@ -16,8 +15,18 @@ interface OutputData {
   analytics: Analytics;
 }
 
+interface AnalyticsData {
+  [key: string]: {
+    date: string;
+    yaml_path: string;
+    analytics: Analytics;
+  }[];
+}
+
+const SAAS_DATA: AnalyticsData = {};
+
 const transformData = (data: AnalyticsData): OutputData[] => {
-  const publicYamlPath = 'assets/pricings/originalDataset';
+  const publicYamlPath = 'static/pricings/originalDataset';
   const pricingsDirectory = 'api/public/' + publicYamlPath;
 
   return Object.entries(data).flatMap(([name, pricingArray]) =>

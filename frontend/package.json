@@ -2,6 +2,9 @@
   "name": "sphere-frontend",
   "private": true,
   "version": "0.2.0",
+  "scripts": {
+    "build": "vite build"
+  },
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",

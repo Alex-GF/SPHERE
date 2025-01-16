@@ -53,8 +53,12 @@ class PricingService {
         const pricingAnalytics = new PricingAnalytics(uploadedPricing);
 
         pricingAnalytics.getAnalytics()
-          .then((analytics) => {
+          .then((analytics: any) => {
+            console.log(analytics);
             this.pricingRepository.updateAnalytics(pricing.id, analytics);
+          }).catch((err: any) => {
+            console.log(err);
+            throw new Error((err as Error).message);
           });
 
         return pricing;

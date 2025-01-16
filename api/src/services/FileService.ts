@@ -20,7 +20,9 @@ const processFileUris = (object: any, uriPropertyNames: any) => {
 const getAbsoluteFileUri = (relativeFilePath: string) => {
     let absoluteFileUrl = ''
     const addresses = getIPV4Addresses()
-    if (addresses[0]) {
+    if(process.env.SERVER_HOST){
+      absoluteFileUrl = `http://${process.env.SERVER_HOST}/${relativeFilePath}`
+    }else if (addresses[0]) {
       absoluteFileUrl = `http://${addresses[0]}:${appPort}/${relativeFilePath}`
     } else {
       absoluteFileUrl = `http://localhost:${appPort}/${relativeFilePath}`
