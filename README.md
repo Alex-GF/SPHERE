@@ -25,54 +25,7 @@ git clone https://github.com/Alex-GF/SPHERE.git
 cd SPHERE
 ```
 
-### 3. Configure the environment variables
-
-To configure the variables of the project, you need to set up two environment files. One for the frontend, and the other for the backend.
-
-First, go to the `/api` directory
-
-```bash
-cd api
-```
-
-and create an `.env` file using the provided `.env.mongo.example` as a reference. The resulting `.env` file should look like this:
-
-```plaintext
-DATABASE_TECHNOLOGY=mongoDB      # Technology used to store the data
-MONGO_PROTOCOL=mongodb           # Protocol used to connect to the database
-MONGO_HOST=localhost             # Host where the database is running
-MONGO_PORT=27017                 # Port where the database is running
-MONGO_INITDB_DATABASE=sphere_db  # Name of the database created for the project
-MONGO_INITDB_ROOT_USERNAME=root  # Root user of the database
-MONGO_INITDB_ROOT_PASSWORD=4dm1n # Password of the root user
-DATABASE_NAME=sphere_db          # Name of the database created for the project
-DATABASE_USERNAME=testUser       # User created to manage sphere_db
-DATABASE_PASSWORD=testUser       # Password of the user created for sphere_db
-SERVER_PORT=8080                 # Used for serving the API
-SERVER_HOST=localhost:8080       # Used for serving static files
-APP_HOST=5432                    # Port where the frontend will be server
-AVATARS_FOLDER=public/avatars    # Folder where the avatars will be stored
-BASE_URL_PATH=/api               # Base path for the API
-```
-
-:::info
-Currently, the only supported database is `mongoDB`.
-:::
-
-After setting this up, return to the root directory of the project and access the `frontend` project:
-
-```bash
-cd ../frontend
-```
-
-and create an `.env` file using the provided `.env.example` as a reference. The resulting `.env` file should look like this:
-
-```plaintext
-VITE_API_URL=/api
-VITE_SECRET_KEY=app_secret
-```
-
-### 4. Run the project with docker-compose
+### 3. Run the project with docker-compose
 
 Once the `.env` files are set up, return to the main folder again, and run the following command to start the project with docker-compose:
 
