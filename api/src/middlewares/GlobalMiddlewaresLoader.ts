@@ -1,6 +1,10 @@
 import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
+import bodyParser from "body-parser";
+import multer from "multer";
+
+const upload = multer();
 
 const loadGlobalMiddlewares = (app: express.Application) => {
   app.use(express.json())
@@ -10,7 +14,9 @@ const loadGlobalMiddlewares = (app: express.Application) => {
       crossOriginResourcePolicy: false // allows loading of files from /public
     }
   ))
-//   app.use(measurePerformance)
+  app.use(express.static('public'))
+  app.use(bodyParser.json({limit: '2mb'}))
+  app.use(bodyParser.urlencoded({limit: '2mb', extended: true}))
 }
 
 export default loadGlobalMiddlewares

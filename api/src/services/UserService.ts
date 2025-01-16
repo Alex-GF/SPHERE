@@ -22,12 +22,9 @@ class UserService {
 
     async _register (newUser: any, userType: "user" | "admin") {
       newUser.userType = userType
+      newUser.avatar = newUser.avatar || 'avatars/default-avatar.png'
       newUser = { ...newUser, ...this._createUserTokenDTO() }
-      if (newUser.avatar) {
-        delete newUser.avatar;
-      }
-      // const salt = await bcrypt.genSalt(5)
-      // newUser.password = await bcrypt.hash(newUser.password, salt)
+
       const registeredUser = await this.userRepository.create(newUser)
       processFileUris(registeredUser, ['avatar'])
       return registeredUser
@@ -49,6 +46,21 @@ class UserService {
       }
       const errorMessage = user?.tokenExpiration! <= new Date() ? 'Token expired' : 'Token not valid'
       throw new Error(errorMessage)
+    }
+
+    async updateToken (token: string) {
+      const user = await this.userRepository.findByToken(token);
+      if (!user) {
+        throw new Error('Token not valid');
+      }
+
+      const timeLeft = user.tokenExpiration!.getTime() - Date.now();
+      if (timeLeft < 60 * 60 * 1000) { // less than 1 hour
+        const updatedUser = await this.userRepository.updateToken(user.id, this._createUserTokenDTO());
+        return {token: updatedUser!.token, tokenExpiration: updatedUser!.tokenExpiration};
+      }
+
+      return {token: user.token, tokenExpiration: user.tokenExpiration};
     }
 
     async _login (email: string, password: string, userType: "user" | "admin") {

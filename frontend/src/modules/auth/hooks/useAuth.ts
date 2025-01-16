@@ -6,7 +6,8 @@ import { USERS_BASE_PATH } from '../api/usersApi'
 export interface AuthUserContext {
     user: AuthUser | null
     isAuthenticated: boolean
-    token: string
+    token: string | null,
+    tokenExpiration: Date | null,
     isLoading: boolean
 }
 
@@ -14,23 +15,23 @@ export interface AuthUser {
     id: string
     firstName: string
     lastName: string
-    username: string
     email: string
-    profilePicture: string
-    coinsAmount: number
+    avatar: string
 }
 
 export const useAuth = () => {
     const { authUser, setAuthUser } = useContext(AuthContext)
     const { getItem, setItem, removeItem } = useLocalStorage()
 
-    const addUser = (user: AuthUser, token: string) => {
+    const addUser = (user: AuthUser, token: string, tokenExpiration: Date) => {
         setAuthUser({
             user: user,
             isAuthenticated: true,
             token: token,
+            tokenExpiration: tokenExpiration,
             isLoading: false,
         })
+
         setItem('token', token)
     }
 
@@ -38,7 +39,8 @@ export const useAuth = () => {
         setAuthUser({
             user: null,
             isAuthenticated: false,
-            token: '',
+            token: null,
+            tokenExpiration: null,
             isLoading: false,
         })
         removeItem('token')
@@ -46,37 +48,35 @@ export const useAuth = () => {
 
     useEffect(() => {
         const token = getItem('token')
+
         if (token) {
-            // TODO: Logged user retrieval
-            fetch(`${process.env.REACT_APP_API_URL}${USERS_BASE_PATH}/me`, {
-                method: 'GET',
+            fetch(`${USERS_BASE_PATH}/tokenLogin`, {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
                 },
+                body: JSON.stringify({ token: token}),
             })
                 .then((response: Response) => {
                     if (response.ok) {
                         response.json().then((dataResponse) => {
                             const user = dataResponse.data
                             let userData = {
-                                id: user._id,
+                                id: user.id,
                                 firstName: user.firstName,
                                 lastName: user.lastName,
-                                username: user.username,
                                 email: user.email,
-                                profilePicture: user.profilePicture,
-                                plan: user.plan,
-                                coinsAmount: user.coinsAmount,
+                                avatar: user.avatar,
+                                // plan: user.plan,
                             }
-                            addUser(userData, token)
+                            addUser(userData, user.token, new Date(user.tokenExpiration))
                         })
                     } else {
                         removeUser()
                     }
                 })
                 .catch((_error) => {
-                    setInterval(() => {
+                    setTimeout(() => {
                         removeUser()
                     }, 5000)
                 })
@@ -85,8 +85,8 @@ export const useAuth = () => {
         }
     }, [])
 
-    const login = (user: AuthUser, token: string) => {
-        addUser(user, token)
+    const login = (user: AuthUser, token: string, tokenExpiration: Date) => {
+        addUser(user, token, tokenExpiration)
     }
 
     const logout = () => {
@@ -97,40 +97,33 @@ export const useAuth = () => {
         url: RequestInfo | URL,
         options?: RequestInit
     ) => {
-        const response = await fetch(url, options)
-        if (!response.headers.get('Authorization')) {
-            return response
-        }
-        const newToken = response.headers
-            .get('Authorization')
-            ?.split('Bearer ')[1]
-            .trim()
-        if (newToken && newToken !== getItem('token')) {
-            if (authUser.user) {
-                login(authUser.user, newToken)
-            } else {
-                fetch(`${process.env.REACT_APP_API_URL}${USERS_BASE_PATH}/me`, {
+        
+        if (authUser.tokenExpiration) {
+            const expirationTime = new Date(authUser.tokenExpiration).getTime()
+            const currentTime = new Date().getTime()
+            const timeDifference = expirationTime - currentTime
+
+            if (timeDifference < 60*60*1000 && timeDifference > 0) { // 1 hour
+                fetch(`${USERS_BASE_PATH}/tokenLogin`, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${newToken}`,
+                        'Content-Type': 'application/json'
                     },
+                    body: JSON.stringify({ token: authUser.token}),
                 })
                     .then((response: Response) => {
                         if (response.ok) {
                             response.json().then((dataResponse) => {
                                 const user = dataResponse.data
                                 let userData = {
-                                    id: user._id,
+                                    id: user.id,
                                     firstName: user.firstName,
                                     lastName: user.lastName,
-                                    username: user.username,
                                     email: user.email,
-                                    profilePicture: user.profilePicture,
-                                    plan: user.plan,
-                                    coinsAmount: user.coinsAmount,
+                                    avatar: user.avatar,
+                                    // plan: user.plan,
                                 }
-                                addUser(userData, newToken)
+                                addUser(userData, user.token, user.tokenExpiration)
                             })
                         } else {
                             removeUser()
@@ -140,8 +133,13 @@ export const useAuth = () => {
                         console.log(error)
                         removeUser()
                     })
+            }else{
+                removeUser();
             }
         }
+        
+        const response = await fetch(url, options)
+        
         return response
     }
 

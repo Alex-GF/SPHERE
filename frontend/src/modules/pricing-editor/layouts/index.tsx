@@ -7,6 +7,7 @@ import CopyToClipboardIcon from '../../core/components/copy-icon';
 import { EditorValueContext } from '../contexts/editorValueContext';
 import FileUpload from '../../core/components/file-upload-input';
 import { flex } from '../../core/theme/css';
+import ImportPricingModal from '../../core/components/import-pricing-modal';
 
 export default function EditorLayout({ children }: { children?: React.ReactNode }) {
   const [sharedLinkModalOpen, setSharedLinkModalOpen] = useState(false);
@@ -27,6 +28,18 @@ export default function EditorLayout({ children }: { children?: React.ReactNode 
 
   const handleYamlImportClose = () => {
     setImportLinkModalOpen(false);
+  };
+
+  const onSubmitImport = (file: File) => {
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setEditorValue(reader.result as string);
+      };
+      reader.readAsText(file);
+    } else {
+      alert('No file selected');
+    }
   };
 
   return (
@@ -78,7 +91,6 @@ export default function EditorLayout({ children }: { children?: React.ReactNode 
           </Box>
         </Paper>
       </Modal>
-
       <Modal
         open={importModalOpen}
         onClose={handleYamlImportClose}
@@ -101,7 +113,7 @@ export default function EditorLayout({ children }: { children?: React.ReactNode 
             ...flex({ direction: 'column' }),
           }}
         >
-          <FileUpload />
+          <FileUpload onSubmit={onSubmitImport} />
         </Paper>
       </Modal>
     </EditorValueContext.Provider>

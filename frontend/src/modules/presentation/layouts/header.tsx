@@ -11,16 +11,17 @@ import {
   Tooltip,
   MenuItem,
   useTheme,
-  useMediaQuery
+  useMediaQuery,
+  Button,
 } from '@mui/material';
 import { styled } from '@mui/system';
-import { FaUser } from 'react-icons/fa';
 import Logo from '../../core/components/logo';
 import { grey, primary } from '../../core/theme/palette';
 import { useAuth } from '../../auth/hooks/useAuth';
 import MobileHeaderItems from './components/mobile-header-items';
 import DesktopHeaderItems from './components/desktop-header-items';
 import { headerRoutes } from './router/header-routes';
+import { useRouter } from '../../core/hooks/useRouter';
 
 const StyledAppBar = styled(AppBar)(() => ({
   background: grey[100],
@@ -41,20 +42,36 @@ const NavItems = styled(Box)(({ theme }) => ({
   },
 }));
 
-const Header = () => {
+const Header = ({setUploadModalOpen}: {setUploadModalOpen: (state: boolean) => void}) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  const { authUser } = useAuth();
+  const { authUser, logout } = useAuth();
+  const router = useRouter();
 
-  const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+  const settings = [
+    {
+      name: 'Upload pricing',
+      onClick: () => {
+        setUploadModalOpen(true);
+      },
+    },
+    {
+      name: 'Logout',
+      onClick: () => {
+        logout();
+        handleCloseUserMenu();
+        router.push('/');
+      },
+    },
+  ];
 
   const handleOpenUserMenu = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
-  
+
   const handleCloseUserMenu = () => {
     setAnchorEl(null);
   };
@@ -75,15 +92,15 @@ const Header = () => {
             <NavItems>
               {authUser.isAuthenticated ? (
                 <Tooltip title="Open settings">
-                  <IconButton onClick={handleOpenUserMenu} aria-label="user settings">
-                    <Avatar sx={{ bgcolor: primary[900] }}>
-                      <FaUser />
-                    </Avatar>
-                  </IconButton>
+                  <>
+                    <IconButton onClick={handleOpenUserMenu} aria-label="user settings">
+                      <Avatar sx={{ bgcolor: primary[900] }} src={authUser.user?.avatar} />
+                    </IconButton>
+                  </>
                 </Tooltip>
               ) : (
                 <>
-                  {/* <Button
+                  <Button
                     variant="outlined"
                     sx={{
                       color: primary[500],
@@ -95,6 +112,7 @@ const Header = () => {
                       textTransform: 'none',
                     }}
                     aria-label="login"
+                    onClick={() => router.push('/login')}
                   >
                     Login
                   </Button>
@@ -111,9 +129,10 @@ const Header = () => {
                       textTransform: 'none',
                     }}
                     aria-label="register"
+                    onClick={() => router.push('/register')}
                   >
                     Register
-                  </Button> */}
+                  </Button>
                 </>
               )}
             </NavItems>
@@ -124,9 +143,30 @@ const Header = () => {
               transformOrigin={{ horizontal: 'right', vertical: 'top' }}
               anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
+              <MenuItem
+                sx={{
+                  cursor: 'default',
+                  width: 200,
+                  textAlign: 'center',
+                  marginBottom: 1,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                <Typography fontSize={16} fontWeight="bold" marginBottom={2}>
+                  {authUser.user?.firstName}
+                </Typography>
+                <Box sx={{
+                  cursor: 'default',
+                  width: '90%',
+                  height: '1px',
+                  backgroundColor: grey[500],
+                }}/>
+              </MenuItem>
               {settings.map(setting => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                <MenuItem key={setting.name} onClick={setting.onClick}>
+                  <Typography textAlign="center">{setting.name}</Typography>
                 </MenuItem>
               ))}
             </Menu>

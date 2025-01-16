@@ -11,6 +11,7 @@ export const AuthContext = createContext<AuthContextInterface>({
         user: null,
         isAuthenticated: false,
         token: "",
+        tokenExpiration: null,
         isLoading: true
     },
     setAuthUser: () => {},

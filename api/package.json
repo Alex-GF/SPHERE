@@ -2,6 +2,11 @@
   "name": "sphere-backend",
   "private": true,
   "version": "0.2.0",
+  "type": "module",
+  "scripts": {
+    "build": "npx tsc --project ./tsconfig.json",
+    "dev": "npx tsx --tsconfig tsconfig.json src/backend.ts --seed"
+  },
   "dependencies": {
     "@faker-js/faker": "^9.3.0",
     "@types/bcryptjs": "^2.4.6",
@@ -26,7 +31,7 @@
     "mongo-seeding": "^4.0.1",
     "mongoose": "^8.9.3",
     "multer": "^1.4.5-lts.1",
-    "pricing4ts": "^0.4.0",
+    "pricing4ts": "^0.6.0",
     "prop-types": "^15.8.1",
     "supertest": "^7.0.0",
     "uuid": "^10.0.0"

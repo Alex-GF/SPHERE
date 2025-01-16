@@ -17,7 +17,7 @@ import monaco from 'monaco-editor';
 import { useEditorValue } from '../../hooks/useEditorValue';
 import { parseEncodedYamlToStringYaml } from '../../services/export.service';
 
-const TEMPLATE_PRICING_PATH = '/data/petclinic.yml';
+const TEMPLATE_PRICING_PATH = '/static/assets/pricings/templates/petclinic.yml';
 
 export default function EditorPage() {
   const [pricing, setPricing] = useState<Pricing>();
@@ -76,6 +76,7 @@ export default function EditorPage() {
 
       try {
         const parsedPricing: Pricing = retrievePricingFromYaml(templatePricing);
+        
         setPricing(parsedPricing);
         setEditorValue(templatePricing);
         setErrors([]);
@@ -91,11 +92,7 @@ export default function EditorPage() {
     });
   }, []);
 
-  useEffect(() => {
-    if (pricing) {
-      
-    }
-  }, [editorValue]);
+  useEffect(() => {}, [editorValue]);
 
   return (
     <>

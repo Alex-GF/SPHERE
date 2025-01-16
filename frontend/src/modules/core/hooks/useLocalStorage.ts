@@ -7,7 +7,7 @@ export const useLocalStorage = () => {
     const setItem = (key: string, value: string, _encrypt = true) => {
         let encryptedValue = value;
             if (_encrypt) {
-                encryptedValue = CryptoJS.AES.encrypt(value, process.env.REACT_APP_SECRET_KEY as string).toString();
+                encryptedValue = CryptoJS.AES.encrypt(value, import.meta.env.VITE_SECRET_KEY as string).toString();
             }
         localStorage.setItem(key, encryptedValue);
         setValue(value);
@@ -19,7 +19,7 @@ export const useLocalStorage = () => {
             try {
                 let decryptedValue = value;
                 if (_encrypt) {
-                    decryptedValue = CryptoJS.AES.decrypt(value, process.env.REACT_APP_SECRET_KEY as string).toString(CryptoJS.enc.Utf8);
+                    decryptedValue = CryptoJS.AES.decrypt(value, import.meta.env.VITE_SECRET_KEY as string).toString(CryptoJS.enc.Utf8);
                 }
                 setValue(decryptedValue);
                 return decryptedValue;

@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs'
 bcrypt.genSalt(5, function (err, salt) {
   if (err) console.error(`Gen salt error: ${err}`)
 
-  bcrypt.hash('secret', salt, function (err, hash) {
+  bcrypt.hash('4dm1n', salt, function (err, hash) {
     if (err) console.error(`Hash error: ${err}`)
     console.log(hash)
   })

@@ -38,7 +38,7 @@ export function PricingRenderer({ pricing, errors, style }: Readonly<PricingProp
 
   const tagFeatures = useMemo(() => {
     const tagMap = new Map<string, Feature[]>();
-    pricing.features.forEach((feature) => {
+    Object.values(pricing.features).forEach((feature) => {
       if (feature.tag) {
         if (!tagMap.has(feature.tag)) tagMap.set(feature.tag, []);
         tagMap.get(feature.tag)?.push(feature);
@@ -50,7 +50,7 @@ export function PricingRenderer({ pricing, errors, style }: Readonly<PricingProp
   const featuresWithoutTags = useMemo(() => {
     return Object.entries(pricingData).filter(([name, _]) => {
       const normalizedName = name.toLowerCase().replace(/\s+/g, '');
-      const feature = pricing.features.find(
+      const feature = Object.values(pricing.features).find(
         (f) => f.name.toLowerCase().replace(/\s+/g, '') === normalizedName
       );
       return feature && !feature.tag;
@@ -91,7 +91,7 @@ export function PricingRenderer({ pricing, errors, style }: Readonly<PricingProp
           <thead>
             <tr>
               <th></th>
-              {pricing.plans && pricing.plans.map((plan: Plan, key: number) => (
+              {pricing.plans && Object.values(pricing.plans).map((plan: Plan, key: number) => (
                 <PlanHeader
                   plan={plan}
                   currency={pricing.currency in CURRENCIES ? CURRENCIES[pricing.currency as keyof typeof CURRENCIES] : pricing.currency}
@@ -121,7 +121,7 @@ export function PricingRenderer({ pricing, errors, style }: Readonly<PricingProp
                 features={features}
                 style={style}
                 key={tag}
-                plans={pricing.plans ?? []}
+                plans={Object.values(pricing.plans!) ?? []}
                 currency={pricing.currency}
                 pricingData={pricingData}
               />
@@ -129,7 +129,7 @@ export function PricingRenderer({ pricing, errors, style }: Readonly<PricingProp
           </div>
         )}
 
-        {(pricing.addOns && pricing.addOns.length > 0) && (
+        {(pricing.addOns && Object.values(pricing.addOns).length > 0) && (
           <>
             <div
               className='pricing-page-title'
@@ -137,7 +137,7 @@ export function PricingRenderer({ pricing, errors, style }: Readonly<PricingProp
               <h1>Add-Ons</h1>
             </div>
             <div className='add-ons-container'>
-              {pricing.addOns.map((addOn, index) => {
+              {Object.values(pricing.addOns).map((addOn, index) => {
                 return (
                   <AddOnElement
                     addOn={addOn}

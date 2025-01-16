@@ -29,12 +29,10 @@ const userSchema = new Schema({
     type: String
   },
   address: {
-    type: String,
-    required: true
+    type: String
   },
   postalCode: {
-    type: String,
-    required: true
+    type: String
   },
   userType: {
     type: String,
@@ -59,8 +57,6 @@ const userSchema = new Schema({
     }
   }
 })
-
-userSchema.index({ email: 1 })
 
 userSchema.pre('save', function (callback) {
   const user = this

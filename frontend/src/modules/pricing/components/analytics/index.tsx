@@ -25,7 +25,7 @@ export default function Analytics({ pricingData, toggleModal } : StatsProps) {
                 width={500}
                 height={300}
                 series={[{ data: pricingData?.map((entry) => entry.analytics.configurationSpaceSize).reverse() ?? [], label: 'Different Subscriptions Available', area: false, showMark: true }]}
-                xAxis={[{ scaleType: 'point', data: pricingData?.map((entry) => new Date(entry.date).getFullYear().toString()).reverse() ?? [] }]}
+                xAxis={[{ scaleType: 'point', data: pricingData?.map((entry) => new Date(entry.extractionDate).getFullYear().toString()).reverse() ?? [] }]}
                 />
               <Box>
               <LineChart
@@ -34,7 +34,7 @@ export default function Analytics({ pricingData, toggleModal } : StatsProps) {
                 series={[
                         { data: pricingData?.map((entry) => entry.analytics.minSubscriptionPrice).reverse() ?? [], area: false, showMark: true, label: 'Min Price Subscription' },
                         { data: pricingData?.map((entry) => entry.analytics.maxSubscriptionPrice).reverse() ?? [], area: false, showMark: true, label: 'Max Price Subscription' }]}
-                xAxis={[{ scaleType: 'point', data: pricingData?.map((entry) => new Date(entry.date).getFullYear().toString()).reverse() ?? [] }]}
+                xAxis={[{ scaleType: 'point', data: pricingData?.map((entry) => new Date(entry.extractionDate).getFullYear().toString()).reverse() ?? [] }]}
                 />
             </Box>
             </>
