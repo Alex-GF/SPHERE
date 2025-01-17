@@ -1,7 +1,7 @@
-FROM nginx:1.27.3-alpine
+FROM nginx:1.27.3
 
-RUN apk update
-RUN apk add --no-cache git postgresql-dev libc-dev gcc nano bash
+RUN apt-get update
+RUN apt-get install -y git libc-dev gcc nano bash
 RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/conf.d
 
