@@ -26,7 +26,7 @@ export default defineConfig({
       '/static': {
         target: 'http://localhost:8080',
         changeOrigin: true,
-        rewrite: path => path.replace(/^\/static/, ''),
+        // rewrite: path => path.replace(/^\/static/, ''),
       },
     },
   },
