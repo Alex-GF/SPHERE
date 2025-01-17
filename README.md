@@ -16,21 +16,13 @@ SPHERE provides a ready to use docker-compose file to run the project in a conta
 
 If you don't have docker and docker-compose installed on your machine, you can follow the instructions in the [official docker documentation](https://docs.docker.com/get-docker/) to install them.
 
-### 2. Clone the repository and navigate to the project directory
+### 2. Clone the repository and run SPHERE
 
-Start by cloning the project repository to your local machine and navigating to the project directory:
+To deploy your own instance of SPHERE, you just have to clone the repo, navigate to the `SPHERE/docker` directory, and launch the docker-compose file. To do so, run the following commands:
 
 ```bash
 git clone https://github.com/Alex-GF/SPHERE.git
-cd SPHERE
-```
-
-### 3. Run the project with docker-compose
-
-Once the `.env` files are set up, return to the main folder again, and run the following command to start the project with docker-compose:
-
-```bash
-cd docker
+cd SPHERE/docker
 docker compose up -d
 ```
 
