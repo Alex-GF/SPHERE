@@ -3,7 +3,6 @@ syntaxVersion: "2.1"
 version: "latest"
 createdAt: "2024-01-15"
 currency: EUR
-hasAnnualPayment: false
 features:
   pets:
     description: Pets description
