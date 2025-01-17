@@ -92,7 +92,9 @@ export default function EditorPage() {
     });
   }, []);
 
-  useEffect(() => {}, [editorValue]);
+  useEffect(() => {
+    handleEditorChange(editorValue)
+  }, [editorValue]);
 
   return (
     <>
