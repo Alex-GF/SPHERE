@@ -51,7 +51,10 @@ const initializeDatabase = async () => {
     switch (process.env.DATABASE_TECHNOLOGY) {
       case "mongoDB":
         connection = await initMongoose();
-        await seedDatabase();
+        const isDatabaseEmpty = await connection.connection.db?.listCollections().toArray().then(collections => collections.length === 0);
+        if (isDatabaseEmpty) {
+          await seedDatabase();
+        }
         break
       default:
         throw new Error("Unsupported database technology")

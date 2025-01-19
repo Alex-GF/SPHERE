@@ -29,10 +29,12 @@ const userSchema = new Schema({
     type: String
   },
   address: {
-    type: String
+    type: String,
+    required: false
   },
   postalCode: {
-    type: String
+    type: String,
+    required: false
   },
   userType: {
     type: String,

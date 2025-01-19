@@ -60,7 +60,8 @@ export const useAuth = () => {
                 .then((response: Response) => {
                     if (response.ok) {
                         response.json().then((dataResponse) => {
-                            const user = dataResponse.data
+                            const user = dataResponse
+                            
                             let userData = {
                                 id: user.id,
                                 firstName: user.firstName,
@@ -114,7 +115,8 @@ export const useAuth = () => {
                     .then((response: Response) => {
                         if (response.ok) {
                             response.json().then((dataResponse) => {
-                                const user = dataResponse.data
+                                const user = dataResponse
+                                
                                 let userData = {
                                     id: user.id,
                                     firstName: user.firstName,

@@ -60,7 +60,7 @@ export function usePricingsApi() {
       });
   };
 
-  const createPricing = async (formData: FormData) => {
+  const createPricing = async (formData: FormData, setErrors: Function = () => {}) => {
     return fetchWithInterceptor(PRICINGS_BASE_PATH, {
       method: 'POST',
       headers: {
@@ -68,9 +68,17 @@ export function usePricingsApi() {
       },
       body: formData,
     })
-      .then(response => response.json())
-      .catch(error => {
-        console.error('Error:', error);
+      .then(async response => {
+        const parsedResponse = await response.json()
+        
+        if (!response.ok) {
+          throw new Error(parsedResponse.error);
+        }
+
+        return parsedResponse;
+      })
+      .catch((error: Error) => {
+        setErrors([error.message]);
       });
   };
 

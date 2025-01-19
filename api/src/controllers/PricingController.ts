@@ -40,14 +40,18 @@ class PricingController {
       const pricing = await this.pricingService.create(req.file, req.user.email.split('@')[0])
       res.json(pricing)
     } catch (err: any) {
-      const file = req.file;
-      const directory = path.dirname(file.path);
-      if (fs.readdirSync(directory).length === 1) {
-        fs.rmdirSync(directory, { recursive: true });
-      }else{
-        fs.rmSync(file.path);
+      try{
+        const file = req.file;
+        const directory = path.dirname(file.path);
+        if (fs.readdirSync(directory).length === 1) {
+          fs.rmdirSync(directory, { recursive: true });
+        }else{
+          fs.rmSync(file.path);
+        }
+        res.status(500).send({error: err.message})
+      }catch(err){
+        res.status(500).send({error: (err as Error).message})
       }
-      res.status(500).send({error: err.message})
     }
   }
 

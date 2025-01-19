@@ -22,7 +22,7 @@ To deploy your own instance of SPHERE, you just have to clone the repo, navigate
 
 ```bash
 git clone https://github.com/Alex-GF/SPHERE.git
-cd SPHERE/docker
+cd SPHERE/docker/testing
 docker compose up -d
 ```
 

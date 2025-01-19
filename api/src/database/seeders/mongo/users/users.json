@@ -34,5 +34,23 @@
     "userType": "user",
     "createdAt": {"$date": "2023-02-20T11:22:04.000Z"},
     "updatedAt": {"$date": "2023-02-23T10:09:58.000Z"}
+  },
+  {
+    "_id": {
+      "$oid": "63f74bf8eeed64054274b528"
+    },
+    "firstName": "Faker",
+    "lastName": "User",
+    "email": "faked@acme.com",
+    "password": "$2a$05$ev5Nn4nr5wugf7mEaCBMnOJkCCLqmbF8T4c/TbnJXb/BAGWqiKSuG",
+    "token": "39b27fde450fd1b1304bdd3bbd686ff41158e609",
+    "tokenExpiration": {"$date": "2023-02-23T11:10:14.000Z"},
+    "phone": "+34666777888",
+    "avatar": "avatars/maleAvatar.png",
+    "address": "Fake street 123",
+    "postalCode": "41001",
+    "userType": "user",
+    "createdAt": {"$date": "2023-02-20T11:22:04.000Z"},
+    "updatedAt": {"$date": "2023-02-23T10:09:58.000Z"}
   }
 ]

@@ -16,22 +16,28 @@ export function loginUser(formData: LoginFormProps): Promise<any> {
     });
 }
 
-export function registerUser(formData: RegisterFormProps): Promise<any> {
+export function registerUser(formData: RegisterFormProps, setErrors: Function = () => {}): Promise<any> {
     return fetch(`${USERS_BASE_PATH}/register`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
-    }).then((response) => {
-        
+    }).then(async (response) => {
+
+        const parsedResponse = await response.json();
+
         if (!response.ok) {
-            throw new Error("Error registering user. Please, check the fields before submitting again" );
+            throw new Error(parsedResponse.error);
         }
         
-        return response.json()
+        return parsedResponse;
     })
-    .catch((error) => {
-        console.error("Error:", error);
+    .catch((error: Error) => {
+        if (Array.isArray(error)) {
+            setErrors(error);
+        }else{
+            setErrors([error.message]);
+        }
     });
 }

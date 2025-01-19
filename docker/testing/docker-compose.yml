@@ -6,45 +6,47 @@ services:
       ports:
         - "27017:27017"
       env_file:
-        - ../api/.env.testing
+        - ../../api/.env.testing
       volumes:
         - 'sphere-mongodb:/data/db'
-        - '../api/init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh'
+        - '../../api/init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh'
       networks:
-        - sphere-network
+        - testing-network
   server:
     restart: always
     container_name: sphere-server
     build:
-        context: ../api
+        context: ../../api
         dockerfile: ./docker/Dockerfile
     ports:
       - 8080:8080
     env_file:
-      - ../api/.env.testing
+      - ../../api/.env.testing
+    volumes:
+      - 'sphere-statics:/usr/src/server/public'
     depends_on:
       - mongodb
     links:
       - mongodb
     networks:
-      - sphere-network
+      - testing-network
   client:
     restart: always
     container_name: sphere-client
     build:
-        context: ../frontend
+        context: ../../frontend
         dockerfile: ./docker/Dockerfile
     ports:
       - 5173:5173
     env_file:
-      - ../frontend/.env.production
+      - ../../frontend/.env.production
     networks:
-      - sphere-network
+      - testing-network
   nginx:
     restart: always
     container_name: sphere-nginx
     build:
-        context: ../nginx/local
+        context: ../../nginx/local
         dockerfile: ./Dockerfile
     ports:
       - 80:80
@@ -52,10 +54,12 @@ services:
       - server
       - client
     networks:
-      - sphere-network
+      - testing-network
 volumes:
   sphere-mongodb:
     driver: local
+  sphere-statics:
+    driver: local
 networks:
-  sphere-network:
+  testing-network:
     driver: bridge

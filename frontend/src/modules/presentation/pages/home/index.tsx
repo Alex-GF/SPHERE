@@ -22,7 +22,7 @@ export default function HomePage() {
       </Helmet>
       <Box sx={{ width: '100dvw', ...flex({ direction: 'column' }) }}>
         <HeroLanding />
-        <Divider sx={{ width: '100dvw' }} />      
+        <Divider sx={{ width: '100dvw' }} />
         <FeaturesLanding />
         <Divider sx={{ width: '100dvw' }} />
         <StatsLanding />

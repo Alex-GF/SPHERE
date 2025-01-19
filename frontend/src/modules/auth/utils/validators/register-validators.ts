@@ -59,7 +59,7 @@ function _validatePassword(password: string, confirmPassword: string, errors: st
         return;
     }
     
-    if (password.length < 3) {
+    if (password.length < 5) {
         errors.push("Password must be at least 6 characters");
         return;
     }
