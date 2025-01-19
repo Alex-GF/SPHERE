@@ -15,6 +15,7 @@ import PricingListPage from '../modules/pricing/pages/list';
 import LoginPage from '../modules/auth/pages/login-page';
 import RegisterPage from '../modules/auth/pages/register-page';
 import CardPage from '../modules/pricing/pages/card';
+import LegacyPricingCard from '../modules/pricing/pages/legacy-pricing-card';
 
 export default function Router() {
   const routes = useRoutes([
@@ -30,14 +31,15 @@ export default function Router() {
         { element: <HomePage />, index: true },
         { element: <LoginPage />, path: "/login" },
         { element: <RegisterPage />, path: "/register" },
-        {element: <PricingListPage/>, path: "/pricings"},
-        {element: <CardPage/>, path: "/pricings/:owner/:name"},
-        {element: <TeamPage/>, path: "/team"},
-        {element: <ResearchPage/>, path: "/research"},
-        {element: <ContributionsPage/>, path: "/contributions"},
+        { element: <PricingListPage />, path: "/pricings" },
+        { element: <CardPage />, path: "/pricings/:owner/:name" },
+        { element: <LegacyPricingCard />, path: "/pricings/card" },
+        { element: <TeamPage />, path: "/team" },
+        { element: <ResearchPage />, path: "/research" },
+        { element: <ContributionsPage />, path: "/contributions" },
       ],
-    },
-    {
+        },
+        {
       path: "/editor",
       element: (
         <EditorLayout>
