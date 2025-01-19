@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  mongodb:
+      image: mongo:7.0.16
+      ports:
+        - "27017:27017"
+      env_file:
+        - ../../api/.env.testing
+      volumes:
+        - 'dev-mongodb:/data/db'
+        - '../../api/init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh'
+      networks:
+        - dev-network
+volumes:
+  dev-mongodb:
+    driver: local
+networks:
+  dev-network:
+    driver: bridge

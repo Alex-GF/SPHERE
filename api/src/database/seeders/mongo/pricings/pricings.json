@@ -7565,5 +7565,52 @@
       "minSubscriptionPrice": 0,
       "maxSubscriptionPrice": 748.75
     }
+  },
+  {
+    "_id": {
+      "$oid": "6787d0facaeb2b25748bc0fe"
+    },
+    "name": "Fleet Management",
+    "owner": "faked",
+    "version": "1.0.0",
+    "extractionDate": "2025-01-19T00:00:00.000Z",
+    "currency": "USD",
+    "url": null,
+    "yaml": "static/pricings/originalDataset/fleet/2025.yml",
+    "analytics": {
+      "numberOfFeatures": 4,
+      "numberOfInformationFeatures": 0,
+      "numberOfIntegrationFeatures": 0,
+      "numberOfIntegrationApiFeatures": 0,
+      "numberOfIntegrationExtensionFeatures": 0,
+      "numberOfIntegrationIdentityProviderFeatures": 0,
+      "numberOfIntegrationWebSaaSFeatures": 0,
+      "numberOfIntegrationMarketplaceFeatures": 0,
+      "numberOfIntegrationExternalDeviceFeatures": 0,
+      "numberOfDomainFeatures": 4,
+      "numberOfAutomationFeatures": 0,
+      "numberOfBotAutomationFeatures": 0,
+      "numberOfFilteringAutomationFeatures": 0,
+      "numberOfTrackingAutomationFeatures": 0,
+      "numberOfTaskAutomationFeatures": 0,
+      "numberOfManagementFeatures": 0,
+      "numberOfGuaranteeFeatures": 0,
+      "numberOfSupportFeatures": 0,
+      "numberOfPaymentFeatures": 0,
+      "numberOfUsageLimits": 4,
+      "numberOfRenewableUsageLimits": 2,
+      "numberOfNonRenewableUsageLimits": 2,
+      "numberOfResponseDrivenUsageLimits": 0,
+      "numberOfTimeDrivenUsageLimits": 0,
+      "numberOfPlans": 2,
+      "numberOfFreePlans": 0,
+      "numberOfPaidPlans": 2,
+      "numberOfAddOns": 3,
+      "numberOfReplacementAddons": 3,
+      "numberOfExtensionAddons": 0,
+      "configurationSpaceSize": 16,
+      "minSubscriptionPrice": 15,
+      "maxSubscriptionPrice": 77.55
+    }
   }
 ]

@@ -54,10 +54,8 @@ class PricingService {
 
         await pricingAnalytics.getAnalytics()
           .then((analytics: any) => {
-            console.log(analytics);
             this.pricingRepository.updateAnalytics(pricing.id, analytics);
           }).catch(async (err: any) => {
-            console.log(err);
             await this.pricingRepository.destroy(pricing.id);
             throw new Error((err as Error).message);
           });
