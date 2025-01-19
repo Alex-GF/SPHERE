@@ -55,6 +55,9 @@ const pricingSchema = new Schema(
     }
   });
 
-const pricingModel = mongoose.model('Pricing', pricingSchema, 'pricings')
+// Adding unique index for [name, owner, version]
+pricingSchema.index({ name: 1, owner: 1, version: 1 }, { unique: true });
+
+const pricingModel = mongoose.model('Pricing', pricingSchema, 'pricings');
 
 export default pricingModel;

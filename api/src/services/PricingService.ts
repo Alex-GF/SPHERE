@@ -52,12 +52,13 @@ class PricingService {
 
         const pricingAnalytics = new PricingAnalytics(uploadedPricing);
 
-        pricingAnalytics.getAnalytics()
+        await pricingAnalytics.getAnalytics()
           .then((analytics: any) => {
             console.log(analytics);
             this.pricingRepository.updateAnalytics(pricing.id, analytics);
-          }).catch((err: any) => {
+          }).catch(async (err: any) => {
             console.log(err);
+            await this.pricingRepository.destroy(pricing.id);
             throw new Error((err as Error).message);
           });
 

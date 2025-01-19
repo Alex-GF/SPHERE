@@ -55,15 +55,11 @@ const create = [
     .optional()
     .isString()
     .withMessage('The field address must be a string')
-    .isLength({ min: 1, max: 255 })
-    .withMessage('The address must have between 1 and 255 characters long')
     .trim(),
   check('postalCode')
     .optional()
     .isString()
     .withMessage('The field postalCode must be a string')
-    .isLength({ min: 1, max: 255 })
-    .withMessage('The postalCode must have between 1 and 255 characters long')
     .trim()
 ];
 const update = [
@@ -98,15 +94,11 @@ const update = [
     .optional()
     .isString()
     .withMessage('The field address must be a string')
-    .isLength({ min: 1, max: 255 })
-    .withMessage('The address must have between 1 and 255 characters long')
     .trim(),
   check('postalCode')
     .optional()
     .isString()
     .withMessage('The field postalCode must be a string')
-    .isLength({ min: 1, max: 255 })
-    .withMessage('The postalCode must have between 1 and 255 characters long')
     .trim(),
   check('avatar')
     .optional()

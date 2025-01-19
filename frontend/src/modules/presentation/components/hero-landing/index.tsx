@@ -7,6 +7,7 @@ import { flex } from '../../../core/theme/css';
 import { StyledButtonLanding } from '../styled-button-landing';
 import LanguageIcon from '@mui/icons-material/Language';
 import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite';
+import { useRouter } from '../../../core/hooks/useRouter';
 
 export default function HeroLanding() {
   const myGlobe = Globe();
@@ -14,6 +15,8 @@ export default function HeroLanding() {
   const [globeRefState, setGlobeRefState] = useState<HTMLDivElement>(
     globeRef.current ?? document.createElement('div')
   );
+
+  const router = useRouter();
 
   useEffect(() => {
     setGlobeRefState(globeRef.current ?? document.createElement('div'));
@@ -112,9 +115,9 @@ export default function HeroLanding() {
           {' '}
           Explore our suite of Pricing-driven tools and unleash the full potential of SaaS pricings{' '}
         </Typography>
-        <Box sx={{ minWidth: '50%', ...flex({ justify: 'space-between' }), mt: 5 }}>
-          <StyledButtonLanding variant="contained" size='large' endIcon={<PlayCircleFilledWhiteIcon />}>Get Started</StyledButtonLanding>
-          <Button variant="outlined" size='large' endIcon={<LanguageIcon />}>About SPHERE</Button>
+        <Box sx={{ minWidth: '50%', ...flex({ justify: 'center' }), mt: 5 }}>
+          <Button onClick={() => {router.push("/register")}} variant="outlined" size='large' endIcon={<PlayCircleFilledWhiteIcon />}>Get Started</Button>
+          {/* <Button onClick={() => {router.push("#about")}} variant="outlined" size='large' endIcon={<LanguageIcon />}>About SPHERE</Button> */}
         </Box>
       </Box>
       <Box ref={globeRef} />

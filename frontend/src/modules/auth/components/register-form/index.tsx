@@ -42,7 +42,7 @@ const RegisterForm: React.FC = () => {
     if (errors.length > 0) {
       setErrors(errors);
     } else {
-      registerUser(formValues).then(response => {
+      registerUser(formValues, setErrors).then(response => {
         
         const loggedUser = {
           id: response.id,

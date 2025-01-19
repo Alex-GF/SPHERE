@@ -96,10 +96,8 @@ export default function PricingElement({
               >
                 {(() => {
                   if (typeof value === 'number') {
-
                     if (addonValue && typeof addonValue === 'number' && addonValue !== 0) {
-                      const valueToUse =
-                        addonValue > value ? addonValue : value;
+                      const valueToUse = addonExtension ? value - addonValue : value;
 
                       return valueToUse === 0
                         ? '-'
@@ -113,24 +111,28 @@ export default function PricingElement({
                   return value;
                 })()}
                 {typeof value == 'number' &&
-                  addonValue &&
-                  ((addonValue as number) > value || addonExtension)  &&
-                  (addonValue as number) > 0 ?
-                  (
-                    <Tooltip
-                      title={`This value is only available by contracting the add-on '${addonName!}'. Otherwise, the value would be: ${addonExtension ? value - (addonValue as number) : value}`}
-                      placement="top"
-                    >
-                      <span>
-                        <RiErrorWarningFill />
-                      </span>
-                    </Tooltip>
-                  )
-                  :
-                  (
-                    <></>
-                  )
-                  }
+                addonValue &&
+                ((!addonExtension && (addonValue as number) > value) || addonExtension) &&
+                (addonValue as number) > 0 ? (
+                  <Tooltip
+                    title={`${
+                      addonExtension
+                        ? `You can contract ${addonValue} more ${
+                            (addonValue as number) > 1 ? pluralizeUnit(unit ?? '') : unit
+                          } by contracting the add-on '${addonName!}'`
+                        : `You can extend this limit up to ${addonValue} ${
+                            (addonValue as number) > 1 ? pluralizeUnit(unit ?? '') : unit
+                          } by contracting the add-on '${addonName!}'`
+                    }`}
+                    placement="top"
+                  >
+                    <span>
+                      <RiErrorWarningFill />
+                    </span>
+                  </Tooltip>
+                ) : (
+                  <></>
+                )}
               </span>
             </td>
           );
