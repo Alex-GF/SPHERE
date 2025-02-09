@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
 import { PricingCollectionAnalytics } from '../../types/database/PricingCollection';
 import RepositoryBase from '../RepositoryBase';
-import PricingCollectionMongoose from './models/PricingCollection';
+import PricingCollectionMongoose from './models/PricingCollectionMongoose';
+import PricingMongoose from './models/PricingMongoose';
 import { processFileUris } from '../../services/FileService';
 import { getAllPricingsFromCollection } from './aggregators/get-pricings-from-collection';
 
@@ -103,7 +104,9 @@ class PricingCollectionRepository extends RepositoryBase {
   }
 
   async destroyWithPricings(id: string, ...args: any) {
-    // TODO: Implement this method
+    const result = await PricingCollectionMongoose.deleteOne({ _id: id });
+    const result2 = await PricingMongoose.deleteMany({ _collectionId: id });
+    return result?.deletedCount === 1 && result2?.deletedCount > 0;
   }
 }
 

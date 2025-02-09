@@ -31,13 +31,14 @@ class PricingService {
       return pricingObject
     }
 
-    async create (pricingFile: any, owner: string) {
+    async create (pricingFile: any, owner: string, collectionId?: string) {
       try{
         const uploadedPricing: Pricing = retrievePricingFromPath(pricingFile.path);
         
         const pricingData = {
           name: uploadedPricing.saasName,
           version: uploadedPricing.version,
+          _collectionId: collectionId,
           owner: owner,
           currency: uploadedPricing.currency,
           extractionDate: new Date(uploadedPricing.createdAt),

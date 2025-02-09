@@ -41,7 +41,7 @@ class PricingController {
 
   async create (req: any, res: any) {
     try {
-      const pricing = await this.pricingService.create(req.file, req.user.email.split('@')[0])
+      const pricing = await this.pricingService.create(req.file, req.user.username)
       res.json(pricing)
     } catch (err: any) {
       try{
