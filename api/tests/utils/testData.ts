@@ -11,6 +11,8 @@ const noEmailAdminCredentials = {
 
 const userCredentials = {
   loginField: 'test_user@test.com',
+  email: "test_user@test.com",
+  username: "TestUser",
   password: process.env.USER_PASSWORD,
 };
 

@@ -3,7 +3,7 @@ import request from 'supertest';
 import { getApp, shutdownApp } from './utils/testApp';
 import { Server } from 'http';
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import { generateFakeUser } from './utils/testData';
+import { generateFakeUser, userCredentials } from './utils/testData';
 import { getLoggedInAdmin, getLoggedInUser, getNewloggedInUser } from './utils/auth';
 
 dotenv.config();
@@ -14,6 +14,34 @@ describe('Get public user information', function () {
   beforeAll(async function () {
     app = await getApp();
   });
+
+  describe('POST /users/login', function () {
+    it('Should log in with email and return 200', async function () {
+      const testUser = userCredentials;
+      const response = await request(app).post('/api/users/login').send({
+        loginField: testUser.email,
+        password: testUser.password,
+      });
+      expect(response.status).toEqual(200);
+      expect(response.body.password).toBeUndefined();
+      expect(response.body.email).toEqual(testUser.email);
+      expect(response.body.username).toEqual(testUser.username);
+      expect(response.body.avatar).toBeDefined();
+    });
+
+    it('Should log in with username and return 200', async function () {
+      const testUser = userCredentials;
+      const response = await request(app).post('/api/users/login').send({
+        loginField: testUser.username,
+        password: testUser.password,
+      });
+      expect(response.status).toEqual(200);
+      expect(response.body.password).toBeUndefined();
+      expect(response.body.email).toEqual(testUser.email);
+      expect(response.body.username).toEqual(testUser.username);
+      expect(response.body.avatar).toBeDefined();
+    });
+  })
 
   describe('POST /users/register', function () {
     it('Should return 201 and the user created', async function () {
