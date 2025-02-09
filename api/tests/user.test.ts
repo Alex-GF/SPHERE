@@ -22,6 +22,7 @@ describe('Get public user information', function () {
       expect(response.status).toEqual(201);
       expect(response.body.password).toBeUndefined();
       expect(response.body.email).toEqual(newUser.email);
+      expect(response.body.username).toEqual(newUser.username);
       expect(response.body.userType).toEqual('user');
       expect(response.body.avatar).toBeUndefined();
     });

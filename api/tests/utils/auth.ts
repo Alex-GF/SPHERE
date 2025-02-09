@@ -29,7 +29,7 @@ const getLoggedInUser = async () => {
 const getNewloggedInUser = async (name: string) => {
   const fakeUser = await generateFakeUser("user", name)
   await request(await getApp()).post('/api/users/register').send(fakeUser)
-  const getloggedInUser = (await request(await getApp()).post('/api/users/login').send({ email: `${fakeUser.email}`, password: `${fakeUser.password}` })).body
+  const getloggedInUser = (await request(await getApp()).post('/api/users/login').send({ loginField: `${fakeUser.email}`, password: `${fakeUser.password}` })).body
   return getloggedInUser
 }
 

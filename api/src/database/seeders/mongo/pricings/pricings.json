@@ -7573,7 +7573,9 @@
     "name": "Fleet Management",
     "owner": "faked",
     "version": "1.0.0",
-    "extractionDate": "2025-01-19T00:00:00.000Z",
+    "extractionDate": {
+      "$date": "2025-01-19T00:00:00.000Z"
+    },
     "currency": "USD",
     "url": null,
     "yaml": "static/pricings/originalDataset/fleet/2025.yml",
@@ -7611,6 +7613,106 @@
       "configurationSpaceSize": 16,
       "minSubscriptionPrice": 15,
       "maxSubscriptionPrice": 77.55
+    }
+  },
+  {
+    "_id": {
+      "$oid": "67a8af9c0f009fd3b4310151"
+    },
+    "name": "Fleet Management",
+    "owner": "faked",
+    "version": "0.1.0",
+    "extractionDate": {
+      "$date": "2024-01-19T00:00:00.000Z"
+    },
+    "url": "",
+    "currency": "USD",
+    "yaml": "static/pricings/originalDataset/fleet/2024.yml",
+    "__v": 0,
+    "analytics": {
+      "numberOfFeatures": 4,
+      "numberOfInformationFeatures": 0,
+      "numberOfIntegrationFeatures": 0,
+      "numberOfIntegrationApiFeatures": 0,
+      "numberOfIntegrationExtensionFeatures": 0,
+      "numberOfIntegrationIdentityProviderFeatures": 0,
+      "numberOfIntegrationWebSaaSFeatures": 0,
+      "numberOfIntegrationMarketplaceFeatures": 0,
+      "numberOfIntegrationExternalDeviceFeatures": 0,
+      "numberOfDomainFeatures": 4,
+      "numberOfAutomationFeatures": 0,
+      "numberOfBotAutomationFeatures": 0,
+      "numberOfFilteringAutomationFeatures": 0,
+      "numberOfTrackingAutomationFeatures": 0,
+      "numberOfTaskAutomationFeatures": 0,
+      "numberOfManagementFeatures": 0,
+      "numberOfGuaranteeFeatures": 0,
+      "numberOfSupportFeatures": 0,
+      "numberOfPaymentFeatures": 0,
+      "numberOfUsageLimits": 4,
+      "numberOfRenewableUsageLimits": 2,
+      "numberOfNonRenewableUsageLimits": 2,
+      "numberOfResponseDrivenUsageLimits": 0,
+      "numberOfTimeDrivenUsageLimits": 0,
+      "numberOfPlans": 2,
+      "numberOfFreePlans": 0,
+      "numberOfPaidPlans": 2,
+      "numberOfAddOns": 2,
+      "numberOfReplacementAddons": 2,
+      "numberOfExtensionAddons": 0,
+      "configurationSpaceSize": 6,
+      "minSubscriptionPrice": 25,
+      "maxSubscriptionPrice": 101.8
+    }
+  },
+  {
+    "_id": {
+      "$oid": "67a8b01f0f009fd3b4310167"
+    },
+    "name": "Fleet Management",
+    "owner": "faked",
+    "version": "0.0.1",
+    "extractionDate": {
+      "$date": "2023-01-19T00:00:00.000Z"
+    },
+    "url": "",
+    "currency": "USD",
+    "yaml": "static/pricings/originalDataset/fleet/2023.yml",
+    "__v": 0,
+    "analytics": {
+      "numberOfFeatures": 4,
+      "numberOfInformationFeatures": 0,
+      "numberOfIntegrationFeatures": 0,
+      "numberOfIntegrationApiFeatures": 0,
+      "numberOfIntegrationExtensionFeatures": 0,
+      "numberOfIntegrationIdentityProviderFeatures": 0,
+      "numberOfIntegrationWebSaaSFeatures": 0,
+      "numberOfIntegrationMarketplaceFeatures": 0,
+      "numberOfIntegrationExternalDeviceFeatures": 0,
+      "numberOfDomainFeatures": 4,
+      "numberOfAutomationFeatures": 0,
+      "numberOfBotAutomationFeatures": 0,
+      "numberOfFilteringAutomationFeatures": 0,
+      "numberOfTrackingAutomationFeatures": 0,
+      "numberOfTaskAutomationFeatures": 0,
+      "numberOfManagementFeatures": 0,
+      "numberOfGuaranteeFeatures": 0,
+      "numberOfSupportFeatures": 0,
+      "numberOfPaymentFeatures": 0,
+      "numberOfUsageLimits": 4,
+      "numberOfRenewableUsageLimits": 2,
+      "numberOfNonRenewableUsageLimits": 2,
+      "numberOfResponseDrivenUsageLimits": 0,
+      "numberOfTimeDrivenUsageLimits": 0,
+      "numberOfPlans": 2,
+      "numberOfFreePlans": 0,
+      "numberOfPaidPlans": 2,
+      "numberOfAddOns": 0,
+      "numberOfReplacementAddons": 0,
+      "numberOfExtensionAddons": 0,
+      "configurationSpaceSize": 2,
+      "minSubscriptionPrice": 25,
+      "maxSubscriptionPrice": 100
     }
   }
 ]

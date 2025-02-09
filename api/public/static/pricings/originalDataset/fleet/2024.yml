@@ -1,0 +1,102 @@
+saasName: Fleet Management
+syntaxVersion: "2.1"
+version: "0.1.0"
+createdAt: "2024-01-19"
+currency: USD
+billing:
+  monthly: 1
+features:
+  stops:
+    description: It allows a route to include stops
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  routes:
+    description: It allows users to create routes 
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  vehicles:
+    description: It allows users to add vehicles to a fleet
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  billingTransactions:
+    description: It allows users to make billing transactions
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+usageLimits:
+  maxStopsPerRoute:
+    description: The maximum number of stops allowed per route
+    valueType: NUMERIC
+    defaultValue: 1000
+    unit: stop
+    type: NON_RENEWABLE
+    linkedFeatures:
+    - stops
+  maxRoutes:
+    description: The maximum number of routes allowed
+    valueType: NUMERIC
+    defaultValue: 15
+    unit: route
+    type: RENEWABLE
+    linkedFeatures:
+    - routes
+  maxVehicles:
+    description: The maximum number of vehicles allowed
+    valueType: NUMERIC
+    defaultValue: 10000
+    unit: vehicle
+    type: NON_RENEWABLE
+    linkedFeatures:
+    - vehicles
+  maxBillingTransactions:
+    description: The maximum number of billing transactions allowed
+    valueType: NUMERIC
+    defaultValue: 2500
+    unit: transaction
+    type: RENEWABLE
+    linkedFeatures:
+    - billingTransactions
+plans:
+  STARTER:
+    description: Starter plan
+    price: 25.0
+    unit: user/month
+    features: null
+    usageLimits: null
+  ADVANCED:
+    description: Advanced plan
+    price: 100.0
+    unit: user/month
+    features: null
+    usageLimits:
+      maxStopsPerRoute:
+        value: .inf
+      maxRoutes:
+        value: 100
+      maxBillingTransactions:
+        value: .inf
+addOns:
+  addStops:
+    description: Add stops to your Starter plan (It works as an overage cost)
+    price: 0.5
+    unit: stop
+    features: null
+    usageLimitsExtensions:
+      maxStopsPerRoute:
+        value: 1
+    availableFor:
+      - STARTER
+  addRoutes:
+    description: Add routes to any plan (It works as an overage cost)
+    price: 1.8
+    unit: route
+    features: null
+    usageLimitsExtensions:
+      maxRoutes:
+        value: 1
+    availableFor:
+      - STARTER
+      - ADVANCED

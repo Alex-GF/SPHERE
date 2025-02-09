@@ -15,6 +15,7 @@ export interface AuthUser {
     id: string
     firstName: string
     lastName: string
+    username: string
     email: string
     avatar: string
 }
@@ -66,6 +67,7 @@ export const useAuth = () => {
                                 id: user.id,
                                 firstName: user.firstName,
                                 lastName: user.lastName,
+                                username: user.username,
                                 email: user.email,
                                 avatar: user.avatar,
                                 // plan: user.plan,
@@ -121,6 +123,7 @@ export const useAuth = () => {
                                     id: user.id,
                                     firstName: user.firstName,
                                     lastName: user.lastName,
+                                    username: user.username,
                                     email: user.email,
                                     avatar: user.avatar,
                                     // plan: user.plan,

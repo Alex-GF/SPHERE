@@ -3,25 +3,20 @@ import { LoginFormProps } from "../../components/login-form";
 export function validateLogin(formData: LoginFormProps): string[] {
     const errors: string[] = [];
 
-    if (!formData.email || !formData.password) {
+    if (!formData.loginField || !formData.password) {
         errors.push("Email and password are required");
         return errors;
     }
 
-    _validateEmail(formData.email, errors);
+    _validateLoginField(formData.loginField, errors);
     _validatePassword(formData.password, errors);
 
     return errors;
 }
 
-function _validateEmail(email: string, errors: string[]){
-    const re = /\S+@\S+\.\S+/;
-
-    if (email === undefined || email === "") {
-        errors.push("Email is required");
-        return false;
-    }else if (!re.test(email)) {
-        errors.push("Invalid email address");
+function _validateLoginField(loginField: string, errors: string[]){
+    if (loginField === undefined || loginField === "") {
+        errors.push("Username or Email is required");
         return false;
     }
 }

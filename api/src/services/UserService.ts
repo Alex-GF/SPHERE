@@ -63,35 +63,37 @@ class UserService {
       return {token: user.token, tokenExpiration: user.tokenExpiration};
     }
 
-    async _login (email: string, password: string, userType: "user" | "admin") {
+    async _login (loginField: string, password: string, userType: "user" | "admin") {
     
       let user
   
       if (userType === 'user') {
-        user = await this.userRepository.findUserByEmail(email)
+        user = await this.userRepository.findUserByUsername(loginField)
+        if (!user) user = await this.userRepository.findUserByEmail(loginField)
       } else if (userType === 'admin') {
-        user = await this.userRepository.findAdminByEmail(email)
+        user = await this.userRepository.findAdminByUsername(loginField)
+        if (!user) user = await this.userRepository.findAdminByEmail(loginField)
       }
 
       if (!user) {
-        throw new Error('Invalid email or password')
+        throw new Error('Invalid credentials')
       }
 
       const passwordValid = await bcrypt.compare(password, user.password)
       if (!passwordValid) {
-        throw new Error('Invalid email or password')
+        throw new Error('Invalid credentials')
       }
       const updatedUser = await this.userRepository.updateToken(user.id, this._createUserTokenDTO())
       processFileUris(updatedUser, ['avatar'])
       return updatedUser
     }
   
-    async loginAdmin (email: string, password: string) {
-      return this._login(email, password, 'admin')
+    async loginAdmin (loginField: string, password: string) {
+      return this._login(loginField, password, 'admin')
     }
   
-    async loginUser (email: string, password: string) {
-      return this._login(email, password, 'user')
+    async loginUser (loginField: string, password: string) {
+      return this._login(loginField, password, 'user')
     }
   
     async show (id: string) {

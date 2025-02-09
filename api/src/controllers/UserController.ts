@@ -68,7 +68,7 @@ class UserController {
 
   async loginAdmin(req: any, res: any) {
     try {
-      const user = await this.userService.loginAdmin(req.body.email, req.body.password);
+      const user = await this.userService.loginAdmin(req.body.loginField, req.body.password);
       res.json({ token: user!.token });
     } catch (err: any) {
       return res.status(401).send({ error: err.message });
@@ -77,7 +77,7 @@ class UserController {
 
   async loginUser(req: any, res: any) {
     try {
-      const user = await this.userService.loginUser(req.body.email, req.body.password);
+      const user = await this.userService.loginUser(req.body.loginField, req.body.password);
       res.json({
         id: user!.id,
         firstName: user!.firstName,

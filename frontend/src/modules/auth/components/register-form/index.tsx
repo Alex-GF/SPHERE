@@ -10,6 +10,7 @@ import { useRouter } from '../../../core/hooks/useRouter';
 export type RegisterFormProps = {
   firstName: string;
   lastName: string;
+  username: string;
   email: string;
   password: string;
   confirmPassword?: string;
@@ -30,6 +31,7 @@ const RegisterForm: React.FC = () => {
     const formValues: RegisterFormProps = {
       firstName: formData.get('firstName') as string,
       lastName: formData.get('lastName') as string,
+      username: formData.get('username') as string,
       email: formData.get('email') as string,
       password: formData.get('password') as string,
       confirmPassword: formData.get('confirmPassword') as string,
@@ -48,6 +50,7 @@ const RegisterForm: React.FC = () => {
           id: response.id,
           firstName: response.firstName,
           lastName: response.lastName,
+          username: response.username,
           email: response.email,
           avatar: response.avatar,
         };
@@ -173,6 +176,23 @@ const RegisterForm: React.FC = () => {
           />
         </Grid>
       </Grid>
+
+      {/* Username Field */}
+      <TextField
+        required
+        label="Username"
+        type="text"
+        variant="outlined"
+        name="username"
+        fullWidth
+        slotProps={{
+          input: {
+            sx: {
+              borderRadius: 1.25,
+            },
+          },
+        }}
+      />
 
       {/* Email Field */}
       <TextField

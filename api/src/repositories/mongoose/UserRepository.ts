@@ -43,12 +43,24 @@ class UserRepository extends RepositoryBase {
     return this._findByEmailAndUserType(email, 'user')
   }
 
+  async findAdminByUsername (username: string) {
+    return this._findByUsernameAndUserType(username, 'admin')
+  }
+
+  async findUserByUsername (username: string) {
+    return this._findByUsernameAndUserType(username, 'user')
+  }
+
   async findByToken (token: string) {
     return UserMongoose.findOne({ token })
   }
 
   async _findByEmailAndUserType (email: string, userType: "user" | "admin") {
     return UserMongoose.findOne({ email, userType }, { id: 1, password: 1})
+  }
+
+  async _findByUsernameAndUserType (username: string, userType: "user" | "admin") {
+    return UserMongoose.findOne({ username, userType }, { id: 1, password: 1})
   }
 }
 
