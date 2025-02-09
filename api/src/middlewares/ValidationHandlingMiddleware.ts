@@ -5,7 +5,7 @@ const handleValidation = async (req: any, res: any, next: NextFunction) => {
   const err = validationResult(req) as Result<ValidationError>
 
   if (err.array().length > 0) {
-    res.status(422).send({error: err.array().map(e => e.msg)})
+    res.status(422).send({errors: err.array()})
   } else {
     next()
   }

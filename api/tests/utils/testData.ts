@@ -2,25 +2,25 @@ import { faker } from '@faker-js/faker';
 
 const adminCredentials = {
   email: 'admin1@admin.com',
-  password: 'secret',
+  password: process.env.ADMIN_PASSWORD,
 };
 
 const noEmailAdminCredentials = {
-  password: 'secret',
+  password: process.env.ADMIN_PASSWORD,
 };
 
 const userCredentials = {
-  email: 'user1@user.com',
-  password: 'secret',
+  email: 'test_user@test.com',
+  password: process.env.USER_PASSWORD,
 };
 
 const noEmailUserCredentials = {
-  password: 'secret',
+  password: process.env.USER_PASSWORD,
 };
 
 const invalidCredentials = {
   email: 'invalidCredential@customer.com',
-  password: 'secret',
+  password: 'invalid',
 };
 const generateFakeUser = (type: "user" | "admin", name?: string) => {
   const firstName = name || faker.person.firstName();

@@ -12,7 +12,10 @@ class UserRepository extends RepositoryBase {
   }
 
   async create (businessEntity: any, ...args: any) {
-    return (new UserMongoose(businessEntity)).save()
+    const user = await (new UserMongoose(businessEntity)).save()
+    const userObject = await UserMongoose.findById(user.id, { avatar: 0 })
+
+    return userObject
   }
 
   async update (id: string, businessEntity: any, ...args: any) {

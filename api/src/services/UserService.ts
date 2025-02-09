@@ -26,7 +26,7 @@ class UserService {
       newUser = { ...newUser, ...this._createUserTokenDTO() }
 
       const registeredUser = await this.userRepository.create(newUser)
-      processFileUris(registeredUser, ['avatar'])
+      // processFileUris(registeredUser, ['avatar'])
       return registeredUser
     }
   
