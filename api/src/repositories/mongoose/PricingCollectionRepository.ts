@@ -91,7 +91,11 @@ class PricingCollectionRepository extends RepositoryBase {
     const collection = new PricingCollectionMongoose(data);
     await collection.save();
 
-    return collection.toJSON();
+    return collection.populate("owner", {
+      username: 1,
+      avatar: 1,
+      id: 1,
+    });
   }
 
   async updateAnalytics(pricingId: string, analytics: PricingCollectionAnalytics, ...args: any) {

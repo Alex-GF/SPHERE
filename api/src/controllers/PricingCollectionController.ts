@@ -11,7 +11,7 @@ class PricingCollectionController {
     this.showByNameAndUserId = this.showByNameAndUserId.bind(this);
     this.showByUserId = this.showByUserId.bind(this);
     // this.show = this.show.bind(this);
-    // this.create = this.create.bind(this);
+    this.create = this.create.bind(this);
   }
 
   async index (req: any, res: any) {
@@ -46,38 +46,14 @@ class PricingCollectionController {
     }
   }
 
-  // async show (req: any, res: any) {
-  //   try {
-  //     const pricing = await this.pricingCollectionService.show(req.user.id)
-  //     res.json(pricing)
-  //   } catch (err: any) {
-  //     if (err.message.toLowerCase().includes('not found')) {
-  //       res.status(404).send({error: err.message})
-  //     }else{
-  //       res.status(500).send({error: err.message})
-  //     }
-  //   }
-  // }
-
-  // async create (req: any, res: any) {
-  //   try {
-  //     const pricing = await this.pricingService.create(req.file, req.user.email.split('@')[0])
-  //     res.json(pricing)
-  //   } catch (err: any) {
-  //     try{
-  //       const file = req.file;
-  //       const directory = path.dirname(file.path);
-  //       if (fs.readdirSync(directory).length === 1) {
-  //         fs.rmdirSync(directory, { recursive: true });
-  //       }else{
-  //         fs.rmSync(file.path);
-  //       }
-  //       res.status(500).send({error: err.message})
-  //     }catch(err){
-  //       res.status(500).send({error: (err as Error).message})
-  //     }
-  //   }
-  // }
+  async create (req: any, res: any) {
+    try {
+      const pricing = await this.pricingCollectionService.create(req.body, req.user.id)
+      res.json(pricing)
+    } catch (err: any) {
+      res.status(500).send({error: (err as Error).message})
+    }
+  }
 
   // async destroy (req: any, res: any) {
   //   try {

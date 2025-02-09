@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import container from "../config/container";
 import PricingCollectionRepository from "../repositories/mongoose/PricingCollectionRepository";
 
@@ -38,40 +39,34 @@ class PricingCollectionService {
       return collection;
     }
 
-    async create (pricingFile: any, owner: string) {
-      // try{
-      //   const uploadedPricing: Pricing = retrievePricingFromPath(pricingFile.path);
-        
-      //   const pricingData = {
-      //     name: uploadedPricing.saasName,
-      //     version: uploadedPricing.version,
-      //     owner: owner,
-      //     currency: uploadedPricing.currency,
-      //     extractionDate: new Date(uploadedPricing.createdAt),
-      //     url: '',
-      //     yaml: pricingFile.path.split('/').slice(1).join('/'),
-      //     analytics: {}
-      //   };
+    async create (newCollection: any, userId: string) {
+      try{
+        newCollection._ownerId = new mongoose.Types.ObjectId(userId);
+        newCollection.analytics = {
+          evolutionOfPlans: {
+            dates: [],
+            values: []
+          },
+          evolutionOfAddOns: {
+            dates: [],
+            values: []
+          },
+          evolutionOfFeatures: {
+            dates: [],
+            values: []
+          },
+          evolutionOfConfigurationSpaceSize: {
+            dates: [],
+            values: []
+          },
+        }
 
-      //   const pricing = await this.pricingRepository.create(pricingData);
+        const collection = await this.pricingCollectionRepository.create(newCollection);
 
-      //   processFileUris(pricing, ['yaml'])
-
-      //   const pricingAnalytics = new PricingAnalytics(uploadedPricing);
-
-      //   await pricingAnalytics.getAnalytics()
-      //     .then((analytics: any) => {
-      //       this.pricingRepository.updateAnalytics(pricing.id, analytics);
-      //     }).catch(async (err: any) => {
-      //       await this.pricingRepository.destroy(pricing.id);
-      //       throw new Error((err as Error).message);
-      //     });
-
-      //   return pricing;
-      // }catch(err){
-      //   throw new Error((err as Error).message);
-      // }
-
+        return collection;
+      }catch(err){
+        throw new Error((err as Error).message);
+      }
     }
   
     // async destroy (id: string) {
