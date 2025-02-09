@@ -31,7 +31,11 @@ class PricingController {
       const pricing = await this.pricingService.show(req.params.pricingName, req.params.owner)
       res.json(pricing)
     } catch (err: any) {
-      res.status(500).send({error: err.message})
+      if (err.message.toLowerCase().includes('not found')) {
+        res.status(404).send({error: err.message})
+      }else{
+        res.status(500).send({error: err.message})
+      }
     }
   }
 

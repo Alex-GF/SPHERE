@@ -18,7 +18,7 @@ class PricingCollection {
     lastUpdate: Date
 }
 
-class CollectionAnalyitics {
+class CollectionAnalytics {
     evolutionOfPlans: double[][]
     evolutionOfFeatures: double[][]
     evolutionOfAddOns: double[][]
@@ -34,7 +34,7 @@ class Pricing {
     yaml: String
 }
 
-class PricingAnalyitics {
+class PricingAnalytics {
     numberOfFeatures: integer
     numberOfInformationFeatures: integer
     numberOfIntegrationFeatures: integer
@@ -72,10 +72,11 @@ class PricingAnalyitics {
 
 ' Relationships
 
+User "1" --> "0..*" Pricing : owns
 User "1" --> "0..*" PricingCollection : owns
-PricingCollection *-- CollectionAnalyitics
-PricingCollection "1" --> "0..*" Pricing : contains
-Pricing *-- PricingAnalyitics
+PricingCollection *-- CollectionAnalytics
+PricingCollection "0..1" <-- "1..*" Pricing : belongsTo
+Pricing *-- PricingAnalytics
 
 ' Enums
 

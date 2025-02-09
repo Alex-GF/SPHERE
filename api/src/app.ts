@@ -52,7 +52,7 @@ const initializeDatabase = async () => {
       case "mongoDB":
         connection = await initMongoose();
         const isDatabaseEmpty = await connection.connection.db?.listCollections().toArray().then(collections => collections.length === 0);
-        if (isDatabaseEmpty) {
+        if (isDatabaseEmpty || process.env.ENVIRONMENT === "development") {
           await seedDatabase();
         }
         break
