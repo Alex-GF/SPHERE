@@ -1,13 +1,16 @@
 import mongoose from "mongoose";
 import container from "../config/container";
 import PricingCollectionRepository from "../repositories/mongoose/PricingCollectionRepository";
+import PricingRepository from "../repositories/mongoose/PricingRepository";
 
 class PricingCollectionService {
     
     private pricingCollectionRepository: PricingCollectionRepository;
+    private pricingRepository: PricingRepository;
 
     constructor () {
       this.pricingCollectionRepository = container.resolve('pricingCollectionRepository');
+      this.pricingRepository = container.resolve('pricingRepository');
     }
 
     async index () {
@@ -39,7 +42,7 @@ class PricingCollectionService {
       return collection;
     }
 
-    async create (newCollection: any, userId: string) {
+    async create (newCollection: any, userId: string, username: string) {
       try{
         newCollection._ownerId = new mongoose.Types.ObjectId(userId);
         newCollection.analytics = {
@@ -62,6 +65,8 @@ class PricingCollectionService {
         }
 
         const collection = await this.pricingCollectionRepository.create(newCollection);
+
+        await this.pricingRepository.addPricingsToCollection(collection._id.toString(), username, newCollection.pricings);
 
         return collection;
       }catch(err){

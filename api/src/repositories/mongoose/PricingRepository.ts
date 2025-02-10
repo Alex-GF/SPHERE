@@ -229,6 +229,15 @@ class PricingRepository extends RepositoryBase {
     return pricing.toJSON();
   }
 
+  async addPricingsToCollection(collectionId: string, owner: string, pricings: string[], ...args: any) {
+    const result = await PricingMongoose.updateMany(
+      { name: { $in: pricings }, owner: owner },
+      { $set: { _collectionId: new mongoose.Types.ObjectId(collectionId) } }
+    );
+
+    return result.modifiedCount === pricings.length;
+  }
+
   async destroy(id: string, ...args: any) {
     const result = await PricingMongoose.deleteOne({ _id: id });
     return result?.deletedCount === 1;

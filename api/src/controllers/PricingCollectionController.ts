@@ -47,7 +47,7 @@ class PricingCollectionController {
 
   async create (req: any, res: any) {
     try {
-      const pricing = await this.pricingCollectionService.create(req.body, req.user.id)
+      const pricing = await this.pricingCollectionService.create(req.body, req.user.id, req.user.username)
       res.json(pricing)
     } catch (err: any) {
       res.status(500).send({error: (err as Error).message})

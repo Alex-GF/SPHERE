@@ -39,7 +39,9 @@ class ParameterEvolution extends SchemaType {
 const pricingCollectionSchema = new Schema(
   {
     name: { type: String, required: true },
+    description: { type: String, required: false },
     _ownerId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    private: { type: Boolean, required: true, default: false },
     analytics: {
       evolutionOfPlans: { type: ParameterEvolution, required: false },
       evolutionOfAddOns: { type: ParameterEvolution, required: false },

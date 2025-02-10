@@ -1,18 +1,20 @@
 import { Box, IconButton, Typography } from '@mui/material';
 import { FaFolder } from 'react-icons/fa';
 import { IoMdAddCircleOutline } from "react-icons/io";
-import { usePricingCollectionsApi } from '../../../pricing/api/pricingCollectionsApi';
+import { usePricingCollectionsApi } from '../../api/pricingCollectionsApi';
 import { useEffect, useState } from 'react';
 import { CollectionEntry } from '../../types/profile-types';
 import { flex } from '../../../core/theme/css';
+import { useRouter } from '../../../core/hooks/useRouter';
 
 export default function CollectionSection() {
   const [collections, setCollections] = useState([]);
 
   const { getLoggedUserCollections } = usePricingCollectionsApi();
+  const router = useRouter();
 
   function handleAddCollection() {
-    
+    router.push("/collections/new");
   }
 
   useEffect(() => {
@@ -25,7 +27,7 @@ export default function CollectionSection() {
         }
       })
       .catch(error => {
-        console.log('Cannot GET collections. Error:', error);
+        console.error('Cannot GET collections. Error:', error);
       });
   }, []);
 

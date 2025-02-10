@@ -12,3 +12,10 @@ export interface CollectionEntry {
 export interface PricingEntry {
   
 }
+
+export interface CollectionToCreate {
+  name: string,
+  description: string,
+  private: boolean,
+  pricings: string[]
+}

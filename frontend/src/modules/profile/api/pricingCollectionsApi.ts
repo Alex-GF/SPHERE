@@ -1,6 +1,7 @@
 import { useAuth } from '../../auth/hooks/useAuth';
+import { CollectionToCreate } from '../types/profile-types';
 
-export const COLLECTIONS_BASE_PATH = import.meta.env.VITE_API_URL + '/collections';
+export const COLLECTIONS_BASE_PATH = import.meta.env.VITE_API_URL + '/pricings/collections';
 
 export function usePricingCollectionsApi() {
   const { fetchWithInterceptor, authUser } = useAuth();
@@ -21,5 +22,17 @@ export function usePricingCollectionsApi() {
       });
   };
 
-  return { getLoggedUserCollections };
+  const createCollection = async (collection: CollectionToCreate) => {
+    return fetchWithInterceptor(COLLECTIONS_BASE_PATH, {
+      method: 'POST',
+      headers: basicHeaders,
+      body: JSON.stringify(collection),
+    })
+      .then(response => response.json())
+      .catch(error => {
+        return Promise.reject(error as Error);
+      });
+  }
+
+  return { getLoggedUserCollections, createCollection };
 }
