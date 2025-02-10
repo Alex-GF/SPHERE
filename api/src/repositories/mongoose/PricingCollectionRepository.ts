@@ -5,6 +5,8 @@ import PricingCollectionMongoose from './models/PricingCollectionMongoose';
 import PricingMongoose from './models/PricingMongoose';
 import { processFileUris } from '../../services/FileService';
 import { getAllPricingsFromCollection } from './aggregators/get-pricings-from-collection';
+import { addNumberOfPricingsAggregator } from './aggregators/pricingCollections/add-number-of-pricings';
+import { addOwnerToCollectionAggregator } from './aggregators/pricingCollections/add-owner-to-collection';
 
 class PricingCollectionRepository extends RepositoryBase {
   async findAll(...args: any) {
@@ -12,37 +14,8 @@ class PricingCollectionRepository extends RepositoryBase {
       // TODO: Move this aggregator to a separate function
       const collections = await PricingCollectionMongoose.aggregate(
         [
-          ...getAllPricingsFromCollection(),
-          {
-            $addFields: {
-              pricings: {
-                $arrayElemAt: ['$pricings', 0]
-              }
-            }
-          },
-          {
-            $unwind: {
-              path: '$pricings'
-            }
-          },
-          {
-            $addFields: {
-              numberOfPricings: { $size: "$pricings.pricings" },
-            }
-          },
-          {
-            $lookup: {
-              from: 'users',
-              localField: '_ownerId',
-              foreignField: '_id',
-              as: 'owner',
-            },
-          },
-          {
-            $unwind: {
-              path: '$owner',
-            },
-          },
+          ...addNumberOfPricingsAggregator(),
+          ...addOwnerToCollectionAggregator(),
           {
             $project: {
               owner: {
@@ -53,7 +26,6 @@ class PricingCollectionRepository extends RepositoryBase {
               name: 1,
               analytics: 1,
               numberOfPricings: 1,
-              pricings: 1
             },
           },
         ]);
@@ -67,15 +39,28 @@ class PricingCollectionRepository extends RepositoryBase {
 
   async findByUserId(userId: string, ...args: any) {
     try {
-      return await PricingCollectionMongoose.find({
-        _ownerId: new mongoose.Types.ObjectId(userId),
-      }).select('-analytics')
-        .populate('owner', {
-          username: 1,
-          avatar: 1,
-          id: 1,
-        })
-        .populate('numberOfPricings');
+      const collections = await PricingCollectionMongoose.aggregate([
+        {
+          $match: {
+            _ownerId: new mongoose.Types.ObjectId(userId),
+          },
+        },
+        ...addNumberOfPricingsAggregator(),
+        ...addOwnerToCollectionAggregator(),
+        {
+          $project: {
+            owner: {
+              username: 1,
+              avatar: 1,
+              id: { $toString: '$owner._id' },
+            },
+            name: 1,
+            numberOfPricings: 1,
+          },
+        },
+      ]);
+
+      return collections;
     } catch (err) {
       return null;
     }
@@ -94,19 +79,7 @@ class PricingCollectionRepository extends RepositoryBase {
           },
         },
         ...getAllPricingsFromCollection(),
-        {
-          $lookup: {
-            from: 'users',
-            localField: '_ownerId',
-            foreignField: '_id',
-            as: 'owner',
-          },
-        },
-        {
-          $unwind: {
-            path: '$owner',
-          },
-        },
+        ...addOwnerToCollectionAggregator(),
         {
           $project: {
             owner: {

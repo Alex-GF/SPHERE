@@ -131,12 +131,13 @@ class PricingRepository extends RepositoryBase {
     }
   }
 
-  async findByOwner(owner: string, ...args: any) {
+  async findByOwnerWithoutCollection(owner: string, ...args: any) {
     try {
       const pricings = await PricingMongoose.aggregate([
         {
           $match: {
             owner: owner,
+            _collectionId: { $exists: false }
           }
         },
         ...getAllPricingsAggregator([], [])

@@ -25,27 +25,32 @@ export default function PricingSection() {
 
   return (
     <Box>
-      <Typography variant="h6" sx={{ mb: 1 }}>
-        Pricings {pricings.length > 0 && `(${pricings.length})`}
-      </Typography>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          gap: 2,
-          marginTop: "30px"
-        }}
-      >
-        {pricings && pricings.length > 0 ? (
-          pricings.map((pricing: PricingEntry) => (
-            <PricingListCard name={pricing.name} owner={pricing.owner} dataEntry= {pricing} key={`pricing-${pricing.name}`}/>
-          ))
-        ) : (
-          <Box sx={{ marginTop: '20px' }}>You have no pricings</Box>
-        )}
-      </Box>
+      {pricings && pricings.length > 0 && (
+        <>
+          <Typography variant="h6" sx={{ mb: 1 }}>
+            Unassigned {pricings.length > 0 && `(${pricings.length})`}
+          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: 2,
+              marginTop: '30px',
+            }}
+          >
+            {pricings.map((pricing: PricingEntry) => (
+              <PricingListCard
+                name={pricing.name}
+                owner={pricing.owner}
+                dataEntry={pricing}
+                key={`pricing-${pricing.name}`}
+              />
+            ))}
+          </Box>
+        </>
+      )}
     </Box>
   );
 }

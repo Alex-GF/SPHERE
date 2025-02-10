@@ -19,8 +19,8 @@ class PricingService {
       return pricings
     }
 
-    async indexByUser (username: string){
-      const pricings = await this.pricingRepository.findByOwner(username)
+    async indexByUserWithoutCollection (username: string){
+      const pricings = await this.pricingRepository.findByOwnerWithoutCollection(username)
       return pricings
     }
   
