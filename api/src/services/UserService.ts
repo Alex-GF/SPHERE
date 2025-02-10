@@ -16,7 +16,7 @@ class UserService {
     _createUserTokenDTO () {
       return {
         token: crypto.randomBytes(20).toString('hex'),
-        tokenExpiration: new Date(Date.now() + 60 * 60 * 1000) // 1 hour from now
+        tokenExpiration: new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 hours from now
       }
     }
 

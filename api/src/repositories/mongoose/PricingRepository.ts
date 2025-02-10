@@ -131,7 +131,24 @@ class PricingRepository extends RepositoryBase {
     }
   }
 
-  async findByName(name: string, owner: string, ...args: any) {
+  async findByOwner(owner: string, ...args: any) {
+    try {
+      const pricings = await PricingMongoose.aggregate([
+        {
+          $match: {
+            owner: owner,
+          }
+        },
+        ...getAllPricingsAggregator([], [])
+      ]);
+
+      return pricings[0];
+    }catch(err){
+      return [];
+    }
+  }
+
+  async findByNameAndOwner(name: string, owner: string, ...args: any) {
     try {
       const pricing = await PricingMongoose.aggregate([
         {

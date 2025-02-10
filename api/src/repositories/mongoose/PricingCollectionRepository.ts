@@ -9,13 +9,54 @@ import { getAllPricingsFromCollection } from './aggregators/get-pricings-from-co
 class PricingCollectionRepository extends RepositoryBase {
   async findAll(...args: any) {
     try {
-      const collections = await PricingCollectionMongoose.find()
-        .populate('owner', {
-          username: 1,
-          avatar: 1,
-          id: 1,
-        })
-        .populate('numberOfPricings');
+      // TODO: Move this aggregator to a separate function
+      const collections = await PricingCollectionMongoose.aggregate(
+        [
+          ...getAllPricingsFromCollection(),
+          {
+            $addFields: {
+              pricings: {
+                $arrayElemAt: ['$pricings', 0]
+              }
+            }
+          },
+          {
+            $unwind: {
+              path: '$pricings'
+            }
+          },
+          {
+            $addFields: {
+              numberOfPricings: { $size: "$pricings.pricings" },
+            }
+          },
+          {
+            $lookup: {
+              from: 'users',
+              localField: '_ownerId',
+              foreignField: '_id',
+              as: 'owner',
+            },
+          },
+          {
+            $unwind: {
+              path: '$owner',
+            },
+          },
+          {
+            $project: {
+              owner: {
+                username: 1,
+                avatar: 1,
+                id: { $toString: '$owner._id' },
+              },
+              name: 1,
+              analytics: 1,
+              numberOfPricings: 1,
+              pricings: 1
+            },
+          },
+        ]);
 
       collections.map((c: any) => processFileUris(c.owner, ['avatar']));
       return collections;

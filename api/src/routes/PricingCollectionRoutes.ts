@@ -7,12 +7,12 @@ const loadFileRoutes = function (app: express.Application) {
 
   const baseUrl = process.env.BASE_URL_PATH;
 
-  app.route(baseUrl + '/pricings/collections').get(pricingCollectionController.index);
-
   app
-    .route(baseUrl + '/me/collections')
-    .get(isLoggedIn, pricingCollectionController.showByUserId)
+    .route(baseUrl + '/pricings/collections')
+    .get(pricingCollectionController.index)
     .post(isLoggedIn, pricingCollectionController.create);
+
+  app.route(baseUrl + '/me/collections').get(isLoggedIn, pricingCollectionController.showByUserId);
 
   app
     .route(baseUrl + '/:userId/collections/:collectionName')

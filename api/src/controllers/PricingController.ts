@@ -11,6 +11,7 @@ class PricingController {
   constructor () {
     this.pricingService = container.resolve('pricingService');
     this.index = this.index.bind(this);
+    this.indexByUser = this.indexByUser.bind(this);
     this.show = this.show.bind(this);
     this.create = this.create.bind(this);
   }
@@ -23,6 +24,15 @@ class PricingController {
       res.json(pricings)
     } catch (err: any) {
       res.status(500).send({error: err.message})
+    }
+  }
+
+  async indexByUser (req: any, res: any) {
+    try {
+      const pricings = await this.pricingService.indexByUser(req.user.username)
+      res.json({pricings})
+    } catch (err: any) {
+      res.status(500).send(err.message)
     }
   }
 

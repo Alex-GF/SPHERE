@@ -39,26 +39,37 @@ export function usePricingsApi() {
       requestUrl = `${PRICINGS_BASE_PATH}?${filterParams.toString()}`;
     }
 
-    return fetchWithInterceptor(requestUrl as string, {
+    return fetch(requestUrl as string, {
       method: 'GET',
       headers: basicHeaders,
     })
       .then(response => response.json())
       .catch(error => {
-        console.error('Error:', error);
+        return Promise.reject(error as Error);
       });
   };
 
   const getPricingByName = async (name: string, owner: string) => {
-    return fetchWithInterceptor(`${PRICINGS_BASE_PATH}/${owner}/${name}`, {
+    return fetch(`${PRICINGS_BASE_PATH}/${owner}/${name}`, {
       method: 'GET',
       headers: basicHeaders,
     })
       .then(response => response.json())
       .catch(error => {
-        console.error('Error:', error);
+        return Promise.reject(error as Error);
       });
   };
+
+  const getLoggedUserPricings = async () => {
+    return fetchWithInterceptor(`${import.meta.env.VITE_API_URL}/me/pricings`, {
+      method: 'GET',
+      headers: basicHeaders,
+    })
+      .then(response => response.json())
+      .catch(error => {
+        return Promise.reject(error as Error);
+      });
+  }
 
   const createPricing = async (formData: FormData, setErrors: Function = () => {}) => {
     return fetchWithInterceptor(PRICINGS_BASE_PATH, {
@@ -82,5 +93,5 @@ export function usePricingsApi() {
       });
   };
 
-  return { getPricings, getPricingByName, createPricing };
+  return { getPricings, getPricingByName, getLoggedUserPricings, createPricing };
 }

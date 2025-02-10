@@ -42,7 +42,7 @@ const NavItems = styled(Box)(({ theme }) => ({
   },
 }));
 
-const Header = ({setUploadModalOpen}: {setUploadModalOpen: (state: boolean) => void}) => {
+const Header = ({ setUploadModalOpen }: { setUploadModalOpen: (state: boolean) => void }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const theme = useTheme();
@@ -52,6 +52,13 @@ const Header = ({setUploadModalOpen}: {setUploadModalOpen: (state: boolean) => v
   const router = useRouter();
 
   const settings = [
+    {
+      name: 'My Pricings',
+      onClick: () => {
+        router.push('/me/pricings');
+        handleCloseUserMenu();
+      },
+    },
     {
       name: 'Upload pricing',
       onClick: () => {
@@ -92,11 +99,9 @@ const Header = ({setUploadModalOpen}: {setUploadModalOpen: (state: boolean) => v
             <NavItems>
               {authUser.isAuthenticated ? (
                 <Tooltip title="Open settings">
-                  <>
-                    <IconButton onClick={handleOpenUserMenu} aria-label="user settings">
-                      <Avatar sx={{ bgcolor: primary[900] }} src={authUser.user?.avatar} />
-                    </IconButton>
-                  </>
+                  <IconButton onClick={handleOpenUserMenu} aria-label="user settings">
+                    <Avatar src={authUser.user?.avatar} />
+                  </IconButton>
                 </Tooltip>
               ) : (
                 <>
@@ -157,12 +162,14 @@ const Header = ({setUploadModalOpen}: {setUploadModalOpen: (state: boolean) => v
                 <Typography fontSize={16} fontWeight="bold" marginBottom={2}>
                   {authUser.user?.firstName}
                 </Typography>
-                <Box sx={{
-                  cursor: 'default',
-                  width: '90%',
-                  height: '1px',
-                  backgroundColor: grey[500],
-                }}/>
+                <Box
+                  sx={{
+                    cursor: 'default',
+                    width: '90%',
+                    height: '1px',
+                    backgroundColor: grey[500],
+                  }}
+                />
               </MenuItem>
               {settings.map(setting => (
                 <MenuItem key={setting.name} onClick={setting.onClick}>

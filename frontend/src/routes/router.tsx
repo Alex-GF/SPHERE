@@ -16,6 +16,7 @@ import LoginPage from '../modules/auth/pages/login-page';
 import RegisterPage from '../modules/auth/pages/register-page';
 import CardPage from '../modules/pricing/pages/card';
 import LegacyPricingCard from '../modules/pricing/pages/legacy-pricing-card';
+import MyPricingsPage from '../modules/profile/pages/pricings';
 
 export default function Router() {
   const routes = useRoutes([
@@ -37,6 +38,7 @@ export default function Router() {
         { element: <TeamPage />, path: "/team" },
         { element: <ResearchPage />, path: "/research" },
         { element: <ContributionsPage />, path: "/contributions" },
+        { element: <MyPricingsPage />, path: "/me/pricings" },
       ],
         },
         {

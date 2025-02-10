@@ -38,7 +38,6 @@ class PricingCollectionController {
 
   async showByUserId (req: any, res: any) {
     try {
-      console.log(req.user)
       const collections = await this.pricingCollectionService.showByUserId(req.user.id)
       res.json({collections: collections})
     } catch (err: any) {

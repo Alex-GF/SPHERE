@@ -18,9 +18,14 @@ class PricingService {
       const pricings = await this.pricingRepository.findAll(queryParams)
       return pricings
     }
+
+    async indexByUser (username: string){
+      const pricings = await this.pricingRepository.findByOwner(username)
+      return pricings
+    }
   
     async show (name: string, owner: string) {
-      const pricing: {name: string, versions: PricingModel[]} | null = await this.pricingRepository.findByName(name, owner)
+      const pricing: {name: string, versions: PricingModel[]} | null = await this.pricingRepository.findByNameAndOwner(name, owner)
       if (!pricing) {
         throw new Error('Pricing not found')
       }

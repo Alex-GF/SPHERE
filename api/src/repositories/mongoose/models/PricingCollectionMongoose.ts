@@ -67,13 +67,6 @@ pricingCollectionSchema.virtual('owner', {
   justOne: true,
 });
 
-pricingCollectionSchema.virtual('numberOfPricings', {
-  ref: 'Pricing',
-  localField: '_id',
-  foreignField: '_collectionId',
-  count: true,
-})
-
 // Adding unique index for [name, owner, version]
 pricingCollectionSchema.index({ name: 1, _ownerId: 1 }, { unique: true });
 

@@ -33,7 +33,7 @@
     "avatar": "avatars/maleAvatar.png",
     "address": "Fake street 123",
     "postalCode": "41010",
-    "userType": "admin",
+    "userType": "user",
     "createdAt": {"$date": "2023-02-20T11:22:04.000Z"},
     "updatedAt": {"$date": "2023-02-23T10:09:58.000Z"}
   },

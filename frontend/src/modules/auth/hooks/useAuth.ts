@@ -32,7 +32,6 @@ export const useAuth = () => {
             tokenExpiration: tokenExpiration,
             isLoading: false,
         })
-
         setItem('token', token)
     }
 
@@ -138,8 +137,6 @@ export const useAuth = () => {
                         console.log(error)
                         removeUser()
                     })
-            }else{
-                removeUser();
             }
         }
         
