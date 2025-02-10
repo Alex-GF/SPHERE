@@ -10,6 +10,7 @@ const pricingSchema = new Schema(
     url: { type: String, required: false },
     currency: { type: String, required: true },
     yaml: { type: String, required: true },
+    private: { type: Boolean, required: true, default: false },
     analytics: {
       numberOfFeatures: { type: Number, required: false },
       numberOfInformationFeatures: { type: Number, required: false },
