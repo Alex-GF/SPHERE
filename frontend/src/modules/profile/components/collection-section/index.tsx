@@ -1,5 +1,6 @@
 import { Box, IconButton, Typography } from '@mui/material';
-import { FaSort, FaFolder } from 'react-icons/fa';
+import { FaFolder } from 'react-icons/fa';
+import { IoMdAddCircleOutline } from "react-icons/io";
 import { usePricingCollectionsApi } from '../../../pricing/api/pricingCollectionsApi';
 import { useEffect, useState } from 'react';
 import { CollectionEntry } from '../../types/profile-types';
@@ -9,6 +10,10 @@ export default function CollectionSection() {
   const [collections, setCollections] = useState([]);
 
   const { getLoggedUserCollections } = usePricingCollectionsApi();
+
+  function handleAddCollection() {
+    
+  }
 
   useEffect(() => {
     getLoggedUserCollections()
@@ -38,8 +43,8 @@ export default function CollectionSection() {
         <Typography variant="h6">
           Collections {collections.length > 0 && `(${collections.length})`}{' '}
         </Typography>
-        <IconButton size="small">
-          <FaSort />
+        <IconButton size="small" onClick={handleAddCollection}>
+          <IoMdAddCircleOutline/>
         </IconButton>
       </Box>
 
