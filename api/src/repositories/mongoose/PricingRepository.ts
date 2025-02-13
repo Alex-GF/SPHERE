@@ -123,7 +123,14 @@ class PricingRepository extends RepositoryBase {
 
     try {
       const aggregator = getAllPricingsAggregator(filteringAggregators, sortAggregator);
-      const pricings = await PricingMongoose.aggregate(aggregator);
+      const pricings = await PricingMongoose.aggregate([
+        {
+          $match: {
+            private: false
+          }
+        },  
+        ...aggregator
+      ]);
       return pricings[0];
     } catch (err) {
       console.log(err);

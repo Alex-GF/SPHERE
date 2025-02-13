@@ -45,7 +45,7 @@ export default function CollectionSection() {
         <Typography variant="h6">
           Collections {collections.length > 0 && `(${collections.length})`}{' '}
         </Typography>
-        <IconButton size="small" onClick={handleAddCollection}>
+        <IconButton size="large" onClick={handleAddCollection}>
           <IoMdAddCircleOutline/>
         </IconButton>
       </Box>

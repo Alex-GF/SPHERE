@@ -29,7 +29,8 @@ const timelineData = [
     date: '2024-12-03',
     icon: <GrWorkshop stroke="white" />,
     iconStyle: proceedingsIconStyle,
-    href: 'https://arxiv.org/abs/2409.15150',
+    href: 'https://doi.org/10.1007/978-981-96-0808-9_19',
+    awards: ["Best Student Paper Award", "Distinguished Paper Award"],
   },
   {
     title: 'Towards Effective SaaS Pricing Design: A Case Study of CCSIM',
@@ -71,6 +72,7 @@ const timelineData = [
     icon: <FaPlayCircle fill="white" />,
     iconStyle: demoIconStyle,
     href: 'https://biblioteca.sistedes.es/entities/artículo/16147fdc-2bae-477b-8b22-3d755358597a',
+    awards: ["Best Demo Award"],
   },
   {
     title: 'Pricing-driven Development and Operation of SaaS: Challenges and Opportunities',
@@ -80,6 +82,7 @@ const timelineData = [
     icon: <GrWorkshop stroke="white" />,
     iconStyle: proceedingsIconStyle,
     href: 'https://biblioteca.sistedes.es/entities/artículo/0d0e5e8e-59cd-4c34-b9a0-4de989221c87',
+    awards: ["Best Long Paper Award"],
   },
   {
     title: 'Pricing4SaaS: Towards a Pricing Model to Drive the Operation of SaaS',
