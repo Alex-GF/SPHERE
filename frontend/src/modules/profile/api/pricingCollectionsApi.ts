@@ -32,7 +32,18 @@ export function usePricingCollectionsApi() {
       .catch(error => {
         return Promise.reject(error as Error);
       });
+  };
+
+  const getCollectionByOwnerAndName = (ownerId: string, collectionName: string) => {
+    return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${ownerId}/${collectionName}`, {
+      method: 'GET',
+      headers: basicHeaders,
+    })
+      .then(response => response.json())
+      .catch(error => {
+        return Promise.reject(error as Error);
+      });
   }
 
-  return { getLoggedUserCollections, createCollection };
+  return { getLoggedUserCollections, createCollection, getCollectionByOwnerAndName };
 }

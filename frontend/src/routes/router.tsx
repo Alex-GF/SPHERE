@@ -19,6 +19,7 @@ import LegacyPricingCard from '../modules/pricing/pages/legacy-pricing-card';
 import MyPricingsPage from '../modules/profile/pages/pricings';
 import CreatePricingPage from '../modules/pricing/pages/create';
 import CreateCollectionPage from '../modules/profile/pages/create-collection';
+import CollectionCardPage from '../modules/profile/pages/collection-card';
 
 export default function Router() {
   const routes = useRoutes([
@@ -41,7 +42,8 @@ export default function Router() {
         { element: <TeamPage />, path: "/team" },
         { element: <ResearchPage />, path: "/research" },
         { element: <ContributionsPage />, path: "/contributions" },
-        { element: <CreateCollectionPage />, path: "/collections/new" },
+        { element: <CreateCollectionPage />, path: "/pricings/collections/new" },
+        { element: <CollectionCardPage />, path: "/pricings/collections/:ownerId/:collectionName" },
         { element: <MyPricingsPage />, path: "/me/pricings" },
       ],
         },

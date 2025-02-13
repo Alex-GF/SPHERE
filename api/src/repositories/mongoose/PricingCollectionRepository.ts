@@ -7,6 +7,7 @@ import { processFileUris } from '../../services/FileService';
 import { getAllPricingsFromCollection } from './aggregators/get-pricings-from-collection';
 import { addNumberOfPricingsAggregator } from './aggregators/pricingCollections/add-number-of-pricings';
 import { addOwnerToCollectionAggregator } from './aggregators/pricingCollections/add-owner-to-collection';
+import { addLastPricingUpdateAggregator } from './aggregators/pricingCollections/add-last-pricing-update';
 
 class PricingCollectionRepository extends RepositoryBase {
   async findAll(...args: any) {
@@ -80,6 +81,7 @@ class PricingCollectionRepository extends RepositoryBase {
         },
         ...getAllPricingsFromCollection(),
         ...addOwnerToCollectionAggregator(),
+        ...addLastPricingUpdateAggregator(),
         {
           $project: {
             owner: {
@@ -88,8 +90,10 @@ class PricingCollectionRepository extends RepositoryBase {
               id: { $toString: '$owner._id' },
             },
             name: 1,
+            description: 1,
             analytics: 1,
             pricings: 1,
+            lastUpdate: 1,
           },
         },
       ]);

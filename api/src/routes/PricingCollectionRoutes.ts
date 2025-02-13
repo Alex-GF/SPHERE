@@ -15,7 +15,7 @@ const loadFileRoutes = function (app: express.Application) {
   app.route(baseUrl + '/me/collections').get(isLoggedIn, pricingCollectionController.showByUserId);
 
   app
-    .route(baseUrl + '/:userId/collections/:collectionName')
+    .route(baseUrl + '/pricings/collections/:userId/:collectionName')
     .get(pricingCollectionController.showByNameAndUserId);
 };
 

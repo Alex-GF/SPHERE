@@ -14,7 +14,7 @@ export default function CollectionSection() {
   const router = useRouter();
 
   function handleAddCollection() {
-    router.push("/collections/new");
+    router.push("/pricings/collections/new");
   }
 
   useEffect(() => {
@@ -73,8 +73,10 @@ export default function CollectionSection() {
                   p: 2,
                   ...flex({ direction: 'column' }),
                   width: '200px',
+                  cursor: "pointer"
                 }}
                 key={`collection-${collection.name}`}
+                onClick={() => router.push(`/pricings/collections/${collection.owner.id}/${collection.name}`)}
               >
                 <FaFolder fontSize={100} />
                 <Typography variant="subtitle1">{collection.name}</Typography>
