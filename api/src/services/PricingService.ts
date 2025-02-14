@@ -5,13 +5,16 @@ import { PricingRepository } from "../types/repositories/PricingRepository";
 import { processFileUris } from "./FileService";
 import { PricingService as PricingAnalytics, retrievePricingFromPath } from "pricing4ts/server";
 import { PricingIndexQueryParams } from "../types/services/PricingService";
+import PricingCollectionService from "./PricingCollectionService";
 
 class PricingService {
     
     private pricingRepository: PricingRepository;
+    private pricingCollectionService: PricingCollectionService;
 
     constructor () {
       this.pricingRepository = container.resolve('pricingRepository');
+      this.pricingCollectionService = container.resolve('pricingCollectionService');
     }
 
     async index (queryParams: PricingIndexQueryParams) {
@@ -65,6 +68,10 @@ class PricingService {
             await this.pricingRepository.destroy(pricing.id);
             throw new Error((err as Error).message);
           });
+
+        if (collectionId) {
+          await this.pricingCollectionService.updateCollectionAnalytics(collectionId);
+        }
 
         return pricing;
       }catch(err){

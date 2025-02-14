@@ -6,14 +6,35 @@ export interface PricingCollection {
     analytics: PricingCollectionAnalytics
 }
 
-export interface PricingCollectionAnalytics {
-    evolutionOfPlans: { type: ParameterEvolution, required: false },
-    evolutionOfAddOns: { type: ParameterEvolution, required: false },
-    evolutionOfFeatures: { type: ParameterEvolution, required: false },
-    evolutionOfConfigurationSpaceSize: { type: ParameterEvolution, required: false },
+export interface RetrievedCollection {
+    name: string,
+    owner: User,
+    pricings: any,
+    analytics: PricingCollectionAnalytics
 }
+
+export interface PricingCollectionAnalytics {
+    evolutionOfPlans: ParameterEvolution,
+    evolutionOfAddOns: ParameterEvolution,
+    evolutionOfFeatures: ParameterEvolution,
+    evolutionOfConfigurationSpaceSize: ParameterEvolution,
+}
+
+export type PricingCollectionAnalyticsToAdd = Record<string, AnalyticsParameter>
+
+// export interface PricingCollectionAnalyticsToAdd {
+//     evolutionOfPlans: AnalyticsParameter,
+//     evolutionOfAddOns: AnalyticsParameter,
+//     evolutionOfFeatures: AnalyticsParameter,
+//     evolutionOfConfigurationSpaceSize: AnalyticsParameter,
+// }
 
 export interface ParameterEvolution {
     dates: Date[],
     values: number[]
+}
+
+export interface AnalyticsParameter {
+    date: Date,
+    value: number
 }

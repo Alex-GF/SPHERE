@@ -12,6 +12,7 @@ class PricingCollectionController {
     this.showByUserId = this.showByUserId.bind(this);
     // this.show = this.show.bind(this);
     this.create = this.create.bind(this);
+    this.test = this.test.bind(this);
   }
 
   async index (req: any, res: any) {
@@ -63,6 +64,15 @@ class PricingCollectionController {
   //     res.status(500).send(err.message)
   //   }
   // }
+
+  async test(req: any, res: any) {
+    try{
+      const result = await this.pricingCollectionService.updateCollectionAnalytics("6787d0facaeb2b25748bc12a");
+      res.json(result);
+    } catch(err){
+      res.status(500).send({error: 'An error occurred'})
+    }
+  }
 }
 
 export default PricingCollectionController

@@ -1,40 +1,12 @@
-import mongoose, { Schema, SchemaType } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
-class ParameterEvolution extends SchemaType {
-  constructor(key: string, options: object) {
-    super(key, options, 'ParameterEvolution');
-  }
-
-  cast(val: any) {
-    if (!('dates' in val)) {
-      throw new Error('ParameterEvolution must have a "dates" property');
-    }
-
-    if (!('values' in val)) {
-      throw new Error('ParameterEvolution must have a "values" property');
-    }
-
-    if (!Array.isArray(val.dates)) {
-      throw new Error('ParameterEvolution "dates" must be an array');
-    }
-
-    if (!Array.isArray(val.values)) {
-      throw new Error('ParameterEvolution "values" must be an array');
-    }
-
-    if (Array.isArray(val.dates) && Array.isArray(val.values)) {
-      if (val.dates.length !== val.values.length) {
-        throw new Error('ParameterEvolution "dates" and "values" must have the same length');
-      }
-    }
-
-    const _val: { dates: Date[]; values: number[] } = { dates: val.dates, values: val.values };
-
-    return _val;
-  }
-}
-
-(mongoose.Schema.Types as any).ParameterEvolution = ParameterEvolution;
+const ParameterEvolutionSchema = new Schema(
+  {
+    dates: { type: [Date], default: [] },
+    values: { type: [Number], default: [] },
+  },
+  { _id: false } // No necesitamos un _id para este subdocumento
+);
 
 const pricingCollectionSchema = new Schema(
   {
@@ -43,10 +15,10 @@ const pricingCollectionSchema = new Schema(
     _ownerId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     private: { type: Boolean, required: true, default: false },
     analytics: {
-      evolutionOfPlans: { type: ParameterEvolution, required: false },
-      evolutionOfAddOns: { type: ParameterEvolution, required: false },
-      evolutionOfFeatures: { type: ParameterEvolution, required: false },
-      evolutionOfConfigurationSpaceSize: { type: ParameterEvolution, required: false },
+      evolutionOfPlans: { type: ParameterEvolutionSchema, required: false },
+      evolutionOfAddOns: { type: ParameterEvolutionSchema, required: false },
+      evolutionOfFeatures: { type: ParameterEvolutionSchema, required: false },
+      evolutionOfConfigurationSpaceSize: { type: ParameterEvolutionSchema, required: false },
     },
   },
   {

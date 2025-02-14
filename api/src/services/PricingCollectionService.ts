@@ -1,7 +1,8 @@
-import mongoose from "mongoose";
+import mongoose, { Collection } from "mongoose";
 import container from "../config/container";
 import PricingCollectionRepository from "../repositories/mongoose/PricingCollectionRepository";
 import PricingRepository from "../repositories/mongoose/PricingRepository";
+import { RetrievedCollection } from "../types/database/PricingCollection";
 
 class PricingCollectionService {
     
@@ -68,10 +69,58 @@ class PricingCollectionService {
 
         await this.pricingRepository.addPricingsToCollection(collection._id.toString(), username, newCollection.pricings);
 
+        await this.updateCollectionAnalytics(collection._id.toString());
+
         return collection;
       }catch(err){
         throw new Error((err as Error).message);
       }
+    }
+
+    async updateCollectionAnalytics (collectionId: string) {
+      const collection = await this.pricingCollectionRepository.findById(collectionId);
+      
+      if (!collection) {
+        throw new Error('Pricing collection not found')
+      }
+
+      const newAnalyticsEntry = this._computeCollectionAnalytics(collection);
+
+      await this.pricingCollectionRepository.updateAnalytics(collection._id, newAnalyticsEntry);
+    }
+
+    _computeCollectionAnalytics (collection: RetrievedCollection) {
+      const collectionPricings = collection.pricings[0].pricings;
+      const numberOfPricings = collectionPricings.length;
+      if (collectionPricings.length === 0) return null;
+
+      // Compute the new average analytics
+      const aggregated = collectionPricings.reduce(
+        (acc: any, pricing: any) => {
+          acc.numberOfPlans += pricing.analytics.numberOfPlans/numberOfPricings;
+          acc.numberOfAddOns += pricing.analytics.numberOfAddOns/numberOfPricings;
+          acc.configurationSpaceSize += pricing.analytics.configurationSpaceSize/numberOfPricings;
+          acc.numberOfFeatures += pricing.analytics.numberOfFeatures/numberOfPricings;
+          return acc;
+        },
+        {
+          numberOfPlans: 0,
+          numberOfAddOns: 0,
+          configurationSpaceSize: 0,
+          numberOfFeatures: 0,
+        }
+      );
+
+      const currentDate = new Date().toISOString(); // Sets the current date to dates
+
+      const evolution: any = {
+        evolutionOfPlans: { date: currentDate, value: aggregated.numberOfPlans },
+        evolutionOfAddOns: { date: currentDate, value: aggregated.numberOfAddOns },
+        evolutionOfConfigurationSpaceSize: { date: currentDate, value: aggregated.configurationSpaceSize },
+        evolutionOfFeatures: { date: currentDate, value: aggregated.numberOfFeatures },
+      };
+
+      return evolution;
     }
   
     // async destroy (id: string) {

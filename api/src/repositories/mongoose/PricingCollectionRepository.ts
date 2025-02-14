@@ -1,5 +1,8 @@
 import mongoose from 'mongoose';
-import { PricingCollectionAnalytics } from '../../types/database/PricingCollection';
+import {
+  PricingCollectionAnalytics,
+  PricingCollectionAnalyticsToAdd,
+} from '../../types/database/PricingCollection';
 import RepositoryBase from '../RepositoryBase';
 import PricingCollectionMongoose from './models/PricingCollectionMongoose';
 import PricingMongoose from './models/PricingMongoose';
@@ -13,26 +16,50 @@ class PricingCollectionRepository extends RepositoryBase {
   async findAll(...args: any) {
     try {
       // TODO: Move this aggregator to a separate function
-      const collections = await PricingCollectionMongoose.aggregate(
-        [
-          ...addNumberOfPricingsAggregator(),
-          ...addOwnerToCollectionAggregator(),
-          {
-            $project: {
-              owner: {
-                username: 1,
-                avatar: 1,
-                id: { $toString: '$owner._id' },
-              },
-              name: 1,
-              analytics: 1,
-              numberOfPricings: 1,
+      const collections = await PricingCollectionMongoose.aggregate([
+        ...addNumberOfPricingsAggregator(),
+        ...addOwnerToCollectionAggregator(),
+        {
+          $project: {
+            owner: {
+              username: 1,
+              avatar: 1,
+              id: { $toString: '$owner._id' },
             },
+            name: 1,
+            analytics: 1,
+            numberOfPricings: 1,
           },
-        ]);
+        },
+      ]);
 
       collections.map((c: any) => processFileUris(c.owner, ['avatar']));
       return collections;
+    } catch (err) {
+      return null;
+    }
+  }
+
+  async findById(id: string, ...args: any) {
+    try {
+      const collections = await PricingCollectionMongoose.aggregate([
+        {
+          $match: {
+            _id: new mongoose.Types.ObjectId(id),
+          },
+        },
+        ...getAllPricingsFromCollection(),
+        {
+          $project: {
+            name: 1,
+            description: 1,
+            analytics: 1,
+            pricings: 1,
+          },
+        },
+      ]);
+
+      return collections[0];
     } catch (err) {
       return null;
     }
@@ -109,15 +136,32 @@ class PricingCollectionRepository extends RepositoryBase {
     const collection = new PricingCollectionMongoose(data);
     await collection.save();
 
-    return collection.populate("owner", {
+    return collection.populate('owner', {
       username: 1,
       avatar: 1,
       id: 1,
     });
   }
 
-  async updateAnalytics(pricingId: string, analytics: PricingCollectionAnalytics, ...args: any) {
-    // TODO: Implement this method
+  async updateAnalytics(
+    collectionId: mongoose.Types.ObjectId,
+    analytics: PricingCollectionAnalyticsToAdd,
+    ...args: any
+  ) {
+    const updateData: any = {};
+    for (const key in analytics) {
+      if (analytics.hasOwnProperty(key)) {
+        updateData[`analytics.${key}.dates`] = new Date (analytics[key].date);
+        updateData[`analytics.${key}.values`] = analytics[key].value;
+      }
+    }
+
+    return await PricingCollectionMongoose.updateOne(
+      { _id: collectionId },
+      {
+        $push: updateData,
+      }
+    );
   }
 
   async destroy(id: string, ...args: any) {
