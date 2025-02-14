@@ -7,11 +7,11 @@ import PricingCollectionMongoose from '../../repositories/mongoose/models/Pricin
 export async function up (connection: Connection): Promise<void> {
   mongoose.connect(getMongoDBConnectionURI());
   
-  await PricingCollectionMongoose.updateMany({}, { description: "", private: false });
+  await PricingCollectionMongoose.updateMany({}, { description: "This collection does not have a description", private: false });
 }
 
 export async function down (connection: Connection): Promise<void> {
   mongoose.connect(getMongoDBConnectionURI());
   
-  await PricingCollectionMongoose.updateMany({}, { $unset: { description: "", private: "" } });
+  await PricingCollectionMongoose.updateMany({}, { $unset: { description: "This collection does not have a description", private: "" } });
 }

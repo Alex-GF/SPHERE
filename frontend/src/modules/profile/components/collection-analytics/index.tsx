@@ -28,16 +28,16 @@ export default function CollectionAnalytics({ collectionData, toggleModal }: Sta
         height={300}
         series={[
           {
-            data: collectionData.evolutionOfPlans.values.reverse() ?? [],
-            label: 'Averge Number of Plans',
+            data: collectionData.evolutionOfConfigurationSpaceSize.values.reverse().map((v: any) => typeof v === "number" ? parseFloat(v.toFixed(2)) : v) ?? [],
+            label: 'Average Configuration Space Size',
             area: false,
-            showMark: true,
+            showMark: false,
           },
         ]}
         xAxis={[
           {
             scaleType: 'point',
-            data: formatStringDates(collectionData.evolutionOfPlans.dates)
+            data: formatStringDates(collectionData.evolutionOfConfigurationSpaceSize.dates)
           },
         ]}
       />
@@ -47,9 +47,9 @@ export default function CollectionAnalytics({ collectionData, toggleModal }: Sta
           height={300}
           series={[
             {
-              data: collectionData.evolutionOfAddOns.values.reverse() ?? [],
+              data: collectionData.evolutionOfAddOns.values.reverse().map((v: any) => typeof v === "number" ? parseFloat(v.toFixed(2)) : v) ?? [],
               area: false,
-              showMark: true,
+              showMark: false,
               label: 'Average Number of AddOns',
             },
           ]}

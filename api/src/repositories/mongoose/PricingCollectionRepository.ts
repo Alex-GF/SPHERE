@@ -1,8 +1,5 @@
 import mongoose from 'mongoose';
-import {
-  PricingCollectionAnalytics,
-  PricingCollectionAnalyticsToAdd,
-} from '../../types/database/PricingCollection';
+import { PricingCollectionAnalyticsToAdd } from '../../types/database/PricingCollection';
 import RepositoryBase from '../RepositoryBase';
 import PricingCollectionMongoose from './models/PricingCollectionMongoose';
 import PricingMongoose from './models/PricingMongoose';
@@ -15,7 +12,6 @@ import { addLastPricingUpdateAggregator } from './aggregators/pricingCollections
 class PricingCollectionRepository extends RepositoryBase {
   async findAll(...args: any) {
     try {
-      // TODO: Move this aggregator to a separate function
       const collections = await PricingCollectionMongoose.aggregate([
         ...addNumberOfPricingsAggregator(),
         ...addOwnerToCollectionAggregator(),
@@ -33,7 +29,7 @@ class PricingCollectionRepository extends RepositoryBase {
         },
       ]);
 
-      collections.map((c: any) => processFileUris(c.owner, ['avatar']));
+      collections.forEach((c: any) => processFileUris(c.owner, ['avatar']));
       return collections;
     } catch (err) {
       return null;
