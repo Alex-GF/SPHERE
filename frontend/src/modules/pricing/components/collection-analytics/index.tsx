@@ -3,7 +3,7 @@ import { Box } from '@mui/system';
 import { OpenInFull } from '@mui/icons-material';
 import { LineChart } from '@mui/x-charts';
 import type { CollectionAnalytics } from '../../types/collection';
-import { formatStringDates } from '../../utils/dates-util';
+import { formatStringDates } from '../../../profile/utils/dates-util';
 
 interface StatsProps {
   collectionData: CollectionAnalytics;

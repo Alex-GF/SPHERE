@@ -1,8 +1,9 @@
-import mongoose, { Collection } from "mongoose";
+import mongoose from "mongoose";
 import container from "../config/container";
 import PricingCollectionRepository from "../repositories/mongoose/PricingCollectionRepository";
 import PricingRepository from "../repositories/mongoose/PricingRepository";
 import { RetrievedCollection } from "../types/database/PricingCollection";
+import { CollectionIndexQueryParams } from "../types/services/PricingCollection";
 
 class PricingCollectionService {
     
@@ -14,8 +15,8 @@ class PricingCollectionService {
       this.pricingRepository = container.resolve('pricingRepository');
     }
 
-    async index () {
-      const pricings = await this.pricingCollectionRepository.findAll()
+    async index (queryParams: CollectionIndexQueryParams) {
+      const pricings = await this.pricingCollectionRepository.findAll(queryParams)
       return pricings
     }
 

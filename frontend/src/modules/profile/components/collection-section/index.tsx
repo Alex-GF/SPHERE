@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { CollectionEntry } from '../../types/profile-types';
 import { flex } from '../../../core/theme/css';
 import { useRouter } from '../../../core/hooks/useRouter';
+import CollectionListCard from '../../../pricing/components/collection-list-card';
 
 export default function CollectionSection() {
   const [collections, setCollections] = useState([]);
@@ -66,25 +67,7 @@ export default function CollectionSection() {
             }}
           >
             {collections.map((collection: CollectionEntry) => (
-              <Box
-                sx={{
-                  border: '1px solid #ddd',
-                  borderRadius: 2,
-                  p: 2,
-                  ...flex({ direction: 'column' }),
-                  width: '200px',
-                  cursor: "pointer"
-                }}
-                key={`collection-${collection.name}`}
-                onClick={() => router.push(`/pricings/collections/${collection.owner.id}/${collection.name}`)}
-              >
-                <FaFolder fontSize={100} />
-                <Typography variant="subtitle1">{collection.name}</Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {collection.numberOfPricings} pricings
-                  {/* · Updated Jun 29, 2023 · 105 descargas */}
-                </Typography>
-              </Box>
+              <CollectionListCard collection={collection}/>
             ))}
           </Box>
         ) : (

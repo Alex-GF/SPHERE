@@ -15,7 +15,7 @@ import { useRouter } from '../../../core/hooks/useRouter';
 import CollectionStats from '../../components/collection-stats';
 import CollectionAnalytics from '../../components/collection-analytics';
 import CollectionAnalyticsModal from '../../components/collection-analytics-modal';
-import { usePricingCollectionsApi } from '../../api/pricingCollectionsApi';
+import { usePricingCollectionsApi } from '../../../profile/api/pricingCollectionsApi';
 import { Collection } from '../../types/collection';
 import { PricingsGrid } from '../../../pricing/pages/list';
 import PricingListCard from '../../../pricing/components/pricing-list-card';

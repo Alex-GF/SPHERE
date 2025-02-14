@@ -17,6 +17,7 @@ export interface Collection {
   }[];
   analytics: CollectionAnalytics;
   lastUpdate: string;
+  numberOfPricings: number;
 }
 
 export interface CollectionAnalytics {

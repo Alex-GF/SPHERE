@@ -8,13 +8,81 @@ import { getAllPricingsFromCollection } from './aggregators/get-pricings-from-co
 import { addNumberOfPricingsAggregator } from './aggregators/pricingCollections/add-number-of-pricings';
 import { addOwnerToCollectionAggregator } from './aggregators/pricingCollections/add-owner-to-collection';
 import { addLastPricingUpdateAggregator } from './aggregators/pricingCollections/add-last-pricing-update';
+import { CollectionIndexQueryParams } from '../../types/services/PricingCollection';
 
 class PricingCollectionRepository extends RepositoryBase {
-  async findAll(...args: any) {
+  async findAll(queryParams: CollectionIndexQueryParams, ...args: any) {
+    
+    let filteringAggregators = [];
+    let sortAggregator = [];
+
+    if (Object.keys(queryParams).length > 0){
+      const { name, selectedOwners, sortBy, sort } = queryParams;
+
+      if (name){
+        filteringAggregators.push({
+          $match: {
+            name: {
+              $regex: name,
+              $options: 'i', // case-insensitive
+            },
+          },
+        });
+      }
+
+      if (selectedOwners) {
+        const selectedOwnersFilter = selectedOwners as string[];
+
+        filteringAggregators.push({
+          $match: {
+            "owner.username": {
+              $in: selectedOwnersFilter,
+            },
+          },
+        });
+      }
+      if (sortBy && sort){
+
+        let sortParameter = "";
+        let sortOrder: 1 | -1 = sort === "asc" ? 1 : -1;
+
+        switch (sortBy) {
+          case 'numberOfPricings':
+            sortParameter = "numberOfPricings";
+            break;
+          case 'configurationSpaceSize':
+            sortParameter = "analytics.evolutionOfConfigurationSpaceSize.values";
+            break;
+          case 'numberOfFeatures':
+            sortParameter = "analytics.evolutionOfFeatures.values";
+            break;
+          case 'numberOfPlans':
+            sortParameter = "analytics.evolutionOfPlans.values";
+            break;
+          case 'numberOfAddons':
+            sortParameter = "analytics.evolutionOfAddOns.values";
+            break;
+        };
+        sortAggregator.push({
+          $sort: {
+            [sortParameter]: sortOrder,
+          },
+        });
+      }
+    }
+    
+    
     try {
       const collections = await PricingCollectionMongoose.aggregate([
+        {
+          $match: {
+            private: false
+          }
+        },
         ...addNumberOfPricingsAggregator(),
         ...addOwnerToCollectionAggregator(),
+        ...filteringAggregators,
+        ...sortAggregator,
         {
           $project: {
             owner: {
@@ -23,7 +91,6 @@ class PricingCollectionRepository extends RepositoryBase {
               id: { $toString: '$owner._id' },
             },
             name: 1,
-            analytics: 1,
             numberOfPricings: 1,
           },
         },

@@ -16,10 +16,11 @@ import LoginPage from '../modules/auth/pages/login-page';
 import RegisterPage from '../modules/auth/pages/register-page';
 import CardPage from '../modules/pricing/pages/card';
 import LegacyPricingCard from '../modules/pricing/pages/legacy-pricing-card';
-import MyPricingsPage from '../modules/profile/pages/pricings';
 import CreatePricingPage from '../modules/pricing/pages/create';
+import CollectionCardPage from '../modules/pricing/pages/collection-card';
+import MyPricingsPage from '../modules/profile/pages/pricings';
 import CreateCollectionPage from '../modules/profile/pages/create-collection';
-import CollectionCardPage from '../modules/profile/pages/collection-card';
+import CollectionsListPage from '../modules/pricing/pages/collections-list';
 
 export default function Router() {
   const routes = useRoutes([
@@ -42,6 +43,7 @@ export default function Router() {
         { element: <TeamPage />, path: "/team" },
         { element: <ResearchPage />, path: "/research" },
         { element: <ContributionsPage />, path: "/contributions" },
+        { element: <CollectionsListPage />, path: "/pricings/collections" },
         { element: <CreateCollectionPage />, path: "/pricings/collections/new" },
         { element: <CollectionCardPage />, path: "/pricings/collections/:ownerId/:collectionName" },
         { element: <MyPricingsPage />, path: "/me/pricings" },

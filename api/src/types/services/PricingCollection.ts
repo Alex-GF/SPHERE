@@ -1,0 +1,1 @@
+export type CollectionIndexQueryParams = Record<string, string | string[] | undefined>

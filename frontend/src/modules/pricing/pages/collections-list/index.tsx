@@ -1,12 +1,13 @@
 import { Box, styled } from '@mui/material';
 import { Helmet } from 'react-helmet';
 import { useEffect, useState } from 'react';
-import PricingListCard from '../../components/pricing-list-card';
-import { usePricingsApi } from '../../api/pricingsApi';
 import SearchBar from '../../components/search-bar';
 import { flex } from '../../../core/theme/css';
-import PricingFilters from '../../components/pricing-filters';
 import { grey } from '../../../core/theme/palette';
+import { usePricingCollectionsApi } from '../../../profile/api/pricingCollectionsApi';
+import CollectionListCard from '../../components/collection-list-card';
+import { CollectionEntry } from '../../../profile/types/profile-types';
+import CollectionFilters from '../../components/collection-filters';
 
 export const PricingsGrid = styled(Box)(() => ({
   display: 'flex',
@@ -44,33 +45,22 @@ export type FilterLimits = {
   [key: string]: FilterValues;
 };
 
-export default function PricingListPage() {
-  const [pricingsList, setPricingsList] = useState<PricingEntry[]>([]);
+export default function CollectionsListPage() {
+  const [collectionsList, setCollectionsList] = useState<CollectionEntry[]>([]);
   const [filterLimits, setFilterLimits] = useState<FilterLimits | null>(null);
   const [filterValues, setFilterValues] = useState({});
   const [textFilterValue, setTextFilterValue] = useState('');
 
-  const { getPricings } = usePricingsApi();
+  const { getCollections } = usePricingCollectionsApi();
 
   useEffect(() => {
-    getPricings()
+    getCollections()
       .then(data => {
-        setPricingsList(data.pricings);
-        if (data.pricings.length > 0) {
-          setFilterLimits({
-            minPrice: data.minPrice,
-            maxPrice: data.maxPrice,
-            configurationSpaceSize: data.configurationSpaceSize,
-            owners: data.pricings.map((pricing: PricingEntry) => pricing.owner),
-          });
-        }else{
-          setFilterLimits({
-            minPrice: {min: 0, max: 0, data: []},
-            maxPrice: {min:0, max: 0, data: []},
-            configurationSpaceSize: {min: 0, max: 0, data: []},
-            owners: data.pricings.map((pricing: PricingEntry) => pricing.owner),
-          });
-        }
+        setCollectionsList(data.collections);
+
+        setFilterLimits({
+          owners: data.collections.map((collection: CollectionEntry) => collection.owner),
+        });
       })
       .catch(error => {
         console.error('Error:', error);
@@ -83,16 +73,13 @@ export default function PricingListPage() {
       ...filterValues,
     };
 
-    getPricings(filters)
+    getCollections(filters)
       .then(data => {
-        setPricingsList(data.pricings);
-        
-        if (data.pricings.length > 0) {
+        setCollectionsList(data.collections);
+
+        if (data.collections.length > 0) {
           setFilterLimits({
-            minPrice: data.minPrice,
-            maxPrice: data.maxPrice,
-            configurationSpaceSize: data.configurationSpaceSize,
-            owners: data.pricings.map((pricing: PricingEntry) => pricing.owner),
+            owners: data.collections.map((collection: CollectionEntry) => collection.owner),
           });
         }
       })
@@ -104,7 +91,7 @@ export default function PricingListPage() {
   return (
     <>
       <Helmet>
-        <title> SPHERE - Pricings </title>
+        <title> SPHERE - Collections </title>
       </Helmet>
       <Box
         sx={{
@@ -127,11 +114,10 @@ export default function PricingListPage() {
           }}
         >
           <Box component="div" width="20vw"></Box>
-          {filterLimits && (
-            <PricingFilters
-              filterLimits={filterLimits}
-              receivedOwners={pricingsList.reduce((acc, pricing) => {
-                acc[pricing.owner] = (acc[pricing.owner] || 0) + 1;
+          {filterLimits && collectionsList.length > 0 && (
+            <CollectionFilters
+              receivedOwners={collectionsList.reduce((acc, collection) => {
+                acc[collection.owner.username] = (acc[collection.owner.username] || 0) + 1;
                 return acc;
               }, {} as Record<string, number>)}
               textFilterValue={textFilterValue}
@@ -148,12 +134,19 @@ export default function PricingListPage() {
           }}
         >
           <SearchBar setTextFilterValue={setTextFilterValue} />
-          <PricingsGrid sx={{marginBottom: "50px"}}>
-            {pricingsList.length > 0 ? Object.values(pricingsList).map((pricing) => {
-              return (
-                <PricingListCard key={`pricing-${pricing.name}`} name={pricing.name} owner={pricing.owner} dataEntry={pricing} />
-              );
-            }): <Box>No pricings found</Box>}
+          <PricingsGrid sx={{ marginBottom: '50px' }}>
+            {collectionsList.length > 0 ? (
+              Object.values(collectionsList).map(collection => {
+                return (
+                  <CollectionListCard
+                    key={`collection-${collection.name}`}
+                    collection={collection}
+                  />
+                );
+              })
+            ) : (
+              <Box>No pricings found</Box>
+            )}
           </PricingsGrid>
         </Box>
       </Box>

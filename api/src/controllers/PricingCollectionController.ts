@@ -1,5 +1,6 @@
 import container from '../config/container.js'
 import PricingCollectionService from '../services/PricingCollectionService.js';
+import { CollectionIndexQueryParams } from '../types/services/PricingCollection.js';
 
 class PricingCollectionController {
 
@@ -12,13 +13,15 @@ class PricingCollectionController {
     this.showByUserId = this.showByUserId.bind(this);
     // this.show = this.show.bind(this);
     this.create = this.create.bind(this);
-    this.test = this.test.bind(this);
   }
 
   async index (req: any, res: any) {
     try {
-      const pricings = await this.pricingCollectionService.index()
-      res.json(pricings)
+
+      const queryParams: CollectionIndexQueryParams = this._transformIndexQueryParams(req.query);
+
+      const collections = await this.pricingCollectionService.index(queryParams)
+      res.json({collections: collections})
     } catch (err: any) {
       res.status(500).send({error: err.message})
     }
@@ -65,13 +68,24 @@ class PricingCollectionController {
   //   }
   // }
 
-  async test(req: any, res: any) {
-    try{
-      const result = await this.pricingCollectionService.updateCollectionAnalytics("6787d0facaeb2b25748bc12a");
-      res.json(result);
-    } catch(err){
-      res.status(500).send({error: 'An error occurred'})
+  _transformIndexQueryParams (indexQueryParams: Record<string, string>): CollectionIndexQueryParams {
+    const transformedData: CollectionIndexQueryParams = {
+      name: indexQueryParams.name,
+      sortBy: indexQueryParams.sortBy,
+      sort: indexQueryParams.sort ?? 'asc',
+      selectedOwners: indexQueryParams.owners ? (indexQueryParams.owners).split(",") : undefined
     }
+
+    const optionalFields = ['name', 'sortBy', 'sort', 'selectedOwners'];
+
+    optionalFields.forEach(field => {
+      
+      if (!transformedData[field]) {
+        delete transformedData[field];
+      }
+    });
+
+    return transformedData;
   }
 }
 

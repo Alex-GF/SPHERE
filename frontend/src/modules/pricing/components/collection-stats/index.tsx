@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { formatDistanceToNow, parseISO } from 'date-fns';
-import { CURRENCIES } from "../../../pricing/pages/card";
+import { CURRENCIES } from "../../pages/card";
 import { Collection } from "../../types/collection";
 
 interface StatsProps {

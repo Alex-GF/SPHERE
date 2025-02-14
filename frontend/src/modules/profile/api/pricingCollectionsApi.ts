@@ -11,6 +11,31 @@ export function usePricingCollectionsApi() {
     Authorization: `Bearer ${authUser.token}`,
   };
 
+  const getCollections = async (filters?: Record<string, string>) => {
+    let requestUrl;
+
+    console.log("Filtersapi", filters)
+
+    if (Object.keys(filters ?? {}).length === 0) {
+      requestUrl = `${COLLECTIONS_BASE_PATH}`;
+    } else {
+      const filterParams = new URLSearchParams();
+      Object.entries(filters ?? {}).forEach(([key, value]) => {
+        if (value.trim().length > 0) filterParams.append(key, value as string);
+      });
+      requestUrl = `${COLLECTIONS_BASE_PATH}?${filterParams.toString()}`;
+    }
+
+    return fetch(requestUrl, {
+      method: 'GET',
+      headers: basicHeaders,
+    })
+      .then(response => response.json())
+      .catch(error => {
+        return Promise.reject(error as Error);
+      });
+  };
+
   const getLoggedUserCollections = async () => {
     return fetchWithInterceptor(`${import.meta.env.VITE_API_URL}/me/collections`, {
       method: 'GET',
@@ -43,7 +68,12 @@ export function usePricingCollectionsApi() {
       .catch(error => {
         return Promise.reject(error as Error);
       });
-  }
+  };
 
-  return { getLoggedUserCollections, createCollection, getCollectionByOwnerAndName };
+  return {
+    getLoggedUserCollections,
+    createCollection,
+    getCollectionByOwnerAndName,
+    getCollections,
+  };
 }

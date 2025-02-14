@@ -20,7 +20,18 @@ export const headerRoutes: HeaderRoute[] = [
   {
     name: 'Pricings',
     disabled: false,
-    to: '/pricings',
+    children: [
+      {
+        name: 'Pricings',
+        disabled: false,
+        to: '/pricings',
+      },
+      {
+        name: 'Collections',
+        disabled: false,
+        to: '/pricings/collections',
+      },
+    ],
   },
   {
     name: 'Team',
