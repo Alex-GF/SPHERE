@@ -6,24 +6,15 @@ import {
   Chip,
   Container,
   Paper,
-  Tab,
-  Tabs,
-  TextField,
   Typography,
   styled,
 } from '@mui/material';
 import { Favorite, LibraryAdd, LibraryAddCheck, FavoriteBorder } from '@mui/icons-material';
-// import PricingTree from '../../components/pricing-tree';
-import { PricingRenderer } from '../../../pricing-editor/components/pricing-renderer';
-import { Pricing, retrievePricingFromYaml } from 'pricing4ts';
-import { AnalyticsDataEntry } from '../../../../assets/data/analytics';
 import { usePathname } from '../../../core/hooks/usePathname';
 import { useRouter } from '../../../core/hooks/useRouter';
 import CollectionStats from '../../components/collection-stats';
 import CollectionAnalytics from '../../components/collection-analytics';
-// import Harvey from '../../../pricing/components/harvey';
 import CollectionAnalyticsModal from '../../components/collection-analytics-modal';
-import { usePricingsApi } from '../../../pricing/api/pricingsApi';
 import { usePricingCollectionsApi } from '../../api/pricingCollectionsApi';
 import { Collection } from '../../types/collection';
 import { PricingsGrid } from '../../../pricing/pages/list';
@@ -37,9 +28,8 @@ export const StyledChip = styled(Chip)(({ theme }) => ({
 export default function CollectionCardPage() {
   const [isFollowing, setIsFollowing] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [collection, setCollection] = useState<Collection | null>(null);
-  const [oldestPricingDate, setOldestPricingDate] = useState<string | null>(null);
 
   const pathname = usePathname();
   const { getCollectionByOwnerAndName } = usePricingCollectionsApi();
@@ -47,36 +37,19 @@ export default function CollectionCardPage() {
 
   useEffect(() => {
     let name = pathname.split('/').pop() as string;
-    let ownerId = pathname.split('/')[pathname.split('/').length - 2] as string;
+    let ownerId = pathname.split('/')[pathname.split('/').length - 2];
 
     getCollectionByOwnerAndName(ownerId, name).then(collection => {
       if (collection) {
         setCollection(collection);
-        // setOldestPricingDate(oldestPricing.extractionDate);
       } else {
         router.push('/error');
       }
     });
   }, []);
 
-  // useEffect(() => {
-  //   if (currentPricing === null) {
-  //     return;
-  //   }
-
-  //   let pricingYamlPath = currentPricing.yaml;
-
-  //   fetch(pricingYamlPath).then(async response => {
-  //     let p: string = '';
-  //     p = await response.text();
-
-  //     const parsedPricing: Pricing = retrievePricingFromYaml(p);
-  //     setPricing(parsedPricing);
-  //   });
-  // }, [pricingData, currentPricing]);
-
   const toggleModal = () => {
-    setModalOpen(!isModalOpen);
+    setIsModalOpen(!isModalOpen);
   };
 
   return (
@@ -159,10 +132,10 @@ export default function CollectionCardPage() {
                   }}
                 >
                   {collection.pricings[0].pricings.length > 0 ? (
-                    Object.values(collection.pricings[0].pricings).map((pricing, index) => {
+                    Object.values(collection.pricings[0].pricings).map((pricing) => {
                       return (
                         <PricingListCard
-                          key={`pricing-${index}`}
+                          key={pricing.name}
                           name={pricing.name}
                           owner={pricing.owner}
                           dataEntry={pricing}
