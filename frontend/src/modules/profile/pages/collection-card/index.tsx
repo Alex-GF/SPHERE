@@ -161,11 +161,15 @@ export default function CollectionCardPage() {
         </Box>
       </Container>
 
-      <CollectionAnalyticsModal
-        open={isModalOpen}
-        onClose={toggleModal}
-        collectionData={collection?.analytics}
-      />
+      {
+        collection && (
+          <CollectionAnalyticsModal
+            open={isModalOpen}
+            onClose={toggleModal}
+            collectionData={collection.analytics}
+          />
+        )
+      }
     </>
   );
 }

@@ -3,15 +3,11 @@ import { Box } from '@mui/system';
 import { OpenInFull } from '@mui/icons-material';
 import { LineChart } from '@mui/x-charts';
 import type { CollectionAnalytics } from '../../types/collection';
+import { formatStringDates } from '../../utils/dates-util';
 
 interface StatsProps {
   collectionData: CollectionAnalytics;
   toggleModal: () => void;
-}
-
-function formatStringDates(dates: string[]){
-  return dates
-  .map(date => new Date(date).toISOString().split('T')[0])
 }
 
 export default function CollectionAnalytics({ collectionData, toggleModal }: StatsProps) {
@@ -33,7 +29,7 @@ export default function CollectionAnalytics({ collectionData, toggleModal }: Sta
         series={[
           {
             data: collectionData.evolutionOfPlans.values.reverse() ?? [],
-            label: 'Different Subscriptions Available',
+            label: 'Averge Number of Plans',
             area: false,
             showMark: true,
           },
@@ -54,7 +50,7 @@ export default function CollectionAnalytics({ collectionData, toggleModal }: Sta
               data: collectionData.evolutionOfAddOns.values.reverse() ?? [],
               area: false,
               showMark: true,
-              label: 'Min Price Subscription',
+              label: 'Average Number of AddOns',
             },
           ]}
           xAxis={[
