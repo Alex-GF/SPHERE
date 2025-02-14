@@ -26,6 +26,8 @@ import CollectionAnalyticsModal from '../../components/collection-analytics-moda
 import { usePricingsApi } from '../../../pricing/api/pricingsApi';
 import { usePricingCollectionsApi } from '../../api/pricingCollectionsApi';
 import { Collection } from '../../types/collection';
+import { PricingsGrid } from '../../../pricing/pages/list';
+import PricingListCard from '../../../pricing/components/pricing-list-card';
 
 export const StyledChip = styled(Chip)(({ theme }) => ({
   margin: theme.spacing(0.5),
@@ -137,9 +139,42 @@ export default function CollectionCardPage() {
               Description
             </Typography>
             <Typography variant="body1" sx={{ mb: 4 }}>
-              {collection?.description ? collection.description : 'This collection has no description.'}
+              {collection?.description
+                ? collection.description
+                : 'This collection has no description.'}
             </Typography>
-            {/* {collection && (<></>)} */}
+            {collection && (
+              <>
+                <Typography variant="h6" fontWeight="bold" marginBottom={-2}>
+                  Pricings in Collection
+                </Typography>
+                <PricingsGrid
+                  sx={{
+                    height: '100%',
+                    maxHeight: 800,
+                    overflowY: 'scroll',
+                    border: '1px solid #e0e0e0',
+                    borderRadius: '10px',
+                    padding: '20px 0',
+                  }}
+                >
+                  {collection.pricings[0].pricings.length > 0 ? (
+                    Object.values(collection.pricings[0].pricings).map((pricing, index) => {
+                      return (
+                        <PricingListCard
+                          key={`pricing-${index}`}
+                          name={pricing.name}
+                          owner={pricing.owner}
+                          dataEntry={pricing}
+                        />
+                      );
+                    })
+                  ) : (
+                    <Box>No pricings found</Box>
+                  )}
+                </PricingsGrid>
+              </>
+            )}
           </Box>
 
           <Box sx={{ minWidth: '33.3%' }}>
@@ -151,7 +186,10 @@ export default function CollectionCardPage() {
 
             {collection && (
               <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
-                <CollectionAnalytics collectionData={collection.analytics} toggleModal={toggleModal} />
+                <CollectionAnalytics
+                  collectionData={collection.analytics}
+                  toggleModal={toggleModal}
+                />
               </Paper>
             )}
             {/* <Paper variant="outlined" sx={{ p: 2, mt: 2 }}>
@@ -161,15 +199,13 @@ export default function CollectionCardPage() {
         </Box>
       </Container>
 
-      {
-        collection && (
-          <CollectionAnalyticsModal
-            open={isModalOpen}
-            onClose={toggleModal}
-            collectionData={collection.analytics}
-          />
-        )
-      }
+      {collection && (
+        <CollectionAnalyticsModal
+          open={isModalOpen}
+          onClose={toggleModal}
+          collectionData={collection.analytics}
+        />
+      )}
     </>
   );
 }

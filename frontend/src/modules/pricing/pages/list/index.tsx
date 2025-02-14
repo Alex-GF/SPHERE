@@ -8,7 +8,7 @@ import { flex } from '../../../core/theme/css';
 import PricingFilters from '../../components/pricing-filters';
 import { grey } from '../../../core/theme/palette';
 
-const PricingsGrid = styled(Box)(() => ({
+export const PricingsGrid = styled(Box)(() => ({
   display: 'flex',
   flexWrap: 'wrap',
   width: '100%',
