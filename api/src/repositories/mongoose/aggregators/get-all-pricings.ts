@@ -1,5 +1,6 @@
 export function getAllPricingsAggregator(filteringAggregators: any, sortAggregator: any) {
   return [
+    { $sort: { extractionDate: -1 } },
     latestPricingsByNameAggregator,
     refactorRootAggregator,
     ...filteringAggregators,

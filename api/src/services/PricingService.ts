@@ -43,7 +43,12 @@ class PricingService {
     async create (pricingFile: any, owner: string, collectionId?: string) {
       try{
         const uploadedPricing: Pricing = retrievePricingFromPath(pricingFile.path);
-        
+        const previousPricing = await this.pricingRepository.findByNameAndOwner(uploadedPricing.saasName, owner);
+
+        if (!collectionId && previousPricing && previousPricing.versions[0]._collectionId) {
+          collectionId = previousPricing.versions[0]._collectionId.toString();
+        }
+
         const pricingData = {
           name: uploadedPricing.saasName,
           version: uploadedPricing.version,
