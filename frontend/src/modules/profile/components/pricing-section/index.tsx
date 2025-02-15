@@ -4,7 +4,7 @@ import { usePricingsApi } from '../../../pricing/api/pricingsApi';
 import { PricingEntry } from '../../../pricing/pages/list';
 import PricingListCard from '../../../pricing/components/pricing-list-card';
 
-export default function PricingSection() {
+export default function PricingSection({setAddToCollectionModalOpen, setPricingToAdd}: {setAddToCollectionModalOpen: (value: boolean) => void, setPricingToAdd: (value: string) => void}) {
   const [pricings, setPricings] = useState([]);
 
   const { getLoggedUserPricings } = usePricingsApi();
@@ -45,6 +45,9 @@ export default function PricingSection() {
                 name={pricing.name}
                 owner={pricing.owner}
                 dataEntry={pricing}
+                showOptions
+                setPricingToAdd={setPricingToAdd}
+                setAddToCollectionModalOpen={setAddToCollectionModalOpen}
                 key={`pricing-${pricing.name}`}
               />
             ))}

@@ -1,11 +1,13 @@
-import { Box, Card, CardContent, Stack, styled, Typography } from '@mui/material';
+import { Box, Card, CardContent, Menu, MenuItem, Stack, styled, Typography } from '@mui/material';
 import { useRouter } from '../../../core/hooks/useRouter';
 import { PricingEntry } from '../../pages/list';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 import { getCurrency } from '../stats';
 import { IoMdPricetags } from 'react-icons/io';
-import { FaFileInvoiceDollar } from "react-icons/fa6";
-import { grey } from '../../../core/theme/palette';
+import { FaFileInvoiceDollar } from 'react-icons/fa6';
+import { MdMoreVert } from 'react-icons/md';
+import { grey, primary } from '../../../core/theme/palette';
+import { useState } from 'react';
 
 // const CARD_HEIGHT = 400;
 const CARD_HEIGHT = 150;
@@ -22,23 +24,43 @@ export default function PricingListCard({
   name,
   owner,
   dataEntry,
+  showOptions = false,
+  setPricingToAdd=()=>{},
+  setAddToCollectionModalOpen=()=>{},
 }: {
   name: string;
   owner: string;
   dataEntry: PricingEntry;
+  showOptions?: boolean;
+  setPricingToAdd?: (value: string) => void;
+  setAddToCollectionModalOpen?: (value: boolean) => void;
 }) {
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleAddToCollection = () => {
+    setAddToCollectionModalOpen(true);
+    setPricingToAdd(name);
+  };
+
+  const handleRemovePricing = () => {};
+
+  const handleOpenOptionsMenu = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseOptionsMenu = () => {
+    setAnchorEl(null);
+  };
+
   const router = useRouter();
 
   return (
     <Card
-      onClick={() => {
-        router.push(`/pricings/${owner}/${name}`);
-      }}
       sx={{
         borderRadius: 2,
         boxShadow: 3,
-        padding: "0 5px",
-        width: "100%",
+        padding: '0 5px',
+        width: '100%',
         maxWidth: 600,
         height: CARD_HEIGHT,
         position: 'relative',
@@ -51,8 +73,71 @@ export default function PricingListCard({
         },
       }}
     >
+      {showOptions && (
+        <>
+          <Box
+            sx={{
+              position: 'absolute',
+              right: 10,
+              top: 10,
+              height: 40,
+              width: 40,
+              borderRadius: '50%',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              transition: 'background-color 0.3s',
+              '&:hover': {
+                cursor: 'pointer',
+                backgroundColor: `${grey[300]}`,
+              },
+            }}
+            onClick={handleOpenOptionsMenu}
+          >
+            <MdMoreVert fontSize={30} />
+          </Box>
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleCloseOptionsMenu}
+            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+          >
+            <MenuItem onClick={handleAddToCollection} sx={{
+              transition: 'background-color 0.3s',
+              '&:hover': {
+                backgroundColor: `${grey[300]}`,
+              }
+            }}>
+              <Typography textAlign="center">Add to collection</Typography>
+            </MenuItem>
+            <MenuItem onClick={handleRemovePricing} sx={{
+              transition: 'background-color 0.3s',
+              '&:hover': {
+                backgroundColor: `${grey[300]}`,
+              }
+            }}>
+              <Typography textAlign="center" color="red">
+                Remove
+              </Typography>
+            </MenuItem>
+          </Menu>
+        </>
+      )}
       <CardContent>
-        <Stack justifyContent="center" height={45} pl="10px">
+        <Stack
+          justifyContent="center"
+          height={45}
+          pl="10px"
+          onClick={() => router.push(`/pricings/${owner}/${name}`)}
+          sx={{
+            transition: 'color 0.3s',
+            '&:hover': {
+              cursor: 'pointer',
+              color: `${primary[600]}`,
+            },
+          }}
+        >
           <Typography variant="h6" sx={{ fontWeight: 'bold', mt: 1 }}>
             {dataEntry.owner}/{name}
           </Typography>
@@ -95,8 +180,13 @@ export default function PricingListCard({
           </Box>
           <StatsDivider />
           <Box display="flex" justifyContent="center" alignItems="center">
-            <FaFileInvoiceDollar fill={grey[700]} style={{ height: 18, width: 18, marginRight: 10 }}/>
-            <Typography variant="body1">{dataEntry.analytics.configurationSpaceSize} subscriptions</Typography>
+            <FaFileInvoiceDollar
+              fill={grey[700]}
+              style={{ height: 18, width: 18, marginRight: 10 }}
+            />
+            <Typography variant="body1">
+              {dataEntry.analytics.configurationSpaceSize} subscriptions
+            </Typography>
           </Box>
           <StatsDivider />
           <Box display="flex" justifyContent="between" alignItems="center">
@@ -109,25 +199,6 @@ export default function PricingListCard({
             </Typography>
           </Box>
         </Box>
-        {/* <Stack
-          direction="row"
-          justifyContent="space-evenly"
-          flexWrap="wrap"
-          gap={2}
-          sx={{
-            mt: 2,
-            maxHeight: 40,
-            overflow: 'hidden',
-          }}
-        >
-          {pricing.tags.map(tag => tag)}
-          <StyledChip label="Productivity" variant="outlined" />
-          <StyledChip label="Freemium" variant="outlined" />
-          <StyledChip label="Microsoft" variant="outlined" />
-          <StyledChip label="+1M users" variant="outlined" />
-          <StyledChip label="USD" variant="outlined" />
-          <StyledChip label="USA" variant="outlined" />
-        </Stack> */}
       </CardContent>
     </Card>
   );

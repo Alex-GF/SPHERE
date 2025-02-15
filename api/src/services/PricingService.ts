@@ -77,7 +77,22 @@ class PricingService {
       }catch(err){
         throw new Error((err as Error).message);
       }
+    }
 
+    async addPricingToCollection (pricingName: string, owner: string, collectionId: string) {
+      try{
+        const pricing = await this.pricingRepository.findByNameAndOwner(pricingName, owner);
+        if (!pricing) {
+          throw new Error('Either the pricing does not exist or you are not its owner');
+        }
+  
+        await this.pricingRepository.addPricingToCollection(pricingName, owner, collectionId);
+        await this.pricingCollectionService.updateCollectionAnalytics(collectionId);
+  
+        return true;
+      }catch(err){
+        throw new Error((err as Error).message);
+      }
     }
   
     // async destroy (id: string) {

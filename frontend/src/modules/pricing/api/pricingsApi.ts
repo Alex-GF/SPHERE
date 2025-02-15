@@ -93,5 +93,17 @@ export function usePricingsApi() {
       });
   };
 
-  return { getPricings, getPricingByName, getLoggedUserPricings, createPricing };
+  const addPricingToCollection = async (pricingName: string, collectionId: string) => {
+    return fetchWithInterceptor(`${import.meta.env.VITE_API_URL}/me/pricings`, {
+      method: 'PUT',
+      headers: basicHeaders,
+      body: JSON.stringify({ pricingName, collectionId }),
+    })
+      .then(response => response.json())
+      .catch(error => {
+        return Promise.reject(error as Error);
+      });
+  }
+
+  return { getPricings, getPricingByName, getLoggedUserPricings, createPricing, addPricingToCollection };
 }

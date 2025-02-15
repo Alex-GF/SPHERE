@@ -139,7 +139,14 @@ class PricingCollectionRepository extends RepositoryBase {
         ...addNumberOfPricingsAggregator(),
         ...addOwnerToCollectionAggregator(),
         {
+          $addFields: {
+            id: { $toString: '$_id' },
+          }
+        },
+        {
           $project: {
+            id: 1,
+            _id: 0,
             owner: {
               username: 1,
               avatar: 1,
@@ -173,7 +180,13 @@ class PricingCollectionRepository extends RepositoryBase {
         ...addOwnerToCollectionAggregator(),
         ...addLastPricingUpdateAggregator(),
         {
+          $addFields: {
+            id: { $toString: '$_id' },
+          }
+        },
+        {
           $project: {
+            id: 1,
             owner: {
               username: 1,
               avatar: 1,

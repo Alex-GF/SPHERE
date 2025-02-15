@@ -236,6 +236,18 @@ class PricingRepository extends RepositoryBase {
     return pricing.toJSON();
   }
 
+  async addPricingToCollection(pricingName: string, owner: string, collectionId: string){
+    return await PricingMongoose.updateMany(
+      {
+        name: pricingName,
+        owner: owner,
+      },
+      {
+        $set: { _collectionId: new mongoose.Types.ObjectId(collectionId) }
+      }
+    )
+  }
+
   async addPricingsToCollection(collectionId: string, owner: string, pricings: string[], ...args: any) {
     const result = await PricingMongoose.updateMany(
       { name: { $in: pricings }, owner: owner },
