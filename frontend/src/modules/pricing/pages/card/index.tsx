@@ -27,6 +27,7 @@ import AnalyticsModal from '../../components/analyticsModal';
 import { usePricingsApi } from '../../api/pricingsApi';
 import PricingSettings from '../../components/pricing-settings';
 import customAlert from '../../../core/utils/custom-alert';
+import { useAuth } from '../../../auth/hooks/useAuth';
 
 export const StyledChip = styled(Chip)(({ theme }) => ({
   margin: theme.spacing(0.5),
@@ -55,9 +56,9 @@ export default function CardPage() {
 
   const pathname = usePathname();
   const { getPricingByName } = usePricingsApi();
-  const router = useRouter();
+  const {authUser} = useAuth();
 
-  function updatePricingInformation(pricing: any){
+  function updatePricingInformation(pricing: any) {
     if (pricing.versions && pricing.versions.length > 0) {
       const currentPricing = pricing.versions[0];
       const oldestPricing = pricing.versions[pricing.versions.length - 1];
@@ -66,7 +67,7 @@ export default function CardPage() {
       setCurrentPricing(currentPricing);
       setOldestPricingDate(oldestPricing.extractionDate);
     } else {
-      throw new Error("No pricing versions found");
+      throw new Error('No pricing versions found');
     }
   }
 
@@ -75,9 +76,9 @@ export default function CardPage() {
     let owner = pathname.split('/')[pathname.split('/').length - 2] as string;
 
     getPricingByName(name, owner).then(pricing => {
-      try{
+      try {
         updatePricingInformation(pricing);
-      }catch(err: any){
+      } catch (err: any) {
         customAlert(err.msg);
       }
     });
@@ -187,7 +188,9 @@ export default function CardPage() {
                 <Tabs value={tabValue} onChange={(_, v) => setTabValue(v)}>
                   <Tab label="Pricing card" />
                   <Tab label="Files and versions" />
-                  <Tab label="Settings" />
+                  {currentPricing && authUser.user && currentPricing.owner === authUser.user.username && (
+                    <Tab label="Settings" />
+                  )}
                 </Tabs>
               </Box>
             </Box>
@@ -222,7 +225,10 @@ export default function CardPage() {
               >
                 {pricingData?.map((entry, index) => (
                   <option key={index} value={entry.yaml}>
-                    {entry.yaml.split('/')[entry.yaml.split('/').length - 1].replace('.yaml', '').replace('.yml', ' ')}
+                    {entry.yaml
+                      .split('/')
+                      [entry.yaml.split('/').length - 1].replace('.yaml', '')
+                      .replace('.yml', ' ')}
                   </option>
                 ))}
               </TextField>
@@ -231,7 +237,13 @@ export default function CardPage() {
         </Box>
 
         <Box display="flex" gap={4} sx={{ mb: 4 }}>
-          {tabValue === 2 && pricingData && pricing && <PricingSettings pricingName={pricing.saasName} pricingData={pricingData} updatePricingInformation={updatePricingInformation}/>}
+          {tabValue === 2 && pricingData && pricing && (
+            <PricingSettings
+              pricingName={pricing.saasName}
+              pricingData={pricingData}
+              updatePricingInformation={updatePricingInformation}
+            />
+          )}
           {tabValue === 1 && pricingData && <FileExplorer pricingData={pricingData} />}
           {tabValue === 0 && (
             <>
