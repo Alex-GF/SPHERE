@@ -8,6 +8,7 @@ import { FaFileInvoiceDollar } from 'react-icons/fa6';
 import { MdMoreVert } from 'react-icons/md';
 import { grey, primary } from '../../../core/theme/palette';
 import { useState } from 'react';
+import { usePricingsApi } from '../../api/pricingsApi';
 
 // const CARD_HEIGHT = 400;
 const CARD_HEIGHT = 150;
@@ -26,7 +27,7 @@ export default function PricingListCard({
   dataEntry,
   showOptions = false,
   setPricingToAdd=()=>{},
-  setAddToCollectionModalOpen=()=>{},
+  setAddToCollectionModalOpen,
 }: {
   name: string;
   owner: string;
@@ -37,10 +38,24 @@ export default function PricingListCard({
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
 
+  const {removePricingFromCollection} = usePricingsApi();
+
   const handleAddToCollection = () => {
-    setAddToCollectionModalOpen(true);
+    setAddToCollectionModalOpen ? setAddToCollectionModalOpen(true) : null;
     setPricingToAdd(name);
   };
+
+  const handleRemoveFromCollection = () => {
+    removePricingFromCollection(name)
+      .then(() => {
+        alert('Pricing removed from collection');
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.error(error);
+        alert('An error occurred while removing the pricing from the collection');
+      });
+  }
 
   const handleRemovePricing = () => {};
 
@@ -103,14 +118,29 @@ export default function PricingListCard({
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
           >
-            <MenuItem onClick={handleAddToCollection} sx={{
-              transition: 'background-color 0.3s',
-              '&:hover': {
-                backgroundColor: `${grey[300]}`,
-              }
-            }}>
-              <Typography textAlign="center">Add to collection</Typography>
-            </MenuItem>
+            {
+              setAddToCollectionModalOpen ? (
+                <MenuItem onClick={handleAddToCollection} sx={{
+                  transition: 'background-color 0.3s',
+                  '&:hover': {
+                    backgroundColor: `${grey[300]}`,
+                  }
+                }}>
+                  <Typography textAlign="center">Add to collection</Typography>
+                </MenuItem>
+              )
+              :
+              (
+                <MenuItem onClick={handleRemoveFromCollection} sx={{
+                  transition: 'background-color 0.3s',
+                  '&:hover': {
+                    backgroundColor: `${grey[300]}`,
+                  }
+                }}>
+                  <Typography textAlign="center" color="red">Remove from collection</Typography>
+                </MenuItem>
+              )
+            }
             <MenuItem onClick={handleRemovePricing} sx={{
               transition: 'background-color 0.3s',
               '&:hover': {

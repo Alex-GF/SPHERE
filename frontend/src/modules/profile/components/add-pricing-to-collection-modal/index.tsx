@@ -28,6 +28,8 @@ export default function AddPricingToCollectionModal({
     addPricingToCollection(pricingName, selectedCollection!)
       .then(() => {
         handleClose();
+        alert(`${pricingName} added to collection`);
+        window.location.reload();
       }).catch((error) => {
         console.error(error);
       });

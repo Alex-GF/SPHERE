@@ -179,6 +179,7 @@ class PricingRepository extends RepositoryBase {
               $push: {
                 version: '$version',
                 owner: '$owner',
+                _collectionId: '$_collectionId',
                 extractionDate: '$extractionDate',
                 url: '$url',
                 yaml: '$yaml',
@@ -255,6 +256,18 @@ class PricingRepository extends RepositoryBase {
     );
 
     return result.modifiedCount === pricings.length;
+  }
+
+  async removePricingFromCollection(pricingName: string, owner: string, ...args: any) {
+    return await PricingMongoose.updateMany(
+      {
+        name: pricingName,
+        owner: owner,
+      },
+      {
+        $unset: { _collectionId: 1 }
+      }
+    );
   }
 
   async destroy(id: string, ...args: any) {

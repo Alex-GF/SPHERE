@@ -6,6 +6,7 @@ import { processFileUris } from "./FileService";
 import { PricingService as PricingAnalytics, retrievePricingFromPath } from "pricing4ts/server";
 import { PricingIndexQueryParams } from "../types/services/PricingService";
 import PricingCollectionService from "./PricingCollectionService";
+import { th } from "@faker-js/faker";
 
 class PricingService {
     
@@ -88,6 +89,27 @@ class PricingService {
   
         await this.pricingRepository.addPricingToCollection(pricingName, owner, collectionId);
         await this.pricingCollectionService.updateCollectionAnalytics(collectionId);
+  
+        return true;
+      }catch(err){
+        throw new Error((err as Error).message);
+      }
+    }
+
+    async removePricingFromCollection (pricingName: string, owner: string) {
+      try{
+        const pricing = await this.pricingRepository.findByNameAndOwner(pricingName, owner);
+        console.log(pricing);
+        if (!pricing) {
+          throw new Error('Either the pricing does not exist or you are not its owner');
+        }
+
+        await this.pricingRepository.removePricingFromCollection(pricingName, owner);
+        if (pricing.versions[0]._collectionId){
+          await this.pricingCollectionService.updateCollectionAnalytics(pricing.versions[0]._collectionId);
+        }else{
+          throw new Error('Pricing is not in a collection');
+        }
   
         return true;
       }catch(err){

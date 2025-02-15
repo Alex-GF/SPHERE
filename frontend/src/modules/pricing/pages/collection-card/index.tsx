@@ -139,6 +139,7 @@ export default function CollectionCardPage() {
                           name={pricing.name}
                           owner={pricing.owner}
                           dataEntry={pricing}
+                          showOptions
                         />
                       );
                     })

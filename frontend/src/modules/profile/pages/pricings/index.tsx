@@ -11,11 +11,11 @@ export default function MyPricingsPage() {
   const [pricingToAdd, setPricingToAdd] = useState('');
 
   return (
-    <Box sx={{ display: 'flex', height: '100%', width: '95vw', maxWidth: '1200px' }}>
+    <Box sx={{ display: 'flex', height: '100%', width: '95vw', maxWidth: '1300px' }}>
       {/* SIDEBAR */}
       <Box
         sx={{
-          width: SIDEBAR_WIDTH,
+          width: SIDEBAR_WIDTH + 100,
           borderRight: '1px solid #ddd',
         }}
       >

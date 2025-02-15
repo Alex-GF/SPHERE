@@ -43,7 +43,13 @@ export function usePricingsApi() {
       method: 'GET',
       headers: basicHeaders,
     })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok){
+          return Promise.reject(response);
+        }else{
+          return response.json()
+        }
+      })
       .catch(error => {
         return Promise.reject(error as Error);
       });
@@ -54,7 +60,13 @@ export function usePricingsApi() {
       method: 'GET',
       headers: basicHeaders,
     })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok){
+          return Promise.reject(response);
+        }else{
+          return response.json()
+        }
+      })
       .catch(error => {
         return Promise.reject(error as Error);
       });
@@ -65,7 +77,13 @@ export function usePricingsApi() {
       method: 'GET',
       headers: basicHeaders,
     })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok){
+          return Promise.reject(response);
+        }else{
+          return response.json()
+        }
+      })
       .catch(error => {
         return Promise.reject(error as Error);
       });
@@ -99,11 +117,34 @@ export function usePricingsApi() {
       headers: basicHeaders,
       body: JSON.stringify({ pricingName, collectionId }),
     })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok){
+          return Promise.reject(response);
+        }else{
+          return response.json()
+        }
+      })
       .catch(error => {
         return Promise.reject(error as Error);
       });
   }
 
-  return { getPricings, getPricingByName, getLoggedUserPricings, createPricing, addPricingToCollection };
+  const removePricingFromCollection = async (pricingName: string) => {
+    return fetchWithInterceptor(`${import.meta.env.VITE_API_URL}/me/collections/pricings/${pricingName}`, {
+      method: 'DELETE',
+      headers: basicHeaders,
+    })
+      .then(response => {
+        if (!response.ok) {
+          return Promise.reject(response);
+        }else{
+          return response.json()
+        }
+      })
+      .catch(error => {
+        return Promise.reject(error as Error);
+      });
+  }
+
+  return { getPricings, getPricingByName, getLoggedUserPricings, createPricing, addPricingToCollection, removePricingFromCollection };
 }

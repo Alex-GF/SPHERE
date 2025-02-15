@@ -15,6 +15,7 @@ class PricingController {
     this.show = this.show.bind(this);
     this.create = this.create.bind(this);
     this.addPricingToCollection = this.addPricingToCollection.bind(this);
+    this.removePricingFromCollection = this.removePricingFromCollection.bind(this);
   }
 
   async index (req: any, res: any) {
@@ -73,6 +74,15 @@ class PricingController {
   async addPricingToCollection (req: any, res: any) {
     try{
       const result = await this.pricingService.addPricingToCollection(req.body.pricingName, req.user.username, req.body.collectionId);
+      res.json(result);
+    }catch(err: any){
+      res.status(500).send({error: err.message});
+    }
+  }
+
+  async removePricingFromCollection (req: any, res: any) {
+    try{
+      const result = await this.pricingService.removePricingFromCollection(req.params.pricingName, req.user.username);
       res.json(result);
     }catch(err: any){
       res.status(500).send({error: err.message});

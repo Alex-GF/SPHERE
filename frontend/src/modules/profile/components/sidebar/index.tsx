@@ -1,5 +1,4 @@
-import { Box, Button, Divider, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Box, Divider, Typography } from '@mui/material';
 import ProfileAvatar from '../profile-avatar';
 import { useAuth } from '../../../auth/hooks/useAuth';
 
