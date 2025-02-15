@@ -99,7 +99,7 @@ class PricingService {
     async removePricingFromCollection (pricingName: string, owner: string) {
       try{
         const pricing = await this.pricingRepository.findByNameAndOwner(pricingName, owner);
-        console.log(pricing);
+
         if (!pricing) {
           throw new Error('Either the pricing does not exist or you are not its owner');
         }
@@ -117,13 +117,13 @@ class PricingService {
       }
     }
   
-    // async destroy (id: string) {
-    //   const result = await this.pricingRepository.destroy(id)
-    //   if (!result) {
-    //     throw new Error('Pricing not found')
-    //   }
-    //   return true
-    // }
+    async destroy (pricingName: string, owner: string) {
+      const result = await this.pricingRepository.destroyByNameAndOwner(pricingName, owner)
+      if (!result) {
+        throw new Error('Either the pricing does not exist or you are not its owner')
+      }
+      return true
+    }
   }
   
   export default PricingService

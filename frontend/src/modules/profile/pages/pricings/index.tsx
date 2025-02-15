@@ -9,6 +9,7 @@ const SIDEBAR_WIDTH = 400;
 export default function MyPricingsPage() {
   const [addPricingToCollectionModalOpen, setAddPricingToCollectionModalOpen] = useState(false);
   const [pricingToAdd, setPricingToAdd] = useState('');
+  const [renderFlag, setRenderFlag] = useState(false);
 
   return (
     <Box sx={{ display: 'flex', height: '100%', width: '95vw', maxWidth: '1300px' }}>
@@ -29,11 +30,14 @@ export default function MyPricingsPage() {
           addPricingToCollectionModalOpen={addPricingToCollectionModalOpen}
           setAddPricingToCollectionModalOpen={setAddPricingToCollectionModalOpen}
           pricingToAdd={pricingToAdd}
+          renderFlag={renderFlag}
+          setRenderFlag={setRenderFlag}
         />
         {/* Pricings */}
         <PricingSection
           setAddToCollectionModalOpen={setAddPricingToCollectionModalOpen}
           setPricingToAdd={setPricingToAdd}
+          renderFlag={renderFlag}
         />
       </Box>
     </Box>

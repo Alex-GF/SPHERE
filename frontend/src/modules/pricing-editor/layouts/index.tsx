@@ -8,6 +8,7 @@ import { EditorValueContext } from '../contexts/editorValueContext';
 import FileUpload from '../../core/components/file-upload-input';
 import { flex } from '../../core/theme/css';
 import ImportPricingModal from '../../core/components/import-pricing-modal';
+import customAlert from '../../core/utils/custom-alert';
 
 export default function EditorLayout({ children }: { children?: React.ReactNode }) {
   const [sharedLinkModalOpen, setSharedLinkModalOpen] = useState(false);
@@ -38,7 +39,7 @@ export default function EditorLayout({ children }: { children?: React.ReactNode 
       };
       reader.readAsText(file);
     } else {
-      alert('No file selected');
+      customAlert('No file selected');
     }
   };
 

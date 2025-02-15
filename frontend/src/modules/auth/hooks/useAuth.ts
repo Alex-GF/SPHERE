@@ -134,7 +134,7 @@ export const useAuth = () => {
                         }
                     })
                     .catch((error) => {
-                        console.log(error)
+                        console.error(error)
                         removeUser()
                     })
             }

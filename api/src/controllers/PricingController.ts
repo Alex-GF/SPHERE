@@ -16,6 +16,7 @@ class PricingController {
     this.create = this.create.bind(this);
     this.addPricingToCollection = this.addPricingToCollection.bind(this);
     this.removePricingFromCollection = this.removePricingFromCollection.bind(this);
+    this.destroyByNameAndOwner = this.destroyByNameAndOwner.bind(this);
   }
 
   async index (req: any, res: any) {
@@ -89,15 +90,18 @@ class PricingController {
     }
   }
 
-  // async destroy (req: any, res: any) {
-  //   try {
-  //     const result = await this.pricingService.destroy(req.params.pricingId)
-  //     const message = result ? 'Successfully deleted.' : 'Could not delete pricing.'
-  //     res.json(message)
-  //   } catch (err: any) {
-  //     res.status(500).send(err.message)
-  //   }
-  // }
+  async destroyByNameAndOwner (req: any, res: any) {
+    try {
+      const result = await this.pricingService.destroy(req.params.pricingName, req.user.username)
+      if (!result) {
+        res.status(404).send({error: "Pricing not found"})
+      }else{
+        res.status(200).send()
+      }
+    } catch (err: any) {
+      res.status(500).send({error: err.message})
+    }
+  }
 
   _transformIndexQueryParams(indexQueryParams: Record<string, string | number>): PricingIndexQueryParams{
     const transformedData: PricingIndexQueryParams = {

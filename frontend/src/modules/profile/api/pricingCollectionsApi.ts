@@ -14,8 +14,6 @@ export function usePricingCollectionsApi() {
   const getCollections = async (filters?: Record<string, string>) => {
     let requestUrl;
 
-    console.log("Filtersapi", filters)
-
     if (Object.keys(filters ?? {}).length === 0) {
       requestUrl = `${COLLECTIONS_BASE_PATH}`;
     } else {

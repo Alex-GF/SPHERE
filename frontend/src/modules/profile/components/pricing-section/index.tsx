@@ -4,7 +4,15 @@ import { usePricingsApi } from '../../../pricing/api/pricingsApi';
 import { PricingEntry } from '../../../pricing/pages/list';
 import PricingListCard from '../../../pricing/components/pricing-list-card';
 
-export default function PricingSection({setAddToCollectionModalOpen, setPricingToAdd}: {setAddToCollectionModalOpen: (value: boolean) => void, setPricingToAdd: (value: string) => void}) {
+export default function PricingSection({
+  setAddToCollectionModalOpen,
+  setPricingToAdd,
+  renderFlag
+}: {
+  setAddToCollectionModalOpen: (value: boolean) => void;
+  setPricingToAdd: (value: string) => void;
+  renderFlag: boolean
+}) {
   const [pricings, setPricings] = useState([]);
 
   const { getLoggedUserPricings } = usePricingsApi();
@@ -19,9 +27,9 @@ export default function PricingSection({setAddToCollectionModalOpen, setPricingT
         }
       })
       .catch(error => {
-        console.log('Cannot GET pricings. Error:', error);
+        console.error('Cannot GET pricings. Error:', error);
       });
-  }, []);
+  }, [renderFlag]);
 
   return (
     <Box>

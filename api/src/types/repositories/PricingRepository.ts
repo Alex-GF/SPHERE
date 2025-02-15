@@ -9,5 +9,6 @@ export interface PricingRepository{
     create(data: any, ...args: any): Promise<Pricing>;
     updateAnalytics(pricingId: string, analytics: PricingAnalytics, ...args: any): Promise<Pricing>;
     removePricingFromCollection(pricingName: string, owner: string, ...args: any): Promise<boolean>;
+    destroyByNameAndOwner(name: string, owner: string, ...args: any): Promise<boolean>;
     destroy(id: string, ...args: any): Promise<boolean>;
 }

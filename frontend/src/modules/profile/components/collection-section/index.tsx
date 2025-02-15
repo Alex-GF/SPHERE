@@ -10,10 +10,14 @@ export default function CollectionSection({
   pricingToAdd,
   addPricingToCollectionModalOpen,
   setAddPricingToCollectionModalOpen,
+  renderFlag,
+  setRenderFlag
 }: {
   pricingToAdd: string;
   addPricingToCollectionModalOpen: boolean;
   setAddPricingToCollectionModalOpen: (value: boolean) => void;
+  renderFlag: boolean;
+  setRenderFlag: (value: boolean) => void;
 }) {
   const [collections, setCollections] = useState([]);
 
@@ -25,6 +29,7 @@ export default function CollectionSection({
   }
 
   function handleAddPricingToCollectionModalClose() {
+    setRenderFlag(!renderFlag);
     setAddPricingToCollectionModalOpen(false);
   }
 
@@ -40,7 +45,7 @@ export default function CollectionSection({
       .catch(error => {
         console.error('Cannot GET collections. Error:', error);
       });
-  }, []);
+  }, [renderFlag]);
 
   return (
     <>

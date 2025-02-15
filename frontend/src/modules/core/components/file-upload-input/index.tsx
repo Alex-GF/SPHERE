@@ -5,6 +5,7 @@ import { FaUpload } from 'react-icons/fa';
 import { useDropzone } from 'react-dropzone';
 import { MdDeleteForever } from 'react-icons/md';
 import { error, grey, primary } from '../../theme/palette';
+import customAlert from '../../utils/custom-alert';
 
 const UploadBox = styled(Paper)({
   padding: '10px',
@@ -28,7 +29,7 @@ export default function FileUpload({onSubmit, submitButtonText, submitButtonWidt
     ) {
       setFile(uploadedFile);
     } else {
-      alert('Please upload a file with a .yaml or .yml extension');
+      customAlert('Please upload a file with a .yaml or .yml extension');
     }
   }, []);
 

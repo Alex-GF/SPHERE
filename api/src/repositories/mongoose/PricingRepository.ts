@@ -133,7 +133,6 @@ class PricingRepository extends RepositoryBase {
       ]);
       return pricings[0];
     } catch (err) {
-      console.log(err);
       return {pricings: []};
     }
   }
@@ -268,6 +267,11 @@ class PricingRepository extends RepositoryBase {
         $unset: { _collectionId: 1 }
       }
     );
+  }
+
+  async destroyByNameAndOwner(name: string, owner: string, ...args: any) {
+    const result = await PricingMongoose.deleteMany({ name: name, owner: owner });
+    return result.deletedCount >= 1;
   }
 
   async destroy(id: string, ...args: any) {

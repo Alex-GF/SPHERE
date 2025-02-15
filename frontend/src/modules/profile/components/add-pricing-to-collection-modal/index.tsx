@@ -4,6 +4,7 @@ import { CollectionEntry } from '../../types/profile-types';
 import { flex } from '../../../core/theme/css';
 import { useRef } from 'react';
 import { usePricingsApi } from '../../../pricing/api/pricingsApi';
+import customAlert from '../../../core/utils/custom-alert';
 
 export default function AddPricingToCollectionModal({
   pricingName,
@@ -28,8 +29,8 @@ export default function AddPricingToCollectionModal({
     addPricingToCollection(pricingName, selectedCollection!)
       .then(() => {
         handleClose();
-        alert(`${pricingName} added to collection`);
-        window.location.reload();
+        customAlert(`${pricingName} added to collection`);
+        // window.location.reload();
       }).catch((error) => {
         console.error(error);
       });

@@ -9,6 +9,8 @@ import { MdMoreVert } from 'react-icons/md';
 import { grey, primary } from '../../../core/theme/palette';
 import { useState } from 'react';
 import { usePricingsApi } from '../../api/pricingsApi';
+import customAlert from '../../../core/utils/custom-alert';
+import customConfirm from '../../../core/utils/custom-confirm';
 
 // const CARD_HEIGHT = 400;
 const CARD_HEIGHT = 150;
@@ -26,7 +28,7 @@ export default function PricingListCard({
   owner,
   dataEntry,
   showOptions = false,
-  setPricingToAdd=()=>{},
+  setPricingToAdd = () => {},
   setAddToCollectionModalOpen,
 }: {
   name: string;
@@ -38,7 +40,7 @@ export default function PricingListCard({
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const {removePricingFromCollection} = usePricingsApi();
+  const { removePricingFromCollection, removePricingByName } = usePricingsApi();
 
   const handleAddToCollection = () => {
     setAddToCollectionModalOpen ? setAddToCollectionModalOpen(true) : null;
@@ -46,18 +48,30 @@ export default function PricingListCard({
   };
 
   const handleRemoveFromCollection = () => {
-    removePricingFromCollection(name)
+    customConfirm('Are you sure you want to remove this pricing from the collection?').then(() => {
+      removePricingFromCollection(name)
+        .then(() => {
+          customAlert('Pricing removed from collection');
+          window.location.reload();
+        })
+        .catch(error => {
+          console.error(error);
+          customAlert('An error occurred while removing the pricing from the collection');
+        });
+    });
+  };
+
+  const handleRemovePricing = () => {
+    removePricingByName(name)
       .then(() => {
-        alert('Pricing removed from collection');
+        customAlert('Pricing removed');
         window.location.reload();
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(error);
-        alert('An error occurred while removing the pricing from the collection');
+        customAlert('An error occurred while removing the pricing');
       });
-  }
-
-  const handleRemovePricing = () => {};
+  };
 
   const handleOpenOptionsMenu = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -118,35 +132,42 @@ export default function PricingListCard({
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
           >
-            {
-              setAddToCollectionModalOpen ? (
-                <MenuItem onClick={handleAddToCollection} sx={{
+            {setAddToCollectionModalOpen ? (
+              <MenuItem
+                onClick={handleAddToCollection}
+                sx={{
                   transition: 'background-color 0.3s',
                   '&:hover': {
                     backgroundColor: `${grey[300]}`,
-                  }
-                }}>
-                  <Typography textAlign="center">Add to collection</Typography>
-                </MenuItem>
-              )
-              :
-              (
-                <MenuItem onClick={handleRemoveFromCollection} sx={{
+                  },
+                }}
+              >
+                <Typography textAlign="center">Add to collection</Typography>
+              </MenuItem>
+            ) : (
+              <MenuItem
+                onClick={handleRemoveFromCollection}
+                sx={{
                   transition: 'background-color 0.3s',
                   '&:hover': {
                     backgroundColor: `${grey[300]}`,
-                  }
-                }}>
-                  <Typography textAlign="center" color="red">Remove from collection</Typography>
-                </MenuItem>
-              )
-            }
-            <MenuItem onClick={handleRemovePricing} sx={{
-              transition: 'background-color 0.3s',
-              '&:hover': {
-                backgroundColor: `${grey[300]}`,
-              }
-            }}>
+                  },
+                }}
+              >
+                <Typography textAlign="center" color="red">
+                  Remove from collection
+                </Typography>
+              </MenuItem>
+            )}
+            <MenuItem
+              onClick={handleRemovePricing}
+              sx={{
+                transition: 'background-color 0.3s',
+                '&:hover': {
+                  backgroundColor: `${grey[300]}`,
+                },
+              }}
+            >
               <Typography textAlign="center" color="red">
                 Remove
               </Typography>

@@ -31,6 +31,7 @@ import { AnalyticsDataEntry } from '../../../../assets/data/analytics';
 import { IconButton } from '@mui/material';
 import { Download, OpenInNew } from '@mui/icons-material';
 import { parseStringYamlToEncodedYaml } from '../../../pricing-editor/services/export.service';
+import customAlert from '../../../core/utils/custom-alert';
 
 type FileType = 'image' | 'pdf' | 'doc' | 'video' | 'folder' | 'pinned' | 'trash';
 
@@ -177,7 +178,7 @@ function CustomLabel({
 
   const handleDownload = (children: React.ReactNode) => {
     if (!children) {
-      alert('No file selected.');
+      customAlert('No file selected.');
       return;
     }
     const fileName = children.toString();
@@ -202,13 +203,13 @@ function CustomLabel({
           URL.revokeObjectURL(objectURL);
         });
     } else {
-      alert(`File path for ${fileName} not found.`);
+      customAlert(`File path for ${fileName} not found.`);
     }
   };
 
   const handleOpen = (children: React.ReactNode) => {
     if (!children) {
-      alert('No file selected.');
+      customAlert('No file selected.');
       return;
     }
     const fileName = children.toString();

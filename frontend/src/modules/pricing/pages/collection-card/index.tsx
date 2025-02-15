@@ -1,14 +1,6 @@
 import { Helmet } from 'react-helmet';
 import { useEffect, useState } from 'react';
-import {
-  Box,
-  Button,
-  Chip,
-  Container,
-  Paper,
-  Typography,
-  styled,
-} from '@mui/material';
+import { Box, Button, Chip, Container, Paper, Typography, styled } from '@mui/material';
 import { Favorite, LibraryAdd, LibraryAddCheck, FavoriteBorder } from '@mui/icons-material';
 import { usePathname } from '../../../core/hooks/usePathname';
 import { useRouter } from '../../../core/hooks/useRouter';
@@ -19,6 +11,7 @@ import { usePricingCollectionsApi } from '../../../profile/api/pricingCollection
 import { Collection } from '../../types/collection';
 import { PricingsGrid } from '../../../pricing/pages/list';
 import PricingListCard from '../../../pricing/components/pricing-list-card';
+import { primary } from '../../../core/theme/palette';
 
 export const StyledChip = styled(Chip)(({ theme }) => ({
   margin: theme.spacing(0.5),
@@ -132,7 +125,7 @@ export default function CollectionCardPage() {
                   }}
                 >
                   {collection.pricings[0].pricings.length > 0 ? (
-                    Object.values(collection.pricings[0].pricings).map((pricing) => {
+                    Object.values(collection.pricings[0].pricings).map(pricing => {
                       return (
                         <PricingListCard
                           key={pricing.name}
@@ -144,32 +137,51 @@ export default function CollectionCardPage() {
                       );
                     })
                   ) : (
-                    <Box>No pricings found</Box>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        gap: 2,
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        height: '100%',
+                      }}
+                    >
+                      NO PRICINGS FOUND
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={() => router.push('/me/pricings')}
+                        >
+                          Add
+                        </Button>
+                    </Box>
                   )}
                 </PricingsGrid>
               </>
             )}
           </Box>
+          {collection && collection!.pricings[0].pricings.length > 0 && (
+            <Box sx={{ minWidth: '33.3%' }}>
+              {collection && (
+                <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
+                  <CollectionStats collection={collection} />
+                </Paper>
+              )}
 
-          <Box sx={{ minWidth: '33.3%' }}>
-            {collection && (
-              <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
-                <CollectionStats collection={collection} />
-              </Paper>
-            )}
-
-            {collection && (
-              <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
-                <CollectionAnalytics
-                  collectionData={collection.analytics}
-                  toggleModal={toggleModal}
-                />
-              </Paper>
-            )}
-            {/* <Paper variant="outlined" sx={{ p: 2, mt: 2 }}>
+              {collection && (
+                <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
+                  <CollectionAnalytics
+                    collectionData={collection.analytics}
+                    toggleModal={toggleModal}
+                  />
+                </Paper>
+              )}
+              {/* <Paper variant="outlined" sx={{ p: 2, mt: 2 }}>
               <Harvey />
             </Paper> */}
-          </Box>
+            </Box>
+          )}
         </Box>
       </Container>
 

@@ -14,13 +14,15 @@ const loadFileRoutes = function (app: express.Application) {
     .get(pricingController.index)
     .post(isLoggedIn, upload, pricingController.create);
 
-  app.route(baseUrl + '/pricings/:owner/:pricingName').get(pricingController.show);
-  
+  app
+    .route(baseUrl + '/pricings/:owner/:pricingName')
+    .get(pricingController.show)
+    .delete(isLoggedIn, pricingController.destroyByNameAndOwner);
 
-  app.route(baseUrl + '/me/pricings')
+  app
+    .route(baseUrl + '/me/pricings')
     .get(isLoggedIn, pricingController.indexByUserWithoutCollection)
     .put(isLoggedIn, pricingController.addPricingToCollection);
 };
 
 export default loadFileRoutes;
-

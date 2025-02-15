@@ -91,9 +91,9 @@ function _simulateCollectionEvolution(pricings: Pricing[]) {
   const extractionDates = pricings.map((pricing: any) => new Date(pricing.extractionDate));
   const minDate = new Date(Math.min(...extractionDates.map(date => date.getTime())));
   const maxDate = new Date(Math.max(...extractionDates.map(date => date.getTime())));
-  maxDate.setMonth(maxDate.getMonth() + 1); // Added four months to include the pricing with the las extraction date and stabilise the analytics
+  maxDate.setMonth(maxDate.getMonth() + 6); // Added four months to include the pricing with the las extraction date and stabilise the analytics
 
-  for (let date = new Date(minDate); date <= maxDate; date.setMonth(date.getMonth() + 1)) {
+  for (let date = new Date(minDate); date <= maxDate; date.setMonth(date.getMonth() + 6)) {
     const isoDate = date.toISOString().split('T')[0];
     const filteredPricings = pricings.filter(
       (pricing: any) => new Date(pricing.extractionDate) <= date

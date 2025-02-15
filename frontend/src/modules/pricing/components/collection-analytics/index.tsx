@@ -11,8 +11,6 @@ interface StatsProps {
 }
 
 export default function CollectionAnalytics({ collectionData, toggleModal }: StatsProps) {
-  console.log(collectionData);
-
   return (
     <>
       <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -31,7 +29,7 @@ export default function CollectionAnalytics({ collectionData, toggleModal }: Sta
             data: collectionData.evolutionOfConfigurationSpaceSize.values.reverse().map((v: any) => typeof v === "number" ? parseFloat(v.toFixed(2)) : v) ?? [],
             label: 'Average Configuration Space Size',
             area: false,
-            showMark: false,
+            showMark: collectionData.evolutionOfConfigurationSpaceSize.values.length <= 1,
           },
         ]}
         xAxis={[
@@ -49,7 +47,7 @@ export default function CollectionAnalytics({ collectionData, toggleModal }: Sta
             {
               data: collectionData.evolutionOfAddOns.values.reverse().map((v: any) => typeof v === "number" ? parseFloat(v.toFixed(2)) : v) ?? [],
               area: false,
-              showMark: false,
+              showMark: collectionData.evolutionOfAddOns.values.length <= 1,
               label: 'Average Number of AddOns',
             },
           ]}

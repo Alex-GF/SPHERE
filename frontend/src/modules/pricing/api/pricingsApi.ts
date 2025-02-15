@@ -146,5 +146,22 @@ export function usePricingsApi() {
       });
   }
 
-  return { getPricings, getPricingByName, getLoggedUserPricings, createPricing, addPricingToCollection, removePricingFromCollection };
+  const removePricingByName = async (name: string) => {
+    return fetchWithInterceptor(`${PRICINGS_BASE_PATH}/${authUser.user?.username}/${name}`, {
+      method: 'DELETE',
+      headers: basicHeaders,
+    })
+      .then(response => {
+        if (!response.ok) {
+          return Promise.reject(response);
+        }else{
+          return response.json()
+        }
+      })
+      .catch(error => {
+        return Promise.reject(error as Error);
+      });
+  }
+
+  return { getPricings, getPricingByName, getLoggedUserPricings, createPricing, addPricingToCollection, removePricingFromCollection, removePricingByName };
 }

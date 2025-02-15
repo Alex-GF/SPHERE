@@ -60,7 +60,7 @@ export default function CollectionAnalyticsModal({
                         .map((v: any) => (typeof v === 'number' ? parseFloat(v.toFixed(2)) : v)) ??
                       [],
                     area: false,
-                    showMark: false,
+                    showMark: value.values.length <= 1,
                     label: `Average ${key
                       .replace(/([A-Z])/g, ' $1')
                       .replace(/^./, str => str.toUpperCase())}`,
