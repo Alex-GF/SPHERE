@@ -101,6 +101,21 @@ class PricingService {
       }
     }
 
+    async update (pricingName: string, owner: string, data: any) {
+      const pricing = await this.pricingRepository.findByNameAndOwner(pricingName, owner)
+      if (!pricing) {
+        throw new Error('Either the pricing does not exist or you are not its owner')
+      }
+
+      for (const pricingVersion of pricing.versions) {
+        await this.pricingRepository.update(pricingVersion.id, data)
+      }
+
+      const updatedPricing = await this.pricingRepository.findByNameAndOwner(pricingName, owner)
+
+      return updatedPricing;
+    }
+
     async removePricingFromCollection (pricingName: string, owner: string) {
       try{
         const pricing = await this.pricingRepository.findByNameAndOwner(pricingName, owner);

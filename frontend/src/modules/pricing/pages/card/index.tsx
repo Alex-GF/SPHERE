@@ -25,6 +25,8 @@ import Analytics from '../../components/analytics';
 // import Harvey from '../../components/harvey';
 import AnalyticsModal from '../../components/analyticsModal';
 import { usePricingsApi } from '../../api/pricingsApi';
+import PricingSettings from '../../components/pricing-settings';
+import customAlert from '../../../core/utils/custom-alert';
 
 export const StyledChip = styled(Chip)(({ theme }) => ({
   margin: theme.spacing(0.5),
@@ -55,20 +57,28 @@ export default function CardPage() {
   const { getPricingByName } = usePricingsApi();
   const router = useRouter();
 
+  function updatePricingInformation(pricing: any){
+    if (pricing.versions && pricing.versions.length > 0) {
+      const currentPricing = pricing.versions[0];
+      const oldestPricing = pricing.versions[pricing.versions.length - 1];
+      setFullPricingData(pricing.versions);
+      setPricingData(pricing.versions);
+      setCurrentPricing(currentPricing);
+      setOldestPricingDate(oldestPricing.extractionDate);
+    } else {
+      throw new Error("No pricing versions found");
+    }
+  }
+
   useEffect(() => {
     let name = pathname.split('/').pop() as string;
     let owner = pathname.split('/')[pathname.split('/').length - 2] as string;
 
     getPricingByName(name, owner).then(pricing => {
-      if (pricing.versions && pricing.versions.length > 0) {
-        const currentPricing = pricing.versions[0];
-        const oldestPricing = pricing.versions[pricing.versions.length - 1];
-        setFullPricingData(pricing.versions);
-        setPricingData(pricing.versions);
-        setCurrentPricing(currentPricing);
-        setOldestPricingDate(oldestPricing.extractionDate);
-      } else {
-        router.push('/error');
+      try{
+        updatePricingInformation(pricing);
+      }catch(err: any){
+        customAlert(err.msg);
       }
     });
   }, [pathname]);
@@ -177,6 +187,7 @@ export default function CardPage() {
                 <Tabs value={tabValue} onChange={(_, v) => setTabValue(v)}>
                   <Tab label="Pricing card" />
                   <Tab label="Files and versions" />
+                  <Tab label="Settings" />
                 </Tabs>
               </Box>
             </Box>
@@ -220,9 +231,9 @@ export default function CardPage() {
         </Box>
 
         <Box display="flex" gap={4} sx={{ mb: 4 }}>
-          {tabValue === 1 ? (
-            pricingData && <FileExplorer pricingData={pricingData} />
-          ) : (
+          {tabValue === 2 && pricingData && pricing && <PricingSettings pricingName={pricing.saasName} pricingData={pricingData} updatePricingInformation={updatePricingInformation}/>}
+          {tabValue === 1 && pricingData && <FileExplorer pricingData={pricingData} />}
+          {tabValue === 0 && (
             <>
               <Box flex={1} sx={{ maxWidth: '66.7%' }}>
                 <Typography variant="h6" gutterBottom>

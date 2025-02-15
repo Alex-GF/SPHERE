@@ -129,6 +129,24 @@ export function usePricingsApi() {
       });
   }
 
+  const updatePricing = (pricingName: string, pricingData: any) => {
+    return fetchWithInterceptor(`${PRICINGS_BASE_PATH}/${authUser.user?.username}/${pricingName}`, {
+      method: 'PUT',
+      headers: basicHeaders,
+      body: JSON.stringify(pricingData),
+    })
+      .then(response => {
+        if (!response.ok) {
+          return Promise.reject(response);
+        }else{
+          return response.json()
+        }
+      })
+      .catch(error => {
+        return Promise.reject(error as Error);
+      });
+  }
+
   const removePricingFromCollection = async (pricingName: string) => {
     return fetchWithInterceptor(`${import.meta.env.VITE_API_URL}/me/collections/pricings/${pricingName}`, {
       method: 'DELETE',
@@ -163,5 +181,5 @@ export function usePricingsApi() {
       });
   }
 
-  return { getPricings, getPricingByName, getLoggedUserPricings, createPricing, addPricingToCollection, removePricingFromCollection, removePricingByName };
+  return { getPricings, getPricingByName, getLoggedUserPricings, createPricing, addPricingToCollection, removePricingFromCollection, removePricingByName, updatePricing };
 }

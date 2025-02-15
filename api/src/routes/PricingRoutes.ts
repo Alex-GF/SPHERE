@@ -2,6 +2,8 @@ import express from 'express';
 import { isLoggedIn } from '../middlewares/AuthMiddleware';
 import PricingController from '../controllers/PricingController';
 import { handlePricingUpload } from '../middlewares/FileHandlerMiddleware';
+import * as PricingValidator from '../controllers/validation/PricingValidation';
+import { handleValidation } from '../middlewares/ValidationHandlingMiddleware';
 
 const loadFileRoutes = function (app: express.Application) {
   const pricingController = new PricingController();
@@ -17,6 +19,7 @@ const loadFileRoutes = function (app: express.Application) {
   app
     .route(baseUrl + '/pricings/:owner/:pricingName')
     .get(pricingController.show)
+    .put(isLoggedIn, PricingValidator.update, handleValidation, pricingController.update)
     .delete(isLoggedIn, pricingController.destroyByNameAndOwner);
 
   app

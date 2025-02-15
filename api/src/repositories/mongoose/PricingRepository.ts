@@ -176,8 +176,10 @@ class PricingRepository extends RepositoryBase {
             },
             versions: {
               $push: {
+                id: '$_id',
                 version: '$version',
                 owner: '$owner',
+                private: '$private',
                 _collectionId: '$_collectionId',
                 extractionDate: '$extractionDate',
                 url: '$url',
@@ -255,6 +257,18 @@ class PricingRepository extends RepositoryBase {
     );
 
     return result.modifiedCount === pricings.length;
+  }
+
+  async update(id: string, data: any, ...args: any) {
+    const pricing = await PricingMongoose.findOne({ _id: id });
+    if (!pricing) {
+      return null;
+    }
+
+    pricing.set(data);
+    await pricing.save();
+
+    return pricing.toJSON();
   }
 
   async removePricingFromCollection(pricingName: string, owner: string, ...args: any) {
