@@ -9,13 +9,24 @@ interface CollectionAnalyticsModalProps {
   open: boolean;
   onClose: () => void;
   collectionData: CollectionAnalytics;
+  startDate: string | null;
+  endDate: string | null;
 }
 
 export default function CollectionAnalyticsModal({
   open,
   onClose,
   collectionData,
+  startDate,
+  endDate
 }: CollectionAnalyticsModalProps) {
+
+  function dateIntervalFilter(_: any, index: number) {
+    const entryDate = new Date(collectionData.evolutionOfConfigurationSpaceSize.dates[index]);
+
+    return entryDate >= new Date(startDate!) && entryDate <= new Date(endDate!);
+  }
+
   return (
     <Modal
       open={open}
@@ -55,9 +66,10 @@ export default function CollectionAnalyticsModal({
                 series={[
                   {
                     data:
-                      value.values
-                        .reverse()
-                        .map((v: any) => (typeof v === 'number' ? parseFloat(v.toFixed(2)) : v)) ??
+                      (startDate && endDate
+                        ? value.values.filter(dateIntervalFilter)
+                        : value.values
+                      ).map((v: any) => (typeof v === 'number' ? parseFloat(v.toFixed(2)) : v)) ??
                       [],
                     area: false,
                     showMark: value.values.length <= 1,
@@ -69,7 +81,10 @@ export default function CollectionAnalyticsModal({
                 xAxis={[
                   {
                     scaleType: 'point',
-                    data: formatStringDates(value.dates),
+                    data: formatStringDates((startDate && endDate
+                      ? value.dates.filter(dateIntervalFilter)
+                      : value.dates
+                    )),
                   },
                 ]}
               />

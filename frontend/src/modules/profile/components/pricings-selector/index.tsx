@@ -40,7 +40,7 @@ export default function PricingSelector({ value, onChange }: MultiSelectCardsPro
       })
   }, [])
 
-  return (
+  return pricings.length > 0 ? (
     <Grid2 container spacing={2} sx={{border: '1px solid #ccc', borderRadius: 4, padding: 2}}>
       {pricings ? pricings.map((name: string) => (
         <Grid2 key={name}>
@@ -57,5 +57,5 @@ export default function PricingSelector({ value, onChange }: MultiSelectCardsPro
       </Grid2>
     }
     </Grid2>
-  );
+  ) : <></>;
 }

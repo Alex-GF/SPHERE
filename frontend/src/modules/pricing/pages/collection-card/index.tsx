@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet';
 import { useEffect, useState } from 'react';
-import { Box, Button, Chip, Container, Paper, Typography, styled } from '@mui/material';
+import { Box, Button, Chip, Container, Paper, TextField, Typography, styled } from '@mui/material';
 import { Favorite, LibraryAdd, LibraryAddCheck, FavoriteBorder } from '@mui/icons-material';
 import { usePathname } from '../../../core/hooks/usePathname';
 import { useRouter } from '../../../core/hooks/useRouter';
@@ -11,7 +11,6 @@ import { usePricingCollectionsApi } from '../../../profile/api/pricingCollection
 import { Collection } from '../../types/collection';
 import { PricingsGrid } from '../../../pricing/pages/list';
 import PricingListCard from '../../../pricing/components/pricing-list-card';
-import { primary } from '../../../core/theme/palette';
 
 export const StyledChip = styled(Chip)(({ theme }) => ({
   margin: theme.spacing(0.5),
@@ -23,6 +22,8 @@ export default function CollectionCardPage() {
   const [isLiked, setIsLiked] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [collection, setCollection] = useState<Collection | null>(null);
+  const [startDate, setStartDate] = useState<string | null>(null);
+  const [endDate, setEndDate] = useState<string | null>(null);
 
   const pathname = usePathname();
   const { getCollectionByOwnerAndName } = usePricingCollectionsApi();
@@ -35,6 +36,12 @@ export default function CollectionCardPage() {
     getCollectionByOwnerAndName(ownerId, name).then(collection => {
       if (collection) {
         setCollection(collection);
+        setStartDate(collection.analytics.evolutionOfPlans.dates[0]);
+        setEndDate(
+          collection.analytics.evolutionOfPlans.dates[
+            collection.analytics.evolutionOfPlans.dates.length - 1
+          ]
+        );
       } else {
         router.push('/error');
       }
@@ -43,6 +50,14 @@ export default function CollectionCardPage() {
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
+  };
+
+  const handleInputDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setStartDate(new Date(e.target.value).toISOString());
+  };
+
+  const handleOutputDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEndDate(new Date(e.target.value).toISOString());
   };
 
   return (
@@ -95,6 +110,36 @@ export default function CollectionCardPage() {
             <Typography variant="body2" color="text.secondary" mb={2}>
               More info
             </Typography> */}
+            </Box>
+            <Box display="flex" flexDirection="column" gap={2}>
+              <Box display="flex" gap={2}>
+                {collection && collection.analytics.evolutionOfPlans.dates.length > 0 && (
+                  <>
+                    <TextField
+                      label="Start Date"
+                      type="date"
+                      fullWidth
+                      defaultValue={
+                        new Date(collection.analytics.evolutionOfPlans.dates[0])
+                          .toISOString()
+                          .split('T')[0]
+                      }
+                      slotProps={{ inputLabel: { shrink: true } }}
+                      onChange={handleInputDate}
+                    />
+                    <TextField
+                      label="End Date"
+                      type="date"
+                      fullWidth
+                      defaultValue={
+                        new Date().toISOString().split('T')[0]
+                      }
+                      slotProps={{ inputLabel: { shrink: true } }}
+                      onChange={handleOutputDate}
+                    />
+                  </>
+                )}
+              </Box>
             </Box>
           </Box>
         </Box>
@@ -152,9 +197,9 @@ export default function CollectionCardPage() {
                         variant="outlined"
                         color="primary"
                         onClick={() => router.push('/me/pricings')}
-                        >
-                          Add
-                        </Button>
+                      >
+                        Add
+                      </Button>
                     </Box>
                   )}
                 </PricingsGrid>
@@ -174,6 +219,8 @@ export default function CollectionCardPage() {
                   <CollectionAnalytics
                     collectionData={collection.analytics}
                     toggleModal={toggleModal}
+                    startDate={startDate}
+                    endDate={endDate}
                   />
                 </Paper>
               )}
@@ -190,6 +237,8 @@ export default function CollectionCardPage() {
           open={isModalOpen}
           onClose={toggleModal}
           collectionData={collection.analytics}
+          startDate={startDate}
+          endDate={endDate}
         />
       )}
     </>

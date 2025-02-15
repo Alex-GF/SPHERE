@@ -4,13 +4,28 @@ import { OpenInFull } from '@mui/icons-material';
 import { LineChart } from '@mui/x-charts';
 import type { CollectionAnalytics } from '../../types/collection';
 import { formatStringDates } from '../../../profile/utils/dates-util';
+import { useEffect, useState } from 'react';
 
 interface StatsProps {
   collectionData: CollectionAnalytics;
   toggleModal: () => void;
+  startDate: string | null;
+  endDate: string | null;
 }
 
-export default function CollectionAnalytics({ collectionData, toggleModal }: StatsProps) {
+export default function CollectionAnalytics({
+  collectionData,
+  toggleModal,
+  startDate,
+  endDate,
+}: StatsProps) {
+
+  function dateIntervalFilter(_: any, index: number) {
+    const entryDate = new Date(collectionData.evolutionOfConfigurationSpaceSize.dates[index]);
+
+    return entryDate >= new Date(startDate!) && entryDate <= new Date(endDate!);
+  }
+
   return (
     <>
       <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -26,7 +41,11 @@ export default function CollectionAnalytics({ collectionData, toggleModal }: Sta
         height={300}
         series={[
           {
-            data: collectionData.evolutionOfConfigurationSpaceSize.values.reverse().map((v: any) => typeof v === "number" ? parseFloat(v.toFixed(2)) : v) ?? [],
+            data:
+              (startDate && endDate
+                ? collectionData.evolutionOfConfigurationSpaceSize.values.filter(dateIntervalFilter)
+                : collectionData.evolutionOfConfigurationSpaceSize.values
+              ).map((v: any) => (typeof v === 'number' ? parseFloat(v.toFixed(2)) : v)) ?? [],
             label: 'Average Configuration Space Size',
             area: false,
             showMark: collectionData.evolutionOfConfigurationSpaceSize.values.length <= 1,
@@ -35,7 +54,11 @@ export default function CollectionAnalytics({ collectionData, toggleModal }: Sta
         xAxis={[
           {
             scaleType: 'point',
-            data: formatStringDates(collectionData.evolutionOfConfigurationSpaceSize.dates)
+            data: formatStringDates(
+              startDate && endDate
+                ? collectionData.evolutionOfConfigurationSpaceSize.dates.filter(dateIntervalFilter)
+                : collectionData.evolutionOfConfigurationSpaceSize.dates
+            ),
           },
         ]}
       />
@@ -45,7 +68,11 @@ export default function CollectionAnalytics({ collectionData, toggleModal }: Sta
           height={300}
           series={[
             {
-              data: collectionData.evolutionOfAddOns.values.reverse().map((v: any) => typeof v === "number" ? parseFloat(v.toFixed(2)) : v) ?? [],
+              data:
+                (startDate && endDate
+                  ? collectionData.evolutionOfAddOns.values.filter(dateIntervalFilter)
+                  : collectionData.evolutionOfAddOns.values
+                ).map((v: any) => (typeof v === 'number' ? parseFloat(v.toFixed(2)) : v)) ?? [],
               area: false,
               showMark: collectionData.evolutionOfAddOns.values.length <= 1,
               label: 'Average Number of AddOns',
@@ -54,7 +81,11 @@ export default function CollectionAnalytics({ collectionData, toggleModal }: Sta
           xAxis={[
             {
               scaleType: 'point',
-              data: formatStringDates(collectionData.evolutionOfAddOns.dates)
+              data: formatStringDates(
+                startDate && endDate
+                  ? collectionData.evolutionOfAddOns.dates.filter(dateIntervalFilter)
+                  : collectionData.evolutionOfAddOns.dates
+              ),
             },
           ]}
         />
