@@ -78,6 +78,17 @@ class PricingCollectionService {
       }
     }
 
+    async update (collectionName: string, ownerId: string, data: any) {
+      const collection = await this.pricingCollectionRepository.findByNameAndUserId(collectionName, ownerId)
+      if (!collection) {
+        throw new Error('Either the collection does not exist or you are not its owner')
+      }
+
+      const updatedCollection = await this.pricingCollectionRepository.update(collection._id.toString(), data);
+
+      return updatedCollection;
+    }
+
     async updateCollectionAnalytics (collectionId: string) {
       const collection = await this.pricingCollectionRepository.findById(collectionId);
       

@@ -1,6 +1,17 @@
 import { Helmet } from 'react-helmet';
 import { useEffect, useState } from 'react';
-import { Box, Button, Chip, Container, Paper, TextField, Typography, styled } from '@mui/material';
+import {
+  Box,
+  Button,
+  Chip,
+  Container,
+  Paper,
+  Tab,
+  Tabs,
+  TextField,
+  Typography,
+  styled,
+} from '@mui/material';
 import { Favorite, LibraryAdd, LibraryAddCheck, FavoriteBorder } from '@mui/icons-material';
 import { usePathname } from '../../../core/hooks/usePathname';
 import { useRouter } from '../../../core/hooks/useRouter';
@@ -11,6 +22,8 @@ import { usePricingCollectionsApi } from '../../../profile/api/pricingCollection
 import { Collection } from '../../types/collection';
 import { PricingsGrid } from '../../../pricing/pages/list';
 import PricingListCard from '../../../pricing/components/pricing-list-card';
+import { useAuth } from '../../../auth/hooks/useAuth';
+import CollectionSettings from '../../components/collection-settings';
 
 export const StyledChip = styled(Chip)(({ theme }) => ({
   margin: theme.spacing(0.5),
@@ -24,10 +37,12 @@ export default function CollectionCardPage() {
   const [collection, setCollection] = useState<Collection | null>(null);
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
+  const [tabValue, setTabValue] = useState(0);
 
   const pathname = usePathname();
   const { getCollectionByOwnerAndName } = usePricingCollectionsApi();
   const router = useRouter();
+  const { authUser } = useAuth();
 
   useEffect(() => {
     let name = pathname.split('/').pop() as string;
@@ -110,6 +125,17 @@ export default function CollectionCardPage() {
             <Typography variant="body2" color="text.secondary" mb={2}>
               More info
             </Typography> */}
+
+              <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <Tabs value={tabValue} onChange={(_, v) => setTabValue(v)}>
+                  <Tab label="Pricing card" />
+                  {collection &&
+                    authUser.user &&
+                    collection.owner.username === authUser.user.username && (
+                      <Tab label="Settings" />
+                    )}
+                </Tabs>
+              </Box>
             </Box>
             <Box display="flex" flexDirection="column" gap={2}>
               <Box display="flex" gap={2}>
@@ -131,9 +157,7 @@ export default function CollectionCardPage() {
                       label="End Date"
                       type="date"
                       fullWidth
-                      defaultValue={
-                        new Date().toISOString().split('T')[0]
-                      }
+                      defaultValue={new Date().toISOString().split('T')[0]}
                       slotProps={{ inputLabel: { shrink: true } }}
                       onChange={handleOutputDate}
                     />
@@ -145,89 +169,94 @@ export default function CollectionCardPage() {
         </Box>
 
         <Box display="flex" gap={4} sx={{ mb: 4 }}>
-          <Box flex={1} sx={{ maxWidth: '66.7%' }}>
-            <Typography variant="h6" gutterBottom fontWeight="bold">
-              Description
-            </Typography>
-            <Typography variant="body1" sx={{ mb: 4 }}>
-              {collection?.description
-                ? collection.description
-                : 'This collection has no description.'}
-            </Typography>
-            {collection && (
-              <>
-                <Typography variant="h6" fontWeight="bold" marginBottom={-2}>
-                  Pricings in Collection
+          {tabValue === 1 && collection && <CollectionSettings collection={collection} updateCollection={setCollection}/>}
+          {tabValue === 0 && (
+            <>
+              <Box flex={1} sx={{ maxWidth: '66.7%' }}>
+                <Typography variant="h6" gutterBottom fontWeight="bold">
+                  Description
                 </Typography>
-                <PricingsGrid
-                  sx={{
-                    height: '100%',
-                    maxHeight: 800,
-                    overflowY: 'scroll',
-                    border: '1px solid #e0e0e0',
-                    borderRadius: '10px',
-                    padding: '20px 0',
-                  }}
-                >
-                  {collection.pricings[0].pricings.length > 0 ? (
-                    Object.values(collection.pricings[0].pricings).map(pricing => {
-                      return (
-                        <PricingListCard
-                          key={pricing.name}
-                          name={pricing.name}
-                          owner={pricing.owner}
-                          dataEntry={pricing}
-                          showOptions
-                        />
-                      );
-                    })
-                  ) : (
-                    <Box
+                <Typography variant="body1" sx={{ mb: 4 }}>
+                  {collection?.description
+                    ? collection.description
+                    : 'This collection has no description.'}
+                </Typography>
+                {collection && (
+                  <>
+                    <Typography variant="h6" fontWeight="bold" marginBottom={-2}>
+                      Pricings in Collection
+                    </Typography>
+                    <PricingsGrid
                       sx={{
-                        display: 'flex',
-                        gap: 2,
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center',
                         height: '100%',
+                        maxHeight: 800,
+                        overflowY: 'scroll',
+                        border: '1px solid #e0e0e0',
+                        borderRadius: '10px',
+                        padding: '20px 0',
                       }}
                     >
-                      NO PRICINGS FOUND
-                      <Button
-                        variant="outlined"
-                        color="primary"
-                        onClick={() => router.push('/me/pricings')}
-                      >
-                        Add
-                      </Button>
-                    </Box>
+                      {collection.pricings[0].pricings.length > 0 ? (
+                        Object.values(collection.pricings[0].pricings).map(pricing => {
+                          return (
+                            <PricingListCard
+                              key={pricing.name}
+                              name={pricing.name}
+                              owner={pricing.owner}
+                              dataEntry={pricing}
+                              showOptions
+                            />
+                          );
+                        })
+                      ) : (
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            gap: 2,
+                            flexDirection: 'column',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            height: '100%',
+                          }}
+                        >
+                          NO PRICINGS FOUND
+                          <Button
+                            variant="outlined"
+                            color="primary"
+                            onClick={() => router.push('/me/pricings')}
+                          >
+                            Add
+                          </Button>
+                        </Box>
+                      )}
+                    </PricingsGrid>
+                  </>
+                )}
+              </Box>
+              {collection && collection!.pricings[0].pricings.length > 0 && (
+                <Box sx={{ minWidth: '33.3%' }}>
+                  {collection && (
+                    <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
+                      <CollectionStats collection={collection} />
+                    </Paper>
                   )}
-                </PricingsGrid>
-              </>
-            )}
-          </Box>
-          {collection && collection!.pricings[0].pricings.length > 0 && (
-            <Box sx={{ minWidth: '33.3%' }}>
-              {collection && (
-                <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
-                  <CollectionStats collection={collection} />
-                </Paper>
-              )}
 
-              {collection && (
-                <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
-                  <CollectionAnalytics
-                    collectionData={collection.analytics}
-                    toggleModal={toggleModal}
-                    startDate={startDate}
-                    endDate={endDate}
-                  />
-                </Paper>
-              )}
-              {/* <Paper variant="outlined" sx={{ p: 2, mt: 2 }}>
+                  {collection && (
+                    <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
+                      <CollectionAnalytics
+                        collectionData={collection.analytics}
+                        toggleModal={toggleModal}
+                        startDate={startDate}
+                        endDate={endDate}
+                      />
+                    </Paper>
+                  )}
+                  {/* <Paper variant="outlined" sx={{ p: 2, mt: 2 }}>
               <Harvey />
             </Paper> */}
-            </Box>
+                </Box>
+              )}
+            </>
           )}
         </Box>
       </Container>

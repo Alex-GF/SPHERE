@@ -240,6 +240,20 @@ class PricingCollectionRepository extends RepositoryBase {
     );
   }
 
+  async update(collectionId: string, data: any) {
+    
+    const collection = await PricingCollectionMongoose.findById(collectionId);
+    
+    if (!collection) {
+      throw new Error('Collection not found in database');
+    }
+
+    collection.set(data);
+    await collection.save();
+
+    return collection.toJSON();
+  }
+
   async destroy(id: string, ...args: any) {
     const result = await PricingCollectionMongoose.deleteOne({ _id: id });
     return result?.deletedCount === 1;

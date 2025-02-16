@@ -13,6 +13,7 @@ class PricingCollectionController {
     this.showByUserId = this.showByUserId.bind(this);
     // this.show = this.show.bind(this);
     this.create = this.create.bind(this);
+    this.update = this.update.bind(this);
   }
 
   async index (req: any, res: any) {
@@ -55,6 +56,19 @@ class PricingCollectionController {
       res.json(pricing)
     } catch (err: any) {
       res.status(500).send({error: (err as Error).message})
+    }
+  }
+
+  async update(req: any, res: any) {
+    try {
+      const pricing = await this.pricingCollectionService.update(
+        req.params.colelctionName,
+        req.user.id,
+        req.body
+      );
+      res.json(pricing);
+    } catch (err: any) {
+      res.status(500).send({ error: err.message });
     }
   }
 

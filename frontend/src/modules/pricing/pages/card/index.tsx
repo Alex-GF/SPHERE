@@ -19,7 +19,6 @@ import { Pricing, retrievePricingFromYaml } from 'pricing4ts';
 import FileExplorer from '../../components/file-explorer';
 import { AnalyticsDataEntry } from '../../../../assets/data/analytics';
 import { usePathname } from '../../../core/hooks/usePathname';
-import { useRouter } from '../../../core/hooks/useRouter';
 import Stats from '../../components/stats';
 import Analytics from '../../components/analytics';
 // import Harvey from '../../components/harvey';
