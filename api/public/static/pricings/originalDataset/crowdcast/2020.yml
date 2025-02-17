@@ -1,9 +1,11 @@
-saasName: Crowdcast
 syntaxVersion: '2.1'
-version: '2020-11-29'
-createdAt: '2020-11-29'
+saasName: Crowdcast
+createdAt: '2020-11-30'
+version: '2020-11-30'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20201130045919/https://www.crowdcast.io/pricing
 features:
   liveStreaming:
     description: ''
@@ -47,13 +49,13 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://www.patreon.com/pricing
+    pricingUrls:
+    - https://www.patreon.com/pricing
   stripeIntegration:
     description: ''
     valueType: TEXT
     defaultValue:
-      - GATEWAY
+    - GATEWAY
     type: PAYMENT
   eventAnalytics:
     description: ''
@@ -71,24 +73,24 @@ features:
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://zapier.com/pricing
+    pricingUrls:
+    - https://zapier.com/pricing
   convertKitIntegration:
     description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://convertkit.com/pricing
+    pricingUrls:
+    - https://convertkit.com/pricing
   dripIntegration:
     description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://www.drip.com/pricing
+    pricingUrls:
+    - https://www.drip.com/pricing
   exportEmailAddresses:
     description: ''
     valueType: BOOLEAN
@@ -127,7 +129,7 @@ usageLimits:
     unit: attendee
     type: NON_RENEWABLE
     linkedFeatures:
-      - liveStreaming
+    - liveStreaming
   liveHoursPerMonthLimit:
     description: ''
     valueType: NUMERIC
@@ -135,7 +137,7 @@ usageLimits:
     unit: hour/month
     type: RENEWABLE
     linkedFeatures:
-      - liveStreaming
+    - liveStreaming
   sessionsLimit:
     description: ''
     valueType: NUMERIC
@@ -143,15 +145,15 @@ usageLimits:
     unit: hour/session
     type: NON_RENEWABLE
     linkedFeatures:
-      - liveStreaming
+    - liveStreaming
   multistreamLocationsLimit:
     description: ''
     valueType: NUMERIC
-    defaultValue: 1
+    defaultValue: 0
     unit: location
     type: NON_RENEWABLE
     linkedFeatures:
-      - multistreaming
+    - multistreaming
   screensLimit:
     description: ''
     valueType: NUMERIC
@@ -159,21 +161,18 @@ usageLimits:
     unit: screen
     type: NON_RENEWABLE
     linkedFeatures:
-      - liveStreaming
-      - presentOnManyScreens
+    - liveStreaming
+    - presentOnManyScreens
 plans:
   STARTER:
     description: Perfect for creators just getting started with live video
-    monthlyPrice: 29
-    annualPrice: 20
+    price: 29
     unit: /month
     features: null
     usageLimits: null
-    price: 29
   LITE:
     description: For creators and small businesses looking to grow their audience
-    monthlyPrice: 49
-    annualPrice: 34
+    price: 49
     unit: /month
     features:
       zapierIntegration:
@@ -193,13 +192,10 @@ plans:
         value: 100
       liveHoursPerMonthLimit:
         value: 10
-    price: 49
   PRO:
-    description: >-
-      For professional creators and businesses to consistently host live video
-      events
-    monthlyPrice: 89
-    annualPrice: 62
+    description: For professional creators and businesses to consistently host live
+      video events
+    price: 89
     unit: /month
     features:
       zapierIntegration:
@@ -225,15 +221,17 @@ plans:
         value: 250
       liveHoursPerMonthLimit:
         value: 20
+      multistreamLocationsLimit:
+        value: 1
       screensLimit:
         value: 6
-    price: 89
   BUSINESS:
     description: For startups and companies looking to engage their customers
-    monthlyPrice: 199
-    annualPrice: 139
+    price: 199
     unit: /month
     features:
+      transactionFee:
+        value: 2%
       zapierIntegration:
         value: true
       convertKitIntegration:
@@ -252,17 +250,15 @@ plans:
         value: true
       customRegistrationFields:
         value: true
-      transactionFee:
-        value: 2%
     usageLimits:
       liveAttendeesLimit:
         value: 1000
       liveHoursPerMonthLimit:
         value: 40
-      screensLimit:
+      sessionsLimit:
         value: 6
       multistreamLocationsLimit:
         value: 3
-      sessionsLimit:
+      screensLimit:
         value: 6
-    price: 199
+addOns: null

@@ -5,6 +5,7 @@
     },
     "firstName": "Admin",
     "lastName": "1",
+    "username": "Admin",
     "email": "admin1@admin.com",
     "password": "$2a$05$OGiO5p4b/dThwb/HeBm0w.cWuzJaj2gvIfRmBq7HbTrzHb.QYwrQq",
     "token": "aa8b184a5b0b48737cfdfdbef8cc4990f3821c8b",
@@ -19,10 +20,30 @@
   },
   {
     "_id": {
+      "$oid": "63f74bf8eeed64058364b52e"
+    },
+    "firstName": "Sphere",
+    "lastName": "Admin",
+    "username": "sphere",
+    "email": "sphere@sphere.com",
+    "password": "$2a$05$OGiO5p4b/dThwb/HeBm0w.cWuzJaj2gvIfRmBq7HbTrzHb.QYwrQq",
+    "token": "aa8b184a5b0b48737cfdfdbef8cc4990f3821c8b",
+    "tokenExpiration": {"$date": "2023-02-23T11:10:52.000Z"},
+    "phone": "+34666777888",
+    "avatar": "avatars/maleAvatar.png",
+    "address": "Fake street 123",
+    "postalCode": "41010",
+    "userType": "user",
+    "createdAt": {"$date": "2023-02-20T11:22:04.000Z"},
+    "updatedAt": {"$date": "2023-02-23T10:09:58.000Z"}
+  },
+  {
+    "_id": {
       "$oid": "63f74bf8eeed64054274b529"
     },
     "firstName": "Test",
     "lastName": "User",
+    "username": "TestUser",
     "email": "test_user@test.com",
     "password": "$2a$05$1ODkvjiWy7PPEMXGcbh2yujBvGmwlqTr2zz/fo1oNiqgdpzMA/UGa",
     "token": "39b27fde450fd1b1304bdd3bbd686ff41158e609",
@@ -41,6 +62,7 @@
     },
     "firstName": "Faker",
     "lastName": "User",
+    "username": "Faked",
     "email": "faked@acme.com",
     "password": "$2a$05$ev5Nn4nr5wugf7mEaCBMnOJkCCLqmbF8T4c/TbnJXb/BAGWqiKSuG",
     "token": "39b27fde450fd1b1304bdd3bbd686ff41158e609",

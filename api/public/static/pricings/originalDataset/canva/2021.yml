@@ -1,9 +1,11 @@
-saasName: Canva
 syntaxVersion: '2.1'
-version: 2021-3-18
+saasName: Canva
 createdAt: '2021-03-18'
+version: '2021-03-18'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20210319062841/https://www.canva.com/pricing/
 features:
   freeTemplates:
     description: ''
@@ -117,13 +119,11 @@ features:
     defaultValue: false
     type: INTEGRATION
     integrationType: MARKETPLACE
-    pricingURLs: null
   publishToSocialMediaOnlyAllowedToAdmins:
     description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: MANAGEMENT
-    pricingURLs: null
   teamSharing:
     description: ''
     valueType: BOOLEAN
@@ -202,7 +202,7 @@ usageLimits:
     unit: Brand Kit
     type: NON_RENEWABLE
     linkedFeatures:
-      - brandKit
+    - brandKit
   cloudStorageLimit:
     description: ''
     valueType: NUMERIC
@@ -210,7 +210,7 @@ usageLimits:
     unit: GB
     type: NON_RENEWABLE
     linkedFeatures:
-      - cloudStorage
+    - cloudStorage
   foldersLimit:
     description: ''
     valueType: NUMERIC
@@ -218,22 +218,18 @@ usageLimits:
     unit: folder
     type: NON_RENEWABLE
     linkedFeatures:
-      - folders
+    - folders
 plans:
   FREE:
     description: Everything you need to start designing
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: user/month
     features: null
     usageLimits: null
-    price: 0
   PRO:
-    description: >-
-      Designing together just got better. Professional design made easy with
-      unlimited access to premium tools and content.
-    monthlyPrice: 12.99
-    annualPrice: 9.99
+    description: Designing together just got better. Professional design made easy
+      with unlimited access to premium tools and content.
+    price: 12.99
     unit: user/month
     features:
       premiumStockImages:
@@ -263,13 +259,10 @@ plans:
         value: 100
       foldersLimit:
         value: 1000000000
-    price: 12.99
   ENTERPRISE:
-    description: >-
-      Empower your team, manage your brand, and scale your content all in one
-      place
-    monthlyPrice: Contact Sales
-    annualPrice: 30
+    description: Empower your team, manage your brand, and scale your content all
+      in one place
+    price: Contact Sales
     unit: user/month
     features:
       premiumStockImages:
@@ -309,4 +302,4 @@ plans:
         value: 1000000000
       foldersLimit:
         value: 1000000000
-    price: Contact Sales
+addOns: null

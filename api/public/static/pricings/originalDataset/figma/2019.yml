@@ -1,9 +1,11 @@
-saasName: Figma
 syntaxVersion: '2.1'
-version: '2019-10-17'
-createdAt: '2019-10-17'
+saasName: Figma
+createdAt: '2019-10-18'
+version: '2019-10-18'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20191018192624/https://www.figma.com/pricing/
 features:
   versionHistory:
     description: ''
@@ -31,7 +33,6 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: MARKETPLACE
-    pricingUrls: null
   fileStorage:
     description: ''
     valueType: BOOLEAN
@@ -195,20 +196,17 @@ usageLimits:
     unit: day
     type: NON_RENEWABLE
     linkedFeatures:
-      - versionHistory
+    - versionHistory
 plans:
   STARTER:
     description: ''
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: editor/month
     features: null
     usageLimits: null
-    price: 0
   PROFESSIONAL:
     description: ''
-    monthlyPrice: null
-    annualPrice: 12
+    price: 12
     unit: editor/month
     features:
       privateProjects:
@@ -218,11 +216,9 @@ plans:
     usageLimits:
       versionHistoryDepth:
         value: .inf
-    price: 12
   ORGANIZATION:
     description: ''
-    monthlyPrice: null
-    annualPrice: 45
+    price: 45
     unit: editor/month
     features:
       privateProjects:
@@ -254,4 +250,4 @@ plans:
     usageLimits:
       versionHistoryDepth:
         value: .inf
-    price: 45
+addOns: null

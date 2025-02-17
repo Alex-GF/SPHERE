@@ -1,160 +1,152 @@
-saasName: Slack
 syntaxVersion: '2.1'
-version: '2019-10-30'
-createdAt: '2019-10-30'
+saasName: Slack
+createdAt: '2019-10-31'
+version: '2019-10-31'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20191031074840/https://slack.com/pricing
 features:
   messagesAccess:
-    description: >-
-      Slack saves all your messages for you, but with the free plan, you can
-      only view and search the 10,000 most recent ones.
-    defaultValue: true
+    description: Slack saves all your messages for you, but with the free plan, you
+      can only view and search the 10,000 most recent ones.
     valueType: BOOLEAN
+    defaultValue: true
     type: DOMAIN
   appsAndServices:
-    description: >-
-      Use integrations to connect with the tools and services you use daily.
-      Check the complete list of integrations and bots in the Slack App
-      Directory.
-    defaultValue: true
+    description: Use integrations to connect with the tools and services you use daily.
+      Check the complete list of integrations and bots in the Slack App Directory.
     valueType: BOOLEAN
+    defaultValue: true
     type: DOMAIN
   sharedChannels:
     description: 'Shared channels: Use shared channels to work.'
-    defaultValue: false
     valueType: BOOLEAN
+    defaultValue: false
     type: DOMAIN
   monocanalGuests:
-    description: >-
-      Single-channel guests: Use guest accounts to work with individuals who are
-      not part of your team, such as clients, suppliers, and partners.
-    defaultValue: false
+    description: 'Single-channel guests: Use guest accounts to work with individuals
+      who are not part of your team, such as clients, suppliers, and partners.'
     valueType: BOOLEAN
+    defaultValue: false
     type: DOMAIN
   multicanalGuests:
-    description: >-
-      Multi-channel guests: Use guest accounts to work with organizations that
-      are not part of your team, such as clients, suppliers, and partners.
-    defaultValue: false
+    description: 'Multi-channel guests: Use guest accounts to work with organizations
+      that are not part of your team, such as clients, suppliers, and partners.'
     valueType: BOOLEAN
+    defaultValue: false
     type: DOMAIN
   twoFactorAuthentication:
     description: Two-factor authentication.
-    defaultValue: true
     valueType: BOOLEAN
+    defaultValue: true
     type: INTEGRATION
     integrationType: EXTERNAL_DEVICE
   oAuthGoogle:
     description: OAuth with Google.
-    defaultValue: false
     valueType: BOOLEAN
+    defaultValue: false
     type: INTEGRATION
     integrationType: IDENTITY_PROVIDER
   singleSignOn:
     description: SAML-based single sign-on (SSO).
-    defaultValue: false
     valueType: BOOLEAN
+    defaultValue: false
     type: INTEGRATION
     integrationType: IDENTITY_PROVIDER
   customRules:
     description: Custom message and file retention policies.
-    defaultValue: false
     valueType: BOOLEAN
+    defaultValue: false
     type: MANAGEMENT
   exportMessages:
     description: Corporate export for all messages.
-    defaultValue: false
     valueType: BOOLEAN
+    defaultValue: false
     type: DOMAIN
   dataResidence:
     description: Data residency
-    defaultValue: false
     valueType: BOOLEAN
+    defaultValue: false
     type: GUARANTEE
   privilegesGeneralChannelManagement:
     description: 'Manage posting permissions in the #general channel.'
-    defaultValue: true
     valueType: BOOLEAN
+    defaultValue: true
     type: MANAGEMENT
   privilegesPrivateChannelManagement:
     description: Manage posting permissions for an unlimited number of channels.
-    defaultValue: false
     valueType: BOOLEAN
+    defaultValue: false
     type: MANAGEMENT
   customUserGroups:
     description: Custom user groups to contact a team or department.
-    defaultValue: false
     valueType: BOOLEAN
+    defaultValue: false
     type: MANAGEMENT
   usersManagement:
     description: User management.
-    defaultValue: false
     valueType: BOOLEAN
+    defaultValue: false
     type: MANAGEMENT
   activeDirectorySync:
     description: Real-time Active Directory sync with OneLogin, Okta, and Ping.
-    defaultValue: false
     valueType: BOOLEAN
+    defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://www.onelogin.com/pages/active-directory-sso
-      - https://www.okta.com/integrations/active-directory/
-      - >-
-        https://docs.pingidentity.com/r/en-us/pingoneforenterprise/p14e_connect_adc
+    pricingUrls:
+    - https://www.onelogin.com/pages/active-directory-sso
+    - https://www.okta.com/integrations/active-directory/
+    - https://docs.pingidentity.com/r/en-us/pingoneforenterprise/p14e_connect_adc
   voiceAndVideoCalls:
     description: Voice and video calls
-    defaultValue: true
     valueType: BOOLEAN
+    defaultValue: true
     type: DOMAIN
   screenSharing:
-    description: >-
-      In addition to being able to present your screen, everyone on the call can
-      write on the screen to add annotations.
-    defaultValue: false
+    description: In addition to being able to present your screen, everyone on the
+      call can write on the screen to add annotations.
     valueType: BOOLEAN
+    defaultValue: false
     type: DOMAIN
   peopleChannelsFilesSearch:
-    description: >-
-      Search for relevant people, channels, and files: Smart features help you
-      quickly find what you need and keep up with important conversations.
-    defaultValue: false
+    description: 'Search for relevant people, channels, and files: Smart features
+      help you quickly find what you need and keep up with important conversations.'
     valueType: BOOLEAN
+    defaultValue: false
     type: DOMAIN
   channelRecommendations:
-    description: >-
-      Channel recommendations: Smart features help you quickly find what you
-      need and keep up with important conversations.
-    defaultValue: false
+    description: 'Channel recommendations: Smart features help you quickly find what
+      you need and keep up with important conversations.'
     valueType: BOOLEAN
+    defaultValue: false
     type: DOMAIN
   outlinedMessages:
-    description: >-
-      Highlighted messages: Smart features help you quickly find what you need
-      and keep up with important conversations.
-    defaultValue: false
+    description: 'Highlighted messages: Smart features help you quickly find what
+      you need and keep up with important conversations.'
     valueType: BOOLEAN
+    defaultValue: false
     type: DOMAIN
   storageByAccount:
     description: File storage per account (in total).
-    defaultValue: true
     valueType: BOOLEAN
+    defaultValue: true
     type: DOMAIN
   storageByTeamMember:
     description: File storage per team member.
-    defaultValue: false
     valueType: BOOLEAN
+    defaultValue: false
     type: DOMAIN
   support:
     description: Support (Technical assistance).
-    defaultValue: Standard Support
     valueType: TEXT
+    defaultValue: Standard Support
     type: SUPPORT
   availability:
     description: 99.99% availability guaranteed in our SLA.
-    defaultValue: false
     valueType: BOOLEAN
+    defaultValue: false
     type: GUARANTEE
 usageLimits:
   useMessagesAccess:
@@ -163,52 +155,47 @@ usageLimits:
     defaultValue: 10000
     type: NON_RENEWABLE
     linkedFeatures:
-      - messagesAccess
+    - messagesAccess
   useAppsAndServices:
     description: The limits of apps and services that can be used
     valueType: NUMERIC
     defaultValue: 10
     type: NON_RENEWABLE
     linkedFeatures:
-      - appsAndServices
+    - appsAndServices
   useVoiceAndVideoCalls:
-    description: >-
-      The number of people that can be in the same voice and video calls you
-      make
+    description: The number of people that can be in the same voice and video calls
+      you make
     valueType: NUMERIC
     defaultValue: 1
     type: NON_RENEWABLE
     linkedFeatures:
-      - voiceAndVideoCalls
+    - voiceAndVideoCalls
   useStorageByAccount:
     description: The storage limit by account
     valueType: NUMERIC
     defaultValue: 5
     type: NON_RENEWABLE
     linkedFeatures:
-      - storageByAccount
+    - storageByAccount
   useStorageByTeamMember:
     description: The storage limit by team member
     valueType: NUMERIC
-    defaultValue: 10
+    defaultValue: 0
     type: NON_RENEWABLE
     linkedFeatures:
-      - storageByTeamMember
+    - storageByTeamMember
 plans:
   FREE:
     description: For small teams that want to try Slack for an unlimited period.
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: user/month
     features: null
     usageLimits: null
-    price: 0
   STANDARD:
-    description: >-
-      For teams and businesses that want to make Slack the center of their
+    description: For teams and businesses that want to make Slack the center of their
       projects and communications.
-    monthlyPrice: 8
-    annualPrice: 6.67
+    price: 8
     unit: user/month
     features:
       sharedChannels:
@@ -242,13 +229,12 @@ plans:
         value: 100000000000000000
       useVoiceAndVideoCalls:
         value: 15
-    price: 8
+      useStorageByTeamMember:
+        value: 10
   PLUS:
-    description: >-
-      For businesses that need single sign-on, data export, and guaranteed
+    description: For businesses that need single sign-on, data export, and guaranteed
       uptime in a single Slack workspace.
-    monthlyPrice: 15
-    annualPrice: 12.5
+    price: 15
     unit: user/month
     features:
       sharedChannels:
@@ -298,4 +284,4 @@ plans:
         value: 15
       useStorageByTeamMember:
         value: 20
-    price: 15
+addOns: null

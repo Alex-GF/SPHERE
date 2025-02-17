@@ -1,9 +1,11 @@
-saasName: Notion
 syntaxVersion: '2.1'
-version: 2021-11-1
-createdAt: '2021-11-01'
+saasName: Notion
+createdAt: '2021-11-02'
+version: '2021-11-02'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: http://web.archive.org/web/20211102200417/https://www.notion.so/pricing
 features:
   pages:
     description: ''
@@ -203,7 +205,6 @@ usageLimits:
     defaultValue: 1
     unit: member
     type: NON_RENEWABLE
-    linkedFeatures: null
   guestsLimit:
     description: ''
     valueType: NUMERIC
@@ -211,7 +212,7 @@ usageLimits:
     unit: guest
     type: NON_RENEWABLE
     linkedFeatures:
-      - guests
+    - guests
   fileUploadsLimit:
     description: ''
     valueType: NUMERIC
@@ -219,28 +220,25 @@ usageLimits:
     unit: MB
     type: NON_RENEWABLE
     linkedFeatures:
-      - fileUploads
+    - fileUploads
   versionHistoryThreshold:
     description: ''
     valueType: NUMERIC
-    defaultValue: 30
+    defaultValue: 0
     unit: days
     type: NON_RENEWABLE
     linkedFeatures:
-      - versionHistory
+    - versionHistory
 plans:
   PERSONAL:
     description: ''
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: user/month
     features: null
     usageLimits: null
-    price: 0
   PERSONAL_PRO:
     description: ''
-    monthlyPrice: 5
-    annualPrice: 4
+    price: 5
     unit: user/month
     features:
       versionHistory:
@@ -252,11 +250,11 @@ plans:
         value: .inf
       fileUploadsLimit:
         value: .inf
-    price: 5
+      versionHistoryThreshold:
+        value: 30
   TEAM:
     description: ''
-    monthlyPrice: 10
-    annualPrice: 8
+    price: 10
     unit: user/month
     features:
       versionHistory:
@@ -278,11 +276,11 @@ plans:
         value: .inf
       fileUploadsLimit:
         value: .inf
-    price: 10
+      versionHistoryThreshold:
+        value: 30
   ENTERPRISE:
     description: ''
-    monthlyPrice: Contact Sales
-    annualPrice: Contact Sales
+    price: Contact Sales
     unit: user/month
     features:
       versionHistory:
@@ -322,4 +320,4 @@ plans:
         value: .inf
       versionHistoryThreshold:
         value: .inf
-    price: Contact Sales
+addOns: null

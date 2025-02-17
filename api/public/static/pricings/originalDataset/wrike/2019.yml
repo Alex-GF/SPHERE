@@ -1,9 +1,11 @@
-saasName: Wrike
 syntaxVersion: '2.1'
-version: '2019-11-28'
-createdAt: '2019-11-28'
+saasName: Wrike
+createdAt: '2019-11-29'
+version: '2019-11-29'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20191129220148/https://www.wrike.com/price/
 features:
   boardView:
     description: ''
@@ -48,34 +50,12 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingsUrls:
-      - https://skyvia.com/pricing/
-      - https://www.mediavalet.com/pricing-request
-      - https://cloud.google.com/storage/pricing?hl=es-419
-      - >-
-        https://www.microsoft.com/en-us/microsoft-365/sharepoint/compare-sharepoint-plans
-      - >-
-        https://www.microsoft.com/en-us/microsoft-365/onedrive/compare-onedrive-plans-b
-      - >-
-        https://tenovos.com/digital-asset-management-roi-productivity/?utm_campaign=website&utm_medium=banner&utm_source=website&utm_content=homepage-hero
-      - https://www.dropbox.com/en/plans
-      - https://www.box.com/pricing
   cloudStoragePlatforms:
     description: Google Drive, Dropbox, Box, OneDrive
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingsUrls:
-      - https://skyvia.com/pricing/
-      - https://www.mediavalet.com/pricing-request
-      - https://cloud.google.com/storage/pricing?hl=es-419
-      - >-
-        https://www.microsoft.com/en-us/microsoft-365/onedrive/compare-onedrive-plans-b
-      - >-
-        https://tenovos.com/digital-asset-management-roi-productivity/?utm_campaign=website&utm_medium=banner&utm_source=website&utm_content=homepage-hero
-      - https://www.dropbox.com/en/plans
-      - https://www.box.com/pricing
   storageSpace:
     description: ''
     valueType: BOOLEAN
@@ -97,20 +77,14 @@ features:
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingsUrls:
-      - >-
-        https://www.microsoft.com/en-us/microsoft-365/buy/compare-all-microsoft-365-products
-      - >-
-        https://www.microsoft.com/en-us/microsoft-365/project/compare-microsoft-project-management-software#x06415cfb9b3a424ab32e1d5521decc9a
   shareableDashboards:
     description: https://www.wrike.com/features/dashboards/
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
   collaborators:
-    description: >-
-      Involve team mates from other departments, clients, and contractors for
-      free.
+    description: Involve team mates from other departments, clients, and contractors
+      for free.
     valueType: BOOLEAN
     defaultValue: false
     type: MANAGEMENT
@@ -130,10 +104,9 @@ features:
     defaultValue: false
     type: DOMAIN
   sharedRealTimeReportsWithScheduledNotifications:
-    description: >-
-      Powerful and easy-to-use report builder lets you visualize and share
-      project status. Subscribe to scheduled notifications and get regular
-      report updates and reviews.
+    description: Powerful and easy-to-use report builder lets you visualize and share
+      project status. Subscribe to scheduled notifications and get regular report
+      updates and reviews.
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
@@ -178,8 +151,6 @@ features:
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingsUrls:
-      - https://www.salesforce.com/eu/
   brandedWorkspace:
     description: Align the look and feel of your Wrike workspace with your own logo
     valueType: BOOLEAN
@@ -198,16 +169,14 @@ features:
     type: INTEGRATION
     integrationType: IDENTITY_PROVIDER
   twoFactorVerification:
-    description: >-
-      Add an extra layer of security, requiring a time-sensitive verification
+    description: Add an extra layer of security, requiring a time-sensitive verification
       code along with a username and password.
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: EXTERNAL_DEVICE
   passwordPolicies:
-    description: >-
-      Implement password policy to ensure that passwords meet minimum strength
+    description: Implement password policy to ensure that passwords meet minimum strength
       requirements and users change them regularly.
     valueType: BOOLEAN
     defaultValue: false
@@ -218,8 +187,7 @@ features:
     defaultValue: false
     type: MANAGEMENT
   userAuditReports:
-    description: >-
-      An on-demand report tracks activity of regular users and Wrike account
+    description: An on-demand report tracks activity of regular users and Wrike account
       admins.
     valueType: BOOLEAN
     defaultValue: false
@@ -283,14 +251,12 @@ usageLimits:
     defaultValue: 5
     unit: user
     type: NON_RENEWABLE
-    linkedFeatures: null
   maxNumberOfUsers:
     description: ''
     valueType: NUMERIC
     defaultValue: 5
     unit: user
     type: NON_RENEWABLE
-    linkedFeatures: null
   useStorage:
     description: ''
     valueType: NUMERIC
@@ -298,28 +264,25 @@ usageLimits:
     unit: GB
     type: NON_RENEWABLE
     linkedFeatures:
-      - storageSpace
+    - storageSpace
   useStorageAccount:
     description: ''
     valueType: NUMERIC
-    defaultValue: 15
+    defaultValue: 0
     unit: GB/month
     type: RENEWABLE
     linkedFeatures:
-      - videoUploads
+    - videoUploads
 plans:
   FREE:
     description: A simple, shared task list for small teams
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: user/month
     features: null
     usageLimits: null
-    price: 0
   PROFESSIONAL:
     description: Full project planning & collaboration
-    monthlyPrice: 9.8
-    annualPrice: 9.8
+    price: 9.8
     unit: user/month
     features:
       subtaskManagement:
@@ -339,11 +302,11 @@ plans:
         value: 15
       useStorage:
         value: 5
-    price: 9.8
+      useStorageAccount:
+        value: 15
   BUSINESS:
     description: Robust work management with customization & exec reporting
-    monthlyPrice: 24.8
-    annualPrice: 24.8
+    price: 24.8
     unit: user/month
     features:
       subtaskManagement:
@@ -387,11 +350,11 @@ plans:
         value: 200
       useStorage:
         value: 50
-    price: 24.8
+      useStorageAccount:
+        value: 15
   ENTERPRISE:
     description: Comprehensive solution with advanced security & controls
-    monthlyPrice: Contact Sales
-    annualPrice: Contact Sales
+    price: Contact Sales
     unit: user/month
     features:
       subtaskManagement:
@@ -453,12 +416,13 @@ plans:
         value: 10000000000
       useStorage:
         value: 100
-    price: Contact Sales
+      useStorageAccount:
+        value: 15
 addOns:
   wrikeResource:
     availableFor:
-      - BUSINESS
-      - ENTERPRISE
+    - BUSINESS
+    - ENTERPRISE
     price: Contact Sales
     features:
       wrikeResource:
@@ -467,8 +431,8 @@ addOns:
     usageLimitsExtensions: null
   wrikeProof:
     availableFor:
-      - BUSINESS
-      - ENTERPRISE
+    - BUSINESS
+    - ENTERPRISE
     price: Contact Sales
     features:
       wrikeProof:
@@ -477,8 +441,8 @@ addOns:
     usageLimitsExtensions: null
   wrikePublish:
     availableFor:
-      - BUSINESS
-      - ENTERPRISE
+    - BUSINESS
+    - ENTERPRISE
     price: Contact Sales
     features:
       wrikePublish:
@@ -487,8 +451,8 @@ addOns:
     usageLimitsExtensions: null
   wrikeAnalyze:
     availableFor:
-      - BUSINESS
-      - ENTERPRISE
+    - BUSINESS
+    - ENTERPRISE
     price: Contact Sales
     features:
       wrikeAnalyze:
@@ -497,8 +461,8 @@ addOns:
     usageLimitsExtensions: null
   wrikeIntegrate:
     availableFor:
-      - BUSINESS
-      - ENTERPRISE
+    - BUSINESS
+    - ENTERPRISE
     price: Contact Sales
     features:
       wrikeIntegrate:
@@ -507,8 +471,8 @@ addOns:
     usageLimitsExtensions: null
   wrikeTwoWaySync:
     availableFor:
-      - BUSINESS
-      - ENTERPRISE
+    - BUSINESS
+    - ENTERPRISE
     price: Contact Sales
     features:
       wrikeTwoWaySync:
@@ -517,7 +481,7 @@ addOns:
     usageLimitsExtensions: null
   wrikeLock:
     availableFor:
-      - ENTERPRISE
+    - ENTERPRISE
     price: Contact Sales
     features:
       wrikeLock:

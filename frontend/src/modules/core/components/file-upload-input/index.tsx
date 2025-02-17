@@ -5,6 +5,7 @@ import { FaUpload } from 'react-icons/fa';
 import { useDropzone } from 'react-dropzone';
 import { MdDeleteForever } from 'react-icons/md';
 import { error, grey, primary } from '../../theme/palette';
+import customAlert from '../../utils/custom-alert';
 
 const UploadBox = styled(Paper)({
   padding: '10px',
@@ -17,7 +18,7 @@ const UploadBox = styled(Paper)({
   },
 });
 
-export default function FileUpload({onSubmit}: {onSubmit: (file: File) => void}) {
+export default function FileUpload({onSubmit, submitButtonText, submitButtonWidth}: {onSubmit: (file: File) => void, submitButtonText?: string, submitButtonWidth?: number}) {
   const [file, setFile] = useState<File | null>(null);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -28,7 +29,7 @@ export default function FileUpload({onSubmit}: {onSubmit: (file: File) => void})
     ) {
       setFile(uploadedFile);
     } else {
-      alert('Please upload a file with a .yaml or .yml extension');
+      customAlert('Please upload a file with a .yaml or .yml extension');
     }
   }, []);
 
@@ -53,8 +54,8 @@ export default function FileUpload({onSubmit}: {onSubmit: (file: File) => void})
   };
 
   return (
-    <>
-      <Box sx={{ maxWidth: 400, margin: 'auto', mt: 2, mb: 2 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, alignItems: 'center' }}>
+      <Box sx={{ width: "100%", margin: 'auto', mt: 2, mb: 2 }}>
         <UploadBox
           {...getRootProps()}
           sx={{ opacity: file ? 0.5 : 1, pointerEvents: file ? 'none' : 'auto' }}
@@ -97,10 +98,11 @@ export default function FileUpload({onSubmit}: {onSubmit: (file: File) => void})
         px: 5,
         py: 2,
         mt: 5,
-        borderRadius: 3
+        borderRadius: 3,
+        width: submitButtonWidth ?? '100%',
       }}>
-        Submit File
+        {submitButtonText ?? 'Submit file'}
       </Button>
-    </>
+    </Box>
   );
 }

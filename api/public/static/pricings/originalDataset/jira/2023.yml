@@ -1,9 +1,11 @@
-saasName: Jira
 syntaxVersion: '2.1'
-version: '2023-11-16'
-createdAt: '2023-11-16'
+saasName: Jira
+createdAt: '2023-11-17'
+version: '2023-11-17'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20231117124744/https://www.atlassian.com/software/jira/pricing
 features:
   sites:
     description: ''
@@ -246,14 +248,12 @@ usageLimits:
     defaultValue: 10
     unit: user/site
     type: NON_RENEWABLE
-    linkedFeatures: null
   sitesLimit:
     description: ''
     valueType: NUMERIC
     defaultValue: 1
     unit: site
     type: NON_RENEWABLE
-    linkedFeatures: null
   totalAutomationLimit:
     description: ''
     valueType: NUMERIC
@@ -261,15 +261,15 @@ usageLimits:
     unit: rule/month
     type: RENEWABLE
     linkedFeatures:
-      - automation
+    - automation
   perUserAutomationLimit:
     description: ''
     valueType: NUMERIC
-    defaultValue: 0
+    defaultValue: 1000
     unit: rule/month
     type: RENEWABLE
     linkedFeatures:
-      - automation
+    - automation
   storageLimit:
     description: ''
     valueType: NUMERIC
@@ -277,18 +277,17 @@ usageLimits:
     unit: GB
     type: NON_RENEWABLE
     linkedFeatures:
-      - storage
+    - storage
 plans:
   FREE:
     description: ''
-    monthlyPrice: 0
+    price: 0
     unit: user/month
     features: null
     usageLimits: null
-    price: 0
   STANDARD:
     description: ''
-    monthlyPrice: 7.16
+    price: 7.16
     unit: user/month
     features:
       userRolesAndPermissions:
@@ -310,10 +309,9 @@ plans:
         value: 1700
       storageLimit:
         value: 250
-    price: 7.16
   PREMIUM:
     description: ''
-    monthlyPrice: 12.48
+    price: 12.48
     unit: user/month
     features:
       advancedPlanning:
@@ -357,10 +355,9 @@ plans:
         value: 1000
       storageLimit:
         value: .inf
-    price: 12.48
   ENTERPRISE:
     description: ''
-    monthlyPrice: Contact Sales
+    price: Contact Sales
     unit: user/month
     features:
       advancedPlanning:
@@ -428,13 +425,12 @@ plans:
         value: .inf
       storageLimit:
         value: .inf
-    price: Contact Sales
 addOns:
   atlassianAccessAddOn:
     availableFor:
-      - FREE
-      - STANDARD
-      - PREMIUM
+    - FREE
+    - STANDARD
+    - PREMIUM
     price: Contact Sales
     unit: user/month
     features:

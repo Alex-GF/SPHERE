@@ -3,7 +3,7 @@ import request from 'supertest';
 import { getApp, shutdownApp } from './utils/testApp';
 import { Server } from 'http';
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import { generateFakeUser } from './utils/testData';
+import { generateFakeUser, userCredentials } from './utils/testData';
 import { getLoggedInAdmin, getLoggedInUser, getNewloggedInUser } from './utils/auth';
 
 dotenv.config();
@@ -15,6 +15,34 @@ describe('Get public user information', function () {
     app = await getApp();
   });
 
+  describe('POST /users/login', function () {
+    it('Should log in with email and return 200', async function () {
+      const testUser = userCredentials;
+      const response = await request(app).post('/api/users/login').send({
+        loginField: testUser.email,
+        password: testUser.password,
+      });
+      expect(response.status).toEqual(200);
+      expect(response.body.password).toBeUndefined();
+      expect(response.body.email).toEqual(testUser.email);
+      expect(response.body.username).toEqual(testUser.username);
+      expect(response.body.avatar).toBeDefined();
+    });
+
+    it('Should log in with username and return 200', async function () {
+      const testUser = userCredentials;
+      const response = await request(app).post('/api/users/login').send({
+        loginField: testUser.username,
+        password: testUser.password,
+      });
+      expect(response.status).toEqual(200);
+      expect(response.body.password).toBeUndefined();
+      expect(response.body.email).toEqual(testUser.email);
+      expect(response.body.username).toEqual(testUser.username);
+      expect(response.body.avatar).toBeDefined();
+    });
+  })
+
   describe('POST /users/register', function () {
     it('Should return 201 and the user created', async function () {
       const newUser = generateFakeUser('user');
@@ -22,6 +50,7 @@ describe('Get public user information', function () {
       expect(response.status).toEqual(201);
       expect(response.body.password).toBeUndefined();
       expect(response.body.email).toEqual(newUser.email);
+      expect(response.body.username).toEqual(newUser.username);
       expect(response.body.userType).toEqual('user');
       expect(response.body.avatar).toBeUndefined();
     });
@@ -261,16 +290,13 @@ describe('Get public user information', function () {
     });
 
     describe('address field validation', function () {
-      it('Should return 422 if address is missing', async function () {
+      it('Should return 201 if address is missing', async function () {
         const newUser: any = generateFakeUser('user');
         delete newUser.address;
         const response = await request(app).post('/api/users/register').send(newUser);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some(
-            (err: any) => err.msg === 'A address must be specified in order to create the user'
-          )
-        ).toBeTruthy();
+        expect(response.status).toEqual(201);
+        expect(response.body.password).toBeUndefined();
+        expect(response.body.email).toEqual(newUser.email);
       });
 
       it('Should return 422 if address is not a string', async function () {
@@ -282,31 +308,16 @@ describe('Get public user information', function () {
           response.body.errors.some((err: any) => err.msg === 'The field address must be a string')
         ).toBeTruthy();
       });
-
-      it('Should return 422 if address length is invalid', async function () {
-        const newUser: any = generateFakeUser('user');
-        newUser.address = '';
-        const response = await request(app).post('/api/users/register').send(newUser);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some(
-            (err: any) => err.msg === 'The address must have between 1 and 255 characters long'
-          )
-        ).toBeTruthy();
-      });
     });
 
     describe('postalCode field validation', function () {
-      it('Should return 422 if postalCode is missing', async function () {
+      it('Should return 201 if postalCode is missing', async function () {
         const newUser: any = generateFakeUser('user');
         delete newUser.postalCode;
         const response = await request(app).post('/api/users/register').send(newUser);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some(
-            (err: any) => err.msg === 'A postalCode must be specified in order to create the user'
-          )
-        ).toBeTruthy();
+        expect(response.status).toEqual(201);
+        expect(response.body.password).toBeUndefined();
+        expect(response.body.email).toEqual(newUser.email);
       });
 
       it('Should return 422 if postalCode is not a string', async function () {
@@ -317,18 +328,6 @@ describe('Get public user information', function () {
         expect(
           response.body.errors.some(
             (err: any) => err.msg === 'The field postalCode must be a string'
-          )
-        ).toBeTruthy();
-      });
-
-      it('Should return 422 if postalCode length is invalid', async function () {
-        const newUser: any = generateFakeUser('user');
-        newUser.postalCode = '';
-        const response = await request(app).post('/api/users/register').send(newUser);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some(
-            (err: any) => err.msg === 'The postalCode must have between 1 and 255 characters long'
           )
         ).toBeTruthy();
       });
@@ -507,13 +506,15 @@ describe('Get public user information', function () {
       });
 
       describe('address field validation', function () {
-        it('Should return 422 if address is missing', async function () {
+        it('Should return 201 if address is missing', async function () {
           const newAdmin: any = generateFakeUser('admin');
           delete newAdmin.address;
           const loggedAdminToken = await getLoggedInAdmin();
           const response = await request(app).post('/api/users/registerAdmin').set("Authorization", `Bearer ${loggedAdminToken.token}`).send(newAdmin);
-          expect(response.status).toEqual(422);
-          expect(response.body.errors.some((err: any) => err.msg === 'A address must be specified in order to create the user')).toBeTruthy();
+          expect(response.status).toEqual(201);
+          expect(response.body.password).toBeUndefined();
+          expect(response.body.email).toEqual(newAdmin.email);
+          expect(response.body.userType).toEqual('admin');
         });
 
         it('Should return 422 if address is not a string', async function () {
@@ -524,25 +525,18 @@ describe('Get public user information', function () {
           expect(response.status).toEqual(422);
           expect(response.body.errors.some((err: any) => err.msg === 'The field address must be a string')).toBeTruthy();
         });
-
-        it('Should return 422 if address length is invalid', async function () {
-          const newAdmin: any = generateFakeUser('admin');
-          newAdmin.address = '';
-          const loggedAdminToken = await getLoggedInAdmin();
-          const response = await request(app).post('/api/users/registerAdmin').set("Authorization", `Bearer ${loggedAdminToken.token}`).send(newAdmin);
-          expect(response.status).toEqual(422);
-          expect(response.body.errors.some((err: any) => err.msg === 'The address must have between 1 and 255 characters long')).toBeTruthy();
-        });
       });
 
       describe('postalCode field validation', function () {
-        it('Should return 422 if postalCode is missing', async function () {
+        it('Should return 201 if postalCode is missing', async function () {
           const newAdmin: any = generateFakeUser('admin');
           delete newAdmin.postalCode;
           const loggedAdminToken = await getLoggedInAdmin();
           const response = await request(app).post('/api/users/registerAdmin').set("Authorization", `Bearer ${loggedAdminToken.token}`).send(newAdmin);
-          expect(response.status).toEqual(422);
-          expect(response.body.errors.some((err: any) => err.msg === 'A postalCode must be specified in order to create the user')).toBeTruthy();
+          expect(response.status).toEqual(201);
+          expect(response.body.password).toBeUndefined();
+          expect(response.body.email).toEqual(newAdmin.email);
+          expect(response.body.userType).toEqual('admin');
         });
 
         it('Should return 422 if postalCode is not a string', async function () {
@@ -552,15 +546,6 @@ describe('Get public user information', function () {
           const response = await request(app).post('/api/users/registerAdmin').set("Authorization", `Bearer ${loggedAdminToken.token}`).send(newAdmin);
           expect(response.status).toEqual(422);
           expect(response.body.errors.some((err: any) => err.msg === 'The field postalCode must be a string')).toBeTruthy();
-        });
-
-        it('Should return 422 if postalCode length is invalid', async function () {
-          const newAdmin: any = generateFakeUser('admin');
-          newAdmin.postalCode = '';
-          const loggedAdminToken = await getLoggedInAdmin();
-          const response = await request(app).post('/api/users/registerAdmin').set("Authorization", `Bearer ${loggedAdminToken.token}`).send(newAdmin);
-          expect(response.status).toEqual(422);
-          expect(response.body.errors.some((err: any) => err.msg === 'The postalCode must have between 1 and 255 characters long')).toBeTruthy();
         });
       });
   });
@@ -782,21 +767,6 @@ describe('Get public user information', function () {
           response.body.errors.some((err: any) => err.msg === 'The field address must be a string')
         ).toBeTruthy();
       });
-
-      it('Should return 422 if address length is invalid', async function () {
-        const loggedUserToken: any = await getLoggedInUser();
-        const requestBody: any = { address: '' };
-        const response = await request(app)
-          .put('/api/users')
-          .set('Authorization', `Bearer ${loggedUserToken.token}`)
-          .send(requestBody);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some(
-            (err: any) => err.msg === 'The address must have between 1 and 255 characters long'
-          )
-        ).toBeTruthy();
-      });
     });
 
     describe('postalCode field validation', function () {
@@ -823,21 +793,6 @@ describe('Get public user information', function () {
         expect(
           response.body.errors.some(
             (err: any) => err.msg === 'The field postalCode must be a string'
-          )
-        ).toBeTruthy();
-      });
-
-      it('Should return 422 if postalCode length is invalid', async function () {
-        const loggedUserToken: any = await getLoggedInUser();
-        const requestBody: any = { postalCode: '' };
-        const response = await request(app)
-          .put('/api/users')
-          .set('Authorization', `Bearer ${loggedUserToken.token}`)
-          .send(requestBody);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some(
-            (err: any) => err.msg === 'The postalCode must have between 1 and 255 characters long'
           )
         ).toBeTruthy();
       });

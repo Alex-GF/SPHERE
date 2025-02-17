@@ -1,9 +1,11 @@
-saasName: Jira
 syntaxVersion: '2.1'
-version: '2019-10-29'
-createdAt: '2019-10-29'
+saasName: Jira
+createdAt: '2019-10-30'
+version: '2019-10-30'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20191030002727/https://www.atlassian.com/software/jira/pricing
 features:
   advancedPermissions:
     description: ''
@@ -83,7 +85,6 @@ usageLimits:
     defaultValue: 10
     unit: user/site
     type: NON_RENEWABLE
-    linkedFeatures: null
   storageLimit:
     description: ''
     valueType: NUMERIC
@@ -91,18 +92,17 @@ usageLimits:
     unit: GB
     type: NON_RENEWABLE
     linkedFeatures:
-      - storage
+    - storage
 plans:
   FREE:
     description: ''
-    monthlyPrice: 0
+    price: 0
     unit: user/month
     features: null
     usageLimits: null
-    price: 0
   STANDARD:
     description: ''
-    monthlyPrice: 7
+    price: 7
     unit: user/month
     features:
       advancedPermissions:
@@ -118,10 +118,9 @@ plans:
         value: 20000
       storageLimit:
         value: 250
-    price: 7
   PREMIUM:
     description: ''
-    monthlyPrice: 14
+    price: 14
     unit: user/month
     features:
       advancedPermissions:
@@ -141,4 +140,4 @@ plans:
         value: 20000
       storageLimit:
         value: .inf
-    price: 14
+addOns: null

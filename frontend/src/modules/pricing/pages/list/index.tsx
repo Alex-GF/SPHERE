@@ -8,7 +8,7 @@ import { flex } from '../../../core/theme/css';
 import PricingFilters from '../../components/pricing-filters';
 import { grey } from '../../../core/theme/palette';
 
-const PricingsGrid = styled(Box)(() => ({
+export const PricingsGrid = styled(Box)(() => ({
   display: 'flex',
   flexWrap: 'wrap',
   width: '100%',
@@ -148,10 +148,10 @@ export default function PricingListPage() {
           }}
         >
           <SearchBar setTextFilterValue={setTextFilterValue} />
-          <PricingsGrid>
-            {pricingsList.length > 0 ? Object.values(pricingsList).map((pricing, index) => {
+          <PricingsGrid sx={{marginBottom: "50px"}}>
+            {pricingsList.length > 0 ? Object.values(pricingsList).map((pricing) => {
               return (
-                <PricingListCard key={`pricing-${index}`} name={pricing.name} owner={pricing.owner} dataEntry={pricing} />
+                <PricingListCard key={`pricing-${pricing.owner}-${pricing.name}`} name={pricing.name} owner={pricing.owner} dataEntry={pricing} />
               );
             }): <Box>No pricings found</Box>}
           </PricingsGrid>

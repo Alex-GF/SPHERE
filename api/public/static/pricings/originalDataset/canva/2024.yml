@@ -1,9 +1,10 @@
-saasName: Canva
 syntaxVersion: '2.1'
-version: 2024-7-7
+saasName: Canva
 createdAt: '2024-07-07'
+version: '2024-07-07'
+billing:
+  monthly: 1.0
 currency: EUR
-variables: {}
 features:
   assets1:
     description: Free stock photos, font, graphics, videos and audio
@@ -41,7 +42,6 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs: null
   customTemplates:
     description: Custom templates
     valueType: BOOLEAN
@@ -495,14 +495,12 @@ usageLimits:
     defaultValue: 0
     unit: user
     type: NON_RENEWABLE
-    linkedFeatures: null
   usersLimit:
     description: ''
     valueType: NUMERIC
     defaultValue: 1
     unit: user
     type: NON_RENEWABLE
-    linkedFeatures: null
   magicDesignUsageTokens:
     description: ''
     valueType: NUMERIC
@@ -510,7 +508,7 @@ usageLimits:
     unit: use
     type: NON_RENEWABLE
     linkedFeatures:
-      - magicDesign
+    - magicDesign
   magicWriteTotalUsages:
     description: ''
     valueType: NUMERIC
@@ -518,15 +516,15 @@ usageLimits:
     unit: use
     type: NON_RENEWABLE
     linkedFeatures:
-      - magicWrite
+    - magicWrite
   magicWriteReusableTokens:
     description: ''
     valueType: NUMERIC
-    defaultValue: 0
+    defaultValue: 500
     unit: use
     type: RENEWABLE
     linkedFeatures:
-      - magicWrite
+    - magicWrite
   magicText2ImageTotalTokens:
     description: ''
     valueType: NUMERIC
@@ -534,15 +532,15 @@ usageLimits:
     unit: use
     type: NON_RENEWABLE
     linkedFeatures:
-      - magicMediaText2Image
+    - magicMediaText2Image
   magicText2ImageReusableTokens:
     description: ''
     valueType: NUMERIC
-    defaultValue: 0
+    defaultValue: 500
     unit: use
     type: RENEWABLE
     linkedFeatures:
-      - magicMediaText2Image
+    - magicMediaText2Image
   magicText2VideoTotalTokens:
     description: ''
     valueType: NUMERIC
@@ -550,15 +548,15 @@ usageLimits:
     unit: use
     type: NON_RENEWABLE
     linkedFeatures:
-      - magicMediaText2Video
+    - magicMediaText2Video
   magicText2VideoReusableTokens:
     description: ''
     valueType: NUMERIC
-    defaultValue: 0
+    defaultValue: 50
     unit: use
     type: RENEWABLE
     linkedFeatures:
-      - magicMediaText2Video
+    - magicMediaText2Video
   translatorTotalPages:
     description: ''
     valueType: NUMERIC
@@ -566,15 +564,15 @@ usageLimits:
     unit: page
     type: NON_RENEWABLE
     linkedFeatures:
-      - translator
+    - translator
   translatorReusablePages:
     description: ''
     valueType: NUMERIC
-    defaultValue: 0
+    defaultValue: 500
     unit: page
     type: RENEWABLE
     linkedFeatures:
-      - translator
+    - translator
   brandKitsUnits:
     description: ''
     valueType: NUMERIC
@@ -582,7 +580,7 @@ usageLimits:
     unit: kit
     type: NON_RENEWABLE
     linkedFeatures:
-      - brandKits
+    - brandKits
   cloudStorageLimit:
     description: ''
     valueType: NUMERIC
@@ -590,34 +588,29 @@ usageLimits:
     unit: GB
     type: NON_RENEWABLE
     linkedFeatures:
-      - cloudStorage
+    - cloudStorage
   availableOnlyIfMoreThan100SeatsInvoiced:
     description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: NON_RENEWABLE
     linkedFeatures:
-      - ipIndemnityContentControl
-      - dedicatedCustomerSuccessManager
-      - creativeServices
+    - ipIndemnityContentControl
+    - dedicatedCustomerSuccessManager
+    - creativeServices
 plans:
   FREE:
-    description: >-
-      For anyone to design anything, on their own or with family, friends, or
-      others. No experience required.
-    monthlyPrice: 0
-    annualPrice: 0
+    description: For anyone to design anything, on their own or with family, friends,
+      or others. No experience required.
+    price: 0
     unit: user/month
     features: null
     usageLimits: null
-    price: 0
   PRO:
-    description: >-
-      For individuals, solopreneurs and freelance designers who want unlimited
-      access to premium content, to create professional designs with ease and
-      scale their productivity.
-    monthlyPrice: 15
-    annualPrice: 10
+    description: For individuals, solopreneurs and freelance designers who want unlimited
+      access to premium content, to create professional designs with ease and scale
+      their productivity.
+    price: 15
     unit: user/month
     features:
       assets1:
@@ -662,6 +655,8 @@ plans:
         value: true
       brandTemplates:
         value: true
+      brandKits:
+        value: true
       elementLocking:
         value: true
       replaceLogosAndImagery:
@@ -675,8 +670,6 @@ plans:
       supportTickets:
         value: true
       liveChat:
-        value: true
-      brandKits:
         value: true
     usageLimits:
       magicDesignUsageTokens:
@@ -701,13 +694,10 @@ plans:
         value: 1000
       cloudStorageLimit:
         value: 1024
-    price: 15
   TEAMS:
-    description: >-
-      All the great features of Canva Pro, plus we think you'll love these
+    description: All the great features of Canva Pro, plus we think you'll love these
       features designed to allow teams of all sizes to collaborate with ease.
-    monthlyPrice: 10
-    annualPrice: 8.33
+    price: 10
     unit: user/month
     features:
       assets1:
@@ -783,10 +773,10 @@ plans:
       payAsYouGrowBilling:
         value: true
     usageLimits:
-      usersLimit:
-        value: .inf
       minimumUsersRequired:
         value: 3
+      usersLimit:
+        value: .inf
       magicDesignUsageTokens:
         value: .inf
       magicWriteTotalUsages:
@@ -809,11 +799,9 @@ plans:
         value: 1000
       cloudStorageLimit:
         value: 1024
-    price: 10
   ENTERPRISE:
     description: Empower your organization
-    monthlyPrice: Contact Sales
-    annualPrice: Contact Sales
+    price: Contact Sales
     unit: user/month
     features:
       assets1:
@@ -945,4 +933,4 @@ plans:
         value: 1024
       availableOnlyIfMoreThan100SeatsInvoiced:
         value: true
-    price: Contact Sales
+addOns: null

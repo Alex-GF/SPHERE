@@ -1,9 +1,11 @@
-saasName: Postman
 syntaxVersion: '2.1'
-version: '2021-11-29'
-createdAt: '2021-11-29'
+saasName: Postman
+createdAt: '2021-11-30'
+version: '2021-11-30'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20211130070753/https://www.postman.com/pricing/
 features:
   collaboration:
     description: ''
@@ -116,7 +118,7 @@ features:
     description: ''
     valueType: TEXT
     defaultValue:
-      - CARD
+    - CARD
     type: PAYMENT
   standardEULA:
     description: ''
@@ -136,7 +138,7 @@ usageLimits:
     unit: member
     type: NON_RENEWABLE
     linkedFeatures:
-      - collaboration
+    - collaboration
   maxNumberOfIntegrations:
     description: ''
     valueType: NUMERIC
@@ -144,7 +146,7 @@ usageLimits:
     unit: integration
     type: NON_RENEWABLE
     linkedFeatures:
-      - integrations
+    - integrations
   callsToPostmanApi:
     description: ''
     valueType: NUMERIC
@@ -152,7 +154,7 @@ usageLimits:
     unit: call/month
     type: RENEWABLE
     linkedFeatures:
-      - postmanAPI
+    - postmanAPI
   apiMockServerCallsLimit:
     description: ''
     valueType: NUMERIC
@@ -160,7 +162,7 @@ usageLimits:
     unit: call/month
     type: RENEWABLE
     linkedFeatures:
-      - apiMockServer
+    - apiMockServer
   apiMonitoringCallsLimit:
     description: ''
     valueType: NUMERIC
@@ -168,7 +170,7 @@ usageLimits:
     unit: call/month
     type: RENEWABLE
     linkedFeatures:
-      - apiMockServer
+    - apiMockServer
   customDomainsLimit:
     description: ''
     valueType: NUMERIC
@@ -176,7 +178,7 @@ usageLimits:
     unit: domain
     type: NON_RENEWABLE
     linkedFeatures:
-      - customDomains
+    - customDomains
   recoverDeletedCollectionsThreshold:
     description: ''
     valueType: NUMERIC
@@ -184,20 +186,17 @@ usageLimits:
     unit: day
     type: NON_RENEWABLE
     linkedFeatures:
-      - recoverDeletedCollections
+    - recoverDeletedCollections
 plans:
   FREE:
     description: ''
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: user/month
     features: null
     usageLimits: null
-    price: 0
   TEAM:
     description: ''
-    monthlyPrice: 15
-    annualPrice: 12
+    price: 15
     unit: user/month
     features:
       customDomains:
@@ -217,11 +216,9 @@ plans:
         value: 1
       recoverDeletedCollectionsThreshold:
         value: 30
-    price: 15
   BUSINESS:
     description: ''
-    monthlyPrice: 30
-    annualPrice: 24
+    price: 30
     unit: user/month
     features:
       singleSignOn:
@@ -251,11 +248,9 @@ plans:
         value: 5
       recoverDeletedCollectionsThreshold:
         value: 90
-    price: 30
   ENTERPRISE:
     description: ''
-    monthlyPrice: null
-    annualPrice: 69
+    price: 69
     unit: user/month
     features:
       singleSignOn:
@@ -284,9 +279,9 @@ plans:
         value: true
       paymentOptions:
         value:
-          - CARD
-          - ACH
-          - WIRE_TRANSFER
+        - CARD
+        - ACH
+        - WIRE_TRANSFER
       customEULA:
         value: true
     usageLimits:
@@ -304,14 +299,13 @@ plans:
         value: 25
       recoverDeletedCollectionsThreshold:
         value: 90
-    price: 69
 addOns:
   monitoringPayAsYouGo:
     availableFor:
-      - FREE
-      - TEAM
-      - BUSINESS
-      - ENTERPRISE
+    - FREE
+    - TEAM
+    - BUSINESS
+    - ENTERPRISE
     price: 0.75
     features: null
     usageLimits: null
@@ -320,10 +314,10 @@ addOns:
         value: 1000
   monitoringMonthly:
     availableFor:
-      - FREE
-      - TEAM
-      - BUSINESS
-      - ENTERPRISE
+    - FREE
+    - TEAM
+    - BUSINESS
+    - ENTERPRISE
     price: 20
     unit: block/month
     features: null
@@ -333,10 +327,10 @@ addOns:
         value: 50000
   mockServersPayAsYouGo:
     availableFor:
-      - FREE
-      - TEAM
-      - BUSINESS
-      - ENTERPRISE
+    - FREE
+    - TEAM
+    - BUSINESS
+    - ENTERPRISE
     price: 0.75
     features: null
     usageLimits: null
@@ -345,10 +339,10 @@ addOns:
         value: 1000
   mockServersMonthly:
     availableFor:
-      - FREE
-      - TEAM
-      - BUSINESS
-      - ENTERPRISE
+    - FREE
+    - TEAM
+    - BUSINESS
+    - ENTERPRISE
     price: 20
     unit: block/month
     features: null
@@ -358,9 +352,9 @@ addOns:
         value: 50000
   customDomains:
     availableFor:
-      - TEAM
-      - BUSINESS
-      - ENTERPRISE
+    - TEAM
+    - BUSINESS
+    - ENTERPRISE
     price: 10
     unit: domain/month
     features: null

@@ -1,9 +1,11 @@
-saasName: Dropbox
 syntaxVersion: '2.1'
-version: 2023-12-2
-createdAt: '2023-12-02'
+saasName: Dropbox
+createdAt: '2023-12-03'
+version: '2023-12-03'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20231203025118/https://www.dropbox.com/plans
 features:
   storage:
     description: ''
@@ -401,14 +403,13 @@ usageLimits:
     unit: GB
     type: NON_RENEWABLE
     linkedFeatures:
-      - storage
+    - storage
   usersLimit:
     description: ''
     valueType: NUMERIC
     defaultValue: 1
     unit: user
     type: NON_RENEWABLE
-    linkedFeatures: null
   signatureRequestLimit:
     description: ''
     valueType: NUMERIC
@@ -416,7 +417,7 @@ usageLimits:
     unit: signature/month
     type: RENEWABLE
     linkedFeatures:
-      - signatureRequest
+    - signatureRequest
   templatesLimit:
     description: ''
     valueType: NUMERIC
@@ -424,7 +425,7 @@ usageLimits:
     unit: template
     type: NON_RENEWABLE
     linkedFeatures:
-      - templates
+    - templates
   accountRecoveryAndVersionHistoryThreshold:
     description: ''
     valueType: NUMERIC
@@ -432,8 +433,8 @@ usageLimits:
     unit: day
     type: NON_RENEWABLE
     linkedFeatures:
-      - accountRecovery
-      - versionHistory
+    - accountRecovery
+    - versionHistory
   restoreDeletedFilesThreshold:
     description: ''
     valueType: NUMERIC
@@ -441,7 +442,7 @@ usageLimits:
     unit: day
     type: NON_RENEWABLE
     linkedFeatures:
-      - restoreDeletedFiles
+    - restoreDeletedFiles
   dropboxCaptureRecordingTimeLimit:
     description: ''
     valueType: NUMERIC
@@ -449,28 +450,28 @@ usageLimits:
     unit: min
     type: TIME_DRIVEN
     linkedFeatures:
-      - dropboxCapture
+    - dropboxCapture
   dropboxCaptureFullHDQuality:
     description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: NON_RENEWABLE
     linkedFeatures:
-      - dropboxCapture
+    - dropboxCapture
   dropboxCapture4kQuality:
     description: ''
     valueType: BOOLEAN
-    defaultValue: false
+    defaultValue: true
     type: NON_RENEWABLE
     linkedFeatures:
-      - dropboxCapture
+    - dropboxCapture
   dropboxCaptureAdvancedVideoEditing:
     description: ''
     valueType: BOOLEAN
-    defaultValue: false
+    defaultValue: true
     type: NON_RENEWABLE
     linkedFeatures:
-      - dropboxCapture
+    - dropboxCapture
   dropboxReplayFileUploadsLimit:
     description: ''
     valueType: NUMERIC
@@ -478,28 +479,28 @@ usageLimits:
     unit: file
     type: NON_RENEWABLE
     linkedFeatures:
-      - dropboxReplay
+    - dropboxReplay
   dropboxReplayLiveReviews:
     description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: NON_RENEWABLE
     linkedFeatures:
-      - dropboxReplay
+    - dropboxReplay
   dropboxReplayVersions:
     description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: NON_RENEWABLE
     linkedFeatures:
-      - dropboxReplay
+    - dropboxReplay
   dropboxReplayVideoCollaboration:
     description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: NON_RENEWABLE
     linkedFeatures:
-      - dropboxReplay
+    - dropboxReplay
   largeFileDeliveryLimit:
     description: ''
     valueType: NUMERIC
@@ -507,26 +508,25 @@ usageLimits:
     unit: GB/transfer
     type: NON_RENEWABLE
     linkedFeatures:
-      - largeFileDelivery
+    - largeFileDelivery
   apiAccessToDataTransportPlatformPartnersLimit:
     description: ''
     valueType: NUMERIC
-    defaultValue: 1000000000
+    defaultValue: 0
     unit: request/month
     type: RENEWABLE
     linkedFeatures:
-      - apiAccessToDataTransportPlatformPartners
+    - apiAccessToDataTransportPlatformPartners
 plans:
   PLUS:
     description: ''
-    monthlyPrice: 9.99
+    price: 9.99
     unit: /month
     features: null
     usageLimits: null
-    price: 9.99
   ESSENTIALS:
     description: ''
-    monthlyPrice: 16.58
+    price: 16.58
     unit: /month
     features:
       templates:
@@ -545,13 +545,13 @@ plans:
         value: true
       videoCommenting:
         value: true
+      advancedPdfEditing:
+        value: true
       brandedSharing:
         value: true
       fileLocking:
         value: true
       viewerHistory:
-        value: true
-      advancedPdfEditing:
         value: true
     usageLimits:
       storageLimit:
@@ -574,10 +574,9 @@ plans:
         value: 10
       largeFileDeliveryLimit:
         value: 100
-    price: 16.58
   BUSINESS:
     description: ''
-    monthlyPrice: 15
+    price: 15
     unit: user/month
     features:
       templates:
@@ -610,6 +609,8 @@ plans:
         value: true
       videoCommenting:
         value: true
+      advancedPdfEditing:
+        value: true
       brandedSharing:
         value: true
       fileLocking:
@@ -640,8 +641,6 @@ plans:
         value: true
       phoneSupportDuringBusinessHours:
         value: true
-      advancedPdfEditing:
-        value: true
     usageLimits:
       storageLimit:
         value: 9000
@@ -665,10 +664,11 @@ plans:
         value: 10
       largeFileDeliveryLimit:
         value: 100
-    price: 15
+      apiAccessToDataTransportPlatformPartnersLimit:
+        value: 1000000000
   BUSINESS_PLUS:
     description: ''
-    monthlyPrice: 24
+    price: 24
     unit: user/month
     features:
       templates:
@@ -707,6 +707,8 @@ plans:
         value: true
       videoCommenting:
         value: true
+      advancedPdfEditing:
+        value: true
       brandedSharing:
         value: true
       fileLocking:
@@ -737,8 +739,6 @@ plans:
         value: true
       phoneSupportDuringBusinessHours:
         value: true
-      advancedPdfEditing:
-        value: true
     usageLimits:
       storageLimit:
         value: .inf
@@ -762,4 +762,6 @@ plans:
         value: .inf
       largeFileDeliveryLimit:
         value: 250
-    price: 24
+      apiAccessToDataTransportPlatformPartnersLimit:
+        value: 1000000000
+addOns: null

@@ -1,9 +1,11 @@
-saasName: Figma
 syntaxVersion: '2.1'
-version: '2022-11-29'
-createdAt: '2022-11-29'
+saasName: Figma
+createdAt: '2022-11-30'
+version: '2022-11-30'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20221130060300/https://www.figma.com/pricing/
 features:
   versionHistory:
     description: ''
@@ -36,7 +38,6 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: MARKETPLACE
-    pricingUrls: null
   fileStorage:
     description: ''
     valueType: BOOLEAN
@@ -291,20 +292,17 @@ usageLimits:
     unit: day
     type: NON_RENEWABLE
     linkedFeatures:
-      - versionHistory
+    - versionHistory
 plans:
   STARTER:
     description: ''
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: editor/month
     features: null
     usageLimits: null
-    price: 0
   PROFESSIONAL:
     description: ''
-    monthlyPrice: 15
-    annualPrice: 12
+    price: 15
     unit: editor/month
     features:
       privateProjects:
@@ -320,11 +318,9 @@ plans:
     usageLimits:
       versionHistoryDepth:
         value: .inf
-    price: 15
   ORGANIZATION:
     description: ''
-    monthlyPrice: null
-    annualPrice: 45
+    price: 45
     unit: editor/month
     features:
       privateProjects:
@@ -332,6 +328,8 @@ plans:
       prototypeSharingPermissions:
         value: true
       audioConversations:
+        value: true
+      unlimitedTeams:
         value: true
       branchingAndMerging:
         value: true
@@ -363,16 +361,12 @@ plans:
         value: true
       activityLogs:
         value: true
-      unlimitedTeams:
-        value: true
     usageLimits:
       versionHistoryDepth:
         value: .inf
-    price: 45
   ENTERPRISE:
     description: ''
-    monthlyPrice: null
-    annualPrice: 75
+    price: 75
     unit: editor/month
     features:
       privateProjects:
@@ -380,6 +374,8 @@ plans:
       prototypeSharingPermissions:
         value: true
       audioConversations:
+        value: true
+      unlimitedTeams:
         value: true
       branchingAndMerging:
         value: true
@@ -427,9 +423,7 @@ plans:
         value: true
       dedicatedAccountManager:
         value: true
-      unlimitedTeams:
-        value: true
     usageLimits:
       versionHistoryDepth:
         value: .inf
-    price: 75
+addOns: null

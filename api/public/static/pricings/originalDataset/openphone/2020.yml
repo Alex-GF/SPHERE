@@ -1,9 +1,11 @@
-saasName: OpenPhone
 syntaxVersion: '2.1'
-version: '2020-11-11'
-createdAt: '2020-11-11'
+saasName: OpenPhone
+createdAt: '2020-11-12'
+version: '2020-11-12'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20201112011236/https://www.openphone.co/pricing
 features:
   usAndCanadaCalling:
     description: ''
@@ -58,8 +60,8 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://slack.com/pricing
+    pricingUrls:
+    - https://slack.com/pricing
   crmIntegration:
     description: ''
     valueType: BOOLEAN
@@ -109,7 +111,7 @@ usageLimits:
     unit: phone number
     type: NON_RENEWABLE
     linkedFeatures:
-      - phoneNumbers
+    - phoneNumbers
   usAndCanadCallsLimit:
     description: ''
     valueType: NUMERIC
@@ -117,7 +119,7 @@ usageLimits:
     unit: call
     type: NON_RENEWABLE
     linkedFeatures:
-      - usAndCanadaCalling
+    - usAndCanadaCalling
   usAndCanadaMessagesLimit:
     description: ''
     valueType: NUMERIC
@@ -125,20 +127,17 @@ usageLimits:
     unit: message
     type: NON_RENEWABLE
     linkedFeatures:
-      - usAndCanadaMessaging
+    - usAndCanadaMessaging
 plans:
   STANDARD:
     description: For individuals, teams and companies.
-    monthlyPrice: 10
-    annualPrice: 10
+    price: 10
     unit: user/month
     features: null
     usageLimits: null
-    price: 10
   ENTERPRISE:
     description: For organizations with more requirements.
-    monthlyPrice: Contact Sales
-    annualPrice: Contact Sales
+    price: Contact Sales
     unit: user/month
     features:
       crmIntegration:
@@ -153,12 +152,12 @@ plans:
         value: true
       dedicatedAccountManager:
         value: true
-    price: Contact Sales
+    usageLimits: null
 addOns:
   aditionalPhoneNumbers:
     availableFor:
-      - STANDARD
-      - ENTERPRISE
+    - STANDARD
+    - ENTERPRISE
     price: 5
     unit: phoneNumber/month
     features: null

@@ -1,9 +1,11 @@
-saasName: Jira
 syntaxVersion: '2.1'
-version: '2022-11-29'
-createdAt: '2022-11-29'
+saasName: Jira
+createdAt: '2022-11-30'
+version: '2022-11-30'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20221130235348/https://www.atlassian.com/software/jira/pricing
 features:
   sites:
     description: ''
@@ -216,14 +218,12 @@ usageLimits:
     defaultValue: 10
     unit: user/site
     type: NON_RENEWABLE
-    linkedFeatures: null
   sitesLimit:
     description: ''
     valueType: NUMERIC
     defaultValue: 1
     unit: site
     type: NON_RENEWABLE
-    linkedFeatures: null
   storageLimit:
     description: ''
     valueType: NUMERIC
@@ -231,7 +231,7 @@ usageLimits:
     unit: GB
     type: NON_RENEWABLE
     linkedFeatures:
-      - storage
+    - storage
   projectWithAutomationsLimit:
     description: ''
     valueType: NUMERIC
@@ -239,18 +239,17 @@ usageLimits:
     unit: project
     type: NON_RENEWABLE
     linkedFeatures:
-      - automation
+    - automation
 plans:
   FREE:
     description: ''
-    monthlyPrice: 0
+    price: 0
     unit: user/month
     features: null
     usageLimits: null
-    price: 0
   STANDARD:
     description: ''
-    monthlyPrice: 7.16
+    price: 7.16
     unit: user/month
     features:
       projectRoles:
@@ -270,10 +269,9 @@ plans:
         value: 35000
       storageLimit:
         value: 250
-    price: 7.16
   PREMIUM:
     description: ''
-    monthlyPrice: 12.48
+    price: 12.48
     unit: user/month
     features:
       advancedRoadmaps:
@@ -315,10 +313,9 @@ plans:
         value: .inf
       projectWithAutomationsLimit:
         value: .inf
-    price: 12.48
   ENTERPRISE:
     description: ''
-    monthlyPrice: Contact Sales
+    price: Contact Sales
     unit: user/month
     features:
       advancedRoadmaps:
@@ -374,13 +371,12 @@ plans:
         value: .inf
       projectWithAutomationsLimit:
         value: .inf
-    price: Contact Sales
 addOns:
   atlassianAccessAddOn:
     availableFor:
-      - FREE
-      - STANDARD
-      - PREMIUM
+    - FREE
+    - STANDARD
+    - PREMIUM
     price: Contact Sales
     unit: user/month
     features:

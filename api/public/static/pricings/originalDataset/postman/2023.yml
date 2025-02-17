@@ -1,9 +1,11 @@
-saasName: Postman
 syntaxVersion: '2.1'
-version: 2023-11-4
+saasName: Postman
 createdAt: '2023-11-04'
+version: '2023-11-04'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20231109225552/https://www.postman.com/pricing/
 features:
   apiClient:
     description: https://www.postman.com/api-platform/api-client/
@@ -16,14 +18,12 @@ features:
     defaultValue: true
     type: DOMAIN
   publicApiDocumentation:
-    description: >-
-      https://learning.postman.com/docs/publishing-your-api/publishing-your-docs/#making-your-documentation-public
+    description: https://learning.postman.com/docs/publishing-your-api/publishing-your-docs/#making-your-documentation-public
     valueType: BOOLEAN
     defaultValue: true
     type: INFORMATION
   privateApiDocumentation:
-    description: >-
-      https://learning.postman.com/docs/publishing-your-api/publishing-your-docs/#changing-publication-settings
+    description: https://learning.postman.com/docs/publishing-your-api/publishing-your-docs/#changing-publication-settings
     valueType: BOOLEAN
     defaultValue: true
     type: INFORMATION
@@ -38,20 +38,17 @@ features:
     defaultValue: true
     type: DOMAIN
   publicWorkspaces:
-    description: >-
-      https://learning.postman.com/docs/collaborating-in-postman/using-workspaces/creating-workspaces/
+    description: https://learning.postman.com/docs/collaborating-in-postman/using-workspaces/creating-workspaces/
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   privateWorkspaces:
-    description: >-
-      https://learning.postman.com/docs/collaborating-in-postman/using-workspaces/creating-workspaces/
+    description: https://learning.postman.com/docs/collaborating-in-postman/using-workspaces/creating-workspaces/
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
   partnerWorkspaces:
-    description: >-
-      https://learning.postman.com/docs/collaborating-in-postman/using-workspaces/partner-workspaces/
+    description: https://learning.postman.com/docs/collaborating-in-postman/using-workspaces/partner-workspaces/
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
@@ -73,8 +70,7 @@ features:
     defaultValue: true
     type: MANAGEMENT
   collectionRunner:
-    description: >-
-      https://learning.postman.com/docs/collections/running-collections/intro-to-collection-runs/
+    description: https://learning.postman.com/docs/collections/running-collections/intro-to-collection-runs/
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
@@ -89,8 +85,7 @@ features:
     defaultValue: true
     type: INFORMATION
   mockServersCalls:
-    description: >-
-      https://learning.postman.com/docs/designing-and-developing-your-api/mocking-data/setting-up-mock/
+    description: https://learning.postman.com/docs/designing-and-developing-your-api/mocking-data/setting-up-mock/
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
@@ -116,11 +111,10 @@ features:
     type: INTEGRATION
     integrationType: WEB_SAAS
     pricingUrls:
-      - https://github.com/pricing
-      - https://about.gitlab.com/pricing/
+    - https://github.com/pricing
+    - https://about.gitlab.com/pricing/
   rolesAndPermissions:
-    description: >-
-      https://learning.postman.com/docs/collaborating-in-postman/roles-and-permissions/
+    description: https://learning.postman.com/docs/collaborating-in-postman/roles-and-permissions/
     valueType: BOOLEAN
     defaultValue: false
     type: MANAGEMENT
@@ -131,8 +125,7 @@ features:
     type: INTEGRATION
     integrationType: IDENTITY_PROVIDER
   userProvisioning:
-    description: >-
-      https://learning.postman.com/docs/administration/scim-provisioning/scim-provisioning-overview/
+    description: https://learning.postman.com/docs/administration/scim-provisioning/scim-provisioning-overview/
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
@@ -143,14 +136,12 @@ features:
     defaultValue: false
     type: MANAGEMENT
   domainCapture:
-    description: >-
-      https://learning.postman.com/docs/administration/domain-verification-and-capture/domain-capture-overview/
+    description: https://learning.postman.com/docs/administration/domain-verification-and-capture/domain-capture-overview/
     valueType: BOOLEAN
     defaultValue: false
     type: MANAGEMENT
   collectionRecovery:
-    description: >-
-      https://learning.postman.com/docs/collections/using-collections/#recovering-a-deleted-collection
+    description: https://learning.postman.com/docs/collections/using-collections/#recovering-a-deleted-collection
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
@@ -160,14 +151,12 @@ features:
     defaultValue: true
     type: DOMAIN
   auditLogs:
-    description: >-
-      https://learning.postman.com/docs/administration/managing-your-team/audit-logs/
+    description: https://learning.postman.com/docs/administration/managing-your-team/audit-logs/
     valueType: BOOLEAN
     defaultValue: false
     type: INFORMATION
   secretScanner:
-    description: >-
-      https://learning.postman.com/docs/administration/managing-your-team/secret-scanner/
+    description: https://learning.postman.com/docs/administration/managing-your-team/secret-scanner/
     valueType: TEXT
     defaultValue: Public Workspaces and Public Documentation
     type: AUTOMATION
@@ -178,8 +167,7 @@ features:
     defaultValue: false
     type: MANAGEMENT
   deploymentControl:
-    description: >-
-      https://learning.postman.com/docs/administration/enterprise/managing-enterprise-deployment/
+    description: https://learning.postman.com/docs/administration/enterprise/managing-enterprise-deployment/
     valueType: BOOLEAN
     defaultValue: false
     type: MANAGEMENT
@@ -202,7 +190,7 @@ features:
     description: https://learning.postman.com/docs/billing/billing/
     valueType: TEXT
     defaultValue:
-      - CARD
+    - CARD
     type: PAYMENT
   integrationWithCiCdTools:
     description: ''
@@ -233,7 +221,7 @@ usageLimits:
     unit: calls/month
     type: RENEWABLE
     linkedFeatures:
-      - postmanApi
+    - postmanApi
   numberOfIntegrations:
     description: https://learning.postman.com/docs/integrations/intro-integrations/
     valueType: NUMERIC
@@ -241,16 +229,15 @@ usageLimits:
     unit: integration
     type: NON_RENEWABLE
     linkedFeatures:
-      - thirdPartyIntegrations
+    - thirdPartyIntegrations
   collectionViewers:
-    description: >-
-      https://learning.postman.com/docs/collaborating-in-postman/sharing/#allowing-external-users-to-view-collections
+    description: https://learning.postman.com/docs/collaborating-in-postman/sharing/#allowing-external-users-to-view-collections
     valueType: NUMERIC
     defaultValue: 10
     unit: viewer/team
     type: NON_RENEWABLE
     linkedFeatures:
-      - collections
+    - collections
   customDomainsLimit:
     description: ''
     valueType: NUMERIC
@@ -258,7 +245,7 @@ usageLimits:
     unit: domain
     type: NON_RENEWABLE
     linkedFeatures:
-      - customDomains
+    - customDomains
   localCollectionRunnerLimit:
     description: ''
     valueType: NUMERIC
@@ -266,7 +253,7 @@ usageLimits:
     unit: runs/month
     type: RENEWABLE
     linkedFeatures:
-      - collectionRunner
+    - collectionRunner
   localPerformanceTestingUserLimit:
     description: ''
     valueType: NUMERIC
@@ -274,7 +261,7 @@ usageLimits:
     unit: virtual user
     type: NON_RENEWABLE
     linkedFeatures:
-      - localPerformanceTesting
+    - localPerformanceTesting
   localPerformanceTestingRunsLimit:
     description: ''
     valueType: NUMERIC
@@ -282,7 +269,7 @@ usageLimits:
     unit: run
     type: NON_RENEWABLE
     linkedFeatures:
-      - localPerformanceTesting
+    - localPerformanceTesting
   monitoringCallsLimit:
     description: ''
     valueType: NUMERIC
@@ -290,7 +277,7 @@ usageLimits:
     unit: call/month
     type: RENEWABLE
     linkedFeatures:
-      - monitoringCalls
+    - monitoringCalls
   mockServersCallsLimit:
     description: ''
     valueType: NUMERIC
@@ -298,7 +285,7 @@ usageLimits:
     unit: call/month
     type: RENEWABLE
     linkedFeatures:
-      - mockServersCalls
+    - mockServersCalls
   collectionRecoveryLimit:
     description: ''
     valueType: NUMERIC
@@ -306,7 +293,7 @@ usageLimits:
     unit: day
     type: NON_RENEWABLE
     linkedFeatures:
-      - collectionRecovery
+    - collectionRecovery
   historyDepth:
     description: ''
     valueType: NUMERIC
@@ -314,7 +301,7 @@ usageLimits:
     unit: day
     type: NON_RENEWABLE
     linkedFeatures:
-      - history
+    - history
   flowSteps:
     description: Number of flows executions steps included per month
     valueType: NUMERIC
@@ -322,7 +309,7 @@ usageLimits:
     unit: step/month
     type: RENEWABLE
     linkedFeatures:
-      - postmanFlows
+    - postmanFlows
   flowsPayloadSize:
     description: Number of flows payload size included per month
     valueType: NUMERIC
@@ -330,20 +317,17 @@ usageLimits:
     unit: MB/call
     type: NON_RENEWABLE
     linkedFeatures:
-      - postmanFlows
+    - postmanFlows
 plans:
   BASIC:
     description: ''
-    monthlyPrice: 19
-    annualPrice: 14
+    price: 19
     unit: user/month
     features: null
     usageLimits: null
-    price: 19
   PROFESSIONAL:
     description: ''
-    monthlyPrice: 39
-    annualPrice: 29
+    price: 39
     unit: user/month
     features:
       privateWorkspaces:
@@ -375,11 +359,9 @@ plans:
         value: 10000
       collectionRecoveryLimit:
         value: 90
-    price: 39
   ENTERPRISE_ESSENTIALS:
     description: ''
-    monthlyPrice: 49
-    annualPrice: 49
+    price: 49
     unit: user/month
     features:
       privateWorkspaces:
@@ -406,10 +388,10 @@ plans:
         value: 'Priority Email (SLA: 1 business day)'
       paymentOptions:
         value:
-          - CARD
-          - ACH
-          - WIRE_TRANSFER
-          - INVOICE
+        - CARD
+        - ACH
+        - WIRE_TRANSFER
+        - INVOICE
     usageLimits:
       callsToPostmanApi:
         value: 1000000
@@ -427,12 +409,9 @@ plans:
         value: 90
       historyDepth:
         value: 14
-    price: 49
   ENTERPRISE_ULTIMATE:
     description: ''
-    monthlyPrice: Contact Sales
-    annualPrice: null
-    unit: null
+    price: Contact Sales
     features:
       privateWorkspaces:
         value: true
@@ -470,10 +449,10 @@ plans:
         value: true
       paymentOptions:
         value:
-          - CARD
-          - ACH
-          - WIRE_TRANSFER
-          - INVOICE
+        - CARD
+        - ACH
+        - WIRE_TRANSFER
+        - INVOICE
     usageLimits:
       callsToPostmanApi:
         value: 1000000
@@ -491,11 +470,10 @@ plans:
         value: 90
       historyDepth:
         value: 14
-    price: Contact Sales
 addOns:
   postmanForInternalApiManagement:
     availableFor:
-      - ENTERPRISE_ESSENTIALS
+    - ENTERPRISE_ESSENTIALS
     price: 49
     unit: user/month
     features:
@@ -509,7 +487,7 @@ addOns:
     usageLimitsExtensions: null
   postmanForApiTestAutomation:
     availableFor:
-      - ENTERPRISE_ESSENTIALS
+    - ENTERPRISE_ESSENTIALS
     price: 49
     unit: user/month
     features:
@@ -521,10 +499,10 @@ addOns:
     usageLimitsExtensions: null
   monitoringPayAsYouGo:
     availableFor:
-      - BASIC
-      - PROFESSIONAL
-      - ENTERPRISE_ESSENTIALS
-      - ENTERPRISE_ULTIMATE
+    - BASIC
+    - PROFESSIONAL
+    - ENTERPRISE_ESSENTIALS
+    - ENTERPRISE_ULTIMATE
     price: 0.75
     features: null
     usageLimits: null
@@ -533,10 +511,10 @@ addOns:
         value: 1000
   monitoringMonthly:
     availableFor:
-      - BASIC
-      - PROFESSIONAL
-      - ENTERPRISE_ESSENTIALS
-      - ENTERPRISE_ULTIMATE
+    - BASIC
+    - PROFESSIONAL
+    - ENTERPRISE_ESSENTIALS
+    - ENTERPRISE_ULTIMATE
     price: 20
     unit: block/month
     features: null
@@ -546,10 +524,10 @@ addOns:
         value: 50000
   mockServersPayAsYouGo:
     availableFor:
-      - BASIC
-      - PROFESSIONAL
-      - ENTERPRISE_ESSENTIALS
-      - ENTERPRISE_ULTIMATE
+    - BASIC
+    - PROFESSIONAL
+    - ENTERPRISE_ESSENTIALS
+    - ENTERPRISE_ULTIMATE
     price: 0.75
     features: null
     usageLimits: null
@@ -558,10 +536,10 @@ addOns:
         value: 1000
   mockServersMonthly:
     availableFor:
-      - BASIC
-      - PROFESSIONAL
-      - ENTERPRISE_ESSENTIALS
-      - ENTERPRISE_ULTIMATE
+    - BASIC
+    - PROFESSIONAL
+    - ENTERPRISE_ESSENTIALS
+    - ENTERPRISE_ULTIMATE
     price: 20
     unit: block/month
     features: null
@@ -571,10 +549,10 @@ addOns:
         value: 50000
   customDomains:
     availableFor:
-      - BASIC
-      - PROFESSIONAL
-      - ENTERPRISE_ESSENTIALS
-      - ENTERPRISE_ULTIMATE
+    - BASIC
+    - PROFESSIONAL
+    - ENTERPRISE_ESSENTIALS
+    - ENTERPRISE_ULTIMATE
     price: 10
     unit: domain/month
     features: null
@@ -584,12 +562,11 @@ addOns:
         value: 1
   postmanFlowsBasic:
     availableFor:
-      - BASIC
-      - PROFESSIONAL
-      - ENTERPRISE_ESSENTIALS
-      - ENTERPRISE_ULTIMATE
-    monthlyPrice: 15
-    annualPrice: 12
+    - BASIC
+    - PROFESSIONAL
+    - ENTERPRISE_ESSENTIALS
+    - ENTERPRISE_ULTIMATE
+    price: 15
     unit: user/month
     features:
       postmanFlows:
@@ -602,15 +579,13 @@ addOns:
       flowsPayloadSize:
         value: 1
     usageLimitsExtensions: null
-    price: 15
   postmanFlowsProfessional:
     availableFor:
-      - BASIC
-      - PROFESSIONAL
-      - ENTERPRISE_ESSENTIALS
-      - ENTERPRISE_ULTIMATE
-    monthlyPrice: 25
-    annualPrice: 20
+    - BASIC
+    - PROFESSIONAL
+    - ENTERPRISE_ESSENTIALS
+    - ENTERPRISE_ULTIMATE
+    price: 25
     unit: user/month
     features:
       postmanFlows:
@@ -623,13 +598,12 @@ addOns:
       flowsPayloadSize:
         value: 5
     usageLimitsExtensions: null
-    price: 25
   postbot:
     availableFor:
-      - BASIC
-      - PROFESSIONAL
-      - ENTERPRISE_ESSENTIALS
-      - ENTERPRISE_ULTIMATE
+    - BASIC
+    - PROFESSIONAL
+    - ENTERPRISE_ESSENTIALS
+    - ENTERPRISE_ULTIMATE
     price: 9
     unit: user/month
     features:

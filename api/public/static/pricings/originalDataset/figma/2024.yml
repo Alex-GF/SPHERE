@@ -1,9 +1,11 @@
-saasName: Figma
 syntaxVersion: '2.1'
-version: 2024-7-5
-createdAt: '2024-07-05'
+saasName: Figma
+createdAt: '2024-07-06'
+version: '2024-07-06'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20240606081645/https://www.figma.com/pricing/
 features:
   versionHistory:
     description: ''
@@ -31,7 +33,6 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: MARKETPLACE
-    pricingUrls: null
   fileStorage:
     description: ''
     valueType: BOOLEAN
@@ -487,7 +488,7 @@ usageLimits:
     unit: day
     type: NON_RENEWABLE
     linkedFeatures:
-      - versionHistory
+    - versionHistory
   variableModesLimits:
     description: ''
     valueType: NUMERIC
@@ -495,20 +496,17 @@ usageLimits:
     unit: mode
     type: NON_RENEWABLE
     linkedFeatures:
-      - variableModes
+    - variableModes
 plans:
   STARTER:
     description: ''
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: editor/month
     features: null
     usageLimits: null
-    price: 0
   PROFESSIONAL:
     description: ''
-    monthlyPrice: 15
-    annualPrice: 12
+    price: 15
     unit: editor/month
     features:
       privateProjects:
@@ -566,11 +564,9 @@ plans:
         value: .inf
       variableModesLimits:
         value: 4
-    price: 15
   ORGANIZATION:
     description: ''
-    monthlyPrice: null
-    annualPrice: 45
+    price: 45
     unit: editor/month
     features:
       privateProjects:
@@ -580,6 +576,8 @@ plans:
       audioConversations:
         value: true
       teamAndProjectTransfer:
+        value: true
+      unlimitedTeams:
         value: true
       branchingAndMerging:
         value: true
@@ -651,18 +649,14 @@ plans:
         value: true
       activityLogs:
         value: true
-      unlimitedTeams:
-        value: true
     usageLimits:
       versionHistoryDepth:
         value: .inf
       variableModesLimits:
         value: 4
-    price: 45
   DEV_MODE_ORGANIZATION:
     description: ''
-    monthlyPrice: null
-    annualPrice: 25
+    price: 25
     unit: editor/month
     features:
       advancedInspection:
@@ -694,11 +688,9 @@ plans:
       handoffProcessManagement:
         value: true
     usageLimits: null
-    price: 25
   ENTERPRISE:
     description: ''
-    monthlyPrice: null
-    annualPrice: 75
+    price: 75
     unit: editor/month
     features:
       privateProjects:
@@ -708,6 +700,8 @@ plans:
       audioConversations:
         value: true
       teamAndProjectTransfer:
+        value: true
+      unlimitedTeams:
         value: true
       branchingAndMerging:
         value: true
@@ -823,18 +817,14 @@ plans:
         value: true
       onboardingPlanningAndSupport:
         value: true
-      unlimitedTeams:
-        value: true
     usageLimits:
       versionHistoryDepth:
         value: .inf
       variableModesLimits:
         value: 40
-    price: 75
   DEV_MODE_ENTERPRISE:
     description: ''
-    monthlyPrice: null
-    annualPrice: 35
+    price: 35
     unit: editor/month
     features:
       advancedInspection:
@@ -872,4 +862,4 @@ plans:
       adminControlsForInspectPanel:
         value: true
     usageLimits: null
-    price: 35
+addOns: null

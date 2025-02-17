@@ -1,9 +1,11 @@
-saasName: UserGuiding
 syntaxVersion: '2.1'
-version: '2021-10-28'
-createdAt: '2021-10-28'
+saasName: UserGuiding
+createdAt: '2021-10-29'
+version: '2021-10-29'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20211029162331/https://userguiding.com/pricing/
 features:
   guides:
     description: ''
@@ -117,8 +119,8 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://marketingplatform.google.com/about/analytics/
+    pricingUrls:
+    - https://marketingplatform.google.com/about/analytics/
   webhooks:
     description: ''
     valueType: BOOLEAN
@@ -131,56 +133,54 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://segment.com/pricing/
+    pricingUrls:
+    - https://segment.com/pricing/
   mixpanel:
     description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://mixpanel.com/pricing/
+    pricingUrls:
+    - https://mixpanel.com/pricing/
   zapier:
     description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: API
-    pricingURLs:
-      - https://zapier.com/pricing/
   hubspot:
     description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://www.hubspot.com/pricing/marketing/starter
+    pricingUrls:
+    - https://www.hubspot.com/pricing/marketing/starter
   intercom:
     description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://www.intercom.com/pricing
+    pricingUrls:
+    - https://www.intercom.com/pricing
   slack:
     description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://slack.com/pricing
+    pricingUrls:
+    - https://slack.com/pricing
   woopra:
     description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://www.woopra.com/pricing/
+    pricingUrls:
+    - https://www.woopra.com/pricing/
   knowledBaseIntegrations:
     description: ''
     valueType: BOOLEAN
@@ -255,7 +255,7 @@ usageLimits:
     unit: guide
     type: NON_RENEWABLE
     linkedFeatures:
-      - guides
+    - guides
   activeHotspotsLimit:
     description: ''
     valueType: NUMERIC
@@ -263,7 +263,7 @@ usageLimits:
     unit: hotspot
     type: NON_RENEWABLE
     linkedFeatures:
-      - hotspots
+    - hotspots
   activeOnboardingChecklistsLimit:
     description: ''
     valueType: NUMERIC
@@ -271,7 +271,7 @@ usageLimits:
     unit: checklist
     type: NON_RENEWABLE
     linkedFeatures:
-      - onboardingChecklist
+    - onboardingChecklist
   activeResourceCentersLimit:
     description: ''
     valueType: NUMERIC
@@ -279,14 +279,13 @@ usageLimits:
     unit: resource center
     type: NON_RENEWABLE
     linkedFeatures:
-      - resourceCenters
+    - resourceCenters
   activeUsersLimit:
     description: ''
     valueType: NUMERIC
     defaultValue: 2500
     unit: user/month
     type: RENEWABLE
-    linkedFeatures: null
   teamMembersLimit:
     description: ''
     valueType: NUMERIC
@@ -294,7 +293,7 @@ usageLimits:
     unit: member
     type: NON_RENEWABLE
     linkedFeatures:
-      - teams
+    - teams
   domainsLimit:
     description: ''
     valueType: NUMERIC
@@ -302,24 +301,19 @@ usageLimits:
     unit: domain
     type: NON_RENEWABLE
     linkedFeatures:
-      - domains
+    - domains
 plans:
   BASIC:
-    description: >-
-      Onboard new users and engage customers throughout their lifecycles. Ideal
-      for startups and SMBs.
-    monthlyPrice: 99
-    annualPrice: 82
+    description: Onboard new users and engage customers throughout their lifecycles.
+      Ideal for startups and SMBs.
+    price: 99
     unit: /month
     features: null
     usageLimits: null
-    price: 99
   PROFESSIONAL:
-    description: >-
-      Maximize activation, customer revenue, and retention. Ideal for rapidly
+    description: Maximize activation, customer revenue, and retention. Ideal for rapidly
       growing companies.
-    monthlyPrice: 399
-    annualPrice: 333
+    price: 399
     unit: /month
     features:
       adoptionTracker:
@@ -361,13 +355,10 @@ plans:
         value: 5
       domainsLimit:
         value: 5
-    price: 399
   CORPORATE:
-    description: >-
-      Transform your product experience. Ideal for enterprises with multiple
+    description: Transform your product experience. Ideal for enterprises with multiple
       products.
-    monthlyPrice: 699
-    annualPrice: 583
+    price: 699
     unit: /month
     features:
       adoptionTracker:
@@ -409,4 +400,4 @@ plans:
         value: 1000000
       domainsLimit:
         value: 1000000
-    price: 699
+addOns: null

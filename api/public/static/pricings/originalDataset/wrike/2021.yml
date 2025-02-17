@@ -1,9 +1,11 @@
-saasName: Wrike
 syntaxVersion: '2.1'
-version: '2021-11-23'
-createdAt: '2021-11-23'
+saasName: Wrike
+createdAt: '2021-11-24'
+version: '2021-11-24'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20211124054701/https://www.wrike.com/price/
 features:
   wrikeForWindowsAndMac:
     description: https://www.wrike.com/apps/mobile-and-desktop/desktop-app/
@@ -39,9 +41,8 @@ features:
     defaultValue: true
     type: DOMAIN
   collaborators:
-    description: >-
-      Involve team mates from other departments, clients, and contractors for
-      free.
+    description: Involve team mates from other departments, clients, and contractors
+      for free.
     valueType: BOOLEAN
     defaultValue: true
     type: MANAGEMENT
@@ -51,9 +52,8 @@ features:
     defaultValue: true
     type: INFORMATION
   accountWideWorkSchedules:
-    description: >-
-      Designate your team’s work week and see when you or your teammates are
-      scheduled to work.
+    description: Designate your team’s work week and see when you or your teammates
+      are scheduled to work.
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
@@ -63,18 +63,6 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingsUrls:
-      - https://skyvia.com/pricing/
-      - https://www.mediavalet.com/pricing-request
-      - https://cloud.google.com/storage/pricing?hl=es-419
-      - >-
-        https://www.microsoft.com/en-us/microsoft-365/sharepoint/compare-sharepoint-plans
-      - >-
-        https://www.microsoft.com/en-us/microsoft-365/onedrive/compare-onedrive-plans-b
-      - >-
-        https://tenovos.com/digital-asset-management-roi-productivity/?utm_campaign=website&utm_medium=banner&utm_source=website&utm_content=homepage-hero
-      - https://www.dropbox.com/en/plans
-      - https://www.box.com/pricing
   activeTaskLimitations:
     description: https://www.wrike.com/features/task-management/
     valueType: BOOLEAN
@@ -106,11 +94,6 @@ features:
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingsUrls:
-      - >-
-        https://www.microsoft.com/en-us/microsoft-365/buy/compare-all-microsoft-365-products
-      - >-
-        https://www.microsoft.com/en-us/microsoft-365/project/compare-microsoft-project-management-software#x06415cfb9b3a424ab32e1d5521decc9a
   customFields:
     description: Track anything related to your work.
     valueType: BOOLEAN
@@ -138,17 +121,15 @@ features:
     defaultValue: false
     type: DOMAIN
   guestApprovals:
-    description: >-
-      Get approvals from different stakeholders in your business ecosystem such
-      as partners and clients.
+    description: Get approvals from different stakeholders in your business ecosystem
+      such as partners and clients.
     valueType: BOOLEAN
     defaultValue: false
     type: MANAGEMENT
   realTimeReports:
-    description: >-
-      Powerful and easy-to-use report builder lets you visualize and share
-      project status. Subscribe to scheduled notifications and get regular
-      report updates and reviews.
+    description: Powerful and easy-to-use report builder lets you visualize and share
+      project status. Subscribe to scheduled notifications and get regular report
+      updates and reviews.
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
@@ -168,10 +149,9 @@ features:
     defaultValue: false
     type: DOMAIN
   personal&AccountWideWorkSchedules:
-    description: >-
-      Create additional work schedules and assign them to teammates. Mark
-      vacation or PTO days and designate additional working days for yourself or
-      for team members.
+    description: Create additional work schedules and assign them to teammates. Mark
+      vacation or PTO days and designate additional working days for yourself or for
+      team members.
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
@@ -186,23 +166,20 @@ features:
     defaultValue: false
     type: DOMAIN
   timeSheets:
-    description: >-
-      Find all the time you've tracked and update time for your work in a single
-      place on a daily or weekly basis.
+    description: Find all the time you've tracked and update time for your work in
+      a single place on a daily or weekly basis.
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
   workloadCharts:
-    description: >-
-      Allocate work based on team capacity. Plan work allocation, re-prioritize
+    description: Allocate work based on team capacity. Plan work allocation, re-prioritize
       projects, and distribute hours flexibly and in real time across assignees.
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
   effortAllocation:
-    description: >-
-      Determine how many hours it takes to complete each task, or estimate what
-      percentage of a team member's time you need dedicated to a task.
+    description: Determine how many hours it takes to complete each task, or estimate
+      what percentage of a team member's time you need dedicated to a task.
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
@@ -223,8 +200,6 @@ features:
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingsUrls:
-      - https://www.salesforce.com/eu/
   singleSignOn:
     description: https://www.wrike.com/apps/single-sign-on/saml/
     valueType: BOOLEAN
@@ -232,16 +207,14 @@ features:
     type: INTEGRATION
     integrationType: IDENTITY_PROVIDER
   twoFactorVerification:
-    description: >-
-      Add an extra layer of security, requiring a time-sensitive verification
+    description: Add an extra layer of security, requiring a time-sensitive verification
       code along with a username and password.
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: EXTERNAL_DEVICE
   passwordPolicies:
-    description: >-
-      Implement password policy to ensure that passwords meet minimum strength
+    description: Implement password policy to ensure that passwords meet minimum strength
       requirements and users change them regularly.
     valueType: BOOLEAN
     defaultValue: false
@@ -257,8 +230,7 @@ features:
     defaultValue: false
     type: MANAGEMENT
   userAuditReports:
-    description: >-
-      An on-demand report tracks activity of regular users and Wrike account
+    description: An on-demand report tracks activity of regular users and Wrike account
       admins.
     valueType: BOOLEAN
     defaultValue: false
@@ -274,20 +246,19 @@ features:
     defaultValue: false
     type: DOMAIN
   teamUtilizationAndPerformanceDashboard:
-    description: Measure planned vs. actual utilization of individuals or teams over time.
+    description: Measure planned vs. actual utilization of individuals or teams over
+      time.
     valueType: BOOLEAN
     defaultValue: false
     type: INFORMATION
   jobRoles:
-    description: >-
-      Assign team members job roles to streamline planning and work allocation
+    description: Assign team members job roles to streamline planning and work allocation
       based on functional area.
     valueType: BOOLEAN
     defaultValue: false
     type: MANAGEMENT
   budgetingAndBillableHours:
-    description: >-
-      Plan and monitor project, portfolio and client budgets based on team
+    description: Plan and monitor project, portfolio and client budgets based on team
       member or job role bill and cost rates.
     valueType: BOOLEAN
     defaultValue: false
@@ -303,12 +274,8 @@ features:
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingsUrls:
-      - >-
-        https://www.microsoft.com/en-us/microsoft-365/sharepoint/compare-sharepoint-plans
   digitalAssetManagementIntegration:
-    description: >-
-      https://www.wrike.com/features/digital-asset-management-software-integration/
+    description: https://www.wrike.com/features/digital-asset-management-software-integration/
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
@@ -341,14 +308,12 @@ usageLimits:
     defaultValue: 1
     unit: user
     type: NON_RENEWABLE
-    linkedFeatures: null
   maxNumberOfUsers:
     description: ''
     valueType: NUMERIC
     defaultValue: 10000000000
     unit: user
     type: NON_RENEWABLE
-    linkedFeatures: null
   useStorageAccount:
     description: ''
     valueType: NUMERIC
@@ -356,36 +321,33 @@ usageLimits:
     unit: GB/account
     type: NON_RENEWABLE
     linkedFeatures:
-      - storageAccount
+    - storageAccount
   useStorage:
     description: ''
     valueType: NUMERIC
-    defaultValue: 2
+    defaultValue: 0
     unit: GB/user
     type: NON_RENEWABLE
     linkedFeatures:
-      - storageSpace
+    - storageSpace
   useAutomations:
     description: Renewed per month
     valueType: NUMERIC
-    defaultValue: 200
+    defaultValue: 0
     unit: action/user/month
     type: RENEWABLE
     linkedFeatures:
-      - automationEngine
+    - automationEngine
 plans:
   FREE:
     description: 'For teams getting started: Centralized task management'
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: user/month
     features: null
     usageLimits: null
-    price: 0
   PROFESSIONAL:
     description: 'For fast growing teams: Project planning and team collaboration'
-    monthlyPrice: 9.8
-    annualPrice: 9.8
+    price: 9.8
     unit: user/month
     features:
       storageSpace:
@@ -401,13 +363,12 @@ plans:
         value: 5
       maxNumberOfUsers:
         value: 200
-    price: 9.8
+      useStorage:
+        value: 2
   BUSINESS:
-    description: >-
-      For all teams across an organization: Customizable platform for any team
-      or use case
-    monthlyPrice: 24.8
-    annualPrice: 24.8
+    description: 'For all teams across an organization: Customizable platform for
+      any team or use case'
+    price: 24.8
     unit: user/month
     features:
       storageSpace:
@@ -463,11 +424,11 @@ plans:
         value: 200
       useStorage:
         value: 5
-    price: 24.8
+      useAutomations:
+        value: 200
   ENTERPRISE:
     description: 'For large teams: Enterprise-grade security and scalability'
-    monthlyPrice: Contact Sales
-    annualPrice: Contact Sales
+    price: Contact Sales
     unit: user/month
     features:
       storageSpace:
@@ -535,13 +496,10 @@ plans:
         value: 10
       useAutomations:
         value: 1000
-    price: Contact Sales
   PINNACLE:
-    description: >-
-      For teams with complex work needs: Advanced tools and analytics for
-      complex work
-    monthlyPrice: Contact sales
-    annualPrice: Contact sales
+    description: 'For teams with complex work needs: Advanced tools and analytics
+      for complex work'
+    price: Contact sales
     features:
       storageSpace:
         value: true
@@ -624,13 +582,12 @@ plans:
         value: 15
       useAutomations:
         value: 1500
-    price: Contact sales
 addOns:
   wrikeMarketingInsights:
     availableFor:
-      - BUSINESS
-      - ENTERPRISE
-      - PINNACLE
+    - BUSINESS
+    - ENTERPRISE
+    - PINNACLE
     price: Contact Sales
     features:
       wrikeMarketingInsights:
@@ -639,9 +596,9 @@ addOns:
     usageLimitsExtensions: null
   wrikeIntegrate:
     availableFor:
-      - BUSINESS
-      - ENTERPRISE
-      - PINNACLE
+    - BUSINESS
+    - ENTERPRISE
+    - PINNACLE
     price: Contact Sales
     features:
       wrikeIntegrate:
@@ -650,9 +607,9 @@ addOns:
     usageLimitsExtensions: null
   wrikeTwoWaySync:
     availableFor:
-      - BUSINESS
-      - ENTERPRISE
-      - PINNACLE
+    - BUSINESS
+    - ENTERPRISE
+    - PINNACLE
     price: Contact Sales
     features:
       wrikeTwoWaySync:
@@ -661,8 +618,8 @@ addOns:
     usageLimitsExtensions: null
   wrikeLock:
     availableFor:
-      - ENTERPRISE
-      - PINNACLE
+    - ENTERPRISE
+    - PINNACLE
     price: Contact Sales
     features:
       wrikeLock:

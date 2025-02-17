@@ -1,9 +1,11 @@
-saasName: Box
 syntaxVersion: '2.1'
-version: '2021-11-29'
-createdAt: '2021-11-29'
+saasName: Box
+createdAt: '2021-11-30'
+version: '2021-11-30'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20211130180742/https://www.box.com/pricing
 features:
   secureStorage:
     description: ''
@@ -48,28 +50,27 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - >-
-        https://www.microsoft.com/en-us/microsoft-365/buy/compare-all-microsoft-365-products
+    pricingUrls:
+    - https://www.microsoft.com/en-us/microsoft-365/buy/compare-all-microsoft-365-products
   googleWorkspaceIntegration:
     description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://workspace.google.com/pricing
+    pricingUrls:
+    - https://workspace.google.com/pricing
   slackIntegration:
     description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://slack.com/pricing
+    pricingUrls:
+    - https://slack.com/pricing
   desktopAccess:
-    valueType: BOOLEAN
     description: ''
+    valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   mobileAccess:
@@ -255,7 +256,7 @@ usageLimits:
     unit: GB
     type: NON_RENEWABLE
     linkedFeatures:
-      - secureStorage
+    - secureStorage
   industryAppsIntegrationLimit:
     description: ''
     valueType: NUMERIC
@@ -263,7 +264,7 @@ usageLimits:
     unit: integration
     type: NON_RENEWABLE
     linkedFeatures:
-      - industryAppsIntegration
+    - industryAppsIntegration
   versionHistoryThreshold:
     description: ''
     valueType: NUMERIC
@@ -271,13 +272,12 @@ usageLimits:
     unit: day
     type: NON_RENEWABLE
     linkedFeatures:
-      - versionHistory
+    - versionHistory
   minUsers:
     description: ''
     valueType: NUMERIC
     defaultValue: 3
     type: NON_RENEWABLE
-    linkedFeatures: null
   apiCallsLimit:
     description: ''
     valueType: NUMERIC
@@ -285,7 +285,7 @@ usageLimits:
     unit: calls/month
     type: RENEWABLE
     linkedFeatures:
-      - boxApi
+    - boxApi
   includedDocumentsFor3rdPartyAndCustomApps:
     description: ''
     valueType: NUMERIC
@@ -293,23 +293,22 @@ usageLimits:
     unit: document
     type: NON_RENEWABLE
     linkedFeatures:
-      - industryAppsIntegration
-      - microsoft365Integration
-      - googleWorkspaceIntegration
-      - slackIntegration
-      - activeDirectoryIntegration
-      - relayLite
+    - industryAppsIntegration
+    - microsoft365Integration
+    - googleWorkspaceIntegration
+    - slackIntegration
+    - activeDirectoryIntegration
+    - relayLite
 plans:
   BUSINESS:
     description: ''
-    monthlyPrice: 15
+    price: 15
     unit: user/month
     features: null
     usageLimits: null
-    price: 15
   BUSINESS_PLUS:
     description: ''
-    monthlyPrice: 25
+    price: 25
     unit: user/month
     features:
       unlimitedExternalCollaborators:
@@ -336,19 +335,18 @@ plans:
         value: true
       boxGovernance:
         value: true
-      boxKeySafe:
-        value: true
       boxZones:
+        value: true
+      boxKeySafe:
         value: true
     usageLimits:
       uploadSizeLimit:
         value: 15
       industryAppsIntegrationLimit:
         value: 10
-    price: 25
   ENTERPRISE:
     description: ''
-    monthlyPrice: 35
+    price: 35
     unit: user/month
     features:
       unlimitedExternalCollaborators:
@@ -375,9 +373,9 @@ plans:
         value: true
       boxGovernance:
         value: true
-      boxKeySafe:
-        value: true
       boxZones:
+        value: true
+      boxKeySafe:
         value: true
       boxShield:
         value: true
@@ -404,10 +402,9 @@ plans:
         value: 100000
       includedDocumentsFor3rdPartyAndCustomApps:
         value: 250
-    price: 35
   ENTERPRISE_PLUS:
     description: ''
-    monthlyPrice: Contact Sales
+    price: Contact Sales
     unit: user/month
     features:
       unlimitedExternalCollaborators:
@@ -434,9 +431,9 @@ plans:
         value: true
       boxGovernance:
         value: true
-      boxKeySafe:
-        value: true
       boxZones:
+        value: true
+      boxKeySafe:
         value: true
       boxShield:
         value: true
@@ -463,4 +460,4 @@ plans:
         value: 100000
       includedDocumentsFor3rdPartyAndCustomApps:
         value: 1000
-    price: Contact Sales
+addOns: null

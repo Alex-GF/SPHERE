@@ -1,5 +1,6 @@
 export function getAllPricingsAggregator(filteringAggregators: any, sortAggregator: any) {
   return [
+    { $sort: { extractionDate: -1 } },
     latestPricingsByNameAggregator,
     refactorRootAggregator,
     ...filteringAggregators,
@@ -60,6 +61,9 @@ const computeFiltersDataAggregator = {
             configurationSpaceSize: 1,
             minSubscriptionPrice: 1,
             maxSubscriptionPrice: 1,
+            numberOfFeatures: 1,
+            numberOfPlans: 1,
+            numberOfAddOns: 1,
           },
         },
       },

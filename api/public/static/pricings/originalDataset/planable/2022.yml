@@ -1,9 +1,11 @@
-saasName: Planable
 syntaxVersion: '2.1'
-version: '2022-10-29'
-createdAt: '2022-10-29'
+saasName: Planable
+createdAt: '2022-10-30'
+version: '2022-10-30'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20221030072446/https://planable.io/pricing/
 features:
   posts:
     description: ''
@@ -11,15 +13,13 @@ features:
     defaultValue: true
     type: DOMAIN
   socialMediaPages:
-    description: >-
-      Number of social media pages allowed in each workspace. It can be multiple
-      pages from the same platform.
+    description: Number of social media pages allowed in each workspace. It can be
+      multiple pages from the same platform.
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   saveAsAnAd:
-    description: >-
-      The option to send your Facebook drafts as a dark post to your Ads
+    description: The option to send your Facebook drafts as a dark post to your Ads
       Manager.
     valueType: BOOLEAN
     defaultValue: false
@@ -50,8 +50,7 @@ features:
     defaultValue: false
     type: DOMAIN
   labels:
-    description: >-
-      Categorize posts per campaign, topic or content pillar with color-coded
+    description: Categorize posts per campaign, topic or content pillar with color-coded
       labels.
     valueType: BOOLEAN
     defaultValue: true
@@ -67,15 +66,13 @@ features:
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs: null
   noneApprovalWorkflows:
     description: Set workflows that do not require approval for publishing.
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   optionalApprovalWorkflows:
-    description: >-
-      Set workflows that have approvals enabled, but aren't required for
+    description: Set workflows that have approvals enabled, but aren't required for
       publishing.
     valueType: BOOLEAN
     defaultValue: true
@@ -91,16 +88,14 @@ features:
     defaultValue: false
     type: DOMAIN
   internalAndExternalCollaboration:
-    description: >-
-      Have the option to hold conversations and posts behind the scenes, out of
-      approver’s sight.
+    description: Have the option to hold conversations and posts behind the scenes,
+      out of approver’s sight.
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
   versionHistory:
-    description: >-
-      See who did what and when. Preview & restore previous versions of your
-      posts.
+    description: See who did what and when. Preview & restore previous versions of
+      your posts.
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
@@ -133,7 +128,7 @@ features:
     description: ''
     valueType: TEXT
     defaultValue:
-      - CARD
+    - CARD
     type: PAYMENT
 usageLimits:
   postsLimit:
@@ -143,7 +138,7 @@ usageLimits:
     unit: posts
     type: NON_RENEWABLE
     linkedFeatures:
-      - posts
+    - posts
   postsPerMonthLimit:
     description: ''
     valueType: NUMERIC
@@ -151,7 +146,7 @@ usageLimits:
     unit: posts/month
     type: RENEWABLE
     linkedFeatures:
-      - posts
+    - posts
   socialMediaPagesLimit:
     description: ''
     valueType: NUMERIC
@@ -159,7 +154,7 @@ usageLimits:
     unit: pages/workspace
     type: NON_RENEWABLE
     linkedFeatures:
-      - socialMediaPages
+    - socialMediaPages
   workspacesLimit:
     description: ''
     valueType: NUMERIC
@@ -167,7 +162,7 @@ usageLimits:
     unit: worspace
     type: NON_RENEWABLE
     linkedFeatures:
-      - workspaces
+    - workspaces
   numberOfLabels:
     description: ''
     valueType: NUMERIC
@@ -175,7 +170,7 @@ usageLimits:
     unit: label
     type: NON_RENEWABLE
     linkedFeatures:
-      - labels
+    - labels
   mediaStorageCapacity:
     description: ''
     valueType: NUMERIC
@@ -183,7 +178,7 @@ usageLimits:
     unit: GB
     type: NON_RENEWABLE
     linkedFeatures:
-      - mediaStorage
+    - mediaStorage
   versionHistoryThreshold:
     description: ''
     valueType: NUMERIC
@@ -191,12 +186,11 @@ usageLimits:
     unit: day
     type: NON_RENEWABLE
     linkedFeatures:
-      - versionHistory
+    - versionHistory
 plans:
   FREE:
     description: For anyone wanting to test Planable out
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: /month
     features:
       saveAsAnAd:
@@ -226,19 +220,15 @@ plans:
         value: 1000000
       versionHistoryThreshold:
         value: 1000000
-    price: 0
   BASIC:
     description: For businesses getting started with social media
-    monthlyPrice: 13
-    annualPrice: 11
+    price: 13
     unit: user/month
     features: null
     usageLimits: null
-    price: 13
   PRO:
     description: For growing social media teams
-    monthlyPrice: 26
-    annualPrice: 22
+    price: 26
     unit: user/month
     features:
       saveAsAnAd:
@@ -264,11 +254,9 @@ plans:
         value: 50
       versionHistoryThreshold:
         value: 30
-    price: 26
   ENTERPRISE:
     description: For large social media teams wanting to scale
-    monthlyPrice: Custom
-    annualPrice: Custom
+    price: Custom
     unit: user/month
     features:
       saveAsAnAd:
@@ -295,10 +283,10 @@ plans:
         value: true
       paymentOptions:
         value:
-          - CARD
-          - ACH
-          - WIRE_TRANSFER
-          - GATEWAY
+        - CARD
+        - ACH
+        - WIRE_TRANSFER
+        - GATEWAY
     usageLimits:
       socialMediaPagesLimit:
         value: 10
@@ -308,19 +296,16 @@ plans:
         value: 1000000
       versionHistoryThreshold:
         value: 1000000
-    price: Custom
 addOns:
   extraWorkspace:
     description: Add an extra workspace to your account.
     availableFor:
-      - BASIC
-      - PRO
-    monthlyPrice: 20
-    annualPrice: 17
+    - BASIC
+    - PRO
+    price: 20
     unit: workspace/month
     features: null
     usageLimits: null
     usageLimitsExtensions:
       workspacesLimit:
         value: 1
-    price: 20

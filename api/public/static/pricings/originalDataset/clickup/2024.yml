@@ -1,9 +1,11 @@
-saasName: ClickUp
 syntaxVersion: '2.1'
-version: 2024-7-4
-createdAt: '2024-07-04'
+saasName: ClickUp
+createdAt: '2024-07-05'
+version: '2024-07-05'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20240705193957/https://clickup.com/pricing
 features:
   tasks:
     description: ''
@@ -41,8 +43,7 @@ features:
     defaultValue: true
     type: MANAGEMENT
   sharing:
-    description: >-
-      Invite members to private items and invite guests to private or public
+    description: Invite members to private items and invite guests to private or public
       items
     valueType: BOOLEAN
     defaultValue: true
@@ -311,9 +312,8 @@ features:
     defaultValue: true
     type: DOMAIN
   customFieldManagerBasic:
-    description: >-
-      Ability to view, search, create, edit, convert, group, and filter Custom
-      Fields.
+    description: Ability to view, search, create, edit, convert, group, and filter
+      Custom Fields.
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
@@ -323,9 +323,8 @@ features:
     defaultValue: false
     type: MANAGEMENT
   proofing:
-    description: >-
-      Image & PDF Annotation: Add and assign comments directly to task
-      attachments such as design mockups, PDF documents, and more.
+    description: 'Image & PDF Annotation: Add and assign comments directly to task
+      attachments such as design mockups, PDF documents, and more.'
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
@@ -539,48 +538,47 @@ features:
     type: INTEGRATION
     integrationType: WEB_SAAS
     pricingUrls:
-      - https://zapier.com/app/planbuilder/pricing
+    - https://zapier.com/app/planbuilder/pricing
   make:
     description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://www.make.com/en/pricing
+    pricingUrls:
+    - https://www.make.com/en/pricing
   googleDrive:
     description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://one.google.com/about/plans
+    pricingUrls:
+    - https://one.google.com/about/plans
   dropbox:
     description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://www.dropbox.com/plans
+    pricingUrls:
+    - https://www.dropbox.com/plans
   boxCloudStorage:
     description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://www.box.com/pricing
+    pricingUrls:
+    - https://www.box.com/pricing
   oneDriveCloudStorage:
     description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - >-
-        https://www.microsoft.com/en-us/microsoft-365/onedrive/compare-onedrive-plans
+    pricingUrls:
+    - https://www.microsoft.com/en-us/microsoft-365/onedrive/compare-onedrive-plans
   tableauWebConnector:
     description: ''
     valueType: BOOLEAN
@@ -706,22 +704,19 @@ features:
     defaultValue: false
     type: SUPPORT
   prioritySupport:
-    description: >-
-      Receive an enhanced level of support to quickly resolve your highest
+    description: Receive an enhanced level of support to quickly resolve your highest
       priority issues
     valueType: BOOLEAN
     defaultValue: false
     type: SUPPORT
   customerSuccessManager:
-    description: >-
-      Enterprise Plan customers are eligible to receive a Success Manager.
+    description: Enterprise Plan customers are eligible to receive a Success Manager.
       Conditions apply.
     valueType: BOOLEAN
     defaultValue: false
     type: SUPPORT
   onboardingTrainingWorkshop:
-    description: >-
-      Live, virtual, workshop-style classroom training delivered by ClickUp
+    description: Live, virtual, workshop-style classroom training delivered by ClickUp
       Experts.
     valueType: BOOLEAN
     defaultValue: false
@@ -731,6 +726,11 @@ features:
     valueType: BOOLEAN
     defaultValue: false
     type: SUPPORT
+  clickUpAI:
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
 usageLimits:
   useUsers:
     description: ''
@@ -738,7 +738,6 @@ usageLimits:
     defaultValue: 1000000
     unit: user
     type: NON_RENEWABLE
-    linkedFeatures: null
   useTasks:
     description: ''
     valueType: NUMERIC
@@ -746,7 +745,7 @@ usageLimits:
     unit: task
     type: NON_RENEWABLE
     linkedFeatures:
-      - tasks
+    - tasks
   useSpaces:
     description: ''
     valueType: NUMERIC
@@ -754,7 +753,7 @@ usageLimits:
     unit: space
     type: NON_RENEWABLE
     linkedFeatures:
-      - spaces
+    - spaces
   useListsPerFolder:
     description: X Lists per Space, includes Lists in Folders
     valueType: NUMERIC
@@ -762,7 +761,7 @@ usageLimits:
     unit: list
     type: NON_RENEWABLE
     linkedFeatures:
-      - listsPerFolder
+    - listsPerFolder
   useFoldersPerSpace:
     description: ''
     valueType: NUMERIC
@@ -770,7 +769,7 @@ usageLimits:
     unit: folder
     type: NON_RENEWABLE
     linkedFeatures:
-      - foldersPerSpace
+    - foldersPerSpace
   useCustomViews:
     description: ''
     valueType: NUMERIC
@@ -778,7 +777,7 @@ usageLimits:
     unit: view
     type: NON_RENEWABLE
     linkedFeatures:
-      - customViews
+    - customViews
   useFileStorage:
     description: ''
     valueType: NUMERIC
@@ -786,7 +785,7 @@ usageLimits:
     unit: MB
     type: NON_RENEWABLE
     linkedFeatures:
-      - fileStorage
+    - fileStorage
   useGuests:
     description: ''
     valueType: NUMERIC
@@ -794,15 +793,15 @@ usageLimits:
     unit: guest
     type: NON_RENEWABLE
     linkedFeatures:
-      - guests
+    - guests
   useGuestsWithPermissions:
     description: ''
     valueType: NUMERIC
-    defaultValue: 1000000
+    defaultValue: 0
     unit: guest
     type: NON_RENEWABLE
     linkedFeatures:
-      - guestsPermissions
+    - guestsPermissions
   useCustomFields:
     description: ''
     valueType: NUMERIC
@@ -810,15 +809,15 @@ usageLimits:
     unit: use
     type: NON_RENEWABLE
     linkedFeatures:
-      - customFields
+    - customFields
   useTeam:
     description: ''
     valueType: NUMERIC
-    defaultValue: 100
+    defaultValue: 0
     unit: use
     type: NON_RENEWABLE
     linkedFeatures:
-      - team
+    - team
   useGantt:
     description: ''
     valueType: NUMERIC
@@ -826,7 +825,7 @@ usageLimits:
     unit: use
     type: NON_RENEWABLE
     linkedFeatures:
-      - gantt
+    - gantt
   useActivity:
     description: ''
     valueType: NUMERIC
@@ -834,7 +833,7 @@ usageLimits:
     unit: day
     type: NON_RENEWABLE
     linkedFeatures:
-      - activity
+    - activity
   useTimeline:
     description: ''
     valueType: NUMERIC
@@ -842,7 +841,7 @@ usageLimits:
     unit: use
     type: NON_RENEWABLE
     linkedFeatures:
-      - timeline
+    - timeline
   useWorkload:
     description: ''
     valueType: NUMERIC
@@ -850,15 +849,15 @@ usageLimits:
     unit: use
     type: NON_RENEWABLE
     linkedFeatures:
-      - workload
+    - workload
   useMap:
     description: ''
     valueType: NUMERIC
-    defaultValue: 100
+    defaultValue: 0
     unit: use
     type: NON_RENEWABLE
     linkedFeatures:
-      - map
+    - map
   useMindMaps:
     description: ''
     valueType: NUMERIC
@@ -866,7 +865,7 @@ usageLimits:
     unit: use
     type: NON_RENEWABLE
     linkedFeatures:
-      - mindMaps
+    - mindMaps
   useWhiteboards:
     description: ''
     valueType: NUMERIC
@@ -874,7 +873,7 @@ usageLimits:
     unit: whiteboard
     type: NON_RENEWABLE
     linkedFeatures:
-      - whiteboards
+    - whiteboards
   useEmbed:
     description: ''
     valueType: NUMERIC
@@ -882,7 +881,7 @@ usageLimits:
     unit: use
     type: NON_RENEWABLE
     linkedFeatures:
-      - embed
+    - embed
   useCustomTaskTypes:
     description: ''
     valueType: NUMERIC
@@ -890,7 +889,7 @@ usageLimits:
     unit: use
     type: NON_RENEWABLE
     linkedFeatures:
-      - customTaskTypes
+    - customTaskTypes
   useAutomations:
     description: ''
     valueType: NUMERIC
@@ -898,7 +897,7 @@ usageLimits:
     unit: automation/month
     type: RENEWABLE
     linkedFeatures:
-      - automations
+    - automations
   useActiveRules:
     description: ''
     valueType: NUMERIC
@@ -906,7 +905,7 @@ usageLimits:
     unit: rule
     type: NON_RENEWABLE
     linkedFeatures:
-      - activeRules
+    - activeRules
   usePortfolios:
     description: ''
     valueType: NUMERIC
@@ -914,7 +913,7 @@ usageLimits:
     unit: use
     type: NON_RENEWABLE
     linkedFeatures:
-      - portfolios
+    - portfolios
   useApiCalls:
     description: ''
     valueType: NUMERIC
@@ -922,7 +921,7 @@ usageLimits:
     unit: call/minute
     type: RENEWABLE
     linkedFeatures:
-      - apiCalls
+    - apiCalls
   useProofing:
     description: ''
     valueType: NUMERIC
@@ -930,15 +929,14 @@ usageLimits:
     unit: use
     type: NON_RENEWABLE
     linkedFeatures:
-      - proofing
+    - proofing
   useDocTags:
-    description: null
     valueType: NUMERIC
     defaultValue: 100
     unit: use
     type: NON_RENEWABLE
     linkedFeatures:
-      - docTags
+    - docTags
   useEmailInClickUp:
     description: ''
     valueType: NUMERIC
@@ -946,7 +944,7 @@ usageLimits:
     unit: use
     type: NON_RENEWABLE
     linkedFeatures:
-      - emailInClickUp
+    - emailInClickUp
   useEmailAccountsInClickUp:
     description: The number of email accounts per Workspace
     valueType: NUMERIC
@@ -954,31 +952,31 @@ usageLimits:
     unit: account
     type: NON_RENEWABLE
     linkedFeatures:
-      - emailInClickUp
+    - emailInClickUp
   useTeams:
     description: ''
     valueType: NUMERIC
-    defaultValue: 1
+    defaultValue: 0
     unit: team
     type: NON_RENEWABLE
     linkedFeatures:
-      - teams
+    - teams
   useTasksInMultipleLists:
     description: ''
     valueType: NUMERIC
-    defaultValue: 1000000000
+    defaultValue: 0
     unit: use
     type: NON_RENEWABLE
     linkedFeatures:
-      - tasksInMultipleLists
+    - tasksInMultipleLists
   useSubtasksInMultipleLists:
     description: ''
     valueType: NUMERIC
-    defaultValue: 100
+    defaultValue: 0
     unit: use
     type: NON_RENEWABLE
     linkedFeatures:
-      - subtasksInMultipleLists
+    - subtasksInMultipleLists
   useGoals:
     description: ''
     valueType: NUMERIC
@@ -986,7 +984,7 @@ usageLimits:
     unit: use
     type: NON_RENEWABLE
     linkedFeatures:
-      - goals
+    - goals
   useDashboards:
     description: ''
     valueType: NUMERIC
@@ -994,15 +992,15 @@ usageLimits:
     unit: use
     type: NON_RENEWABLE
     linkedFeatures:
-      - dashboards
+    - dashboards
   useTimesheets:
     description: ''
     valueType: NUMERIC
-    defaultValue: 60
+    defaultValue: 0
     unit: use
     type: NON_RENEWABLE
     linkedFeatures:
-      - timesheets
+    - timesheets
   useSprintPoints:
     description: ''
     valueType: NUMERIC
@@ -1010,7 +1008,7 @@ usageLimits:
     unit: use
     type: NON_RENEWABLE
     linkedFeatures:
-      - sprintPoints
+    - sprintPoints
   usePulseLiveOverview:
     description: ''
     valueType: NUMERIC
@@ -1018,7 +1016,7 @@ usageLimits:
     unit: use
     type: NON_RENEWABLE
     linkedFeatures:
-      - pulseLiveOverview
+    - pulseLiveOverview
   useCustomExporting:
     description: X exports of List View and X exports of Table View
     valueType: NUMERIC
@@ -1026,28 +1024,25 @@ usageLimits:
     unit: export
     type: NON_RENEWABLE
     linkedFeatures:
-      - customExporting
+    - customExporting
   useCriticalPathAndSlackTime:
     description: ''
     valueType: NUMERIC
-    defaultValue: 100
+    defaultValue: 0
     unit: use
     type: NON_RENEWABLE
     linkedFeatures:
-      - criticalPathAndSlackTime
+    - criticalPathAndSlackTime
 plans:
   FREE:
     description: Best for personal use
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: member/month
     features: null
     usageLimits: null
-    price: 0
   UNLIMITED:
     description: Best for small teams
-    monthlyPrice: 10
-    annualPrice: 7
+    price: 10
     unit: member/month
     features:
       guestsPermissions:
@@ -1107,6 +1102,8 @@ plans:
         value: 1000000000
       useCustomFields:
         value: 1000000000
+      useTeam:
+        value: 100
       useGantt:
         value: 1000000000
       useActivity:
@@ -1114,6 +1111,8 @@ plans:
       useTimeline:
         value: 100
       useWorkload:
+        value: 100
+      useMap:
         value: 100
       useMindMaps:
         value: 100
@@ -1131,17 +1130,25 @@ plans:
         value: 1000000000
       useEmailInClickUp:
         value: 1000000000
+      useTeams:
+        value: 1
+      useTasksInMultipleLists:
+        value: 1000000000
+      useSubtasksInMultipleLists:
+        value: 100
       useGoals:
         value: 1000000000
       useDashboards:
         value: 1000000000
+      useTimesheets:
+        value: 60
       usePulseLiveOverview:
         value: 1000000000
-    price: 10
+      useCriticalPathAndSlackTime:
+        value: 100
   BUSINESS:
     description: Best for mid-sized teams
-    monthlyPrice: 19
-    annualPrice: 12
+    price: 19
     unit: member/month
     features:
       guestsPermissions:
@@ -1277,13 +1284,15 @@ plans:
         value: 2
       useTeams:
         value: 1000000000
+      useTasksInMultipleLists:
+        value: 1000000000
       useSubtasksInMultipleLists:
         value: 1000
       useGoals:
         value: 1000000000
-      useTimesheets:
-        value: 1000000000
       useDashboards:
+        value: 1000000000
+      useTimesheets:
         value: 1000000000
       useSprintPoints:
         value: 1000000000
@@ -1293,11 +1302,9 @@ plans:
         value: 1000000000
       useCriticalPathAndSlackTime:
         value: 1000000000
-    price: 19
   ENTERPRISE:
     description: Best for many large teams
-    monthlyPrice: Contact Sales
-    annualPrice: Contact Sales
+    price: Contact Sales
     unit: member/month
     features:
       guestsPermissions:
@@ -1487,9 +1494,9 @@ plans:
         value: 1000000000
       useApiCalls:
         value: 10000
-      useDocTags:
-        value: 1000000000
       useProofing:
+        value: 1000000000
+      useDocTags:
         value: 1000000000
       useEmailInClickUp:
         value: 1000000000
@@ -1497,13 +1504,15 @@ plans:
         value: 2
       useTeams:
         value: 1000000000
+      useTasksInMultipleLists:
+        value: 1000000000
       useSubtasksInMultipleLists:
         value: 1000000000
       useGoals:
         value: 1000000000
-      useTimesheets:
-        value: 1000000000
       useDashboards:
+        value: 1000000000
+      useTimesheets:
         value: 1000000000
       useSprintPoints:
         value: 1000000000
@@ -1513,31 +1522,28 @@ plans:
         value: 1000000000
       useCriticalPathAndSlackTime:
         value: 1000000000
-    price: Contact Sales
 addOns:
   extraEmailAccountInClickUp:
     availableFor:
-      - UNLIMITED
-      - BUSINESS
-      - ENTERPRISE
-    monthlyPrice: 2
-    annualPrice: 2
+    - UNLIMITED
+    - BUSINESS
+    - ENTERPRISE
+    price: 2
     unit: account/month
     features: null
     usageLimits: null
     usageLimitsExtensions:
       useEmailAccountsInClickUp:
         value: 1
-    price: 2
   clickUpAI:
     availableFor:
-      - UNLIMITED
-      - BUSINESS
-      - ENTERPRISE
-    monthlyPrice: 7
-    annualPrice: 7
+    - UNLIMITED
+    - BUSINESS
+    - ENTERPRISE
+    price: 7
     unit: member/month
-    features: null
+    features:
+      clickUpAI:
+        value: true
     usageLimits: null
     usageLimitsExtensions: null
-    price: 7

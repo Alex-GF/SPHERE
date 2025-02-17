@@ -1,9 +1,11 @@
-saasName: OpenPhone
 syntaxVersion: '2.1'
-version: 2024-7-16
-createdAt: '2024-07-16'
+saasName: OpenPhone
+createdAt: '2024-07-17'
+version: '2024-07-17'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20240717105154/https://www.openphone.com/pricing
 features:
   usAndCanadaCalling:
     description: ''
@@ -174,32 +176,32 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://slack.com/pricing
+    pricingUrls:
+    - https://slack.com/pricing
   zapierIntegration:
     description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://zapier.com/pricing
+    pricingUrls:
+    - https://zapier.com/pricing
   smsViaZapier:
     description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://zapier.com/pricing
+    pricingUrls:
+    - https://zapier.com/pricing
   googleContactsIntegration:
     description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://workspace.google.com/pricing
+    pricingUrls:
+    - https://workspace.google.com/pricing
   webhooksIntegration:
     description: Beta
     valueType: BOOLEAN
@@ -212,24 +214,24 @@ features:
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://www.hubspot.com/pricing
+    pricingUrls:
+    - https://www.hubspot.com/pricing
   salesforceIntegration:
     description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://www.salesforce.com/products/sales-cloud/pricing/
+    pricingUrls:
+    - https://www.salesforce.com/products/sales-cloud/pricing/
   gongIntegration:
     description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://www.gong.io/pricing/
+    pricingUrls:
+    - https://www.gong.io/pricing/
   userRoles:
     description: ''
     valueType: BOOLEAN
@@ -282,7 +284,7 @@ usageLimits:
     defaultValue: false
     type: NON_RENEWABLE
     linkedFeatures:
-      - usAndCanadaMessaging
+    - usAndCanadaMessaging
   phoneNumbersLimit:
     description: ''
     valueType: NUMERIC
@@ -290,7 +292,7 @@ usageLimits:
     unit: phone number
     type: NON_RENEWABLE
     linkedFeatures:
-      - phoneNumbers
+    - phoneNumbers
   sharedPhoneNumbersLimit:
     description: ''
     valueType: NUMERIC
@@ -298,7 +300,7 @@ usageLimits:
     unit: user
     type: NON_RENEWABLE
     linkedFeatures:
-      - sharedPhoneNumbers
+    - sharedPhoneNumbers
   smsViaZapierAddonLimit:
     description: ''
     valueType: NUMERIC
@@ -306,20 +308,17 @@ usageLimits:
     unit: message
     type: NON_RENEWABLE
     linkedFeatures:
-      - smsViaZapier
+    - smsViaZapier
 plans:
   STARTER:
     description: ''
-    monthlyPrice: 19
-    annualPrice: 15
+    price: 19
     unit: user/month
     features: null
     usageLimits: null
-    price: 19
   BUSINESS:
     description: ''
-    monthlyPrice: 33
-    annualPrice: 23
+    price: 33
     unit: user/month
     features:
       aiCallSummaries:
@@ -355,11 +354,9 @@ plans:
     usageLimits:
       sharedPhoneNumbersLimit:
         value: .inf
-    price: 33
   ENTERPRISE:
     description: ''
-    monthlyPrice: Contact Sales
-    annualPrice: Contact Sales
+    price: Contact Sales
     unit: user/month
     features:
       aiCallSummaries:
@@ -401,13 +398,12 @@ plans:
     usageLimits:
       sharedPhoneNumbersLimit:
         value: .inf
-    price: Contact Sales
 addOns:
   carrierReviewAndSetupFeesForUsCanadaMessaging:
     availableFor:
-      - STARTER
-      - BUSINESS
-      - ENTERPRISE
+    - STARTER
+    - BUSINESS
+    - ENTERPRISE
     price: 19
     unit: one-time payment
     features:
@@ -417,9 +413,9 @@ addOns:
     usageLimitsExtensions: null
   useCanadaMessagingFee:
     availableFor:
-      - STARTER
-      - BUSINESS
-      - ENTERPRISE
+    - STARTER
+    - BUSINESS
+    - ENTERPRISE
     price: 3
     unit: /month
     features: null
@@ -429,9 +425,9 @@ addOns:
     usageLimitsExtensions: null
   aditionalPhoneNumbers:
     availableFor:
-      - STARTER
-      - BUSINESS
-      - ENTERPRISE
+    - STARTER
+    - BUSINESS
+    - ENTERPRISE
     price: 5
     unit: phoneNumber/month
     features: null
@@ -441,9 +437,9 @@ addOns:
         value: 1
   internationalCallingAndMessaging:
     availableFor:
-      - STARTER
-      - BUSINESS
-      - ENTERPRISE
+    - STARTER
+    - BUSINESS
+    - ENTERPRISE
     price: See Rates
     unit: user/month
     features:
@@ -455,9 +451,9 @@ addOns:
     usageLimitsExtensions: null
   smsViaZapierAddon:
     availableFor:
-      - STARTER
-      - BUSINESS
-      - ENTERPRISE
+    - STARTER
+    - BUSINESS
+    - ENTERPRISE
     price: 0.01
     unit: message
     features:
@@ -469,11 +465,11 @@ addOns:
         value: 1
   extraSmsViaZapier:
     availableFor:
-      - STARTER
-      - BUSINESS
-      - ENTERPRISE
+    - STARTER
+    - BUSINESS
+    - ENTERPRISE
     dependsOn:
-      - smsViaZapierAddon
+    - smsViaZapierAddon
     price: 0.01
     unit: message
     features: null
@@ -483,9 +479,9 @@ addOns:
         value: 1
   soc2ReportAddOn:
     availableFor:
-      - STARTER
-      - BUSINESS
-      - ENTERPRISE
+    - STARTER
+    - BUSINESS
+    - ENTERPRISE
     price: Contact Sales
     unit: /month
     features:

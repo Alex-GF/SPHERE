@@ -10,7 +10,7 @@ import {
   FormControlLabel,
   Button,
 } from '@mui/material';
-import { primary } from '../../../core/theme/palette';
+import { primary, palette } from '../../../core/theme/palette';
 import SliderFilter from '../slider-filter';
 import { FilterLimits } from '../../pages/list';
 
@@ -105,7 +105,7 @@ export default function PricingFilters({
         <InputLabel
           id="sort-by-label"
           sx={{
-            backgroundColor: 'white',
+            backgroundColor: `${palette().background.neutral}`,
             padding: '0 5px',
           }}
         >
@@ -113,6 +113,7 @@ export default function PricingFilters({
         </InputLabel>
         <Select labelId="sort-by-label" value={sortBy} onChange={e => setSortBy(e.target.value)}>
           <MenuItem value="">None</MenuItem>
+          <MenuItem value="pricingName">Pricing Name</MenuItem>
           <MenuItem value="configurationSpaceSize">Configuration Space Size</MenuItem>
           <MenuItem value="featuresCount">Features</MenuItem>
           <MenuItem value="usageLimitsCount">Usage Limits</MenuItem>

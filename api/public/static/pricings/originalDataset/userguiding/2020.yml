@@ -1,9 +1,11 @@
-saasName: UserGuiding
 syntaxVersion: '2.1'
-version: '2020-11-24'
-createdAt: '2020-11-24'
+saasName: UserGuiding
+createdAt: '2020-11-25'
+version: '2020-11-25'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20201125174346/https://userguiding.com/pricing/
 features:
   users:
     description: ''
@@ -120,7 +122,6 @@ usageLimits:
     defaultValue: 20000
     unit: user
     type: NON_RENEWABLE
-    linkedFeatures: null
   teamMembersLimit:
     description: ''
     valueType: NUMERIC
@@ -128,7 +129,7 @@ usageLimits:
     unit: member
     type: NON_RENEWABLE
     linkedFeatures:
-      - teams
+    - teams
   activeGuidesLimit:
     description: ''
     valueType: NUMERIC
@@ -136,7 +137,7 @@ usageLimits:
     unit: guide
     type: NON_RENEWABLE
     linkedFeatures:
-      - guides
+    - guides
   activeHotspotsLimit:
     description: ''
     valueType: NUMERIC
@@ -144,7 +145,7 @@ usageLimits:
     unit: hotspot
     type: NON_RENEWABLE
     linkedFeatures:
-      - hotspots
+    - hotspots
   activeOnboardingChecklistsLimit:
     description: ''
     valueType: NUMERIC
@@ -152,49 +153,32 @@ usageLimits:
     unit: checklist
     type: NON_RENEWABLE
     linkedFeatures:
-      - onboardingChecklist
+    - onboardingChecklist
   limitedCustomization:
     description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: RENEWABLE
     linkedFeatures:
-      - customization
+    - customization
 plans:
   STARTUP:
     description: ''
-    monthlyPrice: 199
-    annualPrice: 165.83
+    price: 199
     unit: /month
     features: null
     usageLimits: null
-    price: 199
   GROWTH:
     description: ''
-    monthlyPrice: 399
-    annualPrice: 332.5
+    price: 399
     unit: /month
     features:
       successCoaching:
         value: true
-    usaeLimits:
-      activeUsersLimit:
-        value: 30000
-      teamMembersLimit:
-        value: 5
-      activeGuidesLimit:
-        value: 1000000000
-      activeHotspotsLimit:
-        value: 1000000000
-      activeOnboardingChecklistsLimit:
-        value: 1000000000
-      limitedCustomization:
-        value: false
-    price: 399
+    usageLimits: null
   ENTERPRISE:
     description: ''
-    monthlyPrice: 999
-    annualPrice: 832.5
+    price: 999
     unit: /month
     features:
       successCoaching:
@@ -216,4 +200,4 @@ plans:
         value: 1000000000
       activeOnboardingChecklistsLimit:
         value: 1000000000
-    price: 999
+addOns: null

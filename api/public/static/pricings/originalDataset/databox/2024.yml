@@ -1,9 +1,11 @@
-saasName: Databox
 syntaxVersion: '2.1'
-version: 2024-6-11
-createdAt: '2024-06-11'
+saasName: Databox
+createdAt: '2024-06-12'
+version: '2024-06-12'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20240612204019/https://databox.com/pricing
 features:
   dataSources:
     description: ''
@@ -22,9 +24,8 @@ features:
     type: INTEGRATION
     integrationType: API
   historicalData:
-    description: >-
-      The maximum amount of historical data that you can access in your Databox
-      Account.
+    description: The maximum amount of historical data that you can access in your
+      Databox Account.
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
@@ -75,19 +76,16 @@ features:
     defaultValue: true
     type: DOMAIN
   databoardTemplates:
-    description: >-
-      Instantly use pre-built templates created by experts. Browse the available
-      templates on our website or inside our application.
+    description: Instantly use pre-built templates created by experts. Browse the
+      available templates on our website or inside our application.
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   databoardDesigner:
-    description: >-
-      Create Databoards, no coding required. Use the Designer by starting with a
-      blank Databoard or choosing, then customizing a template. Use pre-built
-      datablocks or start with blank visualizations and choose vour datasource,
-      metric, time intervals and more. Re-arrange, resize, move and delete
-      datablocks.
+    description: Create Databoards, no coding required. Use the Designer by starting
+      with a blank Databoard or choosing, then customizing a template. Use pre-built
+      datablocks or start with blank visualizations and choose vour datasource, metric,
+      time intervals and more. Re-arrange, resize, move and delete datablocks.
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
@@ -113,10 +111,9 @@ features:
     defaultValue: false
     type: DOMAIN
   dataCalculations:
-    description: >-
-      Data Calculations enable you to create on-the-fly calculations, regardless
-      of whether the metrics originate from a single data source or different
-      data sources.
+    description: Data Calculations enable you to create on-the-fly calculations, regardless
+      of whether the metrics originate from a single data source or different data
+      sources.
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
@@ -146,38 +143,32 @@ features:
     defaultValue: true
     type: DOMAIN
   slackIntegration:
-    description: >-
-      Receive alerts in Slack. Share Databoards and datablocks in Slack. Use the
-      Databox Slackbot to ask questions about your data.
+    description: Receive alerts in Slack. Share Databoards and datablocks in Slack.
+      Use the Databox Slackbot to ask questions about your data.
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingsUrls:
-      - https://slack.com/pricing
   streamToTv:
-    description: >-
-      View any of your Databoards on a wall-mounted TV in your office. Broadcast
-      your data in the office to motivate your team and keep the metrics that
-      matter front and center.
+    description: View any of your Databoards on a wall-mounted TV in your office.
+      Broadcast your data in the office to motivate your team and keep the metrics
+      that matter front and center.
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
     integrationType: EXTERNAL_DEVICE
   mobileAppAccess:
-    description: >-
-      View all your Databoards, goals and receive alerts and scorecards on your
-      mobile device in our app. IOS and Android native apps available.
+    description: View all your Databoards, goals and receive alerts and scorecards
+      on your mobile device in our app. IOS and Android native apps available.
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
     integrationType: EXTERNAL_DEVICE
   goals:
-    description: >-
-      Set a daily, weekly, monthly or annual goal for any metric you're
-      tracking. Assign the goal to someone on your team and receive alerts when
-      you hit thegoal or if you are at risk of missing it. View progress to all
-      your Company's goals on one screen.
+    description: Set a daily, weekly, monthly or annual goal for any metric you're
+      tracking. Assign the goal to someone on your team and receive alerts when you
+      hit thegoal or if you are at risk of missing it. View progress to all your Company's
+      goals on one screen.
     valueType: BOOLEAN
     defaultValue: false
     type: AUTOMATION
@@ -215,11 +206,9 @@ features:
     defaultValue: true
     type: DOMAIN
   alerts:
-    description: >-
-      Receive alerts via the mobile app. Slack or via email for any metric you
-      want to monitor more closely. Alerts can be triggered when numbers go
-      above or below any number or change by a set percentage over a specified
-      time interval.
+    description: Receive alerts via the mobile app. Slack or via email for any metric
+      you want to monitor more closely. Alerts can be triggered when numbers go above
+      or below any number or change by a set percentage over a specified time interval.
     valueType: BOOLEAN
     defaultValue: false
     type: AUTOMATION
@@ -369,6 +358,10 @@ features:
     valueType: BOOLEAN
     defaultValue: false
     type: MANAGEMENT
+  quickstartOnboarding:
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
 usageLimits:
   includedDataSources:
     description: ''
@@ -377,7 +370,7 @@ usageLimits:
     unit: data source
     type: NON_RENEWABLE
     linkedFeatures:
-      - dataSources
+    - dataSources
   dataSourcesLimit:
     description: ''
     valueType: NUMERIC
@@ -385,7 +378,7 @@ usageLimits:
     unit: data source
     type: NON_RENEWABLE
     linkedFeatures:
-      - dataSources
+    - dataSources
   historicalDataThreshold:
     description: ''
     valueType: NUMERIC
@@ -393,7 +386,7 @@ usageLimits:
     unit: month
     type: NON_RENEWABLE
     linkedFeatures:
-      - historicalData
+    - historicalData
   warehouseStorageLimit:
     description: ''
     valueType: NUMERIC
@@ -401,30 +394,29 @@ usageLimits:
     unit: GB
     type: NON_RENEWABLE
     linkedFeatures:
-      - warehouseDataStorage
+    - warehouseDataStorage
   usersLimit:
     description: ''
     valueType: NUMERIC
     defaultValue: 3
     unit: user
     type: NON_RENEWABLE
-    linkedFeatures: null
   guidedOnboardingLimit:
     description: ''
     valueType: NUMERIC
-    defaultValue: 6
+    defaultValue: 0
     unit: hour
     type: NON_RENEWABLE
     linkedFeatures:
-      - guidedOnboarding
+    - guidedOnboarding
   dedicatedAnalystLimit:
     description: ''
     valueType: NUMERIC
-    defaultValue: 2
+    defaultValue: 0
     unit: hour/month
     type: RENEWABLE
     linkedFeatures:
-      - dedicatedAnalyst
+    - dedicatedAnalyst
   15minPriorityConnectionsLimit:
     description: ''
     valueType: NUMERIC
@@ -432,20 +424,17 @@ usageLimits:
     unit: connection
     type: RENEWABLE
     linkedFeatures:
-      - 15minPriorityConnections
+    - 15minPriorityConnections
 plans:
   FREE:
     description: ''
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: /month
     features: null
     usageLimits: null
-    price: 0
   STARTER:
     description: ''
-    monthlyPrice: 59
-    annualPrice: 47
+    price: 59
     unit: connection/month
     features:
       dataSyncFrequency:
@@ -481,11 +470,9 @@ plans:
         value: 20
       usersLimit:
         value: 5
-    price: 59
   PROFESSIONAL:
     description: ''
-    monthlyPrice: 169
-    annualPrice: 135
+    price: 169
     unit: connection/month
     features:
       dataSyncFrequency:
@@ -539,11 +526,9 @@ plans:
         value: 20
       usersLimit:
         value: 15
-    price: 169
   GROWTH:
     description: ''
-    monthlyPrice: 399
-    annualPrice: 319
+    price: 399
     unit: connection/month
     features:
       dataSyncFrequency:
@@ -613,11 +598,9 @@ plans:
         value: 20
       usersLimit:
         value: 1000000000
-    price: 399
   PREMIUM:
     description: ''
-    monthlyPrice: 999
-    annualPrice: 799
+    price: 999
     unit: connection/month
     features:
       dataSyncFrequency:
@@ -644,6 +627,8 @@ plans:
         value: true
       removableBrandingOnDataboards:
         value: true
+      fiscalCalendars:
+        value: true
       goals:
         value: true
       alerts:
@@ -663,8 +648,6 @@ plans:
       archiveReports:
         value: true
       removableBrandingOnReports:
-        value: true
-      fiscalCalendars:
         value: true
       advancedSlideTypes:
         value: true
@@ -699,14 +682,17 @@ plans:
         value: 1000000000
       usersLimit:
         value: 1000000000
-    price: 999
+      guidedOnboardingLimit:
+        value: 6
+      dedicatedAnalystLimit:
+        value: 2
 addOns:
   brandingAndWhiteLabelling:
     availableFor:
-      - STARTER
-      - PROFESSIONAL
-      - GROWTH
-      - PREMIUM
+    - STARTER
+    - PROFESSIONAL
+    - GROWTH
+    - PREMIUM
     price: 250
     unit: /month
     features:
@@ -716,11 +702,11 @@ addOns:
     usageLimitsExtensions: null
   15minSync:
     availableFor:
-      - FREE
-      - STARTER
-      - PROFESSIONAL
-      - GROWTH
-      - PREMIUM
+    - FREE
+    - STARTER
+    - PROFESSIONAL
+    - GROWTH
+    - PREMIUM
     price: 18
     unit: /month
     features:
@@ -734,9 +720,9 @@ addOns:
     usageLimitsExtensions: null
   fiscalCalendar:
     availableFor:
-      - STARTER
-      - PROFESSIONAL
-      - GROWTH
+    - STARTER
+    - PROFESSIONAL
+    - GROWTH
     price: 50
     unit: /month
     features:
@@ -746,20 +732,22 @@ addOns:
     usageLimitsExtensions: null
   quickstartOnboarding:
     availableFor:
-      - STARTER
-      - PROFESSIONAL
-      - GROWTH
-      - PREMIUM
+    - STARTER
+    - PROFESSIONAL
+    - GROWTH
+    - PREMIUM
     price: 1000
     unit: one time purchase
-    features: null
+    features:
+      quickstartOnboarding:
+        value: true
     usageLimits: null
     usageLimitsExtensions: null
   guidedOnboarding:
     availableFor:
-      - STARTER
-      - PROFESSIONAL
-      - GROWTH
+    - STARTER
+    - PROFESSIONAL
+    - GROWTH
     price: 500
     unit: one time purchase
     features:
@@ -769,9 +757,9 @@ addOns:
     usageLimitsExtensions: null
   dedicatedAnalyst:
     availableFor:
-      - STARTER
-      - PROFESSIONAL
-      - GROWTH
+    - STARTER
+    - PROFESSIONAL
+    - GROWTH
     price: 200
     unit: /month
     features:
@@ -781,9 +769,9 @@ addOns:
     usageLimitsExtensions: null
   advancedSecurity:
     availableFor:
-      - STARTER
-      - PROFESSIONAL
-      - GROWTH
+    - STARTER
+    - PROFESSIONAL
+    - GROWTH
     price: 100
     unit: /month
     features:
@@ -793,10 +781,10 @@ addOns:
     usageLimitsExtensions: null
   prioritySupport:
     availableFor:
-      - STARTER
-      - PROFESSIONAL
-      - GROWTH
-      - PREMIUM
+    - STARTER
+    - PROFESSIONAL
+    - GROWTH
+    - PREMIUM
     price: Contact Sales
     unit: /month
     features:

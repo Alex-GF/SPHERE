@@ -1,9 +1,11 @@
-saasName: Overleaf
 syntaxVersion: '2.1'
-version: 2019-11-3
-createdAt: '2019-11-03'
+saasName: Overleaf
+createdAt: '2019-11-04'
+version: '2019-11-04'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20191104132617/https://www.overleaf.com/user/subscription/plans
 features:
   privateProjects:
     description: ''
@@ -53,15 +55,13 @@ features:
     type: INTEGRATION
     integrationType: WEB_SAAS
     pricingUrls:
-      - https://www.dropbox.com/plans
+    - https://www.dropbox.com/plans
   githubIntegration:
     description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingsURLs:
-      - https://github.com/pricing
   prioritySupport:
     description: ''
     valueType: BOOLEAN
@@ -75,20 +75,17 @@ usageLimits:
     unit: collaborator
     type: NON_RENEWABLE
     linkedFeatures:
-      - realTimeCollaboration
+    - realTimeCollaboration
 plans:
   PERSONAL:
     description: ''
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: /month
     features: null
     usageLimits: null
-    price: 0
   COLLABORATOR:
     description: ''
-    monthlyPrice: 15
-    annualPrice: 15
+    price: 15
     unit: /month
     features:
       realTimeTrackChanges:
@@ -108,11 +105,9 @@ plans:
     usageLimits:
       maxCollaboratorsPerProject:
         value: 10
-    price: 15
   PROFESSIONAL:
     description: ''
-    monthlyPrice: 30
-    annualPrice: 30
+    price: 30
     unit: /month
     features:
       realTimeTrackChanges:
@@ -132,4 +127,4 @@ plans:
     usageLimits:
       maxCollaboratorsPerProject:
         value: .inf
-    price: 30
+addOns: null

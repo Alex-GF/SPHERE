@@ -1,9 +1,11 @@
-saasName: OpenPhone
 syntaxVersion: '2.1'
-version: '2021-11-17'
-createdAt: '2021-11-17'
+saasName: OpenPhone
+createdAt: '2021-11-18'
+version: '2021-11-18'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20211118055140/https://www.openphone.co/pricing
 features:
   usAndCanadaCalling:
     description: ''
@@ -95,32 +97,32 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://slack.com/pricing
+    pricingUrls:
+    - https://slack.com/pricing
   zapierIntegration:
     description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://zapier.com/pricing
+    pricingUrls:
+    - https://zapier.com/pricing
   smsViaZapier:
     description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://zapier.com/pricing
+    pricingUrls:
+    - https://zapier.com/pricing
   hubSpotCRMIntegration:
     description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://www.hubspot.com/pricing
+    pricingUrls:
+    - https://www.hubspot.com/pricing
   adminDashboard:
     description: ''
     valueType: BOOLEAN
@@ -169,7 +171,7 @@ usageLimits:
     unit: phone number
     type: NON_RENEWABLE
     linkedFeatures:
-      - phoneNumbers
+    - phoneNumbers
   usAndCanadCallsLimit:
     description: ''
     valueType: NUMERIC
@@ -177,7 +179,7 @@ usageLimits:
     unit: call
     type: NON_RENEWABLE
     linkedFeatures:
-      - usAndCanadaCalling
+    - usAndCanadaCalling
   usAndCanadaMessagesLimit:
     description: ''
     valueType: NUMERIC
@@ -185,7 +187,7 @@ usageLimits:
     unit: message
     type: NON_RENEWABLE
     linkedFeatures:
-      - usAndCanadaMessaging
+    - usAndCanadaMessaging
   smsViaZapierAddonLimit:
     description: ''
     valueType: NUMERIC
@@ -193,22 +195,18 @@ usageLimits:
     unit: message
     type: NON_RENEWABLE
     linkedFeatures:
-      - smsViaZapier
+    - smsViaZapier
 plans:
   STANDARD:
     description: The essentials to get you up and running.
-    monthlyPrice: 10
-    annualPrice: 10
+    price: 10
     unit: user/month
     features: null
     usageLimits: null
-    price: 10
   PREMIUM:
-    description: >-
-      For power users and teams looking for more integrations and collaboration
+    description: For power users and teams looking for more integrations and collaboration
       features.
-    monthlyPrice: 25
-    annualPrice: 25
+    price: 25
     unit: user/month
     features:
       advancedAutoAtendant:
@@ -223,11 +221,10 @@ plans:
         value: true
       prioritySupport:
         value: true
-    price: 25
+    usageLimits: null
   ENTERPRISE:
     description: For organizations with complex requirements.
-    monthlyPrice: Contact Sales
-    annualPrice: Contact Sales
+    price: Contact Sales
     unit: user/month
     features:
       advancedAutoAtendant:
@@ -246,13 +243,13 @@ plans:
         value: true
       dedicatedAccountManager:
         value: true
-    price: Contact Sales
+    usageLimits: null
 addOns:
   aditionalPhoneNumbers:
     availableFor:
-      - STANDARD
-      - PREMIUM
-      - ENTERPRISE
+    - STANDARD
+    - PREMIUM
+    - ENTERPRISE
     price: 5
     unit: phoneNumber/month
     features: null
@@ -262,9 +259,9 @@ addOns:
         value: 1
   internationalCallingAndMessaging:
     availableFor:
-      - STANDARD
-      - PREMIUM
-      - ENTERPRISE
+    - STANDARD
+    - PREMIUM
+    - ENTERPRISE
     price: See Rates
     unit: user/month
     features:
@@ -276,9 +273,9 @@ addOns:
     usageLimitsExtensions: null
   smsViaZapierAddon:
     availableFor:
-      - STANDARD
-      - PREMIUM
-      - ENTERPRISE
+    - STANDARD
+    - PREMIUM
+    - ENTERPRISE
     price: 0.01
     unit: message
     features:

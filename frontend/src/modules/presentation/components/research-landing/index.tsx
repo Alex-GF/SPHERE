@@ -6,12 +6,11 @@ import { useRouter } from '../../../core/hooks/useRouter';
 import { StyledButtonLanding } from '../styled-button-landing';
 
 export default function ResearchLanding() {
-  
   const router = useRouter();
-  
+
   return (
     <Box sx={{ width: '100dvw', my: { xs: 8, sm: 12 } }}>
-      <Container maxWidth="xl" sx={{ ...flex({ direction: 'column', justify: 'center' })}}>
+      <Container maxWidth="xl" sx={{ ...flex({ direction: 'column', justify: 'center' }) }}>
         <Typography
           component="h2"
           variant="h3"
@@ -36,8 +35,8 @@ export default function ResearchLanding() {
         >
           Our platform is the result of cutting-edge research and the dedication of a world-class
           team. The scientific publications behind our technology and the brilliant minds of our
-          researchers have made it possible to create powerful and flexible solutions for 
-          DevOps teams and SaaS pricing management.
+          researchers have made it possible to create powerful and flexible solutions for DevOps
+          teams and SaaS pricing management.
         </Typography>
         <Typography
           variant="h6"
@@ -53,52 +52,67 @@ export default function ResearchLanding() {
           possible.
         </Typography>
         <ImageList gap={25}>
-            <img
-                alt=""
-                src="assets/landing/icwe24.jpeg"
-                width={400}
-                height={250}
-                style={{
-                    borderRadius: '16px',
-                    objectFit: 'cover',
-                }}
-            />
-            <img
-                alt=""
-                src="assets/landing/caise24.jpeg"
-                width={400}
-                height={250}
-                style={{
-                    borderRadius: '16px',
-                    objectFit: 'cover',
-                }}
-            />
-            <img
-                alt=""
-                src="assets/landing/sistedes24.jpeg"
-                width={400}
-                height={250}
-                style={{
-                    borderRadius: '16px',
-                    objectFit: 'cover',
-                }}
-            />
-            <img
-                alt=""
-                src="assets/landing/score24.jpeg"
-                width={400}
-                height={250}
-                style={{
-                    borderRadius: '16px',
-                    objectFit: 'cover',
-                }}
-            />
+          <img
+            alt=""
+            src="assets/landing/research/presenter1.heic"
+            width={400}
+            height={250}
+            style={{
+              borderRadius: '16px',
+              objectFit: 'cover',
+            }}
+          />
+          <img
+            alt=""
+            src="assets/landing/research/presenter3.heic"
+            width={400}
+            height={250}
+            style={{
+              borderRadius: '16px',
+              objectFit: 'cover',
+            }}
+          />
+          <img
+            alt=""
+            src="assets/landing/research/group.heic"
+            width={400}
+            height={250}
+            style={{
+              borderRadius: '16px',
+              objectFit: 'cover',
+            }}
+          />
+          <img
+            alt=""
+            src="assets/landing/research/award.jpg"
+            width={400}
+            height={250}
+            style={{
+              borderRadius: '16px',
+              objectFit: 'cover',
+            }}
+          />
         </ImageList>
-        <Box mt={5} sx={{...flex({ justify: 'center', align: 'center' })}} gap={3.5}>
-          <StyledButtonLanding variant="contained" color="primary" startIcon={<LibraryBooks />} size="large" sx={{ width: 400, textAlign: 'center' }} onClick={() => router.push("/research")}>
+        <Box mt={5} sx={{ ...flex({ justify: 'center', align: 'center' }) }} gap={3.5}>
+          <StyledButtonLanding
+            variant="contained"
+            startIcon={<LibraryBooks />}
+            size="large"
+            sx={{
+              width: 400,
+            }}
+            onClick={() => router.push('/research')}
+          >
             Discover All Our Publications
           </StyledButtonLanding>
-          <Button variant="outlined" color="primary" startIcon={<People />} size="large" sx={{ width: 400, textAlign: 'center' }} onClick={() => router.push("/team")}>
+          <Button
+            variant="outlined"
+            color="primary"
+            startIcon={<People />}
+            size="large"
+            sx={{ width: 400, textAlign: 'center' }}
+            onClick={() => router.push('/team')}
+          >
             Meet Our Team And Collaborators
           </Button>
         </Box>

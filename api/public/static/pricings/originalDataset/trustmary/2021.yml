@@ -1,9 +1,11 @@
-saasName: Trustmary - Full Suite
 syntaxVersion: '2.1'
-version: '2021-11-29'
+saasName: Trustmary - Full Suite
 createdAt: '2021-11-29'
+version: '2021-11-29'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20211130124431/https://trustmary.com/pricing/
 features:
   surveys:
     description: ''
@@ -56,7 +58,6 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs: null
   feedbackRequestViaQR:
     description: ''
     valueType: BOOLEAN
@@ -88,7 +89,7 @@ usageLimits:
     unit: survey/month
     type: RENEWABLE
     linkedFeatures:
-      - surveys
+    - surveys
   testimonialsOrReviewsAtTheSameTime:
     description: ''
     valueType: NUMERIC
@@ -96,8 +97,8 @@ usageLimits:
     unit: testimonial or review
     type: NON_RENEWABLE
     linkedFeatures:
-      - testimonials
-      - reviews
+    - testimonials
+    - reviews
   feedbackRequestViaEmailLimit:
     description: ''
     valueType: NUMERIC
@@ -105,20 +106,17 @@ usageLimits:
     unit: email/month
     type: RENEWABLE
     linkedFeatures:
-      - feedbackRequestViaEmail
+    - feedbackRequestViaEmail
 plans:
   STARTER:
     description: ''
-    monthlyPrice: 290
-    annualPrice: 249.17
+    price: 290
     unit: /month
     features: null
     usageLimits: null
-    price: 290
   BUSINESS:
     description: ''
-    monthlyPrice: 390
-    annualPrice: 332.5
+    price: 390
     unit: /month
     features: null
     usageLimits:
@@ -126,11 +124,9 @@ plans:
         value: 400
       testimonialsOrReviewsAtTheSameTime:
         value: 100
-    price: 390
   PRO:
     description: ''
-    monthlyPrice: 590
-    annualPrice: 499.9
+    price: 590
     unit: /month
     features: null
     usageLimits:
@@ -138,4 +134,4 @@ plans:
         value: 2000
       testimonialsOrReviewsAtTheSameTime:
         value: 1000
-    price: 590
+addOns: null

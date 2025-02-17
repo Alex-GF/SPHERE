@@ -12,7 +12,10 @@ class UserRepository extends RepositoryBase {
   }
 
   async create (businessEntity: any, ...args: any) {
-    return (new UserMongoose(businessEntity)).save()
+    const user = await (new UserMongoose(businessEntity)).save()
+    const userObject = await UserMongoose.findById(user.id, { avatar: 0 })
+
+    return userObject
   }
 
   async update (id: string, businessEntity: any, ...args: any) {
@@ -40,12 +43,24 @@ class UserRepository extends RepositoryBase {
     return this._findByEmailAndUserType(email, 'user')
   }
 
+  async findAdminByUsername (username: string) {
+    return this._findByUsernameAndUserType(username, 'admin')
+  }
+
+  async findUserByUsername (username: string) {
+    return this._findByUsernameAndUserType(username, 'user')
+  }
+
   async findByToken (token: string) {
     return UserMongoose.findOne({ token })
   }
 
   async _findByEmailAndUserType (email: string, userType: "user" | "admin") {
     return UserMongoose.findOne({ email, userType }, { id: 1, password: 1})
+  }
+
+  async _findByUsernameAndUserType (username: string, userType: "user" | "admin") {
+    return UserMongoose.findOne({ username, userType }, { id: 1, password: 1})
   }
 }
 

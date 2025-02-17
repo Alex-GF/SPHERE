@@ -1,9 +1,11 @@
-saasName: ClickUp
 syntaxVersion: '2.1'
-version: '2019-10-31'
-createdAt: '2019-10-31'
+saasName: ClickUp
+createdAt: '2019-11-01'
+version: '2019-11-01'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20191101035142/https://clickup.com/pricing
 features:
   storage:
     description: ''
@@ -148,16 +150,13 @@ usageLimits:
 plans:
   FREE:
     description: Everything you need to be productive
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: user/month
     features: null
     usageLimits: null
-    price: 0
   UNLIMITED:
     description: Unlimited storage and advanced features
-    monthlyPrice: 9
-    annualPrice: 5
+    price: 9
     unit: member/month
     features:
       views:
@@ -177,11 +176,9 @@ plans:
       customFields:
         value: true
     usageLimits: null
-    price: 9
   BUSINESS:
     description: Business class features and security
-    monthlyPrice: 19
-    annualPrice: 9
+    price: 19
     unit: member/month
     features:
       views:
@@ -219,11 +216,9 @@ plans:
       extraGuests:
         value: true
     usageLimits: null
-    price: 19
   ENTERPRISE:
     description: ''
-    monthlyPrice: Contact Sales
-    annualPrice: Contact Sales
+    price: Contact Sales
     unit: member/month
     features:
       views:
@@ -275,4 +270,4 @@ plans:
     usageLimits:
       increasedApiLimit:
         value: true
-    price: Contact Sales
+addOns: null

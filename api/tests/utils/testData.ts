@@ -1,30 +1,36 @@
 import { faker } from '@faker-js/faker';
 
 const adminCredentials = {
-  email: 'admin1@admin.com',
-  password: 'secret',
+  loginField: 'admin1@admin.com',
+  password: process.env.ADMIN_PASSWORD,
 };
 
 const noEmailAdminCredentials = {
-  password: 'secret',
+  password: process.env.ADMIN_PASSWORD,
 };
 
 const userCredentials = {
-  email: 'user1@user.com',
-  password: 'secret',
+  loginField: 'test_user@test.com',
+  email: "test_user@test.com",
+  username: "TestUser",
+  password: process.env.USER_PASSWORD,
 };
 
 const noEmailUserCredentials = {
-  password: 'secret',
+  password: process.env.USER_PASSWORD,
 };
 
 const invalidCredentials = {
-  email: 'invalidCredential@customer.com',
-  password: 'secret',
+  loginField: 'invalidCredential@customer.com',
+  password: 'invalid',
 };
 const generateFakeUser = (type: "user" | "admin", name?: string) => {
   const firstName = name || faker.person.firstName();
   const lastName = faker.person.lastName();
+  let username = faker.internet.username({ firstName: firstName.toLowerCase(), lastName: lastName.toLowerCase() }).slice(0, 15);
+  if (username.length < 3) {
+    username = username.padEnd(3, '0');
+  }
   const email = faker.internet.email({ firstName: firstName.toLowerCase(), lastName: lastName.toLowerCase() });
   const password = '12345678AaBb_!';
   const phone = faker.phone.number();
@@ -36,6 +42,7 @@ const generateFakeUser = (type: "user" | "admin", name?: string) => {
   return {
     firstName,
     lastName,
+    username,
     email,
     password,
     phone,

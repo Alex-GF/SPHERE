@@ -5,6 +5,7 @@ export function validateRegister(formData: RegisterFormProps): string[] {
 
     _validateFirstName(formData.firstName, errors);
     _validateLastName(formData.lastName, errors);
+    _validateUsername(formData.username, errors);
     _validateEmail(formData.email, errors);
     _validatePassword(formData.password, formData.confirmPassword!, errors);
     _validatePhone(formData.phone, errors);
@@ -37,6 +38,16 @@ function _validateLastName(lastName: string, errors: string[]){
 
     if (lastName.length < 1 || lastName.length > 255) {
         errors.push("The last name must have between 3 and 255 characters long");
+        return;
+    }
+}
+
+function _validateUsername(username: string, errors: string[]){
+    if (username === undefined || username === "") {
+        errors.push("Username is required");
+        return;
+    }else if (username.length < 3 || username.length > 15) {
+        errors.push("Username must be between 3 and 15 characters long");
         return;
     }
 }

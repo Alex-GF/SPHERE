@@ -1,9 +1,11 @@
-saasName: Pumble
 syntaxVersion: '2.1'
-version: '2022-11-27'
-createdAt: '2022-11-27'
+saasName: Pumble
+createdAt: '2022-11-28'
+version: '2022-11-28'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20221128031926/https://pumble.com/pricing
 features:
   privateChannels:
     description: Only invited users can send messages in a private channel.
@@ -16,16 +18,13 @@ features:
     defaultValue: true
     type: DOMAIN
   directMessages:
-    description: >-
-      Share business information, send files and images, or share links to
-      others, one-on-one.
+    description: Share business information, send files and images, or share links
+      to others, one-on-one.
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   threads:
-    description: >-
-      Spin off side conversations into threads to keep the channel
-      distraction-free.
+    description: Spin off side conversations into threads to keep the channel distraction-free.
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
@@ -45,16 +44,14 @@ features:
     defaultValue: true
     type: DOMAIN
   messageHistory:
-    description: >-
-      Access all your messages that have ever been sent to get context for past
-      decisions or get new team members up to speed faster.
+    description: Access all your messages that have ever been sent to get context
+      for past decisions or get new team members up to speed faster.
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   shareFilesAndLinks:
-    description: >-
-      Share images, videos, documents or links with your teammates and search
-      for them later via File browser.
+    description: Share images, videos, documents or links with your teammates and
+      search for them later via File browser.
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
@@ -64,32 +61,31 @@ features:
     defaultValue: true
     type: DOMAIN
   messageFormatting:
-    description: >-
-      Highlight important information within conversation or markup your code
-      blocks.
+    description: Highlight important information within conversation or markup your
+      code blocks.
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   fileStoragePerAccount:
-    description: Share images, documents, and other files, and access them later in Pumble.
+    description: Share images, documents, and other files, and access them later in
+      Pumble.
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   fileStoragePerUser:
-    description: Share images, documents, and other files, and access them later in Pumble.
+    description: Share images, documents, and other files, and access them later in
+      Pumble.
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
   customizableSections:
-    description: >-
-      Organize channels and conversations into custom, collapsible sections in
-      your sidebar.
+    description: Organize channels and conversations into custom, collapsible sections
+      in your sidebar.
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
   oneOnOneVoiceAndVideoCalls:
-    description: >-
-      Go from typing to talking in a single click, with 1:1 voice and video
+    description: Go from typing to talking in a single click, with 1:1 voice and video
       calls.
     valueType: BOOLEAN
     defaultValue: true
@@ -105,9 +101,8 @@ features:
     defaultValue: false
     type: DOMAIN
   guestAccess:
-    description: >-
-      Work with people outside your company and give them access only to the
-      specific channels.
+    description: Work with people outside your company and give them access only to
+      the specific channels.
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
@@ -117,9 +112,8 @@ features:
     defaultValue: false
     type: MANAGEMENT
   permissions:
-    description: >-
-      Manage who can create and archive channels, invite members, remove them
-      from channels, post in public channels and other permissions.
+    description: Manage who can create and archive channels, invite members, remove
+      them from channels, post in public channels and other permissions.
     valueType: BOOLEAN
     defaultValue: false
     type: MANAGEMENT
@@ -155,7 +149,6 @@ usageLimits:
     defaultValue: 1000000000
     unit: user
     type: NON_RENEWABLE
-    linkedFeatures: null
   useMessageHistory:
     description: The number of days that can be searched for the messageHistory.
     valueType: NUMERIC
@@ -163,7 +156,7 @@ usageLimits:
     unit: day
     type: NON_RENEWABLE
     linkedFeatures:
-      - messageHistory
+    - messageHistory
   useFileStoragePerAccount:
     description: The amount of storage that can be used per account.
     valueType: NUMERIC
@@ -171,28 +164,25 @@ usageLimits:
     unit: GB/account
     type: NON_RENEWABLE
     linkedFeatures:
-      - fileStoragePerAccount
+    - fileStoragePerAccount
   useFileStoragePerUser:
     description: The amount of storage that can be used per user or team member.
     valueType: NUMERIC
-    defaultValue: 10
+    defaultValue: 0
     unit: GB/user
     type: NON_RENEWABLE
     linkedFeatures:
-      - fileStoragePerUser
+    - fileStoragePerUser
 plans:
   FREE:
     description: ''
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: user/month
     features: null
     usageLimits: null
-    price: 0
   PRO:
     description: ''
-    monthlyPrice: 1.99
-    annualPrice: 1.66
+    price: 1.99
     unit: user/month
     features:
       fileStoragePerUser:
@@ -211,5 +201,7 @@ plans:
         value: true
       priorityCustomerSupport:
         value: true
-    usageLimits: null
-    price: 1.99
+    usageLimits:
+      useFileStoragePerUser:
+        value: 10
+addOns: null

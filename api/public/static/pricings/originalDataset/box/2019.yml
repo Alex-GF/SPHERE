@@ -1,9 +1,11 @@
-saasName: Box
 syntaxVersion: '2.1'
-version: '2019-11-13'
-createdAt: '2019-11-13'
+saasName: Box
+createdAt: '2019-11-14'
+version: '2019-11-14'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20191114113543/https://www.box.com/pricing
 features:
   secureStorage:
     description: ''
@@ -16,8 +18,8 @@ features:
     defaultValue: true
     type: DOMAIN
   desktopAccessToBoxFiles:
-    valueType: BOOLEAN
     description: ''
+    valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   mobileAccess:
@@ -221,7 +223,7 @@ usageLimits:
     unit: GB
     type: NON_RENEWABLE
     linkedFeatures:
-      - secureStorage
+    - secureStorage
   uploadSizeLimit:
     description: ''
     valueType: NUMERIC
@@ -229,19 +231,17 @@ usageLimits:
     unit: GB
     type: NON_RENEWABLE
     linkedFeatures:
-      - secureStorage
+    - secureStorage
   minUsers:
     description: ''
     valueType: NUMERIC
     defaultValue: 3
     type: NON_RENEWABLE
-    linkedFeatures: null
   maxUsers:
     description: ''
     valueType: NUMERIC
     defaultValue: 10
     type: NON_RENEWABLE
-    linkedFeatures: null
   apiCallsLimit:
     description: ''
     valueType: NUMERIC
@@ -249,18 +249,17 @@ usageLimits:
     unit: calls/month
     type: RENEWABLE
     linkedFeatures:
-      - boxApi
+    - boxApi
 plans:
   STARTER:
     description: ''
-    monthlyPrice: 5
+    price: 5
     unit: user/month
     features: null
     usageLimits: null
-    price: 5
   BUSINESS:
     description: ''
-    monthlyPrice: 15
+    price: 15
     unit: user/month
     features:
       advancedSecurityReporting:
@@ -288,10 +287,9 @@ plans:
         value: .inf
       apiCallsLimit:
         value: 50000
-    price: 15
   BUSINESS_PLUS:
     description: ''
-    monthlyPrice: 25
+    price: 25
     unit: user/month
     features:
       advancedSecurityReporting:
@@ -343,10 +341,9 @@ plans:
         value: .inf
       apiCallsLimit:
         value: 50000
-    price: 25
   ENTERPRISE:
     description: ''
-    monthlyPrice: Contact Sales
+    price: Contact Sales
     unit: user/month
     features:
       advancedSecurityReporting:
@@ -365,17 +362,27 @@ plans:
         value: true
       dataLossPrevention:
         value: true
-      hipaaCompliance:
-        value: true
-      hitechCompliance:
-        value: true
-      fedrampCompliance:
-        value: true
       unlimitedExternalCollaborators:
         value: true
       completeContentVisibility:
         value: true
       completeContentManagement:
+        value: true
+      customMetadata:
+        value: true
+      customTemplates:
+        value: true
+      boxGovernance:
+        value: true
+      boxKeySafe:
+        value: true
+      boxZones:
+        value: true
+      hipaaCompliance:
+        value: true
+      hitechCompliance:
+        value: true
+      fedrampCompliance:
         value: true
       unlimitedIntegrations:
         value: true
@@ -389,16 +396,6 @@ plans:
         value: true
       documentWatermark:
         value: true
-      customMetadata:
-        value: true
-      customTemplates:
-        value: true
-      boxGovernance:
-        value: true
-      boxKeySafe:
-        value: true
-      boxZones:
-        value: true
     usageLimits:
       secureStorageLimit:
         value: .inf
@@ -408,4 +405,4 @@ plans:
         value: .inf
       apiCallsLimit:
         value: 100000
-    price: Contact Sales
+addOns: null

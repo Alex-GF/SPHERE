@@ -1,9 +1,11 @@
-saasName: Evernote
 syntaxVersion: '2.1'
-version: '2020-11-29'
-createdAt: '2020-11-29'
+saasName: Evernote
+createdAt: '2020-11-30'
+version: '2020-11-30'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20201130010053/https://evernote.com/compare-plans
 features:
   syncAcrossDevices:
     description: ''
@@ -103,7 +105,6 @@ features:
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs: null
   addRemindersToNotes:
     description: ''
     valueType: BOOLEAN
@@ -126,7 +127,7 @@ features:
     type: INTEGRATION
     integrationType: WEB_SAAS
     pricingUrls:
-      - https://slack.com/pricing
+    - https://slack.com/pricing
   connectWithTeams:
     description: ''
     valueType: BOOLEAN
@@ -134,16 +135,15 @@ features:
     type: INTEGRATION
     integrationType: WEB_SAAS
     pricingUrls:
-      - >-
-        https://www.microsoft.com/en-us/microsoft-365/microsoft-teams/group-chat-software
+    - https://www.microsoft.com/en-us/microsoft-365/microsoft-teams/group-chat-software
   connectWithGmail:
     description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://workspace.google.com/pricing
+    pricingUrls:
+    - https://workspace.google.com/pricing
   searchTextInsideImages:
     description: ''
     valueType: BOOLEAN
@@ -160,9 +160,8 @@ features:
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - >-
-        https://www.microsoft.com/en-us/microsoft-365/outlook/email-and-calendar-software-microsoft-outlook
+    pricingUrls:
+    - https://www.microsoft.com/en-us/microsoft-365/outlook/email-and-calendar-software-microsoft-outlook
   searchTextInsideOfficeDocs:
     description: ''
     valueType: BOOLEAN
@@ -254,7 +253,6 @@ features:
     defaultValue: false
     type: INTEGRATION
     integrationType: IDENTITY_PROVIDER
-    pricingUrls: null
   activityHistory:
     description: ''
     valueType: BOOLEAN
@@ -273,7 +271,7 @@ usageLimits:
     unit: device
     type: NON_RENEWABLE
     linkedFeatures:
-      - syncAcrossDevices
+    - syncAcrossDevices
   maximumNoteSize:
     description: ''
     valueType: NUMERIC
@@ -281,32 +279,29 @@ usageLimits:
     unit: MB/note
     type: NON_RENEWABLE
     linkedFeatures:
-      - notes
+    - notes
   globalMonthlyUploadLimit:
     description: ''
     valueType: NUMERIC
     defaultValue: 60
     unit: MB
     type: RENEWABLE
-    linkedFeatures: null
   monthlyUploadLimitByUser:
     description: ''
     valueType: NUMERIC
     defaultValue: 0
     unit: MB
     type: RENEWABLE
-    linkedFeatures: null
 plans:
   BASIC:
     description: TAKE GREAT NOTES.
-    monthlyPrice: 0
+    price: 0
     unit: /month
     features: null
     usageLimits: null
-    price: 0
   PREMIUM:
     description: BE MORE PRODUCTIVE.
-    monthlyPrice: 7.99
+    price: 7.99
     unit: /month
     features:
       annotatePdfs:
@@ -338,10 +333,9 @@ plans:
         value: 200
       globalMonthlyUploadLimit:
         value: 10240
-    price: 7.99
   BUSINESS:
     description: COLLABORATE ACROSS YOUR COMPANY.
-    monthlyPrice: 14.99
+    price: 14.99
     unit: user/month
     features:
       annotatePdfs:
@@ -387,4 +381,4 @@ plans:
         value: 20480
       monthlyUploadLimitByUser:
         value: 2048
-    price: 14.99
+addOns: null

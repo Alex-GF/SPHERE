@@ -1,9 +1,11 @@
-saasName: Overleaf
 syntaxVersion: '2.1'
-version: '2021-11-27'
-createdAt: '2021-11-27'
+saasName: Overleaf
+createdAt: '2021-11-28'
+version: '2021-11-28'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20211128031659/https://www.overleaf.com/user/subscription/plans
 features:
   privateProjects:
     description: ''
@@ -58,22 +60,19 @@ features:
     type: INTEGRATION
     integrationType: WEB_SAAS
     pricingUrls:
-      - https://www.dropbox.com/plans
+    - https://www.dropbox.com/plans
   gitIntegration:
     description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingsURLs: null
   githubIntegration:
     description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingsURLs:
-      - https://github.com/pricing
   prioritySupport:
     description: ''
     valueType: BOOLEAN
@@ -87,7 +86,7 @@ usageLimits:
     unit: collaborator
     type: NON_RENEWABLE
     linkedFeatures:
-      - realTimeCollaboration
+    - realTimeCollaboration
   compileTimeoutLimit:
     description: ''
     valueType: NUMERIC
@@ -95,20 +94,17 @@ usageLimits:
     unit: min
     type: TIME_DRIVEN
     linkedFeatures:
-      - latexCompilation
+    - latexCompilation
 plans:
   FREE:
     description: ''
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: /month
     features: null
     usageLimits: null
-    price: 0
   PERSONAL:
     description: ''
-    monthlyPrice: 10
-    annualPrice: 10
+    price: 10
     unit: /month
     features:
       fullDocumentHistory:
@@ -128,11 +124,9 @@ plans:
     usageLimits:
       compileTimeoutLimit:
         value: 4
-    price: 10
   COLLABORATOR:
     description: ''
-    monthlyPrice: 15
-    annualPrice: 15
+    price: 15
     unit: /month
     features:
       realTimeTrackChanges:
@@ -156,11 +150,9 @@ plans:
         value: 10
       compileTimeoutLimit:
         value: 4
-    price: 15
   PROFESSIONAL:
     description: ''
-    monthlyPrice: 30
-    annualPrice: 30
+    price: 30
     unit: /month
     features:
       realTimeTrackChanges:
@@ -184,4 +176,4 @@ plans:
         value: .inf
       compileTimeoutLimit:
         value: 4
-    price: 30
+addOns: null

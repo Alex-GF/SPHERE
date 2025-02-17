@@ -1,9 +1,11 @@
-saasName: Zapier
 syntaxVersion: '2.1'
-version: 2024-7-2
-createdAt: '2024-07-02'
+saasName: Zapier
+createdAt: '2024-07-03'
+version: '2024-07-03'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20240703053228/https://zapier.com/pricing
 features:
   tasks:
     description: ''
@@ -279,7 +281,6 @@ usageLimits:
     defaultValue: 1
     unit: user
     type: NON_RENEWABLE
-    linkedFeatures: null
   tasksLimit:
     description: ''
     valueType: NUMERIC
@@ -287,7 +288,7 @@ usageLimits:
     unit: task/month
     type: RENEWABLE
     linkedFeatures:
-      - tasks
+    - tasks
   pollingTimeThreshold:
     description: ''
     valueType: NUMERIC
@@ -295,21 +296,18 @@ usageLimits:
     unit: min
     type: NON_RENEWABLE
     linkedFeatures:
-      - tasks
-      - zaps
+    - tasks
+    - zaps
 plans:
   FREE:
     description: Anyone can automate their work. Start with the basics.
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: /month
     features: null
     usageLimits: null
-    price: 0
   PROFESSIONAL:
     description: Advanced tools to take your work to the next level.
-    monthlyPrice: 61.25
-    annualPrice: 49
+    price: 61.25
     unit: /month
     features:
       payPerTaskForOverageTasks:
@@ -345,11 +343,9 @@ plans:
         value: 2000
       pollingTimeThreshold:
         value: 2
-    price: 61.25
   TEAM:
     description: Bring your team together to collaborate on automation.
-    monthlyPrice: 446.27
-    annualPrice: 299
+    price: 446.27
     unit: /month
     features:
       payPerTaskForOverageTasks:
@@ -401,11 +397,9 @@ plans:
         value: 50000
       pollingTimeThreshold:
         value: 1
-    price: 446.27
   ENTERPRISE:
     description: Automation plus enterprise-grade features.
-    monthlyPrice: Contact Sales
-    annualPrice: Contact Sales
+    price: Contact Sales
     unit: /month
     features:
       payPerTaskForOverageTasks:
@@ -487,11 +481,10 @@ plans:
         value: .inf
       pollingTimeThreshold:
         value: 1
-    price: Contact Sales
 addOns:
   samlSingleSignOnAddOn:
     availableFor:
-      - TEAM
+    - TEAM
     price: Contact Sales
     unit: /month
     features:
@@ -501,10 +494,10 @@ addOns:
     usageLimitsExtensions: null
   tablesPremiumAddOn:
     availableFor:
-      - FREE
-      - PROFESSIONAL
-      - TEAM
-      - ENTERPRISE
+    - FREE
+    - PROFESSIONAL
+    - TEAM
+    - ENTERPRISE
     price: Contact Sales
     unit: /month
     features:
@@ -514,10 +507,10 @@ addOns:
     usageLimitsExtensions: null
   interfacesPremiumAddOn:
     availableFor:
-      - FREE
-      - PROFESSIONAL
-      - TEAM
-      - ENTERPRISE
+    - FREE
+    - PROFESSIONAL
+    - TEAM
+    - ENTERPRISE
     price: Contact Sales
     unit: /month
     features:
@@ -527,10 +520,10 @@ addOns:
     usageLimitsExtensions: null
   chatBotsPremiumAddOn:
     availableFor:
-      - FREE
-      - PROFESSIONAL
-      - TEAM
-      - ENTERPRISE
+    - FREE
+    - PROFESSIONAL
+    - TEAM
+    - ENTERPRISE
     price: Contact Sales
     unit: /month
     features:

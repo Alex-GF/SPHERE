@@ -12,6 +12,7 @@ export default function App() {
     isAuthenticated: false,
     user: null,
     token: '',
+    tokenExpiration: null,
     isLoading: true,
   });
 

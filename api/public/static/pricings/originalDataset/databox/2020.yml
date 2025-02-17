@@ -1,9 +1,11 @@
-saasName: Databox
 syntaxVersion: '2.1'
-version: '2020-11-30'
-createdAt: '2020-11-30'
+saasName: Databox
+createdAt: '2020-12-01'
+version: '2020-12-01'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20201201223603/https://databox.com/pricing
 features:
   dataSources:
     description: ''
@@ -21,112 +23,95 @@ features:
     defaultValue: daily
     type: GUARANTEE
   historicalData:
-    description: >-
-      The maximum amount of historical data that you can access in your Databox
-      Account.
+    description: The maximum amount of historical data that you can access in your
+      Databox Account.
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   oneClickInteractions:
-    description: >-
-      Connect to your data from any of 70+ systems by logging in (using Auth) to
-      each system from within the Databox application. View our integrations
+    description: Connect to your data from any of 70+ systems by logging in (using
+      Auth) to each system from within the Databox application. View our integrations
       page for a full list.
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
     integrationType: MARKETPLACE
   dashboardTemplates:
-    description: >-
-      Instantly use pre-built templates created by experts. Browse the available
-      templates on our website or inside our application.
+    description: Instantly use pre-built templates created by experts. Browse the
+      available templates on our website or inside our application.
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   datablockLibrary:
-    description: >-
-      Quickly visualize common metrics with pre-built datablocks. Browse the
-      available datablocks from within our Designer in the Databox application.
+    description: Quickly visualize common metrics with pre-built datablocks. Browse
+      the available datablocks from within our Designer in the Databox application.
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   databoardDesigner:
-    description: >-
-      Create Databoards, no coding required. Use the Designer by starting with a
-      blank Databoard or choosing, then customizing a template. Use pre-built
-      datablocks or start with blank visualizations and choose vour datasource,
-      metric, time intervals and more. Re-arrange, resize, move and delete
-      datablocks.
+    description: Create Databoards, no coding required. Use the Designer by starting
+      with a blank Databoard or choosing, then customizing a template. Use pre-built
+      datablocks or start with blank visualizations and choose vour datasource, metric,
+      time intervals and more. Re-arrange, resize, move and delete datablocks.
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   goalTracking:
-    description: >-
-      Set a daily, weekly, monthly or annual goal for any metric you're
-      tracking. Assign the goal to someone on your team and receive alerts when
-      you hit thegoal or if you are at risk of missing it. View progress to all
-      your Company's goals on one screen.
+    description: Set a daily, weekly, monthly or annual goal for any metric you're
+      tracking. Assign the goal to someone on your team and receive alerts when you
+      hit thegoal or if you are at risk of missing it. View progress to all your Company's
+      goals on one screen.
     valueType: BOOLEAN
     defaultValue: true
     type: AUTOMATION
     automationType: TRACKING
   alerts:
-    description: >-
-      Receive alerts via the mobile app. Slack or via email for any metric you
-      want to monitor more closely. Alerts can be triggered when numbers go
-      above or below any number or change by a set percentage over a specified
-      time interval.
+    description: Receive alerts via the mobile app. Slack or via email for any metric
+      you want to monitor more closely. Alerts can be triggered when numbers go above
+      or below any number or change by a set percentage over a specified time interval.
     valueType: BOOLEAN
     defaultValue: true
     type: AUTOMATION
     automationType: TRACKING
   singleUrlDashboardCarousel:
-    description: >-
-      Create a single URL to send to others with a sequence of up to 10
+    description: Create a single URL to send to others with a sequence of up to 10
       Databoards.
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   scheduleEmailSnapshots:
-    description: >-
-      Schedule a daily, weekly or monthly snapshot of any Databoard to any
-      user's email address. Include snapshots in presentation or just send it so
-      no one needs to login.
+    description: Schedule a daily, weekly or monthly snapshot of any Databoard to
+      any user's email address. Include snapshots in presentation or just send it
+      so no one needs to login.
     valueType: BOOLEAN
     defaultValue: true
     type: AUTOMATION
     automationType: TASK_AUTOMATION
   nativeMobileApps:
-    description: >-
-      View all your Databoards, goals and receive alerts and scorecards on your
-      mobile device in our app. IOS and Android native apps available.
+    description: View all your Databoards, goals and receive alerts and scorecards
+      on your mobile device in our app. IOS and Android native apps available.
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
     integrationType: EXTERNAL_DEVICE
   tvDisplay:
-    description: >-
-      View any of your Databoards on a wall-mounted TV in your office. Broadcast
-      your data in the office to motivate your team and keep the metrics that
-      matter front and center.
+    description: View any of your Databoards on a wall-mounted TV in your office.
+      Broadcast your data in the office to motivate your team and keep the metrics
+      that matter front and center.
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
     integrationType: EXTERNAL_DEVICE
   slackIntegration:
-    description: >-
-      Receive alerts in Slack. Share Databoards and datablocks in Slack. Use the
-      Databox Slackbot to ask questions about your data.
+    description: Receive alerts in Slack. Share Databoards and datablocks in Slack.
+      Use the Databox Slackbot to ask questions about your data.
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingsUrls:
-      - https://slack.com/pricing
   annotations:
-    description: >-
-      Add notes to lines and charts to communicate why numbers have gone up or
-      down.
+    description: Add notes to lines and charts to communicate why numbers have gone
+      up or down.
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
@@ -137,45 +122,39 @@ features:
     type: INTEGRATION
     integrationType: API
   queryBuilder:
-    description: >-
-      Pull, filter and segment data from more advanced systems like Google
-      Analytics, Facebook Ads, Mixpanel, HubSpot and many more of our
-      connectors. To pull some metrics or specific time intervals, Query Builder
-      is required. Contact us with your needs and we'll tell you if you need
-      Query Builder.
+    description: Pull, filter and segment data from more advanced systems like Google
+      Analytics, Facebook Ads, Mixpanel, HubSpot and many more of our connectors.
+      To pull some metrics or specific time intervals, Query Builder is required.
+      Contact us with your needs and we'll tell you if you need Query Builder.
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: MARKETPLACE
   dataCalculations:
-    description: >-
-      Data Calculations enable you to create on-the-fly calculations, regardless
-      of whether the metrics originate from a single data source or different
-      data sources.
+    description: Data Calculations enable you to create on-the-fly calculations, regardless
+      of whether the metrics originate from a single data source or different data
+      sources.
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
   sqlDatabaseIntegrations:
-    description: >-
-      Connect with many types of SQL databases. Once connected, use Query
+    description: Connect with many types of SQL databases. Once connected, use Query
       Builder to write SQL to pull and visualize your data however you want.
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: MARKETPLACE
   companyBranding:
-    description: >-
-      Host your Databoards on your own or a client's URL/Domain Name, brand our
-      mobile app with your logo amd replace the 'powered by Databox' with your
-      own. All plans allow you to change colors, background images and add your
-      logo to Databoards.
+    description: Host your Databoards on your own or a client's URL/Domain Name, brand
+      our mobile app with your logo amd replace the 'powered by Databox' with your
+      own. All plans allow you to change colors, background images and add your logo
+      to Databoards.
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
   additionalSecurity:
-    description: >-
-      Add password protection and limit access by IP address to ensure your
-      Databoards can only be seen by authorized people.
+    description: Add password protection and limit access by IP address to ensure
+      your Databoards can only be seen by authorized people.
     valueType: BOOLEAN
     defaultValue: false
     type: MANAGEMENT
@@ -187,14 +166,13 @@ usageLimits:
     unit: data source
     type: NON_RENEWABLE
     linkedFeatures:
-      - dataSources
+    - dataSources
   usersLimit:
     description: ''
     valueType: NUMERIC
     defaultValue: 3
     unit: user
     type: NON_RENEWABLE
-    linkedFeatures: null
   databoardsLimit:
     description: ''
     valueType: NUMERIC
@@ -202,7 +180,7 @@ usageLimits:
     unit: databoard
     type: NON_RENEWABLE
     linkedFeatures:
-      - databoards
+    - databoards
   historicalDataThreshold:
     description: ''
     valueType: NUMERIC
@@ -210,20 +188,17 @@ usageLimits:
     unit: month
     type: NON_RENEWABLE
     linkedFeatures:
-      - historicalData
+    - historicalData
 plans:
   FREE:
     description: ''
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: forever
     features: null
     usageLimits: null
-    price: 0
   BASIC:
     description: ''
-    monthlyPrice: 59
-    annualPrice: 49
+    price: 59
     unit: /month
     features:
       dataRefresh:
@@ -237,11 +212,9 @@ plans:
         value: 10
       databoardsLimit:
         value: 10
-    price: 59
   PLUS:
     description: ''
-    monthlyPrice: 119
-    annualPrice: 99
+    price: 119
     unit: /month
     features:
       dataRefresh:
@@ -263,11 +236,9 @@ plans:
         value: 10
       historicalDataThreshold:
         value: 24
-    price: 119
   BUSINESS:
     description: ''
-    monthlyPrice: 299
-    annualPrice: 248
+    price: 299
     unit: user/month
     features:
       dataRefresh:
@@ -293,4 +264,4 @@ plans:
         value: 50
       historicalDataThreshold:
         value: 1000000000
-    price: 299
+addOns: null

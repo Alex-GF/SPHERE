@@ -1,9 +1,11 @@
-saasName: MailChimp - Marketing
 syntaxVersion: '2.1'
-version: '2021-11-29'
-createdAt: '2021-11-29'
+saasName: MailChimp - Marketing
+createdAt: '2021-11-30'
+version: '2021-11-30'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20211130113422/https://mailchimp.com/pricing/marketing/compare-plans/
 features:
   contacts:
     description: ''
@@ -189,16 +191,16 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://facebook.com/business
+    pricingUrls:
+    - https://facebook.com/business
   instagramAds:
     description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://business.instagram.com/advertising
+    pricingUrls:
+    - https://business.instagram.com/advertising
   socialPosting:
     description: ''
     valueType: BOOLEAN
@@ -484,7 +486,7 @@ usageLimits:
     unit: contact
     type: NON_RENEWABLE
     linkedFeatures:
-      - contacts
+    - contacts
   audiencesLimit:
     description: ''
     valueType: NUMERIC
@@ -492,14 +494,13 @@ usageLimits:
     unit: audience
     type: NON_RENEWABLE
     linkedFeatures:
-      - audiences
+    - audiences
   seatsLimit:
     description: ''
     valueType: NUMERIC
     defaultValue: 1
     unit: seat
     type: NON_RENEWABLE
-    linkedFeatures: null
   appEngagementThreshold:
     description: ''
     valueType: NUMERIC
@@ -507,7 +508,7 @@ usageLimits:
     unit: month
     type: NON_RENEWABLE
     linkedFeatures:
-      - appEngagement
+    - appEngagement
   monthlyEmailSends:
     description: ''
     valueType: NUMERIC
@@ -515,18 +516,17 @@ usageLimits:
     unit: email/month
     type: RENEWABLE
     linkedFeatures:
-      - emailMarketing
+    - emailMarketing
 plans:
   FREE:
     description: All the basics for businesses that are just getting started.
-    monthlyPrice: 0
+    price: 0
     unit: /month
     features: null
     usageLimits: null
-    price: 0
   ESSENTIALS:
     description: Must-have features for email senders who want added support.
-    monthlyPrice: 9.99
+    price: 9.99
     unit: /month
     features:
       adminRole:
@@ -554,10 +554,9 @@ plans:
         value: 3
       monthlyEmailSends:
         value: 500000
-    price: 9.99
   STANDARD:
     description: Better insights for growing businesses that want more customers.
-    monthlyPrice: 14.99
+    price: 14.99
     unit: /month
     features:
       adminRole:
@@ -621,16 +620,15 @@ plans:
         value: 100000
       audiencesLimit:
         value: 5
-      appEngagementThreshold:
-        value: 3
       seatsLimit:
         value: 5
+      appEngagementThreshold:
+        value: 3
       monthlyEmailSends:
         value: 1200000
-    price: 14.99
   PREMIUM:
     description: Advanced features for pros who need more customization.
-    monthlyPrice: 299
+    price: 299
     unit: /month
     features:
       adminRole:
@@ -704,20 +702,19 @@ plans:
         value: 200000
       audiencesLimit:
         value: .inf
-      appEngagementThreshold:
-        value: 18
       seatsLimit:
         value: .inf
+      appEngagementThreshold:
+        value: 18
       monthlyEmailSends:
         value: 3000000
-    price: 299
 addOns:
   customDomainAddOn:
     availableFor:
-      - FREE
-      - ESSENTIALS
-      - STANDARD
-      - PREMIUM
+    - FREE
+    - ESSENTIALS
+    - STANDARD
+    - PREMIUM
     price: Contact Sales
     unit: domain/month
     features:
@@ -727,9 +724,9 @@ addOns:
     usageLimitsExtensions: null
   advancedSchedulingAddOn:
     availableFor:
-      - ESSENTIALS
-      - STANDARD
-      - PREMIUM
+    - ESSENTIALS
+    - STANDARD
+    - PREMIUM
     price: 8
     unit: /month
     features:
@@ -739,9 +736,9 @@ addOns:
     usageLimitsExtensions: null
   transactionalEmailsAddOn:
     availableFor:
-      - ESSENTIALS
-      - STANDARD
-      - PREMIUM
+    - ESSENTIALS
+    - STANDARD
+    - PREMIUM
     price: Contact Sales
     unit: /month
     features:

@@ -39,26 +39,55 @@ export function usePricingsApi() {
       requestUrl = `${PRICINGS_BASE_PATH}?${filterParams.toString()}`;
     }
 
-    return fetchWithInterceptor(requestUrl as string, {
+    return fetch(requestUrl as string, {
       method: 'GET',
       headers: basicHeaders,
     })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok){
+          return Promise.reject(response);
+        }else{
+          return response.json()
+        }
+      })
       .catch(error => {
-        console.error('Error:', error);
+        return Promise.reject(error as Error);
       });
   };
 
   const getPricingByName = async (name: string, owner: string) => {
-    return fetchWithInterceptor(`${PRICINGS_BASE_PATH}/${owner}/${name}`, {
+    return fetch(`${PRICINGS_BASE_PATH}/${owner}/${name}`, {
       method: 'GET',
       headers: basicHeaders,
     })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok){
+          return Promise.reject(response);
+        }else{
+          return response.json()
+        }
+      })
       .catch(error => {
-        console.error('Error:', error);
+        return Promise.reject(error as Error);
       });
   };
+
+  const getLoggedUserPricings = async () => {
+    return fetchWithInterceptor(`${import.meta.env.VITE_API_URL}/me/pricings`, {
+      method: 'GET',
+      headers: basicHeaders,
+    })
+      .then(response => {
+        if (!response.ok){
+          return Promise.reject(response);
+        }else{
+          return response.json()
+        }
+      })
+      .catch(error => {
+        return Promise.reject(error as Error);
+      });
+  }
 
   const createPricing = async (formData: FormData, setErrors: Function = () => {}) => {
     return fetchWithInterceptor(PRICINGS_BASE_PATH, {
@@ -82,5 +111,92 @@ export function usePricingsApi() {
       });
   };
 
-  return { getPricings, getPricingByName, createPricing };
+  const addPricingToCollection = async (pricingName: string, collectionId: string) => {
+    return fetchWithInterceptor(`${import.meta.env.VITE_API_URL}/me/pricings`, {
+      method: 'PUT',
+      headers: basicHeaders,
+      body: JSON.stringify({ pricingName, collectionId }),
+    })
+      .then(response => {
+        if (!response.ok){
+          return Promise.reject(response);
+        }else{
+          return response.json()
+        }
+      })
+      .catch(error => {
+        return Promise.reject(error as Error);
+      });
+  }
+
+  const updatePricing = (pricingName: string, pricingData: any) => {
+    return fetchWithInterceptor(`${PRICINGS_BASE_PATH}/${authUser.user?.username}/${pricingName}`, {
+      method: 'PUT',
+      headers: basicHeaders,
+      body: JSON.stringify(pricingData),
+    })
+      .then(response => {
+        if (!response.ok) {
+          return Promise.reject(response);
+        }else{
+          return response.json()
+        }
+      })
+      .catch(error => {
+        return Promise.reject(error as Error);
+      });
+  }
+
+  const removePricingVersion = async (pricingName: string, pricingVersion: string) => {
+    return fetchWithInterceptor(`${PRICINGS_BASE_PATH}/${authUser.user?.username}/${pricingName}/${pricingVersion}`, {
+      method: 'DELETE',
+      headers: basicHeaders,
+    })
+      .then(response => {
+        if (!response.ok) {
+          return Promise.reject(response);
+        }else{
+          return response.json()
+        }
+      })
+      .catch(error => {
+        return Promise.reject(error as Error);
+      });
+  }
+
+  const removePricingFromCollection = async (pricingName: string) => {
+    return fetchWithInterceptor(`${import.meta.env.VITE_API_URL}/me/collections/pricings/${pricingName}`, {
+      method: 'DELETE',
+      headers: basicHeaders,
+    })
+      .then(response => {
+        if (!response.ok) {
+          return Promise.reject(response);
+        }else{
+          return response.json()
+        }
+      })
+      .catch(error => {
+        return Promise.reject(error as Error);
+      });
+  }
+
+  const removePricingByName = async (name: string) => {
+    return fetchWithInterceptor(`${PRICINGS_BASE_PATH}/${authUser.user?.username}/${name}`, {
+      method: 'DELETE',
+      headers: basicHeaders,
+    })
+      .then(async response => {
+        if (!response.ok) {
+          return Promise.reject(response);
+        }else{
+          return response.json()
+        }
+      })
+      .catch(error => {
+        return Promise.reject(error as Error);
+      });
+  }
+
+  return { getPricings, getPricingByName, getLoggedUserPricings, createPricing, addPricingToCollection, removePricingFromCollection, removePricingByName, updatePricing, removePricingVersion };
 }

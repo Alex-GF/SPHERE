@@ -1,9 +1,11 @@
-saasName: Clockify
 syntaxVersion: '2.1'
-version: '2021-11-24'
-createdAt: '2021-11-24'
+saasName: Clockify
+createdAt: '2021-10-25'
+version: '2021-10-25'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20211025123922/https://clockify.me/extra-features
 features:
   unlimitedTracking:
     description: Track as much time as you want, without any limits.
@@ -49,9 +51,8 @@ features:
     defaultValue: false
     type: DOMAIN
   hideTimeAndPages:
-    description: >-
-      Prevent users from seeing projects, reports, and other members and their
-      time entries.
+    description: Prevent users from seeing projects, reports, and other members and
+      their time entries.
     valueType: BOOLEAN
     defaultValue: false
     type: MANAGEMENT
@@ -71,15 +72,13 @@ features:
     defaultValue: false
     type: DOMAIN
   timeAudit:
-    description: >-
-      Find entries without project and task, and with suspicious duration (too
-      short or too long).
+    description: Find entries without project and task, and with suspicious duration
+      (too short or too long).
     valueType: BOOLEAN
     defaultValue: false
     type: INFORMATION
   customizeExports:
-    description: >-
-      Choose what you wish to see in your exports (name, logo, columns,
+    description: Choose what you wish to see in your exports (name, logo, columns,
       information).
     valueType: BOOLEAN
     defaultValue: false
@@ -115,8 +114,7 @@ features:
     defaultValue: false
     type: DOMAIN
   managerRole:
-    description: >-
-      Give manager rights to users so they can manage projects and approve
+    description: Give manager rights to users so they can manage projects and approve
       timesheets.
     valueType: BOOLEAN
     defaultValue: false
@@ -148,8 +146,6 @@ features:
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingsUrls:
-      - https://quickbooks.intuit.com/global/pricing/
   expenses:
     description: Record fixed fees on projects and attach receipts.
     valueType: BOOLEAN
@@ -167,9 +163,8 @@ features:
     type: AUTOMATION
     automationType: TASK_AUTOMATION
   budgetAndEstimates:
-    description: >-
-      Set project estimate in time or money, and get tracked vs budgeted info in
-      reports.
+    description: Set project estimate in time or money, and get tracked vs budgeted
+      info in reports.
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
@@ -189,9 +184,8 @@ features:
     defaultValue: false
     type: MANAGEMENT
   gpsTracking:
-    description: >-
-      Track your team's location and visited client sites while on the clock
-      (optional).
+    description: Track your team's location and visited client sites while on the
+      clock (optional).
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
@@ -201,16 +195,14 @@ features:
     defaultValue: false
     type: DOMAIN
   singleSignOn:
-    description: >-
-      Eliminate user-managed passwords and improve security by using your
+    description: Eliminate user-managed passwords and improve security by using your
       company's authentication system (SAML, Office 365, Okta, Google, etc.).
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: IDENTITY_PROVIDER
   customSubdomain:
-    description: >-
-      Move workspace to custom subdomain, prevent people from having multiple
+    description: Move workspace to custom subdomain, prevent people from having multiple
       workspaces, and let new users join your workspace automatically.
     valueType: BOOLEAN
     defaultValue: false
@@ -228,7 +220,7 @@ usageLimits:
     unit: track
     type: NON_RENEWABLE
     linkedFeatures:
-      - unlimitedTracking
+    - unlimitedTracking
   projectsLimit:
     description: ''
     valueType: NUMERIC
@@ -236,7 +228,7 @@ usageLimits:
     unit: project
     type: NON_RENEWABLE
     linkedFeatures:
-      - unlimitedProjects
+    - unlimitedProjects
   reportsLimit:
     description: ''
     valueType: NUMERIC
@@ -244,20 +236,17 @@ usageLimits:
     unit: report
     type: NON_RENEWABLE
     linkedFeatures:
-      - unlimitedReports
+    - unlimitedReports
 plans:
   FREE:
     description: ''
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: user/month
     features: null
     usageLimits: null
-    price: 0
   BASIC:
     description: Administration
-    monthlyPrice: 4.99
-    annualPrice: 3.99
+    price: 4.99
     unit: user/month
     features:
       addTimeForOthers:
@@ -281,11 +270,9 @@ plans:
       importTimesheets:
         value: true
     usageLimits: null
-    price: 4.99
   STANDARD:
     description: Timesheeting & billing
-    monthlyPrice: 6.99
-    annualPrice: 5.49
+    price: 6.99
     unit: user/month
     features:
       addTimeForOthers:
@@ -327,11 +314,9 @@ plans:
       quickBooksIntegration:
         value: true
     usageLimits: null
-    price: 6.99
   PRO:
     description: Profit & Productivity
-    monthlyPrice: 9.99
-    annualPrice: 7.99
+    price: 9.99
     unit: user/month
     features:
       addTimeForOthers:
@@ -391,11 +376,9 @@ plans:
       screenshots:
         value: true
     usageLimits: null
-    price: 9.99
   ENTERPRISE:
     description: Control & Security
-    monthlyPrice: 14.99
-    annualPrice: 11.99
+    price: 14.99
     unit: user/month
     features:
       addTimeForOthers:
@@ -461,4 +444,4 @@ plans:
       controlAccounts:
         value: true
     usageLimits: null
-    price: 14.99
+addOns: null

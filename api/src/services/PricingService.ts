@@ -1,26 +1,34 @@
-import { Pricing } from "pricing4ts";
+import {Pricing} from "pricing4ts";
 import { Pricing as PricingModel } from "../types/database/Pricing";
 import container from "../config/container";
-import { PricingRepository } from "../types/repositories/PricingRepository";
 import { processFileUris } from "./FileService";
 import { PricingService as PricingAnalytics, retrievePricingFromPath } from "pricing4ts/server";
 import { PricingIndexQueryParams } from "../types/services/PricingService";
+import PricingCollectionService from "./PricingCollectionService";
+import PricingRepository from "../repositories/mongoose/PricingRepository";
 
 class PricingService {
     
     private pricingRepository: PricingRepository;
+    private pricingCollectionService: PricingCollectionService;
 
     constructor () {
       this.pricingRepository = container.resolve('pricingRepository');
+      this.pricingCollectionService = container.resolve('pricingCollectionService');
     }
 
     async index (queryParams: PricingIndexQueryParams) {
       const pricings = await this.pricingRepository.findAll(queryParams)
       return pricings
     }
+
+    async indexByUserWithoutCollection (username: string){
+      const pricings = await this.pricingRepository.findByOwnerWithoutCollection(username)
+      return pricings
+    }
   
     async show (name: string, owner: string) {
-      const pricing: {name: string, versions: PricingModel[]} | null = await this.pricingRepository.findByName(name, owner)
+      const pricing: {name: string, versions: PricingModel[]} | null = await this.pricingRepository.findByNameAndOwner(name, owner)
       if (!pricing) {
         throw new Error('Pricing not found')
       }
@@ -31,13 +39,19 @@ class PricingService {
       return pricingObject
     }
 
-    async create (pricingFile: any, owner: string) {
+    async create (pricingFile: any, owner: string, collectionId?: string) {
       try{
         const uploadedPricing: Pricing = retrievePricingFromPath(pricingFile.path);
-        
+        const previousPricing = await this.pricingRepository.findByNameAndOwner(uploadedPricing.saasName, owner);
+
+        if (!collectionId && previousPricing && previousPricing.versions[0]._collectionId) {
+          collectionId = previousPricing.versions[0]._collectionId.toString();
+        }
+
         const pricingData = {
           name: uploadedPricing.saasName,
           version: uploadedPricing.version,
+          _collectionId: collectionId,
           owner: owner,
           currency: uploadedPricing.currency,
           extractionDate: new Date(uploadedPricing.createdAt),
@@ -54,26 +68,91 @@ class PricingService {
 
         await pricingAnalytics.getAnalytics()
           .then((analytics: any) => {
-            this.pricingRepository.updateAnalytics(pricing.id, analytics);
+            this.pricingRepository.updateAnalytics(pricing._id.toString(), analytics);
           }).catch(async (err: any) => {
-            await this.pricingRepository.destroy(pricing.id);
+            await this.pricingRepository.destroy(pricing._id.toString());
             throw new Error((err as Error).message);
           });
+
+        if (collectionId) {
+          await this.pricingCollectionService.updateCollectionAnalytics(collectionId);
+        }
 
         return pricing;
       }catch(err){
         throw new Error((err as Error).message);
       }
+    }
 
+    async addPricingToCollection (pricingName: string, owner: string, collectionId: string) {
+      try{
+        const pricing = await this.pricingRepository.findByNameAndOwner(pricingName, owner);
+        if (!pricing) {
+          throw new Error('Either the pricing does not exist or you are not its owner');
+        }
+  
+        await this.pricingRepository.addPricingToCollection(pricingName, owner, collectionId);
+        await this.pricingCollectionService.updateCollectionAnalytics(collectionId);
+  
+        return true;
+      }catch(err){
+        throw new Error((err as Error).message);
+      }
+    }
+
+    async update (pricingName: string, owner: string, data: any) {
+      const pricing = await this.pricingRepository.findByNameAndOwner(pricingName, owner)
+      if (!pricing) {
+        throw new Error('Either the pricing does not exist or you are not its owner')
+      }
+
+      for (const pricingVersion of pricing.versions) {
+        await this.pricingRepository.update(pricingVersion.id, data)
+      }
+
+      const updatedPricing = await this.pricingRepository.findByNameAndOwner(pricingName, owner)
+
+      return updatedPricing;
+    }
+
+    async removePricingFromCollection (pricingName: string, owner: string) {
+      try{
+        const pricing = await this.pricingRepository.findByNameAndOwner(pricingName, owner);
+
+        if (!pricing) {
+          throw new Error('Either the pricing does not exist or you are not its owner');
+        }
+
+        await this.pricingRepository.removePricingFromCollection(pricingName, owner);
+        if (pricing.versions[0]._collectionId){
+          await this.pricingCollectionService.updateCollectionAnalytics(pricing.versions[0]._collectionId);
+        }else{
+          throw new Error('Pricing is not in a collection');
+        }
+  
+        return true;
+      }catch(err){
+        throw new Error((err as Error).message);
+      }
     }
   
-    // async destroy (id: string) {
-    //   const result = await this.pricingRepository.destroy(id)
-    //   if (!result) {
-    //     throw new Error('Pricing not found')
-    //   }
-    //   return true
-    // }
+    async destroy (pricingName: string, owner: string) {
+      const result = await this.pricingRepository.destroyByNameAndOwner(pricingName, owner)
+      if (!result) {
+        throw new Error('Either the pricing does not exist or you are not its owner')
+      }
+      return true
+    }
+
+    async destroyVersion (pricingName: string, pricingVersion: string, owner: string) {
+      const result = await this.pricingRepository.destroyVersionByNameAndOwner(pricingName, pricingVersion, owner)
+
+      if (!result) {
+        throw new Error('Either the pricing does not exist or you are not its owner')
+      }
+
+      return true;
+    }
   }
   
   export default PricingService

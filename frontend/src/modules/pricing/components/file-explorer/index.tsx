@@ -28,9 +28,17 @@ import { TreeItem2Provider } from '@mui/x-tree-view/TreeItem2Provider';
 import { TreeItem2DragAndDropOverlay } from '@mui/x-tree-view/TreeItem2DragAndDropOverlay';
 import { TreeViewBaseItem } from '@mui/x-tree-view/models';
 import { AnalyticsDataEntry } from '../../../../assets/data/analytics';
-import { IconButton } from '@mui/material';
+import { IconButton, Modal, Paper } from '@mui/material';
 import { Download, OpenInNew } from '@mui/icons-material';
 import { parseStringYamlToEncodedYaml } from '../../../pricing-editor/services/export.service';
+import customAlert from '../../../core/utils/custom-alert';
+import { MdDeleteForever } from 'react-icons/md';
+import customConfirm from '../../../core/utils/custom-confirm';
+import { usePricingsApi } from '../../api/pricingsApi';
+import { IoIosLink } from 'react-icons/io';
+import CopyToClipboardIcon from '../../../core/components/copy-icon';
+import { YamlLinkShare } from '../../contexts/yamlLinkShare';
+import { Link } from 'react-router-dom';
 
 type FileType = 'image' | 'pdf' | 'doc' | 'video' | 'folder' | 'pinned' | 'trash';
 
@@ -133,7 +141,7 @@ const CustomTreeItemContent = styled(TreeItem2Content)(({ theme }) => ({
     backgroundColor: theme.palette.primary.dark,
     color: theme.palette.primary.contrastText,
     ...theme.applyStyles('light', {
-      backgroundColor: theme.palette.primary.main,
+      backgroundColor: theme.palette.primary.light,
     }),
   },
 }));
@@ -163,60 +171,90 @@ interface CustomLabelProps {
   icon?: React.ElementType;
   expandable?: boolean;
   fileType?: FileType;
-  pricingData: AnalyticsDataEntry[];
 }
 
-function CustomLabel({
-  icon: Icon,
-  expandable,
-  children,
-  fileType,
-  pricingData,
-  ...other
-}: CustomLabelProps) {
+function CustomLabel({ icon: Icon, expandable, children, fileType, ...other }: CustomLabelProps) {
+  const { removePricingVersion } = usePricingsApi();
+
+  const { setSelectedYamlLink, setYamlLinkModalOpen } = React.useContext(YamlLinkShare);
 
   const handleDownload = (children: React.ReactNode) => {
     if (!children) {
-      alert('No file selected.');
+      customAlert('No file selected.');
       return;
     }
     const fileName = children.toString();
 
     if (fileName) {
+      const saasName = fileName.split('/')[fileName.split('/').length - 2];
+      const version = fileName.split('/')[fileName.split('/').length - 1];
 
-      const saasName = fileName.split("/")[fileName.split("/").length-2];
-      const version = fileName.split("/")[fileName.split("/").length-1];
+      fetch(fileName).then(async response => {
+        const blob = await response.blob();
+        const objectURL = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = objectURL;
+        link.download = `${saasName}-${version}`;
+        document.body.appendChild(link);
+        link.click();
 
-      fetch(fileName)
-        .then(async (response) => {
-          const blob = await response.blob()
-          const objectURL = URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = objectURL;
-          link.download = `${saasName}-${version}`;
-          document.body.appendChild(link);
-          link.click();
-
-          // Clean DOM and revoke object URL
-          document.body.removeChild(link);
-          URL.revokeObjectURL(objectURL);
-        });
+        // Clean DOM and revoke object URL
+        document.body.removeChild(link);
+        URL.revokeObjectURL(objectURL);
+      });
     } else {
-      alert(`File path for ${fileName} not found.`);
+      customAlert(`File path for ${fileName} not found.`);
     }
   };
 
   const handleOpen = (children: React.ReactNode) => {
     if (!children) {
-      alert('No file selected.');
+      customAlert('No file selected.');
       return;
     }
     const fileName = children.toString();
-    
+
     fetch(fileName).then(async response => {
-        const text = await response.text();
-        let urlParam = parseStringYamlToEncodedYaml(text).split("pricing=")[1];
-        window.open(`/editor?pricing=${urlParam}`, '_blank');
+      const text = await response.text();
+      let urlParam = parseStringYamlToEncodedYaml(text).split('pricing=')[1];
+      window.open(`/editor?pricing=${urlParam}`, '_blank');
+    });
+  };
+
+  const handleCopyLink = (children: React.ReactNode) => {
+    if (!children) {
+      customAlert('No file selected.');
+      return;
+    }
+
+    const fileName = children.toString();
+
+    setSelectedYamlLink(fileName);
+    setYamlLinkModalOpen(true);
+  };
+
+  const handleDeleteVersion = async (children: React.ReactNode) => {
+    if (!children) {
+      customAlert('No file selected.');
+      return;
+    }
+
+    const fileName = children.toString();
+    const saasName = fileName.split('/')[fileName.split('/').length - 2];
+    const version = fileName.split('/')[fileName.split('/').length - 1].split('.')[0];
+
+    customConfirm(`Are you sure you want to delete ${saasName}-${version}?`).then(() => {
+      removePricingVersion(saasName, version)
+        .then(() => {
+          customAlert(`${saasName}-${version} has been deleted.`).then(() =>
+            window.location.reload()
+          );
+        })
+        .catch(_ => {
+          customAlert(
+            `Failed to delete ${saasName}-${version}. Please, try again later or contact with support.`
+          );
+        });
     });
   };
 
@@ -237,35 +275,35 @@ function CustomLabel({
         />
       )}
 
-      <StyledTreeItemLabelText variant="body2">{children?.toString().split("/")[children?.toString().split("/").length-1]}</StyledTreeItemLabelText>
+      <StyledTreeItemLabelText variant="body2">
+        {children?.toString().split('/')[children?.toString().split('/').length - 1]}
+      </StyledTreeItemLabelText>
       <Box
         sx={{
           ml: 'auto',
           color: 'text.secondary',
           fontSize: '0.75rem',
           fontWeight: 400,
-                }}
-            >
-            {/* 150 KB • 2 days ago */}
+        }}
+      >
+        {/* 150 KB • 2 days ago */}
         {fileType === 'doc' && (
-            <>
-            <IconButton
-                size="small"
-                sx={{ ml: 1 }}
-                onClick={() => handleDownload(children)}
-            >
-                <Download />
+          <>
+            <IconButton size="small" sx={{ ml: 1 }} onClick={() => handleDownload(children)}>
+              <Download />
             </IconButton>
-            <IconButton
-                size="small"
-                sx={{ ml: 1 }}
-                onClick={() => handleOpen(children)}
-            >
-                <OpenInNew />
+            <IconButton size="small" sx={{ ml: 1 }} onClick={() => handleOpen(children)}>
+              <OpenInNew />
             </IconButton>
-            </>
+            <IconButton size="small" sx={{ ml: 1 }} onClick={() => handleCopyLink(children)}>
+              <IoIosLink fontSize={25} />
+            </IconButton>
+            <IconButton size="small" sx={{ ml: 1 }} onClick={() => handleDeleteVersion(children)}>
+              <MdDeleteForever fontSize={25} />
+            </IconButton>
+          </>
         )}
-        </Box>
+      </Box>
     </TreeItem2Label>
   );
 }
@@ -301,10 +339,9 @@ const getIconFromFileType = (fileType: FileType) => {
 interface CustomTreeItemProps
   extends Omit<UseTreeItem2Parameters, 'rootRef'>,
     Omit<React.HTMLAttributes<HTMLLIElement>, 'onFocus'> {}
-
 const CustomTreeItem = React.forwardRef(function CustomTreeItem(
   props: CustomTreeItemProps,
-  ref: React.Ref<HTMLLIElement>,
+  ref: React.Ref<HTMLLIElement>
 ) {
   const { id, itemId, label, disabled, children, ...other } = props;
 
@@ -347,8 +384,9 @@ const CustomTreeItem = React.forwardRef(function CustomTreeItem(
           </TreeItem2IconContainer>
           <TreeItem2Checkbox {...getCheckboxProps()} />
           <CustomLabel
-                  pricingData={[]} {...getLabelProps({ icon, expandable: expandable && status.expanded })}
-                  fileType={item.fileType}          />
+            {...getLabelProps({ icon, expandable: expandable && status.expanded })}
+            fileType={item.fileType}
+          />
           <TreeItem2DragAndDropOverlay {...getDragAndDropOverlayProps()} />
         </CustomTreeItemContent>
         {children && <TransitionComponent {...getGroupTransitionProps()} />}
@@ -358,41 +396,49 @@ const CustomTreeItem = React.forwardRef(function CustomTreeItem(
 });
 
 export default function FileExplorer({ pricingData }: { pricingData: AnalyticsDataEntry[] }) {
-    const [items, setItems] = React.useState<TreeViewBaseItem<ExtendedTreeItemProps>[]>([]);
+  const [items, setItems] = React.useState<TreeViewBaseItem<ExtendedTreeItemProps>[]>([]);
+  const [selectedYamlLink, setSelectedYamlLink] = React.useState<string>('');
+  const [yamlLinkModalOpen, setYamlLinkModalOpen] = React.useState<boolean>(false);
 
-React.useEffect(() => {
+  function handleYamlLinkModalClose() {
+    setYamlLinkModalOpen(false);
+  }
+
+  React.useEffect(() => {
     const pricingItems = pricingData.map((entry, index) => ({
-        id: `pricing-${index}`,
-        label: entry.yaml,
-        fileType: 'doc' as FileType,
+      id: `pricing-${index}`,
+      label: entry.yaml,
+      fileType: 'doc' as FileType,
     }));
 
     setItems([
-        {
-            id: 'pricings',
-            label: 'Pricings',
-            fileType: 'folder',
-            children: pricingItems,
-        }
+      {
+        id: 'pricings',
+        label: 'Pricings',
+        fileType: 'folder',
+        children: pricingItems,
+      },
     ]);
-}, [pricingData]);
+  }, [pricingData]);
 
-    return (
-        <>
-            <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        p: 2,
-                        borderBottom: '1px solid',
-                        borderColor: 'divider',
-                    }}
-                >
-                    <Typography variant="h6" component="div">
-                        File Explorer
-                    </Typography>
-                    {/* <Box sx={{ display: 'flex', gap: 2 }}>
+  return (
+    <YamlLinkShare.Provider
+      value={{ selectedYamlLink, setSelectedYamlLink, yamlLinkModalOpen, setYamlLinkModalOpen }}
+    >
+      <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            p: 2,
+            borderBottom: '1px solid',
+            borderColor: 'divider',
+          }}
+        >
+          <Typography variant="h6" component="div">
+            File Explorer
+          </Typography>
+          {/* <Box sx={{ display: 'flex', gap: 2 }}>
                         <Typography variant="body2" component="div">
                             Size
                         </Typography>
@@ -400,15 +446,60 @@ React.useEffect(() => {
                             Last Modified
                         </Typography>
                     </Box> */}
-                </Box>
-                <RichTreeView
-                    items={items}
-                    defaultExpandedItems={['pricings']}
-                    defaultSelectedItems="pricings"
-                    sx={{ height: 'fit-content', flexGrow: 1, overflowY: 'auto' }}
-                    slots={{ item: CustomTreeItem }}
-                />
-            </Box>
-        </>
-    );
+        </Box>
+        <RichTreeView
+          items={items}
+          defaultExpandedItems={['pricings']}
+          defaultSelectedItems="pricings"
+          sx={{ height: 'fit-content', flexGrow: 1, overflowY: 'auto' }}
+          slots={{ item: CustomTreeItem }}
+        />
+      </Box>
+      <Modal
+        open={yamlLinkModalOpen}
+        onClose={handleYamlLinkModalClose}
+        aria-labelledby="modal-yaml-link-title"
+        aria-describedby="modal-yaml-link-description"
+      >
+        <Paper
+          elevation={3}
+          sx={{
+            maxWidth: 600,
+            width: '90vw',
+            mx: 'auto',
+            mt: 4,
+            p: 4,
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translateX(-50%) translateY(-50%)',
+            borderRadius: '20px',
+          }}
+        >
+          <Typography
+            variant="h6"
+            component="h2"
+            gutterBottom
+            sx={{
+              textAlign: 'center',
+              fontWeight: 'bold',
+            }}
+          >
+            Your link is ready!
+          </Typography>
+          <Typography sx={{ mt: 2, mb: 3, textAlign: 'center' }}>
+            This link points directly to the YAML file of the selected pricing version. It can be
+            used to leverage some functionalities within the{' '}
+            <a href="https://pricing4saas-docs.vercel.app" target="_blank">
+              Pricing4SaaS suite
+            </a>
+            .
+          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <CopyToClipboardIcon value={selectedYamlLink} />
+          </Box>
+        </Paper>
+      </Modal>
+    </YamlLinkShare.Provider>
+  );
 }

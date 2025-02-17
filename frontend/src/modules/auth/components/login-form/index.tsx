@@ -9,7 +9,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useRouter } from '../../../core/hooks/useRouter';
 
 export type LoginFormProps = {
-  email: string;
+  loginField: string;
   password: string;
 }
 
@@ -25,7 +25,7 @@ const LoginForm: React.FC = () => {
     const formData = new FormData(e.target);
     
     const formValues: LoginFormProps = {
-      email: formData.get('email') as string,
+      loginField: formData.get('loginField') as string,
       password: formData.get('password') as string,
     }
 
@@ -46,6 +46,7 @@ const LoginForm: React.FC = () => {
             id: response.id,
             firstName: response.firstName,
             lastName: response.lastName,
+            username: response.username,
             email: response.email,
             avatar: response.avatar,
           }
@@ -119,9 +120,8 @@ const LoginForm: React.FC = () => {
         <TextField
           fullWidth
           variant="outlined"
-          placeholder="Email"
-          type="email"
-          name="email"
+          placeholder="Username or Email"
+          name="loginField"
           sx={{
             borderRadius: '20px',
           }}

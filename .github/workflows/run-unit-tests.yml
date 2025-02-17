@@ -23,6 +23,7 @@ jobs:
       - name: Make envfile
         uses: SpicyPizza/create-envfile@v2.0
         with:
+          envkey_ENVIRONMENT: "production"
           envkey_DATABASE_TECHNOLOGY: ${{vars.CI_DATABASE_TECHNOLOGY}}
           envkey_MONGO_PROTOCOL: ${{vars.CI_MONGO_PROTOCOL}}
           envkey_MONGO_HOST: ${{vars.CI_MONGO_HOST}}
@@ -37,6 +38,8 @@ jobs:
           envkey_APP_HOST: ${{vars.CI_APP_HOST}}
           envkey_AVATARS_FOLDER: ${{vars.CI_AVATARS_FOLDER}}
           envkey_BASE_URL_PATH: ${{vars.CI_BASE_URL_PATH}}
+          envkey_ADMIN_PASSWORD: ${{secrets.ADMIN_PASSWORD}}
+          envkey_USER_PASSWORD: ${{secrets.USER_PASSWORD}}
           directory: ./api
           file_name: .env
           fail_on_empty: false
@@ -53,6 +56,12 @@ jobs:
 
       - name: Install dependencies
         run: npm run install
+      
+      - name: Show env
+        run: cat ./api/.env
+
+      - name: Seed DB
+        run: cd api && npx tsx --tsconfig tsconfig.json ./scripts/seedMongo.ts && cd ..
 
       - name: Run tests
         run: npm run test

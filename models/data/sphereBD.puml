@@ -1,0 +1,88 @@
+@startuml
+
+' Classes
+class User {
+    firstName: String
+    lastName: String
+    email: String
+    password: String
+    phone: String
+    avatar: String [Optional]
+    address: String [Optional]
+    postalCode: String [Optional]
+    userType: UserType
+}
+
+class PricingCollection {
+    name: String
+    lastUpdate: Date
+}
+
+class CollectionAnalytics {
+    evolutionOfPlans: double[][]
+    evolutionOfFeatures: double[][]
+    evolutionOfAddOns: double[][]
+    evolutionOfConfigurationSpaceSize: double[][]
+}
+
+class Pricing {
+    name: String
+    version: String
+    extractionDate: Date
+    url: String [Optional]
+    currency: String
+    yaml: String
+}
+
+class PricingAnalytics {
+    numberOfFeatures: integer
+    numberOfInformationFeatures: integer
+    numberOfIntegrationFeatures: integer
+    numberOfIntegrationApiFeatures: integer
+    numberOfIntegrationExtensionFeatures : integer
+    numberOfIntegrationIdentityProviderFeatures: integer
+    numberOfIntegrationWebSaaSFeatures: integer
+    numberOfIntegrationMarketplaceFeatures: integer
+    numberOfIntegrationExternalDeviceFeatures: integer
+    numberOfDomainFeatures: integer
+    numberOfAutomationFeatures: integer
+    numberOfBotAutomationFeatures: integer
+    numberOfFilteringAutomationFeatures: integer
+    numberOfTrackingAutomationFeatures: integer
+    numberOfTaskAutomationFeatures: integer
+    numberOfManagementFeatures: integer
+    numberOfGuaranteeFeatures: integer
+    numberOfSupportFeatures: integer
+    numberOfPaymentFeatures: integer
+    numberOfUsageLimits: integer
+    numberOfRenewableUsageLimits: integer
+    numberOfNonRenewableUsageLimits: integer
+    numberOfResponseDrivenUsageLimits: integer
+    numberOfTimeDrivenUsageLimits: integer
+    numberOfPlans: integer
+    numberOfFreePlans: integer
+    numberOfPaidPlans: integer
+    numberOfAddOns: integer
+    numberOfReplacementAddons: integer
+    numberOfExtensionAddons: integer
+    configurationSpaceSize: integer
+    minSubscriptionPrice: double
+    maxSubscriptionPrice: double
+}
+
+' Relationships
+
+User "1" --> "0..*" Pricing : owns
+User "1" --> "0..*" PricingCollection : owns
+PricingCollection *-- CollectionAnalytics
+PricingCollection "0..1" <-- "1..*" Pricing : belongsTo
+Pricing *-- PricingAnalytics
+
+' Enums
+
+enum UserType {
+    ADMIN
+    USER
+}
+
+@enduml

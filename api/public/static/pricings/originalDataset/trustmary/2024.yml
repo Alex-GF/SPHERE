@@ -1,9 +1,11 @@
-saasName: Trustmary - Collect
 syntaxVersion: '2.1'
-version: 2024-7-14
+saasName: Trustmary - Collect
 createdAt: '2024-07-14'
+version: '2024-07-14'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20240715101914/https://trustmary.com/pricing/
 features:
   3in1Surveys:
     description: ''
@@ -200,32 +202,32 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://zapier.com/pricing
+    pricingUrls:
+    - https://zapier.com/pricing
   makeIntegration:
     description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://www.make.com/pricing
+    pricingUrls:
+    - https://www.make.com/pricing
   hubspotIntegration:
     description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://www.hubspot.com/pricing/marketing/starter
+    pricingUrls:
+    - https://www.hubspot.com/pricing/marketing/starter
   pipedriveIntegration:
     description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://www.pipedrive.com/en/pricing
+    pricingUrls:
+    - https://www.pipedrive.com/en/pricing
   freeSurveyHelp:
     description: ''
     valueType: BOOLEAN
@@ -254,18 +256,18 @@ features:
 usageLimits:
   unlimitedTeamMembers:
     description: ''
-    valueType: BOOLEAN
-    defaultValue: false
+    valueType: NUMERIC
+    defaultValue: 0
     type: NON_RENEWABLE
     linkedFeatures:
-      - teams
+    - teams
   unlimitedSuveys:
     description: ''
-    valueType: BOOLEAN
-    defaultValue: false
+    valueType: NUMERIC
+    defaultValue: 0
     type: NON_RENEWABLE
     linkedFeatures:
-      - surveys
+    - surveys
   surveyResponsesLimit:
     description: ''
     valueType: NUMERIC
@@ -285,22 +287,23 @@ usageLimits:
     unit: connection
     type: NON_RENEWABLE
     linkedFeatures:
-      - reviewPlatform
+    - reviewPlatform
 plans:
   SOLO:
     description: Essentials to get more reviews and feedback
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: /month
     features: null
     usageLimits: null
-    price: 0
   STARTER:
     description: For smaller teams, more responses and automations
-    monthlyPrice: 29
-    annualPrice: 24
+    price: 29
     unit: /month
     features:
+      teams:
+        value: true
+      surveys:
+        value: true
       surveyTemplateLibrary:
         value: true
       surveyStatus:
@@ -325,22 +328,24 @@ plans:
         value: true
     usageLimits:
       unlimitedTeamMembers:
-        value: true
+        value: .inf
       unlimitedSuveys:
-        value: true
+        value: .inf
       surveyResponsesLimit:
         value: 20
       requestsViaEmailLimit:
         value: 200
       reviewPlatformConnectionsLimit:
         value: 3
-    price: 29
   BUSINESS:
     description: The best Collect plan for growing companies
-    monthlyPrice: 79
-    annualPrice: 65
+    price: 79
     unit: /month
     features:
+      teams:
+        value: true
+      surveys:
+        value: true
       surveyTemplateLibrary:
         value: true
       surveyStatus:
@@ -371,22 +376,24 @@ plans:
         value: true
     usageLimits:
       unlimitedTeamMembers:
-        value: true
+        value: .inf
       unlimitedSuveys:
-        value: true
+        value: .inf
       surveyResponsesLimit:
         value: 50
       requestsViaEmailLimit:
         value: 600
       reviewPlatformConnectionsLimit:
         value: 10
-    price: 79
   SCALE:
     description: ''
-    monthlyPrice: 159
-    annualPrice: 132
+    price: 159
     unit: /month
     features:
+      teams:
+        value: true
+      surveys:
+        value: true
       surveyTemplateLibrary:
         value: true
       surveyStatus:
@@ -417,23 +424,22 @@ plans:
         value: true
     usageLimits:
       unlimitedTeamMembers:
-        value: true
+        value: .inf
       unlimitedSuveys:
-        value: true
+        value: .inf
       surveyResponsesLimit:
         value: 500
       requestsViaEmailLimit:
         value: 6000
       reviewPlatformConnectionsLimit:
         value: 25
-    price: 159
 addOns:
   onboardingPackageAddOn:
     availableFor:
-      - SOLO
-      - STARTER
-      - BUSINESS
-      - SCALE
+    - SOLO
+    - STARTER
+    - BUSINESS
+    - SCALE
     price: 990
     unit: one time payment
     features:

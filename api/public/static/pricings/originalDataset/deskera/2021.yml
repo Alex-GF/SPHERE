@@ -1,9 +1,11 @@
-saasName: Deskera
 syntaxVersion: '2.1'
-version: '2021-10-13'
-createdAt: '2021-10-13'
+saasName: Deskera
+createdAt: '2021-10-14'
+version: '2021-10-14'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20211014065819/https://www.deskera.com/pricing/
 features:
   allInOneDashboard:
     description: ''
@@ -127,8 +129,8 @@ usageLimits:
     unit: invoices/bills
     type: NON_RENEWABLE
     linkedFeatures:
-      - createInvoices
-      - createBills
+    - createInvoices
+    - createBills
   runPayrollLimit:
     description: ''
     valueType: NUMERIC
@@ -136,20 +138,17 @@ usageLimits:
     unit: employee
     type: NON_RENEWABLE
     linkedFeatures:
-      - runPayroll
+    - runPayroll
 plans:
   STARTUP:
     description: ''
-    monthlyPrice: 35
-    annualPrice: 29
+    price: 35
     unit: user/month
     features: null
     usageLimits: null
-    price: 35
   ESSENTIAL:
     description: ''
-    monthlyPrice: 58
-    annualPrice: 49
+    price: 58
     unit: user/month
     features:
       multiCurrency:
@@ -165,11 +164,9 @@ plans:
         value: .inf
       runPayrollLimit:
         value: 30
-    price: 58
   PROFESSIONAL:
     description: ''
-    monthlyPrice: 119
-    annualPrice: 99
+    price: 119
     unit: user/month
     features:
       multiCurrency:
@@ -197,4 +194,4 @@ plans:
         value: .inf
       runPayrollLimit:
         value: 100
-    price: 119
+addOns: null

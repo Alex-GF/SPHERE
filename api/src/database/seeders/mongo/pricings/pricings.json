@@ -5,6 +5,9 @@
     },
     "name": "Box",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2024",
     "extractionDate": "2024-07-15T00:00:00.000Z",
     "currency": "EUR",
@@ -52,6 +55,9 @@
     },
     "name": "Box",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2023",
     "extractionDate": "2023-11-19T00:00:00.000Z",
     "currency": "EUR",
@@ -99,6 +105,9 @@
     },
     "name": "Box",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2022",
     "extractionDate": "2022-11-28T00:00:00.000Z",
     "currency": "USD",
@@ -146,6 +155,9 @@
     },
     "name": "Box",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2021",
     "extractionDate": "2021-11-29T00:00:00.000Z",
     "currency": "USD",
@@ -193,6 +205,9 @@
     },
     "name": "Box",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2020",
     "extractionDate": "2020-11-28T00:00:00.000Z",
     "currency": "USD",
@@ -240,6 +255,9 @@
     },
     "name": "Box",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2019",
     "extractionDate": "2019-11-13T00:00:00.000Z",
     "currency": "USD",
@@ -287,6 +305,9 @@
     },
     "name": "Buffer",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2024",
     "extractionDate": "2024-07-02T00:00:00.000Z",
     "currency": "USD",
@@ -334,6 +355,9 @@
     },
     "name": "Buffer",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2023",
     "extractionDate": "2023-11-29T00:00:00.000Z",
     "currency": "USD",
@@ -381,6 +405,9 @@
     },
     "name": "Buffer",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2022",
     "extractionDate": "2022-11-29T00:00:00.000Z",
     "currency": "USD",
@@ -428,6 +455,9 @@
     },
     "name": "Buffer",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2021",
     "extractionDate": "2021-11-29T00:00:00.000Z",
     "currency": "USD",
@@ -475,6 +505,9 @@
     },
     "name": "Buffer",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2020",
     "extractionDate": "2020-11-29T00:00:00.000Z",
     "currency": "USD",
@@ -522,6 +555,9 @@
     },
     "name": "Buffer",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2019",
     "extractionDate": "2019-11-29T00:00:00.000Z",
     "currency": "USD",
@@ -569,6 +605,9 @@
     },
     "name": "Canva",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2024",
     "extractionDate": "2024-07-07T00:00:00.000Z",
     "currency": "EUR",
@@ -616,6 +655,9 @@
     },
     "name": "Canva",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2023",
     "extractionDate": "2023-11-24T00:00:00.000Z",
     "currency": "EUR",
@@ -663,6 +705,9 @@
     },
     "name": "Canva",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2022",
     "extractionDate": "2022-02-08T00:00:00.000Z",
     "currency": "USD",
@@ -710,6 +755,9 @@
     },
     "name": "Canva",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2021",
     "extractionDate": "2021-03-18T00:00:00.000Z",
     "currency": "USD",
@@ -757,6 +805,9 @@
     },
     "name": "Canva",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2020",
     "extractionDate": "2020-06-19T00:00:00.000Z",
     "currency": "USD",
@@ -804,6 +855,9 @@
     },
     "name": "Canva",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2019",
     "extractionDate": "2019-09-05T00:00:00.000Z",
     "currency": "USD",
@@ -851,6 +905,9 @@
     },
     "name": "Clickup",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2024",
     "extractionDate": "2024-07-04T00:00:00.000Z",
     "currency": "USD",
@@ -898,6 +955,9 @@
     },
     "name": "Clickup",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2023",
     "extractionDate": "2023-11-29T00:00:00.000Z",
     "currency": "USD",
@@ -945,6 +1005,9 @@
     },
     "name": "Clickup",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2022",
     "extractionDate": "2022-11-27T00:00:00.000Z",
     "currency": "USD",
@@ -992,6 +1055,9 @@
     },
     "name": "Clickup",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2021",
     "extractionDate": "2021-11-01T00:00:00.000Z",
     "currency": "USD",
@@ -1039,6 +1105,9 @@
     },
     "name": "Clickup",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2020",
     "extractionDate": "2020-10-01T00:00:00.000Z",
     "currency": "USD",
@@ -1086,6 +1155,9 @@
     },
     "name": "Clickup",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2019",
     "extractionDate": "2019-10-31T00:00:00.000Z",
     "currency": "USD",
@@ -1133,6 +1205,9 @@
     },
     "name": "Clockify",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2024",
     "extractionDate": "2024-07-05T00:00:00.000Z",
     "currency": "USD",
@@ -1180,6 +1255,9 @@
     },
     "name": "Clockify",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2023",
     "extractionDate": "2023-12-02T00:00:00.000Z",
     "currency": "USD",
@@ -1227,6 +1305,9 @@
     },
     "name": "Clockify",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2022",
     "extractionDate": "2022-11-15T00:00:00.000Z",
     "currency": "USD",
@@ -1274,6 +1355,9 @@
     },
     "name": "Clockify",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2021",
     "extractionDate": "2021-11-24T00:00:00.000Z",
     "currency": "USD",
@@ -1321,6 +1405,9 @@
     },
     "name": "Clockify",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2020",
     "extractionDate": "2020-11-29T00:00:00.000Z",
     "currency": "USD",
@@ -1368,6 +1455,9 @@
     },
     "name": "Clockify",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2019",
     "extractionDate": "2019-11-11T00:00:00.000Z",
     "currency": "USD",
@@ -1415,6 +1505,9 @@
     },
     "name": "Crowdcast",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2024",
     "extractionDate": "2024-07-14T00:00:00.000Z",
     "currency": "USD",
@@ -1462,6 +1555,9 @@
     },
     "name": "Crowdcast",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2023",
     "extractionDate": "2023-11-29T00:00:00.000Z",
     "currency": "USD",
@@ -1509,6 +1605,9 @@
     },
     "name": "Crowdcast",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2022",
     "extractionDate": "2022-11-22T00:00:00.000Z",
     "currency": "USD",
@@ -1556,6 +1655,9 @@
     },
     "name": "Crowdcast",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2021",
     "extractionDate": "2021-11-27T00:00:00.000Z",
     "currency": "USD",
@@ -1603,6 +1705,9 @@
     },
     "name": "Crowdcast",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2020",
     "extractionDate": "2020-11-29T00:00:00.000Z",
     "currency": "USD",
@@ -1650,6 +1755,9 @@
     },
     "name": "Databox",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2024",
     "extractionDate": "2024-06-11T00:00:00.000Z",
     "currency": "USD",
@@ -1697,6 +1805,9 @@
     },
     "name": "Databox",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2023",
     "extractionDate": "2023-12-11T00:00:00.000Z",
     "currency": "USD",
@@ -1744,6 +1855,9 @@
     },
     "name": "Databox",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2022",
     "extractionDate": "2022-11-07T00:00:00.000Z",
     "currency": "USD",
@@ -1791,6 +1905,9 @@
     },
     "name": "Databox",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2021",
     "extractionDate": "2021-11-22T00:00:00.000Z",
     "currency": "USD",
@@ -1838,6 +1955,9 @@
     },
     "name": "Databox",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2020",
     "extractionDate": "2020-11-30T00:00:00.000Z",
     "currency": "USD",
@@ -1885,6 +2005,9 @@
     },
     "name": "Databox",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2019",
     "extractionDate": "2019-12-10T00:00:00.000Z",
     "currency": "USD",
@@ -1932,6 +2055,9 @@
     },
     "name": "Deskera",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2024",
     "extractionDate": "2024-07-15T00:00:00.000Z",
     "currency": "USD",
@@ -1979,6 +2105,9 @@
     },
     "name": "Deskera",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2023",
     "extractionDate": "2023-03-23T00:00:00.000Z",
     "currency": "USD",
@@ -2026,6 +2155,9 @@
     },
     "name": "Deskera",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2022",
     "extractionDate": "2022-12-04T00:00:00.000Z",
     "currency": "USD",
@@ -2073,6 +2205,9 @@
     },
     "name": "Deskera",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2021",
     "extractionDate": "2021-10-13T00:00:00.000Z",
     "currency": "USD",
@@ -2120,6 +2255,9 @@
     },
     "name": "Dropbox",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2024",
     "extractionDate": "2024-07-15T00:00:00.000Z",
     "currency": "EUR",
@@ -2167,6 +2305,9 @@
     },
     "name": "Dropbox",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2023",
     "extractionDate": "2023-12-02T00:00:00.000Z",
     "currency": "USD",
@@ -2214,6 +2355,9 @@
     },
     "name": "Dropbox",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2022",
     "extractionDate": "2022-11-15T00:00:00.000Z",
     "currency": "USD",
@@ -2261,6 +2405,9 @@
     },
     "name": "Dropbox",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2021",
     "extractionDate": "2021-11-19T00:00:00.000Z",
     "currency": "USD",
@@ -2308,6 +2455,9 @@
     },
     "name": "Evernote",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2024",
     "extractionDate": "2024-07-06T00:00:00.000Z",
     "currency": "USD",
@@ -2355,6 +2505,9 @@
     },
     "name": "Evernote",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2023",
     "extractionDate": "2023-11-23T00:00:00.000Z",
     "currency": "USD",
@@ -2402,6 +2555,9 @@
     },
     "name": "Evernote",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2022",
     "extractionDate": "2022-11-29T00:00:00.000Z",
     "currency": "USD",
@@ -2449,6 +2605,9 @@
     },
     "name": "Evernote",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2021",
     "extractionDate": "2021-11-28T00:00:00.000Z",
     "currency": "USD",
@@ -2496,6 +2655,9 @@
     },
     "name": "Evernote",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2020",
     "extractionDate": "2020-11-29T00:00:00.000Z",
     "currency": "USD",
@@ -2543,6 +2705,9 @@
     },
     "name": "Evernote",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2019",
     "extractionDate": "2019-11-29T00:00:00.000Z",
     "currency": "USD",
@@ -2590,6 +2755,9 @@
     },
     "name": "Figma",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2024",
     "extractionDate": "2024-07-05T00:00:00.000Z",
     "currency": "USD",
@@ -2637,6 +2805,9 @@
     },
     "name": "Figma",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2023",
     "extractionDate": "2023-11-08T00:00:00.000Z",
     "currency": "EUR",
@@ -2684,6 +2855,9 @@
     },
     "name": "Figma",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2022",
     "extractionDate": "2022-11-29T00:00:00.000Z",
     "currency": "USD",
@@ -2731,6 +2905,9 @@
     },
     "name": "Figma",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2021",
     "extractionDate": "2021-11-29T00:00:00.000Z",
     "currency": "USD",
@@ -2778,6 +2955,9 @@
     },
     "name": "Figma",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2020",
     "extractionDate": "2020-11-26T00:00:00.000Z",
     "currency": "USD",
@@ -2825,6 +3005,9 @@
     },
     "name": "Figma",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2019",
     "extractionDate": "2019-10-17T00:00:00.000Z",
     "currency": "USD",
@@ -2872,6 +3055,9 @@
     },
     "name": "Github",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2024",
     "extractionDate": "2024-06-07T00:00:00.000Z",
     "currency": "EUR",
@@ -2919,6 +3105,9 @@
     },
     "name": "Github",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2023",
     "extractionDate": "2023-11-20T00:00:00.000Z",
     "currency": "EUR",
@@ -2966,6 +3155,9 @@
     },
     "name": "Github",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2022",
     "extractionDate": "2022-11-29T00:00:00.000Z",
     "currency": "EUR",
@@ -3013,6 +3205,9 @@
     },
     "name": "Github",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2021",
     "extractionDate": "2021-11-29T00:00:00.000Z",
     "currency": "EUR",
@@ -3060,6 +3255,9 @@
     },
     "name": "Github",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2020",
     "extractionDate": "2020-11-29T00:00:00.000Z",
     "currency": "EUR",
@@ -3107,6 +3305,9 @@
     },
     "name": "Github",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2019",
     "extractionDate": "2019-11-29T00:00:00.000Z",
     "currency": "EUR",
@@ -3154,6 +3355,9 @@
     },
     "name": "Hypercontext",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2024",
     "extractionDate": "2024-07-15T00:00:00.000Z",
     "currency": "USD",
@@ -3201,6 +3405,9 @@
     },
     "name": "Hypercontext",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2023",
     "extractionDate": "2023-10-24T00:00:00.000Z",
     "currency": "USD",
@@ -3248,6 +3455,9 @@
     },
     "name": "Hypercontext",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2022",
     "extractionDate": "2022-10-13T00:00:00.000Z",
     "currency": "USD",
@@ -3295,6 +3505,9 @@
     },
     "name": "Hypercontext",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2021",
     "extractionDate": "2021-10-09T00:00:00.000Z",
     "currency": "USD",
@@ -3342,6 +3555,9 @@
     },
     "name": "Jira",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2024",
     "extractionDate": "2024-07-07T00:00:00.000Z",
     "currency": "USD",
@@ -3389,6 +3605,9 @@
     },
     "name": "Jira",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2023",
     "extractionDate": "2023-11-16T00:00:00.000Z",
     "currency": "USD",
@@ -3436,6 +3655,9 @@
     },
     "name": "Jira",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2022",
     "extractionDate": "2022-11-29T00:00:00.000Z",
     "currency": "USD",
@@ -3483,6 +3705,9 @@
     },
     "name": "Jira",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2021",
     "extractionDate": "2021-09-24T00:00:00.000Z",
     "currency": "USD",
@@ -3530,6 +3755,9 @@
     },
     "name": "Jira",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2020",
     "extractionDate": "2020-11-29T00:00:00.000Z",
     "currency": "USD",
@@ -3577,6 +3805,9 @@
     },
     "name": "Jira",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2019",
     "extractionDate": "2019-10-29T00:00:00.000Z",
     "currency": "USD",
@@ -3624,6 +3855,9 @@
     },
     "name": "Mailchimp",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2024",
     "extractionDate": "2024-07-12T00:00:00.000Z",
     "currency": "USD",
@@ -3671,6 +3905,9 @@
     },
     "name": "Mailchimp",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2023",
     "extractionDate": "2023-11-29T00:00:00.000Z",
     "currency": "USD",
@@ -3718,6 +3955,9 @@
     },
     "name": "Mailchimp",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2022",
     "extractionDate": "2022-11-30T00:00:00.000Z",
     "currency": "USD",
@@ -3765,6 +4005,9 @@
     },
     "name": "Mailchimp",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2021",
     "extractionDate": "2021-11-29T00:00:00.000Z",
     "currency": "USD",
@@ -3812,6 +4055,9 @@
     },
     "name": "Mailchimp",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2020",
     "extractionDate": "2020-11-29T00:00:00.000Z",
     "currency": "USD",
@@ -3859,6 +4105,9 @@
     },
     "name": "Mailchimp",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2019",
     "extractionDate": "2019-11-29T00:00:00.000Z",
     "currency": "USD",
@@ -3906,6 +4155,9 @@
     },
     "name": "Office",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2019",
     "extractionDate": "2019-11-29T00:00:00.000Z",
     "currency": "USD",
@@ -3953,6 +4205,9 @@
     },
     "name": "Microsoft",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2024",
     "extractionDate": "2024-07-16T00:00:00.000Z",
     "currency": "USD",
@@ -4000,6 +4255,9 @@
     },
     "name": "Microsoft",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2023",
     "extractionDate": "2023-11-24T00:00:00.000Z",
     "currency": "USD",
@@ -4047,6 +4305,9 @@
     },
     "name": "Microsoft",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2022",
     "extractionDate": "2022-11-23T00:00:00.000Z",
     "currency": "USD",
@@ -4094,6 +4355,9 @@
     },
     "name": "Microsoft",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2021",
     "extractionDate": "2021-11-18T00:00:00.000Z",
     "currency": "USD",
@@ -4141,6 +4405,9 @@
     },
     "name": "Microsoft",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2020",
     "extractionDate": "2020-11-11T00:00:00.000Z",
     "currency": "USD",
@@ -4188,6 +4455,9 @@
     },
     "name": "Notion",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2024",
     "extractionDate": "2024-07-16T00:00:00.000Z",
     "currency": "USD",
@@ -4235,6 +4505,9 @@
     },
     "name": "Notion",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2023",
     "extractionDate": "2023-11-28T00:00:00.000Z",
     "currency": "USD",
@@ -4282,6 +4555,9 @@
     },
     "name": "Notion",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2022",
     "extractionDate": "2022-11-29T00:00:00.000Z",
     "currency": "USD",
@@ -4329,6 +4605,9 @@
     },
     "name": "Notion",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2021",
     "extractionDate": "2021-11-01T00:00:00.000Z",
     "currency": "USD",
@@ -4376,6 +4655,9 @@
     },
     "name": "Openphone",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2024",
     "extractionDate": "2024-07-16T00:00:00.000Z",
     "currency": "USD",
@@ -4423,6 +4705,9 @@
     },
     "name": "Openphone",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2023",
     "extractionDate": "2023-11-19T00:00:00.000Z",
     "currency": "USD",
@@ -4470,6 +4755,9 @@
     },
     "name": "Openphone",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2022",
     "extractionDate": "2022-11-28T00:00:00.000Z",
     "currency": "USD",
@@ -4517,6 +4805,9 @@
     },
     "name": "Openphone",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2021",
     "extractionDate": "2021-11-17T00:00:00.000Z",
     "currency": "USD",
@@ -4564,6 +4855,9 @@
     },
     "name": "Openphone",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2020",
     "extractionDate": "2020-11-11T00:00:00.000Z",
     "currency": "USD",
@@ -4611,6 +4905,9 @@
     },
     "name": "Overleaf",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2024",
     "extractionDate": "2024-07-10T00:00:00.000Z",
     "currency": "USD",
@@ -4658,6 +4955,9 @@
     },
     "name": "Overleaf",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2023",
     "extractionDate": "2023-11-27T00:00:00.000Z",
     "currency": "USD",
@@ -4705,6 +5005,9 @@
     },
     "name": "Overleaf",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2022",
     "extractionDate": "2022-11-27T00:00:00.000Z",
     "currency": "USD",
@@ -4752,6 +5055,9 @@
     },
     "name": "Overleaf",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2021",
     "extractionDate": "2021-11-27T00:00:00.000Z",
     "currency": "USD",
@@ -4799,6 +5105,9 @@
     },
     "name": "Overleaf",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2020",
     "extractionDate": "2020-11-24T00:00:00.000Z",
     "currency": "USD",
@@ -4846,6 +5155,9 @@
     },
     "name": "Overleaf",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2019",
     "extractionDate": "2019-11-03T00:00:00.000Z",
     "currency": "USD",
@@ -4893,6 +5205,9 @@
     },
     "name": "Planable",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2024",
     "extractionDate": "2024-07-18T00:00:00.000Z",
     "currency": "USD",
@@ -4940,6 +5255,9 @@
     },
     "name": "Planable",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2023",
     "extractionDate": "2023-10-20T00:00:00.000Z",
     "currency": "USD",
@@ -4987,6 +5305,9 @@
     },
     "name": "Planable",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2022",
     "extractionDate": "2022-10-29T00:00:00.000Z",
     "currency": "USD",
@@ -5034,6 +5355,9 @@
     },
     "name": "Planable",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2021",
     "extractionDate": "2021-11-18T00:00:00.000Z",
     "currency": "USD",
@@ -5081,6 +5405,9 @@
     },
     "name": "Planable",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2020",
     "extractionDate": "2020-11-25T00:00:00.000Z",
     "currency": "USD",
@@ -5128,6 +5455,9 @@
     },
     "name": "Planable",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2019",
     "extractionDate": "2019-05-23T00:00:00.000Z",
     "currency": "USD",
@@ -5175,6 +5505,9 @@
     },
     "name": "Postman",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2024",
     "extractionDate": "2024-06-28T00:00:00.000Z",
     "currency": "USD",
@@ -5222,6 +5555,9 @@
     },
     "name": "Postman",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2023",
     "extractionDate": "2023-11-04T00:00:00.000Z",
     "currency": "USD",
@@ -5269,6 +5605,9 @@
     },
     "name": "Postman",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2022",
     "extractionDate": "2022-11-23T00:00:00.000Z",
     "currency": "USD",
@@ -5316,6 +5655,9 @@
     },
     "name": "Postman",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2021",
     "extractionDate": "2021-11-29T00:00:00.000Z",
     "currency": "USD",
@@ -5363,6 +5705,9 @@
     },
     "name": "Postman",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2020",
     "extractionDate": "2020-11-24T00:00:00.000Z",
     "currency": "USD",
@@ -5410,6 +5755,9 @@
     },
     "name": "Pumble",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2024",
     "extractionDate": "2024-07-15T00:00:00.000Z",
     "currency": "USD",
@@ -5457,6 +5805,9 @@
     },
     "name": "Pumble",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2023",
     "extractionDate": "2023-09-30T00:00:00.000Z",
     "currency": "USD",
@@ -5504,6 +5855,9 @@
     },
     "name": "Pumble",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2022",
     "extractionDate": "2022-11-27T00:00:00.000Z",
     "currency": "USD",
@@ -5551,6 +5905,9 @@
     },
     "name": "Pumble",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2021",
     "extractionDate": "2021-09-19T00:00:00.000Z",
     "currency": "USD",
@@ -5598,6 +5955,9 @@
     },
     "name": "Quip",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2024",
     "extractionDate": "2024-07-01T00:00:00.000Z",
     "currency": "USD",
@@ -5645,6 +6005,9 @@
     },
     "name": "Quip",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2023",
     "extractionDate": "2023-11-29T00:00:00.000Z",
     "currency": "USD",
@@ -5692,6 +6055,9 @@
     },
     "name": "Quip",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2022",
     "extractionDate": "2022-11-28T00:00:00.000Z",
     "currency": "USD",
@@ -5739,6 +6105,9 @@
     },
     "name": "Quip",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2021",
     "extractionDate": "2021-11-29T00:00:00.000Z",
     "currency": "USD",
@@ -5786,6 +6155,9 @@
     },
     "name": "Quip",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2020",
     "extractionDate": "2020-11-29T00:00:00.000Z",
     "currency": "USD",
@@ -5833,6 +6205,9 @@
     },
     "name": "Quip",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2019",
     "extractionDate": "2019-11-25T00:00:00.000Z",
     "currency": "USD",
@@ -5880,6 +6255,9 @@
     },
     "name": "Salesforce",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2024",
     "extractionDate": "2024-07-15T00:00:00.000Z",
     "currency": "USD",
@@ -5927,6 +6305,9 @@
     },
     "name": "Salesforce",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2023",
     "extractionDate": "2023-12-02T00:00:00.000Z",
     "currency": "EUR",
@@ -5974,6 +6355,9 @@
     },
     "name": "Salesforce",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2022",
     "extractionDate": "2022-11-26T00:00:00.000Z",
     "currency": "USD",
@@ -6021,6 +6405,9 @@
     },
     "name": "Salesforce",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2021",
     "extractionDate": "2021-11-29T00:00:00.000Z",
     "currency": "USD",
@@ -6068,6 +6455,9 @@
     },
     "name": "Salesforce",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2020",
     "extractionDate": "2020-11-25T00:00:00.000Z",
     "currency": "USD",
@@ -6115,6 +6505,9 @@
     },
     "name": "Salesforce",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2019",
     "extractionDate": "2019-11-25T00:00:00.000Z",
     "currency": "USD",
@@ -6162,6 +6555,9 @@
     },
     "name": "Slack",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2024",
     "extractionDate": "2024-07-02T00:00:00.000Z",
     "currency": "USD",
@@ -6209,6 +6605,9 @@
     },
     "name": "Slack",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2023",
     "extractionDate": "2023-10-23T00:00:00.000Z",
     "currency": "USD",
@@ -6256,6 +6655,9 @@
     },
     "name": "Slack",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2020",
     "extractionDate": "2020-10-21T00:00:00.000Z",
     "currency": "USD",
@@ -6303,6 +6705,9 @@
     },
     "name": "Slack",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2019",
     "extractionDate": "2019-10-30T00:00:00.000Z",
     "currency": "USD",
@@ -6350,6 +6755,9 @@
     },
     "name": "Tableau",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2024",
     "extractionDate": "2024-06-30T00:00:00.000Z",
     "currency": "USD",
@@ -6397,6 +6805,9 @@
     },
     "name": "Tableau",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2023",
     "extractionDate": "2023-11-28T00:00:00.000Z",
     "currency": "USD",
@@ -6444,6 +6855,9 @@
     },
     "name": "Tableau",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2022",
     "extractionDate": "2022-11-29T00:00:00.000Z",
     "currency": "USD",
@@ -6491,6 +6905,9 @@
     },
     "name": "Tableau",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2021",
     "extractionDate": "2021-11-28T00:00:00.000Z",
     "currency": "USD",
@@ -6538,6 +6955,9 @@
     },
     "name": "Tableau",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2020",
     "extractionDate": "2020-11-25T00:00:00.000Z",
     "currency": "USD",
@@ -6585,6 +7005,9 @@
     },
     "name": "Tableau",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2019",
     "extractionDate": "2019-08-12T00:00:00.000Z",
     "currency": "USD",
@@ -6632,6 +7055,9 @@
     },
     "name": "Trustmary",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2024",
     "extractionDate": "2024-07-14T00:00:00.000Z",
     "currency": "USD",
@@ -6679,6 +7105,9 @@
     },
     "name": "Trustmary",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2023",
     "extractionDate": "2023-10-30T00:00:00.000Z",
     "currency": "USD",
@@ -6726,6 +7155,9 @@
     },
     "name": "Trustmary",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2022",
     "extractionDate": "2022-11-29T00:00:00.000Z",
     "currency": "USD",
@@ -6773,6 +7205,9 @@
     },
     "name": "Trustmary",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2021",
     "extractionDate": "2021-11-29T00:00:00.000Z",
     "currency": "USD",
@@ -6820,6 +7255,9 @@
     },
     "name": "Userguiding",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2024",
     "extractionDate": "2024-11-09T00:00:00.000Z",
     "currency": "USD",
@@ -6867,6 +7305,9 @@
     },
     "name": "Userguiding",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2023",
     "extractionDate": "2023-12-09T00:00:00.000Z",
     "currency": "USD",
@@ -6914,6 +7355,9 @@
     },
     "name": "Userguiding",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2022",
     "extractionDate": "2022-11-22T00:00:00.000Z",
     "currency": "USD",
@@ -6961,6 +7405,9 @@
     },
     "name": "Userguiding",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2021",
     "extractionDate": "2021-10-28T00:00:00.000Z",
     "currency": "USD",
@@ -7008,6 +7455,9 @@
     },
     "name": "Userguiding",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2020",
     "extractionDate": "2020-11-24T00:00:00.000Z",
     "currency": "USD",
@@ -7055,6 +7505,9 @@
     },
     "name": "Wrike",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2024",
     "extractionDate": "2024-07-09T00:00:00.000Z",
     "currency": "USD",
@@ -7102,6 +7555,9 @@
     },
     "name": "Wrike",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2023",
     "extractionDate": "2023-12-02T00:00:00.000Z",
     "currency": "USD",
@@ -7149,6 +7605,9 @@
     },
     "name": "Wrike",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2022",
     "extractionDate": "2022-10-03T00:00:00.000Z",
     "currency": "USD",
@@ -7196,6 +7655,9 @@
     },
     "name": "Wrike",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2021",
     "extractionDate": "2021-11-23T00:00:00.000Z",
     "currency": "USD",
@@ -7243,6 +7705,9 @@
     },
     "name": "Wrike",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2020",
     "extractionDate": "2020-11-23T00:00:00.000Z",
     "currency": "USD",
@@ -7290,6 +7755,9 @@
     },
     "name": "Wrike",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2019",
     "extractionDate": "2019-11-28T00:00:00.000Z",
     "currency": "USD",
@@ -7337,6 +7805,9 @@
     },
     "name": "Zapier",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2024",
     "extractionDate": "2024-07-02T00:00:00.000Z",
     "currency": "USD",
@@ -7384,6 +7855,9 @@
     },
     "name": "Zapier",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2023",
     "extractionDate": "2023-11-28T00:00:00.000Z",
     "currency": "USD",
@@ -7431,6 +7905,9 @@
     },
     "name": "Zapier",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2022",
     "extractionDate": "2022-11-29T00:00:00.000Z",
     "currency": "USD",
@@ -7478,6 +7955,9 @@
     },
     "name": "Zapier",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2020",
     "extractionDate": "2020-11-16T00:00:00.000Z",
     "currency": "USD",
@@ -7525,6 +8005,9 @@
     },
     "name": "Zapier",
     "owner": "sphere",
+    "_collectionId": {
+      "$oid": "6787d0facaeb2b25748bc12a"
+    },
     "version": "2019",
     "extractionDate": "2019-11-12T00:00:00.000Z",
     "currency": "USD",
@@ -7571,9 +8054,11 @@
       "$oid": "6787d0facaeb2b25748bc0fe"
     },
     "name": "Fleet Management",
-    "owner": "faked",
+    "owner": "Faked",
     "version": "1.0.0",
-    "extractionDate": "2025-01-19T00:00:00.000Z",
+    "extractionDate": {
+      "$date": "2025-01-19T00:00:00.000Z"
+    },
     "currency": "USD",
     "url": null,
     "yaml": "static/pricings/originalDataset/fleet/2025.yml",
@@ -7611,6 +8096,106 @@
       "configurationSpaceSize": 16,
       "minSubscriptionPrice": 15,
       "maxSubscriptionPrice": 77.55
+    }
+  },
+  {
+    "_id": {
+      "$oid": "67a8af9c0f009fd3b4310151"
+    },
+    "name": "Fleet Management",
+    "owner": "Faked",
+    "version": "0.1.0",
+    "extractionDate": {
+      "$date": "2024-01-19T00:00:00.000Z"
+    },
+    "url": "",
+    "currency": "USD",
+    "yaml": "static/pricings/originalDataset/fleet/2024.yml",
+    "__v": 0,
+    "analytics": {
+      "numberOfFeatures": 4,
+      "numberOfInformationFeatures": 0,
+      "numberOfIntegrationFeatures": 0,
+      "numberOfIntegrationApiFeatures": 0,
+      "numberOfIntegrationExtensionFeatures": 0,
+      "numberOfIntegrationIdentityProviderFeatures": 0,
+      "numberOfIntegrationWebSaaSFeatures": 0,
+      "numberOfIntegrationMarketplaceFeatures": 0,
+      "numberOfIntegrationExternalDeviceFeatures": 0,
+      "numberOfDomainFeatures": 4,
+      "numberOfAutomationFeatures": 0,
+      "numberOfBotAutomationFeatures": 0,
+      "numberOfFilteringAutomationFeatures": 0,
+      "numberOfTrackingAutomationFeatures": 0,
+      "numberOfTaskAutomationFeatures": 0,
+      "numberOfManagementFeatures": 0,
+      "numberOfGuaranteeFeatures": 0,
+      "numberOfSupportFeatures": 0,
+      "numberOfPaymentFeatures": 0,
+      "numberOfUsageLimits": 4,
+      "numberOfRenewableUsageLimits": 2,
+      "numberOfNonRenewableUsageLimits": 2,
+      "numberOfResponseDrivenUsageLimits": 0,
+      "numberOfTimeDrivenUsageLimits": 0,
+      "numberOfPlans": 2,
+      "numberOfFreePlans": 0,
+      "numberOfPaidPlans": 2,
+      "numberOfAddOns": 2,
+      "numberOfReplacementAddons": 2,
+      "numberOfExtensionAddons": 0,
+      "configurationSpaceSize": 6,
+      "minSubscriptionPrice": 25,
+      "maxSubscriptionPrice": 101.8
+    }
+  },
+  {
+    "_id": {
+      "$oid": "67a8b01f0f009fd3b4310167"
+    },
+    "name": "Fleet Management",
+    "owner": "Faked",
+    "version": "0.0.1",
+    "extractionDate": {
+      "$date": "2023-01-19T00:00:00.000Z"
+    },
+    "url": "",
+    "currency": "USD",
+    "yaml": "static/pricings/originalDataset/fleet/2023.yml",
+    "__v": 0,
+    "analytics": {
+      "numberOfFeatures": 4,
+      "numberOfInformationFeatures": 0,
+      "numberOfIntegrationFeatures": 0,
+      "numberOfIntegrationApiFeatures": 0,
+      "numberOfIntegrationExtensionFeatures": 0,
+      "numberOfIntegrationIdentityProviderFeatures": 0,
+      "numberOfIntegrationWebSaaSFeatures": 0,
+      "numberOfIntegrationMarketplaceFeatures": 0,
+      "numberOfIntegrationExternalDeviceFeatures": 0,
+      "numberOfDomainFeatures": 4,
+      "numberOfAutomationFeatures": 0,
+      "numberOfBotAutomationFeatures": 0,
+      "numberOfFilteringAutomationFeatures": 0,
+      "numberOfTrackingAutomationFeatures": 0,
+      "numberOfTaskAutomationFeatures": 0,
+      "numberOfManagementFeatures": 0,
+      "numberOfGuaranteeFeatures": 0,
+      "numberOfSupportFeatures": 0,
+      "numberOfPaymentFeatures": 0,
+      "numberOfUsageLimits": 4,
+      "numberOfRenewableUsageLimits": 2,
+      "numberOfNonRenewableUsageLimits": 2,
+      "numberOfResponseDrivenUsageLimits": 0,
+      "numberOfTimeDrivenUsageLimits": 0,
+      "numberOfPlans": 2,
+      "numberOfFreePlans": 0,
+      "numberOfPaidPlans": 2,
+      "numberOfAddOns": 0,
+      "numberOfReplacementAddons": 0,
+      "numberOfExtensionAddons": 0,
+      "configurationSpaceSize": 2,
+      "minSubscriptionPrice": 25,
+      "maxSubscriptionPrice": 100
     }
   }
 ]

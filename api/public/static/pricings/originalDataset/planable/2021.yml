@@ -1,9 +1,11 @@
-saasName: Planable
 syntaxVersion: '2.1'
-version: '2021-11-18'
-createdAt: '2021-11-18'
+saasName: Planable
+createdAt: '2021-11-19'
+version: '2021-11-19'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20211119105131/https://planable.io/pricing/
 features:
   posts:
     description: ''
@@ -11,9 +13,8 @@ features:
     defaultValue: true
     type: DOMAIN
   pages:
-    description: >-
-      Number of social media pages allowed in each workspace. It can be multiple
-      pages from the same platform.
+    description: Number of social media pages allowed in each workspace. It can be
+      multiple pages from the same platform.
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
@@ -104,7 +105,6 @@ usageLimits:
     defaultValue: 3
     unit: user
     type: NON_RENEWABLE
-    linkedFeatures: null
   postsLimit:
     description: ''
     valueType: NUMERIC
@@ -112,7 +112,7 @@ usageLimits:
     unit: post
     type: NON_RENEWABLE
     linkedFeatures:
-      - posts
+    - posts
   pagesLimit:
     description: ''
     valueType: NUMERIC
@@ -120,7 +120,7 @@ usageLimits:
     unit: page
     type: NON_RENEWABLE
     linkedFeatures:
-      - pages
+    - pages
   workspacesLimit:
     description: ''
     valueType: NUMERIC
@@ -128,58 +128,51 @@ usageLimits:
     unit: worspace
     type: NON_RENEWABLE
     linkedFeatures:
-      - workspaces
+    - workspaces
   storageCapacity:
     description: ''
     valueType: NUMERIC
-    defaultValue: 1000000000
+    defaultValue: 0
     unit: GB
     type: NON_RENEWABLE
     linkedFeatures:
-      - unlimitedStorage
+    - unlimitedStorage
 plans:
   FREE:
     description: For social media teams wanting to try out Planable
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: user/month
     features: null
     usageLimits:
+      usersLimit:
+        value: 1000000000000
       postsLimit:
         value: 50
-      usersLimit:
+      pagesLimit:
         value: 1000000000000
       workspacesLimit:
         value: 1000000000000
-      pagesLimit:
-        value: 1000000000000
-    price: 0
   STARTER:
     description: For freelancers & startups with up to 3 team members
-    monthlyPrice: 39
-    annualPrice: 33
+    price: 39
     unit: user/month
     features: null
     usageLimits: null
-    price: 39
   PREMIUM:
     description: For small agencies & brands
-    monthlyPrice: 99
-    annualPrice: 83
+    price: 99
     unit: user/month
     features: null
     usageLimits:
       usersLimit:
         value: 7
-      workspacesLimit:
-        value: 5
       pagesLimit:
         value: 1000000000000
-    price: 99
+      workspacesLimit:
+        value: 5
   ENTERPRISE:
     description: For large organizations
-    monthlyPrice: Custom
-    annualPrice: Custom
+    price: Custom
     unit: user/month
     features:
       realTimeSupport:
@@ -197,8 +190,10 @@ plans:
     usageLimits:
       usersLimit:
         value: 1000000000000
-      workspacesLimit:
-        value: 1000000000000
       pagesLimit:
         value: 1000000000000
-    price: Custom
+      workspacesLimit:
+        value: 1000000000000
+      storageCapacity:
+        value: 1000000000
+addOns: null

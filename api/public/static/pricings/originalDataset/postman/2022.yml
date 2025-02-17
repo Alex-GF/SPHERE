@@ -1,9 +1,11 @@
-saasName: Postman
 syntaxVersion: '2.1'
-version: '2022-11-23'
-createdAt: '2022-11-23'
+saasName: Postman
+createdAt: '2022-11-24'
+version: '2022-11-24'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20221124161721/https://www.postman.com/pricing/
 features:
   apiClient:
     description: ''
@@ -47,8 +49,8 @@ features:
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://github.com/pricing
+    pricingUrls:
+    - https://github.com/pricing
   staticIpAddresses:
     description: ''
     valueType: BOOLEAN
@@ -215,7 +217,7 @@ features:
     description: ''
     valueType: TEXT
     defaultValue:
-      - CARD
+    - CARD
     type: PAYMENT
 usageLimits:
   callsToPostmanApi:
@@ -225,7 +227,7 @@ usageLimits:
     unit: calls/month
     type: RENEWABLE
     linkedFeatures:
-      - postmanAPI
+    - postmanAPI
   numberOfIntegrations:
     description: ''
     valueType: NUMERIC
@@ -233,7 +235,7 @@ usageLimits:
     unit: integration
     type: NON_RENEWABLE
     linkedFeatures:
-      - integrations
+    - integrations
   imageEmbeddingLimit:
     description: ''
     valueType: NUMERIC
@@ -241,7 +243,7 @@ usageLimits:
     unit: MB
     type: NON_RENEWABLE
     linkedFeatures:
-      - imageEmbedding
+    - imageEmbedding
   customDomainsLimit:
     description: ''
     valueType: NUMERIC
@@ -249,7 +251,7 @@ usageLimits:
     unit: domain
     type: NON_RENEWABLE
     linkedFeatures:
-      - customDomains
+    - customDomains
   recoverDeletedCollectionsThreshold:
     description: ''
     valueType: NUMERIC
@@ -257,7 +259,7 @@ usageLimits:
     unit: day
     type: NON_RENEWABLE
     linkedFeatures:
-      - recoverDeletedCollections
+    - recoverDeletedCollections
   monitoringCallsFixedLimit:
     description: ''
     valueType: NUMERIC
@@ -265,7 +267,7 @@ usageLimits:
     unit: call
     type: NON_RENEWABLE
     linkedFeatures:
-      - apiMonitoringCalls
+    - apiMonitoringCalls
   monitoringCallsMonthlyLimit:
     description: ''
     valueType: NUMERIC
@@ -273,7 +275,7 @@ usageLimits:
     unit: call/month
     type: RENEWABLE
     linkedFeatures:
-      - apiMonitoringCalls
+    - apiMonitoringCalls
   mockServerCallsFixedLimit:
     description: ''
     valueType: NUMERIC
@@ -281,7 +283,7 @@ usageLimits:
     unit: call
     type: NON_RENEWABLE
     linkedFeatures:
-      - apiMockServer
+    - apiMockServer
   mockServerCallsMonthlyLimit:
     description: ''
     valueType: NUMERIC
@@ -289,27 +291,24 @@ usageLimits:
     unit: call/month
     type: RENEWABLE
     linkedFeatures:
-      - apiMockServer
+    - apiMockServer
 plans:
   FREE:
     description: ''
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: user/month
     features: null
     usageLimits: null
-    price: 0
   BASIC:
     description: ''
-    monthlyPrice: 15
-    annualPrice: 12
+    price: 15
     unit: user/month
     features:
       customDomains:
         value: true
       paymentOptions:
         value:
-          - CARD
+        - CARD
     usageLimits:
       callsToPostmanApi:
         value: 10000
@@ -319,11 +318,9 @@ plans:
         value: 1
       recoverDeletedCollectionsThreshold:
         value: 30
-    price: 15
   PROFESSIONAL:
     description: ''
-    monthlyPrice: 36
-    annualPrice: 29
+    price: 36
     unit: user/month
     features:
       nativeGitSupport:
@@ -344,7 +341,7 @@ plans:
         value: true
       paymentOptions:
         value:
-          - CARD
+        - CARD
     usageLimits:
       callsToPostmanApi:
         value: 100000
@@ -354,11 +351,9 @@ plans:
         value: 5
       recoverDeletedCollectionsThreshold:
         value: 90
-    price: 36
   ENTERPRISE:
     description: ''
-    monthlyPrice: null
-    annualPrice: 99
+    price: 99
     unit: user/month
     features:
       nativeGitSupport:
@@ -411,9 +406,9 @@ plans:
         value: true
       paymentOptions:
         value:
-          - CARD
-          - ACH
-          - WIRE_TRANSFER
+        - CARD
+        - ACH
+        - WIRE_TRANSFER
     usageLimits:
       callsToPostmanApi:
         value: 1000000
@@ -423,14 +418,13 @@ plans:
         value: 25
       recoverDeletedCollectionsThreshold:
         value: 90
-    price: 99
 addOns:
   monitoringPayAsYouGo:
     availableFor:
-      - FREE
-      - BASIC
-      - PROFESSIONAL
-      - ENTERPRISE
+    - FREE
+    - BASIC
+    - PROFESSIONAL
+    - ENTERPRISE
     price: 0.75
     features:
       apiMonitoringCalls:
@@ -441,10 +435,10 @@ addOns:
         value: 1000
   monitoringMonthly:
     availableFor:
-      - FREE
-      - BASIC
-      - PROFESSIONAL
-      - ENTERPRISE
+    - FREE
+    - BASIC
+    - PROFESSIONAL
+    - ENTERPRISE
     price: 20
     unit: block/month
     features:
@@ -456,10 +450,10 @@ addOns:
         value: 50000
   mockServersPayAsYouGo:
     availableFor:
-      - FREE
-      - BASIC
-      - PROFESSIONAL
-      - ENTERPRISE
+    - FREE
+    - BASIC
+    - PROFESSIONAL
+    - ENTERPRISE
     price: 0.75
     features:
       apiMockServer:
@@ -470,10 +464,10 @@ addOns:
         value: 1000
   mockServersMonthly:
     availableFor:
-      - FREE
-      - BASIC
-      - PROFESSIONAL
-      - ENTERPRISE
+    - FREE
+    - BASIC
+    - PROFESSIONAL
+    - ENTERPRISE
     price: 20
     unit: block/month
     features:
@@ -485,9 +479,9 @@ addOns:
         value: 50000
   customDomains:
     availableFor:
-      - BASIC
-      - PROFESSIONAL
-      - ENTERPRISE
+    - BASIC
+    - PROFESSIONAL
+    - ENTERPRISE
     price: 10
     unit: domain/month
     features: null

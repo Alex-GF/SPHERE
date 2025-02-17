@@ -20,6 +20,14 @@ const create = [
     .isLength({ min: 1, max: 255 })
     .withMessage('The last name must have between 1 and 255 characters long')
     .trim(),
+  check('username')
+    .exists()
+    .withMessage('A username must be provided in order to create the user')
+    .isString()
+    .withMessage('The username field must be a string')
+    .isLength({ min: 3, max: 15 })
+    .withMessage('The username must have between 3 and 15 characters long')
+    .trim(),
   check('email')
     .exists()
     .withMessage('An email must be provided in order to create the user')
@@ -77,6 +85,13 @@ const update = [
     .isLength({ min: 1, max: 255 })
     .withMessage('The last name must have between 1 and 255 characters long')
     .trim(),
+  check('username')
+    .optional()
+    .isString()
+    .withMessage('The username field must be a string')
+    .isLength({ min: 3, max: 15 })
+    .withMessage('The username must have between 3 and 15 characters long')
+    .trim(),
   check('email')
     .optional()
     .isString()
@@ -113,8 +128,20 @@ const update = [
     .withMessage('Maximum file size of ' + maxFileSize / 1000000 + 'MB'),
 ];
 const login = [
-  check('email').exists().isString().isEmail().normalizeEmail().withMessage('Invalid email'),
-  check('password').exists().isString(),
+  check('loginField')
+    .exists()
+    .withMessage('A loginField must be provided')
+    .isString()
+    .withMessage('The loginField must be a string')
+    .custom((value) => {
+      const isEmail = /\S+@\S+\.\S+/.test(value);
+      const isUsername = /^[a-zA-Z0-9_]{3,15}$/.test(value);
+      if (!isEmail && !isUsername) {
+        throw new Error('The loginField must be a valid email or username');
+      }
+      return true;
+    }),
+  check('password').exists().isString().withMessage('A password must be provided'),
 ];
 
 export { create, update, login };

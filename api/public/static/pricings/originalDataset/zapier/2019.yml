@@ -1,9 +1,11 @@
-saasName: Zapier
 syntaxVersion: '2.1'
-version: '2019-11-12'
-createdAt: '2019-11-12'
+saasName: Zapier
+createdAt: '2019-11-13'
+version: '2019-11-13'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20191113034602/https://zapier.com/pricing
 features:
   tasks:
     description: ''
@@ -111,7 +113,6 @@ usageLimits:
     defaultValue: 1
     unit: user
     type: NON_RENEWABLE
-    linkedFeatures: null
   tasksLimit:
     description: ''
     valueType: NUMERIC
@@ -119,7 +120,7 @@ usageLimits:
     unit: task/month
     type: RENEWABLE
     linkedFeatures:
-      - tasks
+    - tasks
   zapsLimit:
     description: ''
     valueType: NUMERIC
@@ -127,7 +128,7 @@ usageLimits:
     unit: zap/month
     type: RENEWABLE
     linkedFeatures:
-      - zaps
+    - zaps
   updateTimeThreshold:
     description: ''
     valueType: NUMERIC
@@ -135,8 +136,8 @@ usageLimits:
     unit: min
     type: NON_RENEWABLE
     linkedFeatures:
-      - tasks
-      - zaps
+    - tasks
+    - zaps
   premiumAppsLimit:
     description: ''
     valueType: NUMERIC
@@ -144,20 +145,17 @@ usageLimits:
     unit: app
     type: NON_RENEWABLE
     linkedFeatures:
-      - premiumApps
+    - premiumApps
 plans:
   FREE:
     description: Anyone can automate their work. Start with the basics.
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: /month
     features: null
     usageLimits: null
-    price: 0
   STARTER:
     description: Unleash the power of automation.
-    monthlyPrice: 24.99
-    annualPrice: 19.99
+    price: 24.99
     unit: /month
     features:
       multiStepZaps:
@@ -179,11 +177,9 @@ plans:
         value: 15
       premiumAppsLimit:
         value: 3
-    price: 24.99
   PROFESSIONAL:
     description: Advanced tools to take your work to the next level.
-    monthlyPrice: 61.25
-    annualPrice: 49
+    price: 61.25
     unit: /month
     features:
       multiStepZaps:
@@ -209,11 +205,9 @@ plans:
         value: 2
       premiumAppsLimit:
         value: .inf
-    price: 61.25
   TEAM:
     description: Bring your team together to collaborate on automation.
-    monthlyPrice: 373.75
-    annualPrice: 299
+    price: 373.75
     unit: /month
     features:
       multiStepZaps:
@@ -249,11 +243,9 @@ plans:
         value: 1
       premiumAppsLimit:
         value: .inf
-    price: 373.75
   COMPANY:
     description: Automation plus enterprise-grade features.
-    monthlyPrice: 748.75
-    annualPrice: 599
+    price: 748.75
     unit: /month
     features:
       multiStepZaps:
@@ -299,4 +291,4 @@ plans:
         value: 1
       premiumAppsLimit:
         value: .inf
-    price: 748.75
+addOns: null

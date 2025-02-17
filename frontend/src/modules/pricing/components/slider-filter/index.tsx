@@ -26,7 +26,7 @@ export default function SliderFilter({
       return numericValue >= range[0] && numericValue <= range[1];
     });
     
-    // if(selectedMarks.length === 0) return `${min} — ${data[data.length - 1].value}`;
+    if(selectedMarks.length === 0) return `${min} — ${max}`;
 
     const lowerLimit = selectedMarks[0].split('-')[0];
     const upperLimit = selectedMarks[selectedMarks.length - 1].split('-')[1] || `${selectedMarks[selectedMarks.length - 1]}`;
@@ -93,7 +93,7 @@ export default function SliderFilter({
         value={range}
         onChange={handleSliderChange}
         min={0}
-        max={parseFloat(marks[marks.length - 1].replace('+', ''))}
+        max={marks.length > 0 ? parseFloat(marks[marks.length - 1].replace('+', '')) : max}
         step={null} // No pasos intermedios
         marks={marks.map(value => ({
           value: parseFloat(value.replace('+', ''))
