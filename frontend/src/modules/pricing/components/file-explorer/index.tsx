@@ -37,8 +37,8 @@ import customConfirm from '../../../core/utils/custom-confirm';
 import { usePricingsApi } from '../../api/pricingsApi';
 import { IoIosLink } from 'react-icons/io';
 import CopyToClipboardIcon from '../../../core/components/copy-icon';
-import { YamlLinkShare } from '../../contexts/yamlLinkShare';
-import { Link } from 'react-router-dom';
+import { FileExplorerContext } from '../../contexts/fileExplorerContext';
+import { useAuth } from '../../../auth/hooks/useAuth';
 
 type FileType = 'image' | 'pdf' | 'doc' | 'video' | 'folder' | 'pinned' | 'trash';
 
@@ -47,41 +47,6 @@ type ExtendedTreeItemProps = {
   id: string;
   label: string;
 };
-
-// const ITEMS: TreeViewBaseItem<ExtendedTreeItemProps>[] = [
-//   {
-//     id: '1',
-//     label: 'Documents',
-//     children: [
-//       {
-//         id: '1.1',
-//         label: 'Company',
-//         children: [
-//           { id: '1.1.1', label: 'Invoice', fileType: 'pdf' },
-//           { id: '1.1.2', label: 'Meeting notes', fileType: 'doc' },
-//           { id: '1.1.3', label: 'Tasks list', fileType: 'doc' },
-//           { id: '1.1.4', label: 'Equipment', fileType: 'pdf' },
-//           { id: '1.1.5', label: 'Video conference', fileType: 'video' },
-//         ],
-//       },
-//       { id: '1.2', label: 'Personal', fileType: 'folder' },
-//       { id: '1.3', label: 'Group photo', fileType: 'image' },
-//     ],
-//   },
-//   {
-//     id: '2',
-//     label: 'Bookmarked',
-//     fileType: 'pinned',
-//     children: [
-//       { id: '2.1', label: 'Learning materials', fileType: 'folder' },
-//       { id: '2.2', label: 'News', fileType: 'folder' },
-//       { id: '2.3', label: 'Forums', fileType: 'folder' },
-//       { id: '2.4', label: 'Travel documents', fileType: 'pdf' },
-//     ],
-//   },
-//   { id: '3', label: 'History', fileType: 'folder' },
-//   { id: '4', label: 'Trash', fileType: 'trash' },
-// ];
 
 declare module 'react' {
   interface CSSProperties {
@@ -176,7 +141,10 @@ interface CustomLabelProps {
 function CustomLabel({ icon: Icon, expandable, children, fileType, ...other }: CustomLabelProps) {
   const { removePricingVersion } = usePricingsApi();
 
-  const { setSelectedYamlLink, setYamlLinkModalOpen } = React.useContext(YamlLinkShare);
+  const { pricingOwner, setSelectedYamlLink, setYamlLinkModalOpen } =
+    React.useContext(FileExplorerContext);
+
+  const { authUser } = useAuth();
 
   const handleDownload = (children: React.ReactNode) => {
     if (!children) {
@@ -298,9 +266,11 @@ function CustomLabel({ icon: Icon, expandable, children, fileType, ...other }: C
             <IconButton size="small" sx={{ ml: 1 }} onClick={() => handleCopyLink(children)}>
               <IoIosLink fontSize={25} />
             </IconButton>
-            <IconButton size="small" sx={{ ml: 1 }} onClick={() => handleDeleteVersion(children)}>
-              <MdDeleteForever fontSize={25} />
-            </IconButton>
+            {authUser.user && pricingOwner === authUser.user.username && (
+              <IconButton size="small" sx={{ ml: 1 }} onClick={() => handleDeleteVersion(children)}>
+                <MdDeleteForever fontSize={25} />
+              </IconButton>
+            )}
           </>
         )}
       </Box>
@@ -421,10 +391,19 @@ export default function FileExplorer({ pricingData }: { pricingData: AnalyticsDa
     ]);
   }, [pricingData]);
 
+  const contextValue = React.useMemo(
+    () => ({
+      pricingOwner: pricingData[0].owner.username,
+      selectedYamlLink,
+      setSelectedYamlLink,
+      yamlLinkModalOpen,
+      setYamlLinkModalOpen,
+    }),
+    [pricingData, selectedYamlLink, yamlLinkModalOpen]
+  );
+
   return (
-    <YamlLinkShare.Provider
-      value={{ selectedYamlLink, setSelectedYamlLink, yamlLinkModalOpen, setYamlLinkModalOpen }}
-    >
+    <FileExplorerContext.Provider value={contextValue}>
       <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
         <Box
           sx={{
@@ -500,6 +479,6 @@ export default function FileExplorer({ pricingData }: { pricingData: AnalyticsDa
           </Box>
         </Paper>
       </Modal>
-    </YamlLinkShare.Provider>
+    </FileExplorerContext.Provider>
   );
 }

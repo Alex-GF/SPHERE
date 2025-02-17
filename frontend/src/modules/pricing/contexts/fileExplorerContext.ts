@@ -1,13 +1,15 @@
 import { createContext } from "react";
 
-export interface YamlLinkShareInteface {
+export interface FileExplorerContextInteface {
+    pricingOwner: string;
     selectedYamlLink: string;
     setSelectedYamlLink: (selectedYamlLink: string) => void;
     yamlLinkModalOpen: boolean;
     setYamlLinkModalOpen: (yamlLinkModalOpen: boolean) => void;
 }
 
-export const YamlLinkShare = createContext<YamlLinkShareInteface>({
+export const FileExplorerContext = createContext<FileExplorerContextInteface>({
+    pricingOwner: '',
     selectedYamlLink: '',
     setSelectedYamlLink: () => {},
     yamlLinkModalOpen: false,
