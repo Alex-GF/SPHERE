@@ -1,7 +1,8 @@
 import { Box, IconButton, Typography } from '@mui/material';
 import { IoMdAddCircleOutline } from 'react-icons/io';
+import { FaSortAlphaDown, FaSortAlphaUpAlt } from "react-icons/fa";
 import { usePricingCollectionsApi } from '../../api/pricingCollectionsApi';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useRouter } from '../../../core/hooks/useRouter';
 import CollectionsGrid from '../collections-grid';
 import AddPricingToCollectionModal from '../add-pricing-to-collection-modal';
@@ -19,7 +20,8 @@ export default function CollectionSection({
   renderFlag: boolean;
   setRenderFlag: (value: boolean) => void;
 }) {
-  const [collections, setCollections] = useState([]);
+  const [collections, setCollections] = useState<any[]>([]);
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
   const { getLoggedUserCollections } = usePricingCollectionsApi();
   const router = useRouter();
@@ -33,6 +35,10 @@ export default function CollectionSection({
     setAddPricingToCollectionModalOpen(false);
   }
 
+  const toggleSortOrder = () => {
+    setSortOrder(prev => (prev === "asc" ? "desc" : "asc"));
+  };
+
   useEffect(() => {
     getLoggedUserCollections()
       .then(data => {
@@ -45,7 +51,17 @@ export default function CollectionSection({
       .catch(error => {
         console.error('Cannot GET collections. Error:', error);
       });
-  }, [renderFlag]);
+  }, [renderFlag, getLoggedUserCollections]);
+
+  const sortedCollections = useMemo(() => {
+    return [...collections].sort((a, b) => {
+      const nameA = a.name?.toLowerCase() || '';
+      const nameB = b.name?.toLowerCase() || '';
+      return sortOrder === "asc"
+        ? nameA.localeCompare(nameB)
+        : nameB.localeCompare(nameA);
+    });
+  }, [collections, sortOrder]);
 
   return (
     <>
@@ -59,22 +75,27 @@ export default function CollectionSection({
             mb: 1,
           }}
         >
-          <Typography variant="h6">
-            Collections {collections.length > 0 && `(${collections.length})`}{' '}
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography variant="h6">
+              Collections {collections.length > 0 && `(${collections.length})`}
+            </Typography>
+            <IconButton onClick={toggleSortOrder} size="medium">
+              {sortOrder === "asc" ? <FaSortAlphaDown /> : <FaSortAlphaUpAlt />}
+            </IconButton>
+          </Box>
           <IconButton size="large" onClick={handleAddCollection}>
             <IoMdAddCircleOutline />
           </IconButton>
         </Box>
 
         {/* List of collections */}
-        <CollectionsGrid collections={collections} />
+        <CollectionsGrid collections={sortedCollections} />
       </Box>
       <AddPricingToCollectionModal
         pricingName={pricingToAdd}
         modalState={addPricingToCollectionModalOpen}
         handleClose={handleAddPricingToCollectionModalClose}
-        collections={collections}
+        collections={sortedCollections}
       />
     </>
   );

@@ -1,43 +1,64 @@
-import { Box, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Box, Typography, IconButton } from '@mui/material';
+import { useEffect, useState, useMemo } from 'react';
 import { usePricingsApi } from '../../../pricing/api/pricingsApi';
 import { PricingEntry } from '../../../pricing/pages/list';
 import PricingListCard from '../../../pricing/components/pricing-list-card';
+import { FaSortAlphaDown, FaSortAlphaUpAlt } from 'react-icons/fa';
 
 export default function PricingSection({
   setAddToCollectionModalOpen,
   setPricingToAdd,
-  renderFlag
+  renderFlag,
 }: {
   setAddToCollectionModalOpen: (value: boolean) => void;
   setPricingToAdd: (value: string) => void;
-  renderFlag: boolean
+  renderFlag: boolean;
 }) {
-  const [pricings, setPricings] = useState([]);
+  const [pricings, setPricings] = useState<PricingEntry[]>([]);
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
   const { getLoggedUserPricings } = usePricingsApi();
 
+  const toggleSortOrder = () => {
+    setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+  };
+
   useEffect(() => {
     getLoggedUserPricings()
-      .then(data => {
+      .then((data) => {
         if (data.error) {
           throw new Error(data.error);
         } else if (data.pricings) {
           setPricings(data.pricings.pricings);
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Cannot GET pricings. Error:', error);
       });
-  }, [renderFlag]);
+  }, [renderFlag, getLoggedUserPricings]);
+
+  const sortedPricings = useMemo(() => {
+    return [...pricings].sort((a, b) => {
+      const nameA = a.name?.toLowerCase() || '';
+      const nameB = b.name?.toLowerCase() || '';
+      return sortOrder === "asc"
+        ? nameA.localeCompare(nameB)
+        : nameB.localeCompare(nameA);
+    });
+  }, [pricings, sortOrder]);
 
   return (
     <Box>
-      {pricings && pricings.length > 0 && (
+      {sortedPricings && sortedPricings.length > 0 && (
         <>
-          <Typography variant="h6" sx={{ mb: 1 }}>
-            Unassigned {pricings.length > 0 && `(${pricings.length})`}
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+            <Typography variant="h6">
+              Unassigned {sortedPricings.length > 0 && `(${sortedPricings.length})`}
+            </Typography>
+            <IconButton onClick={toggleSortOrder} size="medium">
+              {sortOrder === "asc" ? <FaSortAlphaDown /> : <FaSortAlphaUpAlt />}
+            </IconButton>
+          </Box>
           <Box
             sx={{
               display: 'flex',
@@ -48,7 +69,7 @@ export default function PricingSection({
               marginTop: '30px',
             }}
           >
-            {pricings.map((pricing: PricingEntry) => (
+            {sortedPricings.map((pricing: PricingEntry) => (
               <PricingListCard
                 name={pricing.name}
                 owner={pricing.owner}
