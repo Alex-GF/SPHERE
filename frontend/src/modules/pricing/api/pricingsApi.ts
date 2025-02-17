@@ -147,6 +147,23 @@ export function usePricingsApi() {
       });
   }
 
+  const removePricingVersion = async (pricingName: string, pricingVersion: string) => {
+    return fetchWithInterceptor(`${PRICINGS_BASE_PATH}/${authUser.user?.username}/${pricingName}/${pricingVersion}`, {
+      method: 'DELETE',
+      headers: basicHeaders,
+    })
+      .then(response => {
+        if (!response.ok) {
+          return Promise.reject(response);
+        }else{
+          return response.json()
+        }
+      })
+      .catch(error => {
+        return Promise.reject(error as Error);
+      });
+  }
+
   const removePricingFromCollection = async (pricingName: string) => {
     return fetchWithInterceptor(`${import.meta.env.VITE_API_URL}/me/collections/pricings/${pricingName}`, {
       method: 'DELETE',
@@ -169,7 +186,7 @@ export function usePricingsApi() {
       method: 'DELETE',
       headers: basicHeaders,
     })
-      .then(response => {
+      .then(async response => {
         if (!response.ok) {
           return Promise.reject(response);
         }else{
@@ -181,5 +198,5 @@ export function usePricingsApi() {
       });
   }
 
-  return { getPricings, getPricingByName, getLoggedUserPricings, createPricing, addPricingToCollection, removePricingFromCollection, removePricingByName, updatePricing };
+  return { getPricings, getPricingByName, getLoggedUserPricings, createPricing, addPricingToCollection, removePricingFromCollection, removePricingByName, updatePricing, removePricingVersion };
 }

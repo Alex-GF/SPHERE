@@ -1,12 +1,11 @@
-import { Pricing } from "pricing4ts";
+import {Pricing} from "pricing4ts";
 import { Pricing as PricingModel } from "../types/database/Pricing";
 import container from "../config/container";
-import { PricingRepository } from "../types/repositories/PricingRepository";
 import { processFileUris } from "./FileService";
 import { PricingService as PricingAnalytics, retrievePricingFromPath } from "pricing4ts/server";
 import { PricingIndexQueryParams } from "../types/services/PricingService";
 import PricingCollectionService from "./PricingCollectionService";
-import { th } from "@faker-js/faker";
+import PricingRepository from "../repositories/mongoose/PricingRepository";
 
 class PricingService {
     
@@ -69,9 +68,9 @@ class PricingService {
 
         await pricingAnalytics.getAnalytics()
           .then((analytics: any) => {
-            this.pricingRepository.updateAnalytics(pricing.id, analytics);
+            this.pricingRepository.updateAnalytics(pricing._id.toString(), analytics);
           }).catch(async (err: any) => {
-            await this.pricingRepository.destroy(pricing.id);
+            await this.pricingRepository.destroy(pricing._id.toString());
             throw new Error((err as Error).message);
           });
 
@@ -143,6 +142,16 @@ class PricingService {
         throw new Error('Either the pricing does not exist or you are not its owner')
       }
       return true
+    }
+
+    async destroyVersion (pricingName: string, pricingVersion: string, owner: string) {
+      const result = await this.pricingRepository.destroyVersionByNameAndOwner(pricingName, pricingVersion, owner)
+
+      if (!result) {
+        throw new Error('Either the pricing does not exist or you are not its owner')
+      }
+
+      return true;
     }
   }
   

@@ -61,7 +61,7 @@ export default function EditorLayout({ children }: { children?: React.ReactNode 
         <Paper
           elevation={3}
           sx={{
-            maxWidth: 400,
+            maxWidth: 600,
             width: '90vw',
             mx: 'auto',
             mt: 4,

@@ -223,7 +223,7 @@ class PricingRepository extends RepositoryBase {
     const pricing = new PricingMongoose(data);
     await pricing.save();
 
-    return pricing.toJSON();
+    return pricing;
   }
 
   async updateAnalytics(pricingId: string, analytics: PricingAnalytics, ...args: any) {
@@ -297,6 +297,20 @@ class PricingRepository extends RepositoryBase {
   async destroyByNameAndOwner(name: string, owner: string, ...args: any) {
     const result = await PricingMongoose.deleteMany({ name: name, owner: owner });
     return result.deletedCount >= 1;
+  }
+
+  async destroyVersionByNameAndOwner(name: string, version: string, owner: string, ...args: any) {
+    const result = await PricingMongoose.deleteOne({
+      $expr: {
+        $and: [
+          { $eq: [{ $toLower: "$name" }, name.toLowerCase()] },
+          { $eq: ["$owner", owner] },
+          { $eq: ["$version", version] }
+        ]
+      }
+    });
+
+    return result.deletedCount === 1;
   }
 
   async destroy(id: string, ...args: any) {

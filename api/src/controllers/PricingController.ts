@@ -17,6 +17,7 @@ class PricingController {
     this.update = this.update.bind(this);
     this.removePricingFromCollection = this.removePricingFromCollection.bind(this);
     this.destroyByNameAndOwner = this.destroyByNameAndOwner.bind(this);
+    this.destroyVersionByNameAndOwner = this.destroyVersionByNameAndOwner.bind(this);
   }
 
   async index(req: any, res: any) {
@@ -119,6 +120,19 @@ class PricingController {
         res.status(200).send({message: "Pricing deleted successfully" });
       }
     } catch (err: any) {
+      res.status(500).send({ error: err.message });
+    }
+  }
+
+  async destroyVersionByNameAndOwner(req: any, res: any) {
+    try{
+      const result = await this.pricingService.destroyVersion(req.params.pricingName, req.params.pricingVersion, req.user.username);
+      if (!result) {
+        res.status(404).send({ error: 'Pricing version not found' });
+      } else {
+        res.status(200).send({message: "Pricing version deleted successfully" });
+      }
+    }catch(err: any){
       res.status(500).send({ error: err.message });
     }
   }

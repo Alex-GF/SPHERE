@@ -21,6 +21,10 @@ const loadFileRoutes = function (app: express.Application) {
     .get(pricingController.show)
     .put(isLoggedIn, PricingValidator.update, handleValidation, pricingController.update)
     .delete(isLoggedIn, pricingController.destroyByNameAndOwner);
+  
+  app
+    .route(baseUrl + '/pricings/:owner/:pricingName/:pricingVersion')
+    .delete(isLoggedIn, pricingController.destroyVersionByNameAndOwner);
 
   app
     .route(baseUrl + '/me/pricings')
