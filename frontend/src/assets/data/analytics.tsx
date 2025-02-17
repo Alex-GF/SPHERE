@@ -36,9 +36,13 @@ export interface SaaSAnalytics {
 
 export interface AnalyticsDataEntry {
   name: string;
-  owner: string;
+  owner: {
+    id: string,
+    username: string
+  };
   private: boolean;
   _collectionId: string;
+  collection: string;
   version: string;
   extractionDate: string;
   currency: string;

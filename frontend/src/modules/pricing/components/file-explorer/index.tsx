@@ -141,7 +141,7 @@ const CustomTreeItemContent = styled(TreeItem2Content)(({ theme }) => ({
     backgroundColor: theme.palette.primary.dark,
     color: theme.palette.primary.contrastText,
     ...theme.applyStyles('light', {
-      backgroundColor: theme.palette.primary.main,
+      backgroundColor: theme.palette.primary.light,
     }),
   },
 }));

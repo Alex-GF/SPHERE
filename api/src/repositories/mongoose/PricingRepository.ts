@@ -4,19 +4,19 @@ import { PricingAnalytics } from '../../types/database/Pricing';
 import { getAllPricingsAggregator } from './aggregators/get-all-pricings';
 import { PricingIndexQueryParams } from '../../types/services/PricingService';
 import mongoose from 'mongoose';
+import { getPricingByNameAndOwnerAggregator } from './aggregators/get-pricing-by-name-and-owner';
 
 class PricingRepository extends RepositoryBase {
   async findAll(...args: any) {
-
     const queryParams: PricingIndexQueryParams = args[0];
 
     let filteringAggregators = [];
     let sortAggregator = [];
 
-    if (Object.keys(queryParams).length > 0){
+    if (Object.keys(queryParams).length > 0) {
       const { name, subscriptions, minPrice, maxPrice, selectedOwners, sortBy, sort } = queryParams;
 
-      if (name){
+      if (name) {
         filteringAggregators.push({
           $match: {
             name: {
@@ -27,40 +27,46 @@ class PricingRepository extends RepositoryBase {
         });
       }
 
-      if (subscriptions){
-        const subscriptionsFilter = subscriptions as {min: number, max: number};
+      if (subscriptions) {
+        const subscriptionsFilter = subscriptions as { min: number; max: number };
 
         filteringAggregators.push({
           $match: {
-            "analytics.configurationSpaceSize": {
+            'analytics.configurationSpaceSize': {
               $gte: !Number.isNaN(subscriptionsFilter.min) ? subscriptionsFilter.min : 0,
-              $lte: !Number.isNaN(subscriptionsFilter.max) ? subscriptionsFilter.max : Number.MAX_SAFE_INTEGER,
+              $lte: !Number.isNaN(subscriptionsFilter.max)
+                ? subscriptionsFilter.max
+                : Number.MAX_SAFE_INTEGER,
             },
           },
         });
       }
 
-      if (minPrice){
-        const minPriceFilter = minPrice as {min: number, max: number};
+      if (minPrice) {
+        const minPriceFilter = minPrice as { min: number; max: number };
 
         filteringAggregators.push({
           $match: {
-            "analytics.minSubscriptionPrice": {
+            'analytics.minSubscriptionPrice': {
               $gte: !Number.isNaN(minPriceFilter.min) ? minPriceFilter.min : 0,
-              $lte: !Number.isNaN(minPriceFilter.max) ? minPriceFilter.max : Number.MAX_SAFE_INTEGER,
+              $lte: !Number.isNaN(minPriceFilter.max)
+                ? minPriceFilter.max
+                : Number.MAX_SAFE_INTEGER,
             },
           },
         });
       }
 
-      if (maxPrice){
-        const maxPriceFilter = maxPrice as {min: number, max: number};
+      if (maxPrice) {
+        const maxPriceFilter = maxPrice as { min: number; max: number };
 
         filteringAggregators.push({
           $match: {
-            "analytics.maxSubscriptionPrice": {
+            'analytics.maxSubscriptionPrice': {
               $gte: !Number.isNaN(maxPriceFilter.min) ? maxPriceFilter.min : 0,
-              $lte: !Number.isNaN(maxPriceFilter.max) ? maxPriceFilter.max : Number.MAX_SAFE_INTEGER,
+              $lte: !Number.isNaN(maxPriceFilter.max)
+                ? maxPriceFilter.max
+                : Number.MAX_SAFE_INTEGER,
             },
           },
         });
@@ -77,63 +83,61 @@ class PricingRepository extends RepositoryBase {
           },
         });
       }
-      if (sortBy && sort){
-
-        let sortParameter = "";
-        let sortOrder = sort === "asc" ? 1 : -1;
+      if (sortBy && sort) {
+        let sortParameter = '';
+        let sortOrder = sort === 'asc' ? 1 : -1;
 
         switch (sortBy) {
           case 'configurationSpaceSize':
-            sortParameter = "analytics.configurationSpaceSize";
+            sortParameter = 'analytics.configurationSpaceSize';
             break;
           case 'featuresCount':
-            sortParameter = "analytics.numberOfFeatures";
+            sortParameter = 'analytics.numberOfFeatures';
             break;
           case 'usageLimitsCount':
-            sortParameter = "analytics.numberOfUsageLimits";
+            sortParameter = 'analytics.numberOfUsageLimits';
             break;
           case 'plansCount':
-            sortParameter = "analytics.numberOfPlans";
+            sortParameter = 'analytics.numberOfPlans';
             break;
           case 'addonsCount':
-            sortParameter = "analytics.numberOfAddons";
+            sortParameter = 'analytics.numberOfAddons';
             break;
           case 'minPrice':
-            sortParameter = "analytics.minSubscriptionPrice";
+            sortParameter = 'analytics.minSubscriptionPrice';
             break;
           case 'maxPrice':
-            sortParameter = "analytics.maxSubscriptionPrice";
+            sortParameter = 'analytics.maxSubscriptionPrice';
             break;
-        };
+        }
         sortAggregator.push({
           $addFields: {
-              pricings: {
-                $sortArray: {
-                  input: "$pricings",
-                  sortBy: {
-                    [sortParameter]: sortOrder
-                  }
-                }
-              }
-            }
+            pricings: {
+              $sortArray: {
+                input: '$pricings',
+                sortBy: {
+                  [sortParameter]: sortOrder,
+                },
+              },
+            },
+          },
         });
       }
     }
-
 
     try {
       const aggregator = getAllPricingsAggregator(filteringAggregators, sortAggregator);
       const pricings = await PricingMongoose.aggregate([
         {
           $match: {
-            private: false
-          }
-        },  
-        ...aggregator
+            private: false,
+          },
+        },
+        ...aggregator,
       ]);
       return pricings[0];
     } catch (err) {
-      return {pricings: []};
+      return { pricings: [] };
     }
   }
 
@@ -143,66 +147,21 @@ class PricingRepository extends RepositoryBase {
         {
           $match: {
             owner: owner,
-            _collectionId: { $exists: false }
-          }
+            _collectionId: { $exists: false },
+          },
         },
-        ...getAllPricingsAggregator([], [])
+        ...getAllPricingsAggregator([], []),
       ]);
 
       return pricings[0];
-    }catch(err){
+    } catch (err) {
       return [];
     }
   }
 
   async findByNameAndOwner(name: string, owner: string, ...args: any) {
     try {
-      const pricing = await PricingMongoose.aggregate([
-        {
-          $match: {
-            $expr: {
-              $and: [
-                { $eq: [{ $toLower: '$name' }, { $toLower: name }] },
-                { $eq: [{ $toLower: '$owner' }, { $toLower: owner }] }
-              ]
-            }
-          },
-        },
-        {
-          $group: {
-            _id: {
-              name: '$name',
-              owner: '$owner',
-            },
-            versions: {
-              $push: {
-                id: '$_id',
-                version: '$version',
-                owner: '$owner',
-                private: '$private',
-                _collectionId: '$_collectionId',
-                extractionDate: '$extractionDate',
-                url: '$url',
-                yaml: '$yaml',
-                analytics: '$analytics',
-              },
-            },
-          },
-        },
-        {
-          $project: {
-            _id: 0,
-            name: '$_id.name',
-            owner: '$_id.owner',
-            versions: {
-              $sortArray: {
-                input: '$versions',
-                sortBy: { extractionDate: -1 },
-              },
-            }
-          },
-        },
-      ]);
+      const pricing = await PricingMongoose.aggregate(getPricingByNameAndOwnerAggregator(name, owner));
 
       if (!pricing || pricing.length === 0) {
         return null;
@@ -215,8 +174,7 @@ class PricingRepository extends RepositoryBase {
   }
 
   async create(data: any, ...args: any) {
-
-    if (data._collectionId){
+    if (data._collectionId) {
       data._collectionId = new mongoose.Types.ObjectId(data._collectionId);
     }
 
@@ -238,19 +196,24 @@ class PricingRepository extends RepositoryBase {
     return pricing.toJSON();
   }
 
-  async addPricingToCollection(pricingName: string, owner: string, collectionId: string){
+  async addPricingToCollection(pricingName: string, owner: string, collectionId: string) {
     return await PricingMongoose.updateMany(
       {
         name: pricingName,
         owner: owner,
       },
       {
-        $set: { _collectionId: new mongoose.Types.ObjectId(collectionId) }
+        $set: { _collectionId: new mongoose.Types.ObjectId(collectionId) },
       }
-    )
+    );
   }
 
-  async addPricingsToCollection(collectionId: string, owner: string, pricings: string[], ...args: any) {
+  async addPricingsToCollection(
+    collectionId: string,
+    owner: string,
+    pricings: string[],
+    ...args: any
+  ) {
     const result = await PricingMongoose.updateMany(
       { name: { $in: pricings }, owner: owner },
       { $set: { _collectionId: new mongoose.Types.ObjectId(collectionId) } }
@@ -278,18 +241,18 @@ class PricingRepository extends RepositoryBase {
         owner: owner,
       },
       {
-        $unset: { _collectionId: 1 }
+        $unset: { _collectionId: 1 },
       }
     );
   }
 
-  async removePricingsFromCollection(collectionId: string){
+  async removePricingsFromCollection(collectionId: string) {
     return await PricingMongoose.updateMany(
       {
-        _collectionId: new mongoose.Types.ObjectId(collectionId)
+        _collectionId: new mongoose.Types.ObjectId(collectionId),
       },
       {
-        $unset: { _collectionId: 1 }
+        $unset: { _collectionId: 1 },
       }
     );
   }
@@ -303,11 +266,11 @@ class PricingRepository extends RepositoryBase {
     const result = await PricingMongoose.deleteOne({
       $expr: {
         $and: [
-          { $eq: [{ $toLower: "$name" }, name.toLowerCase()] },
-          { $eq: ["$owner", owner] },
-          { $eq: ["$version", version] }
-        ]
-      }
+          { $eq: [{ $toLower: '$name' }, name.toLowerCase()] },
+          { $eq: ['$owner', owner] },
+          { $eq: ['$version', version] },
+        ],
+      },
     });
 
     return result.deletedCount === 1;
