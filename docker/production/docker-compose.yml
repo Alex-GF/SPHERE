@@ -54,7 +54,7 @@ services:
       - server
       - client
     volumes:
-      - './ssl:/etc/nginx/ssl'
+      - '../../nginx/production/ssl:/etc/nginx/ssl'
     networks:
       - sphere-network
 volumes:
