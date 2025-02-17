@@ -29,3 +29,7 @@ deno.lock
 
 # Locally uploaded pricings
 api/public/static/pricings/uploadedDataset/
+
+# SSL
+
+nginx/production/ssl/
