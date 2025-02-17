@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "npx tsc --project ./tsconfig.json",
-    "dev": "npx tsx --tsconfig tsconfig.json src/backend.ts"
+    "dev": "npx migrate up && npx tsx --tsconfig tsconfig.json src/backend.ts"
   },
   "dependencies": {
     "@faker-js/faker": "^9.3.0",
