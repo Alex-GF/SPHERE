@@ -57,5 +57,8 @@ jobs:
       - name: Install dependencies
         run: npm run install
 
+      - name: Show env
+        run: cat ./api/.env
+
       - name: Run tests
         run: npm run test
