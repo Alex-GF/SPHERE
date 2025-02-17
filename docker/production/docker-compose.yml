@@ -49,10 +49,12 @@ services:
         context: ../../nginx/production
         dockerfile: ./Dockerfile
     ports:
-      - 80:80
+      - 443:443
     depends_on:
       - server
       - client
+    volumes:
+      - './ssl:/etc/nginx/ssl'
     networks:
       - sphere-network
 volumes:
