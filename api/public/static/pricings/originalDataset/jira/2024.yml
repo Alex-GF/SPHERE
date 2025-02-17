@@ -1,9 +1,11 @@
-saasName: Jira
 syntaxVersion: '2.1'
-version: 2024-7-7
-createdAt: '2024-07-07'
+saasName: Jira
+createdAt: '2024-07-08'
+version: '2024-07-08'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20240708154430/https://www.atlassian.com/software/jira/pricing
 features:
   goals:
     description: ''
@@ -92,7 +94,6 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs: null
   userRolesAndPermissions:
     description: ''
     valueType: BOOLEAN
@@ -319,14 +320,12 @@ usageLimits:
     defaultValue: 10
     unit: user/site
     type: NON_RENEWABLE
-    linkedFeatures: null
   sitesLimit:
     description: ''
     valueType: NUMERIC
     defaultValue: 1
     unit: site
     type: NON_RENEWABLE
-    linkedFeatures: null
   totalAutomationLimit:
     description: ''
     valueType: NUMERIC
@@ -334,15 +333,15 @@ usageLimits:
     unit: rule/month
     type: RENEWABLE
     linkedFeatures:
-      - automation
+    - automation
   perUserAutomationLimit:
     description: ''
     valueType: NUMERIC
-    defaultValue: 0
+    defaultValue: 1000
     unit: rule/month
     type: RENEWABLE
     linkedFeatures:
-      - automation
+    - automation
   storageLimit:
     description: ''
     valueType: NUMERIC
@@ -350,7 +349,7 @@ usageLimits:
     unit: GB
     type: NON_RENEWABLE
     linkedFeatures:
-      - storage
+    - storage
   emailNotificationsLimit:
     description: ''
     valueType: NUMERIC
@@ -358,18 +357,17 @@ usageLimits:
     unit: email/day
     type: RENEWABLE
     linkedFeatures:
-      - emailNotifications
+    - emailNotifications
 plans:
   FREE:
     description: ''
-    monthlyPrice: 0
+    price: 0
     unit: user/month
     features: null
     usageLimits: null
-    price: 0
   STANDARD:
     description: ''
-    monthlyPrice: 7.16
+    price: 7.16
     unit: user/month
     features:
       userRolesAndPermissions:
@@ -393,10 +391,9 @@ plans:
         value: 250
       emailNotificationsLimit:
         value: .inf
-    price: 7.16
   PREMIUM:
     description: ''
-    monthlyPrice: 12.48
+    price: 12.48
     unit: user/month
     features:
       userRolesAndPermissions:
@@ -442,18 +439,17 @@ plans:
     usageLimits:
       usersLimit:
         value: 50000
-      emailNotificationsLimit:
-        value: .inf
       totalAutomationLimit:
         value: .inf
       perUserAutomationLimit:
         value: 1000
       storageLimit:
         value: .inf
-    price: 12.48
+      emailNotificationsLimit:
+        value: .inf
   ENTERPRISE:
     description: ''
-    monthlyPrice: Contact Sales
+    price: Contact Sales
     unit: user/month
     features:
       userRolesAndPermissions:
@@ -523,21 +519,20 @@ plans:
         value: 50000
       sitesLimit:
         value: 150
-      emailNotificationsLimit:
-        value: .inf
       totalAutomationLimit:
         value: .inf
       perUserAutomationLimit:
         value: .inf
       storageLimit:
         value: .inf
-    price: Contact Sales
+      emailNotificationsLimit:
+        value: .inf
 addOns:
   atlassianGuardAddOn:
     availableFor:
-      - FREE
-      - STANDARD
-      - PREMIUM
+    - FREE
+    - STANDARD
+    - PREMIUM
     price: Contact Sales
     unit: user/month
     features:

@@ -1,9 +1,11 @@
-saasName: Evernote
 syntaxVersion: '2.1'
-version: '2019-11-29'
-createdAt: '2019-11-29'
+saasName: Evernote
+createdAt: '2019-11-30'
+version: '2019-11-30'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20191130092655/https://evernote.com/compare-plans
 features:
   notes:
     description: ''
@@ -225,7 +227,7 @@ features:
     type: INTEGRATION
     integrationType: WEB_SAAS
     pricingUrls:
-      - https://one.google.com/about/plans
+    - https://one.google.com/about/plans
   connectWithEmailProviders:
     description: ''
     valueType: BOOLEAN
@@ -239,9 +241,8 @@ features:
     type: INTEGRATION
     integrationType: WEB_SAAS
     pricingUrls:
-      - https://slack.com/pricing
-      - >-
-        https://www.microsoft.com/en-us/microsoft-365/microsoft-teams/group-chat-software
+    - https://slack.com/pricing
+    - https://www.microsoft.com/en-us/microsoft-365/microsoft-teams/group-chat-software
   connectWithCrms:
     description: ''
     valueType: BOOLEAN
@@ -249,7 +250,7 @@ features:
     type: INTEGRATION
     integrationType: WEB_SAAS
     pricingUrls:
-      - https://www.salesforce.com/products/sales-cloud/pricing/
+    - https://www.salesforce.com/products/sales-cloud/pricing/
   collaborationSpacesForTeams:
     description: ''
     valueType: BOOLEAN
@@ -318,14 +319,12 @@ usageLimits:
     defaultValue: 60
     unit: MB
     type: RENEWABLE
-    linkedFeatures: null
   monthlyUploadLimitByUser:
     description: ''
     valueType: NUMERIC
     defaultValue: 0
     unit: MB
     type: RENEWABLE
-    linkedFeatures: null
   maximumNoteSize:
     description: ''
     valueType: NUMERIC
@@ -333,7 +332,7 @@ usageLimits:
     unit: MB/note
     type: NON_RENEWABLE
     linkedFeatures:
-      - notes
+    - notes
   collaborationSpacesLimit:
     description: ''
     valueType: NUMERIC
@@ -341,25 +340,23 @@ usageLimits:
     unit: space
     type: NON_RENEWABLE
     linkedFeatures:
-      - collaborationSpacesForTeams
+    - collaborationSpacesForTeams
   devicesOfDevicesWithOneAccount:
     description: ''
     valueType: NUMERIC
     defaultValue: 2
     unit: device
     type: NON_RENEWABLE
-    linkedFeatures: null
 plans:
   FREE:
     description: Take great notes
-    monthlyPrice: 0
+    price: 0
     unit: /month
     features: null
     usageLimits: null
-    price: 0
   PREMIUM:
     description: Organize everything
-    monthlyPrice: 7.99
+    price: 7.99
     unit: /month
     features:
       forwardEmailsIntoEvernote:
@@ -397,10 +394,9 @@ plans:
         value: 200
       devicesOfDevicesWithOneAccount:
         value: 1000000
-    price: 7.99
   BUSINESS:
     description: Bring your team together
-    monthlyPrice: 14.99
+    price: 14.99
     unit: user/month
     features:
       forwardEmailsIntoEvernote:
@@ -468,4 +464,4 @@ plans:
         value: 10000000
       devicesOfDevicesWithOneAccount:
         value: 1000000
-    price: 14.99
+addOns: null

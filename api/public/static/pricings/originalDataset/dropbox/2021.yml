@@ -1,9 +1,11 @@
-saasName: Dropbox
 syntaxVersion: '2.1'
-version: '2021-11-19'
-createdAt: '2021-11-19'
+saasName: Dropbox
+createdAt: '2021-11-20'
+version: '2021-11-20'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20211120083446/https://www.dropbox.com/plans
 features:
   storage:
     description: ''
@@ -126,7 +128,6 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs: null
   fileLocking:
     description: ''
     valueType: BOOLEAN
@@ -282,14 +283,13 @@ usageLimits:
     unit: GB
     type: NON_RENEWABLE
     linkedFeatures:
-      - storage
+    - storage
   usersLimit:
     description: ''
     valueType: NUMERIC
     defaultValue: 1
     unit: user
     type: NON_RENEWABLE
-    linkedFeatures: null
   fileRecoveryAndVersionHistoryThreshold:
     description: ''
     valueType: NUMERIC
@@ -297,8 +297,8 @@ usageLimits:
     unit: day
     type: NON_RENEWABLE
     linkedFeatures:
-      - fileRecovery
-      - versionHistory
+    - fileRecovery
+    - versionHistory
   dropboxRewindThreshold:
     description: ''
     valueType: NUMERIC
@@ -306,7 +306,7 @@ usageLimits:
     unit: day
     type: NON_RENEWABLE
     linkedFeatures:
-      - dropboxRewind
+    - dropboxRewind
   dropboxTransferLimit:
     description: ''
     valueType: NUMERIC
@@ -314,14 +314,14 @@ usageLimits:
     unit: GB/transfer
     type: NON_RENEWABLE
     linkedFeatures:
-      - dropboxTransfer
+    - dropboxTransfer
   includeCustomizationOptionsInDropboxTransfer:
     description: ''
     valueType: BOOLEAN
-    defaultValue: false
+    defaultValue: true
     type: NON_RENEWABLE
     linkedFeatures:
-      - dropboxTransfer
+    - dropboxTransfer
   eSignaturesLimit:
     description: ''
     valueType: NUMERIC
@@ -329,26 +329,25 @@ usageLimits:
     unit: signature/month
     type: RENEWABLE
     linkedFeatures:
-      - eSignatures
+    - eSignatures
   apiAccessToDataTransportPlatformPartnersLimit:
     description: ''
     valueType: NUMERIC
-    defaultValue: 1000000000
+    defaultValue: 0
     unit: request/month
     type: RENEWABLE
     linkedFeatures:
-      - apiAccessToDataTransportPlatformPartners
+    - apiAccessToDataTransportPlatformPartners
 plans:
   PLUS:
     description: ''
-    monthlyPrice: 9.99
+    price: 9.99
     unit: /month
     features: null
     usageLimits: null
-    price: 9.99
   FAMILY:
     description: ''
-    monthlyPrice: 16.99
+    price: 16.99
     unit: /month
     features:
       familyRoom:
@@ -358,10 +357,9 @@ plans:
     usageLimits:
       usersLimit:
         value: 6
-    price: 16.99
   PROFESSIONAL:
     description: ''
-    monthlyPrice: 16.58
+    price: 16.58
     unit: /month
     features:
       documentWatermarking:
@@ -389,10 +387,9 @@ plans:
         value: 100
       includeCustomizationOptionsInDropboxTransfer:
         value: true
-    price: 16.58
   STANDARD:
     description: ''
-    monthlyPrice: 12.5
+    price: 12.5
     unit: user/month
     features:
       documentWatermarking:
@@ -434,10 +431,11 @@ plans:
         value: 180
       dropboxTransferLimit:
         value: 2
-    price: 12.5
+      apiAccessToDataTransportPlatformPartnersLimit:
+        value: 1000000000
   ADVANCED:
     description: ''
-    monthlyPrice: 20
+    price: 20
     unit: user/month
     features:
       documentWatermarking:
@@ -499,4 +497,6 @@ plans:
         value: 100
       includeCustomizationOptionsInDropboxTransfer:
         value: true
-    price: 20
+      apiAccessToDataTransportPlatformPartnersLimit:
+        value: 1000000000
+addOns: null

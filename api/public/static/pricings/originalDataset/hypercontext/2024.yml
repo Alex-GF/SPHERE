@@ -1,9 +1,9 @@
-saasName: HyperContext
 syntaxVersion: '2.1'
-version: 2024-7-15
+saasName: HyperContext
+version: '2024-07-15'
 createdAt: '2024-07-15'
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20240617032133/https://hypercontext.com/pricing
 features:
   agendaSharing:
     description: ''
@@ -344,16 +344,13 @@ features:
 plans:
   FREE:
     description: Best for people who want to take Hypercontext for a spin.
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: person/month
     features: null
     usageLimits: null
-    price: 0
   PRO:
     description: Best for managers with too much on their plate.
-    monthlyPrice: 7
-    annualPrice: 5.6
+    price: 7
     unit: person/month
     features:
       nextSteps:
@@ -397,11 +394,9 @@ plans:
       inAppSupport:
         value: true
     usageLimits: null
-    price: 7
   BUSINESS:
     description: Best for standardizing meetings and hitting goals.
-    monthlyPrice: 11
-    annualPrice: 8.8
+    price: 11
     unit: person/month
     features:
       nextSteps:
@@ -477,10 +472,9 @@ plans:
       advancedSecurityFeatures:
         value: true
     usageLimits: null
-    price: 11
   ENTERPRISE:
     description: Best for standardizing meetings and hitting goals.
-    annualPrice: 12.8
+    price: 12.8
     unit: person/month
     features:
       nextSteps:
@@ -598,4 +592,3 @@ plans:
       complianceReports:
         value: true
     usageLimits: null
-    price: 12.8

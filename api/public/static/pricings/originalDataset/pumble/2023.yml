@@ -1,9 +1,11 @@
-saasName: Pumble
 syntaxVersion: '2.1'
-version: 2023-9-30
+saasName: Pumble
 createdAt: '2023-09-30'
+version: '2023-09-30'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20230925121037/https://pumble.com/pricing
 features:
   privateChannels:
     description: Only invited users can send messages in a private channel.
@@ -16,16 +18,13 @@ features:
     defaultValue: true
     type: DOMAIN
   directMessages:
-    description: >-
-      Share business information, send files and images, or share links to
-      others, one-on-one.
+    description: Share business information, send files and images, or share links
+      to others, one-on-one.
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   threads:
-    description: >-
-      Spin off side conversations into threads to keep the channel
-      distraction-free.
+    description: Spin off side conversations into threads to keep the channel distraction-free.
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
@@ -45,16 +44,14 @@ features:
     defaultValue: true
     type: DOMAIN
   messageHistory:
-    description: >-
-      Access all your messages that have ever been sent to get context for past
-      decisions or get new team members up to speed faster.
+    description: Access all your messages that have ever been sent to get context
+      for past decisions or get new team members up to speed faster.
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   shareFilesAndLinks:
-    description: >-
-      Share images, videos, documents or links with your teammates and search
-      for them later via File browser.
+    description: Share images, videos, documents or links with your teammates and
+      search for them later via File browser.
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
@@ -64,9 +61,8 @@ features:
     defaultValue: true
     type: DOMAIN
   messageFormatting:
-    description: >-
-      Highlight important information within conversation or markup your code
-      blocks.
+    description: Highlight important information within conversation or markup your
+      code blocks.
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
@@ -77,19 +73,20 @@ features:
     type: AUTOMATION
     automationType: TASK_AUTOMATION
   fileStoragePerAccount:
-    description: Share images, documents, and other files, and access them later in Pumble.
+    description: Share images, documents, and other files, and access them later in
+      Pumble.
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   fileStoragePerUser:
-    description: Share images, documents, and other files, and access them later in Pumble.
+    description: Share images, documents, and other files, and access them later in
+      Pumble.
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
   customizableSections:
-    description: >-
-      Organize channels and conversations into custom, collapsible sections in
-      your sidebar.
+    description: Organize channels and conversations into custom, collapsible sections
+      in your sidebar.
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
@@ -114,9 +111,8 @@ features:
     defaultValue: false
     type: DOMAIN
   guestAccess:
-    description: >-
-      Work with people outside your company and give them access only to the
-      specific channels.
+    description: Work with people outside your company and give them access only to
+      the specific channels.
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
@@ -126,9 +122,8 @@ features:
     defaultValue: false
     type: MANAGEMENT
   permissions:
-    description: >-
-      Manage who can create and archive channels, invite members, remove them
-      from channels, post in public channels and other permissions.
+    description: Manage who can create and archive channels, invite members, remove
+      them from channels, post in public channels and other permissions.
     valueType: BOOLEAN
     defaultValue: false
     type: MANAGEMENT
@@ -138,8 +133,8 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://www.slack.com/
+    pricingUrls:
+    - https://www.slack.com/
   dataEncryption:
     description: Pumble encrypts all data at rest and in transit.
     valueType: BOOLEAN
@@ -172,7 +167,6 @@ usageLimits:
     defaultValue: 1000000000
     unit: user
     type: NON_RENEWABLE
-    linkedFeatures: null
   useMessageHistory:
     description: The number of days that can be searched for the messageHistory.
     valueType: NUMERIC
@@ -180,7 +174,7 @@ usageLimits:
     unit: day
     type: NON_RENEWABLE
     linkedFeatures:
-      - messageHistory
+    - messageHistory
   useFileStoragePerAccount:
     description: The amount of storage that can be used per account.
     valueType: NUMERIC
@@ -188,15 +182,15 @@ usageLimits:
     unit: GB/account
     type: NON_RENEWABLE
     linkedFeatures:
-      - fileStoragePerAccount
+    - fileStoragePerAccount
   useFileStoragePerUser:
     description: The amount of storage that can be used per user or team member.
     valueType: NUMERIC
-    defaultValue: 10
+    defaultValue: 0
     unit: GB/user
     type: NON_RENEWABLE
     linkedFeatures:
-      - fileStoragePerUser
+    - fileStoragePerUser
   useVoiceCalls:
     description: The number of users that can join the same voice call.
     valueType: NUMERIC
@@ -204,7 +198,7 @@ usageLimits:
     unit: user
     type: NON_RENEWABLE
     linkedFeatures:
-      - voiceCalls
+    - voiceCalls
   useVideoCalls:
     description: The number of users that can join the same video call.
     valueType: NUMERIC
@@ -212,20 +206,17 @@ usageLimits:
     unit: user
     type: NON_RENEWABLE
     linkedFeatures:
-      - videoCalls
+    - videoCalls
 plans:
   FREE:
     description: ''
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: user/month
     features: null
     usageLimits: null
-    price: 0
   PRO:
     description: ''
-    monthlyPrice: 1.99
-    annualPrice: 1.66
+    price: 1.99
     unit: user/month
     features:
       messageSchedule:
@@ -247,8 +238,10 @@ plans:
       priorityCustomerSupport:
         value: true
     usageLimits:
+      useFileStoragePerUser:
+        value: 10
       useVoiceCalls:
         value: 1000000000
       useVideoCalls:
         value: 1000000000
-    price: 1.99
+addOns: null

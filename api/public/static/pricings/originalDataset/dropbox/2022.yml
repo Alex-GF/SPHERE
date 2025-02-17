@@ -1,9 +1,11 @@
-saasName: Dropbox
 syntaxVersion: '2.1'
-version: '2022-11-15'
-createdAt: '2022-11-15'
+saasName: Dropbox
+createdAt: '2022-11-16'
+version: '2022-11-16'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20221116040240/https://www.dropbox.com/plans
 features:
   storage:
     description: ''
@@ -46,7 +48,6 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs: null
   dropboxBackup:
     description: ''
     valueType: BOOLEAN
@@ -292,14 +293,13 @@ usageLimits:
     unit: GB
     type: NON_RENEWABLE
     linkedFeatures:
-      - storage
+    - storage
   usersLimit:
     description: ''
     valueType: NUMERIC
     defaultValue: 1
     unit: user
     type: NON_RENEWABLE
-    linkedFeatures: null
   fileRecoveryAndVersionHistoryThreshold:
     description: ''
     valueType: NUMERIC
@@ -307,8 +307,8 @@ usageLimits:
     unit: day
     type: NON_RENEWABLE
     linkedFeatures:
-      - fileRecovery
-      - versionHistory
+    - fileRecovery
+    - versionHistory
   dropboxRewindThreshold:
     description: ''
     valueType: NUMERIC
@@ -316,7 +316,7 @@ usageLimits:
     unit: day
     type: NON_RENEWABLE
     linkedFeatures:
-      - dropboxRewind
+    - dropboxRewind
   dropboxCaptureRecordingTimeLimit:
     description: ''
     valueType: NUMERIC
@@ -324,28 +324,28 @@ usageLimits:
     unit: min
     type: TIME_DRIVEN
     linkedFeatures:
-      - dropboxCapture
+    - dropboxCapture
   dropboxCaptureFullHDQuality:
     description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: NON_RENEWABLE
     linkedFeatures:
-      - dropboxCapture
+    - dropboxCapture
   dropboxCapture4kQuality:
     description: ''
     valueType: BOOLEAN
-    defaultValue: false
+    defaultValue: true
     type: NON_RENEWABLE
     linkedFeatures:
-      - dropboxCapture
+    - dropboxCapture
   dropboxCaptureAdvancedVideoEditing:
     description: ''
     valueType: BOOLEAN
-    defaultValue: false
+    defaultValue: true
     type: NON_RENEWABLE
     linkedFeatures:
-      - dropboxCapture
+    - dropboxCapture
   dropboxTransferLimit:
     description: ''
     valueType: NUMERIC
@@ -353,14 +353,14 @@ usageLimits:
     unit: GB/transfer
     type: NON_RENEWABLE
     linkedFeatures:
-      - dropboxTransfer
+    - dropboxTransfer
   includeCustomizationOptionsInDropboxTransfer:
     description: ''
     valueType: BOOLEAN
-    defaultValue: false
+    defaultValue: true
     type: NON_RENEWABLE
     linkedFeatures:
-      - dropboxTransfer
+    - dropboxTransfer
   eSignaturesLimit:
     description: ''
     valueType: NUMERIC
@@ -368,26 +368,25 @@ usageLimits:
     unit: signature/month
     type: RENEWABLE
     linkedFeatures:
-      - eSignatures
+    - eSignatures
   apiAccessToDataTransportPlatformPartnersLimit:
     description: ''
     valueType: NUMERIC
-    defaultValue: 1000000000
+    defaultValue: 0
     unit: request/month
     type: RENEWABLE
     linkedFeatures:
-      - apiAccessToDataTransportPlatformPartners
+    - apiAccessToDataTransportPlatformPartners
 plans:
   PLUS:
     description: ''
-    monthlyPrice: 9.99
+    price: 9.99
     unit: /month
     features: null
     usageLimits: null
-    price: 9.99
   FAMILY:
     description: ''
-    monthlyPrice: 16.99
+    price: 16.99
     unit: /month
     features:
       familyRoom:
@@ -397,10 +396,9 @@ plans:
     usageLimits:
       usersLimit:
         value: 6
-    price: 16.99
   PROFESSIONAL:
     description: ''
-    monthlyPrice: 16.58
+    price: 16.58
     unit: /month
     features:
       sharedLinkControls:
@@ -430,10 +428,9 @@ plans:
         value: 100
       includeCustomizationOptionsInDropboxTransfer:
         value: true
-    price: 16.58
   STANDARD:
     description: ''
-    monthlyPrice: 15
+    price: 15
     unit: user/month
     features:
       sharedLinkControls:
@@ -485,10 +482,11 @@ plans:
         value: true
       dropboxTransferLimit:
         value: 2
-    price: 15
+      apiAccessToDataTransportPlatformPartnersLimit:
+        value: 1000000000
   ADVANCED:
     description: ''
-    monthlyPrice: 24
+    price: 24
     unit: user/month
     features:
       sharedLinkControls:
@@ -560,4 +558,6 @@ plans:
         value: 100
       includeCustomizationOptionsInDropboxTransfer:
         value: true
-    price: 24
+      apiAccessToDataTransportPlatformPartnersLimit:
+        value: 1000000000
+addOns: null

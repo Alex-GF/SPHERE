@@ -1,9 +1,11 @@
-saasName: Canva
 syntaxVersion: '2.1'
-version: 2020-6-19
+saasName: Canva
 createdAt: '2020-06-19'
+version: '2020-06-19'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20200720161814/https://www.canva.com/pricing/
 features:
   freeTemplates:
     description: ''
@@ -178,7 +180,7 @@ usageLimits:
     unit: Brand Kit
     type: NON_RENEWABLE
     linkedFeatures:
-      - brandKit
+    - brandKit
   cloudStorageLimit:
     description: ''
     valueType: NUMERIC
@@ -186,7 +188,7 @@ usageLimits:
     unit: GB
     type: NON_RENEWABLE
     linkedFeatures:
-      - cloudStorage
+    - cloudStorage
   foldersLimit:
     description: ''
     valueType: NUMERIC
@@ -194,22 +196,18 @@ usageLimits:
     unit: folder
     type: NON_RENEWABLE
     linkedFeatures:
-      - folders
+    - folders
 plans:
   FREE:
     description: Everything you need to start designing
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: user/month
     features: null
     usageLimits: null
-    price: 0
   PRO:
-    description: >-
-      Designing together just got better. Professional design made easy with
-      unlimited access to premium tools and content.
-    monthlyPrice: 12.95
-    annualPrice: 9.95
+    description: Designing together just got better. Professional design made easy
+      with unlimited access to premium tools and content.
+    price: 12.95
     unit: user/month
     features:
       premiumStockImages:
@@ -235,13 +233,10 @@ plans:
         value: 100
       foldersLimit:
         value: 1000000000
-    price: 12.95
   ENTERPRISE:
-    description: >-
-      Empower your team, manage your brand, and scale your content all in one
-      place
-    monthlyPrice: Contact Sales
-    annualPrice: 30
+    description: Empower your team, manage your brand, and scale your content all
+      in one place
+    price: Contact Sales
     unit: user/month
     features:
       premiumStockImages:
@@ -275,4 +270,4 @@ plans:
         value: 1000000000
       foldersLimit:
         value: 1000000000
-    price: Contact Sales
+addOns: null

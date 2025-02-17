@@ -1,67 +1,28 @@
 {
-    "_id": {
-      "$oid": "6787d0facaeb2b25748bc12a"
+  "_id": {
+    "$oid": "6787d0facaeb2b25748bc12a"
+  },
+  "name": "IEEE TSC 2025",
+  "description": "This collection includes the dataset of real-world pricings presented in the paper [PAPER NAME], which has been submitted to the IEEE Transactions on Services Computing journal 2025 paper. Its primary objective is to serve as a replication package for the paper, enabling readers to review and experiment with the results in real time. Additionally, this dataset can serve as a benchmark for future research on pricing strategies in the context of cloud computing.",
+  "_ownerId": {
+    "$oid": "63f74bf8eeed64058364b52e"
+  },
+  "analytics": {
+    "evolutionOfPlans": {
+      "dates": [],
+      "values": []
     },
-    "name": "sphere",
-    "_ownerId": {
-      "$oid": "63f74bf8eeed64058364b52e"
+    "evolutionOfAddOns": {
+      "dates": [],
+      "values": []
     },
-    "analytics": {
-      "evolutionOfPlans": {
-        "dates": [
-          {"$date": "2023-02-20T11:22:04.000Z"},
-          {"$date": "2023-02-21T11:22:04.000Z"},
-          {"$date": "2023-02-22T11:22:04.000Z"},
-          {"$date": "2023-02-23T11:22:04.000Z"}
-        ],
-        "values": [
-            100,
-            200,
-            300,
-            400
-        ]
-      },
-      "evolutionOfAddOns": {
-        "dates": [
-          {"$date": "2023-02-20T11:22:04.000Z"},
-          {"$date": "2023-02-21T11:22:04.000Z"},
-          {"$date": "2023-02-22T11:22:04.000Z"},
-          {"$date": "2023-02-23T11:22:04.000Z"}
-        ],
-        "values": [
-            1,
-            2,
-            3,
-            4
-        ]
-      },
-      "evolutionOfFeatures": {
-        "dates": [
-          {"$date": "2023-02-20T11:22:04.000Z"},
-          {"$date": "2023-02-21T11:22:04.000Z"},
-          {"$date": "2023-02-22T11:22:04.000Z"},
-          {"$date": "2023-02-23T11:22:04.000Z"}
-        ],
-        "values": [
-            10,
-            20,
-            30,
-            40
-        ]
-      },
-      "evolutionOfConfigurationSpaceSize": {
-        "dates": [
-          {"$date": "2023-02-20T11:22:04.000Z"},
-          {"$date": "2023-02-21T11:22:04.000Z"},
-          {"$date": "2023-02-22T11:22:04.000Z"},
-          {"$date": "2023-02-23T11:22:04.000Z"}
-        ],
-        "values": [
-            1000,
-            2000,
-            3000,
-            4000
-        ]
-      }
+    "evolutionOfFeatures": {
+      "dates": [],
+      "values": []
+    },
+    "evolutionOfConfigurationSpaceSize": {
+      "dates": [],
+      "values": []
     }
   }
+}

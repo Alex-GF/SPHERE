@@ -1,9 +1,9 @@
-saasName: Clockify
 syntaxVersion: '2.1'
-version: 2024-7-5
-createdAt: '2024-07-05'
+saasName: Clockify
+version: '2024-07-06'
+createdAt: '2024-07-06'
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20240706191453/https://clockify.me/pricing
 features:
   unlimitedTracking:
     description: Track as much time as you want, without any limits.
@@ -416,20 +416,17 @@ features:
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs: null
+    pricingUrls: null
 plans:
   FREE:
     description: ''
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: user/month
     features: null
     usageLimits: null
-    price: 0
   BASIC:
     description: Administration
-    monthlyPrice: 4.99
-    annualPrice: 3.99
+    price: 4.99
     unit: user/month
     features:
       favoriteEntries:
@@ -465,11 +462,9 @@ plans:
       kioskPIN:
         value: true
     usageLimits: null
-    price: 4.99
   STANDARD:
     description: Timesheeting & billing
-    monthlyPrice: 6.99
-    annualPrice: 5.49
+    price: 6.99
     unit: user/month
     features:
       favoriteEntries:
@@ -529,11 +524,9 @@ plans:
       force2FA:
         value: true
     usageLimits: null
-    price: 6.99
   PRO:
     description: Profit & Productivity
-    monthlyPrice: 9.99
-    annualPrice: 7.99
+    price: 9.99
     unit: user/month
     features:
       favoriteEntries:
@@ -625,11 +618,9 @@ plans:
       dataRegion:
         value: true
     usageLimits: null
-    price: 9.99
   ENTERPRISE:
     description: ''
-    monthlyPrice: 14.99
-    annualPrice: 11.99
+    price: 14.99
     unit: user/month
     features:
       favoriteEntries:
@@ -729,11 +720,9 @@ plans:
       auditLog:
         value: true
     usageLimits: null
-    price: 14.99
   CAKE_BUNDLE:
     description: ''
-    monthlyPrice: 15.99
-    annualPrice: 12.99
+    price: 15.99
     unit: user/month
     features:
       favoriteEntries:
@@ -835,53 +824,44 @@ plans:
       accessToAllCake.comProducts:
         value: true
     usageLimits: null
-    price: 15.99
 addOns:
   kioskBasic:
     availableFor:
       - BASIC
-    monthlyPrice: 0.99
-    annualPrice: 0.79
+    price: 0.99
     unit: per kiosk user/month
     features:
       kiosk:
         value: true
     usageLimits: null
     usageLimitsExtensions: null
-    price: 0.99
   kioskStandard:
     availableFor:
       - STANDARD
-    monthlyPrice: 1.49
-    annualPrice: 1.19
+    price: 1.49
     unit: per kiosk user/month
     features:
       kiosk:
         value: true
     usageLimits: null
     usageLimitsExtensions: null
-    price: 1.49
   kioskPro:
     availableFor:
       - PRO
-    monthlyPrice: 1.99
-    annualPrice: 1.59
+    price: 1.99
     unit: per kiosk user/month
     features:
       kiosk:
         value: true
     usageLimits: null
     usageLimitsExtensions: null
-    price: 1.99
   kioskEnterprise:
     availableFor:
       - ENTERPRISE
-    monthlyPrice: 2.99
-    annualPrice: 2.39
+    price: 2.99
     unit: per kiosk user/month
     features:
       kiosk:
         value: true
     usageLimits: null
     usageLimitsExtensions: null
-    price: 2.99

@@ -1,9 +1,11 @@
-saasName: HyperContext
 syntaxVersion: '2.1'
-version: '2022-10-13'
-createdAt: '2022-10-13'
+saasName: HyperContext
+createdAt: '2022-10-14'
+version: '2022-10-14'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20221014081829/https://hypercontext.com/pricing
 features:
   oneToOneMeetings:
     description: ''
@@ -26,7 +28,6 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs: null
   meetingArchives:
     description: ''
     valueType: BOOLEAN
@@ -69,8 +70,8 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://workspace.google.com/pricing
+    pricingUrls:
+    - https://workspace.google.com/pricing
   guestUsers:
     description: ''
     valueType: BOOLEAN
@@ -223,24 +224,24 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://workspace.google.com/pricing
+    pricingUrls:
+    - https://workspace.google.com/pricing
   googleCalendar:
     description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://workspace.google.com/pricing
+    pricingUrls:
+    - https://workspace.google.com/pricing
   googleMeet:
     description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://workspace.google.com/pricing
+    pricingUrls:
+    - https://workspace.google.com/pricing
   chromeMeetingExtension:
     description: ''
     valueType: BOOLEAN
@@ -253,26 +254,24 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://slack.com/pricing
+    pricingUrls:
+    - https://slack.com/pricing
   microsoftTeams:
     description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - >-
-        https://www.microsoft.com/en-us/microsoft-teams/compare-microsoft-teams-business-options
+    pricingUrls:
+    - https://www.microsoft.com/en-us/microsoft-teams/compare-microsoft-teams-business-options
   outlookCalendar:
     description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - >-
-        https://www.microsoft.com/en-us/microsoft-365/outlook/compare-microsoft-outlook-email-plans
+    pricingUrls:
+    - https://www.microsoft.com/en-us/microsoft-365/outlook/compare-microsoft-outlook-email-plans
   mobileApps:
     description: ''
     valueType: BOOLEAN
@@ -285,8 +284,8 @@ features:
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://zapier.com/pricing
+    pricingUrls:
+    - https://zapier.com/pricing
 usageLimits:
   meetingSearchThreshold:
     description: ''
@@ -295,7 +294,7 @@ usageLimits:
     unit: day
     type: NON_RENEWABLE
     linkedFeatures:
-      - meetingSearch
+    - meetingSearch
   storageLimit:
     description: ''
     valueType: NUMERIC
@@ -303,21 +302,18 @@ usageLimits:
     unit: GB
     type: NON_RENEWABLE
     linkedFeatures:
-      - fileAttachments
-      - cloudLinkIntegrations
+    - fileAttachments
+    - cloudLinkIntegrations
 plans:
   BASIC:
     description: Best for people who want to take Hypercontext for a spin.
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: person/month
     features: null
     usageLimits: null
-    price: 0
   PRO:
     description: Best for managers with too much on their plate.
-    monthlyPrice: 7
-    annualPrice: 5.6
+    price: 7
     unit: person/month
     features:
       realTimeCollaboration:
@@ -341,11 +337,9 @@ plans:
         value: .inf
       storageLimit:
         value: 250
-    price: 7
   BUSINESS:
     description: Best for standardizing meetings and hitting goals.
-    monthlyPrice: 11
-    annualPrice: 8.8
+    price: 11
     unit: person/month
     features:
       realTimeCollaboration:
@@ -395,11 +389,10 @@ plans:
         value: .inf
       storageLimit:
         value: .inf
-    price: 11
 addOns:
   customSSO:
     availableFor:
-      - BUSINESS
+    - BUSINESS
     price: Contact Sales
     unit: /month
     features:

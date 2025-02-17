@@ -1,235 +1,261 @@
-saasName: Office 365 - For Business
 syntaxVersion: '2.1'
-version: '2019-11-29'
+saasName: Microsoft - Office 365 For Business
 createdAt: '2019-11-29'
+version: '2019-11-29'
+url: https://web.archive.org/web/20191129064040/https://products.office.com/en-us/compare-all-microsoft-office-products?&activetab=tab:primaryr2
+tags:
+- Desktop versions of Office apps for PC & Mac
+- Web & mobile versions of Office apps
+- Teamwork & communication
+- Email & calendaring
+- File storage & sharing
+- Security & compliance
+- Support & deployment
+- Tools to build & manage your business
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
 features:
-  cloudStorage:
-    description: Store and access files securely in the cloud
-    valueType: BOOLEAN
-    defaultValue: true
-    type: DOMAIN
-  customBusinessEmail:
-    description: Use a custom business email (name@yourbusiness.com)
+  microsoftOutlookDesktopApp:
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
+    tag: Desktop versions of Office apps for PC & Mac
     type: DOMAIN
-  mailbox:
-    description: Host and administer email with a 50-GB mailbox
+  microsoftWordDesktopApp:
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
+    tag: Desktop versions of Office apps for PC & Mac
     type: DOMAIN
-  businessClassEmail:
-    description: >-
-      Business-class email on mobile devices, tablets, desktops, and the web
-      with Exchange
+  microsoftExcelDesktopApp:
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
+    tag: Desktop versions of Office apps for PC & Mac
     type: DOMAIN
-  sharedCalendars:
-    description: Easily schedule meetings and respond to invitations using shared calendars
+  microsoftPowerPointDesktopApp:
+    description: ''
     valueType: BOOLEAN
     defaultValue: false
+    tag: Desktop versions of Office apps for PC & Mac
     type: DOMAIN
-  calendar:
-    description: >-
-      Manage your calendar, share available meeting times, schedule meetings,
-      and get reminders
+  realTimeCollaborationDesktop:
+    description: Real-time co-authoring so multiple users can work in the same document,
+      simultaneously
     valueType: BOOLEAN
     defaultValue: false
+    tag: Desktop versions of Office apps for PC & Mac
     type: DOMAIN
-  manageEmail:
-    description: >-
-      Set up new user emails, restore deleted accounts, create custom scripts,
-      and more from anywhere
-    valueType: BOOLEAN
-    defaultValue: false
-    type: MANAGEMENT
-  realTimeCollaboration:
-    description: Collaborate in the same file with real-time coauthoring and editing
+  microsoftOutlookWebApp:
+    description: ''
     valueType: BOOLEAN
     defaultValue: true
+    tag: Web & mobile versions of Office apps
     type: DOMAIN
-  multiplatformFileAccess:
-    description: Access your files from your computer, tablet, or phone
-    valueType: BOOLEAN
-    defaultValue: true
-    type: DOMAIN
-  fileStoring:
-    description: Keep your files securely stored, up to date, and accessible across devices
-    valueType: BOOLEAN
-    defaultValue: true
-    type: DOMAIN
-  fileSharing:
-    description: Share files with external contacts by providing access or guest links
-    valueType: BOOLEAN
-    defaultValue: true
-    type: DOMAIN
-  sharingManagement:
-    description: >-
-      Securely share documents and send emails so only those with the right
-      permissions can access the information
-    valueType: BOOLEAN
-    defaultValue: true
-    type: MANAGEMENT
-  chat:
-    description: >-
-      Chat one-on-one or in a group chat, pin chats, and save messages for quick
-      access
-    valueType: BOOLEAN
-    defaultValue: false
-    type: DOMAIN
-  onlineMeetings:
-    description: >-
-      Host secure, organized meetings with audio, video, screen-sharing, and the
-      option to record
-    valueType: BOOLEAN
-    defaultValue: false
-    type: DOMAIN
-  microsoftSharePoint:
-    description: >-
-      Create team sites to share information, content, and files throughout your
-      intranet using SharePoint
-    valueType: BOOLEAN
-    defaultValue: false
-    type: DOMAIN
-  emailSpamFilter:
-    description: >-
-      Help protect your business against spam and malware with cloud-based email
-      filtering
-    valueType: BOOLEAN
-    defaultValue: false
-    type: AUTOMATION
-    automationType: FILTERING
-  securityStandardsAndPrivacyControls:
-    description: >-
-      Meets key international, regional, and industry-specific standards and
-      terms, with more than 1,000 security and privacy controls
-    valueType: BOOLEAN
-    defaultValue: true
-    type: GUARANTEE
-  passwordPolicies:
-    description: Manage security threats by creating password policies
-    valueType: BOOLEAN
-    defaultValue: true
-    type: MANAGEMENT
-  securityGroups:
-    description: >-
-      Control access to business information with security groups and custom
-      permissions
-    valueType: BOOLEAN
-    defaultValue: true
-    type: MANAGEMENT
-  milelQReporting:
-    description: >-
-      Have real-time, accurate mileage tracking and reporting in the palm of
-      your hand with MileIQ
-    valueType: BOOLEAN
-    defaultValue: false
-    type: INFORMATION
-  microsoftBookings:
-    description: >-
-      Streamline client scheduling and manage appointments with Microsoft
-      Bookings
-    valueType: BOOLEAN
-    defaultValue: false
-    type: DOMAIN
-  phoneAndOnlineSupport:
-    description: Contact phone and online support anytime
-    valueType: BOOLEAN
-    defaultValue: true
-    type: SUPPORT
-  uptimeGuarantee:
-    description: Have peace of mind with a financially backed 99% uptime guarantee
-    valueType: BOOLEAN
-    defaultValue: true
-    type: GUARANTEE
-  license:
-    description: Licensed for commercial use
-    valueType: BOOLEAN
-    defaultValue: true
-    type: GUARANTEE
   microsoftWordWebApp:
     description: ''
     valueType: BOOLEAN
     defaultValue: true
+    tag: Web & mobile versions of Office apps
     type: DOMAIN
   microsoftExcelWebApp:
     description: ''
     valueType: BOOLEAN
     defaultValue: true
+    tag: Web & mobile versions of Office apps
     type: DOMAIN
   microsoftPowerPointWebApp:
     description: ''
     valueType: BOOLEAN
     defaultValue: true
+    tag: Web & mobile versions of Office apps
     type: DOMAIN
-  microsoftOneNoteWebApp:
+  microsoftOutlookMobileApp:
     description: ''
     valueType: BOOLEAN
     defaultValue: true
-    type: DOMAIN
-  microsoftOutlookWebApp:
-    description: ''
-    valueType: BOOLEAN
-    defaultValue: false
+    tag: Web & mobile versions of Office apps
     type: DOMAIN
   microsoftWordMobileApp:
     description: ''
     valueType: BOOLEAN
     defaultValue: true
+    tag: Web & mobile versions of Office apps
     type: DOMAIN
   microsoftExcelMobileApp:
     description: ''
     valueType: BOOLEAN
     defaultValue: true
+    tag: Web & mobile versions of Office apps
     type: DOMAIN
   microsoftPowerPointMobileApp:
     description: ''
     valueType: BOOLEAN
     defaultValue: true
+    tag: Web & mobile versions of Office apps
     type: DOMAIN
-  microsoftOneNoteMobileApp:
-    description: ''
+  realTimeCollaborationWebMobile:
+    description: Real-time co-authoring so multiple users can work in the same document,
+      simultaneously
     valueType: BOOLEAN
     defaultValue: true
+    tag: Web & mobile versions of Office apps
     type: DOMAIN
-  microsoftOutlookMobileApp:
-    description: ''
+  onlineMeetings:
+    description: Host online meetings and video calls for up to 250 people with Microsoft
+      Teams2
     valueType: BOOLEAN
     defaultValue: false
+    tag: Teamwork & communication
     type: DOMAIN
-  microsoftTeams:
-    description: ''
+  chat:
+    description: Chat with your team from your desktop or on the go with Microsoft
+      Teams for quick access
     valueType: BOOLEAN
     defaultValue: false
+    tag: Teamwork & communication
     type: DOMAIN
-  microsoftWordDesktopApp:
-    description: ''
+  microsoftSharePoint:
+    description: Create team sites to share information, content, and files throughout
+      your intranet using SharePoint
+    valueType: BOOLEAN
+    defaultValue: false
+    tag: Teamwork & communication
+    type: DOMAIN
+  mailbox:
+    description: Email hosting with 50 GB mailbox
+    valueType: BOOLEAN
+    defaultValue: false
+    tag: Email & calendaring
+    type: DOMAIN
+  customBusinessEmail:
+    description: Use your own custom domain name (e.g. yourname@yourcompany.com)
+    valueType: BOOLEAN
+    defaultValue: false
+    tag: Email & calendaring
+    type: DOMAIN
+  businessClassEmail:
+    description: Business-class email on phones, tablets, desktops, and the web with
+      Exchange
+    valueType: BOOLEAN
+    defaultValue: false
+    tag: Email & calendaring
+    type: DOMAIN
+  calendar:
+    description: Manage your calendar, share available meeting times, schedule meetings,
+      and get reminders
+    valueType: BOOLEAN
+    defaultValue: false
+    tag: Email & calendaring
+    type: DOMAIN
+  sharedCalendars:
+    description: Schedule meetings and respond to invitations with ease using shared
+      calendars
+    valueType: BOOLEAN
+    defaultValue: false
+    tag: Email & calendaring
+    type: DOMAIN
+  manageEmail:
+    description: Set up new user emails, restore deleted accounts, create custom scripts,
+      and more from anywhere
+    valueType: BOOLEAN
+    defaultValue: false
+    tag: Email & calendaring
+    type: MANAGEMENT
+  cloudStorage:
+    description: Store and access files securely in the cloud
     valueType: BOOLEAN
     defaultValue: true
+    tag: File storage & sharing
     type: DOMAIN
-  microsoftExcelDesktopApp:
-    description: ''
+  multiplatformFileAccess:
+    description: Access your files from your computer, tablet, or phone
     valueType: BOOLEAN
     defaultValue: true
+    tag: File storage & sharing
     type: DOMAIN
-  microsoftPowerPointDesktopApp:
-    description: ''
+  fileStoring:
+    description: Keep your files securely stored, up to date, and accessible across
+      devices
     valueType: BOOLEAN
     defaultValue: true
+    tag: File storage & sharing
     type: DOMAIN
-  microsoftOneNoteDesktopApp:
-    description: ''
+  fileSharing:
+    description: Share files with external contacts by providing access or guest links
     valueType: BOOLEAN
     defaultValue: true
+    tag: File storage & sharing
     type: DOMAIN
-  microsoftOutlookDesktopApp:
-    description: ''
+  sharingManagement:
+    description: Securely share documents and send emails so only those with the right
+      permissions can access the information
     valueType: BOOLEAN
     defaultValue: true
+    tag: File storage & sharing
+    type: MANAGEMENT
+  emailSpamFilter:
+    description: Protect your email against spam, malware, and known threats with
+      Exchange Online Protection
+    valueType: BOOLEAN
+    defaultValue: false
+    tag: Security & compliance
+    type: AUTOMATION
+    automationType: FILTERING
+  securityStandardsAndPrivacyControls:
+    description: Meets key international, regional, and industry-specific standards
+      and terms, with more than 1,000 security and privacy controls
+    valueType: BOOLEAN
+    defaultValue: true
+    tag: Security & compliance
+    type: GUARANTEE
+  securityGroups:
+    description: Control who and when someone has access to your business information
+      with security groups and custom permissions
+    valueType: BOOLEAN
+    defaultValue: true
+    tag: Security & compliance
+    type: MANAGEMENT
+  passwordPolicies:
+    description: Create password policies that require users to reset their passwords
+      after a specified number of days.
+    valueType: BOOLEAN
+    defaultValue: true
+    tag: Security & compliance
+    type: MANAGEMENT
+  phoneAndOnlineSupport:
+    description: 24/7 phone and online support
+    valueType: BOOLEAN
+    defaultValue: true
+    tag: Support & deployment
+    type: SUPPORT
+  uptimeGuarantee:
+    description: 99.9% uptime guarantee
+    valueType: BOOLEAN
+    defaultValue: true
+    tag: Support & deployment
+    type: GUARANTEE
+  license:
+    description: Licensed for commercial use
+    valueType: BOOLEAN
+    defaultValue: true
+    tag: Support & deployment
+    type: GUARANTEE
+  microsoftBookings:
+    description: Make it easier for your customers to schedule and manage appointments
+      with Microsoft Bookings
+    valueType: BOOLEAN
+    defaultValue: false
+    tag: Tools to build & manage your business
     type: DOMAIN
+  milelQReporting:
+    description: Have real-time, accurate mileage tracking and reporting in the palm
+      of your hand with MileIQ
+    valueType: BOOLEAN
+    defaultValue: false
+    tag: Tools to build & manage your business
+    type: INFORMATION
   microsoftPublisher:
     description: ''
     valueType: BOOLEAN
@@ -240,18 +266,10 @@ features:
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
-  webinars:
-    description: Schedule and host webinars for up to 300 people
+  microsoftTeams:
     valueType: BOOLEAN
     defaultValue: false
-    type: MANAGEMENT
-  webinarInvitationManagement:
-    description: >-
-      Host webinars that include attendee registration pages and email
-      confirmations
-    valueType: BOOLEAN
-    defaultValue: false
-    type: MANAGEMENT
+    type: DOMAIN
 usageLimits:
   maxUsers:
     description: ''
@@ -259,7 +277,6 @@ usageLimits:
     defaultValue: 300
     unit: user
     type: NON_RENEWABLE
-    linkedFeatures: null
   maxMobileDevices:
     description: ''
     valueType: NUMERIC
@@ -267,11 +284,10 @@ usageLimits:
     unit: device
     type: NON_RENEWABLE
     linkedFeatures:
-      - microsoftWordMobileApp
-      - microsoftExcelMobileApp
-      - microsoftPowerPointMobileApp
-      - microsoftOneNoteMobileApp
-      - microsoftOutlookMobileApp
+    - microsoftWordMobileApp
+    - microsoftExcelMobileApp
+    - microsoftPowerPointMobileApp
+    - microsoftOutlookMobileApp
   maxTabletDevices:
     description: ''
     valueType: NUMERIC
@@ -279,23 +295,21 @@ usageLimits:
     unit: device
     type: NON_RENEWABLE
     linkedFeatures:
-      - microsoftWordMobileApp
-      - microsoftExcelMobileApp
-      - microsoftPowerPointMobileApp
-      - microsoftOneNoteMobileApp
-      - microsoftOutlookMobileApp
+    - microsoftWordMobileApp
+    - microsoftExcelMobileApp
+    - microsoftPowerPointMobileApp
+    - microsoftOutlookMobileApp
   maxDesktopDevices:
     description: ''
     valueType: NUMERIC
-    defaultValue: 5
+    defaultValue: 0
     unit: device
     type: NON_RENEWABLE
     linkedFeatures:
-      - microsoftWordDesktopApp
-      - microsoftExcelDesktopApp
-      - microsoftPowerPointDesktopApp
-      - microsoftOneNoteDesktopApp
-      - microsoftOutlookDesktopApp
+    - microsoftWordDesktopApp
+    - microsoftExcelDesktopApp
+    - microsoftPowerPointDesktopApp
+    - microsoftOutlookDesktopApp
   cloudStorageLimit:
     description: ''
     valueType: NUMERIC
@@ -303,7 +317,7 @@ usageLimits:
     unit: GB
     type: NON_RENEWABLE
     linkedFeatures:
-      - cloudStorage
+    - cloudStorage
   slaMaxUptime:
     description: ''
     valueType: NUMERIC
@@ -311,107 +325,120 @@ usageLimits:
     unit: '%'
     type: NON_RENEWABLE
     linkedFeatures:
-      - uptimeGuarantee
+    - uptimeGuarantee
   mailboxMaxCapacity:
     description: ''
     valueType: NUMERIC
-    defaultValue: 50
+    defaultValue: 0
     unit: GB
     type: NON_RENEWABLE
     linkedFeatures:
-      - mailbox
-  webinarsMaxLimit:
+    - mailbox
+  onlineMeetingCapacity:
     description: ''
     valueType: NUMERIC
-    defaultValue: 250
+    defaultValue: 0
     unit: people
     type: NON_RENEWABLE
     linkedFeatures:
-      - chat
-      - onlineMeetings
-      - webinars
+    - onlineMeetings
 plans:
   BUSINESS:
     description: ''
-    monthlyPrice: 10
-    annualPrice: 8.25
-    unit: user/month
-    features: null
-    usageLimits: null
-    price: 10
-  BUSINESS_ESSENTIALS:
-    description: ''
-    monthlyPrice: 6
-    annualPrice: 5
+    price: 8.25
     unit: user/month
     features:
-      customBusinessEmail:
+      microsoftOutlookDesktopApp:
         value: true
-      mailbox:
+      microsoftWordDesktopApp:
         value: true
-      businessClassEmail:
+      microsoftExcelDesktopApp:
         value: true
-      sharedCalendars:
+      microsoftPowerPointDesktopApp:
         value: true
-      calendar:
+      realTimeCollaborationDesktop:
         value: true
-      manageEmail:
-        value: true
-      chat:
-        value: true
-      onlineMeetings:
-        value: true
-      microsoftSharePoint:
-        value: true
-      emailSpamFilter:
-        value: true
-      microsoftOutlookWebApp:
-        value: true
-      microsoftOutlookMobileApp:
-        value: true
-      microsoftTeams:
-        value: true
-    usageLimits: null
-    price: 6
+    usageLimits:
+      maxDesktopDevices:
+        value: 5
   BUSINESS_PREMIUM:
     description: ''
-    monthlyPrice: 15
-    annualPrice: 12.5
+    price: 12.5
     unit: user/month
     features:
-      customBusinessEmail:
+      microsoftOutlookDesktopApp:
         value: true
-      mailbox:
+      microsoftWordDesktopApp:
         value: true
-      businessClassEmail:
+      microsoftExcelDesktopApp:
         value: true
-      sharedCalendars:
+      microsoftPowerPointDesktopApp:
         value: true
-      calendar:
-        value: true
-      manageEmail:
-        value: true
-      chat:
+      realTimeCollaborationDesktop:
         value: true
       onlineMeetings:
         value: true
+      chat:
+        value: true
       microsoftSharePoint:
         value: true
-      emailSpamFilter:
+      mailbox:
         value: true
-      milelQReporting:
+      customBusinessEmail:
+        value: true
+      businessClassEmail:
+        value: true
+      calendar:
+        value: true
+      sharedCalendars:
+        value: true
+      manageEmail:
+        value: true
+      emailSpamFilter:
         value: true
       microsoftBookings:
         value: true
-      microsoftOutlookWebApp:
-        value: true
-      microsoftOutlookMobileApp:
+      milelQReporting:
         value: true
       microsoftTeams:
         value: true
-      webinars:
+    usageLimits:
+      maxDesktopDevices:
+        value: 5
+      mailboxMaxCapacity:
+        value: 50
+      onlineMeetingCapacity:
+        value: 250
+  BUSINESS_ESSENTIALS:
+    description: ''
+    price: 5
+    unit: user/month
+    features:
+      onlineMeetings:
         value: true
-      webinarInvitationManagement:
+      chat:
         value: true
-    usageLimits: null
-    price: 15
+      microsoftSharePoint:
+        value: true
+      mailbox:
+        value: true
+      customBusinessEmail:
+        value: true
+      businessClassEmail:
+        value: true
+      calendar:
+        value: true
+      sharedCalendars:
+        value: true
+      manageEmail:
+        value: true
+      emailSpamFilter:
+        value: true
+      microsoftTeams:
+        value: true
+    usageLimits:
+      mailboxMaxCapacity:
+        value: 50
+      onlineMeetingCapacity:
+        value: 250
+addOns: null

@@ -1,9 +1,9 @@
-saasName: Quip
 syntaxVersion: '2.1'
-version: '2019-11-25'
-createdAt: '2019-11-25'
+saasName: Quip
+version: '2019-11-26'
+createdAt: '2019-11-26'
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20191126165227/https://quip.com/about/pricing
 features:
   documents:
     description: ''
@@ -64,7 +64,7 @@ features:
     valueType: BOOLEAN
     defaultValue: true
     type: GUARANTEE
-    docURL: https://quip.com/security/governance-and-compliance
+    docUrl: https://quip.com/security/governance-and-compliance
   customAndAdvancedLiveApps:
     description: ''
     valueType: BOOLEAN
@@ -109,16 +109,13 @@ features:
 plans:
   STARTER:
     description: Powerful collaboration for your team or small business.
-    monthlyPrice: 12
-    annualPrice: 10
+    price: 12
     unit: user/month
     features: null
     usageLimits: null
-    price: 12
   ENTERPRISE:
     description: Secure productivity platform for large and complex teams.
-    monthlyPrice: null
-    annualPrice: 25
+    price: 25
     unit: user/month
     features:
       customAndAdvancedLiveApps:
@@ -128,13 +125,11 @@ plans:
       enterpriseAPI:
         value: true
     usageLimits: null
-    price: 25
   CUSTOMER360:
     description: >-
       Real-time alerts and collaboration inside Salesforce for sales and service
       teams.
-    monthlyPrice: Contact Sales
-    annualPrice: Contact Sales
+    price: Contact Sales
     unit: user/month
     features:
       customAndAdvancedLiveApps:
@@ -152,4 +147,3 @@ plans:
       embedQuipDocumentComponentsInSalesforce:
         value: true
     usageLimits: null
-    price: Contact Sales

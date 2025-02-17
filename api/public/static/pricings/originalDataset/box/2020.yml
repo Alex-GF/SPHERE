@@ -1,9 +1,11 @@
-saasName: Box
 syntaxVersion: '2.1'
-version: '2020-11-28'
-createdAt: '2020-11-28'
+saasName: Box
+createdAt: '2020-11-29'
+version: '2020-11-29'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20201129232820/https://www.box.com/pricing
 features:
   secureStorage:
     description: ''
@@ -43,8 +45,8 @@ features:
     type: INTEGRATION
     integrationType: MARKETPLACE
   desktopAccessToBoxFiles:
-    valueType: BOOLEAN
     description: ''
+    valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   mobileAccess:
@@ -231,7 +233,7 @@ usageLimits:
     unit: GB
     type: NON_RENEWABLE
     linkedFeatures:
-      - secureStorage
+    - secureStorage
   uploadSizeLimit:
     description: ''
     valueType: NUMERIC
@@ -239,15 +241,15 @@ usageLimits:
     unit: GB
     type: NON_RENEWABLE
     linkedFeatures:
-      - secureStorage
+    - secureStorage
   industryAppsIntegrationLimit:
     description: ''
     valueType: NUMERIC
-    defaultValue: 1
+    defaultValue: 0
     unit: integration
     type: NON_RENEWABLE
     linkedFeatures:
-      - industryAppsIntegration
+    - industryAppsIntegration
   versionHistoryThreshold:
     description: ''
     valueType: NUMERIC
@@ -255,19 +257,17 @@ usageLimits:
     unit: day
     type: NON_RENEWABLE
     linkedFeatures:
-      - versionHistory
+    - versionHistory
   minUsers:
     description: ''
     valueType: NUMERIC
     defaultValue: 3
     type: NON_RENEWABLE
-    linkedFeatures: null
   maxUsers:
     description: ''
     valueType: NUMERIC
     defaultValue: 10
     type: NON_RENEWABLE
-    linkedFeatures: null
   apiCallsLimit:
     description: ''
     valueType: NUMERIC
@@ -275,18 +275,17 @@ usageLimits:
     unit: calls/month
     type: RENEWABLE
     linkedFeatures:
-      - boxApi
+    - boxApi
 plans:
   STARTER:
     description: ''
-    monthlyPrice: 5
+    price: 5
     unit: user/month
     features: null
     usageLimits: null
-    price: 5
   BUSINESS:
     description: ''
-    monthlyPrice: 15
+    price: 15
     unit: user/month
     features:
       industryAppsIntegration:
@@ -297,9 +296,9 @@ plans:
         value: true
       advancedUserReporting:
         value: true
-      activeDirectoryIntegration:
-        value: true
       singleSignOn:
+        value: true
+      activeDirectoryIntegration:
         value: true
       customBranding:
         value: true
@@ -310,16 +309,17 @@ plans:
         value: .inf
       uploadSizeLimit:
         value: 5
+      industryAppsIntegrationLimit:
+        value: 1
       versionHistoryThreshold:
         value: 50
       maxUsers:
         value: .inf
       apiCallsLimit:
         value: 50000
-    price: 15
   BUSINESS_PLUS:
     description: ''
-    monthlyPrice: 25
+    price: 25
     unit: user/month
     features:
       industryAppsIntegration:
@@ -330,9 +330,9 @@ plans:
         value: true
       advancedUserReporting:
         value: true
-      activeDirectoryIntegration:
-        value: true
       singleSignOn:
+        value: true
+      activeDirectoryIntegration:
         value: true
       customBranding:
         value: true
@@ -379,10 +379,9 @@ plans:
         value: .inf
       apiCallsLimit:
         value: 50000
-    price: 25
   ENTERPRISE:
     description: ''
-    monthlyPrice: Contact Sales
+    price: Contact Sales
     unit: user/month
     features:
       industryAppsIntegration:
@@ -393,9 +392,9 @@ plans:
         value: true
       advancedUserReporting:
         value: true
-      activeDirectoryIntegration:
-        value: true
       singleSignOn:
+        value: true
+      activeDirectoryIntegration:
         value: true
       customBranding:
         value: true
@@ -454,4 +453,4 @@ plans:
         value: .inf
       apiCallsLimit:
         value: 100000
-    price: Contact Sales
+addOns: null

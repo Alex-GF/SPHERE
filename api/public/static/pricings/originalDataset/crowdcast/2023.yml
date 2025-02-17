@@ -1,9 +1,11 @@
-saasName: Crowdcast
 syntaxVersion: '2.1'
-version: '2023-11-29'
-createdAt: '2023-11-29'
+saasName: Crowdcast
+createdAt: '2023-11-30'
+version: '2023-11-30'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20231130072654/https://www.crowdcast.io/pricing
 features:
   liveStreaming:
     description: ''
@@ -45,7 +47,7 @@ features:
     description: ''
     valueType: TEXT
     defaultValue:
-      - GATEWAY
+    - GATEWAY
     type: PAYMENT
   eventAnalytics:
     description: ''
@@ -63,8 +65,8 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://zapier.com/pricing
+    pricingUrls:
+    - https://zapier.com/pricing
   exportEmailAddresses:
     description: ''
     valueType: BOOLEAN
@@ -98,7 +100,7 @@ usageLimits:
     unit: attendee
     type: NON_RENEWABLE
     linkedFeatures:
-      - liveStreaming
+    - liveStreaming
   liveHoursPerMonthLimit:
     description: ''
     valueType: NUMERIC
@@ -106,7 +108,7 @@ usageLimits:
     unit: hour/month
     type: RENEWABLE
     linkedFeatures:
-      - liveStreaming
+    - liveStreaming
   hostSeatsLimit:
     description: ''
     valueType: NUMERIC
@@ -114,7 +116,7 @@ usageLimits:
     unit: seat
     type: NON_RENEWABLE
     linkedFeatures:
-      - liveStreaming
+    - liveStreaming
   sessionsLimit:
     description: ''
     valueType: NUMERIC
@@ -122,30 +124,26 @@ usageLimits:
     unit: hour/session
     type: NON_RENEWABLE
     linkedFeatures:
-      - liveStreaming
+    - liveStreaming
   multistreamLocationsLimit:
     description: ''
     valueType: NUMERIC
-    defaultValue: 1
+    defaultValue: 0
     unit: location
     type: NON_RENEWABLE
     linkedFeatures:
-      - multistreaming
+    - multistreaming
 plans:
   LITE:
     description: For creators and small businesses looking to grow their audience
-    monthlyPrice: 49
-    annualPrice: 34
+    price: 49
     unit: /month
     features: null
     usageLimits: null
-    price: 49
   PRO:
-    description: >-
-      For professional creators and businesses to consistently host live video
-      events
-    monthlyPrice: 89
-    annualPrice: 62
+    description: For professional creators and businesses to consistently host live
+      video events
+    price: 89
     unit: /month
     features:
       multistreaming:
@@ -159,19 +157,19 @@ plans:
         value: 20
       hostSeatsLimit:
         value: 2
-    price: 89
+      multistreamLocationsLimit:
+        value: 1
   BUSINESS:
     description: For startups and companies looking to engage their customers
-    monthlyPrice: 195
-    annualPrice: 139
+    price: 195
     unit: /month
     features:
+      transactionFee:
+        value: 2%
       multistreaming:
         value: true
       customRegistrationFields:
         value: true
-      transactionFee:
-        value: 2%
     usageLimits:
       liveAttendeesLimit:
         value: 1000
@@ -179,8 +177,8 @@ plans:
         value: 40
       hostSeatsLimit:
         value: 4
-      multistreamLocationsLimit:
-        value: 3
       sessionsLimit:
         value: 6
-    price: 195
+      multistreamLocationsLimit:
+        value: 3
+addOns: null

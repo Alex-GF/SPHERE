@@ -1,9 +1,11 @@
-saasName: MailChimp - Marketing
 syntaxVersion: '2.1'
-version: 2024-7-12
-createdAt: '2024-07-12'
+saasName: MailChimp - Marketing
+createdAt: '2024-07-13'
+version: '2024-07-13'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20240713054406/https://mailchimp.com/pricing/marketing/compare-plans/
 features:
   ownerRole:
     description: ''
@@ -481,7 +483,7 @@ usageLimits:
     unit: contact
     type: NON_RENEWABLE
     linkedFeatures:
-      - contacts
+    - contacts
   audiencesLimit:
     description: ''
     valueType: NUMERIC
@@ -489,14 +491,13 @@ usageLimits:
     unit: audience
     type: NON_RENEWABLE
     linkedFeatures:
-      - audiences
+    - audiences
   seatsLimit:
     description: ''
     valueType: NUMERIC
     defaultValue: 1
     unit: seat
     type: NON_RENEWABLE
-    linkedFeatures: null
   appEngagementThreshold:
     description: ''
     valueType: NUMERIC
@@ -504,7 +505,7 @@ usageLimits:
     unit: month
     type: NON_RENEWABLE
     linkedFeatures:
-      - appEngagement
+    - appEngagement
   monthlyEmailSends:
     description: ''
     valueType: NUMERIC
@@ -512,7 +513,7 @@ usageLimits:
     unit: email/month
     type: RENEWABLE
     linkedFeatures:
-      - emailMarketing
+    - emailMarketing
   dailyEmailSends:
     description: ''
     valueType: NUMERIC
@@ -520,15 +521,15 @@ usageLimits:
     unit: email/day
     type: RENEWABLE
     linkedFeatures:
-      - emailMarketing
+    - emailMarketing
   standardVettingIncludedCredits:
     description: ''
     valueType: NUMERIC
-    defaultValue: 5000
+    defaultValue: 0
     unit: credit
     type: RESPONSE_DRIVEN
     linkedFeatures:
-      - standardVetting
+    - standardVetting
   personalizedOnboardingSessionsLimit:
     description: ''
     valueType: NUMERIC
@@ -536,18 +537,17 @@ usageLimits:
     unit: session
     type: NON_RENEWABLE
     linkedFeatures:
-      - personalizedOnboarding
+    - personalizedOnboarding
 plans:
   FREE:
     description: All the basics for businesses that are just getting started.
-    monthlyPrice: 0
+    price: 0
     unit: /month
     features: null
     usageLimits: null
-    price: 0
   ESSENTIALS:
     description: Must-have features for email senders who want added support.
-    monthlyPrice: 13
+    price: 13
     unit: 500 users/month
     features:
       adminRole:
@@ -577,10 +577,9 @@ plans:
         value: 500000
       dailyEmailSends:
         value: .inf
-    price: 13
   STANDARD:
     description: Better insights for growing businesses that want more customers.
-    monthlyPrice: 20
+    price: 20
     unit: 500 users/month
     features:
       adminRole:
@@ -656,18 +655,17 @@ plans:
         value: 100000
       audiencesLimit:
         value: 5
-      appEngagementThreshold:
-        value: 3
       seatsLimit:
         value: 5
+      appEngagementThreshold:
+        value: 3
       monthlyEmailSends:
         value: 1200000
       personalizedOnboardingSessionsLimit:
         value: 1
-    price: 20
   PREMIUM:
     description: Advanced features for pros who need more customization.
-    monthlyPrice: 350
+    price: 350
     unit: 500 users/month
     features:
       adminRole:
@@ -747,19 +745,18 @@ plans:
         value: .inf
       audiencesLimit:
         value: .inf
-      appEngagementThreshold:
-        value: 18
       seatsLimit:
         value: .inf
+      appEngagementThreshold:
+        value: 18
       monthlyEmailSends:
         value: .inf
       personalizedOnboardingSessionsLimit:
         value: 4
-    price: 350
 addOns:
   premiumMigrationServicesAddOn:
     availableFor:
-      - PREMIUM
+    - PREMIUM
     price: Contact Sales
     unit: /month
     features:
@@ -769,8 +766,8 @@ addOns:
     usageLimitsExtensions: null
   transactionalEmailsAddOn:
     availableFor:
-      - STANDARD
-      - PREMIUM
+    - STANDARD
+    - PREMIUM
     price: Contact Sales
     unit: /month
     features:
@@ -780,7 +777,7 @@ addOns:
     usageLimitsExtensions: null
   smsAndMmsMarketingAddOnForEssentialsTier:
     availableFor:
-      - ESSENTIALS
+    - ESSENTIALS
     price: Contact Sales
     unit: /month
     features:
@@ -808,7 +805,7 @@ addOns:
     usageLimitsExtensions: null
   smsAndMmsMarketingAddOnForStandardTier:
     availableFor:
-      - STANDARD
+    - STANDARD
     price: Contact Sales
     unit: /month
     features:
@@ -844,7 +841,7 @@ addOns:
     usageLimitsExtensions: null
   smsAndMmsMarketingAddOnForPremiumTier:
     availableFor:
-      - PREMIUM
+    - PREMIUM
     price: Contact Sales
     unit: /month
     features:

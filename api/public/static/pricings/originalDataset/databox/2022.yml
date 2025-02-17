@@ -1,9 +1,11 @@
-saasName: Databox
 syntaxVersion: '2.1'
-version: 2022-11-7
+saasName: Databox
 createdAt: '2022-11-07'
+version: '2022-11-07'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20221202023412/https://databox.com/pricing
 features:
   dataSources:
     description: ''
@@ -16,9 +18,8 @@ features:
     defaultValue: daily
     type: GUARANTEE
   historicalData:
-    description: >-
-      The maximum amount of historical data that you can access in your Databox
-      Account.
+    description: The maximum amount of historical data that you can access in your
+      Databox Account.
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
@@ -45,8 +46,6 @@ features:
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingsURLs:
-      - https://workspace.google.com/pricing
   thirdPartyIntegrations:
     description: Choose between 2000+ integrations
     valueType: BOOLEAN
@@ -65,12 +64,10 @@ features:
     defaultValue: true
     type: DOMAIN
   databoardDesigner:
-    description: >-
-      Create Databoards, no coding required. Use the Designer by starting with a
-      blank Databoard or choosing, then customizing a template. Use pre-built
-      datablocks or start with blank visualizations and choose vour datasource,
-      metric, time intervals and more. Re-arrange, resize, move and delete
-      datablocks.
+    description: Create Databoards, no coding required. Use the Designer by starting
+      with a blank Databoard or choosing, then customizing a template. Use pre-built
+      datablocks or start with blank visualizations and choose vour datasource, metric,
+      time intervals and more. Re-arrange, resize, move and delete datablocks.
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
@@ -81,10 +78,9 @@ features:
     type: INTEGRATION
     integrationType: MARKETPLACE
   dataCalculations:
-    description: >-
-      Data Calculations enable you to create on-the-fly calculations, regardless
-      of whether the metrics originate from a single data source or different
-      data sources.
+    description: Data Calculations enable you to create on-the-fly calculations, regardless
+      of whether the metrics originate from a single data source or different data
+      sources.
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
@@ -94,9 +90,8 @@ features:
     defaultValue: false
     type: DOMAIN
   databoardTemplates:
-    description: >-
-      Instantly use pre-built templates created by experts. Browse the available
-      templates on our website or inside our application.
+    description: Instantly use pre-built templates created by experts. Browse the
+      available templates on our website or inside our application.
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
@@ -111,11 +106,10 @@ features:
     defaultValue: false
     type: MANAGEMENT
   goals:
-    description: >-
-      Set a daily, weekly, monthly or annual goal for any metric you're
-      tracking. Assign the goal to someone on your team and receive alerts when
-      you hit thegoal or if you are at risk of missing it. View progress to all
-      your Company's goals on one screen.
+    description: Set a daily, weekly, monthly or annual goal for any metric you're
+      tracking. Assign the goal to someone on your team and receive alerts when you
+      hit thegoal or if you are at risk of missing it. View progress to all your Company's
+      goals on one screen.
     valueType: BOOLEAN
     defaultValue: true
     type: AUTOMATION
@@ -126,11 +120,9 @@ features:
     defaultValue: true
     type: MANAGEMENT
   alerts:
-    description: >-
-      Receive alerts via the mobile app. Slack or via email for any metric you
-      want to monitor more closely. Alerts can be triggered when numbers go
-      above or below any number or change by a set percentage over a specified
-      time interval.
+    description: Receive alerts via the mobile app. Slack or via email for any metric
+      you want to monitor more closely. Alerts can be triggered when numbers go above
+      or below any number or change by a set percentage over a specified time interval.
     valueType: BOOLEAN
     defaultValue: true
     type: AUTOMATION
@@ -141,28 +133,23 @@ features:
     defaultValue: true
     type: DOMAIN
   slackIntegration:
-    description: >-
-      Receive alerts in Slack. Share Databoards and datablocks in Slack. Use the
-      Databox Slackbot to ask questions about your data.
+    description: Receive alerts in Slack. Share Databoards and datablocks in Slack.
+      Use the Databox Slackbot to ask questions about your data.
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingsUrls:
-      - https://slack.com/pricing
   streamToTv:
-    description: >-
-      View any of your Databoards on a wall-mounted TV in your office. Broadcast
-      your data in the office to motivate your team and keep the metrics that
-      matter front and center.
+    description: View any of your Databoards on a wall-mounted TV in your office.
+      Broadcast your data in the office to motivate your team and keep the metrics
+      that matter front and center.
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
     integrationType: EXTERNAL_DEVICE
   mobileAppAccess:
-    description: >-
-      View all your Databoards, goals and receive alerts and scorecards on your
-      mobile device in our app. IOS and Android native apps available.
+    description: View all your Databoards, goals and receive alerts and scorecards
+      on your mobile device in our app. IOS and Android native apps available.
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
@@ -235,7 +222,6 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs: null
   automatedSends:
     description: ''
     valueType: BOOLEAN
@@ -277,7 +263,7 @@ usageLimits:
     unit: data source
     type: NON_RENEWABLE
     linkedFeatures:
-      - dataSources
+    - dataSources
   historicalDataThreshold:
     description: ''
     valueType: NUMERIC
@@ -285,7 +271,7 @@ usageLimits:
     unit: month
     type: NON_RENEWABLE
     linkedFeatures:
-      - historicalData
+    - historicalData
   warehouseStorageLimit:
     description: ''
     valueType: NUMERIC
@@ -293,7 +279,7 @@ usageLimits:
     unit: GB
     type: NON_RENEWABLE
     linkedFeatures:
-      - warehouseDataStorage
+    - warehouseDataStorage
   databoardsLimit:
     description: ''
     valueType: NUMERIC
@@ -301,7 +287,7 @@ usageLimits:
     unit: /connection
     type: NON_RENEWABLE
     linkedFeatures:
-      - databoards
+    - databoards
   queryBuilderLimit:
     description: ''
     valueType: NUMERIC
@@ -309,27 +295,23 @@ usageLimits:
     unit: metrics
     type: NON_RENEWABLE
     linkedFeatures:
-      - queryBuilder
+    - queryBuilder
   usersLimit:
     description: ''
     valueType: NUMERIC
     defaultValue: 5
     unit: user
     type: NON_RENEWABLE
-    linkedFeatures: null
 plans:
   STARTER:
     description: ''
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: connection/month
     features: null
     usageLimits: null
-    price: 0
   PROFESSIONAL:
     description: ''
-    monthlyPrice: 169
-    annualPrice: 135
+    price: 169
     unit: connection/month
     features:
       dataSyncFrequency:
@@ -357,11 +339,9 @@ plans:
         value: 300
       usersLimit:
         value: 25
-    price: 169
   PERFORMER:
     description: ''
-    monthlyPrice: 289
-    annualPrice: 231
+    price: 289
     unit: connection/month
     features:
       dataSyncFrequency:
@@ -397,12 +377,11 @@ plans:
         value: 1000
       usersLimit:
         value: 1000000000
-    price: 289
 addOns:
   brandingAndWhiteLabelling:
     availableFor:
-      - PROFESSIONAL
-      - PERFORMER
+    - PROFESSIONAL
+    - PERFORMER
     price: 250
     unit: /month
     features:

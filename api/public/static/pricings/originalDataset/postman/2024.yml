@@ -1,9 +1,11 @@
-saasName: Postman
 syntaxVersion: '2.1'
-version: 2024-6-28
-createdAt: '2024-06-28'
+saasName: Postman
+createdAt: '2024-06-29'
+version: '2024-06-29'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20240629141749/https://www.postman.com/pricing/
 features:
   apiClientHTTP:
     description: https://www.postman.com/api-platform/api-client/
@@ -52,20 +54,17 @@ features:
     defaultValue: true
     type: DOMAIN
   collectionRecovery:
-    description: >-
-      https://learning.postman.com/docs/collections/using-collections/#recovering-a-deleted-collection
+    description: https://learning.postman.com/docs/collections/using-collections/#recovering-a-deleted-collection
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   publicApiDocumentation:
-    description: >-
-      https://learning.postman.com/docs/publishing-your-api/publishing-your-docs/#making-your-documentation-public
+    description: https://learning.postman.com/docs/publishing-your-api/publishing-your-docs/#making-your-documentation-public
     valueType: BOOLEAN
     defaultValue: true
     type: INFORMATION
   privateApiDocumentation:
-    description: >-
-      https://learning.postman.com/docs/publishing-your-api/publishing-your-docs/#changing-publication-settings
+    description: https://learning.postman.com/docs/publishing-your-api/publishing-your-docs/#changing-publication-settings
     valueType: BOOLEAN
     defaultValue: true
     type: INFORMATION
@@ -75,17 +74,16 @@ features:
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://slack.com/pricing
+    pricingUrls:
+    - https://slack.com/pricing
   microsoftTeamsIntegration:
     description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - >-
-        https://www.microsoft.com/en-us/microsoft-365/microsoft-teams/group-chat-software
+    pricingUrls:
+    - https://www.microsoft.com/en-us/microsoft-365/microsoft-teams/group-chat-software
   teamWorkspaces:
     description: ''
     valueType: BOOLEAN
@@ -97,26 +95,22 @@ features:
     defaultValue: true
     type: DOMAIN
   publicWorkspaces:
-    description: >-
-      https://learning.postman.com/docs/collaborating-in-postman/using-workspaces/creating-workspaces/
+    description: https://learning.postman.com/docs/collaborating-in-postman/using-workspaces/creating-workspaces/
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   privateWorkspaces:
-    description: >-
-      https://learning.postman.com/docs/collaborating-in-postman/using-workspaces/creating-workspaces/
+    description: https://learning.postman.com/docs/collaborating-in-postman/using-workspaces/creating-workspaces/
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
   singlePartnerWorkspaces:
-    description: >-
-      https://learning.postman.com/docs/collaborating-in-postman/using-workspaces/partner-workspaces/
+    description: https://learning.postman.com/docs/collaborating-in-postman/using-workspaces/partner-workspaces/
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
   multiPartnerWorkspaces:
-    description: >-
-      https://learning.postman.com/docs/collaborating-in-postman/using-workspaces/partner-workspaces/
+    description: https://learning.postman.com/docs/collaborating-in-postman/using-workspaces/partner-workspaces/
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
@@ -151,8 +145,7 @@ features:
     defaultValue: true
     type: DOMAIN
   mockServers:
-    description: >-
-      https://learning.postman.com/docs/designing-and-developing-your-api/mocking-data/setting-up-mock/
+    description: https://learning.postman.com/docs/designing-and-developing-your-api/mocking-data/setting-up-mock/
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
@@ -162,8 +155,7 @@ features:
     defaultValue: true
     type: INFORMATION
   collectionRunner:
-    description: >-
-      https://learning.postman.com/docs/collections/running-collections/intro-to-collection-runs/
+    description: https://learning.postman.com/docs/collections/running-collections/intro-to-collection-runs/
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
@@ -173,15 +165,13 @@ features:
     defaultValue: true
     type: DOMAIN
   postmanCLI:
-    description: >-
-      https://learning.postman.com/docs/running-collections/using-newman-cli/intro-newman-cli/
+    description: https://learning.postman.com/docs/running-collections/using-newman-cli/intro-newman-cli/
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
     integrationType: EXTERNAL_DEVICE
   newmanCLI:
-    description: >-
-      https://learning.postman.com/docs/running-collections/using-newman-cli/intro-newman-cli/
+    description: https://learning.postman.com/docs/running-collections/using-newman-cli/intro-newman-cli/
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
@@ -215,14 +205,12 @@ features:
     defaultValue: true
     type: SUPPORT
   auditLogs:
-    description: >-
-      https://learning.postman.com/docs/administration/managing-your-team/audit-logs/
+    description: https://learning.postman.com/docs/administration/managing-your-team/audit-logs/
     valueType: BOOLEAN
     defaultValue: false
     type: INFORMATION
   deploymentControl:
-    description: >-
-      https://learning.postman.com/docs/administration/enterprise/managing-enterprise-deployment/
+    description: https://learning.postman.com/docs/administration/enterprise/managing-enterprise-deployment/
     valueType: BOOLEAN
     defaultValue: false
     type: MANAGEMENT
@@ -258,8 +246,7 @@ features:
     type: AUTOMATION
     automationType: TRACKING
   secretScanner:
-    description: >-
-      https://learning.postman.com/docs/administration/managing-your-team/secret-scanner/
+    description: https://learning.postman.com/docs/administration/managing-your-team/secret-scanner/
     valueType: BOOLEAN
     defaultValue: false
     type: AUTOMATION
@@ -271,8 +258,7 @@ features:
     type: INTEGRATION
     integrationType: IDENTITY_PROVIDER
   userProvisioning:
-    description: >-
-      https://learning.postman.com/docs/administration/scim-provisioning/scim-provisioning-overview/
+    description: https://learning.postman.com/docs/administration/scim-provisioning/scim-provisioning-overview/
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
@@ -467,7 +453,7 @@ features:
     description: ''
     valueType: TEXT
     defaultValue:
-      - CARD
+    - CARD
     type: PAYMENT
   termsOfService:
     description: ''
@@ -553,7 +539,7 @@ usageLimits:
     unit: calls/month
     type: RENEWABLE
     linkedFeatures:
-      - postmanApi
+    - postmanApi
   collectionRecoveryLimit:
     description: ''
     valueType: NUMERIC
@@ -561,7 +547,7 @@ usageLimits:
     unit: day
     type: NON_RENEWABLE
     linkedFeatures:
-      - collectionRecovery
+    - collectionRecovery
   packagesLimit:
     description: ''
     valueType: NUMERIC
@@ -569,7 +555,7 @@ usageLimits:
     unit: package
     type: NON_RENEWABLE
     linkedFeatures:
-      - packages
+    - packages
   mockServerCallsLimit:
     description: ''
     valueType: NUMERIC
@@ -577,7 +563,7 @@ usageLimits:
     unit: call/month
     type: RENEWABLE
     linkedFeatures:
-      - mockServers
+    - mockServers
   monitoringCallsLimit:
     description: ''
     valueType: NUMERIC
@@ -585,7 +571,7 @@ usageLimits:
     unit: call/month
     type: RENEWABLE
     linkedFeatures:
-      - monitoring
+    - monitoring
   collectionRunsLimit:
     description: ''
     valueType: NUMERIC
@@ -593,7 +579,7 @@ usageLimits:
     unit: run/month
     type: RENEWABLE
     linkedFeatures:
-      - collectionRunner
+    - collectionRunner
   localPerformanceTestingUserLimit:
     description: ''
     valueType: NUMERIC
@@ -601,7 +587,7 @@ usageLimits:
     unit: virtual user
     type: NON_RENEWABLE
     linkedFeatures:
-      - localPerformanceTesting
+    - localPerformanceTesting
   localPerformanceTestingRunsLimit:
     description: ''
     valueType: NUMERIC
@@ -609,7 +595,7 @@ usageLimits:
     unit: run
     type: NON_RENEWABLE
     linkedFeatures:
-      - localPerformanceTesting
+    - localPerformanceTesting
   customDomainsLimit:
     description: ''
     valueType: NUMERIC
@@ -617,7 +603,7 @@ usageLimits:
     unit: domain
     type: NON_RENEWABLE
     linkedFeatures:
-      - customDomains
+    - customDomains
   collectionGuestViewerLimit:
     description: ''
     valueType: NUMERIC
@@ -625,7 +611,7 @@ usageLimits:
     unit: viewer/collection
     type: NON_RENEWABLE
     linkedFeatures:
-      - collectionGuestViewerRole
+    - collectionGuestViewerRole
   flowCredits:
     description: Number of flows executions steps included per month
     valueType: NUMERIC
@@ -633,7 +619,7 @@ usageLimits:
     unit: credit/month
     type: RESPONSE_DRIVEN
     linkedFeatures:
-      - postmanFlows
+    - postmanFlows
   flowsPayloadSize:
     description: Number of flows payload size included per month
     valueType: NUMERIC
@@ -641,20 +627,17 @@ usageLimits:
     unit: MB/call
     type: NON_RENEWABLE
     linkedFeatures:
-      - postmanFlows
+    - postmanFlows
 plans:
   FREE:
     description: ''
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: user/month
     features: null
     usageLimits: null
-    price: 0
   BASIC:
     description: ''
-    monthlyPrice: 19
-    annualPrice: 14
+    price: 19
     unit: user/month
     features:
       slackIntegration:
@@ -674,11 +657,9 @@ plans:
         value: 50
       collectionGuestViewerLimit:
         value: 10
-    price: 19
   PROFESSIONAL:
     description: ''
-    monthlyPrice: 39
-    annualPrice: 29
+    price: 39
     unit: user/month
     features:
       slackIntegration:
@@ -730,11 +711,9 @@ plans:
         value: 50
       collectionGuestViewerLimit:
         value: 25
-    price: 39
   ENTERPRISE:
     description: ''
-    monthlyPrice: 49
-    annualPrice: 49
+    price: 49
     unit: user/month
     features:
       slackIntegration:
@@ -809,8 +788,8 @@ plans:
         value: true
       paymentMethod:
         value:
-          - INVOICE
-          - OTHER
+        - INVOICE
+        - OTHER
       termsOfService:
         value: true
     usageLimits:
@@ -828,13 +807,12 @@ plans:
         value: 50
       collectionGuestViewerLimit:
         value: .inf
-    price: 49
 addOns:
   extraMonitoringCalls:
     availableFor:
-      - BASIC
-      - PROFESSIONAL
-      - ENTERPRISE
+    - BASIC
+    - PROFESSIONAL
+    - ENTERPRISE
     price: 0.75
     features: null
     usageLimits: null
@@ -843,9 +821,9 @@ addOns:
         value: 1000
   extraMockServerCalls:
     availableFor:
-      - BASIC
-      - PROFESSIONAL
-      - ENTERPRISE
+    - BASIC
+    - PROFESSIONAL
+    - ENTERPRISE
     price: 0.75
     features: null
     usageLimits: null
@@ -854,9 +832,9 @@ addOns:
         value: 1000
   customDomains:
     availableFor:
-      - BASIC
-      - PROFESSIONAL
-      - ENTERPRISE
+    - BASIC
+    - PROFESSIONAL
+    - ENTERPRISE
     price: 10
     unit: domain/month
     features: null
@@ -866,11 +844,10 @@ addOns:
         value: 1
   postmanFlowsBasic:
     availableFor:
-      - BASIC
-      - PROFESSIONAL
-      - ENTERPRISE
-    monthlyPrice: 15
-    annualPrice: 12
+    - BASIC
+    - PROFESSIONAL
+    - ENTERPRISE
+    price: 15
     unit: user/month
     features:
       postmanFlows:
@@ -883,14 +860,12 @@ addOns:
       flowsPayloadSize:
         value: 1
     usageLimitsExtensions: null
-    price: 15
   postmanFlowsProfessional:
     availableFor:
-      - BASIC
-      - PROFESSIONAL
-      - ENTERPRISE
-    monthlyPrice: 25
-    annualPrice: 20
+    - BASIC
+    - PROFESSIONAL
+    - ENTERPRISE
+    price: 25
     unit: user/month
     features:
       postmanFlows:
@@ -905,12 +880,11 @@ addOns:
       flowsPayloadSize:
         value: 5
     usageLimitsExtensions: null
-    price: 25
   postbotBasicTier:
     availableFor:
-      - FREE
-      - BASIC
-      - PROFESSIONAL
+    - FREE
+    - BASIC
+    - PROFESSIONAL
     price: 9
     unit: user/month
     features:
@@ -930,7 +904,7 @@ addOns:
     usageLimitsExtensions: null
   postbotEnterpriseTier:
     availableFor:
-      - ENTERPRISE
+    - ENTERPRISE
     price: 19
     unit: user/month
     features:
@@ -954,10 +928,10 @@ addOns:
     usageLimitsExtensions: null
   unlimitedCollectionRunsAddOn:
     availableFor:
-      - FREE
-      - BASIC
-      - PROFESSIONAL
-      - ENTERPRISE
+    - FREE
+    - BASIC
+    - PROFESSIONAL
+    - ENTERPRISE
     price: 49
     unit: user/month
     features: null
@@ -967,7 +941,7 @@ addOns:
     usageLimitsExtensions: null
   partnerManagerRoleProfessionalTierAddOn:
     availableFor:
-      - PROFESSIONAL
+    - PROFESSIONAL
     price: 29
     unit: user/month
     features:
@@ -977,7 +951,7 @@ addOns:
     usageLimitsExtensions: null
   partnerManagerRoleEnterpriseTierAddOn:
     availableFor:
-      - ENTERPRISE
+    - ENTERPRISE
     price: 49
     unit: user/month
     features:
@@ -987,7 +961,7 @@ addOns:
     usageLimitsExtensions: null
   advancedSecurityAdministration:
     availableFor:
-      - ENTERPRISE
+    - ENTERPRISE
     price: 29
     unit: user/month
     features:
@@ -997,7 +971,7 @@ addOns:
     usageLimitsExtensions: null
   apiBuilderAddOn:
     availableFor:
-      - ENTERPRISE
+    - ENTERPRISE
     price: 49
     unit: user/month
     features:

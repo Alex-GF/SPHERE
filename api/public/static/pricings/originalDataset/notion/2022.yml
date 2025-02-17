@@ -1,9 +1,11 @@
-saasName: Notion
 syntaxVersion: '2.1'
-version: '2022-11-29'
-createdAt: '2022-11-29'
+saasName: Notion
+createdAt: '2022-11-30'
+version: '2022-11-30'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20221130194246/https://www.notion.so/pricing
 features:
   pages:
     description: ''
@@ -244,7 +246,6 @@ usageLimits:
     defaultValue: 1
     unit: member
     type: NON_RENEWABLE
-    linkedFeatures: null
   guestsLimit:
     description: ''
     valueType: NUMERIC
@@ -252,7 +253,7 @@ usageLimits:
     unit: guest
     type: NON_RENEWABLE
     linkedFeatures:
-      - guests
+    - guests
   fileUploadsLimit:
     description: ''
     valueType: NUMERIC
@@ -260,15 +261,15 @@ usageLimits:
     unit: MB
     type: NON_RENEWABLE
     linkedFeatures:
-      - fileUploads
+    - fileUploads
   versionHistoryThreshold:
     description: ''
     valueType: NUMERIC
-    defaultValue: 30
+    defaultValue: 0
     unit: days
     type: NON_RENEWABLE
     linkedFeatures:
-      - versionHistory
+    - versionHistory
   syncDatabasesLimit:
     description: ''
     valueType: NUMERIC
@@ -276,20 +277,17 @@ usageLimits:
     unit: database
     type: NON_RENEWABLE
     linkedFeatures:
-      - syncDatabases
+    - syncDatabases
 plans:
   PERSONAL:
     description: ''
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: user/month
     features: null
     usageLimits: null
-    price: 0
   PERSONAL_PRO:
     description: ''
-    monthlyPrice: 5
-    annualPrice: 4
+    price: 5
     unit: user/month
     features:
       versionHistory:
@@ -301,13 +299,13 @@ plans:
         value: .inf
       fileUploadsLimit:
         value: .inf
+      versionHistoryThreshold:
+        value: 30
       syncDatabasesLimit:
         value: .inf
-    price: 5
   TEAM:
     description: ''
-    monthlyPrice: 10
-    annualPrice: 8
+    price: 10
     unit: user/month
     features:
       versionHistory:
@@ -333,13 +331,13 @@ plans:
         value: .inf
       fileUploadsLimit:
         value: .inf
+      versionHistoryThreshold:
+        value: 30
       syncDatabasesLimit:
         value: .inf
-    price: 10
   ENTERPRISE:
     description: ''
-    monthlyPrice: Contact Sales
-    annualPrice: Contact Sales
+    price: Contact Sales
     unit: user/month
     features:
       versionHistory:
@@ -393,4 +391,4 @@ plans:
         value: .inf
       syncDatabasesLimit:
         value: .inf
-    price: Contact Sales
+addOns: null

@@ -1,9 +1,11 @@
-saasName: Trustmary - Collect
 syntaxVersion: '2.1'
-version: '2023-10-30'
+saasName: Trustmary - Collect
 createdAt: '2023-10-30'
+version: '2023-10-30'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20231031155120/https://trustmary.com/pricing/
 features:
   responses:
     description: ''
@@ -34,24 +36,24 @@ features:
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://zapier.com/pricing
+    pricingUrls:
+    - https://zapier.com/pricing
   hubspotIntegration:
     description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://www.hubspot.com/pricing/marketing/starter
+    pricingUrls:
+    - https://www.hubspot.com/pricing/marketing/starter
   pipedriveIntegration:
     description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://www.pipedrive.com/en/pricing
+    pricingUrls:
+    - https://www.pipedrive.com/en/pricing
   domains:
     description: ''
     valueType: BOOLEAN
@@ -214,20 +216,17 @@ usageLimits:
     unit: connection
     type: NON_RENEWABLE
     linkedFeatures:
-      - reviewPlatform
+    - reviewPlatform
 plans:
   SOLO:
     description: Essentials to get more reviews and feedback
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: /month
     features: null
     usageLimits: null
-    price: 0
   STARTER:
     description: For smaller teams, more responses and automations
-    monthlyPrice: 29
-    annualPrice: 24
+    price: 29
     unit: /month
     features:
       automations:
@@ -243,11 +242,9 @@ plans:
         value: 5000
       reviewPlatformConnectionsLimit:
         value: 3
-    price: 29
   BUSINESS:
     description: ''
-    monthlyPrice: 79
-    annualPrice: 65.9
+    price: 79
     unit: /month
     features:
       automations:
@@ -271,11 +268,9 @@ plans:
         value: 25000
       reviewPlatformConnectionsLimit:
         value: 10
-    price: 79
   SCALE:
     description: ''
-    monthlyPrice: 189
-    annualPrice: 157.5
+    price: 189
     unit: /month
     features:
       automations:
@@ -301,4 +296,4 @@ plans:
         value: 100000
       reviewPlatformConnectionsLimit:
         value: 25
-    price: 189
+addOns: null

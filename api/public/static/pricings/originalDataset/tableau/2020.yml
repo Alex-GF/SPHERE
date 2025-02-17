@@ -1,9 +1,11 @@
-saasName: Tableau
 syntaxVersion: '2.1'
-version: '2020-11-25'
-createdAt: '2020-11-25'
+saasName: Tableau
+createdAt: '2020-11-26'
+version: '2020-11-26'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: http://web.archive.org/web/20201126181617/https://www.tableau.com/pricing/teams-orgs
 features:
   webAccess:
     description: ''
@@ -44,9 +46,8 @@ features:
     defaultValue: true
     type: DOMAIN
   downloadVisualizationAsImages:
-    description: >-
-      Download a snapshot of a visualization or dashboard as either a .pdf or
-      .png file.
+    description: Download a snapshot of a visualization or dashboard as either a .pdf
+      or .png file.
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
@@ -115,17 +116,15 @@ features:
     defaultValue: false
     type: DOMAIN
   askData:
-    description: >-
-      Explore an existing data source published to Tableau Server or Tableau
+    description: Explore an existing data source published to Tableau Server or Tableau
       Online with Ask Data.
     valueType: BOOLEAN
     defaultValue: false
     type: AUTOMATION
     automationType: BOT
   createAndPublishNewWorkbookFromNewDataSources:
-    description: >-
-      Create and share content by connecting to a new data source, including raw
-      data. You're not restricted to existing, published data sources.
+    description: Create and share content by connecting to a new data source, including
+      raw data. You're not restricted to existing, published data sources.
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
@@ -136,8 +135,7 @@ features:
     defaultValue: false
     type: DOMAIN
   createNewWorkbooksBasedOnPreBuiltDashboardStarters:
-    description: >-
-      Dashboard Starters allow you to connect prebuilt dashboards to common
+    description: Dashboard Starters allow you to connect prebuilt dashboards to common
       enterprise applications.
     valueType: BOOLEAN
     defaultValue: false
@@ -216,24 +214,19 @@ usageLimits:
     unit: flow
     type: NON_RENEWABLE
     linkedFeatures:
-      - runFlows
+    - runFlows
 plans:
   VIEWER:
-    description: >-
-      View and interact with dashboards and visualizations in a secure,
+    description: View and interact with dashboards and visualizations in a secure,
       easy-to-use platform.
-    monthlyPrice: null
-    annualPrice: 15
+    price: 15
     unit: user/month
     features: null
     usageLimits: null
-    price: 15
   EXPLORER:
-    description: >-
-      Explore trusted data and answer your own questions faster with full
+    description: Explore trusted data and answer your own questions faster with full
       self-service analytics.
-    monthlyPrice: null
-    annualPrice: 42
+    price: 42
     unit: user/month
     features:
       downloadFullData:
@@ -257,13 +250,10 @@ plans:
       certifyDataSources:
         value: true
     usageLimits: null
-    price: 42
   CREATOR:
-    description: >-
-      Discover insights with a powerful suite of products that support your
-      end-to-end analytics workflow.
-    monthlyPrice: null
-    annualPrice: 70
+    description: Discover insights with a powerful suite of products that support
+      your end-to-end analytics workflow.
+    price: 70
     unit: user/month
     features:
       downloadFullData:
@@ -299,11 +289,10 @@ plans:
       certifyDataSources:
         value: true
     usageLimits: null
-    price: 70
 addOns:
   dataManagementViewer:
     availableFor:
-      - VIEWER
+    - VIEWER
     price: 5.5
     unit: user/month
     features:
@@ -315,7 +304,7 @@ addOns:
     usageLimitsExtensions: null
   dataManagementExplorer:
     availableFor:
-      - EXPLORER
+    - EXPLORER
     price: 5.5
     unit: user/month
     features:
@@ -331,7 +320,7 @@ addOns:
     usageLimitsExtensions: null
   dataManagementCreator:
     availableFor:
-      - CREATOR
+    - CREATOR
     price: 5.5
     unit: user/month
     features:
@@ -357,7 +346,7 @@ addOns:
     usageLimitsExtensions: null
   resourceBlocks:
     availableFor:
-      - CREATOR
+    - CREATOR
     price: 250
     unit: block/month
     features: null

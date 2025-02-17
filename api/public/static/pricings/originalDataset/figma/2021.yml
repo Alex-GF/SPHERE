@@ -1,9 +1,9 @@
-saasName: Figma
 syntaxVersion: '2.1'
-version: '2021-11-29'
-createdAt: '2021-11-29'
+saasName: Figma
+version: '2021-11-30' 
+createdAt: '2021-11-30'
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20211130230706/https://www.figma.com/pricing/
 features:
   versionHistory:
     description: ''
@@ -215,16 +215,13 @@ features:
 plans:
   STARTER:
     description: ''
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: editor/month
     features: null
     usageLimits: null
-    price: 0
   PROFESSIONAL:
     description: ''
-    monthlyPrice: null
-    annualPrice: 12
+    price: 12
     unit: editor/month
     features:
       privateProjects:
@@ -236,11 +233,9 @@ plans:
       teamLibraries:
         value: true
     usageLimits: null
-    price: 12
   ORGANIZATION:
     description: ''
-    monthlyPrice: null
-    annualPrice: 45
+    price: 45
     unit: editor/month
     features:
       privateProjects:
@@ -278,4 +273,3 @@ plans:
       activityLogs:
         value: true
     usageLimits: null
-    price: 45

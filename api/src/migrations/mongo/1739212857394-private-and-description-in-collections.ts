@@ -8,8 +8,13 @@ export async function up (connection: Connection): Promise<void> {
   mongoose.connect(getMongoDBConnectionURI());
   
   await PricingCollectionMongoose.updateMany(
-    {},
-    { $set: { description: "This collection does not have a description", private: false } }
+    { description: { $exists: false } }, 
+    { $set: { description: "This collection does not have a description" } }
+  );
+
+  await PricingCollectionMongoose.updateMany(
+    { pricing: { $exists: false } },
+    { $set: { private: false } }
   );
 }
 

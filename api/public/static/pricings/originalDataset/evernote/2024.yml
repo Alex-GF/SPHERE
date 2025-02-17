@@ -1,9 +1,11 @@
-saasName: Evernote
 syntaxVersion: '2.1'
-version: 2024-7-6
-createdAt: '2024-07-06'
+saasName: Evernote
+createdAt: '2024-07-07'
+version: '2024-07-07'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20240707040421/https://evernote.com/compare-plans
 features:
   notes:
     description: ''
@@ -67,20 +69,17 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://workspace.google.com/pricing
-      - >-
-        https://www.microsoft.com/en-us/microsoft-365/microsoft-outlook-email-and-calendar-software
+    pricingUrls:
+    - https://workspace.google.com/pricing
+    - https://www.microsoft.com/en-us/microsoft-365/microsoft-outlook-email-and-calendar-software
   attachFilesToNotes:
-    description: >-
-      Attach photos, PDFs, spreadsheets, Google Docs, and other files to your
-      notes
+    description: Attach photos, PDFs, spreadsheets, Google Docs, and other files to
+      your notes
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   advancedSearch:
-    description: >-
-      Find anything in your account with Boolean, geographic, and filtered
+    description: Find anything in your account with Boolean, geographic, and filtered
       searches
     valueType: BOOLEAN
     defaultValue: true
@@ -96,9 +95,8 @@ features:
     defaultValue: true
     type: DOMAIN
   easySharing:
-    description: >-
-      Email content into Evernote, email notes to collaborators, export notes
-      and notebooks as PDFs
+    description: Email content into Evernote, email notes to collaborators, export
+      notes and notebooks as PDFs
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
@@ -120,25 +118,24 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://workspace.google.com/pricing
+    pricingUrls:
+    - https://workspace.google.com/pricing
   microsoftIntegration:
     description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - >-
-        https://www.microsoft.com/en-us/microsoft-365/microsoft-outlook-email-and-calendar-software
+    pricingUrls:
+    - https://www.microsoft.com/en-us/microsoft-365/microsoft-outlook-email-and-calendar-software
   slackIntegration:
     description: ''
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://slack.com/pricing
+    pricingUrls:
+    - https://slack.com/pricing
   twoStepVerification:
     description: ''
     valueType: BOOLEAN
@@ -203,7 +200,7 @@ usageLimits:
     unit: notes
     type: NON_RENEWABLE
     linkedFeatures:
-      - notes
+    - notes
   notebooksLimit:
     description: ''
     valueType: NUMERIC
@@ -211,7 +208,7 @@ usageLimits:
     unit: notebooks
     type: NON_RENEWABLE
     linkedFeatures:
-      - notebooks
+    - notebooks
   maximumNoteSize:
     description: ''
     valueType: NUMERIC
@@ -219,21 +216,19 @@ usageLimits:
     unit: MB/note
     type: NON_RENEWABLE
     linkedFeatures:
-      - notes
+    - notes
   globalMonthlyUploadLimit:
     description: ''
     valueType: NUMERIC
     defaultValue: 60
     unit: MB
     type: RENEWABLE
-    linkedFeatures: null
   monthlyUploadLimitByUser:
     description: ''
     valueType: NUMERIC
     defaultValue: 0
     unit: MB
     type: RENEWABLE
-    linkedFeatures: null
   syncAccrossDevicesLimit:
     description: ''
     valueType: NUMERIC
@@ -241,7 +236,7 @@ usageLimits:
     unit: devices
     type: NON_RENEWABLE
     linkedFeatures:
-      - syncAcrossDevices
+    - syncAcrossDevices
   externalCalendarsLimit:
     description: ''
     valueType: NUMERIC
@@ -249,20 +244,17 @@ usageLimits:
     unit: calendars
     type: NON_RENEWABLE
     linkedFeatures:
-      - externalCalendars
+    - externalCalendars
 plans:
   FREE:
     description: Capture ideas and find them quickly
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: /month
     features: null
     usageLimits: null
-    price: 0
   PERSONAL:
     description: Keep home and family on track
-    monthlyPrice: 12.99
-    annualPrice: 10.83
+    price: 12.99
     unit: /month
     features:
       supportTickets:
@@ -278,11 +270,9 @@ plans:
         value: 10240
       syncAccrossDevicesLimit:
         value: 1000000000
-    price: 12.99
   PROFESIONAL:
     description: Tackle any project, at work or at home
-    monthlyPrice: 16.99
-    annualPrice: 14.16
+    price: 16.99
     unit: /month
     features:
       aiPoweredSearch:
@@ -308,11 +298,9 @@ plans:
         value: 1000000000
       externalCalendarsLimit:
         value: 5
-    price: 16.99
   TEAMS:
     description: Collaborate and share among your team
-    monthlyPrice: 24.99
-    annualPrice: 20.83
+    price: 24.99
     unit: user/month
     features:
       aiPoweredSearch:
@@ -352,4 +340,4 @@ plans:
         value: 1000000000
       externalCalendarsLimit:
         value: 5
-    price: 24.99
+addOns: null

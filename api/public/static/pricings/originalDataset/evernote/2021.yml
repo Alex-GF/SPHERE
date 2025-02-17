@@ -1,9 +1,11 @@
-saasName: Evernote
 syntaxVersion: '2.1'
-version: '2021-11-28'
-createdAt: '2021-11-28'
+saasName: Evernote
+createdAt: '2021-11-29'
+version: '2021-11-29'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20211129200145/https://evernote.com/compare-plans
 features:
   appForIOS:
     description: ''
@@ -101,8 +103,8 @@ features:
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://workspace.google.com/pricing
+    pricingUrls:
+    - https://workspace.google.com/pricing
   assignTasksToOthers:
     description: ''
     valueType: BOOLEAN
@@ -120,8 +122,8 @@ features:
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://workspace.google.com/pricing
+    pricingUrls:
+    - https://workspace.google.com/pricing
   customizeHomeWithPinnedNotesWidget:
     description: ''
     valueType: BOOLEAN
@@ -166,9 +168,8 @@ features:
     type: INTEGRATION
     integrationType: EXTENSION
   attachFilesToNotes:
-    description: >-
-      Attach photos, PDFs, spreadsheets, Google Docs, and other files to your
-      notes
+    description: Attach photos, PDFs, spreadsheets, Google Docs, and other files to
+      your notes
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
@@ -218,7 +219,6 @@ features:
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs: null
   createCustomTemplates:
     description: ''
     valueType: BOOLEAN
@@ -266,8 +266,8 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://workspace.google.com/pricing
+    pricingUrls:
+    - https://workspace.google.com/pricing
   customizeHomeWithMoreWidgets:
     description: ''
     valueType: BOOLEAN
@@ -290,8 +290,8 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://one.google.com/about/plans
+    pricingUrls:
+    - https://one.google.com/about/plans
   searchTextInsideImages:
     description: ''
     valueType: BOOLEAN
@@ -363,7 +363,6 @@ features:
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs: null
   advancedPdfExportControls:
     description: ''
     valueType: BOOLEAN
@@ -376,7 +375,7 @@ features:
     type: INTEGRATION
     integrationType: WEB_SAAS
     pricingUrls:
-      - https://slack.com/pricing
+    - https://slack.com/pricing
   connectWithSalesforce:
     description: ''
     valueType: BOOLEAN
@@ -384,7 +383,7 @@ features:
     type: INTEGRATION
     integrationType: WEB_SAAS
     pricingUrls:
-      - https://www.salesforce.com/eu/sales/pricing/
+    - https://www.salesforce.com/eu/sales/pricing/
   connectWithTeams:
     description: ''
     valueType: BOOLEAN
@@ -392,8 +391,7 @@ features:
     type: INTEGRATION
     integrationType: WEB_SAAS
     pricingUrls:
-      - >-
-        https://www.microsoft.com/en-us/microsoft-365/microsoft-teams/group-chat-software
+    - https://www.microsoft.com/en-us/microsoft-365/microsoft-teams/group-chat-software
   dataNotForSale:
     description: ''
     valueType: BOOLEAN
@@ -450,9 +448,8 @@ features:
     defaultValue: false
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - >-
-        https://www.microsoft.com/en-us/microsoft-365/outlook/email-and-calendar-software-microsoft-outlook
+    pricingUrls:
+    - https://www.microsoft.com/en-us/microsoft-365/outlook/email-and-calendar-software-microsoft-outlook
 usageLimits:
   syncDevicesLimit:
     description: ''
@@ -461,7 +458,7 @@ usageLimits:
     unit: device
     type: NON_RENEWABLE
     linkedFeatures:
-      - syncAcrossDevices
+    - syncAcrossDevices
   maximumNoteSize:
     description: ''
     valueType: NUMERIC
@@ -469,34 +466,29 @@ usageLimits:
     unit: MB/note
     type: NON_RENEWABLE
     linkedFeatures:
-      - notes
+    - notes
   globalMonthlyUploadLimit:
     description: ''
     valueType: NUMERIC
     defaultValue: 60
     unit: MB
     type: RENEWABLE
-    linkedFeatures: null
   monthlyUploadLimitByUser:
     description: ''
     valueType: NUMERIC
     defaultValue: 0
     unit: MB
     type: RENEWABLE
-    linkedFeatures: null
 plans:
   FREE:
     description: Capture ideas and find them quickly
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: /month
     features: null
     usageLimits: null
-    price: 0
   PERSONAL:
     description: Keep home and family on track
-    monthlyPrice: 7.99
-    annualPrice: 5.83
+    price: 7.99
     unit: /month
     features:
       tasksManagementView:
@@ -560,11 +552,9 @@ plans:
         value: 200
       globalMonthlyUploadLimit:
         value: 10240
-    price: 7.99
   PROFESIONAL:
     description: Tackle any project, at work or at home
-    monthlyPrice: 9.99
-    annualPrice: 8.33
+    price: 9.99
     unit: /month
     features:
       tasksManagementView:
@@ -652,11 +642,9 @@ plans:
         value: 200
       globalMonthlyUploadLimit:
         value: 20480
-    price: 9.99
   TEAMS:
     description: Collaborate and share knowledge to keep your team on the same page.
-    monthlyPrice: 14.99
-    annualPrice: 12.49
+    price: 14.99
     unit: user/month
     features:
       tasksManagementView:
@@ -758,4 +746,4 @@ plans:
         value: 20480
       monthlyUploadLimitByUser:
         value: 2048
-    price: 14.99
+addOns: null

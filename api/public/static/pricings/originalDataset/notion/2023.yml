@@ -1,9 +1,11 @@
-saasName: Notion
 syntaxVersion: '2.1'
-version: '2023-11-28'
-createdAt: '2023-11-28'
+saasName: Notion
+createdAt: '2023-11-29'
+version: '2023-11-29'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20231129223436/https://www.notion.so/pricing
 features:
   pages:
     description: ''
@@ -92,16 +94,16 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://slack.com/pricing
+    pricingUrls:
+    - https://slack.com/pricing
   zapierIntegration:
     description: ''
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
-      - https://zapier.com/pricing
+    pricingUrls:
+    - https://zapier.com/pricing
   publicApi:
     description: ''
     valueType: BOOLEAN
@@ -242,7 +244,7 @@ usageLimits:
     unit: guest
     type: NON_RENEWABLE
     linkedFeatures:
-      - guests
+    - guests
   fileUploadsLimit:
     description: ''
     valueType: NUMERIC
@@ -250,15 +252,15 @@ usageLimits:
     unit: MB
     type: NON_RENEWABLE
     linkedFeatures:
-      - fileUploads
+    - fileUploads
   pageHistoryThreshold:
     description: ''
     valueType: NUMERIC
-    defaultValue: 7
+    defaultValue: 0
     unit: days
     type: NON_RENEWABLE
     linkedFeatures:
-      - pageHistory
+    - pageHistory
   syncDatabasesLimit:
     description: ''
     valueType: NUMERIC
@@ -266,7 +268,7 @@ usageLimits:
     unit: database
     type: NON_RENEWABLE
     linkedFeatures:
-      - syncDatabases
+    - syncDatabases
   rowLimitPerSyncedDatabase:
     description: ''
     valueType: NUMERIC
@@ -274,20 +276,17 @@ usageLimits:
     unit: row
     type: NON_RENEWABLE
     linkedFeatures:
-      - syncDatabases
+    - syncDatabases
 plans:
   FREE:
     description: ''
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: user/month
     features: null
     usageLimits: null
-    price: 0
   PLUS:
     description: ''
-    monthlyPrice: 8
-    annualPrice: 10
+    price: 8
     unit: user/month
     features:
       notionSiteDomain:
@@ -297,21 +296,17 @@ plans:
       prioritySupport:
         value: true
     usageLimits:
-      fileUploadsLimit:
-        value: .inf
-      pageHistoryThreshold:
-        value: 30
       guestsLimit:
         value: 100
+      fileUploadsLimit:
+        value: .inf
       syncDatabasesLimit:
         value: .inf
       rowLimitPerSyncedDatabase:
         value: 20000
-    price: 8
   BUSINESS:
     description: ''
-    monthlyPrice: 18
-    annualPrice: 15
+    price: 18
     unit: user/month
     features:
       advancedPageAnalytics:
@@ -329,21 +324,17 @@ plans:
       prioritySupport:
         value: true
     usageLimits:
-      fileUploadsLimit:
-        value: .inf
-      pageHistoryThreshold:
-        value: 90
       guestsLimit:
         value: 250
+      fileUploadsLimit:
+        value: .inf
       syncDatabasesLimit:
         value: .inf
       rowLimitPerSyncedDatabase:
         value: 20000
-    price: 18
   ENTERPRISE:
     description: ''
-    monthlyPrice: Contact Sales
-    annualPrice: Contact Sales
+    price: Contact Sales
     unit: user/month
     features:
       advancedPageAnalytics:
@@ -395,14 +386,12 @@ plans:
       customerSuccessManager:
         value: true
     usageLimits:
-      fileUploadsLimit:
-        value: .inf
-      pageHistoryThreshold:
-        value: .inf
       guestsLimit:
         value: 250
+      fileUploadsLimit:
+        value: .inf
       syncDatabasesLimit:
         value: .inf
       rowLimitPerSyncedDatabase:
         value: 20000
-    price: Contact Sales
+addOns: null

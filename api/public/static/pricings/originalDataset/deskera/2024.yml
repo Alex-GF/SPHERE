@@ -1,9 +1,8 @@
-saasName: Deskera
 syntaxVersion: '2.1'
-version: 2024-7-15
+saasName: Deskera
+version: '2024-07-15'
 createdAt: '2024-07-15'
 currency: USD
-variables: {}
 features:
   estimates:
     description: ''
@@ -459,7 +458,7 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
+    pricingUrls:
       - https://amazon.com/
   paypalIntegration:
     description: ''
@@ -467,7 +466,7 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
+    pricingUrls:
       - https://paypal.com/
   shipstationIntegration:
     description: ''
@@ -475,7 +474,7 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
+    pricingUrls:
       - https://shipstation.com/
   shopifyIntegration:
     description: ''
@@ -483,7 +482,7 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
+    pricingUrls:
       - https://shopify.com/
   squareIntegration:
     description: ''
@@ -491,7 +490,7 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
+    pricingUrls:
       - https://square.com/
   stripeIntegration:
     description: ''
@@ -499,7 +498,7 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
+    pricingUrls:
       - https://stripe.com/
   wooCommerceIntegration:
     description: ''
@@ -507,7 +506,7 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
-    pricingURLs:
+    pricingUrls:
       - https://woocommerce.com/
   mobileApp:
     description: ''
@@ -544,14 +543,13 @@ features:
 plans:
   GROWTH:
     description: ''
-    annualPrice: 199
+    price: 199
     unit: user/month
     features: null
     usageLimits: null
-    price: 199
   ESSENTIAL:
     description: ''
-    annualPrice: 249
+    price: 249
     unit: user/month
     features:
       rowRackBin:
@@ -569,10 +567,9 @@ plans:
       customDashboards:
         value: true
     usageLimits: null
-    price: 249
   PROFESSIONAL:
     description: ''
-    annualPrice: Contact Sales
+    price: Contact Sales
     unit: user/month
     features:
       rowRackBin:
@@ -602,4 +599,3 @@ plans:
       customDashboards:
         value: true
     usageLimits: null
-    price: Contact Sales

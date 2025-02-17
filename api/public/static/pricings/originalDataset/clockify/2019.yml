@@ -1,9 +1,11 @@
-saasName: Clockify
 syntaxVersion: '2.1'
-version: '2019-11-11'
-createdAt: '2019-11-11'
+saasName: Clockify
+createdAt: '2019-11-12'
+version: '2019-11-12'
+billing:
+  monthly: 1.0
 currency: USD
-variables: {}
+url: https://web.archive.org/web/20191112192511/https://clockify.me/extra-features
 features:
   unlimitedTracking:
     description: Track as much time as you want, without any limits.
@@ -69,9 +71,8 @@ features:
     defaultValue: false
     type: DOMAIN
   timeAudit:
-    description: >-
-      Find entries without project and task, and with suspicious duration (too
-      short or too long).
+    description: Find entries without project and task, and with suspicious duration
+      (too short or too long).
     valueType: BOOLEAN
     defaultValue: false
     type: INFORMATION
@@ -107,9 +108,8 @@ features:
     defaultValue: false
     type: DOMAIN
   hidePages:
-    description: >-
-      Prevent users from seeing projects, reports, and other members and their
-      time entries.
+    description: Prevent users from seeing projects, reports, and other members and
+      their time entries.
     valueType: BOOLEAN
     defaultValue: false
     type: MANAGEMENT
@@ -120,16 +120,14 @@ features:
     type: AUTOMATION
     automationType: TASK_AUTOMATION
   singleSignOn:
-    description: >-
-      Eliminate user-managed passwords and improve security by using your
+    description: Eliminate user-managed passwords and improve security by using your
       company's authentication system (SAML, Office 365, Okta, Google, etc.).
     valueType: BOOLEAN
     defaultValue: false
     type: INTEGRATION
     integrationType: IDENTITY_PROVIDER
   customSubdomain:
-    description: >-
-      Move workspace to custom subdomain, prevent people from having multiple
+    description: Move workspace to custom subdomain, prevent people from having multiple
       workspaces, and let new users join your workspace automatically.
     valueType: BOOLEAN
     defaultValue: false
@@ -147,7 +145,7 @@ usageLimits:
     unit: track
     type: NON_RENEWABLE
     linkedFeatures:
-      - unlimitedTracking
+    - unlimitedTracking
   projectsLimit:
     description: ''
     valueType: NUMERIC
@@ -155,7 +153,7 @@ usageLimits:
     unit: project
     type: NON_RENEWABLE
     linkedFeatures:
-      - unlimitedProjects
+    - unlimitedProjects
   reportsLimit:
     description: ''
     valueType: NUMERIC
@@ -163,20 +161,17 @@ usageLimits:
     unit: report
     type: NON_RENEWABLE
     linkedFeatures:
-      - unlimitedReports
+    - unlimitedReports
 plans:
   FREE:
     description: For teams that just need a simple and easy to use time tracker
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: user/month
     features: null
     usageLimits: null
-    price: 0
   PLUS:
     description: For companies that need a bit more control over who can do what.
-    monthlyPrice: 9.99
-    annualPrice: 8.33
+    price: 9.99
     unit: user/month
     features:
       privateTimeEntries:
@@ -194,11 +189,9 @@ plans:
       targetsAndReminders:
         value: true
     usageLimits: null
-    price: 9.99
   PREMIUM:
     description: For companies that need a robust full-featured time tracker.
-    monthlyPrice: 29.99
-    annualPrice: 24.99
+    price: 29.99
     unit: user/month
     features:
       privateTimeEntries:
@@ -228,11 +221,9 @@ plans:
       automaticLock:
         value: true
     usageLimits: null
-    price: 29.99
   ENTERPRISE:
     description: For organizations that need complete control over their data.
-    monthlyPrice: 9.99
-    annualPrice: 8.33
+    price: 9.99
     unit: user/month
     features:
       privateTimeEntries:
@@ -268,4 +259,4 @@ plans:
       controlAccounts:
         value: true
     usageLimits: null
-    price: 9.99
+addOns: null

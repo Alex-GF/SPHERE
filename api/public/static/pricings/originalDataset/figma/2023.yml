@@ -1,9 +1,11 @@
-saasName: Figma
 syntaxVersion: '2.1'
-version: 2023-11-8
+saasName: Figma
 createdAt: '2023-11-08'
+version: '2023-11-08'
+billing:
+  monthly: 1.0
 currency: EUR
-variables: {}
+url: https://web.archive.org/web/20231111135956/https://www.figma.com/pricing/
 features:
   versionHistory:
     description: ''
@@ -31,7 +33,6 @@ features:
     defaultValue: true
     type: INTEGRATION
     integrationType: MARKETPLACE
-    pricingUrls: null
   fileStorage:
     description: ''
     valueType: BOOLEAN
@@ -389,7 +390,7 @@ usageLimits:
     unit: day
     type: NON_RENEWABLE
     linkedFeatures:
-      - versionHistory
+    - versionHistory
   teamsLimit:
     description: ''
     valueType: NUMERIC
@@ -397,7 +398,7 @@ usageLimits:
     unit: team
     type: NON_RENEWABLE
     linkedFeatures:
-      - teams
+    - teams
   modesLimits:
     description: ''
     valueType: NUMERIC
@@ -405,20 +406,17 @@ usageLimits:
     unit: mode
     type: NON_RENEWABLE
     linkedFeatures:
-      - modes
+    - modes
 plans:
   STARTER:
     description: ''
-    monthlyPrice: 0
-    annualPrice: 0
+    price: 0
     unit: editor/month
     features: null
     usageLimits: null
-    price: 0
   FIGMA_PROFESSIONAL:
     description: ''
-    monthlyPrice: 15
-    annualPrice: 12
+    price: 15
     unit: editor/month
     features:
       privateProjects:
@@ -456,11 +454,9 @@ plans:
         value: .inf
       modesLimits:
         value: 4
-    price: 15
   FIGMA_ORGANIZATION:
     description: ''
-    monthlyPrice: null
-    annualPrice: 45
+    price: 45
     unit: editor/month
     features:
       privateProjects:
@@ -516,8 +512,7 @@ plans:
       centralizedContentAdministration:
         value: true
       singleSignOn:
-        value: >-
-          Azure Active Directory (Azure AD), Okta, OneLogin, Google SSO, Active
+        value: Azure Active Directory (Azure AD), Okta, OneLogin, Google SSO, Active
           Directory Federation Services (AD FS)
       activityLogs:
         value: true
@@ -528,11 +523,9 @@ plans:
         value: .inf
       modesLimits:
         value: 4
-    price: 45
   ENTERPRISE:
     description: ''
-    monthlyPrice: null
-    annualPrice: 75
+    price: 75
     unit: editor/month
     features:
       privateProjects:
@@ -594,8 +587,7 @@ plans:
       centralizedContentAdministration:
         value: true
       singleSignOn:
-        value: >-
-          Azure Active Directory (Azure AD), Okta, OneLogin, Google SSO, Active
+        value: Azure Active Directory (Azure AD), Okta, OneLogin, Google SSO, Active
           Directory Federation Services (AD FS)
       activityLogs:
         value: true
@@ -638,4 +630,4 @@ plans:
         value: .inf
       modesLimits:
         value: 40
-    price: 75
+addOns: null

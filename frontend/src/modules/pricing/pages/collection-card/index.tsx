@@ -215,7 +215,7 @@ export default function CollectionCardPage() {
                     >
                       {sortedPricings.length > 0 ? (
                         sortedPricings.map((pricing: any) => {
-                          const ownerName = pricing.owner?.username || '';
+                          const ownerName = pricing.owner || '';
                           return (
                             <PricingListCard
                               key={pricing.name}
