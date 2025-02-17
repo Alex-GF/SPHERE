@@ -21,7 +21,7 @@ const getAbsoluteFileUri = (relativeFilePath: string) => {
     let absoluteFileUrl = ''
     const addresses = getIPV4Addresses()
     if(process.env.SERVER_HOST){
-      absoluteFileUrl = `http://${process.env.SERVER_HOST}/${relativeFilePath}`
+      absoluteFileUrl = `${process.env.SERVER_HOST}/${relativeFilePath}`
     }else if (addresses[0]) {
       absoluteFileUrl = `http://${addresses[0]}:${appPort}/${relativeFilePath}`
     } else {
