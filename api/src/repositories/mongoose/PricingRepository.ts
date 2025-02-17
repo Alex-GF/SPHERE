@@ -88,6 +88,9 @@ class PricingRepository extends RepositoryBase {
         let sortOrder = sort === 'asc' ? 1 : -1;
 
         switch (sortBy) {
+          case 'pricingName':
+            sortParameter = 'name';
+            break;
           case 'configurationSpaceSize':
             sortParameter = 'analytics.configurationSpaceSize';
             break;

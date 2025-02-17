@@ -113,6 +113,7 @@ export default function PricingFilters({
         </InputLabel>
         <Select labelId="sort-by-label" value={sortBy} onChange={e => setSortBy(e.target.value)}>
           <MenuItem value="">None</MenuItem>
+          <MenuItem value="pricingName">Pricing Name</MenuItem>
           <MenuItem value="configurationSpaceSize">Configuration Space Size</MenuItem>
           <MenuItem value="featuresCount">Features</MenuItem>
           <MenuItem value="usageLimitsCount">Usage Limits</MenuItem>
