@@ -3,33 +3,38 @@ import { useEffect, useState } from 'react';
 import VisibilityOptions from '../visibility-options';
 import customConfirm from '../../../core/utils/custom-confirm';
 import customAlert from '../../../core/utils/custom-alert';
-import { usePricingsApi } from '../../api/pricingsApi';
 import { useRouter } from '../../../core/hooks/useRouter';
 import { Collection } from '../../types/collection';
 import { DangerZone, SettingsPage } from '../pricing-settings';
+import { usePricingCollectionsApi } from '../../../profile/api/pricingCollectionsApi';
 
 export default function CollectionSettings({
   collection,
-  updateCollection
+  updateCollectionMethod
 }: {
   collection: Collection;
-  updateCollection: (collection: Collection) => void;
+  updateCollectionMethod: (collection: Collection) => void;
 }) {
   const [visibility, setVisibility] = useState('Public');
 
-  const { updatePricing, removePricingByName } = usePricingsApi();
+  const { updateCollection, deleteCollection } = usePricingCollectionsApi();
   const router = useRouter();
 
   function handleVisibilityChange() {
     customConfirm('Are you sure you want to change the visibility of this collection?')
       .then(() => {
-        const pricingUpdateBody = {
+        const collectionUpdateBody = {
           private: !(visibility === 'Private'),
         };
 
-        updatePricing(collection.name, pricingUpdateBody)
-          .then((pricing: any) => {
-            updateCollection(pricing);
+        updateCollection(collection.name, collectionUpdateBody)
+          .then((data: any) => {
+            console.log(data);
+            if (data.error){
+              customAlert(`Error: ${data.error}`);
+              return;
+            }
+            updateCollectionMethod(data);
             setVisibility(visibility === 'Private' ? 'Public' : 'Private');
             customAlert('Pricing visibility updated successfully');
           })
@@ -41,11 +46,11 @@ export default function CollectionSettings({
   }
 
   function handleDeleteCollection() {
-    customConfirm('Are you sure you want to delete this pricing? This action is irreversible.')
+    customConfirm('Are you sure you want to delete this collection and preserve its pricings? This action is irreversible.')
       .then(() => {
-        removePricingByName(collection.name)
+        deleteCollection(collection.name, false)
           .then(() => {
-            customConfirm('Pricing deleted successfully. Do you want to return to the main page?')
+            customConfirm('Collection deleted successfully. Do you want to return to the main page?')
               .then(() => {
                 router.push('/');
               })
@@ -54,17 +59,17 @@ export default function CollectionSettings({
               });
           }).catch((error) => {
             console.log(error);
-            customAlert(`An error has occurred while removing the pricing. Please, try again later.`);
+            customAlert(`An error has occurred while removing the collection. Please, try again later.`);
           });
       })
   }
 
   function handleDeleteCollectionAndPricings() {
-    customConfirm('Are you sure you want to delete this pricing? This action is irreversible.')
+    customConfirm('Are you sure you want to delete this collection and its pricings? This action is irreversible.')
       .then(() => {
-        removePricingByName(collection.name)
+        deleteCollection(collection.name, true)
           .then(() => {
-            customConfirm('Pricing deleted successfully. Do you want to return to the main page?')
+            customConfirm('Collection and pricings deleted successfully. Do you want to return to the main page?')
               .then(() => {
                 router.push('/');
               })
@@ -72,8 +77,7 @@ export default function CollectionSettings({
                 router.push('/me/pricings');
               });
           }).catch((error) => {
-            console.log(error);
-            customAlert(`An error has occurred while removing the pricing. Please, try again later.`);
+            customAlert(`An error has occurred while removing the collection. Please, try again later.`);
           });
       })
   }

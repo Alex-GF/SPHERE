@@ -57,7 +57,7 @@ export function usePricingCollectionsApi() {
       });
   };
 
-  const getCollectionByOwnerAndName = (ownerId: string, collectionName: string) => {
+  const getCollectionByOwnerAndName = async (ownerId: string, collectionName: string) => {
     return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${ownerId}/${collectionName}`, {
       method: 'GET',
       headers: basicHeaders,
@@ -68,10 +68,35 @@ export function usePricingCollectionsApi() {
       });
   };
 
+  const updateCollection = async (collectionName: string, collectionData: any) => {
+    return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${authUser.user!.id}/${collectionName}`, {
+      method: 'PUT',
+      headers: basicHeaders,
+      body: JSON.stringify(collectionData),
+    })
+      .then(async response => response.json())
+      .catch(error => {
+        return Promise.reject(error as Error);
+      });
+  }
+
+  const deleteCollection = async (collectionName: string, deleteCascade: boolean) => {
+    return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${authUser.user!.id}/${collectionName}?cascade=${deleteCascade}`, {
+      method: 'DELETE',
+      headers: basicHeaders
+    })
+      .then(async response => response.json())
+      .catch(error => {
+        return Promise.reject(error as Error);
+      });
+  }
+
   return {
     getLoggedUserCollections,
     createCollection,
     getCollectionByOwnerAndName,
     getCollections,
+    updateCollection,
+    deleteCollection
   };
 }

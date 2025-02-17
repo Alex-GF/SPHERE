@@ -194,6 +194,7 @@ class PricingCollectionRepository extends RepositoryBase {
             },
             name: 1,
             description: 1,
+            private: 1,
             analytics: 1,
             pricings: 1,
             lastUpdate: 1,
@@ -260,9 +261,9 @@ class PricingCollectionRepository extends RepositoryBase {
   }
 
   async destroyWithPricings(id: string, ...args: any) {
-    const result = await PricingCollectionMongoose.deleteOne({ _id: id });
-    const result2 = await PricingMongoose.deleteMany({ _collectionId: id });
-    return result?.deletedCount === 1 && result2?.deletedCount > 0;
+    const resultPricings = await PricingMongoose.deleteMany({ _collectionId: new mongoose.Types.ObjectId(id) });
+    const resultCollections = await PricingCollectionMongoose.deleteOne({ _id: new mongoose.Types.ObjectId(id) });
+    return resultCollections?.deletedCount === 1 && resultPricings?.deletedCount > 0;
   }
 }
 

@@ -145,7 +145,7 @@ export default function CollectionsListPage() {
                 );
               })
             ) : (
-              <Box>No pricings found</Box>
+              <Box>No collections found</Box>
             )}
           </PricingsGrid>
         </Box>

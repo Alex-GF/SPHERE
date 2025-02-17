@@ -25,7 +25,8 @@ const loadFileRoutes = function (app: express.Application) {
   app
     .route(baseUrl + '/pricings/collections/:userId/:collectionName')
     .get(pricingCollectionController.showByNameAndUserId)
-    .put(isLoggedIn, PricingCollectionValidator.update, handleValidation, pricingCollectionController.update);
+    .put(isLoggedIn, PricingCollectionValidator.update, handleValidation, pricingCollectionController.update)
+    .delete(isLoggedIn, pricingCollectionController.destroy);
 };
 
 export default loadFileRoutes;

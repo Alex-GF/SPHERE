@@ -84,7 +84,9 @@ class PricingCollectionService {
         throw new Error('Either the collection does not exist or you are not its owner')
       }
 
-      const updatedCollection = await this.pricingCollectionRepository.update(collection._id.toString(), data);
+      await this.pricingCollectionRepository.update(collection._id.toString(), data);
+
+      const updatedCollection = await this.pricingCollectionRepository.findByNameAndUserId(collectionName, ownerId);
 
       return updatedCollection;
     }
@@ -99,6 +101,28 @@ class PricingCollectionService {
       const newAnalyticsEntry = this._computeCollectionAnalytics(collection);
 
       await this.pricingCollectionRepository.updateAnalytics(collection._id, newAnalyticsEntry);
+    }
+
+    async destroy (collectionName: string, ownerId: string, deleteCascade: boolean) { 
+      const collection = await this.pricingCollectionRepository.findByNameAndUserId(collectionName, ownerId);
+      if (!collection) {
+        throw new Error('Either the collection does not exist or you are not its owner')
+      }
+
+      let result;
+
+      if (deleteCascade){
+        result = await this.pricingCollectionRepository.destroyWithPricings(collection._id.toString());
+      }else{
+        await this.pricingRepository.removePricingsFromCollection(collection._id.toString());
+        result = await this.pricingCollectionRepository.destroy(collection._id.toString());
+      }
+
+      if (!result) {
+        throw new Error('Collection not found')
+      }
+
+      return true
     }
 
     _computeCollectionAnalytics (collection: RetrievedCollection) {

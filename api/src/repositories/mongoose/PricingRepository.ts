@@ -283,6 +283,17 @@ class PricingRepository extends RepositoryBase {
     );
   }
 
+  async removePricingsFromCollection(collectionId: string){
+    return await PricingMongoose.updateMany(
+      {
+        _collectionId: new mongoose.Types.ObjectId(collectionId)
+      },
+      {
+        $unset: { _collectionId: 1 }
+      }
+    );
+  }
+
   async destroyByNameAndOwner(name: string, owner: string, ...args: any) {
     const result = await PricingMongoose.deleteMany({ name: name, owner: owner });
     return result.deletedCount >= 1;

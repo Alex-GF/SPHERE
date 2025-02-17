@@ -3,7 +3,6 @@
       "$oid": "6787d0facaeb2b25748bc12a"
     },
     "name": "sphere",
-    "description": "This is the sphere pricing collection",
     "_ownerId": {
       "$oid": "63f74bf8eeed64058364b52e"
     },

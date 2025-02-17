@@ -14,6 +14,7 @@ class PricingCollectionController {
     // this.show = this.show.bind(this);
     this.create = this.create.bind(this);
     this.update = this.update.bind(this);
+    this.destroy = this.destroy.bind(this);
   }
 
   async index (req: any, res: any) {
@@ -61,26 +62,30 @@ class PricingCollectionController {
 
   async update(req: any, res: any) {
     try {
-      const pricing = await this.pricingCollectionService.update(
-        req.params.colelctionName,
+      const collection = await this.pricingCollectionService.update(
+        req.params.collectionName,
         req.user.id,
         req.body
       );
-      res.json(pricing);
+      res.json(collection);
     } catch (err: any) {
-      res.status(500).send({ error: err.message });
+      res.status(400).send({ error: err.message });
     }
   }
 
-  // async destroy (req: any, res: any) {
-  //   try {
-  //     const result = await this.pricingService.destroy(req.params.pricingId)
-  //     const message = result ? 'Successfully deleted.' : 'Could not delete pricing.'
-  //     res.json(message)
-  //   } catch (err: any) {
-  //     res.status(500).send(err.message)
-  //   }
-  // }
+  async destroy (req: any, res: any) {
+    try {
+
+      const { cascade } = req.query;
+      const deleteCascade = String(cascade).toLowerCase() === 'true';
+      
+      const result = await this.pricingCollectionService.destroy(req.params.collectionName, req.user.id, deleteCascade)
+      const message = result ? 'Successfully deleted.' : 'Could not delete collection.'
+      res.json({message: message})
+    } catch (err: any) {
+      res.status(400).send({error: err.message})
+    }
+  }
 
   _transformIndexQueryParams (indexQueryParams: Record<string, string>): CollectionIndexQueryParams {
     const transformedData: CollectionIndexQueryParams = {

@@ -169,7 +169,7 @@ export default function CollectionCardPage() {
         </Box>
 
         <Box display="flex" gap={4} sx={{ mb: 4 }}>
-          {tabValue === 1 && collection && <CollectionSettings collection={collection} updateCollection={setCollection}/>}
+          {tabValue === 1 && collection && <CollectionSettings collection={collection} updateCollectionMethod={setCollection}/>}
           {tabValue === 0 && (
             <>
               <Box flex={1} sx={{ maxWidth: '66.7%' }}>
