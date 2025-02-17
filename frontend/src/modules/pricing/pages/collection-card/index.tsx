@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import {
   Box,
   Button,
@@ -11,6 +11,7 @@ import {
   TextField,
   Typography,
   styled,
+  IconButton,
 } from '@mui/material';
 import { Favorite, LibraryAdd, LibraryAddCheck, FavoriteBorder } from '@mui/icons-material';
 import { usePathname } from '../../../core/hooks/usePathname';
@@ -24,6 +25,7 @@ import { PricingsGrid } from '../../../pricing/pages/list';
 import PricingListCard from '../../../pricing/components/pricing-list-card';
 import { useAuth } from '../../../auth/hooks/useAuth';
 import CollectionSettings from '../../components/collection-settings';
+import { FaSortAlphaDown, FaSortAlphaUpAlt } from 'react-icons/fa';
 
 export const StyledChip = styled(Chip)(({ theme }) => ({
   margin: theme.spacing(0.5),
@@ -38,6 +40,7 @@ export default function CollectionCardPage() {
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
   const [tabValue, setTabValue] = useState(0);
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
   const pathname = usePathname();
   const { getCollectionByOwnerAndName } = usePricingCollectionsApi();
@@ -45,8 +48,9 @@ export default function CollectionCardPage() {
   const { authUser } = useAuth();
 
   useEffect(() => {
-    let name = pathname.split('/').pop() as string;
-    let ownerId = pathname.split('/')[pathname.split('/').length - 2];
+    const segments = pathname.split('/');
+    const name = segments.pop() as string;
+    const ownerId = segments[segments.length - 1];
 
     getCollectionByOwnerAndName(ownerId, name).then(collection => {
       if (collection) {
@@ -61,7 +65,7 @@ export default function CollectionCardPage() {
         router.push('/error');
       }
     });
-  }, []);
+  }, [pathname, getCollectionByOwnerAndName, router]);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -75,10 +79,29 @@ export default function CollectionCardPage() {
     setEndDate(new Date(e.target.value).toISOString());
   };
 
+  const toggleSortOrder = () => {
+    setSortOrder(prev => (prev === "asc" ? "desc" : "asc"));
+  };
+
+  const sortedPricings = useMemo(() => {
+    if (!collection || !collection.pricings || collection.pricings.length === 0) {
+      return [];
+    }
+    // Convertir el objeto a un array
+    const pricingArray = Object.values(collection.pricings[0].pricings) as any[];
+    return pricingArray.sort((a, b) => {
+      const nameA = a.name?.toLowerCase() || '';
+      const nameB = b.name?.toLowerCase() || '';
+      return sortOrder === "asc"
+        ? nameA.localeCompare(nameB)
+        : nameB.localeCompare(nameA);
+    });
+  }, [collection, sortOrder]);
+
   return (
     <>
       <Helmet>
-        <title> {`SPHERE - ${collection?.name} Collection`} </title>
+        <title>{`SPHERE - ${collection?.name} Collection`}</title>
       </Helmet>
       <Container maxWidth="xl">
         <Box sx={{ my: 4 }}>
@@ -112,19 +135,6 @@ export default function CollectionCardPage() {
                   {isFollowing ? 'Following' : 'Follow'}
                 </Button>
               </Box>
-
-              {/* <Box display="flex" flexWrap="wrap" gap={1} mb={2}>
-              <StyledChip label="Productivity" variant="outlined" />
-              <StyledChip label="Freemium" variant="outlined" />
-              <StyledChip label="Microsoft" variant="outlined" />
-              <StyledChip label="+1M users" variant="outlined" />
-              <StyledChip label="USD" variant="outlined" />
-              <StyledChip label="USA" variant="outlined" />
-            </Box>
-
-            <Typography variant="body2" color="text.secondary" mb={2}>
-              More info
-            </Typography> */}
 
               <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={tabValue} onChange={(_, v) => setTabValue(v)}>
@@ -169,7 +179,9 @@ export default function CollectionCardPage() {
         </Box>
 
         <Box display="flex" gap={4} sx={{ mb: 4 }}>
-          {tabValue === 1 && collection && <CollectionSettings collection={collection} updateCollectionMethod={setCollection}/>}
+          {tabValue === 1 && collection && (
+            <CollectionSettings collection={collection} updateCollectionMethod={setCollection} />
+          )}
           {tabValue === 0 && (
             <>
               <Box flex={1} sx={{ maxWidth: '66.7%' }}>
@@ -183,9 +195,14 @@ export default function CollectionCardPage() {
                 </Typography>
                 {collection && (
                   <>
-                    <Typography variant="h6" fontWeight="bold" marginBottom={-2}>
-                      Pricings in Collection
-                    </Typography>
+                    <Box display="flex" alignItems="center" mb={-2}>
+                      <Typography variant="h6" fontWeight="bold">
+                        Pricings in Collection
+                      </Typography>
+                      <IconButton onClick={toggleSortOrder} size="medium">
+                        {sortOrder === "asc" ? <FaSortAlphaDown /> : <FaSortAlphaUpAlt />}
+                      </IconButton>
+                    </Box>
                     <PricingsGrid
                       sx={{
                         height: '100%',
@@ -196,13 +213,14 @@ export default function CollectionCardPage() {
                         padding: '20px 0',
                       }}
                     >
-                      {collection.pricings[0].pricings.length > 0 ? (
-                        Object.values(collection.pricings[0].pricings).map(pricing => {
+                      {sortedPricings.length > 0 ? (
+                        sortedPricings.map((pricing: any) => {
+                          const ownerName = pricing.owner?.username || '';
                           return (
                             <PricingListCard
                               key={pricing.name}
                               name={pricing.name}
-                              owner={pricing.owner}
+                              owner={ownerName}
                               dataEntry={pricing}
                               showOptions
                             />
@@ -233,7 +251,7 @@ export default function CollectionCardPage() {
                   </>
                 )}
               </Box>
-              {collection && collection!.pricings[0].pricings.length > 0 && (
+              {collection && collection.pricings[0].pricings.length > 0 && (
                 <Box sx={{ minWidth: '33.3%' }}>
                   {collection && (
                     <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
@@ -251,9 +269,6 @@ export default function CollectionCardPage() {
                       />
                     </Paper>
                   )}
-                  {/* <Paper variant="outlined" sx={{ p: 2, mt: 2 }}>
-              <Harvey />
-            </Paper> */}
                 </Box>
               )}
             </>
