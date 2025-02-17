@@ -139,7 +139,7 @@ export default function CollectionsListPage() {
               Object.values(collectionsList).map(collection => {
                 return (
                   <CollectionListCard
-                    key={`collection-${collection.name}`}
+                    key={`collection-${collection.owner.username}-${collection.name}`}
                     collection={collection}
                   />
                 );
