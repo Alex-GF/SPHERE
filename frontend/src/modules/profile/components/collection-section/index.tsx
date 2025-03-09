@@ -51,7 +51,7 @@ export default function CollectionSection({
       .catch(error => {
         console.error('Cannot GET collections. Error:', error);
       });
-  }, [renderFlag, getLoggedUserCollections]);
+  }, [renderFlag]);
 
   const sortedCollections = useMemo(() => {
     return [...collections].sort((a, b) => {
