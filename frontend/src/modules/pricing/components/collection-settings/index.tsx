@@ -29,7 +29,6 @@ export default function CollectionSettings({
 
         updateCollection(collection.name, collectionUpdateBody)
           .then((data: any) => {
-            console.log(data);
             if (data.error){
               customAlert(`Error: ${data.error}`);
               return;

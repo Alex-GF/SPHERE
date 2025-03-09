@@ -20,7 +20,7 @@
             "request": "launch",
             "name": "Debug TSX Execution",
             "runtimeExecutable": "npx",
-            "args": ["tsx", "--tsconfig", "tsconfig.json", "--watch", "src/backend.ts", "--seed"],
+            "args": ["tsx", "--tsconfig", "tsconfig.json", "--watch", "src/backend.ts"],
             "smartStep": true,
             "console": "integratedTerminal",
             "envFile": "${workspaceRoot}/api/.env",

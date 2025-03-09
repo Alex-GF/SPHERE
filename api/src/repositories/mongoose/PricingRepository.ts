@@ -176,15 +176,19 @@ class PricingRepository extends RepositoryBase {
     }
   }
 
-  async create(data: any, ...args: any) {
-    if (data._collectionId) {
-      data._collectionId = new mongoose.Types.ObjectId(data._collectionId);
-    }
+  async create(data: any[], ...args: any) {
+    data.forEach((item) => {
+      if (item._collectionId) {
+        item._collectionId = new mongoose.Types.ObjectId(item._collectionId);
+      }
+    });
 
-    const pricing = new PricingMongoose(data);
-    await pricing.save();
+    return await PricingMongoose.insertMany(data);
 
-    return pricing;
+    // const pricing = new PricingMongoose(data);
+    // await pricing.save();
+
+    // return pricing;
   }
 
   async updateAnalytics(pricingId: string, analytics: PricingAnalytics, ...args: any) {

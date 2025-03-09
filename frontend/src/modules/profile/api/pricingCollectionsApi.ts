@@ -56,6 +56,20 @@ export function usePricingCollectionsApi() {
         return Promise.reject(error as Error);
       });
   };
+  
+  const createBulkCollection = async (formData: FormData) => {
+    return fetchWithInterceptor(COLLECTIONS_BASE_PATH + "/bulk", {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${authUser.token}`,
+      },
+      body: formData,
+    })
+      .then(response => response.json())
+      .catch(error => {
+        return Promise.reject(error as Error);
+      });
+  };
 
   const getCollectionByOwnerAndName = async (ownerId: string, collectionName: string) => {
     return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${ownerId}/${collectionName}`, {
@@ -94,6 +108,7 @@ export function usePricingCollectionsApi() {
   return {
     getLoggedUserCollections,
     createCollection,
+    createBulkCollection,
     getCollectionByOwnerAndName,
     getCollections,
     updateCollection,

@@ -41,7 +41,7 @@ class PricingService {
 
     async create (pricingFile: any, owner: string, collectionId?: string) {
       try{
-        const uploadedPricing: Pricing = retrievePricingFromPath(pricingFile.path);
+        const uploadedPricing: Pricing = retrievePricingFromPath(typeof pricingFile === "string" ? pricingFile : pricingFile.path);
         const previousPricing = await this.pricingRepository.findByNameAndOwner(uploadedPricing.saasName, owner);
 
         if (!collectionId && previousPricing && previousPricing.versions[0]._collectionId) {
@@ -60,7 +60,7 @@ class PricingService {
           analytics: {}
         };
 
-        const pricing = await this.pricingRepository.create(pricingData);
+        const pricing = await this.pricingRepository.create([pricingData]);
 
         processFileUris(pricing, ['yaml'])
 
@@ -68,9 +68,9 @@ class PricingService {
 
         await pricingAnalytics.getAnalytics()
           .then((analytics: any) => {
-            this.pricingRepository.updateAnalytics(pricing._id.toString(), analytics);
+            this.pricingRepository.updateAnalytics(pricing[0]._id.toString(), analytics);
           }).catch(async (err: any) => {
-            await this.pricingRepository.destroy(pricing._id.toString());
+            await this.pricingRepository.destroy(pricing[0]._id.toString());
             throw new Error((err as Error).message);
           });
 

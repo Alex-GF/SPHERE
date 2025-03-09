@@ -13,6 +13,7 @@ class PricingCollectionController {
     this.showByUserId = this.showByUserId.bind(this);
     // this.show = this.show.bind(this);
     this.create = this.create.bind(this);
+    this.bulkCreate = this.bulkCreate.bind(this);
     this.update = this.update.bind(this);
     this.destroy = this.destroy.bind(this);
   }
@@ -55,6 +56,15 @@ class PricingCollectionController {
     try {
       const pricing = await this.pricingCollectionService.create(req.body, req.user.id, req.user.username)
       res.json(pricing)
+    } catch (err: any) {
+      res.status(500).send({error: (err as Error).message})
+    }
+  }
+  
+  async bulkCreate (req: any, res: any) {
+    try {
+      const collection = await this.pricingCollectionService.bulkCreate(req.file, req.body, req.user.id, req.user.username)
+      res.json(collection)
     } catch (err: any) {
       res.status(500).send({error: (err as Error).message})
     }

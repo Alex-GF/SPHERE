@@ -73,7 +73,6 @@ export default function PricingSettings({
                 router.push('/me/pricings');
               });
           }).catch((error) => {
-            console.log(error);
             customAlert(`An error has occurred while removing the pricing. Please, try again later.`);
           });
       })

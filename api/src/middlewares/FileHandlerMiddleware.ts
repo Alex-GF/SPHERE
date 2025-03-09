@@ -1,6 +1,7 @@
 import fs from 'fs';
 import multer from 'multer';
 import { Request, Response, NextFunction } from 'express';
+import {v4 as uuidv4} from 'uuid';
 
 const addFilenameToBody = (...fieldNames: string[]) => (req: any, res: any, next: NextFunction) => {
   fieldNames.forEach(fieldName => {
@@ -50,4 +51,24 @@ const handlePricingUpload = (pricingFieldNames: string[], folder: string) => {
     return multer({ storage }).fields(fields)
   }
 }
-export { handleFileUpload, addFilenameToBody, handlePricingUpload }
+
+const handleCollectionUpload = (collectionFieldNames: string[], folder: string) => {
+  console.log('collectionFieldNames', collectionFieldNames)
+  const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      fs.mkdirSync(folder + `/`, { recursive: true })
+      cb(null, folder)
+    },
+    filename: function (req, file, cb) {
+      cb(null, uuidv4() + '.' + file.originalname.split('.').pop())
+    },
+  })
+
+  if (collectionFieldNames.length === 1) {
+    return multer({ storage: storage, limits: {fileSize: 2 * 1024 * 1024} }).single(collectionFieldNames[0])
+  } else {
+    const fields = collectionFieldNames.map(collectionFieldNames => { return { name: collectionFieldNames, maxCount: 1 } })
+    return multer({ storage }).fields(fields)
+  }
+}
+export { handleFileUpload, addFilenameToBody, handlePricingUpload, handleCollectionUpload }
