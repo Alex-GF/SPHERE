@@ -145,10 +145,14 @@ class PricingCollectionService {
 
     await this.pricingCollectionRepository.update(collection._id.toString(), data);
 
-    const updatedCollection = await this.pricingCollectionRepository.findByNameAndUserId(
-      collectionName,
-      ownerId
-    );
+    const updatedCollection = await this.pricingCollectionRepository.findById(collection._id.toString());
+
+    if (updatedCollection.name !== collectionName) {
+      fs.renameSync(
+        this._getExtractPath(ownerId, collectionName),
+        this._getExtractPath(ownerId, updatedCollection.name)
+      );
+    }
 
     return updatedCollection;
   }
@@ -240,7 +244,7 @@ class PricingCollectionService {
   // }
 
   _getExtractPath(userId: string, collectionName: string) {
-    return `./public/static/collections/${userId}/${collectionName}`;
+    return `${process.env.COLLECTIONS_FOLDER}/${userId}/${collectionName}`;
   }
 }
 

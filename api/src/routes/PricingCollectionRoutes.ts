@@ -38,6 +38,10 @@ const loadFileRoutes = function (app: express.Application) {
       pricingCollectionController.update
     )
     .delete(isLoggedIn, pricingCollectionController.destroy);
+
+    app
+    .route(baseUrl + '/pricings/collections/:userId/:collectionName/download')
+    .get(pricingCollectionController.downloadCollection);
 };
 
 export default loadFileRoutes;

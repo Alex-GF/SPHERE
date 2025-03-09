@@ -82,6 +82,31 @@ export function usePricingCollectionsApi() {
       });
   };
 
+  const downloadCollection = async (ownerId: string, collectionName: string) => {
+    return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${ownerId}/${collectionName}/download`, {
+      method: 'GET',
+      headers: basicHeaders,
+    })
+      .then(async response => {
+        if (!response.ok) {
+          return Promise.reject(new Error('Error downloading collection'));
+        }
+
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = collectionName + '.zip';
+        a.click();
+
+        URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      })
+      .catch(error => {
+        return Promise.reject(error as Error);
+      });
+  }
+
   const updateCollection = async (collectionName: string, collectionData: any) => {
     return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${authUser.user!.id}/${collectionName}`, {
       method: 'PUT',
@@ -111,6 +136,7 @@ export function usePricingCollectionsApi() {
     createBulkCollection,
     getCollectionByOwnerAndName,
     getCollections,
+    downloadCollection,
     updateCollection,
     deleteCollection
   };

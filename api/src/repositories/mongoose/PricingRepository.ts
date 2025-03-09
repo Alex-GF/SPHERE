@@ -189,6 +189,16 @@ class PricingRepository extends RepositoryBase {
     }
   }
 
+  async findByCollection(collectionId: string, ...args: any) {
+    try {
+      const pricings = await PricingMongoose.find({ _collectionId: collectionId });
+
+      return pricings;
+    } catch (err) {
+      return [];
+    }
+  }
+
   async create(data: any[], ...args: any) {
     data.forEach((item) => {
       if (item._collectionId) {
@@ -214,6 +224,19 @@ class PricingRepository extends RepositoryBase {
     await pricing.save();
 
     return pricing.toJSON();
+  }
+
+  async updatePricingsCollectionName(pricingsToUpdate: any, ownerId: string, newCollectionName: string, ...args: any) {
+    const bulkOps = pricingsToUpdate.map((pricing: any) => ({
+      updateOne: {
+        filter: { _id: pricing._id },
+        update: { $set: { yaml: pricing.yaml } },
+      },
+    }));
+
+    const result = await PricingMongoose.bulkWrite(bulkOps);
+    
+    return result.modifiedCount === pricingsToUpdate.length;
   }
 
   async addPricingToCollection(pricingName: string, owner: string, collectionId: string) {

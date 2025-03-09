@@ -26,6 +26,11 @@ class PricingService {
       const pricings = await this.pricingRepository.findByOwnerWithoutCollection(username)
       return pricings
     }
+    
+    async indexByCollection (collectionId: string){
+      const pricings = await this.pricingRepository.findByCollection(collectionId)
+      return pricings
+    }
   
     async show (name: string, owner: string, queryParams?: {collectionName?: string}) {
       const pricing: {name: string, versions: PricingModel[]} | null = await this.pricingRepository.findByNameAndOwner(name, owner, queryParams)
@@ -113,6 +118,25 @@ class PricingService {
       const updatedPricing = await this.pricingRepository.findByNameAndOwner(pricingName, owner)
 
       return updatedPricing;
+    }
+
+    async updatePricingsCollectionName (oldCollectionName: string, newCollectionName: string, collectionId: string, ownerId: string) {
+      
+      if (oldCollectionName === newCollectionName){
+        return true;
+      }
+
+      const pricings = await this.pricingRepository.findByCollection(collectionId);
+      const pricingsToUpdate = []
+      for (const pricing of pricings) {
+        if (pricing.yaml.includes(oldCollectionName)){
+          pricing.yaml = pricing.yaml.replace(oldCollectionName, newCollectionName)
+          pricingsToUpdate.push(pricing)
+        }
+      }
+
+      await this.pricingRepository.updatePricingsCollectionName(pricingsToUpdate, ownerId, newCollectionName)
+      return true
     }
 
     async removePricingFromCollection (pricingName: string, owner: string) {
