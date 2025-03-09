@@ -53,7 +53,6 @@ const handlePricingUpload = (pricingFieldNames: string[], folder: string) => {
 }
 
 const handleCollectionUpload = (collectionFieldNames: string[], folder: string) => {
-  console.log('collectionFieldNames', collectionFieldNames)
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
       fs.mkdirSync(folder + `/`, { recursive: true })

@@ -3,6 +3,7 @@ export function getAllPricingsAggregator(filteringAggregators: any, sortAggregat
     { $sort: { extractionDate: -1 } },
     latestPricingsByNameAggregator,
     refactorRootAggregator,
+    ...parseCollectionNameAggregator,
     ...filteringAggregators,
     computeFiltersDataAggregator,
     refactorOutputAggregator,
@@ -15,6 +16,7 @@ const latestPricingsByNameAggregator = {
     _id: {
       name: '$name',
       owner: '$owner',
+      _collectionId: '$_collectionId',
     },
     latestPricing: {
       $first: '$$ROOT',
@@ -30,6 +32,28 @@ const refactorRootAggregator = {
     newRoot: '$latestPricing',
   },
 };
+
+const parseCollectionNameAggregator = [
+  {
+    $lookup: {
+      from: 'pricingCollections',
+      localField: '_collectionId',
+      foreignField: '_id',
+      as: 'collection',
+    },
+  },
+  {
+    $unwind: {
+      path: '$collection',
+      preserveNullAndEmptyArrays: true,
+    },
+  },
+  {
+    $set: {
+      collectionName: '$collection.name',
+    },
+  },
+]
 
 const refactorOutputAggregator = {
   $project: {
@@ -54,6 +78,7 @@ const computeFiltersDataAggregator = {
           _id: 0,
           name: 1,
           owner: 1,
+          collectionName: 1,
           version: 1,
           extractionDate: 1,
           currency: 1,

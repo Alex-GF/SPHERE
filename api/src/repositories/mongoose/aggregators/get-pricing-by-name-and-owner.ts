@@ -34,19 +34,19 @@ export function getPricingByNameAndOwnerAggregator(
         ],
       },
     },
-    { $unwind: { path: '$owner', preserveNullAndEmptyArrays: true } },
     { $unwind: { path: '$collection', preserveNullAndEmptyArrays: true } },
+    { $unwind: { path: '$owner', preserveNullAndEmptyArrays: true } },
     {
       $group: {
-        _id: { name: '$name', owner: '$owner.username' },
+        _id: { name: '$name', owner: '$owner.username', collectionName: "$collection.name" },
         name: { $first: '$name' },
+        collectionName: { $first: '$collection.name' },
         versions: {
           $push: {
             id: { $toString: '$_id' },
             version: '$version',
             private: '$private',
-            _collectionId: '$_collectionId',
-            collection: { $ifNull: ['$collection.name', null] },
+            collectionName: { $ifNull: ['$collection.name', null] },
             extractionDate: '$extractionDate',
             url: '$url',
             yaml: '$yaml',
@@ -64,6 +64,7 @@ export function getPricingByNameAndOwnerAggregator(
         _id: 0,
         name: 1, // `name` global
         owner: 1, // `owner` global
+        collectionName: 1,
         versions: { $sortArray: { input: '$versions', sortBy: { extractionDate: -1 } } }, // Orden descendente por fecha
       },
     },

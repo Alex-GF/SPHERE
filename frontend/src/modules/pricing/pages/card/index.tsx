@@ -28,6 +28,7 @@ import PricingSettings from '../../components/pricing-settings';
 import customAlert from '../../../core/utils/custom-alert';
 import { useAuth } from '../../../auth/hooks/useAuth';
 import { Link } from 'react-router-dom';
+import { useQueryParams } from '../../../core/hooks/useQueryParams';
 
 export const StyledChip = styled(Chip)(({ theme }) => ({
   margin: theme.spacing(0.5),
@@ -55,6 +56,7 @@ export default function CardPage() {
   const [oldestPricingDate, setOldestPricingDate] = useState<string | null>(null);
 
   const pathname = usePathname();
+  const queryParams = useQueryParams();
   const { getPricingByName } = usePricingsApi();
   const { authUser } = useAuth();
 
@@ -74,8 +76,9 @@ export default function CardPage() {
   useEffect(() => {
     let name = pathname.split('/').pop() as string;
     let owner = pathname.split('/')[pathname.split('/').length - 2] as string;
+    let collectionName: string | null = queryParams.get('collectionName');
 
-    getPricingByName(name, owner).then(pricing => {
+    getPricingByName(name, owner, collectionName).then(pricing => {
       try {
         updatePricingInformation(pricing);
       } catch (err: any) {
@@ -144,12 +147,16 @@ export default function CardPage() {
             <Box display="flex" flexDirection="column">
               <Box display="flex" alignItems="center" gap={2} mb={2}>
                 <Typography variant="h5" letterSpacing={1}>
-                  <Box component="span" sx={{ color: 'text.secondary', mr: 0.25 }}>
-                    {currentPricing?.owner.username}
-                  </Box>
-                  <Box component="span" sx={{ color: 'text.secondary', mr: 0.25 }}>
-                    /
-                  </Box>
+                  {currentPricing?.collectionName && (
+                    <>
+                      <Box component="span" sx={{ color: 'text.secondary', mr: 0.25 }}>
+                        {currentPricing?.collectionName}
+                      </Box>
+                      <Box component="span" sx={{ color: 'text.secondary', mr: 0.25 }}>
+                        /
+                      </Box>
+                    </>
+                  )}
                   {pricing?.saasName}
                 </Typography>
                 <Button
@@ -184,9 +191,14 @@ export default function CardPage() {
               More info
             </Typography> */}
 
-              {currentPricing && currentPricing.collection && (
+              {currentPricing && currentPricing.collectionName && (
                 <Typography variant="h6" color="text.secondary" mb={2} fontWeight="bold">
-                  Collection: <Link to={`/pricings/collections/${currentPricing.owner.id}/${currentPricing.collection}`}>{currentPricing.collection}</Link>
+                  Collection:{' '}
+                  <Link
+                    to={`/pricings/collections/${currentPricing.owner.id}/${currentPricing.collectionName}`}
+                  >
+                    {currentPricing.collectionName}
+                  </Link>
                 </Typography>
               )}
 
@@ -196,7 +208,9 @@ export default function CardPage() {
                   <Tab label="Files and versions" />
                   {currentPricing &&
                     authUser.user &&
-                    currentPricing.owner.username === authUser.user.username && <Tab label="Settings" />}
+                    currentPricing.owner.username === authUser.user.username && (
+                      <Tab label="Settings" />
+                    )}
                 </Tabs>
               </Box>
             </Box>
