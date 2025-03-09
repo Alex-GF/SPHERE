@@ -64,8 +64,10 @@ export default function CollectionCardPage() {
       } else {
         router.push('/error');
       }
+    }).catch(() => {
+      router.push('/error')
     });
-  }, [pathname, getCollectionByOwnerAndName, router]);
+  }, [pathname, router]);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -109,12 +111,12 @@ export default function CollectionCardPage() {
             <Box display="flex" flexDirection="column">
               <Box display="flex" alignItems="center" gap={2} mb={2}>
                 <Typography variant="h5" letterSpacing={1}>
-                  <Box component="span" sx={{ color: 'text.secondary', mr: 0.25 }}>
+                  {/* <Box component="span" sx={{ color: 'text.secondary', mr: 0.25 }}>
                     {collection?.owner.username}
                   </Box>
                   <Box component="span" sx={{ color: 'text.secondary', mr: 0.25 }}>
                     /
-                  </Box>
+                  </Box> */}
                   {collection?.name}
                 </Typography>
                 <Button
