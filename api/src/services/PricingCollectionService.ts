@@ -2,11 +2,12 @@ import mongoose from 'mongoose';
 import container from '../config/container';
 import PricingCollectionRepository from '../repositories/mongoose/PricingCollectionRepository';
 import PricingRepository from '../repositories/mongoose/PricingRepository';
-import { RetrievedCollection } from '../types/database/PricingCollection';
+import { PricingCollectionAnalytics, PricingCollectionAnalyticsToAdd, RetrievedCollection } from '../types/database/PricingCollection';
 import { CollectionIndexQueryParams } from '../types/services/PricingCollection';
 import { decompressZip } from '../utils/zip-manager';
 import {  PricingService as PricingAnalytics, retrievePricingFromPath } from 'pricing4ts/server';
 import fs from 'fs';
+import { calculateAnalyticsForPricings } from '../utils/pricing-collections-utils';
 
 class PricingCollectionService {
   private pricingCollectionRepository: PricingCollectionRepository;
@@ -130,6 +131,22 @@ class PricingCollectionService {
       return collection;
     } catch(err) {
       await this.pricingCollectionRepository.destroy(newCollectionData.name, userId, true);
+      throw new Error((err as Error).message);
+    }
+  }
+
+  async generateCollectionAnalytics(collectionName: string, ownerId: string) {
+    try{
+      const collectionPricings = await this.pricingCollectionRepository.findCollectionPricings(collectionName, ownerId);
+      if (!collectionPricings) {
+        throw new Error('Collection not found');
+      }
+
+      const analytics = calculateAnalyticsForPricings(collectionPricings.pricings);
+      
+      await this.pricingCollectionRepository.setCollectionAnalytics(collectionPricings._id, analytics);
+      return true;
+    }catch(err){
       throw new Error((err as Error).message);
     }
   }

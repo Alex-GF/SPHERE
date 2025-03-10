@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { PricingCollectionAnalyticsToAdd } from '../../types/database/PricingCollection';
+import { PricingCollectionAnalytics, PricingCollectionAnalyticsToAdd } from '../../types/database/PricingCollection';
 import RepositoryBase from '../RepositoryBase';
 import PricingCollectionMongoose from './models/PricingCollectionMongoose';
 import PricingMongoose from './models/PricingMongoose';
@@ -209,6 +209,39 @@ class PricingCollectionRepository extends RepositoryBase {
     }
   }
 
+  async findCollectionPricings(name: string, userId: string, ...args: any) {
+    try {
+      const collections = await PricingCollectionMongoose.aggregate([
+        {
+          $match: {
+            name: {
+              $regex: name,
+              $options: 'i',
+            },
+            _ownerId: new mongoose.Types.ObjectId(userId),
+          },
+        },
+        {
+          $lookup: {
+            from: 'pricings',
+            localField: '_id',
+            foreignField: '_collectionId',
+            as: 'pricings',
+          }
+        },
+        {
+          $project: {
+            pricings: 1,
+          },
+        },
+      ]);
+
+      return collections[0];
+    } catch (err) {
+      return null;
+    }
+  }
+
   async create(data: any, ...args: any) {
     const collection = new PricingCollectionMongoose(data);
     await collection.save();
@@ -250,6 +283,19 @@ class PricingCollectionRepository extends RepositoryBase {
     }
 
     collection.set(data);
+    await collection.save();
+
+    return collection.toJSON();
+  }
+
+  async setCollectionAnalytics(collectionId: string, analytics: any) {
+    const collection = await PricingCollectionMongoose.findById(collectionId);
+
+    if (!collection) {
+      throw new Error('Collection not found in database');
+    }
+
+    collection.set({ analytics });
     await collection.save();
 
     return collection.toJSON();

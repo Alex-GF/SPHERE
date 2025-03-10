@@ -19,6 +19,7 @@ class PricingCollectionController {
     this.downloadCollection = this.downloadCollection.bind(this);
     this.create = this.create.bind(this);
     this.bulkCreate = this.bulkCreate.bind(this);
+    this.generateAnalytics = this.generateAnalytics.bind(this);
     this.update = this.update.bind(this);
     this.destroy = this.destroy.bind(this);
   }
@@ -147,6 +148,22 @@ class PricingCollectionController {
       res.json(collection);
     } catch (err: any) {
       res.status(500).send({ error: (err as Error).message });
+    }
+  }
+
+  async generateAnalytics(req: any, res: any) {
+    if (req.user.id === req.params.userId) {
+      try {
+        await this.pricingCollectionService.generateCollectionAnalytics(
+          req.params.collectionName,
+          req.user.id
+        );
+        res.status(200).send({ message: 'Analytics generated successfully.' });
+      } catch (err: any) {
+        res.status(500).send({ error: err.message});
+      }
+    }else{
+      res.status(403).send({ error: 'This collection is not yours.' });
     }
   }
 

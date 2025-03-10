@@ -1,65 +1,7 @@
-import mongoose from 'mongoose';
-import { getMongoDBConnectionURI } from '../../config/mongoose';
-import PricingCollectionMongoose from '../../repositories/mongoose/models/PricingCollectionMongoose';
-import { Pricing } from '../../types/database/Pricing';
+import { Pricing } from "../types/database/Pricing";
 
-export async function up(): Promise<void> {
-  mongoose.connect(getMongoDBConnectionURI());
-
-  const collections = await PricingCollectionMongoose.aggregate([
-    {
-      $lookup: {
-        from: 'pricings',
-        localField: '_id',
-        foreignField: '_collectionId',
-        as: 'pricings',
-      },
-    },
-  ]);
-
-  for (const collection of collections) {
-    const newAnalytics = calculateAnalyticsForPricings(collection);
-
-    await PricingCollectionMongoose.updateOne({
-      _id: collection._id,
-    }, {
-      analytics: newAnalytics,
-    });
-  }
-}
-
-export async function down(): Promise<void> {
-  mongoose.connect(getMongoDBConnectionURI());
-
-  await PricingCollectionMongoose.updateMany(
-    {},
-    {
-      $set: {
-        analytics: {
-          evolutionOfPlans: {
-            dates: [],
-            values: [],
-          },
-          evolutionOfAddOns: {
-            dates: [],
-            values: [],
-          },
-          evolutionOfFeatures: {
-            dates: [],
-            values: [],
-          },
-          evolutionOfConfigurationSpaceSize: {
-            dates: [],
-            values: [],
-          },
-        },
-      },
-    }
-  );
-}
-
-const calculateAnalyticsForPricings = (collection: any) => {
-  const extractionDates = _simulateCollectionEvolution(collection.pricings);
+export const calculateAnalyticsForPricings = (pricings: any) => {
+  const extractionDates = _simulateCollectionEvolution(pricings);
 
   const analyticsByMonth = _getAnalyticsEvolution(extractionDates);
 
