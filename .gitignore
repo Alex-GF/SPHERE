@@ -28,7 +28,8 @@ dist-ssr
 deno.lock
 
 # Locally uploaded pricings
-api/public/static/pricings/uploadedDataset/
+api/public/static/pricings/uploaded/
+api/public/static/collections
 
 # SSL
 

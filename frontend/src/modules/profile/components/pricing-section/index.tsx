@@ -35,7 +35,7 @@ export default function PricingSection({
       .catch((error) => {
         console.error('Cannot GET pricings. Error:', error);
       });
-  }, [renderFlag, getLoggedUserPricings]);
+  }, [renderFlag]);
 
   const sortedPricings = useMemo(() => {
     return [...pricings].sort((a, b) => {

@@ -162,9 +162,22 @@ class PricingRepository extends RepositoryBase {
     }
   }
 
-  async findByNameAndOwner(name: string, owner: string, ...args: any) {
+  async findByNameAndOwner(name: string, owner: string, queryParams?: {collectionName?: string}, ...args: any) {
     try {
-      const pricing = await PricingMongoose.aggregate(getPricingByNameAndOwnerAggregator(name, owner));
+      let pricing;
+      if (queryParams?.collectionName) {
+        pricing = await PricingMongoose.aggregate([
+          ...getPricingByNameAndOwnerAggregator(name, owner),
+          {
+            $match: {
+              'collectionName': queryParams.collectionName,
+            }
+          }
+        ]);
+      }else{
+        pricing = await PricingMongoose.aggregate(getPricingByNameAndOwnerAggregator(name, owner));
+      }
+      
 
       if (!pricing || pricing.length === 0) {
         return null;
@@ -176,15 +189,29 @@ class PricingRepository extends RepositoryBase {
     }
   }
 
-  async create(data: any, ...args: any) {
-    if (data._collectionId) {
-      data._collectionId = new mongoose.Types.ObjectId(data._collectionId);
+  async findByCollection(collectionId: string, ...args: any) {
+    try {
+      const pricings = await PricingMongoose.find({ _collectionId: collectionId });
+
+      return pricings;
+    } catch (err) {
+      return [];
     }
+  }
 
-    const pricing = new PricingMongoose(data);
-    await pricing.save();
+  async create(data: any[], ...args: any) {
+    data.forEach((item) => {
+      if (item._collectionId) {
+        item._collectionId = new mongoose.Types.ObjectId(item._collectionId);
+      }
+    });
 
-    return pricing;
+    return await PricingMongoose.insertMany(data);
+
+    // const pricing = new PricingMongoose(data);
+    // await pricing.save();
+
+    // return pricing;
   }
 
   async updateAnalytics(pricingId: string, analytics: PricingAnalytics, ...args: any) {
@@ -197,6 +224,19 @@ class PricingRepository extends RepositoryBase {
     await pricing.save();
 
     return pricing.toJSON();
+  }
+
+  async updatePricingsCollectionName(pricingsToUpdate: any, ownerId: string, newCollectionName: string, ...args: any) {
+    const bulkOps = pricingsToUpdate.map((pricing: any) => ({
+      updateOne: {
+        filter: { _id: pricing._id },
+        update: { $set: { yaml: pricing.yaml } },
+      },
+    }));
+
+    const result = await PricingMongoose.bulkWrite(bulkOps);
+    
+    return result.modifiedCount === pricingsToUpdate.length;
   }
 
   async addPricingToCollection(pricingName: string, owner: string, collectionId: string) {

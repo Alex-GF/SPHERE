@@ -180,7 +180,7 @@ export default function PricingListCard({
           justifyContent="center"
           height={45}
           pl="10px"
-          onClick={() => router.push(`/pricings/${owner}/${name}`)}
+          onClick={() => router.push(`/pricings/${owner}/${name}?collectionName=${dataEntry.collectionName}`)}
           sx={{
             transition: 'color 0.3s',
             '&:hover': {
@@ -190,7 +190,7 @@ export default function PricingListCard({
           }}
         >
           <Typography variant="h6" sx={{ fontWeight: 'bold', mt: 1 }}>
-            {dataEntry.owner}/{name}
+          {dataEntry.collectionName ? `${dataEntry.collectionName}/${name}` : name}
           </Typography>
         </Stack>
         {/* <Box

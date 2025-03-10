@@ -4,10 +4,12 @@ import { isLoggedIn } from '../middlewares/AuthMiddleware';
 import PricingController from '../controllers/PricingController';
 import { handleValidation } from '../middlewares/ValidationHandlingMiddleware';
 import * as PricingCollectionValidator from '../controllers/validation/PricingCollectionValidation';
+import { handleCollectionUpload } from '../middlewares/FileHandlerMiddleware';
 
 const loadFileRoutes = function (app: express.Application) {
   const pricingCollectionController = new PricingCollectionController();
   const pricingController = new PricingController();
+  const upload = handleCollectionUpload(['zip'], './public/static/collections');
 
   const baseUrl = process.env.BASE_URL_PATH;
 
@@ -16,17 +18,31 @@ const loadFileRoutes = function (app: express.Application) {
     .get(pricingCollectionController.index)
     .post(isLoggedIn, pricingCollectionController.create);
 
-  app.route(baseUrl + '/me/collections')
-  .get(isLoggedIn, pricingCollectionController.showByUserId);
+  app
+    .route(baseUrl + '/pricings/collections/bulk')
+    .post(isLoggedIn, upload, pricingCollectionController.bulkCreate);
 
-  app.route(baseUrl + '/me/collections/pricings/:pricingName')
-  .delete(isLoggedIn, pricingController.removePricingFromCollection);
+  app.route(baseUrl + '/me/collections').get(isLoggedIn, pricingCollectionController.showByUserId);
+
+  app
+    .route(baseUrl + '/me/collections/pricings/:pricingName')
+    .delete(isLoggedIn, pricingController.removePricingFromCollection);
 
   app
     .route(baseUrl + '/pricings/collections/:userId/:collectionName')
     .get(pricingCollectionController.showByNameAndUserId)
-    .put(isLoggedIn, PricingCollectionValidator.update, handleValidation, pricingCollectionController.update)
+    .post(isLoggedIn, pricingCollectionController.generateAnalytics)
+    .put(
+      isLoggedIn,
+      PricingCollectionValidator.update,
+      handleValidation,
+      pricingCollectionController.update
+    )
     .delete(isLoggedIn, pricingCollectionController.destroy);
+
+    app
+    .route(baseUrl + '/pricings/collections/:userId/:collectionName/download')
+    .get(pricingCollectionController.downloadCollection);
 };
 
 export default loadFileRoutes;

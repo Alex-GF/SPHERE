@@ -55,8 +55,8 @@ export function usePricingsApi() {
       });
   };
 
-  const getPricingByName = async (name: string, owner: string) => {
-    return fetch(`${PRICINGS_BASE_PATH}/${owner}/${name}`, {
+  const getPricingByName = async (name: string, owner: string, collectionName: string | null) => {
+    return fetch(`${PRICINGS_BASE_PATH}/${owner}/${name}${collectionName && collectionName !== "undefined" ? `?collectionName=${collectionName}` : ""}`, {
       method: 'GET',
       headers: basicHeaders,
     })

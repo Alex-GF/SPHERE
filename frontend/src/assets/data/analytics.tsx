@@ -40,6 +40,7 @@ export interface AnalyticsDataEntry {
     id: string,
     username: string
   };
+  collectionName: string;
   private: boolean;
   _collectionId: string;
   collection: string;

@@ -26,9 +26,14 @@ class PricingService {
       const pricings = await this.pricingRepository.findByOwnerWithoutCollection(username)
       return pricings
     }
+    
+    async indexByCollection (collectionId: string){
+      const pricings = await this.pricingRepository.findByCollection(collectionId)
+      return pricings
+    }
   
-    async show (name: string, owner: string) {
-      const pricing: {name: string, versions: PricingModel[]} | null = await this.pricingRepository.findByNameAndOwner(name, owner)
+    async show (name: string, owner: string, queryParams?: {collectionName?: string}) {
+      const pricing: {name: string, versions: PricingModel[]} | null = await this.pricingRepository.findByNameAndOwner(name, owner, queryParams)
       if (!pricing) {
         throw new Error('Pricing not found')
       }
@@ -41,7 +46,7 @@ class PricingService {
 
     async create (pricingFile: any, owner: string, collectionId?: string) {
       try{
-        const uploadedPricing: Pricing = retrievePricingFromPath(pricingFile.path);
+        const uploadedPricing: Pricing = retrievePricingFromPath(typeof pricingFile === "string" ? pricingFile : pricingFile.path);
         const previousPricing = await this.pricingRepository.findByNameAndOwner(uploadedPricing.saasName, owner);
 
         if (!collectionId && previousPricing && previousPricing.versions[0]._collectionId) {
@@ -60,7 +65,7 @@ class PricingService {
           analytics: {}
         };
 
-        const pricing = await this.pricingRepository.create(pricingData);
+        const pricing = await this.pricingRepository.create([pricingData]);
 
         processFileUris(pricing, ['yaml'])
 
@@ -68,9 +73,9 @@ class PricingService {
 
         await pricingAnalytics.getAnalytics()
           .then((analytics: any) => {
-            this.pricingRepository.updateAnalytics(pricing._id.toString(), analytics);
+            this.pricingRepository.updateAnalytics(pricing[0]._id.toString(), analytics);
           }).catch(async (err: any) => {
-            await this.pricingRepository.destroy(pricing._id.toString());
+            await this.pricingRepository.destroy(pricing[0]._id.toString());
             throw new Error((err as Error).message);
           });
 
@@ -113,6 +118,25 @@ class PricingService {
       const updatedPricing = await this.pricingRepository.findByNameAndOwner(pricingName, owner)
 
       return updatedPricing;
+    }
+
+    async updatePricingsCollectionName (oldCollectionName: string, newCollectionName: string, collectionId: string, ownerId: string) {
+      
+      if (oldCollectionName === newCollectionName){
+        return true;
+      }
+
+      const pricings = await this.pricingRepository.findByCollection(collectionId);
+      const pricingsToUpdate = []
+      for (const pricing of pricings) {
+        if (pricing.yaml.includes(oldCollectionName)){
+          pricing.yaml = pricing.yaml.replace(oldCollectionName, newCollectionName)
+          pricingsToUpdate.push(pricing)
+        }
+      }
+
+      await this.pricingRepository.updatePricingsCollectionName(pricingsToUpdate, ownerId, newCollectionName)
+      return true
     }
 
     async removePricingFromCollection (pricingName: string, owner: string) {

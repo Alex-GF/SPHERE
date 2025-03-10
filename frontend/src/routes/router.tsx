@@ -39,7 +39,7 @@ export default function Router() {
         { element: <PricingListPage />, path: "/pricings" },
         { element: <CreatePricingPage />, path: "/pricings/new" },
         { element: <CardPage />, path: "/pricings/:owner/:name" },
-        { element: <LegacyPricingCard />, path: "/pricings/card" },
+        // { element: <LegacyPricingCard />, path: "/pricings/card" },
         { element: <TeamPage />, path: "/team" },
         { element: <ResearchPage />, path: "/research" },
         { element: <ContributionsPage />, path: "/contributions" },

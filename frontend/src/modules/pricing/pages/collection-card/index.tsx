@@ -26,6 +26,8 @@ import PricingListCard from '../../../pricing/components/pricing-list-card';
 import { useAuth } from '../../../auth/hooks/useAuth';
 import CollectionSettings from '../../components/collection-settings';
 import { FaSortAlphaDown, FaSortAlphaUpAlt } from 'react-icons/fa';
+import { primary } from '../../../core/theme/palette';
+import LoadingModal from '../../../core/components/loading-modal';
 
 export const StyledChip = styled(Chip)(({ theme }) => ({
   margin: theme.spacing(0.5),
@@ -40,10 +42,10 @@ export default function CollectionCardPage() {
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
   const [tabValue, setTabValue] = useState(0);
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
   const pathname = usePathname();
-  const { getCollectionByOwnerAndName } = usePricingCollectionsApi();
+  const { getCollectionByOwnerAndName, downloadCollection } = usePricingCollectionsApi();
   const router = useRouter();
   const { authUser } = useAuth();
 
@@ -52,20 +54,24 @@ export default function CollectionCardPage() {
     const name = segments.pop() as string;
     const ownerId = segments[segments.length - 1];
 
-    getCollectionByOwnerAndName(ownerId, name).then(collection => {
-      if (collection) {
-        setCollection(collection);
-        setStartDate(collection.analytics.evolutionOfPlans.dates[0]);
-        setEndDate(
-          collection.analytics.evolutionOfPlans.dates[
-            collection.analytics.evolutionOfPlans.dates.length - 1
-          ]
-        );
-      } else {
+    getCollectionByOwnerAndName(ownerId, name)
+      .then(collection => {
+        if (collection) {
+          setCollection(collection);
+          setStartDate(collection.analytics.evolutionOfPlans.dates[0]);
+          setEndDate(
+            collection.analytics.evolutionOfPlans.dates[
+              collection.analytics.evolutionOfPlans.dates.length - 1
+            ]
+          );
+        } else {
+          router.push('/error');
+        }
+      })
+      .catch(() => {
         router.push('/error');
-      }
-    });
-  }, [pathname, getCollectionByOwnerAndName, router]);
+      });
+  }, [pathname, router]);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -80,7 +86,7 @@ export default function CollectionCardPage() {
   };
 
   const toggleSortOrder = () => {
-    setSortOrder(prev => (prev === "asc" ? "desc" : "asc"));
+    setSortOrder(prev => (prev === 'asc' ? 'desc' : 'asc'));
   };
 
   const sortedPricings = useMemo(() => {
@@ -92,9 +98,7 @@ export default function CollectionCardPage() {
     return pricingArray.sort((a, b) => {
       const nameA = a.name?.toLowerCase() || '';
       const nameB = b.name?.toLowerCase() || '';
-      return sortOrder === "asc"
-        ? nameA.localeCompare(nameB)
-        : nameB.localeCompare(nameA);
+      return sortOrder === 'asc' ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
     });
   }, [collection, sortOrder]);
 
@@ -109,12 +113,12 @@ export default function CollectionCardPage() {
             <Box display="flex" flexDirection="column">
               <Box display="flex" alignItems="center" gap={2} mb={2}>
                 <Typography variant="h5" letterSpacing={1}>
-                  <Box component="span" sx={{ color: 'text.secondary', mr: 0.25 }}>
+                  {/* <Box component="span" sx={{ color: 'text.secondary', mr: 0.25 }}>
                     {collection?.owner.username}
                   </Box>
                   <Box component="span" sx={{ color: 'text.secondary', mr: 0.25 }}>
                     /
-                  </Box>
+                  </Box> */}
                   {collection?.name}
                 </Typography>
                 <Button
@@ -138,7 +142,7 @@ export default function CollectionCardPage() {
 
               <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={tabValue} onChange={(_, v) => setTabValue(v)}>
-                  <Tab label="Pricing card" />
+                  <Tab label="Collection card" />
                   {collection &&
                     authUser.user &&
                     collection.owner.username === authUser.user.username && (
@@ -195,13 +199,33 @@ export default function CollectionCardPage() {
                 </Typography>
                 {collection && (
                   <>
-                    <Box display="flex" alignItems="center" mb={-2}>
-                      <Typography variant="h6" fontWeight="bold">
-                        Pricings in Collection
-                      </Typography>
-                      <IconButton onClick={toggleSortOrder} size="medium">
-                        {sortOrder === "asc" ? <FaSortAlphaDown /> : <FaSortAlphaUpAlt />}
-                      </IconButton>
+                    <Box display="flex" alignItems="center" justifyContent="space-between">
+                      <Box display="flex" alignItems="center" mb={-2}>
+                        <Typography variant="h6" fontWeight="bold">
+                          Pricings in Collection
+                        </Typography>
+                        <IconButton onClick={toggleSortOrder} size="medium">
+                          {sortOrder === 'asc' ? <FaSortAlphaDown /> : <FaSortAlphaUpAlt />}
+                        </IconButton>
+                      </Box>
+                      <Button
+                        sx={{
+                          border: `1px solid ${primary[400]}`,
+                          color: `${primary[400]}`,
+                          width: 150,
+                          height: 40,
+                          fontSize: 16,
+                          fontWeight: 'bold',
+                          marginBottom: -2,
+                          "&:hover": {
+                            backgroundColor: primary[400],
+                            color: 'white',
+                          }
+                        }}
+                        onClick={() => downloadCollection(collection?.owner.id as string, collection?.name as string)}
+                      >
+                        DOWNLOAD
+                      </Button>
                     </Box>
                     <PricingsGrid
                       sx={{

@@ -42,7 +42,8 @@ class PricingController {
 
   async show(req: any, res: any) {
     try {
-      const pricing = await this.pricingService.show(req.params.pricingName, req.params.owner);
+      const queryParams = req.query;
+      const pricing = await this.pricingService.show(req.params.pricingName, req.params.owner, queryParams);
       res.json(pricing);
     } catch (err: any) {
       if (err.message.toLowerCase().includes('not found')) {

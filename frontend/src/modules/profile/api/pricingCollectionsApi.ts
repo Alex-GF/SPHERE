@@ -56,6 +56,20 @@ export function usePricingCollectionsApi() {
         return Promise.reject(error as Error);
       });
   };
+  
+  const createBulkCollection = async (formData: FormData) => {
+    return fetchWithInterceptor(COLLECTIONS_BASE_PATH + "/bulk", {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${authUser.token}`,
+      },
+      body: formData,
+    })
+      .then(response => response.json())
+      .catch(error => {
+        return Promise.reject(error as Error);
+      });
+  };
 
   const getCollectionByOwnerAndName = async (ownerId: string, collectionName: string) => {
     return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${ownerId}/${collectionName}`, {
@@ -67,6 +81,31 @@ export function usePricingCollectionsApi() {
         return Promise.reject(error as Error);
       });
   };
+
+  const downloadCollection = async (ownerId: string, collectionName: string) => {
+    return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${ownerId}/${collectionName}/download`, {
+      method: 'GET',
+      headers: basicHeaders,
+    })
+      .then(async response => {
+        if (!response.ok) {
+          return Promise.reject(new Error('Error downloading collection'));
+        }
+
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = collectionName + '.zip';
+        a.click();
+
+        URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      })
+      .catch(error => {
+        return Promise.reject(error as Error);
+      });
+  }
 
   const updateCollection = async (collectionName: string, collectionData: any) => {
     return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${authUser.user!.id}/${collectionName}`, {
@@ -94,8 +133,10 @@ export function usePricingCollectionsApi() {
   return {
     getLoggedUserCollections,
     createCollection,
+    createBulkCollection,
     getCollectionByOwnerAndName,
     getCollections,
+    downloadCollection,
     updateCollection,
     deleteCollection
   };
