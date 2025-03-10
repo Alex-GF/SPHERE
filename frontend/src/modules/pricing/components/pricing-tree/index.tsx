@@ -309,7 +309,7 @@ export default function PricingTree({ pricing, name }: PricingTreeProps) {
                 Pricing tree for
             </Typography>
             <Typography variant="h6" gutterBottom color="text.secondary" fontFamily="monospace" letterSpacing={0.25}>
-                sphere/{name}
+                {name}
             </Typography>
         </Box>
         <RichTreeView
