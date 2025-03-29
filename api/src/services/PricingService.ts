@@ -160,8 +160,20 @@ class PricingService {
       }
     }
   
-    async destroy (pricingName: string, owner: string) {
-      const result = await this.pricingRepository.destroyByNameAndOwner(pricingName, owner)
+    async destroy (pricingName: string, owner: string, queryParams?: {collectionName?: string}) {
+
+      let collectionId;
+
+      if (queryParams?.collectionName) {
+        const collection = await this.pricingCollectionService.showByNameAndUserId(queryParams.collectionName, owner)
+        if (!collection) {
+          throw new Error('Collection not found')
+        }
+
+        collectionId = collection._id.toString()
+      }
+
+      const result = await this.pricingRepository.destroyByNameOwnerAndCollectionId(pricingName, owner, collectionId)
       if (!result) {
         throw new Error('Either the pricing does not exist or you are not its owner')
       }

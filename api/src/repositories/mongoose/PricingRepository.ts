@@ -300,9 +300,18 @@ class PricingRepository extends RepositoryBase {
     );
   }
 
-  async destroyByNameAndOwner(name: string, owner: string, ...args: any) {
-    const result = await PricingMongoose.deleteMany({ name: name, owner: owner });
-    return result.deletedCount >= 1;
+  async destroyByNameOwnerAndCollectionId(name: string, owner: string, collectionId?: string) {
+    if (collectionId) {
+      const result = await PricingMongoose.deleteMany({
+        name: name,
+        owner: owner,
+        _collectionId: new mongoose.Types.ObjectId(collectionId),
+      });
+      return result.deletedCount >= 1;
+    }else{
+      const result = await PricingMongoose.deleteMany({ name: name, owner: owner, _collectionId: { $exists: false } });
+      return result.deletedCount >= 1;
+    }
   }
 
   async destroyVersionByNameAndOwner(name: string, version: string, owner: string, ...args: any) {

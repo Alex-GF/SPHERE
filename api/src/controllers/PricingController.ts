@@ -114,7 +114,8 @@ class PricingController {
 
   async destroyByNameAndOwner(req: any, res: any) {
     try {
-      const result = await this.pricingService.destroy(req.params.pricingName, req.user.username);
+      const queryParams = req.query;
+      const result = await this.pricingService.destroy(req.params.pricingName, req.user.username, queryParams);
       if (!result) {
         res.status(404).send({ error: 'Pricing not found' });
       } else {
