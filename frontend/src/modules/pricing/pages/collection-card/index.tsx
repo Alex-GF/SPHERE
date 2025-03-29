@@ -27,7 +27,6 @@ import { useAuth } from '../../../auth/hooks/useAuth';
 import CollectionSettings from '../../components/collection-settings';
 import { FaSortAlphaDown, FaSortAlphaUpAlt } from 'react-icons/fa';
 import { primary } from '../../../core/theme/palette';
-import LoadingModal from '../../../core/components/loading-modal';
 
 export const StyledChip = styled(Chip)(({ theme }) => ({
   margin: theme.spacing(0.5),
@@ -38,9 +37,9 @@ export default function CollectionCardPage() {
   const [isFollowing, setIsFollowing] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [collection, setCollection] = useState<Collection | null>(null);
-  const [startDate, setStartDate] = useState<string | null>(null);
-  const [endDate, setEndDate] = useState<string | null>(null);
+  const [collection, setCollection] = useState<Collection | undefined>(undefined);
+  const [startDate, setStartDate] = useState<string | null>(new Date().toISOString());
+  const [endDate, setEndDate] = useState<string | null>(new Date().toISOString());
   const [tabValue, setTabValue] = useState(0);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
@@ -58,18 +57,21 @@ export default function CollectionCardPage() {
       .then(collection => {
         if (collection) {
           setCollection(collection);
-          setStartDate(collection.analytics.evolutionOfPlans.dates[0]);
-          setEndDate(
-            collection.analytics.evolutionOfPlans.dates[
-              collection.analytics.evolutionOfPlans.dates.length - 1
-            ]
-          );
+          if (collection.analytics) {
+            setStartDate(collection.analytics.evolutionOfPlans.dates[0]);
+            setEndDate(
+              collection.analytics.evolutionOfPlans.dates[
+                collection.analytics.evolutionOfPlans.dates.length - 1
+              ]
+            );
+          }
         } else {
           router.push('/error');
         }
       })
-      .catch(() => {
-        router.push('/error');
+      .catch(error => {
+        console.log(error);
+        // router.push('/error');
       });
   }, [pathname, router]);
 
@@ -153,30 +155,32 @@ export default function CollectionCardPage() {
             </Box>
             <Box display="flex" flexDirection="column" gap={2}>
               <Box display="flex" gap={2}>
-                {collection && collection.analytics.evolutionOfPlans.dates.length > 0 && (
-                  <>
-                    <TextField
-                      label="Start Date"
-                      type="date"
-                      fullWidth
-                      defaultValue={
-                        new Date(collection.analytics.evolutionOfPlans.dates[0])
-                          .toISOString()
-                          .split('T')[0]
-                      }
-                      slotProps={{ inputLabel: { shrink: true } }}
-                      onChange={handleInputDate}
-                    />
-                    <TextField
-                      label="End Date"
-                      type="date"
-                      fullWidth
-                      defaultValue={new Date().toISOString().split('T')[0]}
-                      slotProps={{ inputLabel: { shrink: true } }}
-                      onChange={handleOutputDate}
-                    />
-                  </>
-                )}
+                {collection &&
+                  collection.analytics &&
+                  collection.analytics.evolutionOfPlans.dates.length > 0 && (
+                    <>
+                      <TextField
+                        label="Start Date"
+                        type="date"
+                        fullWidth
+                        defaultValue={
+                          new Date(collection.analytics.evolutionOfPlans.dates[0])
+                            .toISOString()
+                            .split('T')[0]
+                        }
+                        slotProps={{ inputLabel: { shrink: true } }}
+                        onChange={handleInputDate}
+                      />
+                      <TextField
+                        label="End Date"
+                        type="date"
+                        fullWidth
+                        defaultValue={new Date().toISOString().split('T')[0]}
+                        slotProps={{ inputLabel: { shrink: true } }}
+                        onChange={handleOutputDate}
+                      />
+                    </>
+                  )}
               </Box>
             </Box>
           </Box>
@@ -217,12 +221,17 @@ export default function CollectionCardPage() {
                           fontSize: 16,
                           fontWeight: 'bold',
                           marginBottom: -2,
-                          "&:hover": {
+                          '&:hover': {
                             backgroundColor: primary[400],
                             color: 'white',
-                          }
+                          },
                         }}
-                        onClick={() => downloadCollection(collection?.owner.id as string, collection?.name as string)}
+                        onClick={() =>
+                          downloadCollection(
+                            collection?.owner.id as string,
+                            collection?.name as string
+                          )
+                        }
                       >
                         DOWNLOAD
                       </Button>
@@ -275,26 +284,23 @@ export default function CollectionCardPage() {
                   </>
                 )}
               </Box>
-              {collection && collection.pricings[0].pricings.length > 0 && (
-                <Box sx={{ minWidth: '33.3%' }}>
-                  {collection && (
-                    <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
-                      <CollectionStats collection={collection} />
-                    </Paper>
-                  )}
 
-                  {collection && (
-                    <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
-                      <CollectionAnalytics
-                        collectionData={collection.analytics}
-                        toggleModal={toggleModal}
-                        startDate={startDate}
-                        endDate={endDate}
-                      />
-                    </Paper>
-                  )}
-                </Box>
-              )}
+              <Box sx={{ minWidth: '33.3%' }}>
+                <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
+                  <CollectionStats collection={collection} />
+                </Paper>
+
+                {collection && (
+                  <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
+                    <CollectionAnalytics
+                      collectionData={collection.analytics}
+                      toggleModal={toggleModal}
+                      startDate={startDate}
+                      endDate={endDate}
+                    />
+                  </Paper>
+                )}
+              </Box>
             </>
           )}
         </Box>
