@@ -47,6 +47,7 @@ class PricingService {
     async create (pricingFile: any, owner: string, collectionId?: string) {
       try{
         const uploadedPricing: Pricing = retrievePricingFromPath(typeof pricingFile === "string" ? pricingFile : pricingFile.path);
+        // TODO: if the pricing exists in two or more collections, this could lead to error.
         const previousPricing = await this.pricingRepository.findByNameAndOwner(uploadedPricing.saasName, owner);
 
         if (!collectionId && previousPricing && previousPricing.versions[0]._collectionId) {
@@ -67,7 +68,7 @@ class PricingService {
 
         const pricing = await this.pricingRepository.create([pricingData]);
 
-        processFileUris(pricing, ['yaml'])
+        processFileUris(pricing[0], ['yaml'])
 
         const pricingAnalytics = new PricingAnalytics(uploadedPricing);
 
