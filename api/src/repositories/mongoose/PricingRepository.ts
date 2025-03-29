@@ -162,7 +162,12 @@ class PricingRepository extends RepositoryBase {
     }
   }
 
-  async findByNameAndOwner(name: string, owner: string, queryParams?: {collectionName?: string}, ...args: any) {
+  async findByNameAndOwner(
+    name: string,
+    owner: string,
+    queryParams?: { collectionName?: string },
+    ...args: any
+  ) {
     try {
       let pricing;
       if (queryParams?.collectionName) {
@@ -170,14 +175,20 @@ class PricingRepository extends RepositoryBase {
           ...getPricingByNameAndOwnerAggregator(name, owner),
           {
             $match: {
-              'collectionName': queryParams.collectionName,
-            }
-          }
+              collectionName: queryParams.collectionName,
+            },
+          },
         ]);
-      }else{
-        pricing = await PricingMongoose.aggregate(getPricingByNameAndOwnerAggregator(name, owner));
+      } else {
+        pricing = await PricingMongoose.aggregate([
+          {
+            $match: {
+              _collectionId: { $exists: false },
+            },
+          },
+          ...getPricingByNameAndOwnerAggregator(name, owner),
+        ]);
       }
-      
 
       if (!pricing || pricing.length === 0) {
         return null;
@@ -200,7 +211,7 @@ class PricingRepository extends RepositoryBase {
   }
 
   async create(data: any[], ...args: any) {
-    data.forEach((item) => {
+    data.forEach(item => {
       if (item._collectionId) {
         item._collectionId = new mongoose.Types.ObjectId(item._collectionId);
       }
@@ -226,7 +237,12 @@ class PricingRepository extends RepositoryBase {
     return pricing.toJSON();
   }
 
-  async updatePricingsCollectionName(pricingsToUpdate: any, ownerId: string, newCollectionName: string, ...args: any) {
+  async updatePricingsCollectionName(
+    pricingsToUpdate: any,
+    ownerId: string,
+    newCollectionName: string,
+    ...args: any
+  ) {
     const bulkOps = pricingsToUpdate.map((pricing: any) => ({
       updateOne: {
         filter: { _id: pricing._id },
@@ -235,7 +251,7 @@ class PricingRepository extends RepositoryBase {
     }));
 
     const result = await PricingMongoose.bulkWrite(bulkOps);
-    
+
     return result.modifiedCount === pricingsToUpdate.length;
   }
 
@@ -308,8 +324,12 @@ class PricingRepository extends RepositoryBase {
         _collectionId: new mongoose.Types.ObjectId(collectionId),
       });
       return result.deletedCount >= 1;
-    }else{
-      const result = await PricingMongoose.deleteMany({ name: name, owner: owner, _collectionId: { $exists: false } });
+    } else {
+      const result = await PricingMongoose.deleteMany({
+        name: name,
+        owner: owner,
+        _collectionId: { $exists: false },
+      });
       return result.deletedCount >= 1;
     }
   }
