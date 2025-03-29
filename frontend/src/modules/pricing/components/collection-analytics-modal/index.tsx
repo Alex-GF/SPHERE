@@ -55,7 +55,7 @@ export default function CollectionAnalyticsModal({
             overflowY: 'auto',
           }}
         >
-          {Object.entries(collectionData).map(([key, value]) => (
+          {collectionData && Object.entries(collectionData).map(([key, value]) => (
             <Box key={key}>
               <Typography variant="body2" color="text.secondary" mb={2}>
                 {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())} Over Time

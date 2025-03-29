@@ -4,7 +4,7 @@ import { OpenInFull } from '@mui/icons-material';
 import { LineChart } from '@mui/x-charts';
 import type { CollectionAnalytics } from '../../types/collection';
 import { formatStringDates } from '../../../profile/utils/dates-util';
-import { useEffect, useState } from 'react';
+import { flex } from '../../../core/theme/css';
 
 interface StatsProps {
   collectionData: CollectionAnalytics;
@@ -19,9 +19,8 @@ export default function CollectionAnalytics({
   startDate,
   endDate,
 }: StatsProps) {
-
   function dateIntervalFilter(_: any, index: number) {
-    const entryDate = new Date(collectionData.evolutionOfConfigurationSpaceSize.dates[index]);
+    const entryDate = collectionData ? new Date(collectionData.evolutionOfConfigurationSpaceSize.dates[index]) : new Date();
 
     return entryDate >= new Date(startDate!) && entryDate <= new Date(endDate!);
   }
@@ -36,33 +35,7 @@ export default function CollectionAnalytics({
           <OpenInFull />
         </IconButton>
       </Box>
-      <LineChart
-        width={500}
-        height={300}
-        series={[
-          {
-            data:
-              (startDate && endDate
-                ? collectionData.evolutionOfConfigurationSpaceSize.values.filter(dateIntervalFilter)
-                : collectionData.evolutionOfConfigurationSpaceSize.values
-              ).map((v: any) => (typeof v === 'number' ? parseFloat(v.toFixed(2)) : v)) ?? [],
-            label: 'Average Configuration Space Size',
-            area: false,
-            showMark: collectionData.evolutionOfConfigurationSpaceSize.values.length <= 1,
-          },
-        ]}
-        xAxis={[
-          {
-            scaleType: 'point',
-            data: formatStringDates(
-              startDate && endDate
-                ? collectionData.evolutionOfConfigurationSpaceSize.dates.filter(dateIntervalFilter)
-                : collectionData.evolutionOfConfigurationSpaceSize.dates
-            ),
-          },
-        ]}
-      />
-      <Box>
+      {collectionData && collectionData.evolutionOfConfigurationSpaceSize ? (
         <LineChart
           width={500}
           height={300}
@@ -70,12 +43,14 @@ export default function CollectionAnalytics({
             {
               data:
                 (startDate && endDate
-                  ? collectionData.evolutionOfAddOns.values.filter(dateIntervalFilter)
-                  : collectionData.evolutionOfAddOns.values
+                  ? collectionData.evolutionOfConfigurationSpaceSize.values.filter(
+                      dateIntervalFilter
+                    )
+                  : collectionData.evolutionOfConfigurationSpaceSize.values
                 ).map((v: any) => (typeof v === 'number' ? parseFloat(v.toFixed(2)) : v)) ?? [],
+              label: 'Average Configuration Space Size',
               area: false,
-              showMark: collectionData.evolutionOfAddOns.values.length <= 1,
-              label: 'Average Number of AddOns',
+              showMark: collectionData.evolutionOfConfigurationSpaceSize.values.length <= 1,
             },
           ]}
           xAxis={[
@@ -83,12 +58,60 @@ export default function CollectionAnalytics({
               scaleType: 'point',
               data: formatStringDates(
                 startDate && endDate
-                  ? collectionData.evolutionOfAddOns.dates.filter(dateIntervalFilter)
-                  : collectionData.evolutionOfAddOns.dates
+                  ? collectionData.evolutionOfConfigurationSpaceSize.dates.filter(
+                      dateIntervalFilter
+                    )
+                  : collectionData.evolutionOfConfigurationSpaceSize.dates
               ),
             },
           ]}
         />
+      ) : (
+        <Typography variant="body1" gutterBottom sx={{
+          width: 500,
+          height: 500,
+          ...flex({})
+        }}>
+          No configuration space data available for this collection.
+        </Typography>
+      )}
+      <Box>
+        {collectionData && collectionData.evolutionOfAddOns ? (
+          <LineChart
+            width={500}
+            height={300}
+            series={[
+              {
+                data:
+                  (startDate && endDate
+                    ? collectionData.evolutionOfAddOns.values.filter(dateIntervalFilter)
+                    : collectionData.evolutionOfAddOns.values
+                  ).map((v: any) => (typeof v === 'number' ? parseFloat(v.toFixed(2)) : v)) ?? [],
+                area: false,
+                showMark: collectionData.evolutionOfAddOns.values.length <= 1,
+                label: 'Average Number of AddOns',
+              },
+            ]}
+            xAxis={[
+              {
+                scaleType: 'point',
+                data: formatStringDates(
+                  startDate && endDate
+                    ? collectionData.evolutionOfAddOns.dates.filter(dateIntervalFilter)
+                    : collectionData.evolutionOfAddOns.dates
+                ),
+              },
+            ]}
+          />
+        ) : (
+          <Typography variant="body1" gutterBottom sx={{
+            width: 500,
+            height: 500,
+            ...flex({})
+          }}>
+            No add-ons data available for this collection.
+          </Typography>
+        )}
       </Box>
     </>
   );

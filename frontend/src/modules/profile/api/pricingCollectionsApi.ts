@@ -66,6 +66,12 @@ export function usePricingCollectionsApi() {
       body: formData,
     })
       .then(response => response.json())
+      .then(data => {
+        if (data.error){
+          return Promise.reject(data.error);
+        }
+        return data;
+      })
       .catch(error => {
         return Promise.reject(error as Error);
       });
@@ -77,6 +83,12 @@ export function usePricingCollectionsApi() {
       headers: basicHeaders,
     })
       .then(response => response.json())
+      .then(data => {
+        if (data.error) {
+          return Promise.reject(data.error);
+        }
+        return data;
+      })
       .catch(error => {
         return Promise.reject(error as Error);
       });

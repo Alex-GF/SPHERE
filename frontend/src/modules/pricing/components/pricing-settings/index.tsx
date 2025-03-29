@@ -63,7 +63,7 @@ export default function PricingSettings({
   function handleDeletePricing() {
     customConfirm('Are you sure you want to delete this pricing? This action is irreversible.')
       .then(() => {
-        removePricingByName(pricingName)
+        removePricingByName(pricingName, pricingData[0].collectionName)
           .then(() => {
             customConfirm('Pricing deleted successfully. Do you want to return to the main page?')
               .then(() => {

@@ -9,6 +9,8 @@ import { useRouter } from '../../../core/hooks/useRouter';
 import FileUpload from '../../../core/components/file-upload-input';
 import { grey, primary } from '../../../core/theme/palette';
 import { flex } from '../../../core/theme/css';
+import customAlert from '../../../core/utils/custom-alert';
+import customConfirm from '../../../core/utils/custom-confirm';
 
 export interface CreateCollectionFormFieldProps {
   readonly value: string;
@@ -22,7 +24,7 @@ export default function CreateCollectionForm({setShowLoading}: { setShowLoading:
   const [selectedPricings, setSelectedPricings] = useState<string[]>([]);
   const [tabValue, setTabValue] = useState(0);
 
-  const { createCollection, createBulkCollection } = usePricingCollectionsApi();
+  const { createCollection, createBulkCollection, deleteCollection } = usePricingCollectionsApi();
   const router = useRouter();
 
   const handleSubmit = (file: any) => {
@@ -41,7 +43,7 @@ export default function CreateCollectionForm({setShowLoading}: { setShowLoading:
           router.push('/me/pricings');
         })
         .catch(error => {
-          console.error(error);
+          alert(error);
         });
     } else {
       const formData = new FormData();
@@ -54,12 +56,23 @@ export default function CreateCollectionForm({setShowLoading}: { setShowLoading:
       setShowLoading(true);
 
       createBulkCollection(formData)
-        .then(() => {
+        .then(data => {
           setShowLoading(false);
-          router.push('/me/pricings');
+          if (data.pricingsWithErrors && data.pricingsWithErrors.length > 0) {
+            customConfirm(`Some pricings could not be added to the collection due to errors: ${data.pricingsWithErrors.map((p: {name: string, error: string}) => p.name).join(' | ')}. Do you still want to save the collection and add them again manually?`).then(() => {
+              router.push('/me/pricings');
+            }).catch(() => {
+              deleteCollection(collectionName, true).then(() => {
+                router.push('/me/pricings');
+              })
+            });
+          }else{
+            router.push('/me/pricings');
+          }
         })
         .catch(error => {
-          console.error(error);
+          setShowLoading(false);
+          customAlert(error);
         });
     }
   };

@@ -67,7 +67,7 @@ pricingSchema.virtual('collection', {
 });
 
 // Adding unique index for [name, owner, version]
-pricingSchema.index({ name: 1, owner: 1, version: 1 }, { unique: true });
+pricingSchema.index({ name: 1, owner: 1, version: 1, _collectionId: 1 }, { unique: true });
 
 const pricingModel = mongoose.model('Pricing', pricingSchema, 'pricings');
 

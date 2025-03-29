@@ -181,16 +181,17 @@ export function usePricingsApi() {
       });
   }
 
-  const removePricingByName = async (name: string) => {
-    return fetchWithInterceptor(`${PRICINGS_BASE_PATH}/${authUser.user?.username}/${name}`, {
+  const removePricingByName = async (name: string, collectionName?: string) => {
+    return fetchWithInterceptor(`${PRICINGS_BASE_PATH}/${authUser.user?.username}/${name}${collectionName ? `?collectionName${collectionName}` : ""}`, {
       method: 'DELETE',
       headers: basicHeaders,
     })
-      .then(async response => {
-        if (!response.ok) {
-          return Promise.reject(response);
+      .then(async response => response.json())
+      .then(data => {
+        if (data.error){
+          return Promise.reject(data.error);
         }else{
-          return response.json()
+          return data;
         }
       })
       .catch(error => {

@@ -98,7 +98,7 @@ class PricingCollectionService {
       const collection = await this.pricingCollectionRepository.create(newCollectionData);
 
       const pricingDatas = [];
-
+      const pricingsWithErrors = [];
       for (const pricing of extractedFiles) {
         if (!(pricing.endsWith('.yaml') || pricing.endsWith('.yml'))) {
           continue
@@ -120,7 +120,10 @@ class PricingCollectionService {
             };
           pricingDatas.push(pricingData);
         }catch(err){
-          throw new Error(`Error while processing pricing ${pricing.split("/")[pricing.split("/").length - 2]}/${pricing.split("/").pop()}: ${err}`);
+          pricingsWithErrors.push({
+            name: `${pricing.split("/")[pricing.split("/").length - 2]}/${pricing.split("/")[pricing.split("/").length - 1]}`,
+            error: err,
+          });
         }
       }
 
@@ -128,9 +131,9 @@ class PricingCollectionService {
 
       await this.updateCollectionAnalytics(collection._id.toString());
 
-      return collection;
+      return [collection, pricingsWithErrors];
     } catch(err) {
-      await this.pricingCollectionRepository.destroy(newCollectionData.name, userId, true);
+      await this.destroy(newCollectionData.name, userId, true, true);
       throw new Error((err as Error).message);
     }
   }
@@ -186,7 +189,7 @@ class PricingCollectionService {
     await this.pricingCollectionRepository.updateAnalytics(collection._id, newAnalyticsEntry);
   }
 
-  async destroy(collectionName: string, ownerId: string, deleteCascade: boolean) {
+  async destroy(collectionName: string, ownerId: string, deleteCascade: boolean, ignoreResult: boolean = false) {
     const collection = await this.pricingCollectionRepository.findByNameAndUserId(
       collectionName,
       ownerId
@@ -208,7 +211,7 @@ class PricingCollectionService {
       result = await this.pricingCollectionRepository.destroy(collection._id.toString());
     }
 
-    if (!result) {
+    if (!result && !ignoreResult) {
       throw new Error('Collection not found');
     }
 

@@ -47,6 +47,7 @@ class PricingService {
     async create (pricingFile: any, owner: string, collectionId?: string) {
       try{
         const uploadedPricing: Pricing = retrievePricingFromPath(typeof pricingFile === "string" ? pricingFile : pricingFile.path);
+        // TODO: if the pricing exists in two or more collections, this could lead to error.
         const previousPricing = await this.pricingRepository.findByNameAndOwner(uploadedPricing.saasName, owner);
 
         if (!collectionId && previousPricing && previousPricing.versions[0]._collectionId) {
@@ -67,7 +68,7 @@ class PricingService {
 
         const pricing = await this.pricingRepository.create([pricingData]);
 
-        processFileUris(pricing, ['yaml'])
+        processFileUris(pricing[0], ['yaml'])
 
         const pricingAnalytics = new PricingAnalytics(uploadedPricing);
 
@@ -160,8 +161,20 @@ class PricingService {
       }
     }
   
-    async destroy (pricingName: string, owner: string) {
-      const result = await this.pricingRepository.destroyByNameAndOwner(pricingName, owner)
+    async destroy (pricingName: string, owner: string, queryParams?: {collectionName?: string}) {
+
+      let collectionId;
+
+      if (queryParams?.collectionName) {
+        const collection = await this.pricingCollectionService.showByNameAndUserId(queryParams.collectionName, owner)
+        if (!collection) {
+          throw new Error('Collection not found')
+        }
+
+        collectionId = collection._id.toString()
+      }
+
+      const result = await this.pricingRepository.destroyByNameOwnerAndCollectionId(pricingName, owner, collectionId)
       if (!result) {
         throw new Error('Either the pricing does not exist or you are not its owner')
       }

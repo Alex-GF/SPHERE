@@ -139,13 +139,13 @@ class PricingCollectionController {
 
   async bulkCreate(req: any, res: any) {
     try {
-      const collection = await this.pricingCollectionService.bulkCreate(
+      const [collection, pricingsWithErrors] = await this.pricingCollectionService.bulkCreate(
         req.file,
         req.body,
         req.user.id,
         req.user.username
       );
-      res.json(collection);
+      res.json({collection, pricingsWithErrors});
     } catch (err: any) {
       res.status(500).send({ error: (err as Error).message });
     }

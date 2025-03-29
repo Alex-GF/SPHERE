@@ -62,7 +62,9 @@ export default function PricingListCard({
   };
 
   const handleRemovePricing = () => {
-    removePricingByName(name)
+    console.log('Removing pricing:', name);
+    console.log('Removing pricing:', dataEntry);
+    removePricingByName(name, dataEntry.collectionName)
       .then(() => {
         customAlert('Pricing removed');
         window.location.reload();
@@ -180,7 +182,9 @@ export default function PricingListCard({
           justifyContent="center"
           height={45}
           pl="10px"
-          onClick={() => router.push(`/pricings/${owner}/${name}?collectionName=${dataEntry.collectionName}`)}
+          onClick={() =>
+            router.push(`/pricings/${owner}/${name}?collectionName=${dataEntry.collectionName}`)
+          }
           sx={{
             transition: 'color 0.3s',
             '&:hover': {
@@ -190,40 +194,9 @@ export default function PricingListCard({
           }}
         >
           <Typography variant="h6" sx={{ fontWeight: 'bold', mt: 1 }}>
-          {dataEntry.collectionName ? `${dataEntry.collectionName}/${name}` : name}
+            {dataEntry.collectionName ? `${dataEntry.collectionName}/${name}` : name}
           </Typography>
         </Stack>
-        {/* <Box
-          sx={{
-            position: 'relative',
-            maxHeight: 200,
-            overflow: 'hidden',
-            mt: 1,
-          }}
-        >
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            textAlign="justify"
-            sx={{ mt: 1, height: 200 }}
-          >
-            This is the pricing information for {name}. The pricing version that is currently
-            displayed is from {new Date(dataEntry.extractionDate).toLocaleDateString()}. The prices
-            are displayed with EUR currency. In future versions, more data will be provided in this
-            card.
-          </Typography>
-          <Box
-            sx={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: 40,
-              backgroundImage:
-                'linear-gradient(to bottom, rgba(0, 0, 0, 0.01) 0%, rgba(255, 255, 255, 1) 100%)',
-            }}
-          />
-        </Box> */}
         <Box display="flex" justifyContent="space-evenly" alignItems="center" mt={2}>
           <Box>
             <Typography component="span">Updated </Typography>
@@ -236,17 +209,26 @@ export default function PricingListCard({
               style={{ height: 18, width: 18, marginRight: 10 }}
             />
             <Typography variant="body1">
-              {dataEntry.analytics.configurationSpaceSize} subscriptions
+              {dataEntry.analytics ? (
+                <>{dataEntry.analytics.configurationSpaceSize} subscriptions</>
+              ) : (
+                <>–</>
+              )}
             </Typography>
           </Box>
           <StatsDivider />
           <Box display="flex" justifyContent="between" alignItems="center">
             <IoMdPricetags fill={grey[700]} style={{ height: 20, width: 20, marginRight: 10 }} />
-
             <Typography variant="body1">
-              {dataEntry.analytics.minSubscriptionPrice}
-              {getCurrency(dataEntry.currency)} - {dataEntry?.analytics.maxSubscriptionPrice}
-              {getCurrency(dataEntry.currency)}
+              {dataEntry.analytics ? (
+                <>
+                  {dataEntry.analytics.minSubscriptionPrice}
+                  {getCurrency(dataEntry.currency)} - {dataEntry?.analytics.maxSubscriptionPrice}
+                  {getCurrency(dataEntry.currency)}
+                </>
+              ) : (
+                <>–</>
+              )}
             </Typography>
           </Box>
         </Box>
