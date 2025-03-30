@@ -40,7 +40,11 @@ const handlePricingUpload = (pricingFieldNames: string[], folder: string) => {
       cb(null, folder)
     },
     filename: function (req, file, cb) {
-      cb(null, req.body.saasName + "/" + req.body.version + '.' + file.originalname.split('.').pop())
+      if (file) {
+        cb(null, req.body.saasName + "/" + req.body.version + '.' + file.originalname.split('.').pop())
+      } else {
+        cb(new Error('File does not exist'), "fail.yml")
+      }
     }
   })
 

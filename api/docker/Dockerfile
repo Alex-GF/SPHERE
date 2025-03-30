@@ -1,8 +1,8 @@
 # Use an official Node.js runtime as the base image
 FROM node:21.1-slim
 
-# Install MiniZinc CLI
-RUN apt-get update && apt-get install -y minizinc
+# Install minizinc
+RUN apt-get update && apt-get install -y minizinc && apt-get clean
 
 # Set the working directory in the container
 WORKDIR /usr/src/server
