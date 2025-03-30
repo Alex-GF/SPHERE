@@ -215,6 +215,13 @@ class PricingRepository extends RepositoryBase {
       if (item._collectionId) {
         item._collectionId = new mongoose.Types.ObjectId(item._collectionId);
       }
+
+      if (item.analytics && item.analytics.minSubscriptionPrice && Number.isNaN(item.analytics.minSubscriptionPrice)){
+        item.analytics.minSubscriptionPrice = undefined;
+      }
+      if (item.analytics && item.analytics.minSubscriptionPrice && Number.isNaN(item.analytics.maxSubscriptionPrice)){
+        item.analytics.maxSubscriptionPrice = undefined;
+      }
     });
 
     return await PricingMongoose.insertMany(data);
