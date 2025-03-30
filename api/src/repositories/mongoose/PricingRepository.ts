@@ -239,8 +239,6 @@ class PricingRepository extends RepositoryBase {
 
   async updatePricingsCollectionName(
     pricingsToUpdate: any,
-    ownerId: string,
-    newCollectionName: string,
     ...args: any
   ) {
     const bulkOps = pricingsToUpdate.map((pricing: any) => ({
