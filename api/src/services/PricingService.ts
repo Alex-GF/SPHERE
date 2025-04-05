@@ -44,6 +44,43 @@ class PricingService {
       return pricingObject
     }
 
+    async getConfigurationSpace (pricingId: string, queryParams?: {limit?: string, offset?: string}) {
+
+      // Validations
+      if (queryParams?.limit && !/^\d+$/.test(queryParams.limit)) {
+        throw new Error('Invalid limit parameter, it must be a numeric value');
+      }
+
+      if (queryParams?.offset && !/^\d+$/.test(queryParams.offset)) {
+        throw new Error('Invalid offset parameter, it must be a numeric value');
+      }
+
+      const formattedQueryParams = {
+        limit: queryParams?.limit ? parseInt(queryParams.limit) : undefined,
+        offset: queryParams?.offset ? parseInt(queryParams.offset) : undefined
+      }
+      
+      const retrievedPricing = await this.pricingRepository.findById(pricingId)
+      if (!retrievedPricing) {
+        throw new Error('Pricing not found')
+      }
+
+      if (!process.env.SERVER_STATICS_FOLDER){
+        throw new Error('SERVER_STATICS_FOLDER env not set')
+      }
+
+      // Configuariton space calculation
+      const pricingInfo: Pricing = retrievePricingFromPath(process.env.SERVER_STATICS_FOLDER + retrievedPricing.yaml);
+      const pricingAnalytics = new PricingAnalytics(pricingInfo);
+      const configurationSpace = await pricingAnalytics.getConfigurationSpace();
+      
+      // Pagination
+      const startPaginationIndex = formattedQueryParams.offset ? formattedQueryParams.offset : 0;
+      const endPaginationIndex = formattedQueryParams.limit ? startPaginationIndex + formattedQueryParams.limit : configurationSpace.length;
+
+      return configurationSpace.slice(startPaginationIndex, endPaginationIndex);
+    }
+
     async create (pricingFile: any, owner: string, collectionId?: string) {
       try{
         const uploadedPricing: Pricing = retrievePricingFromPath(typeof pricingFile === "string" ? pricingFile : pricingFile.path);

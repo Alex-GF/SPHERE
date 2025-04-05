@@ -210,6 +210,15 @@ class PricingRepository extends RepositoryBase {
     }
   }
 
+  async findById(id: string, ...args: any[]): Promise<any> {
+    const pricing = await PricingMongoose.findOne({ _id: new mongoose.Types.ObjectId(id) });
+    if (!pricing) {
+      return null;
+    }
+
+    return pricing.toJSON();
+  }
+
   async create(data: any[], ...args: any) {
     data.forEach(item => {
       if (item._collectionId) {
