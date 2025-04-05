@@ -29,6 +29,7 @@ import customAlert from '../../../core/utils/custom-alert';
 import { useAuth } from '../../../auth/hooks/useAuth';
 import { Link } from 'react-router-dom';
 import { useQueryParams } from '../../../core/hooks/useQueryParams';
+import ConfigurationSpaceView from '../../components/configuration-space-view';
 
 export const StyledChip = styled(Chip)(({ theme }) => ({
   margin: theme.spacing(0.5),
@@ -205,6 +206,7 @@ export default function CardPage() {
               <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={tabValue} onChange={(_, v) => setTabValue(v)}>
                   <Tab label="Pricing card" />
+                  <Tab label="Configuration Space Details" />
                   <Tab label="Files and versions" />
                   {currentPricing &&
                     authUser.user &&
@@ -257,14 +259,15 @@ export default function CardPage() {
         </Box>
 
         <Box display="flex" gap={4} sx={{ mb: 4 }}>
-          {tabValue === 2 && pricingData && pricing && (
+          {tabValue === 3 && pricingData && pricing && (
             <PricingSettings
               pricingName={pricing.saasName}
               pricingData={pricingData}
               updatePricingInformation={updatePricingInformation}
             />
           )}
-          {tabValue === 1 && pricingData && <FileExplorer pricingData={pricingData} />}
+          {tabValue === 2 && pricingData && <FileExplorer pricingData={pricingData} />}
+          {tabValue === 1 && currentPricing && <ConfigurationSpaceView pricingId={currentPricing.id} />}
           {tabValue === 0 && (
             <>
               <Box flex={1} sx={{ maxWidth: '66.7%' }}>

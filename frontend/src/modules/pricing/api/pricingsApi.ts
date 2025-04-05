@@ -12,19 +12,20 @@ export function usePricingsApi() {
   };
 
   const getPricings = async (filters: Record<string, string | FilterValues> = {}) => {
-    
     let requestUrl;
 
-    if (Object.keys(filters).length === 0){
+    if (Object.keys(filters).length === 0) {
       requestUrl = `${PRICINGS_BASE_PATH}`;
-    }else{
+    } else {
       const filterParams = new URLSearchParams();
       Object.entries(filters).forEach(([key, value]) => {
         if (Array.isArray(value)) {
           if (typeof value[0] === 'number') {
-            if(value[0]) filterParams.append("min-" + key.replace("Range", ""), value[0].toString());
-            if(value[1]) filterParams.append("max-" + key.replace("Range", ""), value[1].toString());
-          }else if(typeof value[0] === 'string'){
+            if (value[0])
+              filterParams.append('min-' + key.replace('Range', ''), value[0].toString());
+            if (value[1])
+              filterParams.append('max-' + key.replace('Range', ''), value[1].toString());
+          } else if (typeof value[0] === 'string') {
             const selectedOwners = value as string[];
 
             const owners = selectedOwners.join(',');
@@ -32,7 +33,7 @@ export function usePricingsApi() {
           }
         } else {
           const stringValue = value as string;
-          
+
           if (stringValue.trim().length > 0) filterParams.append(key, value as string);
         }
       });
@@ -44,10 +45,10 @@ export function usePricingsApi() {
       headers: basicHeaders,
     })
       .then(response => {
-        if (!response.ok){
+        if (!response.ok) {
           return Promise.reject(response);
-        }else{
-          return response.json()
+        } else {
+          return response.json();
         }
       })
       .catch(error => {
@@ -56,15 +57,20 @@ export function usePricingsApi() {
   };
 
   const getPricingByName = async (name: string, owner: string, collectionName: string | null) => {
-    return fetch(`${PRICINGS_BASE_PATH}/${owner}/${name}${collectionName && collectionName !== "undefined" ? `?collectionName=${collectionName}` : ""}`, {
-      method: 'GET',
-      headers: basicHeaders,
-    })
+    return fetch(
+      `${PRICINGS_BASE_PATH}/${owner}/${name}${
+        collectionName && collectionName !== 'undefined' ? `?collectionName=${collectionName}` : ''
+      }`,
+      {
+        method: 'GET',
+        headers: basicHeaders,
+      }
+    )
       .then(response => {
-        if (!response.ok){
+        if (!response.ok) {
           return Promise.reject(response);
-        }else{
-          return response.json()
+        } else {
+          return response.json();
         }
       })
       .catch(error => {
@@ -78,16 +84,45 @@ export function usePricingsApi() {
       headers: basicHeaders,
     })
       .then(response => {
-        if (!response.ok){
+        if (!response.ok) {
           return Promise.reject(response);
-        }else{
-          return response.json()
+        } else {
+          return response.json();
         }
       })
       .catch(error => {
         return Promise.reject(error as Error);
       });
-  }
+  };
+
+  const getConfigurationSpace = async (pricingId: string, limit?: number, offset?: number) => {
+    
+    const params = new URLSearchParams();
+
+    if (limit !== undefined) params.set('limit', limit.toString());
+    if (offset !== undefined) params.set('offset', offset.toString());
+
+    const queryString = params.toString(); 
+    
+    return fetchWithInterceptor(
+      `${PRICINGS_BASE_PATH}/${pricingId}/configuration-space${queryString ? `?${queryString}` : ''}`,
+      {
+        method: 'GET',
+        headers: basicHeaders,
+      }
+    )
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) {
+          return Promise.reject(data.error);
+        } else {
+          return data;
+        }
+      })
+      .catch(error => {
+        return Promise.reject(error as Error);
+      });
+  };
 
   const createPricing = async (formData: FormData, setErrors: Function = () => {}) => {
     return fetchWithInterceptor(PRICINGS_BASE_PATH, {
@@ -98,8 +133,8 @@ export function usePricingsApi() {
       body: formData,
     })
       .then(async response => {
-        const parsedResponse = await response.json()
-        
+        const parsedResponse = await response.json();
+
         if (!response.ok) {
           throw new Error(parsedResponse.error);
         }
@@ -118,16 +153,16 @@ export function usePricingsApi() {
       body: JSON.stringify({ pricingName, collectionId }),
     })
       .then(response => {
-        if (!response.ok){
+        if (!response.ok) {
           return Promise.reject(response);
-        }else{
-          return response.json()
+        } else {
+          return response.json();
         }
       })
       .catch(error => {
         return Promise.reject(error as Error);
       });
-  }
+  };
 
   const updatePricing = (pricingName: string, pricingData: any) => {
     return fetchWithInterceptor(`${PRICINGS_BASE_PATH}/${authUser.user?.username}/${pricingName}`, {
@@ -138,66 +173,88 @@ export function usePricingsApi() {
       .then(response => {
         if (!response.ok) {
           return Promise.reject(response);
-        }else{
-          return response.json()
+        } else {
+          return response.json();
         }
       })
       .catch(error => {
         return Promise.reject(error as Error);
       });
-  }
+  };
 
   const removePricingVersion = async (pricingName: string, pricingVersion: string) => {
-    return fetchWithInterceptor(`${PRICINGS_BASE_PATH}/${authUser.user?.username}/${pricingName}/${pricingVersion}`, {
-      method: 'DELETE',
-      headers: basicHeaders,
-    })
+    return fetchWithInterceptor(
+      `${PRICINGS_BASE_PATH}/${authUser.user?.username}/${pricingName}/${pricingVersion}`,
+      {
+        method: 'DELETE',
+        headers: basicHeaders,
+      }
+    )
       .then(response => {
         if (!response.ok) {
           return Promise.reject(response);
-        }else{
-          return response.json()
+        } else {
+          return response.json();
         }
       })
       .catch(error => {
         return Promise.reject(error as Error);
       });
-  }
+  };
 
   const removePricingFromCollection = async (pricingName: string) => {
-    return fetchWithInterceptor(`${import.meta.env.VITE_API_URL}/me/collections/pricings/${pricingName}`, {
-      method: 'DELETE',
-      headers: basicHeaders,
-    })
+    return fetchWithInterceptor(
+      `${import.meta.env.VITE_API_URL}/me/collections/pricings/${pricingName}`,
+      {
+        method: 'DELETE',
+        headers: basicHeaders,
+      }
+    )
       .then(response => {
         if (!response.ok) {
           return Promise.reject(response);
-        }else{
-          return response.json()
+        } else {
+          return response.json();
         }
       })
       .catch(error => {
         return Promise.reject(error as Error);
       });
-  }
+  };
 
   const removePricingByName = async (name: string, collectionName?: string) => {
-    return fetchWithInterceptor(`${PRICINGS_BASE_PATH}/${authUser.user?.username}/${name}${collectionName ? `?collectionName${collectionName}` : ""}`, {
-      method: 'DELETE',
-      headers: basicHeaders,
-    })
+    return fetchWithInterceptor(
+      `${PRICINGS_BASE_PATH}/${authUser.user?.username}/${name}${
+        collectionName ? `?collectionName${collectionName}` : ''
+      }`,
+      {
+        method: 'DELETE',
+        headers: basicHeaders,
+      }
+    )
       .then(async response => response.json())
       .then(data => {
-        if (data.error){
+        if (data.error) {
           return Promise.reject(data.error);
-        }else{
+        } else {
           return data;
         }
       })
       .catch(error => {
         return Promise.reject(error as Error);
       });
-  }
+  };
 
-  return { getPricings, getPricingByName, getLoggedUserPricings, createPricing, addPricingToCollection, removePricingFromCollection, removePricingByName, updatePricing, removePricingVersion };
+  return {
+    getPricings,
+    getPricingByName,
+    getLoggedUserPricings,
+    getConfigurationSpace,
+    createPricing,
+    addPricingToCollection,
+    removePricingFromCollection,
+    removePricingByName,
+    updatePricing,
+    removePricingVersion,
+  };
 }
