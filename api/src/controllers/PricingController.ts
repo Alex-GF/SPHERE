@@ -57,8 +57,8 @@ class PricingController {
 
   async getConfigurationSpace(req: any, res: any) {
     try {
-      const configurationSpace = await this.pricingService.getConfigurationSpace(req.params.pricingId, req.query);
-      res.json(configurationSpace);
+      const [configurationSpace, configurationSpaceSize] = await this.pricingService.getConfigurationSpace(req.params.pricingId, req.query);
+      res.json({configurationSpace: configurationSpace, configurationSpaceSize: configurationSpaceSize});
     } catch (err: any) {
       if (err.message.toLowerCase().includes('not found')) {
         res.status(404).send({ error: err.message });

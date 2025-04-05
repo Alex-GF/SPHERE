@@ -78,7 +78,7 @@ class PricingService {
       const startPaginationIndex = formattedQueryParams.offset ? formattedQueryParams.offset : 0;
       const endPaginationIndex = formattedQueryParams.limit ? startPaginationIndex + formattedQueryParams.limit : configurationSpace.length;
 
-      return configurationSpace.slice(startPaginationIndex, endPaginationIndex);
+      return [configurationSpace.slice(startPaginationIndex, endPaginationIndex), configurationSpace.length];
     }
 
     async create (pricingFile: any, owner: string, collectionId?: string) {
