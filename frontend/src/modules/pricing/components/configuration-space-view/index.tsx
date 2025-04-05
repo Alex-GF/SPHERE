@@ -6,7 +6,7 @@ import { flex } from '../../../core/theme/css';
 import ConfigurationSpaceGrid from '../configuration-space-grid';
 import BanterLoader from '../../../core/components/loaders/banter-loader';
 
-export interface ConfigurationSpace {
+export interface Configuration {
   selectedPlan?: string;
   selectedAddons: string[];
   subscriptionFeatures: string[];
@@ -15,7 +15,7 @@ export interface ConfigurationSpace {
 
 export default function ConfigurationSpaceView({ pricingId }: { pricingId: string }) {
   const [renderedConfigurationSpace, setRenderedConfigurationSpace] = useState<
-    ConfigurationSpace[]
+  Configuration[]
   >([]);
   const [renderedConfigurationSpaceSize, setRenderedConfigurationSpaceSize] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
@@ -90,7 +90,7 @@ export default function ConfigurationSpaceView({ pricingId }: { pricingId: strin
       ) : (
         <>
           <ConfigurationSpaceGrid configurationSpace={renderedConfigurationSpace} />
-          {!(renderedConfigurationSpace.length >= renderedConfigurationSpaceSize) && (
+          {renderedConfigurationSpace.length < renderedConfigurationSpaceSize && (
             <Box sx={{ marginTop: 10 }} ref={loaderRef}>
               <BanterLoader />
             </Box>
