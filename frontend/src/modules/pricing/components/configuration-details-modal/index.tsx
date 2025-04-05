@@ -7,11 +7,11 @@ export default function ConfigurationDetailsModal({
   configuration,
   isOpen,
   handleClose,
-}: {
+}: Readonly<{
   configuration: Configuration | undefined;
   isOpen: boolean;
   handleClose: () => void;
-}) {
+}>) {
   return (
     <Modal
       open={isOpen}
