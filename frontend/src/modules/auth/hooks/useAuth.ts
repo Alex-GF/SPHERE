@@ -44,12 +44,19 @@ export const useAuth = () => {
             isLoading: false,
         })
         removeItem('token')
+        removeItem('firstAuthSent')
     }
 
     useEffect(() => {
         const token = getItem('token')
 
         if (token) {
+            const firstAuthSent = getItem('firstAuthSent')
+            
+            if (firstAuthSent) {
+                return
+            }
+            setItem('firstAuthSent', "true")
             fetch(`${USERS_BASE_PATH}/tokenLogin`, {
                 method: 'POST',
                 headers: {
@@ -76,6 +83,8 @@ export const useAuth = () => {
                     } else {
                         removeUser()
                     }
+
+                    removeItem('firstAuthSent')
                 })
                 .catch((_error) => {
                     setTimeout(() => {
