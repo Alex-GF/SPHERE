@@ -6,6 +6,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { useRouter } from '../../../core/hooks/useRouter';
 import CollectionsGrid from '../collections-grid';
 import AddPricingToCollectionModal from '../add-pricing-to-collection-modal';
+import { useAuth } from '../../../auth/hooks/useAuth';
 
 export default function CollectionSection({
   pricingToAdd,
@@ -24,6 +25,7 @@ export default function CollectionSection({
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
   const { getLoggedUserCollections } = usePricingCollectionsApi();
+  const { authUser } = useAuth();
   const router = useRouter();
 
   function handleAddCollection() {
@@ -40,6 +42,9 @@ export default function CollectionSection({
   };
 
   useEffect(() => {
+    if (!authUser.isAuthenticated) {
+      return;
+    }
     getLoggedUserCollections()
       .then(data => {
         if (data.error) {
@@ -51,7 +56,7 @@ export default function CollectionSection({
       .catch(error => {
         console.error('Cannot GET collections. Error:', error);
       });
-  }, [renderFlag]);
+  }, [renderFlag, authUser]);
 
   const sortedCollections = useMemo(() => {
     return [...collections].sort((a, b) => {
