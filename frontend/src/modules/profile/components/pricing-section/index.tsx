@@ -4,6 +4,7 @@ import { usePricingsApi } from '../../../pricing/api/pricingsApi';
 import { PricingEntry } from '../../../pricing/pages/list';
 import PricingListCard from '../../../pricing/components/pricing-list-card';
 import { FaSortAlphaDown, FaSortAlphaUpAlt } from 'react-icons/fa';
+import { useAuth } from '../../../auth/hooks/useAuth';
 
 export default function PricingSection({
   setAddToCollectionModalOpen,
@@ -18,12 +19,16 @@ export default function PricingSection({
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
   const { getLoggedUserPricings } = usePricingsApi();
+  const { authUser } = useAuth();
 
   const toggleSortOrder = () => {
     setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
   };
 
   useEffect(() => {
+    if (!authUser.isAuthenticated) {
+      return;
+    }
     getLoggedUserPricings()
       .then((data) => {
         if (data.error) {
@@ -35,7 +40,7 @@ export default function PricingSection({
       .catch((error) => {
         console.error('Cannot GET pricings. Error:', error);
       });
-  }, [renderFlag]);
+  }, [renderFlag, authUser]);
 
   const sortedPricings = useMemo(() => {
     return [...pricings].sort((a, b) => {
