@@ -12,6 +12,7 @@ class PricingController {
     this.index = this.index.bind(this);
     this.indexByUserWithoutCollection = this.indexByUserWithoutCollection.bind(this);
     this.show = this.show.bind(this);
+    this.getConfigurationSpace = this.getConfigurationSpace.bind(this);
     this.create = this.create.bind(this);
     this.addPricingToCollection = this.addPricingToCollection.bind(this);
     this.update = this.update.bind(this);
@@ -45,6 +46,19 @@ class PricingController {
       const queryParams = req.query;
       const pricing = await this.pricingService.show(req.params.pricingName, req.params.owner, queryParams);
       res.json(pricing);
+    } catch (err: any) {
+      if (err.message.toLowerCase().includes('not found')) {
+        res.status(404).send({ error: err.message });
+      } else {
+        res.status(500).send({ error: err.message });
+      }
+    }
+  }
+
+  async getConfigurationSpace(req: any, res: any) {
+    try {
+      const [configurationSpace, configurationSpaceSize] = await this.pricingService.getConfigurationSpace(req.params.pricingId, req.query);
+      res.json({configurationSpace: configurationSpace, configurationSpaceSize: configurationSpaceSize});
     } catch (err: any) {
       if (err.message.toLowerCase().includes('not found')) {
         res.status(404).send({ error: err.message });

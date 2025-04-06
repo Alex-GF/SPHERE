@@ -35,6 +35,7 @@ export interface SaaSAnalytics {
 }
 
 export interface AnalyticsDataEntry {
+  id: string;
   name: string;
   owner: {
     id: string,

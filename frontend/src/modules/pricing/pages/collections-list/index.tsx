@@ -8,6 +8,7 @@ import { usePricingCollectionsApi } from '../../../profile/api/pricingCollection
 import CollectionListCard from '../../components/collection-list-card';
 import { CollectionEntry } from '../../../profile/types/profile-types';
 import CollectionFilters from '../../components/collection-filters';
+import { v4 as uuidv4 } from 'uuid';
 
 export const PricingsGrid = styled(Box)(() => ({
   display: 'flex',
@@ -139,7 +140,7 @@ export default function CollectionsListPage() {
               Object.values(collectionsList).map(collection => {
                 return (
                   <CollectionListCard
-                    key={`collection-${collection.owner.username}-${collection.name}`}
+                    key={uuidv4()}
                     collection={collection}
                   />
                 );

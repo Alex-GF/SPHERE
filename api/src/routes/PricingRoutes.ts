@@ -16,6 +16,9 @@ const loadFileRoutes = function (app: express.Application) {
     .get(pricingController.index)
     .post(isLoggedIn, upload, pricingController.create);
 
+  app.route(baseUrl + '/pricings/:pricingId/configuration-space')
+    .get(pricingController.getConfigurationSpace)
+
   app
     .route(baseUrl + '/pricings/:owner/:pricingName')
     .get(pricingController.show)

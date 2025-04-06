@@ -7,11 +7,11 @@ export default function ContributionDetailsModal({
   selectedContribution,
   isOpen,
   handleClose,
-}: {
+}: Readonly<{
   selectedContribution: Contribution | null;
   isOpen: boolean;
   handleClose: () => void;
-}) {
+}>) {
   return (
     <Modal
       open={isOpen}
@@ -26,7 +26,7 @@ export default function ContributionDetailsModal({
       <Fade in={isOpen}>
         <Box
           sx={{
-            position: 'absolute' as 'absolute',
+            position: 'absolute',
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
