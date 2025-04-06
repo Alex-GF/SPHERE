@@ -40,6 +40,7 @@ jobs:
           envkey_BASE_URL_PATH: ${{vars.CI_BASE_URL_PATH}}
           envkey_ADMIN_PASSWORD: ${{secrets.ADMIN_PASSWORD}}
           envkey_USER_PASSWORD: ${{secrets.USER_PASSWORD}}
+          envkey_REDIS_URL: ${{vars.CI_REDIS_URL}}
           directory: ./api
           file_name: .env
           fail_on_empty: false
@@ -53,6 +54,11 @@ jobs:
           mongodb-password: ${{ vars.CI_MONGO_INITDB_ROOT_PASSWORD }}
           mongodb-db: ${{ vars.CI_MONGO_INITDB_DATABASE }}
           mongodb-port: ${{ vars.CI_MONGO_PORT }}
+
+      - name: Start Redis
+        uses: shogo82148/actions-setup-redis@v1
+        with:
+          redis-version: '7.x'
 
       - name: Install dependencies
         run: npm run install

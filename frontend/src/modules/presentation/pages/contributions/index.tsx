@@ -4,6 +4,7 @@ import ContributionCard from '../../layouts/components/contribution-card';
 import { Helmet } from 'react-helmet';
 import { Box, styled } from '@mui/material';
 import ContributionDetailsModal from '../../layouts/components/contribution-details';
+import { v4 as uuidv4 } from 'uuid';
 
 const ContributionsGrid = styled(Box)(() => ({
   width: '100dvw',
@@ -35,9 +36,9 @@ export default function ContributionsPage() {
         <title> SPHERE - Contributions </title>
       </Helmet>
       <ContributionsGrid>
-        {contributions.map((contribution, index) => (
+        {contributions.map((contribution) => (
           <ContributionCard 
-            key={index} 
+            key={uuidv4()} 
             onClick={() => handleOpen(contribution)} 
             contribution={contribution} 
           />

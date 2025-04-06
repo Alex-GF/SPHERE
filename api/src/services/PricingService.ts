@@ -6,15 +6,18 @@ import { PricingService as PricingAnalytics, retrievePricingFromPath } from "pri
 import { PricingIndexQueryParams } from "../types/services/PricingService";
 import PricingCollectionService from "./PricingCollectionService";
 import PricingRepository from "../repositories/mongoose/PricingRepository";
+import CacheService from "./CacheService";
 
 class PricingService {
     
     private pricingRepository: PricingRepository;
     private pricingCollectionService: PricingCollectionService;
+    private cacheService: CacheService;
 
     constructor () {
       this.pricingRepository = container.resolve('pricingRepository');
       this.pricingCollectionService = container.resolve('pricingCollectionService');
+      this.cacheService = container.resolve('cacheService');
     }
 
     async index (queryParams: PricingIndexQueryParams) {
@@ -42,6 +45,52 @@ class PricingService {
       }
       const pricingObject = Object.assign({}, pricing)
       return pricingObject
+    }
+
+    async getConfigurationSpace (pricingId: string, queryParams?: {limit?: string, offset?: string}) {
+
+      // Validations
+      if (queryParams?.limit && !/^\d+$/.test(queryParams.limit)) {
+        throw new Error('Invalid limit parameter, it must be a numeric value');
+      }
+
+      if (queryParams?.offset && !/^\d+$/.test(queryParams.offset)) {
+        throw new Error('Invalid offset parameter, it must be a numeric value');
+      }
+
+      const formattedQueryParams = {
+        limit: queryParams?.limit ? parseInt(queryParams.limit) : undefined,
+        offset: queryParams?.offset ? parseInt(queryParams.offset) : undefined
+      }
+      
+      const retrievedPricing = await this.pricingRepository.findById(pricingId)
+      if (!retrievedPricing) {
+        throw new Error('Pricing not found')
+      }
+
+      if (!process.env.SERVER_STATICS_FOLDER){
+        throw new Error('SERVER_STATICS_FOLDER env not set')
+      }
+
+      let configurationSpace = null;
+      const key: string = "configurationSpace:" + pricingId;
+      const cachedConfigurationSpace = await this.cacheService.get(key);
+
+      if (cachedConfigurationSpace) {
+        configurationSpace = cachedConfigurationSpace;
+      }else{
+        // Configuariton space calculation
+        const pricingInfo: Pricing = retrievePricingFromPath(process.env.SERVER_STATICS_FOLDER + retrievedPricing.yaml);
+        const pricingAnalytics = new PricingAnalytics(pricingInfo);
+        configurationSpace = await pricingAnalytics.getConfigurationSpace();
+        await this.cacheService.set(key, configurationSpace, 60 * 60 * 24);
+      }
+      
+      // Pagination
+      const startPaginationIndex = formattedQueryParams.offset ? formattedQueryParams.offset : 0;
+      const endPaginationIndex = formattedQueryParams.limit ? startPaginationIndex + formattedQueryParams.limit : configurationSpace.length;
+
+      return [configurationSpace.slice(startPaginationIndex, endPaginationIndex), configurationSpace.length];
     }
 
     async create (pricingFile: any, owner: string, collectionId?: string) {
