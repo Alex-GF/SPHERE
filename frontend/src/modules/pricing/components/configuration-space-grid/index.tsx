@@ -11,7 +11,7 @@ export default function ConfigurationSpaceGrid({
   configurationSpace: Configuration[];
 }>) {
 
-  const [open, setOpen] = useState<boolean>(true);
+  const [open, setOpen] = useState<boolean>(false);
   const [selectedConfiguration, setSelectedConfiguration] = useState<Configuration | undefined>(undefined);
 
   function handleCardClick(configuration: Configuration) {
