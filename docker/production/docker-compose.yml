@@ -75,6 +75,8 @@ volumes:
     driver: local
   sphere-statics:
     driver: local
+  redis_data:
+    driver: local
 networks:
   sphere-network:
     driver: bridge
