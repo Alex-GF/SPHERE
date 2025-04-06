@@ -5,6 +5,7 @@ import { flex } from '../../../core/theme/css';
 import { useRouter } from '../../../core/hooks/useRouter';
 import { primary } from '../../../core/theme/palette';
 import { forwardRef, useImperativeHandle, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 const CollectionsGrid = forwardRef(
   (
@@ -49,6 +50,7 @@ const CollectionsGrid = forwardRef(
           >
             {collections.map((collection: CollectionEntry) => (
               <CollectionListCard
+                key={uuidv4()}
                 collection={collection}
                 selected={selector ? selectedCollection === collection.id : false}
                 handleCustomClick={selector ? () => handleSelect(collection.id) : undefined}
