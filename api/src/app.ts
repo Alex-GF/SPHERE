@@ -6,6 +6,8 @@ import type { Server } from "http";
 import type { AddressInfo } from "net";
 import { disconnectMongoose, initMongoose } from "./config/mongoose";
 import { seedDatabase } from "./database/seeders/mongo/seeder";
+import { initRedis } from "./config/redis";
+import container from "./config/container";
 
 const green = "\x1b[32m"; // Color verde
 const blue = "\x1b[36m"; // Color azul
@@ -17,7 +19,9 @@ const initializeApp = async () => {
   const app: Application = express();
   loadGlobalMiddlewares(app);
   await routes(app);
-  await initializeDatabase()
+  await initializeDatabase();
+  const redisClient = await initRedis();
+  container.resolve("cacheService").setRedisClient(redisClient);
   // await postInitializeDatabase(app)
   return app;
 };

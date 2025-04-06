@@ -10,6 +10,7 @@ import MongoosePricingCollectionRepository from "../repositories/mongoose/Pricin
 import UserService from "../services/UserService";
 import PricingService from "../services/PricingService";
 import PricingCollectionService from "../services/PricingCollectionService";
+import CacheService from "../services/CacheService";
 
 dotenv.config();
 
@@ -32,6 +33,7 @@ function initContainer(databaseType: string): AwilixContainer {
     userService: asClass(UserService).singleton(),
     pricingService: asClass(PricingService).singleton(),
     pricingCollectionService: asClass(PricingCollectionService).singleton(),
+    cacheService: asClass(CacheService).singleton(),
   });
   return container;
 }
