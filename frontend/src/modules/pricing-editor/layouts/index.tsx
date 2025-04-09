@@ -124,13 +124,23 @@ export default function EditorLayout({ children }: { children?: React.ReactNode 
           </Box>
 
           {
-            tabValue === 1 && (
+            tabValue === 1 ? (
               <Typography
                 variant="body2"
                 color="error"
                 sx={{ textAlign: 'center', mb: 2 }}
               >
-                WARNING: If the YAML is too large, the URL might not be processed correctly.
+                <strong>WARNING:</strong> If the YAML is too large, the URL might not be processed correctly.
+              </Typography>
+            )
+            :
+            (
+              <Typography
+                variant="body2"
+                color="info"
+                sx={{ textAlign: 'center', mb: 2 }}
+              >
+                <strong>INFO:</strong> The generated URL will only be available for 24h.
               </Typography>
             )
           }
