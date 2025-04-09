@@ -2,18 +2,21 @@ import { Box, Modal, Paper, Typography } from '@mui/material';
 import Header from './header';
 import Main from './main';
 import { useState } from 'react';
-import { parseStringYamlToEncodedYaml } from '../services/export.service';
+import { createUrlWithEncodedYaml, parseStringYamlToEncodedYaml } from '../services/export.service';
 import CopyToClipboardIcon from '../../core/components/copy-icon';
 import { EditorValueContext } from '../contexts/editorValueContext';
 import FileUpload from '../../core/components/file-upload-input';
 import { flex } from '../../core/theme/css';
-import ImportPricingModal from '../../core/components/import-pricing-modal';
 import customAlert from '../../core/utils/custom-alert';
+import { useCacheApi } from '../components/pricing-renderer/api/cacheApi';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function EditorLayout({ children }: { children?: React.ReactNode }) {
   const [sharedLinkModalOpen, setSharedLinkModalOpen] = useState(false);
   const [importModalOpen, setImportLinkModalOpen] = useState(false);
   const [editorValue, setEditorValue] = useState<string>('');
+
+  const { setInCache } = useCacheApi();
 
   const renderSharedLink = () => {
     setSharedLinkModalOpen(true);
@@ -29,6 +32,24 @@ export default function EditorLayout({ children }: { children?: React.ReactNode 
 
   const handleYamlImportClose = () => {
     setImportLinkModalOpen(false);
+  };
+
+  const handleCopyToClipboard = () => {
+    if (sharedLinkModalOpen) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const assignedId = urlParams.get('pricing') ?? uuidv4();
+      
+      const encodedPricing = parseStringYamlToEncodedYaml(editorValue);
+
+      setInCache(assignedId, encodedPricing, 24 * 60 * 60) // 24h
+        .catch(error => {
+          customAlert(`Error saving link in cache: ${error}`);
+        });
+
+      return createUrlWithEncodedYaml(assignedId);
+    }else{      
+      return '';
+    }
   };
 
   const onSubmitImport = (file: File) => {
@@ -88,7 +109,7 @@ export default function EditorLayout({ children }: { children?: React.ReactNode 
             Share this link to allow other users to see and edit their own version of your pricing
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <CopyToClipboardIcon value={parseStringYamlToEncodedYaml(editorValue)} />
+            <CopyToClipboardIcon value={handleCopyToClipboard()} />
           </Box>
         </Paper>
       </Modal>

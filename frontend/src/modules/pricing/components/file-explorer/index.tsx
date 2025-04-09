@@ -39,6 +39,8 @@ import { IoIosLink } from 'react-icons/io';
 import CopyToClipboardIcon from '../../../core/components/copy-icon';
 import { FileExplorerContext } from '../../contexts/fileExplorerContext';
 import { useAuth } from '../../../auth/hooks/useAuth';
+import { v4 as uuidv4 } from 'uuid';
+import { useCacheApi } from '../../../pricing-editor/components/pricing-renderer/api/cacheApi';
 
 type FileType = 'image' | 'pdf' | 'doc' | 'video' | 'folder' | 'pinned' | 'trash';
 
@@ -145,6 +147,7 @@ function CustomLabel({ icon: Icon, expandable, children, fileType, ...other }: C
     React.useContext(FileExplorerContext);
 
   const { authUser } = useAuth();
+  const {getFromCache, setInCache} = useCacheApi();
 
   const handleDownload = (children: React.ReactNode) => {
     if (!children) {
@@ -184,8 +187,12 @@ function CustomLabel({ icon: Icon, expandable, children, fileType, ...other }: C
 
     fetch(fileName).then(async response => {
       const text = await response.text();
-      let urlParam = parseStringYamlToEncodedYaml(text).split('pricing=')[1];
-      window.open(`/editor?pricing=${urlParam}`, '_blank');
+      const urlParam = parseStringYamlToEncodedYaml(text);
+      const assignedId = uuidv4();
+
+      setInCache(assignedId, urlParam, 24 * 60 * 60).then(() => {
+        window.open(`/editor?pricing=${assignedId}`, '_blank');
+      }) // 24h
     });
   };
 

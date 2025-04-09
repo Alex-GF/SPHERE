@@ -16,6 +16,7 @@ import TextmateTheme from '../../../core/theme/editor-themes/Textmate.json';
 import monaco from 'monaco-editor';
 import { useEditorValue } from '../../hooks/useEditorValue';
 import { parseEncodedYamlToStringYaml } from '../../services/export.service';
+import { useCacheApi } from '../../components/pricing-renderer/api/cacheApi';
 
 const TEMPLATE_PRICING_PATH = `${import.meta.env.VITE_ASSETS_URL}/pricings/templates/petclinic.yml`;
 
@@ -25,6 +26,7 @@ export default function EditorPage() {
 
   const { mode } = useMode();
   const { editorValue, setEditorValue } = useEditorValue();
+  const {getFromCache} = useCacheApi();
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -71,7 +73,13 @@ export default function EditorPage() {
       if (!pricingParam) {
         templatePricing = await response.text();
       } else {
-        templatePricing = parseEncodedYamlToStringYaml(pricingParam);
+        if (pricingParam.length > 36){ // It is greater that UUID          
+          templatePricing = parseEncodedYamlToStringYaml(pricingParam);
+        }else{
+          const cachedPricing = await getFromCache(pricingParam);
+          
+          templatePricing = parseEncodedYamlToStringYaml(cachedPricing);
+        }
       }
 
       try {

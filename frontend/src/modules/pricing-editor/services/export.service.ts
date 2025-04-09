@@ -10,7 +10,12 @@ export function parseStringYamlToEncodedYaml(yaml: string): string {
   // Compresses the YAML string and encodes it to be URL-safe
   const compressed = LZString.compressToEncodedURIComponent(yaml);
   // Returns the current URL with the compressed YAML appended as a query parameter
-  return `${window.location.href}?pricing=${compressed}`;
+  return compressed;
+}
+
+export function createUrlWithEncodedYaml(encoded: string): string {
+  const baseUrl = window.location.href.split('?')[0];
+  return `${baseUrl}?pricing=${encoded}`;
 }
 
 /**
