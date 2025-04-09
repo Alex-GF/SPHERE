@@ -116,12 +116,24 @@ export default function EditorLayout({ children }: { children?: React.ReactNode 
             Share this link to allow other users to see and edit their own version of your pricing
           </Typography>
 
-          <Box sx={{ borderBottom: 1, borderColor: 'divider', ...flex({justify: "center"}) }}>
+          <Box sx={{ ...flex({justify: "center"}), mb: 2 }}>
             <Tabs value={tabValue} onChange={(_, v) => setTabValue(v)}>
               <Tab label="Short encoding" />
               <Tab label="Full encoding" />
             </Tabs>
           </Box>
+
+          {
+            tabValue === 1 && (
+              <Typography
+                variant="body2"
+                color="error"
+                sx={{ textAlign: 'center', mb: 2 }}
+              >
+                WARNING: If the YAML is too large, the URL might not be processed correctly.
+              </Typography>
+            )
+          }
 
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <CopyToClipboardIcon value={handleCopyToClipboard()} />
