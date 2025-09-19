@@ -1,4 +1,5 @@
 import { useAuth } from '../../auth/hooks/useAuth';
+import { useCallback, useMemo } from 'react';
 import { CollectionToCreate } from '../types/profile-types';
 
 export const COLLECTIONS_BASE_PATH = import.meta.env.VITE_API_URL + '/pricings/collections';
@@ -6,12 +7,14 @@ export const COLLECTIONS_BASE_PATH = import.meta.env.VITE_API_URL + '/pricings/c
 export function usePricingCollectionsApi() {
   const { fetchWithInterceptor, authUser } = useAuth();
 
-  const basicHeaders = {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${authUser.token}`,
-  };
+  const token = authUser?.token;
 
-  const getCollections = async (filters?: Record<string, string>) => {
+  const basicHeaders = useMemo(() => ({
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${token}`,
+  }), [token]);
+
+  const getCollections = useCallback(async (filters?: Record<string, string | number>) => {
     let requestUrl;
 
     if (Object.keys(filters ?? {}).length === 0) {
@@ -19,7 +22,13 @@ export function usePricingCollectionsApi() {
     } else {
       const filterParams = new URLSearchParams();
       Object.entries(filters ?? {}).forEach(([key, value]) => {
-        if (value.trim().length > 0) filterParams.append(key, value as string);
+        if (value === undefined || value === null) return;
+        // numeric pagination params
+        if (key === 'limit' || key === 'offset') {
+          filterParams.append(key, String(value));
+          return;
+        }
+        if ((value as string).trim && (value as string).trim().length > 0) filterParams.append(key, value as string);
       });
       requestUrl = `${COLLECTIONS_BASE_PATH}?${filterParams.toString()}`;
     }
@@ -32,9 +41,9 @@ export function usePricingCollectionsApi() {
       .catch(error => {
         return Promise.reject(error as Error);
       });
-  };
+  }, [basicHeaders]);
 
-  const getLoggedUserCollections = async () => {
+  const getLoggedUserCollections = useCallback(async () => {
     return fetchWithInterceptor(`${import.meta.env.VITE_API_URL}/me/collections`, {
       method: 'GET',
       headers: basicHeaders,
@@ -43,9 +52,9 @@ export function usePricingCollectionsApi() {
       .catch(error => {
         return Promise.reject(error as Error);
       });
-  };
+  }, [fetchWithInterceptor, basicHeaders]);
 
-  const createCollection = async (collection: CollectionToCreate) => {
+  const createCollection = useCallback(async (collection: CollectionToCreate) => {
     return fetchWithInterceptor(COLLECTIONS_BASE_PATH, {
       method: 'POST',
       headers: basicHeaders,
@@ -55,13 +64,13 @@ export function usePricingCollectionsApi() {
       .catch(error => {
         return Promise.reject(error as Error);
       });
-  };
+  }, [fetchWithInterceptor, basicHeaders]);
   
-  const createBulkCollection = async (formData: FormData) => {
+  const createBulkCollection = useCallback(async (formData: FormData) => {
     return fetchWithInterceptor(COLLECTIONS_BASE_PATH + "/bulk", {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${authUser.token}`,
+        Authorization: `Bearer ${token}`,
       },
       body: formData,
     })
@@ -75,9 +84,9 @@ export function usePricingCollectionsApi() {
       .catch(error => {
         return Promise.reject(error as Error);
       });
-  };
+  }, [fetchWithInterceptor, token]);
 
-  const getCollectionByOwnerAndName = async (ownerId: string, collectionName: string) => {
+  const getCollectionByOwnerAndName = useCallback(async (ownerId: string, collectionName: string) => {
     return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${ownerId}/${collectionName}`, {
       method: 'GET',
       headers: basicHeaders,
@@ -92,9 +101,9 @@ export function usePricingCollectionsApi() {
       .catch(error => {
         return Promise.reject(error as Error);
       });
-  };
+  }, [fetchWithInterceptor, basicHeaders]);
 
-  const downloadCollection = async (ownerId: string, collectionName: string) => {
+  const downloadCollection = useCallback(async (ownerId: string, collectionName: string) => {
     return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${ownerId}/${collectionName}/download`, {
       method: 'GET',
       headers: basicHeaders,
@@ -117,9 +126,10 @@ export function usePricingCollectionsApi() {
       .catch(error => {
         return Promise.reject(error as Error);
       });
-  }
+  }, [fetchWithInterceptor, basicHeaders]);
 
-  const updateCollection = async (collectionName: string, collectionData: any) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const updateCollection = useCallback(async (collectionName: string, collectionData: any) => {
     return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${authUser.user!.id}/${collectionName}`, {
       method: 'PUT',
       headers: basicHeaders,
@@ -129,9 +139,9 @@ export function usePricingCollectionsApi() {
       .catch(error => {
         return Promise.reject(error as Error);
       });
-  }
+  }, [fetchWithInterceptor, basicHeaders, authUser]);
 
-  const deleteCollection = async (collectionName: string, deleteCascade: boolean) => {
+  const deleteCollection = useCallback(async (collectionName: string, deleteCascade: boolean) => {
     return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${authUser.user!.id}/${collectionName}?cascade=${deleteCascade}`, {
       method: 'DELETE',
       headers: basicHeaders
@@ -140,9 +150,9 @@ export function usePricingCollectionsApi() {
       .catch(error => {
         return Promise.reject(error as Error);
       });
-  }
+  }, [fetchWithInterceptor, basicHeaders, authUser]);
 
-  return {
+  return useMemo(() => ({
     getLoggedUserCollections,
     createCollection,
     createBulkCollection,
@@ -151,5 +161,14 @@ export function usePricingCollectionsApi() {
     downloadCollection,
     updateCollection,
     deleteCollection
-  };
+  }), [
+    getLoggedUserCollections,
+    createCollection,
+    createBulkCollection,
+    getCollectionByOwnerAndName,
+    getCollections,
+    downloadCollection,
+    updateCollection,
+    deleteCollection,
+  ]);
 }

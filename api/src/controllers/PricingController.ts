@@ -26,7 +26,13 @@ class PricingController {
     try {
       const queryParams: PricingIndexQueryParams = this._transformIndexQueryParams(req.query);
 
-      const pricings = await this.pricingService.index(queryParams);
+      // include pagination params if provided
+      const pagination = {
+        limit: req.query.limit,
+        offset: req.query.offset,
+      };
+
+      const pricings = await this.pricingService.index(Object.assign({}, queryParams, pagination));
       res.json(pricings);
     } catch (err: any) {
       res.status(500).send({ error: err.message });
@@ -206,6 +212,15 @@ class PricingController {
         ? (indexQueryParams.selectedOwners as string).split(',')
         : undefined,
     };
+
+    // pass through pagination (as strings) if present
+    if (indexQueryParams['limit'] !== undefined) {
+      (transformedData as any).limit = indexQueryParams['limit'] as string;
+    }
+
+    if (indexQueryParams['offset'] !== undefined) {
+      (transformedData as any).offset = indexQueryParams['offset'] as string;
+    }
 
     const optionalFields = [
       'name',

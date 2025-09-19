@@ -28,8 +28,9 @@ class PricingCollectionController {
     try {
       const queryParams: CollectionIndexQueryParams = this._transformIndexQueryParams(req.query);
 
-      const collections = await this.pricingCollectionService.index(queryParams);
-      res.json({ collections: collections });
+      const result = await this.pricingCollectionService.index(queryParams);
+      // result contains { collections, total }
+      res.json(result);
     } catch (err: any) {
       res.status(500).send({ error: err.message });
     }
@@ -209,9 +210,11 @@ class PricingCollectionController {
       sortBy: indexQueryParams.sortBy,
       sort: indexQueryParams.sort ?? 'asc',
       selectedOwners: indexQueryParams.owners ? indexQueryParams.owners.split(',') : undefined,
+      limit: indexQueryParams.limit,
+      offset: indexQueryParams.offset,
     };
 
-    const optionalFields = ['name', 'sortBy', 'sort', 'selectedOwners'];
+    const optionalFields = ['name', 'sortBy', 'sort', 'selectedOwners', 'limit', 'offset'];
 
     optionalFields.forEach(field => {
       if (!transformedData[field]) {

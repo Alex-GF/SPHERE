@@ -7,6 +7,8 @@ import SearchBar from '../../components/search-bar';
 import { flex } from '../../../core/theme/css';
 import PricingFilters from '../../components/pricing-filters';
 import { grey } from '../../../core/theme/palette';
+import PricingsPagination from '../../components/pricings-pagination';
+import PricingsListContainer from '../../components/pricings-list-container';
 
 export const PricingsGrid = styled(Box)(() => ({
   display: 'flex',
@@ -50,57 +52,47 @@ export default function PricingListPage() {
   const [filterLimits, setFilterLimits] = useState<FilterLimits | null>(null);
   const [filterValues, setFilterValues] = useState({});
   const [textFilterValue, setTextFilterValue] = useState('');
+  const [limit, setLimit] = useState<number>(12);
+  const [offset, setOffset] = useState<number>(0);
+  const [totalCount, setTotalCount] = useState<number>(0);
 
   const { getPricings } = usePricingsApi();
-
+  // single effect handling initial load, filters and pagination
   useEffect(() => {
-    getPricings()
-      .then(data => {
-        setPricingsList(data.pricings);
-        if (data.pricings.length > 0) {
-          setFilterLimits({
-            minPrice: data.minPrice,
-            maxPrice: data.maxPrice,
-            configurationSpaceSize: data.configurationSpaceSize,
-            owners: data.pricings.map((pricing: PricingEntry) => pricing.owner),
-          });
-        }else{
-          setFilterLimits({
-            minPrice: {min: 0, max: 0, data: []},
-            maxPrice: {min:0, max: 0, data: []},
-            configurationSpaceSize: {min: 0, max: 0, data: []},
-            owners: data.pricings.map((pricing: PricingEntry) => pricing.owner),
-          });
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-  }, []);
-
-  useEffect(() => {
-    const filters = {
+    const filters: Record<string, string | FilterValues | number | undefined> = {
       name: textFilterValue,
       ...filterValues,
     };
 
-    getPricings(filters)
+    getPricings({ ...filters, limit, offset })
       .then(data => {
-        setPricingsList(data.pricings);
-        
-        if (data.pricings.length > 0) {
+        setPricingsList(data.pricings || []);
+        if (typeof data.total === 'number') {
+          setTotalCount(data.total);
+        } else if (Array.isArray(data.pricings)) {
+          setTotalCount(offset + data.pricings.length);
+        }
+
+        if (data.pricings && data.pricings.length > 0) {
           setFilterLimits({
             minPrice: data.minPrice,
             maxPrice: data.maxPrice,
             configurationSpaceSize: data.configurationSpaceSize,
             owners: data.pricings.map((pricing: PricingEntry) => pricing.owner),
           });
+        } else {
+          setFilterLimits({
+            minPrice: { min: 0, max: 0, data: [] },
+            maxPrice: { min: 0, max: 0, data: [] },
+            configurationSpaceSize: { min: 0, max: 0, data: [] },
+            owners: [],
+          } as unknown as FilterLimits);
         }
       })
       .catch(error => {
         console.error('Error:', error);
       });
-  }, [textFilterValue, filterValues]);
+  }, [textFilterValue, filterValues, limit, offset, getPricings]);
 
   return (
     <>
@@ -149,13 +141,32 @@ export default function PricingListPage() {
           }}
         >
           <SearchBar setTextFilterValue={setTextFilterValue} />
-          <PricingsGrid sx={{marginBottom: "50px"}}>
-            {pricingsList.length > 0 ? Object.values(pricingsList).map((pricing) => {
-              return (
-                <PricingListCard key={`pricing-${pricing.owner}-${pricing.collectionName}-${pricing.name}`} name={pricing.name} owner={pricing.owner} dataEntry={pricing} />
-              );
-            }): <Box>No pricings found</Box>}
-          </PricingsGrid>
+          <PricingsListContainer>
+            <PricingsGrid sx={{ marginBottom: '50px' }}>
+              {pricingsList.length > 0 ? (
+                Object.values(pricingsList).map(pricing => (
+                  <PricingListCard
+                    key={`pricing-${pricing.owner}-${pricing.collectionName}-${pricing.name}`}
+                    name={pricing.name}
+                    owner={pricing.owner}
+                    dataEntry={pricing}
+                  />
+                ))
+              ) : (
+                <Box>No pricings found</Box>
+              )}
+            </PricingsGrid>
+
+            <PricingsPagination
+              limit={limit}
+              offset={offset}
+              total={totalCount}
+              onChange={(newOffset: number, newLimit: number) => {
+                setOffset(newOffset);
+                setLimit(newLimit);
+              }}
+            />
+          </PricingsListContainer>
         </Box>
       </Box>
     </>

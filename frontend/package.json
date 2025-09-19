@@ -25,6 +25,7 @@
     "@types/react-vertical-timeline-component": "^3.3.6",
     "crypto-js": "^4.2.0",
     "date-fns": "^4.1.0",
+    "framer-motion": "^12.23.16",
     "globe.gl": "^2.33.1",
     "helmet": "^8.0.0",
     "lz-string": "^1.5.0",
