@@ -1,21 +1,21 @@
 saasName: PetClinic
-syntaxVersion: "2.1"
+syntaxVersion: "3.0"
 version: "latest"
-createdAt: "2024-01-15"
+createdAt: "2025-09-19"
 currency: EUR
 features:
   pets:
     description: Pets description
     valueType: BOOLEAN
     defaultValue: true
-    expression: userContext['pets'] < planContext['usageLimits']['maxPets']
-    serverExpression: userContext['pets'] <= planContext['usageLimits']['maxPets']
+    expression: subscriptionContext['pets'] < planContext['usageLimits']['maxPets']
+    serverExpression: subscriptionContext['pets'] <= planContext['usageLimits']['maxPets']
     type: DOMAIN
   visits:
     description: visits description
     valueType: BOOLEAN
     defaultValue: true
-    expression: userContext['visits'] < planContext['usageLimits']['maxVisitsPerMonthAndPet']
+    expression: subscriptionContext['visits'] < planContext['usageLimits']['maxVisitsPerMonthAndPet']
     type: DOMAIN
   supportPriority:
     description: supportPriority description
@@ -66,6 +66,7 @@ usageLimits:
     defaultValue: 2
     unit: pet
     type: NON_RENEWABLE
+    trackable: true
     linkedFeatures:
     - pets
   maxVisitsPerMonthAndPet:
@@ -74,6 +75,9 @@ usageLimits:
     defaultValue: 1
     unit: visit
     type: RENEWABLE
+    period:
+      value: 1
+      unit: MONTH
     linkedFeatures:
     - visits
 plans:
@@ -120,6 +124,17 @@ plans:
       maxVisitsPerMonthAndPet:
         value: 6
 addOns:
+  extraPet:
+    description: extraPet description
+    price: 2.95
+    unit: pet/month
+    subscriptionConstraints:
+      min: 1
+      max: 20
+      step: 1
+    usageLimits:
+      maxPets:
+        value: 1
   havePetsDashboard:
     description: havePetsDashboard description
     availableFor:
