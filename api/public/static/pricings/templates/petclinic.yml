@@ -8,14 +8,14 @@ features:
     description: Pets description
     valueType: BOOLEAN
     defaultValue: true
-    expression: subscriptionContext['pets'] < planContext['usageLimits']['maxPets']
-    serverExpression: subscriptionContext['pets'] <= planContext['usageLimits']['maxPets']
+    expression: subscriptionContext['pets'] < pricingContext['usageLimits']['maxPets']
+    serverExpression: subscriptionContext['pets'] <= pricingContext['usageLimits']['maxPets']
     type: DOMAIN
   visits:
     description: visits description
     valueType: BOOLEAN
     defaultValue: true
-    expression: subscriptionContext['visits'] < planContext['usageLimits']['maxVisitsPerMonthAndPet']
+    expression: subscriptionContext['visits'] < pricingContext['usageLimits']['maxVisitsPerMonthAndPet']
     type: DOMAIN
   supportPriority:
     description: supportPriority description
@@ -26,26 +26,26 @@ features:
     description: haveCalendar description
     valueType: BOOLEAN
     defaultValue: false
-    expression: planContext['features']['haveCalendar']
+    expression: pricingContext['features']['haveCalendar']
     type: DOMAIN
   havePetsDashboard:
     description: havePetsDashboard description
     valueType: BOOLEAN
     defaultValue: false
-    expression: planContext['features']['havePetsDashboard']
+    expression: pricingContext['features']['havePetsDashboard']
     type: DOMAIN
     render: disabled
   haveVetSelection:
     description: haveVetSelection description
     valueType: BOOLEAN
     defaultValue: false
-    expression: planContext['features']['haveVetSelection']
+    expression: pricingContext['features']['haveVetSelection']
     type: DOMAIN
   consultations:
     description: consultations description
     valueType: BOOLEAN
     defaultValue: false
-    expression: planContext['features']['consultations']
+    expression: pricingContext['features']['consultations']
     type: DOMAIN
   smartClinicReports:
     description: smartClinicReports description
