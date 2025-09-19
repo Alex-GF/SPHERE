@@ -20,8 +20,9 @@ class PricingCollectionService {
   }
 
   async index(queryParams: CollectionIndexQueryParams) {
-    const pricings = await this.pricingCollectionRepository.findAll(queryParams);
-    return pricings;
+    const result = await this.pricingCollectionRepository.findAll(queryParams);
+    // result is { collections, total }
+    return result;
   }
 
   async showByNameAndUserId(name: string, userId: string) {
