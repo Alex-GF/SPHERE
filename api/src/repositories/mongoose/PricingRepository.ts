@@ -130,15 +130,75 @@ class PricingRepository extends RepositoryBase {
 
     try {
       const aggregator = getAllPricingsAggregator(filteringAggregators, sortAggregator);
-      const pricings = await PricingMongoose.aggregate([
+
+      // parse pagination params to integers
+      const limitRaw = queryParams?.limit;
+      const offsetRaw = queryParams?.offset;
+
+      let limit: number | undefined;
+      let offset: number | undefined;
+
+      if (limitRaw !== undefined) {
+        limit = typeof limitRaw === 'string' ? parseInt(limitRaw, 10) : Number(limitRaw);
+        if (Number.isNaN(limit) || limit! < 0) limit = undefined;
+      }
+
+      if (offsetRaw !== undefined) {
+        offset = typeof offsetRaw === 'string' ? parseInt(offsetRaw, 10) : Number(offsetRaw);
+        if (Number.isNaN(offset) || offset! < 0) offset = undefined;
+      }
+
+      // Build base pipeline and optionally add pagination stages that operate inside aggregation
+      const basePipeline: any[] = [
         {
           $match: {
             private: false,
           },
         },
         ...aggregator,
-      ]);
-      return pricings[0];
+      ];
+
+      // If pagination params present, compute total and slice pricings inside the aggregation for efficiency
+      if (typeof offset !== 'undefined' || typeof limit !== 'undefined') {
+        const start = offset || 0;
+        // if limit is undefined, slice from start to end -> handle by not limiting (use large number)
+        const take = typeof limit !== 'undefined' ? limit : Number.MAX_SAFE_INTEGER;
+
+        const paginationStages = [
+          {
+            $addFields: {
+              total: { $size: '$pricings' },
+            },
+          },
+          {
+            $project: {
+              pricings: {
+                $cond: [
+                  { $gt: [{ $size: '$pricings' }, 0] },
+                  { $slice: ['$pricings', start, take] },
+                  [],
+                ],
+              },
+              minPrice: 1,
+              maxPrice: 1,
+              configurationSpaceSize: 1,
+              total: 1,
+            },
+          },
+        ];
+
+        const pricings = await PricingMongoose.aggregate([...basePipeline, ...paginationStages]);
+        return pricings[0] || { pricings: [], minPrice: [], maxPrice: [], configurationSpaceSize: [], total: 0 };
+      }
+
+      // No pagination: return full result (and include total)
+      const pricings = await PricingMongoose.aggregate(basePipeline);
+      const result = pricings[0] || { pricings: [], minPrice: [], maxPrice: [], configurationSpaceSize: [], total: 0 };
+      // ensure total is set
+      if (typeof result.total === 'undefined') {
+        result.total = Array.isArray(result.pricings) ? result.pricings.length : 0;
+      }
+      return result;
     } catch (err) {
       return { pricings: [] };
     }

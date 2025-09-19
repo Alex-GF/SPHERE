@@ -1,9 +1,10 @@
-syntaxVersion: '2.1'
 saasName: Clockify
+syntaxVersion: '3.0'
 version: '2024-07-06'
+url: https://web.archive.org/web/20240706191453/https://clockify.me/pricing
 createdAt: '2024-07-06'
 currency: USD
-url: https://web.archive.org/web/20240706191453/https://clockify.me/pricing
+variables: {}
 features:
   unlimitedTracking:
     description: Track as much time as you want, without any limits.
