@@ -124,7 +124,7 @@ export function usePricingsApi() {
       });
   };
 
-  const createPricing = async (formData: FormData, setErrors: Function = () => {}) => {
+  const createPricing = async (formData: FormData, setErrors: (errors: string[]) => void = () => {}) => {
     return fetchWithInterceptor(PRICINGS_BASE_PATH, {
       method: 'POST',
       headers: {
@@ -164,6 +164,7 @@ export function usePricingsApi() {
       });
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const updatePricing = (pricingName: string, pricingData: any) => {
     return fetchWithInterceptor(`${PRICINGS_BASE_PATH}/${authUser.user?.username}/${pricingName}`, {
       method: 'PUT',
@@ -181,6 +182,24 @@ export function usePricingsApi() {
         return Promise.reject(error as Error);
       });
   };
+
+  const updateClientPricingVersion = async (pricingString: string) => {
+    return fetchWithInterceptor(`${PRICINGS_BASE_PATH}`, {
+      method: 'PUT',
+      headers: basicHeaders,
+      body: JSON.stringify({pricing: pricingString}),
+    })
+      .then(response => {
+        if (!response.ok) {
+          return Promise.reject(response);
+        } else {
+          return response.json();
+        }
+      })
+      .catch(error => {
+        return Promise.reject(error as Error);
+      });
+  }
 
   const removePricingVersion = async (pricingName: string, pricingVersion: string) => {
     return fetchWithInterceptor(
@@ -255,6 +274,7 @@ export function usePricingsApi() {
     removePricingFromCollection,
     removePricingByName,
     updatePricing,
+    updateClientPricingVersion,
     removePricingVersion,
   };
 }

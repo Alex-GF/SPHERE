@@ -2,7 +2,7 @@ import Grid from '@mui/material/Grid2';
 import Editor, { Monaco } from '@monaco-editor/react';
 import { grey } from '../../../core/theme/palette';
 import { useState, useEffect, useRef } from 'react';
-import { retrievePricingFromYaml, Pricing } from 'pricing4ts';
+import { Pricing, retrievePricingFromYaml } from 'pricing4ts';
 
 import { PricingRenderer } from '../../components/pricing-renderer';
 import LoadingView from '../../../core/pages/loading';
