@@ -15,7 +15,7 @@ import PricingListPage from '../modules/pricing/pages/list';
 import LoginPage from '../modules/auth/pages/login-page';
 import RegisterPage from '../modules/auth/pages/register-page';
 import CardPage from '../modules/pricing/pages/card';
-import LegacyPricingCard from '../modules/pricing/pages/legacy-pricing-card';
+// import LegacyPricingCard from '../modules/pricing/pages/legacy-pricing-card';
 import CreatePricingPage from '../modules/pricing/pages/create';
 import CollectionCardPage from '../modules/pricing/pages/collection-card';
 import MyPricingsPage from '../modules/profile/pages/pricings';

@@ -22,6 +22,26 @@ const demoIconStyle = {
 
 const timelineData = [
   {
+    title: 'HORIZON: a Classification and Comparison Framework for Pricing-driven Feature Toggling',
+    subtitle:
+      'Alejandro García-Fernández, José Antonio Parejo and Antonio Ruiz-Cortés',
+    text: ['25th International Conference on Web Engineering (ICWE)'],
+    date: '2025-06-15',
+    icon: <GrWorkshop stroke="white" />,
+    iconStyle: proceedingsIconStyle,
+    href: '#',
+  },
+  {
+    title: 'Automated Analysis of Pricings in SaaS-Based Information Systems',
+    subtitle:
+      'Alejandro García-Fernández, José Antonio Parejo, Pablo Trinidad and Antonio Ruiz-Cortés',
+    text: ['37th International Conference on Advanced Information Systems Engineering (CAISE)'],
+    date: '2025-06-15',
+    icon: <GrWorkshop stroke="white" />,
+    iconStyle: proceedingsIconStyle,
+    href: 'https://doi.org/10.1007/978-3-031-94571-7_13',
+  },
+  {
     title: 'Racing the Market: An Industry Support Analysis for Pricing-Driven DevOps in SaaS',
     subtitle:
       'Alejandro García-Fernández, José Antonio Parejo, Francisco Javier Cavero and Antonio Ruiz-Cortés',
@@ -42,7 +62,7 @@ const timelineData = [
     date: '2024-12-03',
     icon: <GrWorkshop stroke="white" />,
     iconStyle: proceedingsIconStyle,
-    href: '#',
+    href: 'https://doi.org/10.1007/978-981-96-7238-7_13',
   },
   {
     title: 'From Static to Intelligent: Evolving SaaS Pricing with LLMs',
@@ -51,7 +71,7 @@ const timelineData = [
     date: '2024-12-03',
     icon: <GrWorkshop stroke="white" />,
     iconStyle: proceedingsIconStyle,
-    href: '#',
+    href: 'https://doi.org/10.1007/978-981-96-7423-7_12',
   },
   {
     title: 'Towards Pricing4SaaS: A Framework for Pricing-driven Feature Toggling in SaaS',
@@ -61,7 +81,7 @@ const timelineData = [
     date: '2024-06-17',
     icon: <FaPlayCircle fill="white" />,
     iconStyle: demoIconStyle,
-    href: 'https://link.springer.com/chapter/10.1007/978-3-031-62362-2_30',
+    href: 'https://doi.org/10.1007/978-3-031-62362-2_30',
   },
   {
     title: 'Towards a Suite of Software Libraries for Pricing-driven Feature Toggling',
@@ -91,7 +111,7 @@ const timelineData = [
     date: '2024-06-03',
     icon: <GrWorkshop stroke="white" />,
     iconStyle: proceedingsIconStyle,
-    href: 'https://link.springer.com/chapter/10.1007/978-3-031-61000-4_6',
+    href: 'https://doi.org/10.1007/978-3-031-61000-4_6',
   },
 ];
 
