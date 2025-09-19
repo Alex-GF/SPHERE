@@ -39,6 +39,11 @@ export default function EditorPage() {
         try {
           setEditorValue(value);
           const parsedPricing: Pricing = retrievePricingFromYaml(value);
+          
+          if (parsedPricing.syntaxVersion !== '3.0'){
+            throw new Error('Only Pricing YAML syntax version 3.0 is supported in this editor.');
+          }
+          
           setPricing(parsedPricing);
           setErrors([]);
         } catch (err) {
