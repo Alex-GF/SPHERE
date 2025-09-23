@@ -1,5 +1,8 @@
-import { BilledType, RenderingStyles } from "../../types";
-import { DEFAULT_RENDERING_STYLES } from "../..";
+import { BilledType, RenderingStyles } from '../../types';
+import DEFAULT_RENDERING_STYLES from '../../shared/constants';
+import { ToggleButtonGroup, ToggleButton, Box } from '@mui/material';
+import { motion } from 'framer-motion';
+import { cardVariants } from '../../shared/motion-variants';
 
 export default function SelectOfferTab({
   selectedBilledType,
@@ -11,60 +14,28 @@ export default function SelectOfferTab({
   style: RenderingStyles;
 }>): JSX.Element {
   return (
-    <div
-      className="radio-inputs"
-      style={{
-        backgroundColor:
-          style.billingSelectionBackgroundColor ??
-          DEFAULT_RENDERING_STYLES.billingSelectionBackgroundColor,
-      }}
-    >
-      <label className="radio">
-        <input
-          type="radio"
-          name="radio"
-          onClick={() => handleSwitchTab("monthly")}
-          checked={selectedBilledType === "monthly"}
-        />
-        <span
-          className="name"
-          style={{
-            color:
-              style.billingSelectionTextColor ??
-              DEFAULT_RENDERING_STYLES.billingSelectionTextColor,
-            backgroundColor:
-              selectedBilledType === "monthly"
-                ? style.billingSelectionColor ??
-                  DEFAULT_RENDERING_STYLES.billingSelectionColor
-                : "transparent",
-          }}
+    <motion.div variants={cardVariants} initial="hidden" animate="visible">
+      <Box sx={{ display: 'flex', justifyContent: 'center', p: 1 }}>
+        <ToggleButtonGroup
+          value={selectedBilledType}
+          exclusive
+          onChange={(_, val) => val && handleSwitchTab(val)}
+          sx={{ bgcolor: style.billingSelectionBackgroundColor ?? DEFAULT_RENDERING_STYLES.billingSelectionBackgroundColor, borderRadius: 2 }}
         >
-          Monthly
-        </span>
-      </label>
-      <label className="radio">
-        <input
-          type="radio"
-          name="radio"
-          onClick={() => handleSwitchTab("annually")}
-          checked={selectedBilledType === "annually"}
-        />
-        <span
-          className="name"
-          style={{
-            color:
-              style.billingSelectionTextColor ??
-              DEFAULT_RENDERING_STYLES.billingSelectionTextColor,
-            backgroundColor:
-              selectedBilledType === "annually"
-                ? style.billingSelectionColor ??
-                  DEFAULT_RENDERING_STYLES.billingSelectionColor
-                : "transparent",
-          }}
-        >
-          Annually
-        </span>
-      </label>
-    </div>
+          <ToggleButton
+            value="monthly"
+            sx={{ color: style.billingSelectionTextColor ?? DEFAULT_RENDERING_STYLES.billingSelectionTextColor }}
+          >
+            Monthly
+          </ToggleButton>
+          <ToggleButton
+            value="annually"
+            sx={{ color: style.billingSelectionTextColor ?? DEFAULT_RENDERING_STYLES.billingSelectionTextColor }}
+          >
+            Annually
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </Box>
+    </motion.div>
   );
 }

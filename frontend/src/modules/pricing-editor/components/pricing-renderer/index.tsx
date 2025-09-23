@@ -1,7 +1,7 @@
 import { Feature, Plan } from 'pricing4ts';
 import { getPricingData } from '../../services/pricing.service';
 import './styles.css';
-import { PricingData, PricingProps, RenderingStyles } from './types.d';
+import { PricingData, PricingProps } from './types.d';
 
 import { useMemo } from 'react';
 import AddOnElement from './components/addon-element';
@@ -11,30 +11,12 @@ import { TagFeatureCard } from './components/tag-card';
 import PricingCard from './components/pricing-card';
 import { CURRENCIES } from '../../../pricing/pages/card';
 
-export const DEFAULT_RENDERING_STYLES: RenderingStyles = {
-  plansColor: '#000000',
-  priceColor: '#000000',
-  periodColor: '#000000',
-  headerColor: '#000000',
-  namesColor: '#000000',
-  valuesColor: '#000000',
-  checkColor: '#000000',
-  crossColor: '#000000',
-  backgroundColor: '#f3f4f6',
-  dividerColor: '#000000',
-  billingSelectionColor: '#ffffff',
-  billingSelectionBackgroundColor: '#EEE',
-  billingSelectionTextColor: '#000000',
-  addonBackgroundColor: '#ffffff',
-  addonTextColor: '#000000',
-};
+import DEFAULT_RENDERING_STYLES from './shared/constants';
 
 export function PricingRenderer({ pricing, errors, style }: Readonly<PricingProps>): JSX.Element {
-  let pricingData: PricingData = getPricingData(pricing, errors);
+  const pricingData: PricingData = getPricingData(pricing, errors);
 
-  if (!style) {
-    style = {};
-  }
+  style ??= {};
 
   const tagFeatures = useMemo(() => {
     const tagMap = new Map<string, Feature[]>();
@@ -48,7 +30,7 @@ export function PricingRenderer({ pricing, errors, style }: Readonly<PricingProp
   }, [pricing?.features]);
 
   const featuresWithoutTags = useMemo(() => {
-    return Object.entries(pricingData).filter(([name, _]) => {
+    return Object.entries(pricingData).filter(([name]) => {
       const normalizedName = name.toLowerCase().replace(/\s+/g, '');
       const feature = Object.values(pricing.features).find(
         (f) => f.name.toLowerCase().replace(/\s+/g, '') === normalizedName
@@ -57,11 +39,7 @@ export function PricingRenderer({ pricing, errors, style }: Readonly<PricingProp
     });
   }, [pricing.features, pricingData]);
 
-  // const [selectedBilledType, setSelectedBilledType] =
-  //   useState<BilledType>("monthly");
-  // function handleSwitchTab(tab: BilledType) {
-  //   setSelectedBilledType(tab);
-  // }
+  // UI billing selector currently disabled in renderer
 
   return (
     <section
@@ -78,25 +56,18 @@ export function PricingRenderer({ pricing, errors, style }: Readonly<PricingProp
             Pricing
           </h1>
         </div> */}
-        {/* {pricing.hasAnnualPayment && (
-          <div className="pricing-page-title">
-            <SelectOfferTab
-              handleSwitchTab={handleSwitchTab}
-              selectedBilledType={selectedBilledType}
-              style={style}
-            />
-          </div>
-        )} */}
+        
         <table className='pricing-table'>
           <thead>
             <tr>
               <th></th>
-              {pricing.plans && Object.values(pricing.plans).map((plan: Plan, key: number) => (
+              {pricing.plans && Object.values(pricing.plans).map((plan: Plan) => (
                 <PlanHeader
                   plan={plan}
                   currency={pricing.currency in CURRENCIES ? CURRENCIES[pricing.currency as keyof typeof CURRENCIES] : pricing.currency}
                   style={style}
-                  key={`${plan.name}-${key}`}
+                  key={plan.name}
+                  index={Object.values(pricing.plans ?? {}).indexOf(plan)}
                 />
               ))}
             </tr>
@@ -115,7 +86,7 @@ export function PricingRenderer({ pricing, errors, style }: Readonly<PricingProp
 
         {tagFeatures && (
           <div className='tag-feature-cards-container' style={{ marginTop: '1rem' }}>
-            {Array.from(tagFeatures.entries()).map(([tag, features]) => (
+              {Array.from(tagFeatures.entries()).map(([tag, features]) => (
               <TagFeatureCard
                 tag={tag}
                 features={features}
@@ -137,16 +108,14 @@ export function PricingRenderer({ pricing, errors, style }: Readonly<PricingProp
               <h1>Add-Ons</h1>
             </div>
             <div className='add-ons-container'>
-              {Object.values(pricing.addOns).map((addOn, index) => {
-                return (
-                  <AddOnElement
-                    addOn={addOn}
-                    currency={pricing.currency in CURRENCIES ? CURRENCIES[pricing.currency as keyof typeof CURRENCIES] : pricing.currency}
-                    style={style}
-                    key={index}
-                  />
-                );
-              })}
+              {Object.values(pricing.addOns).map((addOn) => (
+                <AddOnElement
+                  addOn={addOn}
+                  currency={pricing.currency in CURRENCIES ? CURRENCIES[pricing.currency as keyof typeof CURRENCIES] : pricing.currency}
+                  style={style}
+                  key={addOn.name}
+                />
+              ))}
             </div>
           </>
         )}
