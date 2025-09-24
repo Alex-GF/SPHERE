@@ -26,7 +26,7 @@
     "lastName": "Admin",
     "username": "sphere",
     "email": "sphere@sphere.com",
-    "password": "$2a$05$OGiO5p4b/dThwb/HeBm0w.cWuzJaj2gvIfRmBq7HbTrzHb.QYwrQq",
+    "password": "$2a$05$LMFsJkPi4m0oHMOGIYDwieRv6adaMdqDbXr5XpJhYTc8Fztwg4hHK",
     "token": "aa8b184a5b0b48737cfdfdbef8cc4990f3821c8b",
     "tokenExpiration": {"$date": "2023-02-23T11:10:52.000Z"},
     "phone": "+34666777888",
