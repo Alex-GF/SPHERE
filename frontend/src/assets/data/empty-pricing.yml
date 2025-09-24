@@ -1,9 +1,8 @@
 saasName: Your SaaS Name
-syntaxVersion: "2.1"
+syntaxVersion: "3.0"
 version: "latest"
 createdAt: 2024-01-15
 currency: EUR
-hasAnnualPayment: false
 features:
   feature1:
     description: Feature 1 description

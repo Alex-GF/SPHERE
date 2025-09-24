@@ -8,6 +8,8 @@ import { usePricingCollectionsApi } from '../../../profile/api/pricingCollection
 import CollectionListCard from '../../components/collection-list-card';
 import { CollectionEntry } from '../../../profile/types/profile-types';
 import CollectionFilters from '../../components/collection-filters';
+import PricingsPagination from '../../components/pricings-pagination';
+import PricingsListContainer from '../../components/pricings-list-container';
 import { v4 as uuidv4 } from 'uuid';
 
 export const PricingsGrid = styled(Box)(() => ({
@@ -51,13 +53,17 @@ export default function CollectionsListPage() {
   const [filterLimits, setFilterLimits] = useState<FilterLimits | null>(null);
   const [filterValues, setFilterValues] = useState({});
   const [textFilterValue, setTextFilterValue] = useState('');
+  const [limit, setLimit] = useState<number>(12);
+  const [offset, setOffset] = useState<number>(0);
+  const [totalCount, setTotalCount] = useState<number>(0);
 
   const { getCollections } = usePricingCollectionsApi();
 
   useEffect(() => {
-    getCollections()
+    getCollections({ limit, offset })
       .then(data => {
         setCollectionsList(data.collections);
+        setTotalCount(data.total || 0);
 
         setFilterLimits({
           owners: data.collections.map((collection: CollectionEntry) => collection.owner),
@@ -66,17 +72,20 @@ export default function CollectionsListPage() {
       .catch(error => {
         console.error('Error:', error);
       });
-  }, []);
+  }, [limit, offset, getCollections]);
 
   useEffect(() => {
     const filters = {
       name: textFilterValue,
       ...filterValues,
+      limit,
+      offset,
     };
 
     getCollections(filters)
       .then(data => {
         setCollectionsList(data.collections);
+        setTotalCount(data.total || 0);
 
         if (data.collections.length > 0) {
           setFilterLimits({
@@ -87,7 +96,7 @@ export default function CollectionsListPage() {
       .catch(error => {
         console.error('Error:', error);
       });
-  }, [textFilterValue, filterValues]);
+  }, [textFilterValue, filterValues, limit, offset, getCollections]);
 
   return (
     <>
@@ -135,20 +144,27 @@ export default function CollectionsListPage() {
           }}
         >
           <SearchBar setTextFilterValue={setTextFilterValue} />
-          <PricingsGrid sx={{ marginBottom: '50px' }}>
-            {collectionsList.length > 0 ? (
-              Object.values(collectionsList).map(collection => {
-                return (
-                  <CollectionListCard
-                    key={uuidv4()}
-                    collection={collection}
-                  />
-                );
-              })
-            ) : (
-              <Box>No collections found</Box>
-            )}
-          </PricingsGrid>
+          <PricingsListContainer>
+            <PricingsGrid sx={{ marginBottom: '50px' }}>
+              {collectionsList.length > 0 ? (
+                Object.values(collectionsList).map(collection => (
+                  <CollectionListCard key={uuidv4()} collection={collection} />
+                ))
+              ) : (
+                <Box>No collections found</Box>
+              )}
+            </PricingsGrid>
+
+            <PricingsPagination
+              limit={limit}
+              offset={offset}
+              total={totalCount}
+              onChange={(newOffset: number, newLimit: number) => {
+                setOffset(newOffset);
+                setLimit(newLimit);
+              }}
+            />
+          </PricingsListContainer>
         </Box>
       </Box>
     </>

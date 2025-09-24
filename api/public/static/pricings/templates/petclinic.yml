@@ -1,21 +1,21 @@
 saasName: PetClinic
-syntaxVersion: "2.1"
+syntaxVersion: "3.0"
 version: "latest"
-createdAt: "2024-01-15"
+createdAt: "2025-09-19"
 currency: EUR
 features:
   pets:
     description: Pets description
     valueType: BOOLEAN
     defaultValue: true
-    expression: userContext['pets'] < planContext['usageLimits']['maxPets']
-    serverExpression: userContext['pets'] <= planContext['usageLimits']['maxPets']
+    expression: subscriptionContext['pets'] < pricingContext['usageLimits']['maxPets']
+    serverExpression: subscriptionContext['pets'] <= pricingContext['usageLimits']['maxPets']
     type: DOMAIN
   visits:
     description: visits description
     valueType: BOOLEAN
     defaultValue: true
-    expression: userContext['visits'] < planContext['usageLimits']['maxVisitsPerMonthAndPet']
+    expression: subscriptionContext['visits'] < pricingContext['usageLimits']['maxVisitsPerMonthAndPet']
     type: DOMAIN
   supportPriority:
     description: supportPriority description
@@ -26,26 +26,26 @@ features:
     description: haveCalendar description
     valueType: BOOLEAN
     defaultValue: false
-    expression: planContext['features']['haveCalendar']
+    expression: pricingContext['features']['haveCalendar']
     type: DOMAIN
   havePetsDashboard:
     description: havePetsDashboard description
     valueType: BOOLEAN
     defaultValue: false
-    expression: planContext['features']['havePetsDashboard']
+    expression: pricingContext['features']['havePetsDashboard']
     type: DOMAIN
     render: disabled
   haveVetSelection:
     description: haveVetSelection description
     valueType: BOOLEAN
     defaultValue: false
-    expression: planContext['features']['haveVetSelection']
+    expression: pricingContext['features']['haveVetSelection']
     type: DOMAIN
   consultations:
     description: consultations description
     valueType: BOOLEAN
     defaultValue: false
-    expression: planContext['features']['consultations']
+    expression: pricingContext['features']['consultations']
     type: DOMAIN
   smartClinicReports:
     description: smartClinicReports description
@@ -66,6 +66,7 @@ usageLimits:
     defaultValue: 2
     unit: pet
     type: NON_RENEWABLE
+    trackable: true
     linkedFeatures:
     - pets
   maxVisitsPerMonthAndPet:
@@ -74,6 +75,9 @@ usageLimits:
     defaultValue: 1
     unit: visit
     type: RENEWABLE
+    period:
+      value: 1
+      unit: MONTH
     linkedFeatures:
     - visits
 plans:
@@ -120,6 +124,17 @@ plans:
       maxVisitsPerMonthAndPet:
         value: 6
 addOns:
+  extraPet:
+    description: extraPet description
+    price: 2.95
+    unit: pet/month
+    subscriptionConstraints:
+      min: 1
+      max: 20
+      step: 1
+    usageLimits:
+      maxPets:
+        value: 1
   havePetsDashboard:
     description: havePetsDashboard description
     availableFor:

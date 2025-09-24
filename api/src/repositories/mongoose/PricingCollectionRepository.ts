@@ -73,15 +73,34 @@ class PricingCollectionRepository extends RepositoryBase {
     
     
     try {
-      const collections = await PricingCollectionMongoose.aggregate([
+      // parse pagination params
+      const limitRaw = queryParams?.limit;
+      const offsetRaw = queryParams?.offset;
+
+      let limit: number | undefined;
+      let offset: number | undefined;
+
+      if (limitRaw !== undefined) {
+        limit = typeof limitRaw === 'string' ? parseInt(limitRaw, 10) : Number(limitRaw);
+        if (Number.isNaN(limit) || limit! < 0) limit = undefined;
+      }
+
+      if (offsetRaw !== undefined) {
+        offset = typeof offsetRaw === 'string' ? parseInt(offsetRaw, 10) : Number(offsetRaw);
+        if (Number.isNaN(offset) || offset! < 0) offset = undefined;
+      }
+
+      const basePipeline: any[] = [
         {
           $match: {
-            private: false
-          }
+            private: false,
+          },
         },
         ...addNumberOfPricingsAggregator(),
         ...addOwnerToCollectionAggregator(),
         ...filteringAggregators,
+        // ensure deterministic alphabetical order by name unless an explicit sortAggregator overrides it
+        { $sort: { name: 1 } },
         ...sortAggregator,
         {
           $project: {
@@ -94,12 +113,43 @@ class PricingCollectionRepository extends RepositoryBase {
             numberOfPricings: 1,
           },
         },
-      ]);
+      ];
 
+      if (typeof offset !== 'undefined' || typeof limit !== 'undefined') {
+        const start = offset || 0;
+        const take = typeof limit !== 'undefined' ? limit : Number.MAX_SAFE_INTEGER;
+
+        // Use a $facet to get paginated result and total count in a single aggregation
+        const facetPipeline = [
+          {
+            $facet: {
+              collections: [
+                { $skip: start },
+                { $limit: take },
+              ],
+              total: [
+                { $count: 'count' },
+              ],
+            },
+          },
+        ];
+
+        const aggResult = await PricingCollectionMongoose.aggregate([...basePipeline, ...facetPipeline]);
+        const first = aggResult[0] || { collections: [], total: [] };
+        const collections = first.collections || [];
+        const total = (first.total && first.total[0] && first.total[0].count) || 0;
+
+        collections.forEach((c: any) => processFileUris(c.owner, ['avatar']));
+        return { collections, total };
+      }
+
+      // No pagination: return full result and total
+      const collections = await PricingCollectionMongoose.aggregate(basePipeline);
       collections.forEach((c: any) => processFileUris(c.owner, ['avatar']));
-      return collections;
+      const total = collections.length;
+      return { collections, total };
     } catch (err) {
-      return null;
+      return { collections: [], total: 0 };
     }
   }
 

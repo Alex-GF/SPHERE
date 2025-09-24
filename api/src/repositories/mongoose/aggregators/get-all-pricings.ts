@@ -92,6 +92,9 @@ const computeFiltersDataAggregator = {
           },
         },
       },
+      {
+        $sort: { name: 1 },
+      },
     ],
     minPrice: [
       {

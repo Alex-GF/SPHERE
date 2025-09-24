@@ -58,9 +58,10 @@ export default function CardPage() {
 
   const pathname = usePathname();
   const queryParams = useQueryParams();
-  const { getPricingByName } = usePricingsApi();
+  const { getPricingByName, updateClientPricingVersion } = usePricingsApi();
   const { authUser } = useAuth();
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function updatePricingInformation(pricing: any) {
     if (pricing.versions && pricing.versions.length > 0) {
       const currentPricing = pricing.versions[0];
@@ -75,13 +76,14 @@ export default function CardPage() {
   }
 
   useEffect(() => {
-    let name = pathname.split('/').pop() as string;
-    let owner = pathname.split('/')[pathname.split('/').length - 2] as string;
-    let collectionName: string | null = queryParams.get('collectionName');
+    const name = pathname.split('/').pop() as string;
+    const owner = pathname.split('/')[pathname.split('/').length - 2] as string;
+    const collectionName: string | null = queryParams.get('collectionName');
 
     getPricingByName(name, owner, collectionName).then(pricing => {
       try {
         updatePricingInformation(pricing);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         customAlert(err.msg);
       }
@@ -93,13 +95,22 @@ export default function CardPage() {
       return;
     }
 
-    let pricingYamlPath = currentPricing.yaml;
+    const pricingYamlPath = currentPricing.yaml;
 
     fetch(pricingYamlPath).then(async response => {
       let p: string = '';
       p = await response.text();
 
-      const parsedPricing: Pricing = retrievePricingFromYaml(p);
+      let parsedPricing: Pricing | null = null;
+
+      try{
+        parsedPricing = retrievePricingFromYaml(p);
+      }catch{
+        if (!(/syntaxVersion\s*:\s*["']?3\.0["']?/.test(p))) {
+          parsedPricing = await updateClientPricingVersion(p);
+        }
+      }
+
       setPricing(parsedPricing);
     });
   }, [pricingData, currentPricing]);
@@ -249,6 +260,7 @@ export default function CardPage() {
                   <option key={index} value={entry.yaml}>
                     {entry.yaml
                       .split('/')
+                      // eslint-disable-next-line no-unexpected-multiline
                       [entry.yaml.split('/').length - 1].replace('.yaml', '')
                       .replace('.yml', ' ')}
                   </option>

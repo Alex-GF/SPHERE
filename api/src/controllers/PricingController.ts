@@ -16,6 +16,7 @@ class PricingController {
     this.create = this.create.bind(this);
     this.addPricingToCollection = this.addPricingToCollection.bind(this);
     this.update = this.update.bind(this);
+    this.updateVersion = this.updateVersion.bind(this);
     this.removePricingFromCollection = this.removePricingFromCollection.bind(this);
     this.destroyByNameAndOwner = this.destroyByNameAndOwner.bind(this);
     this.destroyVersionByNameAndOwner = this.destroyVersionByNameAndOwner.bind(this);
@@ -25,7 +26,13 @@ class PricingController {
     try {
       const queryParams: PricingIndexQueryParams = this._transformIndexQueryParams(req.query);
 
-      const pricings = await this.pricingService.index(queryParams);
+      // include pagination params if provided
+      const pagination = {
+        limit: req.query.limit,
+        offset: req.query.offset,
+      };
+
+      const pricings = await this.pricingService.index(Object.assign({}, queryParams, pagination));
       res.json(pricings);
     } catch (err: any) {
       res.status(500).send({ error: err.message });
@@ -44,7 +51,11 @@ class PricingController {
   async show(req: any, res: any) {
     try {
       const queryParams = req.query;
-      const pricing = await this.pricingService.show(req.params.pricingName, req.params.owner, queryParams);
+      const pricing = await this.pricingService.show(
+        req.params.pricingName,
+        req.params.owner,
+        queryParams
+      );
       res.json(pricing);
     } catch (err: any) {
       if (err.message.toLowerCase().includes('not found')) {
@@ -57,8 +68,12 @@ class PricingController {
 
   async getConfigurationSpace(req: any, res: any) {
     try {
-      const [configurationSpace, configurationSpaceSize] = await this.pricingService.getConfigurationSpace(req.params.pricingId, req.query);
-      res.json({configurationSpace: configurationSpace, configurationSpaceSize: configurationSpaceSize});
+      const [configurationSpace, configurationSpaceSize] =
+        await this.pricingService.getConfigurationSpace(req.params.pricingId, req.query);
+      res.json({
+        configurationSpace: configurationSpace,
+        configurationSpaceSize: configurationSpaceSize,
+      });
     } catch (err: any) {
       if (err.message.toLowerCase().includes('not found')) {
         res.status(404).send({ error: err.message });
@@ -114,6 +129,19 @@ class PricingController {
     }
   }
 
+  async updateVersion(req: any, res: any) {
+    try {
+      const pricing = await this.pricingService.updateVersion(req.body.pricing);
+      res.json(pricing);
+    } catch (err: any) {
+      if (err.message.toLowerCase().includes('error updating pricing')) {
+        res.status(400).send({ error: err.message });
+      } else {
+        res.status(500).send({ error: err.message });
+      }
+    }
+  }
+
   async removePricingFromCollection(req: any, res: any) {
     try {
       const result = await this.pricingService.removePricingFromCollection(
@@ -129,11 +157,15 @@ class PricingController {
   async destroyByNameAndOwner(req: any, res: any) {
     try {
       const queryParams = req.query;
-      const result = await this.pricingService.destroy(req.params.pricingName, req.user.username, queryParams);
+      const result = await this.pricingService.destroy(
+        req.params.pricingName,
+        req.user.username,
+        queryParams
+      );
       if (!result) {
         res.status(404).send({ error: 'Pricing not found' });
       } else {
-        res.status(200).send({message: "Pricing deleted successfully" });
+        res.status(200).send({ message: 'Pricing deleted successfully' });
       }
     } catch (err: any) {
       res.status(500).send({ error: err.message });
@@ -141,14 +173,18 @@ class PricingController {
   }
 
   async destroyVersionByNameAndOwner(req: any, res: any) {
-    try{
-      const result = await this.pricingService.destroyVersion(req.params.pricingName, req.params.pricingVersion, req.user.username);
+    try {
+      const result = await this.pricingService.destroyVersion(
+        req.params.pricingName,
+        req.params.pricingVersion,
+        req.user.username
+      );
       if (!result) {
         res.status(404).send({ error: 'Pricing version not found' });
       } else {
-        res.status(200).send({message: "Pricing version deleted successfully" });
+        res.status(200).send({ message: 'Pricing version deleted successfully' });
       }
-    }catch(err: any){
+    } catch (err: any) {
       res.status(500).send({ error: err.message });
     }
   }
@@ -176,6 +212,15 @@ class PricingController {
         ? (indexQueryParams.selectedOwners as string).split(',')
         : undefined,
     };
+
+    // pass through pagination (as strings) if present
+    if (indexQueryParams['limit'] !== undefined) {
+      (transformedData as any).limit = indexQueryParams['limit'] as string;
+    }
+
+    if (indexQueryParams['offset'] !== undefined) {
+      (transformedData as any).offset = indexQueryParams['offset'] as string;
+    }
 
     const optionalFields = [
       'name',

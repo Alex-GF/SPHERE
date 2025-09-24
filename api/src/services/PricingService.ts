@@ -2,7 +2,7 @@ import {Pricing} from "pricing4ts";
 import { Pricing as PricingModel } from "../types/database/Pricing";
 import container from "../config/container";
 import { processFileUris } from "./FileService";
-import { PricingService as PricingAnalytics, retrievePricingFromPath } from "pricing4ts/server";
+import { PricingService as PricingAnalytics, retrievePricingFromPath, retrievePricingFromText } from "pricing4ts/server";
 import { PricingIndexQueryParams } from "../types/services/PricingService";
 import PricingCollectionService from "./PricingCollectionService";
 import PricingRepository from "../repositories/mongoose/PricingRepository";
@@ -168,6 +168,17 @@ class PricingService {
       const updatedPricing = await this.pricingRepository.findByNameAndOwner(pricingName, owner)
 
       return updatedPricing;
+    }
+
+    async updateVersion (pricingString: string){
+
+      try{
+        const updatedPricing: Pricing = retrievePricingFromText(pricingString);
+        return updatedPricing;
+      }catch(err){
+        throw new Error('Error updating pricing: ' + (err as Error).message);
+      }
+
     }
 
     async updatePricingsCollectionName (oldCollectionName: string, newCollectionName: string, collectionId: string, ownerId: string) {

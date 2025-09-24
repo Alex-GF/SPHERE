@@ -1,21 +1,22 @@
-syntaxVersion: '2.1'
 saasName: Buffer
-createdAt: '2024-07-02'
+syntaxVersion: '3.0'
 version: '2024-07-02'
-billing:
-  monthly: 1.0
-currency: USD
 url: https://web.archive.org/web/20240703171425/https://buffer.com/pricing
+createdAt: '2024-07-02'
+currency: USD
+variables: {}
 features:
   channels:
-    description: 'Example: 2 Twitter profiles, 2 Facebook pages, and 2 Start Pages
-      counts as 6 channels'
+    description: >-
+      Example: 2 Twitter profiles, 2 Facebook pages, and 2 Start Pages counts as
+      6 channels
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   schedulePosts:
-    description: Free plans allow for 10 scheduled posts per channel at one time.
-      *Paid plan channels have a 2,000 scheduled post cap per our Fair Use Policy.
+    description: >-
+      Free plans allow for 10 scheduled posts per channel at one time. *Paid
+      plan channels have a 2,000 scheduled post cap per our Fair Use Policy.
     valueType: BOOLEAN
     defaultValue: true
     type: INFORMATION
@@ -92,14 +93,16 @@ features:
     type: INTEGRATION
     integrationType: WEB_SAAS
   startPage:
-    description: A landing page for your brand where you can showcase the things that
+    description: >-
+      A landing page for your brand where you can showcase the things that
       matter
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   bufferAIAssistant:
-    description: Generate new posts for your Buffer schedule, repurpose existing posts,
-      and come up with an endless new ideas.
+    description: >-
+      Generate new posts for your Buffer schedule, repurpose existing posts, and
+      come up with an endless new ideas.
     valueType: BOOLEAN
     defaultValue: true
     type: AUTOMATION
@@ -132,8 +135,7 @@ features:
     defaultValue: true
     type: INFORMATION
   browserExtension:
-    description: Open the composer on any web page and add posts directly to your
-      queue.
+    description: Open the composer on any web page and add posts directly to your queue.
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
@@ -160,15 +162,17 @@ features:
     defaultValue: true
     type: INFORMATION
   mentions:
-    description: Tag other Facebook, LinkedIn, Instagram, and TikTok Pages (some restrictions
-      apply).
+    description: >-
+      Tag other Facebook, LinkedIn, Instagram, and TikTok Pages (some
+      restrictions apply).
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   twitterThreads:
-    description: Draft and schedule threads on Twitter. *The Free plan offers one
-      scheduled Twitter Thread in Buffer at any time. Post the Twitter thread and
-      schedule again, as many times as you want
+    description: >-
+      Draft and schedule threads on Twitter. *The Free plan offers one scheduled
+      Twitter Thread in Buffer at any time. Post the Twitter thread and schedule
+      again, as many times as you want
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
@@ -178,14 +182,16 @@ features:
     defaultValue: true
     type: DOMAIN
   hashtagManager:
-    description: Create, save, reuse, and optimize groups of hashtags for your social
+    description: >-
+      Create, save, reuse, and optimize groups of hashtags for your social
       channels.
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
   instagramFirstComment:
-    description: Schedule the first comment after your post. Include hashtags and/or
-      other information.
+    description: >-
+      Schedule the first comment after your post. Include hashtags and/or other
+      information.
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
@@ -218,7 +224,8 @@ features:
     defaultValue: true
     type: DOMAIN
   performanceOverview:
-    description: See an overview of key metrics (impressions, engagements and new
+    description: >-
+      See an overview of key metrics (impressions, engagements and new
       followers, etc).
     valueType: BOOLEAN
     defaultValue: false
@@ -284,14 +291,16 @@ features:
     defaultValue: false
     type: INFORMATION
   boostedPostInsights:
-    description: Analyze your boosted posts and compare with your organic results
-      to optimize your ad spend.
+    description: >-
+      Analyze your boosted posts and compare with your organic results to
+      optimize your ad spend.
     valueType: BOOLEAN
     defaultValue: false
     type: INFORMATION
   hashtagPerformance:
-    description: Get insight into how your hashtags could be affecting your reach
-      and engagement rates.
+    description: >-
+      Get insight into how your hashtags could be affecting your reach and
+      engagement rates.
     valueType: BOOLEAN
     defaultValue: false
     type: INFORMATION
@@ -301,8 +310,9 @@ features:
     defaultValue: false
     type: INFORMATION
   machineLearningInsights:
-    description: Get suggestions for what, when, and how often to post to maximize
-      your results.
+    description: >-
+      Get suggestions for what, when, and how often to post to maximize your
+      results.
     valueType: BOOLEAN
     defaultValue: false
     type: AUTOMATION
@@ -313,7 +323,8 @@ features:
     defaultValue: false
     type: INFORMATION
   shopifyPerformance:
-    description: See your sales, top referrals, and top products alongside your social
+    description: >-
+      See your sales, top referrals, and top products alongside your social
       media data.
     valueType: BOOLEAN
     defaultValue: false
@@ -334,8 +345,9 @@ features:
     defaultValue: false
     type: DOMAIN
   coverPage:
-    description: Get an automatically generated cover page when you download your
-      report as a PDF..
+    description: >-
+      Get an automatically generated cover page when you download your report as
+      a PDF..
     valueType: BOOLEAN
     defaultValue: false
     type: AUTOMATION
@@ -346,8 +358,9 @@ features:
     defaultValue: false
     type: INFORMATION
   importantCommentDetection:
-    description: Machine-learning-powered alerts highlight open questions & comments
-      on sales or unhappiness.
+    description: >-
+      Machine-learning-powered alerts highlight open questions & comments on
+      sales or unhappiness.
     valueType: BOOLEAN
     defaultValue: false
     type: AUTOMATION
@@ -359,26 +372,30 @@ features:
     type: AUTOMATION
     automationType: TASK_AUTOMATION
   easyAccountSwitching:
-    description: Seamlessly switch between multiple accounts and channels. No more
-      logging in and out.
+    description: >-
+      Seamlessly switch between multiple accounts and channels. No more logging
+      in and out.
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
   includedUsers:
-    description: The number of users who can access and contribute content to your
-      Buffer account.
+    description: >-
+      The number of users who can access and contribute content to your Buffer
+      account.
     valueType: BOOLEAN
     defaultValue: true
     type: DOMAIN
   draftPostManagement:
-    description: Account owners can set post drafting, approval, and full posting
-      access across users.
+    description: >-
+      Account owners can set post drafting, approval, and full posting access
+      across users.
     valueType: BOOLEAN
     defaultValue: false
     type: MANAGEMENT
   customAccessAndPermissions:
-    description: Manage which social channels each user is invited to and their post-approval
-      status
+    description: >-
+      Manage which social channels each user is invited to and their
+      post-approval status
     valueType: BOOLEAN
     defaultValue: false
     type: MANAGEMENT
@@ -393,25 +410,28 @@ features:
     defaultValue: true
     type: DOMAIN
   mobileApps:
-    description: Publish is available on iOS and Android, allowing you to plan, collaborate,
-      and publish on-the-go.
+    description: >-
+      Publish is available on iOS and Android, allowing you to plan,
+      collaborate, and publish on-the-go.
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
     integrationType: EXTERNAL_DEVICE
   thirdPartyIntegrations:
-    description: Use Buffer with your favorite apps like Zapier, IFTTT, Quuu, Pocket,
+    description: >-
+      Use Buffer with your favorite apps like Zapier, IFTTT, Quuu, Pocket,
       Feedly, and more.
     valueType: BOOLEAN
     defaultValue: true
     type: INTEGRATION
     integrationType: MARKETPLACE
   twoFactorAuthentication:
-    description: Enabling two factor authentication adds an extra layer of security
-      to your Buffer Publish account. Whenever you log into your account, after entering
-      your username and password, you'll be asked for a second authentication code.
-      Two factor authentication codes can be generated either via text message (SMS)
-      or Google Authenticator (available on iOS and Android).
+    description: >-
+      Enabling two factor authentication adds an extra layer of security to your
+      Buffer Publish account. Whenever you log into your account, after entering
+      your username and password, you'll be asked for a second authentication
+      code. Two factor authentication codes can be generated either via text
+      message (SMS) or Google Authenticator (available on iOS and Android).
     valueType: BOOLEAN
     defaultValue: true
     type: MANAGEMENT
@@ -422,14 +442,16 @@ features:
     type: INTEGRATION
     integrationType: WEB_SAAS
   customUTMParameters:
-    description: Track the effectiveness of your posts and campaigns using custom
-      UTM parameters.
+    description: >-
+      Track the effectiveness of your posts and campaigns using custom UTM
+      parameters.
     valueType: BOOLEAN
     defaultValue: false
     type: DOMAIN
   selfServiceKnowledgeBase:
-    description: Access to our FAQ where you’ll find how-to guides, most popular
-      questions and video tutorials.
+    description: >-
+      Access to our FAQ where you’ll find how-to guides, most popular questions
+      and video tutorials.
     valueType: BOOLEAN
     defaultValue: true
     type: SUPPORT
@@ -439,10 +461,11 @@ features:
     defaultValue: true
     type: SUPPORT
   emailSupport:
-    description: Fast and helpful support via email. We love lending a hand with social
+    description: >-
+      Fast and helpful support via email. We love lending a hand with social
       media advice, sharing Buffer tips and tricks, and we’re always up to chat
-      through a technical challenge! Being a Buffer customer should feel like having
-      a whole team of people cheering for you.
+      through a technical challenge! Being a Buffer customer should feel like
+      having a whole team of people cheering for you.
     valueType: BOOLEAN
     defaultValue: true
     type: SUPPORT
@@ -454,16 +477,17 @@ usageLimits:
     unit: account
     type: NON_RENEWABLE
     linkedFeatures:
-    - channels
+      - channels
   postsPerScheduledQueuePerSocialAccountLimit:
-    description: The number of posts you can store in your queue at any one time (per
+    description: >-
+      The number of posts you can store in your queue at any one time (per
       social account). There is no daily, monthly, or yearly limit.
     valueType: NUMERIC
     defaultValue: 10
     unit: post/channel
     type: NON_RENEWABLE
     linkedFeatures:
-    - schedulePosts
+      - schedulePosts
   ideasLimit:
     description: The number of ideas you can store in Buffer.
     valueType: NUMERIC
@@ -471,7 +495,7 @@ usageLimits:
     unit: idea
     type: NON_RENEWABLE
     linkedFeatures:
-    - ideas
+      - ideas
   useInstagramHistoricalDataAccess:
     description: Backfill data from the past 6 months for Instagram.
     valueType: NUMERIC
@@ -479,7 +503,7 @@ usageLimits:
     unit: month
     type: NON_RENEWABLE
     linkedFeatures:
-    - instagramHistoricalDataAccess
+      - instagramHistoricalDataAccess
   useTiktokHistoricalDataAccess:
     description: Backfill data from the past 6 months for TikTok.
     valueType: NUMERIC
@@ -487,7 +511,7 @@ usageLimits:
     unit: month
     type: NON_RENEWABLE
     linkedFeatures:
-    - tiktokHistoricalDataAccess
+      - tiktokHistoricalDataAccess
   useFacebookHistoricalDataAccess:
     description: Backfill data from the past 6 months for Facebook.
     valueType: NUMERIC
@@ -495,7 +519,7 @@ usageLimits:
     unit: month
     type: NON_RENEWABLE
     linkedFeatures:
-    - facebookHistoricalDataAccess
+      - facebookHistoricalDataAccess
   useTwitterHistoricalDataAccess:
     description: Backfill data from the past 28 days for Twitter.
     valueType: NUMERIC
@@ -503,7 +527,7 @@ usageLimits:
     unit: day
     type: NON_RENEWABLE
     linkedFeatures:
-    - twitterHistoricalDataAccess
+      - twitterHistoricalDataAccess
   useLinkedinHistoricalDataAccess:
     description: Backfill data from the past 6 months for LinkedIn.
     valueType: NUMERIC
@@ -511,7 +535,7 @@ usageLimits:
     unit: month
     type: NON_RENEWABLE
     linkedFeatures:
-    - linkedinHistoricalDataAccess
+      - linkedinHistoricalDataAccess
   usePinterestHistoricalDataAccess:
     description: Backfill data from the past 6 months for Pinterest.
     valueType: NUMERIC
@@ -519,7 +543,7 @@ usageLimits:
     unit: month
     type: NON_RENEWABLE
     linkedFeatures:
-    - pinterestHistoricalDataAccess
+      - pinterestHistoricalDataAccess
   useGoogleHistoricalDataAccess:
     description: Backfill data from the past 6 months for Google.
     valueType: NUMERIC
@@ -527,7 +551,7 @@ usageLimits:
     unit: month
     type: NON_RENEWABLE
     linkedFeatures:
-    - googleHistoricalDataAccess
+      - googleHistoricalDataAccess
   useMastodonHistoricalDataAccess:
     description: Backfill data from the past 6 months for Mastodon.
     valueType: NUMERIC
@@ -535,7 +559,7 @@ usageLimits:
     unit: month
     type: NON_RENEWABLE
     linkedFeatures:
-    - mastodonHistoricalDataAccess
+      - mastodonHistoricalDataAccess
   useYoutubeHistoricalDataAccess:
     description: Backfill data from the past 6 months for YouTube.
     valueType: NUMERIC
@@ -543,7 +567,7 @@ usageLimits:
     unit: month
     type: NON_RENEWABLE
     linkedFeatures:
-    - youtubeHistoricalDataAccess
+      - youtubeHistoricalDataAccess
   useDataStorage:
     description: Store, analyze, and export up to two years of data.
     valueType: NUMERIC
@@ -551,7 +575,7 @@ usageLimits:
     unit: year
     type: NON_RENEWABLE
     linkedFeatures:
-    - dataStorage
+      - dataStorage
   useTagsLimit:
     description: The number of tags you can create.
     valueType: NUMERIC
@@ -559,16 +583,17 @@ usageLimits:
     unit: tag
     type: NON_RENEWABLE
     linkedFeatures:
-    - tags
+      - tags
   useIncludedUsersLimit:
-    description: The number of users who can access and contribute content to your
-      Buffer account.
+    description: >-
+      The number of users who can access and contribute content to your Buffer
+      account.
     valueType: NUMERIC
     defaultValue: 1
     unit: user
     type: NON_RENEWABLE
     linkedFeatures:
-    - includedUsers
+      - includedUsers
   useTwitterThreadsLimit:
     description: The number of Twitter threads you can create at a time.
     valueType: NUMERIC
@@ -576,7 +601,7 @@ usageLimits:
     unit: thread at a time
     type: NON_RENEWABLE
     linkedFeatures:
-    - twitterThreads
+      - twitterThreads
 plans:
   FREE:
     description: For individuals and businesses getting started with social media.
@@ -911,7 +936,7 @@ plans:
 addOns:
   essentialsExtraChannels:
     availableFor:
-    - ESSENTIALS
+      - ESSENTIALS
     price: 6
     unit: channel/year
     features: null
@@ -919,9 +944,13 @@ addOns:
     usageLimitsExtensions:
       socialChannelsLimit:
         value: 1
+    subscriptionConstraints:
+      minQuantity: 1
+      maxQuantity: .inf
+      quantityStep: 1
   teamExtraChannels:
     availableFor:
-    - TEAM
+      - TEAM
     price: 12
     unit: channel/year
     features: null
@@ -929,9 +958,13 @@ addOns:
     usageLimitsExtensions:
       socialChannelsLimit:
         value: 1
+    subscriptionConstraints:
+      minQuantity: 1
+      maxQuantity: .inf
+      quantityStep: 1
   agencyExtraChannels:
     availableFor:
-    - AGENCY
+      - AGENCY
     price: 6
     unit: channel/year
     features: null
@@ -939,3 +972,7 @@ addOns:
     usageLimitsExtensions:
       socialChannelsLimit:
         value: 1
+    subscriptionConstraints:
+      minQuantity: 1
+      maxQuantity: .inf
+      quantityStep: 1

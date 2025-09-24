@@ -1,11 +1,10 @@
-syntaxVersion: '2.1'
 saasName: Box
-createdAt: '2024-07-16'
+syntaxVersion: '3.0'
 version: '2024-07-16'
-billing:
-  monthly: 1.0
-currency: EUR
 url: https://web.archive.org/web/20240716161914/https://www.box.com/pricing
+createdAt: '2024-07-16'
+currency: EUR
+variables: {}
 features:
   secureStorage:
     description: ''
@@ -66,7 +65,8 @@ features:
     type: INTEGRATION
     integrationType: WEB_SAAS
     pricingUrls:
-    - https://www.microsoft.com/en-us/microsoft-365/buy/compare-all-microsoft-365-products
+      - >-
+        https://www.microsoft.com/en-us/microsoft-365/buy/compare-all-microsoft-365-products
   googleWorkspaceIntegration:
     description: ''
     valueType: BOOLEAN
@@ -74,15 +74,15 @@ features:
     type: INTEGRATION
     integrationType: WEB_SAAS
     pricingUrls:
-    - https://workspace.google.com/pricing
+      - https://workspace.google.com/pricing
   slackIntegration:
     description: ''
     valueType: BOOLEAN
-    defaultValue: false
+    defaultValue: true
     type: INTEGRATION
     integrationType: WEB_SAAS
     pricingUrls:
-    - https://slack.com/pricing
+      - https://slack.com/pricing
   desktopAccess:
     description: ''
     valueType: BOOLEAN
@@ -281,7 +281,7 @@ usageLimits:
     unit: GB
     type: NON_RENEWABLE
     linkedFeatures:
-    - secureStorage
+      - secureStorage
   uploadSizeLimit:
     description: ''
     valueType: NUMERIC
@@ -289,7 +289,7 @@ usageLimits:
     unit: GB
     type: NON_RENEWABLE
     linkedFeatures:
-    - secureStorage
+      - secureStorage
   industryAppsIntegrationLimit:
     description: ''
     valueType: NUMERIC
@@ -297,7 +297,7 @@ usageLimits:
     unit: integration
     type: NON_RENEWABLE
     linkedFeatures:
-    - industryAppsIntegration
+      - industryAppsIntegration
   versionHistoryThreshold:
     description: ''
     valueType: NUMERIC
@@ -305,7 +305,7 @@ usageLimits:
     unit: day
     type: NON_RENEWABLE
     linkedFeatures:
-    - versionHistory
+      - versionHistory
   minUsers:
     description: ''
     valueType: NUMERIC
@@ -323,7 +323,7 @@ usageLimits:
     unit: calls/month
     type: RENEWABLE
     linkedFeatures:
-    - boxApi
+      - boxApi
   boxSignLimit:
     description: ''
     valueType: NUMERIC
@@ -331,7 +331,7 @@ usageLimits:
     unit: document/user/month
     type: RENEWABLE
     linkedFeatures:
-    - boxSignViaWebApp
+      - boxSignViaWebApp
   includedDocumentsFor3rdPartyAndCustomApps:
     description: ''
     valueType: NUMERIC
@@ -339,7 +339,7 @@ usageLimits:
     unit: document
     type: NON_RENEWABLE
     linkedFeatures:
-    - boxSignVia3rdPartyAndCustomApps
+      - boxSignVia3rdPartyAndCustomApps
 plans:
   BUSINESS_STARTER:
     description: ''
@@ -355,6 +355,8 @@ plans:
       industryAppsIntegration:
         value: true
       boxSignVia3rdPartyAndCustomApps:
+        value: true
+      dataLossProtection:
         value: true
       advancedSecurityReporting:
         value: true
@@ -397,6 +399,8 @@ plans:
       unlimitedExternalCollaborators:
         value: true
       boxSignVia3rdPartyAndCustomApps:
+        value: true
+      dataLossProtection:
         value: true
       advancedSecurityReporting:
         value: true
@@ -465,6 +469,8 @@ plans:
       unlimitedExternalCollaborators:
         value: true
       boxSignVia3rdPartyAndCustomApps:
+        value: true
+      dataLossProtection:
         value: true
       advancedSecurityReporting:
         value: true
@@ -547,6 +553,8 @@ plans:
       unlimitedExternalCollaborators:
         value: true
       boxSignVia3rdPartyAndCustomApps:
+        value: true
+      dataLossProtection:
         value: true
       advancedSecurityReporting:
         value: true
