@@ -1,57 +1,45 @@
-import {Plan} from "pricing4ts";
-import { RenderingStyles } from "../../types";
-import {DEFAULT_RENDERING_STYLES} from "../..";
+import { Plan } from 'pricing4ts';
+import { RenderingStyles } from '../../types';
+import DEFAULT_RENDERING_STYLES from '../../shared/constants';
+import { Box, Typography } from '@mui/material';
+import { motion } from 'framer-motion';
+import { listItemVariants } from '../../shared/motion-variants';
+import { getColorForIndex } from '../../shared/color-palette';
 
 export default function PlanHeader({
-    plan,
-    currency,
-    style,
-  }: Readonly<{
-    plan: Plan;
-    currency: string;
-    style: RenderingStyles;
-  }>): JSX.Element {
-    return (
-      <th scope="col" className="plan-col">
-        <h2
-          className="plan-heading"
-          style={{ color: style.plansColor ?? DEFAULT_RENDERING_STYLES.plansColor }}
+  plan,
+  currency,
+  style,
+  // support optional index to pick color
+  index,
+}: Readonly<{
+  plan: Plan;
+  currency: string;
+  style: RenderingStyles;
+  index?: number;
+}>): JSX.Element {
+  const accent = typeof index === 'number' ? getColorForIndex(index) : style.plansColor ?? DEFAULT_RENDERING_STYLES.plansColor;
+
+  return (
+    <motion.th variants={listItemVariants} custom={index ?? 0} scope="col">
+      <Box sx={{ textAlign: 'center', px: 1 }}>
+        <Typography
+          variant="h6"
+          component="div"
+          sx={{ color: accent, fontWeight: 600 }}
         >
           {plan.name}
-        </h2>
-        <p className="plan-price-container">
-          {
-            plan.price == 0 ?
-            (
-              <span
-                className="plan-price"
-                style={{ color: style.priceColor ?? DEFAULT_RENDERING_STYLES.priceColor }}
-              >
-                FREE
-              </span>
-            )
-            :
-            (
-              <>
-                <span
-                  className="plan-price"
-                  style={{ color: style.priceColor ?? DEFAULT_RENDERING_STYLES.priceColor }}
-                >
-                  {plan.price}
-                  {typeof plan.price === 'number' ? currency : ''}
-                </span>
-                {typeof plan.price === 'number' &&
-                <span
-                  className="plan-period"
-                  style={{ color: style.periodColor ?? DEFAULT_RENDERING_STYLES.periodColor }}
-                >
-                  {plan.unit ? plan.unit : "/month"}
-                </span>
-                }
-              </>
-            )
-          }
-        </p>
-      </th>
-    );
-  }
+        </Typography>
+
+        <Typography variant="h5" sx={{ color: accent, fontWeight: 700 }}>
+          {plan.price === 0 ? 'FREE' : <>{plan.price}{typeof plan.price === 'number' ? currency : ''}</>}
+        </Typography>
+        {typeof plan.price === 'number' && (
+          <Typography variant="caption" sx={{ color: accent, opacity: 0.9 }}>
+            {plan.unit ? plan.unit : '/month'}
+          </Typography>
+        )}
+      </Box>
+    </motion.th>
+  );
+}
