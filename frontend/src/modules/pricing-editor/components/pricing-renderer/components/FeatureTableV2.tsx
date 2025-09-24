@@ -162,10 +162,10 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
             <TableCell sx={{ fontWeight: 700 }}></TableCell>
             {planKeys.map((planKey, idx) => (
               <TableCell key={planKey} align='center' sx={{ background: getPlanGradient(idx), color: '#fff', fontWeight: "bolder", minWidth: 160, fontSize: 18 }}>
-                <Typography sx={{ fontWeight: 700 }}>{plans[planKey].name ?? camelToTitle(planKey)}</Typography>
-                <Typography sx={{ fontWeight: 800, fontSize: 18 }}>{plans[planKey].price === 0 ? 'FREE' : <>{plans[planKey].price}{typeof plans[planKey].price === 'number' ? (currency ?? '') : ''}</>}</Typography>
+                <Typography sx={{ fontWeight: 700, fontSize: 24 }}>{plans[planKey].name ?? camelToTitle(planKey)}</Typography>
+                <Typography sx={{ fontWeight: 800, fontSize: 20 }}>{plans[planKey].price === 0 ? 'FREE' : <>{plans[planKey].price}{typeof plans[planKey].price === 'number' ? (currency ?? '') : ''}</>}</Typography>
                 {typeof plans[planKey].unit === 'string' && (
-                  <Typography variant='caption'>{plans[planKey].unit}</Typography>
+                  <Typography variant='caption' sx={{fontSize: 16}}>{plans[planKey].unit}</Typography>
                 )}
               </TableCell>
             ))}
@@ -180,7 +180,7 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
               const fr = renderFlagOfFeature(f);
               return (
                 <motion.tr key={row.id} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + rIdx * 0.02 }}>
-                  <TableCell component='th' scope='row' sx={{ fontWeight: 600 }}>{camelToTitle(features[featureKey].name) ?? camelToTitle(featureKey)}</TableCell>
+                  <TableCell component='th' scope='row' sx={{ fontWeight: 600, fontSize: 16 }}>{camelToTitle(features[featureKey].name) ?? camelToTitle(featureKey)}</TableCell>
                   {planKeys.map((planKey) => {
                     const plan = plans[planKey];
                     const planFeaturesRecord = plan.features as Record<string, unknown> | undefined;
@@ -265,7 +265,7 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
             const ul = usageLimits?.[ulKey];
             return (
               <motion.tr key={row.id} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + rIdx * 0.02 }}>
-                <TableCell component='th' scope='row' sx={{ fontWeight: 600 }}>{camelToTitle(ul?.name ?? ulKey)}</TableCell>
+                <TableCell component='th' scope='row' sx={{ fontWeight: 600, fontSize: 16 }}>{camelToTitle(ul?.name ?? ulKey)}</TableCell>
                 {planKeys.map((planKey) => {
                   const plan = plans[planKey];
                   const limitVal = plan.usageLimits?.[ul?.name ?? ''];
