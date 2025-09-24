@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import container from '../config/container';
 import PricingCollectionRepository from '../repositories/mongoose/PricingCollectionRepository';
 import PricingRepository from '../repositories/mongoose/PricingRepository';
-import { PricingCollectionAnalytics, PricingCollectionAnalyticsToAdd, RetrievedCollection } from '../types/database/PricingCollection';
+import { RetrievedCollection } from '../types/database/PricingCollection';
 import { CollectionIndexQueryParams } from '../types/services/PricingCollection';
 import { decompressZip } from '../utils/zip-manager';
 import {  PricingService as PricingAnalytics, retrievePricingFromPath } from 'pricing4ts/server';
@@ -10,13 +10,12 @@ import fs from 'fs';
 import { calculateAnalyticsForPricings } from '../utils/pricing-collections-utils';
 
 class PricingCollectionService {
-  private pricingCollectionRepository: PricingCollectionRepository;
-  private pricingRepository: PricingRepository;
+  private readonly pricingCollectionRepository: PricingCollectionRepository;
+  private readonly pricingRepository: PricingRepository;
 
   constructor() {
-    this.pricingCollectionRepository = container.resolve('pricingCollectionRepository');
-    this.pricingRepository = container.resolve('pricingRepository');
-    // this.pricingService = pricingService;
+  this.pricingCollectionRepository = container.resolve('pricingCollectionRepository');
+  this.pricingRepository = container.resolve('pricingRepository');
   }
 
   async index(queryParams: CollectionIndexQueryParams) {
@@ -50,6 +49,7 @@ class PricingCollectionService {
   }
 
   async create(newCollection: any, userId: string, username: string) {
+    let collection: any;
     try {
       newCollection._ownerId = new mongoose.Types.ObjectId(userId);
       newCollection.analytics = {
@@ -71,7 +71,7 @@ class PricingCollectionService {
         },
       };
 
-      const collection = await this.pricingCollectionRepository.create(newCollection);
+      collection = await this.pricingCollectionRepository.create(newCollection);
 
       await this.pricingRepository.addPricingsToCollection(
         collection._id.toString(),
@@ -83,11 +83,12 @@ class PricingCollectionService {
 
       return collection;
     } catch (err) {
-      throw new Error((err as Error).message);
+      await this._handleCollectionCreationError(err as Error, collection, newCollection, userId);
     }
   }
 
   async bulkCreate(file: any, newCollectionData: any, userId: string, username: string) {
+  let collection: any;
     try {
       const extractPath = this._getExtractPath(userId, newCollectionData.name);
       const zipPath = file.path;
@@ -96,7 +97,8 @@ class PricingCollectionService {
 
       newCollectionData._ownerId = new mongoose.Types.ObjectId(userId);
 
-      const collection = await this.pricingCollectionRepository.create(newCollectionData);
+  // Create collection and keep reference so we only attempt cleanup if it was created
+  collection = await this.pricingCollectionRepository.create(newCollectionData);
 
       const pricingDatas = [];
       const pricingsWithErrors = [];
@@ -134,8 +136,7 @@ class PricingCollectionService {
 
       return [collection, pricingsWithErrors];
     } catch(err) {
-      await this.destroy(newCollectionData.name, userId, true, true);
-      throw new Error((err as Error).message);
+      throw await this._handleCollectionCreationError(err as Error, collection, newCollectionData, userId);
     }
   }
 
@@ -266,6 +267,28 @@ class PricingCollectionService {
 
   _getExtractPath(userId: string, collectionName: string) {
     return `${process.env.COLLECTIONS_FOLDER}/${userId}/${collectionName}`;
+  }
+
+  async _handleCollectionCreationError(err: Error, collection: any, newCollectionData: any, userId: string): Promise<Error> {
+    // If a collection was created before the error, remove it (cleanup of partial state)
+      try {
+        if (collection?._id) {
+          await this.destroy(newCollectionData.name, userId, true, true);
+        }
+      } catch (cleanupErr) {
+        // If cleanup fails, log it but continue to throw the original error
+        // eslint-disable-next-line no-console
+        console.error('Error during cleanup after bulkCreate failure:', cleanupErr);
+      }
+
+      const errMsg = (err as any)?.message || String(err);
+
+      // Detect duplicate key / already exists errors and surface a clear message
+      if (errMsg.includes('E11000') || errMsg.toLowerCase().includes('duplicate') || errMsg.toLowerCase().includes('already exists')) {
+        throw new Error('A collection with this name already exists. Please choose another name.');
+      }
+
+      throw new Error(errMsg);
   }
 }
 
