@@ -34,6 +34,7 @@ services:
       - ../../api/.env.production
     volumes:
       - 'sphere-statics:/usr/src/server/public'
+      - ../../api/public/static/pricings/templates/petclinic.yml:/usr/src/server/public/pricings/templates/petclinic.yml
     depends_on:
       - mongodb
       - redis
