@@ -26,9 +26,8 @@ export default function PricingCard({
         <CardContent>
           <Box sx={{ textAlign: 'center' }}>
             <Typography
-              variant="h5"
-              component="h2"
-              sx={{ color: style.headerColor ?? defaultStyle.headerColor }}
+              variant="h4"
+              sx={{ color: style.headerColor ?? defaultStyle.headerColor, fontWeight: 700 }}
             >
               {pricing?.saasName}
             </Typography>
