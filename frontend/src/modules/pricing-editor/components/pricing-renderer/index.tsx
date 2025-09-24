@@ -31,7 +31,13 @@ export function PricingRenderer({ pricing, style }: Readonly<PricingProps>): JSX
       <div className='container'>
         <PricingCard pricing={pricing} style={style} defaultStyle={DEFAULT_RENDERING_STYLES}/>
         
-  <FeatureTableV2 plans={pricing.plans ?? {}} features={pricing.features ?? {}} usageLimits={pricing.usageLimits ?? {}} addOns={pricing.addOns ?? {}} />
+  <FeatureTableV2
+    plans={pricing.plans ?? {}}
+    features={pricing.features ?? {}}
+    usageLimits={pricing.usageLimits ?? {}}
+    addOns={pricing.addOns ?? {}}
+    currency={pricing.currency in CURRENCIES ? CURRENCIES[pricing.currency as keyof typeof CURRENCIES] : pricing.currency}
+  />
 
         {(pricing.addOns && Object.values(pricing.addOns).length > 0) && (
           <>

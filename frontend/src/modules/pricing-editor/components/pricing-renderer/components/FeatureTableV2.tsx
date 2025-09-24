@@ -1,82 +1,21 @@
 // React import not required in modern JSX runtime
 import { motion } from 'framer-motion';
-import { Table, TableBody, TableCell, TableHead, TableRow, Box } from '@mui/material';
+import { Table, TableBody, TableCell, TableHead, TableRow, Box, Typography } from '@mui/material';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import { Feature, Plan, AddOn, UsageLimit } from 'pricing4ts';
 import { getPlanGradient } from '../shared/planPalette';
 import { camelToTitle } from '../shared/stringUtils';
+import { formatUsageDisplay } from '../shared/value-helpers';
 
 interface FeatureTableV2Props {
   plans: Record<string, Plan>;
   features: Record<string, Feature>;
   usageLimits: Record<string, UsageLimit> | undefined;
   addOns: Record<string, AddOn> | undefined;
+  currency?: string | undefined;
 }
 
-function safePrimitive(v: unknown): string {
-  if (v === null || v === undefined) return '';
-  if (typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean') return String(v);
-  // If it's an object that has a 'value' or 'defaultValue' property, prefer them
-  if (typeof v === 'object' && v !== null) {
-    try {
-      const s = JSON.stringify(v);
-      return s.length > 80 ? s.slice(0, 77) + '...' : s;
-    } catch {
-      return '[object]';
-    }
-  }
-  return String(v as string | number | boolean);
-}
-
-function formatUsageDisplay(limitValue: unknown, linkedLimit?: UsageLimit): string {
-  // Simple, low-complexity renderer: value + unit (from linkedLimit.name or unit) + / period
-  const value = (() => {
-    if (limitValue === null || limitValue === undefined) return linkedLimit?.defaultValue ?? '';
-    if (typeof limitValue === 'number' || typeof limitValue === 'string' || typeof limitValue === 'boolean') return limitValue;
-    // object: try common keys
-    const obj = limitValue as Record<string, unknown> | undefined;
-    if (!obj) return linkedLimit?.defaultValue ?? safePrimitive(limitValue);
-    for (const key of ['value', 'amount', 'quantity', 'defaultValue', 'max', 'limit', 'count']) {
-      const v = obj[key];
-      if (typeof v === 'number' || typeof v === 'string') return v;
-    }
-    // fallback: any first primitive
-    for (const k of Object.keys(obj)) {
-      const v = obj[k];
-      if (typeof v === 'number' || typeof v === 'string') return v;
-    }
-    return linkedLimit?.defaultValue ?? safePrimitive(limitValue);
-  })();
-
-  let unit = '';
-  if (linkedLimit) {
-    const lu = linkedLimit as unknown as Record<string, unknown>;
-  if (typeof lu.unit === 'string') unit = lu.unit;
-  else if (typeof lu.unitOfMeasure === 'string') unit = lu.unitOfMeasure;
-    else if (typeof linkedLimit.name === 'string') unit = camelToTitle(linkedLimit.name);
-  }
-
-  const period = ((): string => {
-    const p = (linkedLimit as unknown as { period?: unknown }).period;
-    if (!p) return '';
-    if (typeof p === 'string') return p.toLowerCase();
-    if (typeof (p as { unit?: unknown }).unit === 'string') return (p as { unit: string }).unit.toLowerCase();
-    if (typeof (p as { name?: unknown }).name === 'string') return (p as { name: string }).name.toLowerCase();
-    return '';
-  })();
-
-  const pieces: string[] = [];
-  if (value !== '' && value !== undefined && value !== null) pieces.push(String(value));
-  if (unit) pieces.push(unit);
-  const main = pieces.join(' ');
-  if (period) {
-    if (main) return `${main} / ${period}`;
-    return period;
-  }
-  return main;
-}
-
-export function FeatureTableV2({ plans, features, usageLimits, addOns }: Readonly<FeatureTableV2Props>) {
+export function FeatureTableV2({ plans, features, usageLimits, addOns, currency }: Readonly<FeatureTableV2Props>) {
   const planKeys = Object.keys(plans);
   const featureKeys = Object.keys(features);
   const addOnKeys = Object.keys(addOns ?? {});
@@ -119,7 +58,11 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns }: Readonl
             <TableCell sx={{ fontWeight: 700 }}></TableCell>
             {planKeys.map((planKey, idx) => (
               <TableCell key={planKey} align='center' sx={{ background: getPlanGradient(idx), color: '#fff', fontWeight: "bolder", minWidth: 160, fontSize: 18 }}>
-                {plans[planKey].name ?? camelToTitle(planKey)}
+                <Typography sx={{ fontWeight: 700, fontSize: 20 }}>{camelToTitle(plans[planKey].name) ?? camelToTitle(planKey)}</Typography>
+                <Typography sx={{ fontWeight: 800, fontSize: 24 }}>{plans[planKey].price === 0 ? 'FREE' : <>{plans[planKey].price}{typeof plans[planKey].price === 'number' ? (currency ?? '') : ''}</>}</Typography>
+                {typeof plans[planKey].unit === 'string' && (
+                  <Typography variant='caption' sx={{ fontSize: 14 }}>{plans[planKey].unit}</Typography>
+                )}
               </TableCell>
             ))}
           </TableRow>
@@ -127,7 +70,7 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns }: Readonl
         <TableBody>
           {featureKeys.map((featureKey, fIdx) => (
             <motion.tr key={featureKey} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + fIdx * 0.02 }}>
-              <TableCell component='th' scope='row' sx={{ fontWeight: 600 }}>{camelToTitle(features[featureKey].name) ?? camelToTitle(featureKey)}</TableCell>
+              <TableCell component='th' scope='row' sx={{ fontWeight: 600, fontSize: 16 }}>{camelToTitle(features[featureKey].name) ?? camelToTitle(featureKey)}</TableCell>
               {planKeys.map((planKey) => {
                 const plan = plans[planKey];
                 const planRaw = plan.features?.[featureKey];
