@@ -3,9 +3,9 @@ export function getClearEditorValue(){
     const currentDate = new Date().toISOString().split('T')[0];
 
     return `saasName: Your SaaS Name
-syntaxVersion: "2.1"
+syntaxVersion: "3.0"
 version: "latest"
-createdAt: 2024-01-15
+createdAt: ${currentDate}
 currency: EUR
 hasAnnualPayment: false
 features:
