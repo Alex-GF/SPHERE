@@ -12,12 +12,11 @@ import { flex } from '../../../core/theme/css';
 import customAlert from '../../../core/utils/custom-alert';
 import customConfirm from '../../../core/utils/custom-confirm';
 
-export interface CreateCollectionFormFieldProps {
-  readonly value: string;
-  readonly onChange: (value: string) => void;
+export type CreateCollectionFormProps = {
+  readonly setShowLoading: (show: boolean) => void;
 }
 
-export default function CreateCollectionForm({setShowLoading}: { setShowLoading: (show: boolean) => void }) {
+export default function CreateCollectionForm({setShowLoading}: CreateCollectionFormProps) {
   const [collectionName, setCollectionName] = useState('');
   const [collectionDescription, setCollectionDescription] = useState('');
   const [visibility, setVisibility] = useState('Public');
@@ -27,10 +26,11 @@ export default function CreateCollectionForm({setShowLoading}: { setShowLoading:
   const { createCollection, createBulkCollection, deleteCollection } = usePricingCollectionsApi();
   const router = useRouter();
 
-  const handleSubmit = (file: any) => {
+  const handleSubmit = (file?: File | null) => {
+
     const fileToUpload = file instanceof File ? file : null;
 
-    if (!fileToUpload) {
+  if (!fileToUpload) {
       const collectionToCreate = {
         name: collectionName,
         description: collectionDescription,
@@ -43,7 +43,12 @@ export default function CreateCollectionForm({setShowLoading}: { setShowLoading:
           router.push('/me/pricings');
         })
         .catch(error => {
-          alert(error);
+          // If API returned an Error with status 409, show duplicate alert and keep form
+          if (error instanceof Error) {
+            customAlert(error.message);
+            return;
+          }
+          alert(error instanceof Error ? error.message : String(error));
         });
     } else {
       const formData = new FormData();
@@ -58,24 +63,37 @@ export default function CreateCollectionForm({setShowLoading}: { setShowLoading:
       createBulkCollection(formData)
         .then(data => {
           setShowLoading(false);
-          if (data.pricingsWithErrors && data.pricingsWithErrors.length > 0) {
-            customConfirm(`Some pricings could not be added to the collection due to errors: ${data.pricingsWithErrors.map((p: {name: string, error: string}) => p.name).join(' | ')}. Do you still want to save the collection and add them again manually?`).then(() => {
-              router.push('/me/pricings');
-            }).catch(() => {
-              deleteCollection(collectionName, true).then(() => {
-                router.push('/me/pricings');
-              })
-            });
-          }else{
-            router.push('/me/pricings');
-          }
+          handleBulkSuccess(data);
         })
         .catch(error => {
           setShowLoading(false);
-          customAlert(error);
+          if (error instanceof Error && (error as unknown as { status?: number }).status === 409) {
+            customAlert(error.message);
+            return;
+          }
+          customAlert(error instanceof Error ? error.message : String(error));
         });
     }
   };
+
+
+  function handleBulkSuccess(data: { pricingsWithErrors?: Array<{ name: string; error: string }>} ) {
+    if (data.pricingsWithErrors && data.pricingsWithErrors.length > 0) {
+      customConfirm(`Some pricings could not be added to the collection due to errors: ${data.pricingsWithErrors.map((p: {name: string, error: string}) => p.name).join(' | ')}. Do you still want to save the collection and add them again manually?`).then(() => {
+        router.push('/me/pricings');
+      }).catch(() => {
+        deleteCollection(collectionName, true).then(() => {
+            router.push('/me/pricings');
+          })
+      });
+    } else {
+      router.push('/me/pricings');
+    }
+  }
+
+  function handleAddCollectionClick() {
+    handleSubmit();
+  }
 
   return (
     <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -99,7 +117,6 @@ export default function CreateCollectionForm({setShowLoading}: { setShowLoading:
           <PricingSelector value={selectedPricings} onChange={setSelectedPricings} />{' '}
           <Box sx={{ ...flex({}) }}>
             <Button
-              onClick={handleSubmit}
               sx={{
                 backgroundColor: primary[700],
                 color: grey[100],
@@ -111,7 +128,8 @@ export default function CreateCollectionForm({setShowLoading}: { setShowLoading:
                 borderRadius: 3,
                 width: 400,
               }}
-            >
+              onClick={handleAddCollectionClick}
+                >
               Add Collection
             </Button>
           </Box>

@@ -60,9 +60,20 @@ export function usePricingCollectionsApi() {
       headers: basicHeaders,
       body: JSON.stringify(collection),
     })
-      .then(response => response.json())
+      .then(async response => {
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          // Normalize error with status for caller
+          const message = data?.error || data?.message || response.statusText || 'Error creating collection';
+          type ErrorWithStatus = Error & { status?: number };
+          const e = new Error(message) as ErrorWithStatus;
+          e.status = response.status;
+          return Promise.reject(e);
+        }
+        return data;
+      })
       .catch(error => {
-        return Promise.reject(error as Error);
+  return Promise.reject(error instanceof Error ? error : new Error(String(error)));
       });
   }, [fetchWithInterceptor, basicHeaders]);
   
@@ -74,15 +85,25 @@ export function usePricingCollectionsApi() {
       },
       body: formData,
     })
-      .then(response => response.json())
-      .then(data => {
+      .then(async response => {
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          const message = data?.error || data?.message || response.statusText || 'Error creating collection';
+          type ErrorWithStatus = Error & { status?: number };
+          const e = new Error(message) as ErrorWithStatus;
+          e.status = response.status;
+          return Promise.reject(e);
+        }
         if (data.error){
-          return Promise.reject(data.error);
+          type ErrorWithStatus = Error & { status?: number };
+          const e = new Error(data.error) as ErrorWithStatus;
+          e.status = 500;
+          return Promise.reject(e);
         }
         return data;
       })
       .catch(error => {
-        return Promise.reject(error as Error);
+        return Promise.reject(error instanceof Error ? error : new Error(String(error)));
       });
   }, [fetchWithInterceptor, token]);
 
@@ -94,7 +115,7 @@ export function usePricingCollectionsApi() {
       .then(response => response.json())
       .then(data => {
         if (data.error) {
-          return Promise.reject(data.error);
+          return Promise.reject(new Error(data.error));
         }
         return data;
       })
