@@ -17,8 +17,7 @@ import monaco from 'monaco-editor';
 import { useEditorValue } from '../../hooks/useEditorValue';
 import { parseEncodedYamlToStringYaml } from '../../services/export.service';
 import { useCacheApi } from '../../components/pricing-renderer/api/cacheApi';
-
-const TEMPLATE_PRICING_PATH = `${import.meta.env.VITE_ASSETS_URL}/pricings/templates/petclinic.yml`;
+import { TEMPLATE_PETCLINIC_PRICING } from './templates/petclinic';
 
 export default function EditorPage() {
   const [pricing, setPricing] = useState<Pricing>();
@@ -71,12 +70,12 @@ export default function EditorPage() {
   }
 
   useEffect(() => {
-    fetch(TEMPLATE_PRICING_PATH).then(async response => {
+    const fetchPricing = async () => {
       const pricingParam = new URLSearchParams(window.location.search).get('pricing');
       let templatePricing: string = '';
 
       if (!pricingParam) {
-        templatePricing = await response.text();
+        templatePricing = TEMPLATE_PETCLINIC_PRICING;
       } else {
         if (pricingParam.length > 36){ // It is greater that UUID          
           templatePricing = parseEncodedYamlToStringYaml(pricingParam);
@@ -102,7 +101,9 @@ export default function EditorPage() {
           return prevErrors;
         });
       }
-    });
+    };
+
+    fetchPricing();
   }, []);
 
   useEffect(() => {
