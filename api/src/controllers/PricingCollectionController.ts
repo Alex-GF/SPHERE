@@ -6,8 +6,8 @@ import path from 'path';
 import archiver from 'archiver';
 
 class PricingCollectionController {
-  private pricingCollectionService: PricingCollectionService;
-  private pricingService: PricingService;
+  private readonly pricingCollectionService: PricingCollectionService;
+  private readonly pricingService: PricingService;
 
   constructor() {
     this.pricingCollectionService = container.resolve('pricingCollectionService');
@@ -15,7 +15,6 @@ class PricingCollectionController {
     this.index = this.index.bind(this);
     this.showByNameAndUserId = this.showByNameAndUserId.bind(this);
     this.showByUserId = this.showByUserId.bind(this);
-    // this.show = this.show.bind(this);
     this.downloadCollection = this.downloadCollection.bind(this);
     this.create = this.create.bind(this);
     this.bulkCreate = this.bulkCreate.bind(this);
@@ -87,20 +86,10 @@ class PricingCollectionController {
         res.status(500).send({ error: 'Error generating the ZIP.' });
       });
 
-      // archive.on('warning', err => {
-      //   console.warn('⚠️ WARNING en archiver:', err);
-      // });
-
-      // 🚨 Event that confirms when the zip has been generated and closes the connection
+      // Event that confirms when the zip has been generated and closes the connection
       archive.on('end', () => {
-        // console.log('✅ ZIP generado correctamente.');
         res.end();
       });
-
-      // // 🚨 Event that tracks the number of entries processed
-      // archive.on('progress', data => {
-      //   console.log(`📦 Progreso: ${data.entries.processed} archivos añadidos.`);
-      // });
 
       archive.pipe(res);
 
@@ -134,7 +123,12 @@ class PricingCollectionController {
       );
       res.json(pricing);
     } catch (err: any) {
-      res.status(500).send({ error: (err as Error).message });
+      const msg = (err as Error).message || '';
+      if (msg.includes('Ya existe una colección')) {
+        res.status(409).send({ error: msg });
+        return;
+      }
+      res.status(500).send({ error: msg });
     }
   }
 
@@ -148,7 +142,12 @@ class PricingCollectionController {
       );
       res.json({collection, pricingsWithErrors});
     } catch (err: any) {
-      res.status(500).send({ error: (err as Error).message });
+      const msg = (err as Error).message || '';
+      if (msg.includes('Ya existe una colección')) {
+        res.status(409).send({ error: msg });
+        return;
+      }
+      res.status(500).send({ error: msg });
     }
   }
 
