@@ -266,15 +266,22 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
                     const ulKey = linkedUlKeys[0];
                     const ul = usageLimits?.[ulKey];
                     const limitName = ul?.name ?? ulKey;
-                    const planLimitVal = plan.usageLimits ? (plan.usageLimits as Record<string, unknown>)[limitName] : undefined;
+                    const planLimitVal = plan.usageLimits ? (plan.usageLimits as Record<string, UsageLimit>)[limitName].value : undefined;
                     const effective = typeof planLimitVal !== 'undefined' && planLimitVal !== null ? planLimitVal : ul?.defaultValue;
-                    const hasEffective = effective !== undefined && effective !== null && !(typeof effective === 'string' && String(effective).trim() === '');
-                    if (hasEffective) {
+                    const hasEffectiveNonZero = effective !== undefined && effective !== null && !(typeof effective === 'string' && String(effective).trim() === '') && !(typeof effective === 'number' && Number(effective) === 0);
+                    
+                    if (hasEffectiveNonZero) {
                       return (
                         <TableCell key={planKey} align='center'>
                           <Box sx={{ display: 'inline-block', px: 1.5, py: 0.5, borderRadius: 2, background: 'linear-gradient(90deg,#34d399,#10b981)', color: '#fff', fontWeight: 700 }}>
                             {formatUsageDisplay(effective, ul)}
                           </Box>
+                        </TableCell>
+                      );
+                    }else{
+                      return (
+                        <TableCell key={planKey} align='center'>
+                          <FaTimesCircle style={{ color: '#9ca3af', fontSize: '1.25rem' }} />
                         </TableCell>
                       );
                     }
