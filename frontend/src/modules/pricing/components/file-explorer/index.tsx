@@ -216,7 +216,8 @@ function CustomLabel({ icon: Icon, expandable, children, fileType, ...other }: C
 
     const fileName = children.toString();
     const saasName = fileName.split('/')[fileName.split('/').length - 2];
-    const version = fileName.split('/')[fileName.split('/').length - 1].split('.')[0];
+    const version = fileName.split('/')[fileName.split('/').length - 1].replace(/\.[^/.]+$/, "").replace(/\./g, "_");
+
 
     customConfirm(`Are you sure you want to delete ${saasName}-${version}?`).then(() => {
       removePricingVersion(saasName, version)
