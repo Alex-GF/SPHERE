@@ -71,10 +71,16 @@ export default function EditorPage() {
 
   useEffect(() => {
     const fetchPricing = async () => {
-      const pricingParam = new URLSearchParams(window.location.search).get('pricing');
+      const queryParams = new URLSearchParams(globalThis.location.search);
+      const pricingParam = queryParams.get('pricing');
+      const pricingUrlParam = queryParams.get('pricingUrl');
+      
       let templatePricing: string = '';
 
-      if (!pricingParam) {
+      if (pricingUrlParam){
+        const response = await fetch(pricingUrlParam);
+        templatePricing = await response.text();
+      }else if (!pricingParam) {
         templatePricing = TEMPLATE_PETCLINIC_PRICING;
       } else {
         if (pricingParam.length > 36){ // It is greater that UUID          
