@@ -81,8 +81,8 @@ importers:
         specifier: ^0.52.0
         version: 0.52.2
       pricing4ts:
-        specifier: 0.10.3
-        version: 0.10.3(@openfeature/core@1.9.0)(minizinc@4.4.3)
+        specifier: ^0.10.4
+        version: 0.10.4(@openfeature/core@1.9.1)(minizinc@4.4.4)
       prop-types:
         specifier: ^15.8.1
         version: 15.8.1
@@ -765,11 +765,11 @@ packages:
   '@one-ini/wasm@0.1.1':
     resolution: {integrity: sha512-XuySG1E38YScSJoMlqovLru4KTUNSjgVTIjyh7qMX6aNN5HY5Ct5LhRJdxO79JtTzKfzV/bnWpz+zquYrISsvw==}
 
-  '@openfeature/core@1.9.0':
-    resolution: {integrity: sha512-pbJM8bD9yApOzZDEF5njL0A3B1bbT+DHtyCbYVCf5NOVGR6nNWiQaWFcQwrbvfOx9pvVm770/uRfBCzdL2XAUA==}
+  '@openfeature/core@1.9.1':
+    resolution: {integrity: sha512-YySPtH4s/rKKnHRU0xyFGrqMU8XA+OIPNWDrlEFxE6DCVWCIrxE5YpiB94YD2jMFn6SSdA0cwQ8vLkCkl8lm8A==}
 
-  '@openfeature/server-sdk@1.19.0':
-    resolution: {integrity: sha512-sxmYKkBCpWWkKX2xJt6bFK15dorfR2lH27lkeKduTFPXRMV+pO7eORUelI9gctXhxvfXbDGK94ybq5fiso3/vg==}
+  '@openfeature/server-sdk@1.20.0':
+    resolution: {integrity: sha512-95L9CCaGVKC6+7rNCmDxjthFvUyPLOUkoYyjg9Y/Cmy0G9D63xrJBsmH6fqHtLifzAu4+E7fWAZ3TIBnnCtr7A==}
     engines: {node: '>=20'}
     peerDependencies:
       '@openfeature/core': ^1.9.0
@@ -1058,8 +1058,8 @@ packages:
   '@types/node@24.5.2':
     resolution: {integrity: sha512-FYxk1I7wPv3K2XBaoyH2cTnocQEu8AOZ60hPbsyukMPLv5/5qr7V1i8PLHdl6Zf87I+xZXFvPCXYjiTFq+YSDQ==}
 
-  '@types/papaparse@5.3.16':
-    resolution: {integrity: sha512-T3VuKMC2H0lgsjI9buTB3uuKj3EMD2eap1MOuEQuBQ44EnDx/IkGhU6EwiTf9zG3za4SKlmwKAImdDKdNnCsXg==}
+  '@types/papaparse@5.5.0':
+    resolution: {integrity: sha512-GVs5iMQmUr54BAZYYkByv8zPofFxmyxUpISPb2oh8sayR3+1zbxasrOvoKiHJ/nnoq/uULuPsu1Lze1EkagVFg==}
 
   '@types/parse-json@4.0.2':
     resolution: {integrity: sha512-dISoDXWWQwUquiKsyZ4Ng+HX2KsPL7LyHKHQwgGFEA3IaKac4Obd+h2a/a6waisAoepJlBcx9paWqjA8/HVjCw==}
@@ -2480,8 +2480,8 @@ packages:
     resolution: {integrity: sha512-qOOzS1cBTWYF4BH8fVePDBOO9iptMnGUEZwNc/cMWnTV2nVLZ7VoNWEPHkYczZA0pdoA7dl6e7FL659nX9S2aw==}
     engines: {node: '>=16 || 14 >=14.17'}
 
-  minizinc@4.4.3:
-    resolution: {integrity: sha512-n5gQ7FM+nkUgafsTR5I2I5mvLP32nO3HyvClS+P+7Nza/eSB4Hx9+cL5NR2PFXyVWpVJ9mZu9hzJvvyEGe2Rgg==}
+  minizinc@4.4.4:
+    resolution: {integrity: sha512-gaRuXViW3dAT0srYMYADu8ILizqogwP0wxYN2vp2xYVWDZh9JhNiAu/xVblONCIr+0XCeukNcivw5OERxCrfig==}
 
   mkdirp-classic@0.5.3:
     resolution: {integrity: sha512-gKLcREMhtuZRwRAfqP3RFW+TK4JqApVBtOIftVgjuABpAtpxhPGaDcfvbhNvD0B8iD1oUr/txX35NjcaY6Ns/A==}
@@ -2687,8 +2687,8 @@ packages:
     resolution: {integrity: sha512-G9xUchgTEiNpormdYBl+Pha50gOUovT18IvAe7EYMZ1/f9W/WWMPRn+xI68yXNMUk3QXHDwo/1wV/4NejVNe1w==}
     engines: {node: '>=0.10.0'}
 
-  pricing4ts@0.10.3:
-    resolution: {integrity: sha512-RU9s3RvU7u3jByJsciihDZgF3XQCi2GWCyqMwU6wB+Hx/oRO5Wq+FidCYQadgExDMwD9KAkP/AXIPUCnolk95Q==}
+  pricing4ts@0.10.4:
+    resolution: {integrity: sha512-VxJ8WDakLS5cTEHFGy6AdYX9ddUdNsrdIAUy7TXx4LTaUNy50GRQTOo/f/pLbkUEgp0axBBmWMLd14AUKUNu3A==}
     peerDependencies:
       minizinc: ^4.3.5
 
@@ -3965,11 +3965,11 @@ snapshots:
 
   '@one-ini/wasm@0.1.1': {}
 
-  '@openfeature/core@1.9.0': {}
+  '@openfeature/core@1.9.1': {}
 
-  '@openfeature/server-sdk@1.19.0(@openfeature/core@1.9.0)':
+  '@openfeature/server-sdk@1.20.0(@openfeature/core@1.9.1)':
     dependencies:
-      '@openfeature/core': 1.9.0
+      '@openfeature/core': 1.9.1
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
@@ -4242,7 +4242,7 @@ snapshots:
     dependencies:
       undici-types: 7.12.0
 
-  '@types/papaparse@5.3.16':
+  '@types/papaparse@5.5.0':
     dependencies:
       '@types/node': 24.5.2
 
@@ -6025,7 +6025,7 @@ snapshots:
 
   minipass@7.1.2: {}
 
-  minizinc@4.4.3: {}
+  minizinc@4.4.4: {}
 
   mkdirp-classic@0.5.3: {}
 
@@ -6274,15 +6274,15 @@ snapshots:
       extend-shallow: 2.0.1
       js-beautify: 1.15.4
 
-  pricing4ts@0.10.3(@openfeature/core@1.9.0)(minizinc@4.4.3):
+  pricing4ts@0.10.4(@openfeature/core@1.9.1)(minizinc@4.4.4):
     dependencies:
-      '@openfeature/server-sdk': 1.19.0(@openfeature/core@1.9.0)
-      '@types/papaparse': 5.3.16
+      '@openfeature/server-sdk': 1.20.0(@openfeature/core@1.9.1)
+      '@types/papaparse': 5.5.0
       assert: 2.1.0
       currency-codes: 2.2.0
       js-yaml: 4.1.0
       jwt-simple: 0.5.6
-      minizinc: 4.4.3
+      minizinc: 4.4.4
       papaparse: 5.5.3
       semver: 7.7.2
       uuid: 10.0.0

@@ -7,6 +7,7 @@ import { Feature, Plan, AddOn, UsageLimit } from 'pricing4ts';
 import { getPlanGradient } from '../shared/planPalette';
 import { camelToTitle } from '../shared/stringUtils';
 import { formatUsageDisplay } from '../shared/value-helpers';
+import { formatMoneyDisplay } from '../shared/value-helpers';
 
 interface FeatureTableV2Props {
   plans: Record<string, Plan>;
@@ -228,6 +229,8 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
 
   const sortedTags = Object.keys(tagToFeatureKeys).sort((a, b) => a.localeCompare(b));
 
+  // use shared formatMoneyDisplay
+
   // render a table body for a given set of feature keys using the same row-building rules
   function renderTableForFeatureKeys(featureKeysToRender: string[]) {
     const rowsFor = buildRowsForFeatures(featureKeysToRender);
@@ -364,7 +367,7 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
             {planKeys.map((planKey, idx) => (
               <TableCell key={planKey} align='center' sx={{ background: getPlanGradient(idx), color: '#fff', fontWeight: "bolder", minWidth: 160, fontSize: 18 }}>
                 <Typography sx={{ fontWeight: 700, fontSize: 24 }}>{plans[planKey].name ?? camelToTitle(planKey)}</Typography>
-                <Typography sx={{ fontWeight: 800, fontSize: 20 }}>{plans[planKey].price === 0 ? 'FREE' : <>{plans[planKey].price}{typeof plans[planKey].price === 'number' ? (currency ?? '') : ''}</>}</Typography>
+                <Typography sx={{ fontWeight: 800, fontSize: 20 }}>{plans[planKey].price === 0 ? 'FREE' : <>{formatMoneyDisplay(plans[planKey].price)}{typeof plans[planKey].price === 'number' ? (currency ?? '') : ''}</>}</Typography>
                 {typeof plans[planKey].unit === 'string' && (
                   <Typography variant='caption' sx={{fontSize: 16}}>{plans[planKey].unit}</Typography>
                 )}
@@ -390,7 +393,7 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
                   {planKeys.map((planKey, idx) => (
                     <TableCell key={planKey} align='center' sx={{ background: getPlanGradient(idx), color: '#fff', fontWeight: "bolder", minWidth: 160, fontSize: 18 }}>
                       <Typography sx={{ fontWeight: 700, fontSize: 24 }}>{plans[planKey].name ?? camelToTitle(planKey)}</Typography>
-                      <Typography sx={{ fontWeight: 800, fontSize: 20 }}>{plans[planKey].price === 0 ? 'FREE' : <>{plans[planKey].price}{typeof plans[planKey].price === 'number' ? (currency ?? '') : ''}</>}</Typography>
+                      <Typography sx={{ fontWeight: 800, fontSize: 20 }}>{plans[planKey].price === 0 ? 'FREE' : <>{formatMoneyDisplay(plans[planKey].price)}{typeof plans[planKey].price === 'number' ? (currency ?? '') : ''}</>}</Typography>
                       {typeof plans[planKey].unit === 'string' && (
                         <Typography variant='caption' sx={{fontSize: 16}}>{plans[planKey].unit}</Typography>
                       )}
