@@ -144,13 +144,52 @@ export default function EditorPage() {
           size={6}
           sx={{
             height: '100%',
-            overflow: 'scroll',
+            overflowY: 'auto',
+            overflowX: 'hidden',
             backgroundColor: grey[200],
+            boxSizing: 'border-box',
             ...flex({ direction: 'column' }),
+            py: 2,
           }}
         >
           <Box sx={{ width: '100%' }}>
-            {pricing ? <PricingRenderer pricing={pricing} errors={errors} /> : <LoadingView />}
+            {pricing ? <PricingRenderer pricing={pricing} errors={errors} onApplyVariables={(variables) => {
+              // Update the YAML in the editorValue replacing or inserting the variables block
+              const newYaml = (function replaceVariablesInYaml(yaml: string, vars: Record<string, unknown>) {
+                // build variables block
+                const serializeVal = (v: unknown) => {
+                  if (typeof v === 'string') return JSON.stringify(v);
+                  if (typeof v === 'boolean') return v ? 'true' : 'false';
+                  if (typeof v === 'number' && Number.isFinite(v)) return String(v);
+                  // fallback
+                  return JSON.stringify(v);
+                };
+
+                const varsLines = ['variables:'];
+                for (const k of Object.keys(vars)) {
+                  varsLines.push(`  ${k}: ${serializeVal(vars[k])}`);
+                }
+                const varsBlock = varsLines.join('\n');
+
+                const variablesRegex = /^variables:\n(?:[ \t]+.+\n?)*/gm;
+
+                if (variablesRegex.test(yaml)) {
+                  // replace existing variables block
+                  return yaml.replace(variablesRegex, varsBlock + '\n');
+                } else {
+                  // insert after top-level 'createdAt' or 'currency' if present, else append
+                  const insertAfterRegex = /^(createdAt:.*|currency:.*)$/mi;
+                  const m = insertAfterRegex.exec(yaml);
+                  if (m) {
+                    const idx = (m.index ?? 0) + (m[0]?.length ?? 0);
+                    return yaml.slice(0, idx) + '\n' + varsBlock + yaml.slice(idx);
+                  }
+                  return yaml + '\n' + varsBlock + '\n';
+                }
+              })(editorValue, variables);
+
+              setEditorValue(newYaml);
+            }} /> : <LoadingView />}
           </Box>
         </Grid>
       </Grid>
