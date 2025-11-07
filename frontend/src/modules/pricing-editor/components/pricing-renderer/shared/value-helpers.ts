@@ -109,6 +109,26 @@ export function formatUsageDisplay(limitValue: unknown, linkedLimit?: UsageLimit
   return main;
 }
 
+/**
+ * Format a monetary value following the rule: round UP to the nearest cent, show no decimals
+ * if the value is whole, otherwise show 2 decimals.
+ */
+export function formatMoneyDisplay(value: unknown): string {
+  if (typeof value === 'number' && Number.isFinite(value)) {
+    const centsCeil = Math.ceil(value * 100) / 100;
+    return Number.isInteger(centsCeil) ? String(centsCeil) : centsCeil.toFixed(2);
+  }
+  // if it's a string that represents a number, try parse
+  if (typeof value === 'string') {
+    const n = Number(value);
+    if (!Number.isNaN(n) && Number.isFinite(n)) {
+      const centsCeil = Math.ceil(n * 100) / 100;
+      return Number.isInteger(centsCeil) ? String(centsCeil) : centsCeil.toFixed(2);
+    }
+  }
+  return String(value ?? '');
+}
+
 function _safePrimitive(v: unknown): string {
   if (v === null || v === undefined) return '';
   if (typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean') return String(v);

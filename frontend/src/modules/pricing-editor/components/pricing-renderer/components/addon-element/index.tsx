@@ -6,6 +6,7 @@ import { Card, CardContent, Avatar, Typography, Box } from '@mui/material';
 import { motion } from 'framer-motion';
 import { cardVariants } from '../../shared/motion-variants';
 import { indexFromString, getColorForIndex } from '../../shared/color-palette';
+import { formatMoneyDisplay } from '../../shared/value-helpers';
 
 const MotionCard = motion(Card);
 
@@ -60,8 +61,7 @@ export default function AddOnElement({
 
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', minWidth: 80 }}>
           <Typography variant="h6" sx={{ color: style.priceColor ?? DEFAULT_RENDERING_STYLES.priceColor, fontWeight: 700 }}>
-            {addOn.price}
-            {typeof addOn.price === 'number' ? currency : ''}
+            {formatMoneyDisplay(addOn.price)}{typeof addOn.price === 'number' ? currency : ''}
           </Typography>
           {typeof addOn.price === 'number' && (
             <Typography variant="caption" sx={{ color: style.periodColor ?? DEFAULT_RENDERING_STYLES.periodColor }}>
