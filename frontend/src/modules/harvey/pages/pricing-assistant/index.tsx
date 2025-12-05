@@ -335,7 +335,7 @@ function PricingAssistantPage() {
 
   return (
     <Container maxWidth="xl" sx={{ height: '100vh', display: 'flex', flexDirection: 'column', py: 3 }}>
-      <Paper sx={{ mb: 2, p: 2 }}>
+      <Box sx={{ mb: 4 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 2 }}>
           <Box>
             <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
@@ -348,7 +348,7 @@ function PricingAssistantPage() {
           </Box>
           <Box sx={{ display: 'flex', gap: 1 }}>
             <Button
-              variant="outlined"
+              variant="contained"
               onClick={handleNewConversation}
               disabled={isLoading}
             >
@@ -356,7 +356,7 @@ function PricingAssistantPage() {
             </Button>
           </Box>
         </Box>
-      </Paper>
+      </Box>
       <Grid container spacing={2} sx={{ flex: 1, overflow: 'hidden' }}>
         <Grid size={{ xs: 12, md: 8 }} sx={{ height: '100%' }}>
           <Paper sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
