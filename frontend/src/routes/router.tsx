@@ -21,6 +21,8 @@ import CollectionCardPage from '../modules/pricing/pages/collection-card';
 import MyPricingsPage from '../modules/profile/pages/pricings';
 import CreateCollectionPage from '../modules/profile/pages/create-collection';
 import CollectionsListPage from '../modules/pricing/pages/collections-list';
+import PricingAssistantPage from '../modules/harvey/pages/pricing-assistant';
+
 
 export default function Router() {
   const routes = useRoutes([
@@ -47,6 +49,7 @@ export default function Router() {
         { element: <CreateCollectionPage />, path: "/pricings/collections/new" },
         { element: <CollectionCardPage />, path: "/pricings/collections/:ownerId/:collectionName" },
         { element: <MyPricingsPage />, path: "/me/pricings" },
+        { element: <PricingAssistantPage />, path: "/harvey"}
       ],
         },
         {

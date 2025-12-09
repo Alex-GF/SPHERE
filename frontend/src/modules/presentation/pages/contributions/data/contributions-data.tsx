@@ -81,7 +81,7 @@ export const contributions: Contribution[] = [
         ],
     },
     {
-        title: "HARVEY: Holistic Analysis and Regulation Virtual Expert for You",
+        title: "HARVEY: Holistic Agent for Reasoning on Value and Economic analYsis",
         description: "Este trabajo se centra en implementar un chatbot que se integre en la pricing card de SPHERE y que permita hacer diversas consultas sobre un pricing determinado. Además, se plantea explorar el uso de function calling para poder invocar funciones del minizinc que permita obtener datos de otros. El objetivo es lograr un chatbot que pueda interactuar con un pricing y sus versiones anteriores entendiendo al usuario y dando información a través de llamadas a funciones programáticas. Además, podría extenderse para interpretar los requisitos del usuario y poder elaborar restricciones personalizadas que al ejecutar el minizinc nos den valores ciertos y personalizados para el usuario acerca de dicho pricing.",
         markdownDescription: harvey,
         supervisor: "José Antonio Parejo Maestre and Antonio Ruiz Cortés",
