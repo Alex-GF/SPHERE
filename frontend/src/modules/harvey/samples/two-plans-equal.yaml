@@ -1,0 +1,28 @@
+saasName: Two plans that are equal
+syntaxVersion: '2.1'
+version: '2024-11-19'
+createdAt: '2024-11-19'
+currency: EUR
+variables: {}
+features:
+  feature1:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  feature2:
+    description: ''
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+plans:
+  BASIC:
+    price: 10
+    features: null
+  PRO:
+    price: 30
+    features:
+      feature1:
+        value: true
+      feature2:
+        value: true
