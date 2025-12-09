@@ -16,7 +16,7 @@ export const headerRoutes: HeaderRoute[] = [
         to: '/editor',
       },
       {
-        name: 'Harvey Pricing Assistant',
+        name: 'HARVEY',
         disabled: false,
         to: '/harvey',
       },

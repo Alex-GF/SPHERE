@@ -13,7 +13,7 @@ import type {
 } from '../../types/types'
 import { PROMPT_PRESETS } from '../../prompts';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8086';
+const API_BASE_URL = import.meta.env.VITE_HARVEY_URL ?? 'http://localhost:8086';
 
 const extractPricingUrls = (text: string): string[] => {
   const matches = text.match(/https?:\/\/[^\s)]+/gi) ?? [];
@@ -342,8 +342,7 @@ function PricingAssistantPage() {
               H.A.R.V.E.Y. Pricing Assistant
             </Typography>
             <Typography variant="body1" sx={{ color: grey[600] }}>
-              Ask about optimal subscriptions and pricing insights using the Holistic Analysis and
-              Regulation Virtual Expert for You (H.A.R.V.E.Y.) agent.
+              Ask about optimal subscriptions and pricing insights using the Holistic Agent for Reasoning on Value and Economic analYsis (HARVEY).
             </Typography>
           </Box>
           <Box sx={{ display: 'flex', gap: 1 }}>

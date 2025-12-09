@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   mongodb:
       image: mongo:7.0.16
@@ -20,6 +18,108 @@ services:
       test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
     volumes:
       - 'redis_data:/data'
+    networks:
+      - sphere-network
+  choco-analysis-engine:
+    image: aleexgf/choco-pricing-analysis-engine:main
+    container_name: choco-analysis-engine
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - LOG_LEVEL=INFO
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - sphere-network
+  analysis-engine:
+    image: aleexgf/pricing-analysis-engine:main
+    container_name: pricing-analysis-engine
+    ports:
+      - "8002:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - CHOCO_API=http://choco-analysis-engine:8000
+      - LOG_LEVEL=INFO
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    depends_on:
+      - choco-analysis-engine
+    restart: unless-stopped
+    networks:
+      - sphere-network
+  a-mint:
+    image: aleexgf/a-mint:main
+    container_name: a-mint
+    ports:
+      - "8001:8000"
+    env_file: .env
+    environment:
+      - PYTHONPATH=/app
+      - PORT=8000
+      - OPENAI_API_KEY=${AMINT_API_KEY}
+      - OPENAI_API_KEYS=${AMINT_API_KEYS}
+      - ANALYSIS_API=http://analysis-engine:3000/api/v1
+      - LOG_LEVEL=INFO
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+    depends_on:
+      - analysis-engine
+    networks:
+      - sphere-network
+  mcp-server:
+    image: aleexgf/pi-mcp-server:main
+    container_name: mcp-server
+    environment:
+      - AMINT_BASE_URL=http://a-mint:8000
+      - ANALYSIS_BASE_URL=http://analysis-engine:3000
+      - CACHE_BACKEND=memory
+      - LOG_LEVEL=INFO
+      - HTTP_HOST=0.0.0.0
+      - HTTP_PORT=8085
+    ports:
+      - "8085:8085"
+    depends_on:
+      - a-mint
+      - analysis-engine
+    restart: unless-stopped
+    networks:
+      - sphere-network
+  harvey:
+    image: aleexgf/harvey:main
+    container_name: harvey
+    env_file: .env
+    ports:
+      - "8086:8086"
+    environment:
+      - LOG_LEVEL=INFO
+      - OPENAI_API_KEY=${HARVEY_API_KEY}
+      - OPENAI_MODEL=gpt-5-nano
+      - AMINT_BASE_URL=http://a-mint:8000
+      - ANALYSIS_BASE_URL=http://analysis-engine:3000
+      - CACHE_BACKEND=memory
+      - MCP_TRANSPORT=stdio
+    depends_on:
+      - a-mint
+      - analysis-engine
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8086/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
     networks:
       - sphere-network
   server:
