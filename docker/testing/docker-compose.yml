@@ -1,32 +1,27 @@
 services:
   mongodb:
-      image: mongo:7.0.16
-      ports:
-        - "27017:27017"
-      env_file:
-        - ../../api/.env.testing
-      volumes:
-        - 'sphere-mongodb:/data/db'
-        - '../../api/init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh'
-      networks:
-        - testing-network
+    image: mongo:7.0.16
+    network_mode: "host" # Puerto 27017 en el host
+    env_file:
+      - ../../api/.env.testing
+    volumes:
+      - 'sphere-mongodb:/data/db'
+      - '../../api/init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh'
+
   redis:
     image: redis:7.4.2
-    ports:
-      - "6379:6379"
+    network_mode: "host" # Puerto 6379 en el host
     healthcheck:
       test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
     volumes:
       - 'redis_data:/data'
-    networks:
-      - testing-network
+
   choco-analysis-engine:
     image: aleexgf/choco-pricing-analysis-engine:main
     container_name: choco-analysis-engine
-    ports:
-      - "8000:8000"
+    network_mode: "host"
     environment:
-      - PORT=8000
+      - PORT=8000 # Se queda con el puerto 8000
       - LOG_LEVEL=INFO
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
@@ -34,17 +29,15 @@ services:
       timeout: 10s
       retries: 3
     restart: unless-stopped
-    networks:
-      - testing-network
+
   analysis-engine:
     image: aleexgf/pricing-analysis-engine:main
     container_name: pricing-analysis-engine
-    ports:
-      - "8002:3000"
+    network_mode: "host"
     environment:
       - NODE_ENV=production
-      - PORT=3000
-      - CHOCO_API=http://choco-analysis-engine:8000
+      - PORT=3000 # Usa el 3000 directo (antes mapeado a 8002)
+      - CHOCO_API=http://localhost:8000
       - LOG_LEVEL=INFO
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
@@ -54,61 +47,59 @@ services:
     depends_on:
       - choco-analysis-engine
     restart: unless-stopped
-    networks:
-      - testing-network
+
   a-mint:
     image: aleexgf/a-mint:main
     container_name: a-mint
-    ports:
-      - "8001:8000"
+    network_mode: "host"
     env_file: .env
     environment:
       - PYTHONPATH=/app
-      - PORT=8000
+      # CAMBIO: Usamos 8001 para evitar conflicto con choco (8000)
+      - PORT=8001
       - OPENAI_API_KEY=${AMINT_API_KEY}
       - OPENAI_API_KEYS=${AMINT_API_KEYS}
-      - ANALYSIS_API=http://analysis-engine:3000/api/v1
+      # CAMBIO: Apunta al puerto real de analysis (3000)
+      - ANALYSIS_API=http://localhost:3000/api/v1
       - LOG_LEVEL=INFO
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
       interval: 30s
       timeout: 10s
       retries: 3
     restart: unless-stopped
     depends_on:
       - analysis-engine
-    networks:
-      - testing-network
+
   mcp-server:
     image: aleexgf/pi-mcp-server:main
     container_name: mcp-server
+    network_mode: "host"
     environment:
-      - AMINT_BASE_URL=http://a-mint:8000
-      - ANALYSIS_BASE_URL=http://analysis-engine:3000
+      # CAMBIOS: Apuntan a localhost y puertos reales (8001 y 3000)
+      - AMINT_BASE_URL=http://localhost:8001
+      - ANALYSIS_BASE_URL=http://localhost:3000
       - CACHE_BACKEND=memory
       - LOG_LEVEL=INFO
       - HTTP_HOST=0.0.0.0
       - HTTP_PORT=8085
-    ports:
-      - "8085:8085"
     depends_on:
       - a-mint
       - analysis-engine
     restart: unless-stopped
-    networks:
-      - testing-network
+
   harvey:
     image: aleexgf/harvey:main
     container_name: harvey
     env_file: .env
-    ports:
-      - "8086:8086"
+    network_mode: "host" # Puerto 8086
     environment:
       - LOG_LEVEL=INFO
       - OPENAI_API_KEY=${HARVEY_API_KEY}
       - OPENAI_MODEL=gpt-5-nano
-      - AMINT_BASE_URL=http://a-mint:8000
-      - ANALYSIS_BASE_URL=http://analysis-engine:3000
+      # CAMBIOS: Apuntan a localhost y puertos reales (8001 y 3000)
+      - AMINT_BASE_URL=http://localhost:8001
+      - ANALYSIS_BASE_URL=http://localhost:3000
       - CACHE_BACKEND=memory
       - MCP_TRANSPORT=stdio
     depends_on:
@@ -120,16 +111,14 @@ services:
       timeout: 10s
       retries: 3
     restart: unless-stopped
-    networks:
-      - testing-network
+
   server:
     restart: always
     container_name: sphere-server
     build:
         context: ../../api
         dockerfile: ./docker/Dockerfile
-    ports:
-      - 8080:8080
+    network_mode: "host" # Puerto 8080
     env_file:
       - ../../api/.env.testing
     volumes:
@@ -137,36 +126,29 @@ services:
     depends_on:
       - mongodb
       - redis
-    links:
-      - mongodb
-      - redis
-    networks:
-      - testing-network
+    # links eliminados
+
   client:
     restart: always
     container_name: sphere-client
     build:
         context: ../../frontend
         dockerfile: ./docker/Dockerfile
-    ports:
-      - 5173:5173
+    network_mode: "host" # Puerto 5173
     env_file:
       - ../../frontend/.env.production
-    networks:
-      - testing-network
+
   nginx:
     restart: always
     container_name: sphere-nginx
     build:
         context: ../../nginx/local
         dockerfile: ./Dockerfile
-    ports:
-      - 80:80
+    network_mode: "host" # Puerto 80
     depends_on:
       - server
       - client
-    networks:
-      - testing-network
+
 volumes:
   sphere-mongodb:
     driver: local
@@ -174,6 +156,5 @@ volumes:
     driver: local
   redis_data:
     driver: local
-networks:
-  testing-network:
-    driver: bridge
+
+# Redes eliminadas
