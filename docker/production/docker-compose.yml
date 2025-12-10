@@ -69,6 +69,10 @@ services:
       - OPENAI_API_KEYS=${AMINT_API_KEYS}
       - ANALYSIS_API=http://analysis-engine:3000/api/v1
       - LOG_LEVEL=INFO
+      # AÑADE ESTO:
+      - HTTP_PROXY=http://proxy.int.local:3128
+      - HTTPS_PROXY=http://proxy.int.local:3128
+      - NO_PROXY=127.0.0.1,localhost,analysis-engine
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s
@@ -111,6 +115,10 @@ services:
       - ANALYSIS_BASE_URL=http://analysis-engine:3000
       - CACHE_BACKEND=memory
       - MCP_TRANSPORT=stdio
+      # AÑADE ESTO:
+      - HTTP_PROXY=http://proxy.int.local:3128
+      - HTTPS_PROXY=http://proxy.int.local:3128
+      - NO_PROXY=127.0.0.1,localhost,analysis-engine,a-mint
     depends_on:
       - a-mint
       - analysis-engine
@@ -167,6 +175,7 @@ services:
     depends_on:
       - server
       - client
+      - harvey
     volumes:
       - '../../nginx/production/ssl:/etc/nginx/ssl'
     networks:
