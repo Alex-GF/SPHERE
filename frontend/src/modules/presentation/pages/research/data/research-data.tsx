@@ -1,12 +1,13 @@
 import { GrWorkshop } from 'react-icons/gr';
+import { IoNewspaperOutline } from "react-icons/io5";
 import { FaPlayCircle } from 'react-icons/fa';
 
 import { primary } from '../../../../core/theme/palette';
 
-// const journalIconStyle = {
-//   background: primary[900],
-//   boxShadow: `0 0 0 4px ${primary[700]},inset 0 2px 0 rgba(0,0,0,.08),0 3px 0 4px rgba(0,0,0,.05)`,
-// };
+const journalIconStyle = {
+  background: primary[900],
+  boxShadow: `0 0 0 4px ${primary[700]},inset 0 2px 0 rgba(0,0,0,.08),0 3px 0 4px rgba(0,0,0,.05)`,
+};
 const proceedingsIconStyle = {
   background: primary[800],
   boxShadow: `0 0 0 4px ${primary[700]},inset 0 2px 0 rgba(0,0,0,.08),0 3px 0 4px rgba(0,0,0,.05)`,
@@ -22,6 +23,47 @@ const demoIconStyle = {
 
 const timelineData = [
   {
+    title: 'Trends in Industry Support for Pricing-Driven DevOps in SaaS',
+    subtitle:
+      'Alejandro García-Fernández, José Antonio Parejo, Francisco Javier Cavero and Antonio Ruiz-Cortés',
+    text: ['IEEE Transactions on Services Computing'],
+    date: '2026-01-01',
+    icon: <IoNewspaperOutline stroke="white" />,
+    iconStyle: journalIconStyle,
+    href: 'https://doi.org/10.1109/TSC.2025.3634801',
+  },
+  {
+    title: 'iSubscription: Bridging the Gap Between Contracts and Runtime Access Control in SaaS',
+    subtitle:
+      'Alejandro García-Fernández, José Antonio Parejo and Antonio Ruiz-Cortés',
+    text: ['23rd International Conference on Service-Oriented Computing (ICSOC)'],
+    date: '2025-12-04',
+    icon: <GrWorkshop stroke="white" />,
+    iconStyle: proceedingsIconStyle,
+    href: 'https://link.springer.com/book/9789819550142',
+  },
+  {
+    title: 'A-MINT: An LLM Pipeline for Automated Modeling of iPricings from SaaS Pricing Pages',
+    subtitle:
+      'Francisco Javier Cavero, José Antonio Parejo, Juan C. Alonso and Antonio Ruiz-Cortés',
+    text: ['23rd International Conference on Service-Oriented Computing (ICSOC)'],
+    date: '2025-12-04',
+    icon: <GrWorkshop stroke="white" />,
+    iconStyle: proceedingsIconStyle,
+    href: 'https://link.springer.com/book/9789819550142',
+  },
+  {
+    title: 'From Pricing Models to Runtime Self-Adaptation: A Demonstration of SPACE',
+    subtitle:
+      'Alejandro García-Fernández, José Antonio Parejo and Antonio Ruiz-Cortés',
+    text: ['23rd International Conference on Service-Oriented Computing (ICSOC)'],
+    date: '2025-12-04',
+    icon: <FaPlayCircle fill="white" />,
+    iconStyle: demoIconStyle,
+    href: 'https://youtu.be/-GIpNp90qB8?si=W1kJm7waDmFwi_q6',
+    awards: ["Best Demonstration Runner-up"],
+  },
+  {
     title: 'HORIZON: a Classification and Comparison Framework for Pricing-driven Feature Toggling',
     subtitle:
       'Alejandro García-Fernández, José Antonio Parejo and Antonio Ruiz-Cortés',
@@ -29,7 +71,7 @@ const timelineData = [
     date: '2025-06-15',
     icon: <GrWorkshop stroke="white" />,
     iconStyle: proceedingsIconStyle,
-    href: '#',
+    href: 'https://doi.org/10.1007/978-3-031-97207-2_19',
   },
   {
     title: 'Automated Analysis of Pricings in SaaS-Based Information Systems',
