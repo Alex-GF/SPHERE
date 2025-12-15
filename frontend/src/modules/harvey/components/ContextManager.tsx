@@ -66,6 +66,9 @@ function ContextManager({ items, detectedUrls, onAdd, onRemove, onClear }: Props
           <Typography variant="body2" sx={{ color: grey[600] }}>
             Add URLs or YAML exports to ground H.A.R.V.E.Y.'s answers.
           </Typography>
+          <Alert severity="info" sx={{ mt: 1 }}>
+            All pricings detected or added via URL will be modeled automatically; this process can take up to 30–60 minutes.
+          </Alert>
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <Typography variant="body2" sx={{ color: grey[600] }}>

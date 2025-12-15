@@ -23,7 +23,7 @@ function ChatTranscript({ messages, isLoading, promptPresets = [], onPresetSelec
               Welcome to H.A.R.V.E.Y.
             </Typography>
             <Typography variant="body1" sx={{ color: grey[600] }}>
-              Your AI assistant for pricing intelligence and optimal subscription recommendations.
+              Enabling seamless execution of the Pricing Intelligence Interpretation Process.
             </Typography>
           </Box>
           {promptPresets.length > 0 && onPresetSelect && (
