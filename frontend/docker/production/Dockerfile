@@ -28,7 +28,7 @@ RUN npm config set proxy http://proxy.int.local:3128 && \
 
 # 4. Instalamos dependencias
 # --no-audit acelera la instalación detrás de proxys
-RUN npm install --no-audit
+RUN npm install --no-audit --build-from-source=sharp
 
 # Build de la aplicación
 RUN npm run build
