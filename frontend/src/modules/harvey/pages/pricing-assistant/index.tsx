@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useMemo, useState } from 'react';
-import { Box, Container, Typography, Button, Paper } from '@mui/material';
+import { Box, Container, Typography, Button, Paper, Alert, AlertTitle } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { grey } from '../../../core/theme/palette';
 
@@ -25,10 +25,15 @@ import {
   extractPricingUrls,
   uploadYamlPricing,
 } from '../../utils';
+import PlaygroundProvider from '../../components/PlaygroundProvider';
 
 const HARVEY_API_BASE_URL = import.meta.env.VITE_HARVEY_URL ?? 'http://localhost:8086';
 
-function PricingAssistantPage() {
+interface Props {
+  playground?: boolean;
+}
+
+function PricingAssistantPage({ playground = false }: Props) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [question, setQuestion] = useState('');
   const [contextItems, setContextItems] = useState<PricingContextItem[]>([]);
@@ -300,66 +305,70 @@ function PricingAssistantPage() {
   };
 
   return (
-    <PricingContext.Provider value={contextItems}>
-      <Container
-        maxWidth="xl"
-        sx={{ height: '100vh', display: 'flex', flexDirection: 'column', py: 3 }}
-      >
-        <Box sx={{ mb: 4 }}>
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'flex-start',
-              gap: 2,
-            }}
-          >
-            <Box>
-              <Typography variant="h4" component="h1" sx={{ fontWeight: 600, mb: 1 }}>
-                H.A.R.V.E.Y. Pricing Assistant
-              </Typography>
-              <Typography variant="body1" sx={{ color: grey[600] }}>
-                Ask about optimal subscriptions and pricing insights using the Holistic Agent for
-                Reasoning on Value and Economic analYsis (HARVEY).
-              </Typography>
-            </Box>
-            <Box sx={{ display: 'flex', gap: 1 }}>
-              <Button variant="contained" onClick={handleNewConversation} disabled={isLoading}>
-                New conversation
-              </Button>
+    <PlaygroundProvider playground={playground}>
+      <PricingContext.Provider value={contextItems}>
+        <Container
+          maxWidth="xl"
+          sx={{ height: '100vh', display: 'flex', flexDirection: 'column', py: 3 }}
+        >
+          <Box sx={{ mb: 4 }}>
+            <Box>{playground && <Alert severity="warning">Playground mode is active</Alert>}</Box>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'flex-start',
+                gap: 2,
+              }}
+            >
+              <Box>
+                <Typography variant="h4" component="h1" sx={{ fontWeight: 600, mb: 1 }}>
+                  H.A.R.V.E.Y. Pricing Assistant
+                </Typography>
+
+                <Typography variant="body1" sx={{ color: grey[600] }}>
+                  Ask about optimal subscriptions and pricing insights using the Holistic Agent for
+                  Reasoning on Value and Economic analYsis (HARVEY).
+                </Typography>
+              </Box>
+              <Box sx={{ display: 'flex', gap: 1 }}>
+                <Button variant="contained" onClick={handleNewConversation} disabled={isLoading}>
+                  New conversation
+                </Button>
+              </Box>
             </Box>
           </Box>
-        </Box>
-        <Grid container spacing={2} sx={{ flex: 1, overflow: 'hidden' }}>
-          <Grid size={{ xs: 12, md: 8 }} sx={{ height: '100%' }}>
-            <Paper sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-              <ChatTranscript
-                messages={messages}
-                isLoading={isLoading}
-                promptPresets={PROMPT_PRESETS}
-                onPresetSelect={handlePromptSelect}
+          <Grid container spacing={2} sx={{ flex: 1, overflow: 'hidden' }}>
+            <Grid size={{ xs: 12, md: 8 }} sx={{ height: '100%' }}>
+              <Paper sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                <ChatTranscript
+                  messages={messages}
+                  isLoading={isLoading}
+                  promptPresets={PROMPT_PRESETS}
+                  onPresetSelect={handlePromptSelect}
+                />
+              </Paper>
+            </Grid>
+            <Grid size={{ xs: 12, md: 4 }} sx={{ height: '100%', overflowY: 'auto' }}>
+              <ControlPanel
+                question={question}
+                detectedPricingUrls={detectedPricingUrls}
+                contextItems={contextItems}
+                isSubmitting={isLoading}
+                isSubmitDisabled={isSubmitDisabled}
+                onQuestionChange={setQuestion}
+                onSubmit={handleSubmit}
+                onFileSelect={handleFilesSelected}
+                onContextAdd={addContextItem}
+                onContextRemove={removeContextItem}
+                onSphereContextRemove={removeSphereContextItem}
+                onContextClear={clearContext}
               />
-            </Paper>
+            </Grid>
           </Grid>
-          <Grid size={{ xs: 12, md: 4 }} sx={{ height: '100%', overflowY: 'auto' }}>
-            <ControlPanel
-              question={question}
-              detectedPricingUrls={detectedPricingUrls}
-              contextItems={contextItems}
-              isSubmitting={isLoading}
-              isSubmitDisabled={isSubmitDisabled}
-              onQuestionChange={setQuestion}
-              onSubmit={handleSubmit}
-              onFileSelect={handleFilesSelected}
-              onContextAdd={addContextItem}
-              onContextRemove={removeContextItem}
-              onSphereContextRemove={removeSphereContextItem}
-              onContextClear={clearContext}
-            />
-          </Grid>
-        </Grid>
-      </Container>
-    </PricingContext.Provider>
+        </Container>
+      </PricingContext.Provider>
+    </PlaygroundProvider>
   );
 }
 

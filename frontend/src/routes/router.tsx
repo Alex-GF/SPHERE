@@ -49,7 +49,8 @@ export default function Router() {
         { element: <CreateCollectionPage />, path: "/pricings/collections/new" },
         { element: <CollectionCardPage />, path: "/pricings/collections/:ownerId/:collectionName" },
         { element: <MyPricingsPage />, path: "/me/pricings" },
-        { element: <PricingAssistantPage />, path: "/harvey"}
+        { element: <PricingAssistantPage />, path: "/harvey"},
+        { element: <PricingAssistantPage playground />, path: "/harvey-play"}
       ],
         },
         {
