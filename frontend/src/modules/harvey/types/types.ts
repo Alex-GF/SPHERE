@@ -62,6 +62,11 @@ export interface PromptPreset {
   description: string;
   question: string;
   context: YamlContextItemInput[];
+  response?: {
+    plan: Record<string,unknown>
+    result: Record<string, unknown>
+    answer: string
+  }
 }
 
 export interface NotificationUrlEvent {

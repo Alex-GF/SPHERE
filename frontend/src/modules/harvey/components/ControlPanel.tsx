@@ -15,10 +15,11 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 
 import ContextManager from './ContextManager';
-import type { ContextInputType, PricingContextItem } from '../types/types';
+import type { ContextInputType, PricingContextItem, PromptPreset } from '../types/types';
 import SearchPricings from './SearchPricings';
 import { grey } from '@mui/material/colors';
 import usePlayground from '../hooks/usePlayground';
+import UseCaseSelect from './UseCaseSelect';
 
 interface Props {
   question: string;
@@ -26,6 +27,7 @@ interface Props {
   contextItems: PricingContextItem[];
   isSubmitting: boolean;
   isSubmitDisabled: boolean;
+  onPresetSelect: (preset: PromptPreset) => void;
   onQuestionChange: (value: string) => void;
   onSubmit: (event: FormEvent) => void;
   onFileSelect: (files: FileList | null) => void;
@@ -48,6 +50,7 @@ function ControlPanel({
   onContextRemove,
   onSphereContextRemove,
   onContextClear,
+  onPresetSelect
 }: Props) {
   const [showPricingModal, setPricingModal] = useState<boolean>(false);
   const isPlaygroundEnabled = usePlayground();
@@ -65,6 +68,7 @@ function ControlPanel({
       onSubmit={onSubmit}
       sx={{ display: 'flex', flexDirection: 'column', gap: 3, p: 2 }}
     >
+      {isPlaygroundEnabled && <UseCaseSelect onPresetSelect={onPresetSelect} />}
       <TextField
         label="Question"
         name="question"
