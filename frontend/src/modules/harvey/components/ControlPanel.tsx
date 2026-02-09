@@ -75,6 +75,7 @@ function ControlPanel({
         required
         multiline
         rows={4}
+        disabled={isPlaygroundEnabled}
         value={question}
         onChange={handleQuestionChange}
         placeholder="Which is the best available subscription for a team of five users?"
