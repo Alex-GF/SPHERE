@@ -2,6 +2,8 @@ import fs from 'fs';
 import multer from 'multer';
 import { Request, Response, NextFunction } from 'express';
 import {v4 as uuidv4} from 'uuid';
+import { sanitizePathSegment } from '../utils/path-utils';
+import path from 'path';
 
 const addFilenameToBody = (...fieldNames: string[]) => (req: any, res: any, next: NextFunction) => {
   fieldNames.forEach(fieldName => {
@@ -33,45 +35,97 @@ const handleFileUpload = (imageFieldNames: string[], folder: string) => {
   }
 }
 
-const handlePricingUpload = (pricingFieldNames: string[], folder: string) => {
+const handlePricingUpload = (pricingFieldNames: string[], baseFolder: string) => {
   const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      fs.mkdirSync(folder + `/${req.body.saasName}`, { recursive: true })
-      cb(null, folder)
+    destination: (req, _file, cb) => {
+      try {
+        const saasName = sanitizePathSegment(req.body?.saasName, "unknown-saas")
+        const targetDir = path.resolve(baseFolder, saasName)
+
+        // Ensure the directory exists
+        fs.mkdirSync(targetDir, { recursive: true })
+
+        cb(null, targetDir)
+      } catch (error) {
+        cb(error as Error, baseFolder)
+      }
     },
-    filename: function (req, file, cb) {
-      if (file) {
-        cb(null, req.body.saasName + "/" + req.body.version + '.' + file.originalname.split('.').pop())
-      } else {
-        cb(new Error('File does not exist'), "fail.yml")
+
+    filename: (req, file, cb) => {
+      try {
+        if (!file) {
+          cb(new Error("File does not exist"), "fail.yml")
+          return
+        }
+
+        const version = sanitizePathSegment(req.body?.version, "0.0.0")
+
+        // Keep original extension (including .yml / .yaml)
+        const ext = path.extname(file.originalname) || ".yml"
+
+        cb(null, `${version}${ext}`)
+      } catch (error) {
+        cb(error as Error, "fail.yml")
       }
     }
   })
 
   if (pricingFieldNames.length === 1) {
     return multer({ storage }).single(pricingFieldNames[0])
-  } else {
-    const fields = pricingFieldNames.map(pricingFieldNames => { return { name: pricingFieldNames, maxCount: 1 } })
-    return multer({ storage }).fields(fields)
   }
+
+  const fields = pricingFieldNames.map((name) => ({ name, maxCount: 1 }))
+  return multer({ storage }).fields(fields)
 }
 
-const handleCollectionUpload = (collectionFieldNames: string[], folder: string) => {
+const handleCollectionUpload = (
+  collectionFieldNames: string[],
+  baseFolder: string
+) => {
   const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      fs.mkdirSync(folder + `/`, { recursive: true })
-      cb(null, folder)
+    destination: (_req, _file, cb) => {
+      try {
+        const targetDir = path.resolve(baseFolder)
+
+        fs.mkdirSync(targetDir, { recursive: true })
+
+        cb(null, targetDir)
+      } catch (error) {
+        cb(error as Error, baseFolder)
+      }
     },
-    filename: function (req, file, cb) {
-      cb(null, uuidv4() + '.' + file.originalname.split('.').pop())
-    },
+
+    filename: (_req, file, cb) => {
+      try {
+        if (!file) {
+          cb(new Error("File does not exist"), "fail.zip")
+          return
+        }
+
+        const extension = path.extname(file.originalname) || ".zip"
+
+        cb(null, `${uuidv4()}${extension}`)
+      } catch (error) {
+        cb(error as Error, "fail.zip")
+      }
+    }
   })
 
   if (collectionFieldNames.length === 1) {
-    return multer({ storage: storage, limits: {fileSize: 2 * 1024 * 1024} }).single(collectionFieldNames[0])
-  } else {
-    const fields = collectionFieldNames.map(collectionFieldNames => { return { name: collectionFieldNames, maxCount: 1 } })
-    return multer({ storage }).fields(fields)
+    return multer({
+      storage,
+      limits: { fileSize: 2 * 1024 * 1024 }
+    }).single(collectionFieldNames[0])
   }
+
+  const fields = collectionFieldNames.map((name) => ({
+    name,
+    maxCount: 1
+  }))
+
+  return multer({
+    storage,
+    limits: { fileSize: 2 * 1024 * 1024 }
+  }).fields(fields)
 }
 export { handleFileUpload, addFilenameToBody, handlePricingUpload, handleCollectionUpload }

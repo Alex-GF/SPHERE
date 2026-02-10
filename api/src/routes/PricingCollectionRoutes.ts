@@ -5,11 +5,16 @@ import PricingController from '../controllers/PricingController';
 import { handleValidation } from '../middlewares/ValidationHandlingMiddleware';
 import * as PricingCollectionValidator from '../controllers/validation/PricingCollectionValidation';
 import { handleCollectionUpload } from '../middlewares/FileHandlerMiddleware';
+import path from 'path';
 
 const loadFileRoutes = function (app: express.Application) {
   const pricingCollectionController = new PricingCollectionController();
   const pricingController = new PricingController();
-  const upload = handleCollectionUpload(['zip'], './public/static/collections');
+
+  const upload = handleCollectionUpload(
+    ['zip'],
+    path.resolve(process.cwd(), 'public', 'static', 'collections')
+  );
 
   const baseUrl = process.env.BASE_URL_PATH;
 
@@ -40,7 +45,7 @@ const loadFileRoutes = function (app: express.Application) {
     )
     .delete(isLoggedIn, pricingCollectionController.destroy);
 
-    app
+  app
     .route(baseUrl + '/pricings/collections/:userId/:collectionName/download')
     .get(pricingCollectionController.downloadCollection);
 };

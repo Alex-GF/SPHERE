@@ -4,10 +4,14 @@ import PricingController from '../controllers/PricingController';
 import { handlePricingUpload } from '../middlewares/FileHandlerMiddleware';
 import * as PricingValidator from '../controllers/validation/PricingValidation';
 import { handleValidation } from '../middlewares/ValidationHandlingMiddleware';
+import path from 'path';
 
 const loadFileRoutes = function (app: express.Application) {
   const pricingController = new PricingController();
-  const upload = handlePricingUpload(['yaml'], './public/static/pricings/uploaded');
+  const upload = handlePricingUpload(
+  ["yaml"],
+  path.resolve(process.cwd(), "public", "static", "pricings", "uploaded")
+)
 
   const baseUrl = process.env.BASE_URL_PATH;
 
