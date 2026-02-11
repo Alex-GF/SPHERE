@@ -1,0 +1,504 @@
+syntaxVersion: '2.1'
+saasName: CircleCI - Cloud
+createdAt: '2024-07-16'
+version: '2024'
+billing:
+  monthly: 1.0
+currency: USD
+url: https://web.archive.org/web/20240716021906/https://circleci.com/pricing/
+features:
+  network:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  storage:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  smallX86DockerVM:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  mediumX86DockerVM:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  mediumX86PlusDockerVM:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  largeX86DockerVM:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  xLargeX86DockerVM:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  2xLargeX86DockerVM:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  2xLargePlusX86DockerVM:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  mediumArmDockerVM:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  largeArmDockerVM:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  xLargeArmDockerVM:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  2xLargeArmDockerVM:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  mediumLinuxVM:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  largeLinuxVM:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  xLargeLinuxVM:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  2xLargeLinuxVM:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  2xLargePlusLinuxVM:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  mediumArmVM:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  largeArmVM:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  xlargeArmVM:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  2xlargeArmVM:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  mediumWindowsVM:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  largeWindowsVM:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  xLargeWindowsVM:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  2xLargeWindowsVM:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  m1MediumMacOsVM:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  m1LargeMacOsVM:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  smallGpuNvidia:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  smallMultiGpuNvidia:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  smallGen2GpuNvidia:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  mediumGpuNvidia:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  mediumMultiGpuNvidia:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  mediumWindowsGpuNvidia:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  largeGpuNvidia:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  concurrentJobRuns:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  selfHostedRunners:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  dockerLayerCatching:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  ipRanges:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  flakyTestDetection:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: AUTOMATION
+    automationType: BOT
+  privateOrbs:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  components:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  componentsRelease:
+    description: "250 credits per release"
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  communitySupport:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: true
+    type: SUPPORT
+  ticketBasedGlobalSupport:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  8x5SLA:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  12x5SLA:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  24x5SLA:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  24x7SLA:
+    description: ""
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+usageLimits:
+  maxUsers:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 5
+    unit: user
+    type: NON_RENEWABLE
+  creditsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 30000
+    unit: credit/month
+    type: RENEWABLE
+  networkLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: GB
+    type: NON_RENEWABLE
+    linkedFeatures:
+    - network
+  storageLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 2
+    unit: GB
+    type: NON_RENEWABLE
+    linkedFeatures:
+    - storage
+  concurrentJobRunsLimitNonMacOs:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 30
+    unit: job
+    type: NON_RENEWABLE
+    linkedFeatures:
+    - concurrentJobRuns
+  concurrentJobRunsLimitMacOs:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: job
+    type: NON_RENEWABLE
+    linkedFeatures:
+    - concurrentJobRuns
+  selfHostedRunnersLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 5
+    unit: runner
+    type: NON_RENEWABLE
+    linkedFeatures:
+    - selfHostedRunners
+  flakyTestDetectionLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 5
+    unit: test
+    type: NON_RENEWABLE
+    linkedFeatures:
+    - flakyTestDetection
+  componentsLimit:
+    description: ''
+    valueType: NUMERIC
+    defaultValue: 3
+    unit: component/month
+    type: RENEWABLE
+    linkedFeatures:
+    - components
+plans:
+  FREE:
+    description: ""
+    price: 0
+    unit: /month
+    features: null
+    usageLimits: null
+  PERFORMANCE:
+    description: ""
+    price: 15
+    unit: /month
+    features:
+      xLargeX86DockerVM:
+        value: true
+      xLargeArmDockerVM:
+        value: true
+      xLargeLinuxVM:
+        value: true
+      xlargeArmVM:
+        value: true
+      xLargeWindowsVM:
+        value: true
+      m1LargeMacOsVM:
+        value: true
+      ipRanges:
+        value: true
+      ticketBasedGlobalSupport:
+        value: true
+    usageLimits:
+      networkLimit:
+        value: 5
+      storageLimit:
+        value: 2
+      concurrentJobRunsLimitNonMacOs:
+        value: 80
+      concurrentJobRunsLimitMacOs:
+        value: 15
+      selfHostedRunnersLimit:
+        value: 20
+      flakyTestDetectionLimit:
+        value: .inf
+  SCALE:
+    description: ""
+    price: "Contact us"
+    unit: /month
+    features:
+      xLargeX86DockerVM:
+        value: true
+      2xLargeX86DockerVM:
+        value: true
+      2xLargePlusX86DockerVM:
+        value: true
+      xLargeArmDockerVM:
+        value: true
+      2xLargeArmDockerVM:
+        value: true
+      xLargeLinuxVM:
+        value: true
+      2xLargeLinuxVM:
+        value: true
+      2xLargePlusLinuxVM:
+        value: true
+      xlargeArmVM:
+        value: true
+      2xlargeArmVM:
+        value: true
+      xLargeWindowsVM:
+        value: true
+      2xLargeWindowsVM:
+        value: true
+      m1LargeMacOsVM:
+        value: true
+      smallGpuNvidia:
+        value: true
+      smallMultiGpuNvidia:
+        value: true
+      smallGen2GpuNvidia:
+        value: true
+      mediumGpuNvidia:
+        value: true
+      mediumMultiGpuNvidia:
+        value: true
+      mediumWindowsGpuNvidia:
+        value: true
+      largeGpuNvidia:
+        value: true
+      ipRanges:
+        value: true
+      ticketBasedGlobalSupport:
+        value: true
+    usageLimits:
+      maxUsers:
+        value: .inf
+      creditsLimit:
+        value: .inf
+      networkLimit:
+        value: 50
+      storageLimit:
+        value: 200
+      concurrentJobRunsLimitNonMacOs:
+        value: .inf
+      concurrentJobRunsLimitMacOs:
+        value: .inf
+      selfHostedRunnersLimit:
+        value: .inf
+      flakyTestDetectionLimit:
+        value: .inf
+addOns:
+  extraUsers:
+    description: ""
+    availableFor:
+      - PERFORMANCE
+    price: 15
+    unit: /month
+    usageLimitsExtensions:
+      maxUsers:
+        value: 1
+  extraCredits:
+    description: ""
+    availableFor:
+      - PERFORMANCE
+    price: 15
+    unit: /month
+    usageLimitsExtensions:
+      creditsLimit:
+        value: 25000
+  extraComponents:
+    description: ""
+    availableFor:
+      - PERFORMANCE
+      - SCALE
+    price: 24
+    unit: component
+    usageLimitsExtensions:
+      componentsLimit:
+        value: 1
+  8x5SLA:
+    description: ""
+    excludes:
+      - 12x5SLA
+    availableFor:
+      - PERFORMANCE
+    price: "Contact us"
+    unit: /month
+    features:
+      8x5SLA:
+        value: true
+  12x5SLA:
+    description: ""
+    excludes:
+      - 8x5SLA
+    availableFor:
+      - PERFORMANCE
+    price: "Contact us"
+    unit: /month
+    features:
+      12x5SLA:
+        value: true
+  24x5SLA:
+    description: ""
+    excludes:
+      - 24x7SLA
+    availableFor:
+      - SCALE
+    price: "Contact us"
+    unit: /month
+    features:
+      24x5SLA:
+        value: true
+  24x7SLA:
+    description: ""
+    excludes:
+      - 24x5SLA
+    availableFor:
+      - SCALE
+    price: "Contact us"
+    unit: /month
+    features:
+      24x7SLA:
+        value: true

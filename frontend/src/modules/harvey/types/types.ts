@@ -61,12 +61,20 @@ export interface PromptPreset {
   label: string;
   description: string;
   question: string;
-  context: YamlContextItemInput[];
-  response?: {
-    plan: Record<string,unknown>
-    result: Record<string, unknown>
-    answer: string
-  }
+  context: PresetContextInput[];
+  response?: PresetResponse;
+}
+
+export interface PresetContextInput {
+  kind: "url" | "yaml"
+  label: string
+  value: string
+}
+
+export interface PresetResponse {
+  plan: Record<string, unknown>;
+  result: Record<string, unknown>;
+  answer: string;
 }
 
 export interface NotificationUrlEvent {

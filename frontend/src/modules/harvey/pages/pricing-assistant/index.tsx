@@ -1,5 +1,13 @@
 import { FormEvent, useEffect, useMemo, useState } from 'react';
-import { Box, Container, Typography, Button, Paper, Alert } from '@mui/material';
+import {
+  Box,
+  Container,
+  Typography,
+  Button,
+  Paper,
+  Alert,
+  listItemSecondaryActionClasses,
+} from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { grey } from '../../../core/theme/palette';
 
@@ -10,6 +18,7 @@ import type {
   ChatRequest,
   ContextInputType,
   NotificationUrlEvent,
+  PresetContextInput,
   PricingContextItem,
   PricingContextUrlWithId,
   PromptPreset,
@@ -27,6 +36,12 @@ import {
 } from '../../utils';
 import PlaygroundProvider from '../../components/PlaygroundProvider';
 import PresetProvider from '../../components/PresetProvider';
+import {
+  playgroundMockUrlTrnasformEvent,
+  sseUrlTransformEvent,
+  UrlTransformEvent,
+} from '../../sse';
+import { UseCases } from '../../use-cases';
 
 const HARVEY_API_BASE_URL = import.meta.env.VITE_HARVEY_URL ?? 'http://localhost:8086';
 
@@ -41,23 +56,22 @@ function PricingAssistantPage({ playground = false }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [preset, setPreset] = useState<PromptPreset | null>(null);
 
+  const urlTransformEvent: UrlTransformEvent = !playground
+    ? sseUrlTransformEvent
+    : playgroundMockUrlTrnasformEvent;
+
+  const handleUrlNotification = (notification: NotificationUrlEvent) =>
+    setContextItems(previous =>
+      previous.map(item =>
+        item.kind === 'url' && item.id === notification.id
+          ? { ...item, transform: 'done', value: notification.yaml_content }
+          : item
+      )
+    );
+
   useEffect(() => {
-    const eventSource = new EventSource(`${HARVEY_API_BASE_URL}/events`);
-
-    eventSource.onopen = () => console.log('Connection established');
-
-    eventSource.addEventListener('url_transform', (event: MessageEvent) => {
-      const notification: NotificationUrlEvent = JSON.parse(event.data);
-      setContextItems(previous =>
-        previous.map(item =>
-          item.kind === 'url' && item.id === notification.id
-            ? { ...item, transform: 'done', value: notification.yaml_content }
-            : item
-        )
-      );
-    });
-    return () => eventSource.close();
-  }, []);
+    return urlTransformEvent.connect(handleUrlNotification);
+  }, [playground]);
 
   const detectedPricingUrls = useMemo(() => extractPricingUrls(question), [question]);
 
@@ -87,17 +101,19 @@ function PricingAssistantPage({ playground = false }: Props) {
 
     const newPricingContextItems: PricingContextItem[] = createPricingContextItems(inputs);
 
-    const uploadPromises = newPricingContextItems
-      .filter(
-        item =>
-          item.kind === 'yaml' &&
-          item.origin &&
-          (item.origin === 'user' || item.origin === 'preset')
-      )
-      .map(item => uploadYamlPricing(`${item.id}.yaml`, item.value));
+    if (!playground) {
+      const uploadPromises = newPricingContextItems
+        .filter(
+          item =>
+            item.kind === 'yaml' &&
+            item.origin &&
+            (item.origin === 'user' || item.origin === 'preset')
+        )
+        .map(item => uploadYamlPricing(`${item.id}.yaml`, item.value));
 
-    if (uploadPromises.length > 0) {
-      Promise.all(uploadPromises).catch(err => console.error('Upload failed', err));
+      if (uploadPromises.length > 0) {
+        Promise.all(uploadPromises).catch(err => console.error('Upload failed', err));
+      }
     }
 
     setContextItems(previous => [...previous, ...newPricingContextItems]);
@@ -110,18 +126,21 @@ function PricingAssistantPage({ playground = false }: Props) {
   };
 
   const removeContextItem = (id: string) => {
-    const deletePromises = contextItems
-      .filter(
-        item =>
-          item.id === id &&
-          item.kind === 'yaml' &&
-          item.origin &&
-          (item.origin === 'user' || item.origin === 'preset')
-      )
-      .map(item => deleteYamlPricing(`${item.id}.yaml`));
-    if (deletePromises.length > 0) {
-      Promise.all(deletePromises);
+    if (!playground) {
+      const deletePromises = contextItems
+        .filter(
+          item =>
+            item.id === id &&
+            item.kind === 'yaml' &&
+            item.origin &&
+            (item.origin === 'user' || item.origin === 'preset')
+        )
+        .map(item => deleteYamlPricing(`${item.id}.yaml`));
+      if (deletePromises.length > 0) {
+        Promise.all(deletePromises);
+      }
     }
+
     setContextItems(previous => previous.filter(item => item.id !== id));
   };
 
@@ -133,14 +152,16 @@ function PricingAssistantPage({ playground = false }: Props) {
 
   const clearContext = () => {
     setContextItems([]);
-    const storedYamls = contextItems
-      .filter(
-        item =>
-          (item.kind === 'yaml' && item.origin && item.origin !== 'sphere') ||
-          (item.kind === 'url' && item.transform === 'done')
-      )
-      .map(item => deleteYamlPricing(`${item.id}.yaml`));
-    Promise.all(storedYamls).catch(() => console.error('Failed to delete yamls'));
+    if (!playground) {
+      const storedYamls = contextItems
+        .filter(
+          item =>
+            (item.kind === 'yaml' && item.origin && item.origin !== 'sphere') ||
+            (item.kind === 'url' && item.transform === 'done')
+        )
+        .map(item => deleteYamlPricing(`${item.id}.yaml`));
+      Promise.all(storedYamls).catch(() => console.error('Failed to delete yamls'));
+    }
   };
 
   const handleFilesSelected = (files: FileList | null) => {
@@ -190,17 +211,28 @@ function PricingAssistantPage({ playground = false }: Props) {
       });
   };
 
+  const mapPresetContexttoContext = (contextInput: PresetContextInput): ContextInputType => {
+    if (contextInput.kind === 'url') {
+      return {
+        kind: 'url',
+        label: contextInput.label,
+        value: contextInput.value,
+        url: contextInput.value,
+        transform: 'not-started',
+        origin: 'preset',
+      };
+    }
+
+    return { kind: 'yaml', label: contextInput.label, value: contextInput.value, origin: 'preset' };
+  };
+
   const handlePromptSelect = (preset: PromptPreset) => {
     setQuestion(preset.question);
     if (preset.context.length > 0) {
-      addContextItems(
-        preset.context.map(entry => ({
-          kind: entry.kind,
-          label: entry.label,
-          value: entry.value,
-          origin: 'preset',
-        }))
+      const mappedInput: ContextInputType[] = preset.context.map(entry =>
+        mapPresetContexttoContext(entry)
       );
+      addContextItems(mappedInput);
     }
   };
 
@@ -321,6 +353,12 @@ function PricingAssistantPage({ playground = false }: Props) {
           result: preset.response?.result ?? {},
         },
       };
+      if (preset.id === UseCases.AMINT) {
+        setContextItems(items =>
+          items.map(item => (item.kind === 'url' ? { ...item, transform: 'done' } : item))
+        );
+      }
+
       setMessages(messages => [...messages, message]);
     }
   };
