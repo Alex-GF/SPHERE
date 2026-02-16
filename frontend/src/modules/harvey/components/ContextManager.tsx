@@ -130,6 +130,7 @@ function ContextManager({ items, detectedUrls, onAdd, onRemove, onClear }: Props
           type="url"
           name="context-url"
           value={urlInput}
+          disabled={isPlaygroundEnabled}
           placeholder="https://example.com/pricing"
           onChange={event => {
             setUrlInput(event.target.value);
@@ -144,7 +145,7 @@ function ContextManager({ items, detectedUrls, onAdd, onRemove, onClear }: Props
           size="small"
           fullWidth
         />
-        <Button variant="contained" onClick={handleAddUrl}>
+        <Button disabled={isPlaygroundEnabled} variant="contained" onClick={handleAddUrl}>
           Add URL
         </Button>
       </Box>

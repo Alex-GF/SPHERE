@@ -3,6 +3,10 @@ import { PricingContextItem } from '../types/types';
 import { Box } from '@mui/system';
 import { grey } from '@mui/material/colors';
 import { OpenInNew } from '@mui/icons-material';
+import { usePreset } from '../hooks/usePreset';
+import usePlayground from '../hooks/usePlayground';
+import { UseCases } from '../use-cases';
+import { parseStringYamlToEncodedYaml } from '../../pricing-editor/services/export.service';
 
 const HARVEY_API_BASE_URL = import.meta.env.VITE_HARVEY_URL ?? 'http://localhost:8086';
 
@@ -47,6 +51,10 @@ function computeContextItemMetadata(pricingContextItem: PricingContextItem): str
 }
 
 function ContextManagerItem({ item, onRemove }: ContextManagerItemProps) {
+  const isPlaygroundEnabled = usePlayground();
+
+  const { preset } = usePreset();
+
   const formatSphereEditorLink = (url: string) => `/editor?pricingUrl=${url}`;
 
   const formatEditorLink = (): string => {
@@ -55,12 +63,33 @@ function ContextManagerItem({ item, onRemove }: ContextManagerItemProps) {
       case 'user':
       case 'detected':
       case 'agent':
-        return formatSphereEditorLink(`https:/${import.meta.env.VITE_SPHERE_URL}${HARVEY_API_BASE_URL}/static/${item.id}.yaml`);
+        return formatSphereEditorLink(
+          `https:/${import.meta.env.VITE_SPHERE_URL}${HARVEY_API_BASE_URL}/static/${item.id}.yaml`
+        );
       case 'sphere':
         return formatSphereEditorLink(item.yamlPath);
       default:
         return '#';
     }
+  };
+
+  const formatPlaygroundModeLink = (): string => {
+
+    if (!preset) {
+      return '';
+    }
+
+    if (preset.id === UseCases.AMINT) {
+      const url =
+        'https://gist.githubusercontent.com/pgmarc/570f51424ef80fcb720f9bc656645a89/raw/549721cb3e7d14a6cc91555ab827e167dfa4f51c/protonmail-2026.yaml';
+      return formatSphereEditorLink(url);
+    }
+
+    if (item.kind === 'yaml') {
+      return `/editor?pricing=${parseStringYamlToEncodedYaml(item.value)}`;
+    }
+
+    return "#"
   };
 
   const isSphereEditorLinkEnabled =
@@ -98,7 +127,7 @@ function ContextManagerItem({ item, onRemove }: ContextManagerItemProps) {
             size="small"
             variant="text"
             target="_blank"
-            href={formatEditorLink()}
+            href={!isPlaygroundEnabled ? formatEditorLink() : formatPlaygroundModeLink()}
             startIcon={<OpenInNew />}
           >
             Open in editor
