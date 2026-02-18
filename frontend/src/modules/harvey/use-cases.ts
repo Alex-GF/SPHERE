@@ -151,7 +151,7 @@ export const USE_CASES: PromptPreset[] = [
     description:
       'Given that an user wants to achieve X. Determine the cheaper subscription between SaaS',
     question:
-      'I need to perform priority support for issues. Compare the prices of ClickUp and Trello to determine which is cheaper for this specific use.',
+      'I need to get priority support for issues. Compare the prices of ClickUp and Trello to determine which is cheaper for this specific use.',
     context: [
       {
         kind: 'yaml',
