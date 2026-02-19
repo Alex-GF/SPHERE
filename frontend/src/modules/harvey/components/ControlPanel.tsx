@@ -15,9 +15,11 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 
 import ContextManager from './ContextManager';
-import type { ContextInputType, PricingContextItem } from '../types/types';
+import type { ContextInputType, PricingContextItem, PromptPreset } from '../types/types';
 import SearchPricings from './SearchPricings';
 import { grey } from '@mui/material/colors';
+import usePlayground from '../hooks/usePlayground';
+import UseCaseSelect from './UseCaseSelect';
 
 interface Props {
   question: string;
@@ -25,6 +27,7 @@ interface Props {
   contextItems: PricingContextItem[];
   isSubmitting: boolean;
   isSubmitDisabled: boolean;
+  onPresetSelect: (preset: PromptPreset) => void;
   onQuestionChange: (value: string) => void;
   onSubmit: (event: FormEvent) => void;
   onFileSelect: (files: FileList | null) => void;
@@ -47,8 +50,10 @@ function ControlPanel({
   onContextRemove,
   onSphereContextRemove,
   onContextClear,
+  onPresetSelect
 }: Props) {
   const [showPricingModal, setPricingModal] = useState<boolean>(false);
+  const isPlaygroundEnabled = usePlayground();
 
   const handleQuestionChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     onQuestionChange(event.target.value);
@@ -63,12 +68,14 @@ function ControlPanel({
       onSubmit={onSubmit}
       sx={{ display: 'flex', flexDirection: 'column', gap: 3, p: 2 }}
     >
+      {isPlaygroundEnabled && <UseCaseSelect onPresetSelect={onPresetSelect} />}
       <TextField
         label="Question"
         name="question"
         required
         multiline
         rows={4}
+        disabled={isPlaygroundEnabled}
         value={question}
         onChange={handleQuestionChange}
         placeholder="Which is the best available subscription for a team of five users?"
@@ -87,60 +94,75 @@ function ControlPanel({
         onClear={onContextClear}
       />
 
-      <Typography variant="h6" component="h2" sx={{ fontWeight: 600, mb: 2, color: grey[800] }}>
-        Add Pricing Context
-      </Typography>
+      {!isPlaygroundEnabled && (
+        <Typography variant="h6" component="h2" sx={{ fontWeight: 600, mb: 2, color: grey[800] }}>
+          Add Pricing Context
+        </Typography>
+      )}
 
-      <Stack direction="row" spacing={2} divider={<Divider orientation="vertical" flexItem />}>
-        <Box component="section">
-          <Button variant="outlined" component="label" fullWidth>
-            Select archives
-            <input
-              type="file"
-              accept=".yaml,.yml"
-              multiple
-              hidden
-              onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                const files = event.target.files ?? null;
-                onFileSelect(files);
-              }}
-            />
-          </Button>
-          <Typography variant="h6" component="h3" sx={{ fontWeight: 600, mb: 2, color: grey[800] }}>
-            Upload pricing YAML (optional)
-          </Typography>
-          <Typography variant="body1">
-            Uploaded YAMLs appear in the pricing context above so you can remove them at any time.
-          </Typography>
-        </Box>
+      {!isPlaygroundEnabled && (
+        <Stack direction="row" spacing={2} divider={<Divider orientation="vertical" flexItem />}>
+          <Box component="section">
+            <Button variant="outlined" component="label" fullWidth>
+              Select archives
+              <input
+                type="file"
+                accept=".yaml,.yml"
+                multiple
+                hidden
+                onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                  const files = event.target.files ?? null;
+                  onFileSelect(files);
+                }}
+              />
+            </Button>
+            <Typography
+              variant="h6"
+              component="h3"
+              sx={{ fontWeight: 600, mb: 2, color: grey[800] }}
+            >
+              Upload pricing YAML (optional)
+            </Typography>
+            <Typography variant="body1">
+              Uploaded YAMLs appear in the pricing context above so you can remove them at any time.
+            </Typography>
+          </Box>
 
-        <Box component="section">
-          <Button variant="outlined" onClick={handleOpenModal} fullWidth>
-            Search pricings
-          </Button>
-          <Typography variant="h6" component="h3" sx={{ fontWeight: 600, mb: 2, color: grey[800] }}>
-            Add SPHERE iPricing (optional)
-          </Typography>
-          <Typography variant="body1">
-            Add iPricings with our SPHERE integration (our iPricing repository).
-          </Typography>
-          <Typography variant="body1">
-            You can further customize the search if you type a pricing name in the search bar.
-          </Typography>
+          <Box component="section">
+            <Button variant="outlined" onClick={handleOpenModal} fullWidth>
+              Search pricings
+            </Button>
+            <Typography
+              variant="h6"
+              component="h3"
+              sx={{ fontWeight: 600, mb: 2, color: grey[800] }}
+            >
+              Add SPHERE iPricing (optional)
+            </Typography>
+            <Typography variant="body1">
+              Add iPricings with our SPHERE integration (our iPricing repository).
+            </Typography>
+            <Typography variant="body1">
+              You can further customize the search if you type a pricing name in the search bar.
+            </Typography>
 
-          <Dialog maxWidth="lg" fullWidth open={showPricingModal} onClose={handleCloseModal}>
-            <DialogActions>
-              <IconButton aria-label="close" onClick={handleCloseModal}>
-                <CloseIcon />
-              </IconButton>
-            </DialogActions>
-            <DialogTitle>Search Pricings</DialogTitle>
-            <DialogContent>
-              <SearchPricings onContextAdd={onContextAdd} onContextRemove={onSphereContextRemove} />
-            </DialogContent>
-          </Dialog>
-        </Box>
-      </Stack>
+            <Dialog maxWidth="lg" fullWidth open={showPricingModal} onClose={handleCloseModal}>
+              <DialogActions>
+                <IconButton aria-label="close" onClick={handleCloseModal}>
+                  <CloseIcon />
+                </IconButton>
+              </DialogActions>
+              <DialogTitle>Search Pricings</DialogTitle>
+              <DialogContent>
+                <SearchPricings
+                  onContextAdd={onContextAdd}
+                  onContextRemove={onSphereContextRemove}
+                />
+              </DialogContent>
+            </Dialog>
+          </Box>
+        </Stack>
+      )}
     </Box>
   );
 }

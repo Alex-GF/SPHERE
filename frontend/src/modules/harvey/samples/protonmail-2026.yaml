@@ -1,0 +1,405 @@
+syntaxVersion: "3.0"
+saasName: Proton Mail
+createdAt: 2026-02-11
+version: "2026-02-11"
+currency: EUR
+url: https://web.archive.org/web/20260211182642/https://proton.me/mail/pricing
+tags:
+  - Proton Mail
+  - Proton Calendar
+  - Proton Drive
+  - Proton VPN
+  - Proton Pass
+  - Proton Wallet
+features:
+  storage:
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  priorityCustomerSupport:
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  easySwitchImportAssistant:
+    description: Quickly transfer your emails, calendars or contacts from any provider.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: WEB_SAAS
+    pricingUrls:
+      - https://mail.google.com
+  protonSentinelProgram:
+    description: Provides the highest level of account security protection and specialist support.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  emergencyAccess:
+    description: Grant permission to trusted contacts to securely access your
+      Proton account in an emergency, after a set period of time.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  darkWebMonitoring:
+    description: Dark Web Monitoring scans hidden parts of the internet for Proton Mail email addresses that have ended up in illegal data markets. If our system detects a breach, you'll
+      receive a Security Center alert along with actions you can take to mitigate the risk.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: GUARANTEE
+  emailAdresses:
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+    tag: Proton Mail
+  customEmailDomains:
+    description: Use your own custom email domain addresses, e.g., you@yourname.com
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+    tag: Proton Mail
+  messages:
+    description: Bulk promotional or programmatic email sending is currently not supported.
+      We recommend using a dedicated email service provider for this use case.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+    tag: Proton Mail
+  folders:
+    description: Keep your inbox organized with folders.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+    tag: Proton Mail
+  labels:
+    description: Labels are simple tags you can add to messages to make them easier to find or to apply filters to.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+    tag: Proton Mail
+  customFilters:
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+    tag: Proton Mail
+  attachments:
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+    tag: Proton Mail
+  short@pm.meAddress:
+    description: Activate an extra and free email alias yourname@pm.me, easy to remember and share.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+    tag: Proton Mail
+  contactGroups:
+    description: Send emails to large groups quickly and easily by creating as many contact groups as you need (up to 100 contacts per group).
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+    tag: Proton Mail
+  emailClientSupport:
+    description: Proton Mail supports desktop clients such as Outlook, Apple Mail, Thunderbird, etc. via Proton Mail Bridge.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+    tag: Proton Mail
+  autoReply:
+    description: Allows you to set up automatic responses (auto-reply) for your incoming messages.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+    tag: Proton Mail
+  catchAllEmail:
+    description: Ensures you receive all emails sent to your domain, even if the email address doesn't exist, no longer exists, or has a typo.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+    tag: Proton Mail
+  automaticForwarding:
+    description: Automatically forward emails from Proton Mail to any other account.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+    tag: Proton Mail
+  autoDeleteSpamAndTrash:
+    description: Automatically clear out messages older than 30 days from Trash and Spam.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+    tag: Proton Mail
+  scheduleAndSnoozeEmails:
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+    tag: Proton Mail
+  protonScribeWritingAssistant:
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+    tag: Proton Mail
+  desktopApp:
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+    tag: Proton Mail
+  htmlSignatures:
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+    tag: Proton Mail
+  endToEndEncryption:
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+    tag: Proton Mail
+  passwordProtectedEmails:
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+    tag: Proton Mail
+  encryptedContactDetails:
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+    tag: Proton Mail
+  hideMyEmailAliases:
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+    tag: Proton Mail    
+usageLimits:
+  storageLimit:
+    description: Storage space is shared across Proton Mail, Proton Calendar, and Proton Drive.
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: GB
+    type: NON_RENEWABLE
+    trackable: true
+    linkedFeatures:
+      - storage
+  usersLimit:
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: user
+    type: NON_RENEWABLE
+    trackable: true
+  emailAdressesLimit:
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: email
+    type: NON_RENEWABLE
+    trackable: true
+    linkedFeatures:
+      - emailAdresses
+  customEmailDomainsLimit:
+    valueType: NUMERIC
+    defaultValue: 0
+    unit: domain
+    type: NON_RENEWABLE
+    trackable: true
+    linkedFeatures:
+      - customEmailDomains
+  messagesLimit:
+    valueType: NUMERIC
+    defaultValue: 150
+    unit: message
+    type: RENEWABLE
+    period:
+      value: 1
+      unit: DAY
+    linkedFeatures:
+      - messages
+  foldersLimit:
+    valueType: NUMERIC
+    defaultValue: 3
+    unit: folder
+    type: NON_RENEWABLE
+    trackable: true
+    linkedFeatures:
+      - folders
+  labelsLimit:
+    valueType: NUMERIC
+    defaultValue: 3
+    unit: label
+    type: NON_RENEWABLE
+    trackable: true
+    linkedFeatures:
+      - labels
+  customFiltersLimit:
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: filter
+    type: NON_RENEWABLE
+    trackable: true
+    linkedFeatures:
+      - customFilters
+  attachmentsLimit:
+    valueType: NUMERIC
+    defaultValue: 25
+    unit: MB
+    type: NON_RENEWABLE
+    trackable: false
+    linkedFeatures:
+      - attachments
+  hideMyEmailAliasesLimit:
+    valueType: NUMERIC
+    defaultValue: 10
+    unit: email
+    type: NON_RENEWABLE
+    trackable: true
+    linkedFeatures:
+      - hideMyEmailAliases
+plans:
+  PROTON_FREE:
+    price: 0
+    unit: user/month
+    features: null
+    usageLimits: null
+  MAIL_PLUS:
+    price: 4.99
+    unit: user/month
+    features:
+      priorityCustomerSupport:
+        value: true
+      emergencyAccess:
+        value: true
+      darkWebMonitoring:
+        value: true
+      customEmailDomains:
+        value: true
+      desktopApp:
+        value: true
+      short@pm.meAddress:
+        value: true
+      contactGroups:
+        value: true
+      emailClientSupport:
+        value: true
+      autoReply:
+        value: true
+      catchAllEmail:
+        value: true
+      automaticForwarding:
+        value: true
+      autoDeleteSpamAndTrash:
+        value: true
+      scheduleAndSnoozeEmails:
+        value: true
+    usageLimits:
+      storageLimit:
+        value: 15
+      emailAdressesLimit:
+        value: 10
+      customEmailDomainsLimit:
+        value: 1
+      messagesLimit:
+        value: .inf
+      foldersLimit:
+        value: .inf
+      labelsLimit:
+        value: .inf
+      customFiltersLimit:
+        value: .inf
+  PROTON_UNLIMITED:
+    price: 9.99
+    unit: user/month
+    features:
+      priorityCustomerSupport:
+        value: true
+      protonSentinelProgram:
+        value: true
+      emergencyAccess:
+        value: true
+      darkWebMonitoring:
+        value: true
+      desktopApp:
+        value: true
+      customEmailDomains:
+        value: true
+      short@pm.meAddress:
+        value: true
+      contactGroups:
+        value: true
+      emailClientSupport:
+        value: true
+      autoReply:
+        value: true
+      catchAllEmail:
+        value: true
+      automaticForwarding:
+        value: true
+      autoDeleteSpamAndTrash:
+        value: true
+      scheduleAndSnoozeEmails:
+        value: true
+    usageLimits:
+      storageLimit:
+        value: 500
+      emailAdressesLimit:
+        value: 15
+      customEmailDomainsLimit:
+        value: 3
+      messagesLimit:
+        value: .inf
+      foldersLimit:
+        value: .inf
+      labelsLimit:
+        value: .inf
+      customFiltersLimit:
+        value: .inf
+      hideMyEmailAliasesLimit:
+        value: .inf
+  PROTON_DUO:
+    price: 19.99
+    unit: user/month
+    features:
+      priorityCustomerSupport:
+        value: true
+      protonSentinelProgram:
+        value: true
+      emergencyAccess:
+        value: true
+      darkWebMonitoring:
+        value: true
+      desktopApp:
+        value: true
+      customEmailDomains:
+        value: true
+      short@pm.meAddress:
+        value: true
+      contactGroups:
+        value: true
+      emailClientSupport:
+        value: true
+      autoReply:
+        value: true
+      catchAllEmail:
+        value: true
+      automaticForwarding:
+        value: true
+      autoDeleteSpamAndTrash:
+        value: true
+      scheduleAndSnoozeEmails:
+        value: true
+      protonScribeWritingAssistant:
+        value: true
+    usageLimits:
+      storageLimit:
+        value: 2000
+      usersLimit:
+        value: 2
+      emailAdressesLimit:
+        value: 30
+      customEmailDomainsLimit:
+        value: 3
+      messagesLimit:
+        value: .inf
+      foldersLimit:
+        value: .inf
+      labelsLimit:
+        value: .inf
+      customFiltersLimit:
+        value: .inf
+      hideMyEmailAliasesLimit:
+        value: .inf

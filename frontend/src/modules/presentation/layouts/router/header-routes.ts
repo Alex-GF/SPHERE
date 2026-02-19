@@ -20,6 +20,11 @@ export const headerRoutes: HeaderRoute[] = [
         disabled: false,
         to: '/harvey',
       },
+      {
+        name: 'HARVEY (Playground)',
+        disabled: false,
+        to: 'harvey-play',
+      },
     ],
   },
   {

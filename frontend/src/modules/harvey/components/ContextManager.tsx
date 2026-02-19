@@ -4,6 +4,7 @@ import { grey } from '../../core/theme/palette';
 
 import type { ContextInputType, PricingContextItem, UrlContextItemInput } from '../types/types';
 import ContextManagerItem from './ContextManagerItem';
+import usePlayground from '../hooks/usePlayground';
 
 interface Props {
   items: PricingContextItem[];
@@ -16,6 +17,7 @@ interface Props {
 function ContextManager({ items, detectedUrls, onAdd, onRemove, onClear }: Props) {
   const [urlInput, setUrlInput] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const isPlaygroundEnabled = usePlayground()
 
   const availableDetected = useMemo(
     () =>
@@ -60,13 +62,13 @@ function ContextManager({ items, detectedUrls, onAdd, onRemove, onClear }: Props
           <Typography variant="body2" sx={{ color: grey[600] }}>
             Add URLs or YAML exports to ground H.A.R.V.E.Y.'s answers.
           </Typography>
-          <Alert severity="info" sx={{ mt: 1 }}>
+          {!isPlaygroundEnabled && <Alert severity="info" sx={{ mt: 1 }}>
             All pricings detected or added via URL will be modeled automatically; this process can
             take up to 30-60 minutes.
-          </Alert>
-          <Alert severity="warning" sx={{ mt: 1 }}>
+          </Alert>}
+          {!isPlaygroundEnabled && <Alert severity="warning" sx={{ mt: 1 }}>
             Due to temporary production limits, URL extraction might trigger a "LoadError". Please wait for the loading icon in the pricing context box to disappear; once complete, you can proceed to ask questions normally.
-          </Alert>
+          </Alert>}
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <Typography variant="body2" sx={{ color: grey[600] }}>
@@ -128,6 +130,7 @@ function ContextManager({ items, detectedUrls, onAdd, onRemove, onClear }: Props
           type="url"
           name="context-url"
           value={urlInput}
+          disabled={isPlaygroundEnabled}
           placeholder="https://example.com/pricing"
           onChange={event => {
             setUrlInput(event.target.value);
@@ -142,7 +145,7 @@ function ContextManager({ items, detectedUrls, onAdd, onRemove, onClear }: Props
           size="small"
           fullWidth
         />
-        <Button variant="contained" onClick={handleAddUrl}>
+        <Button disabled={isPlaygroundEnabled} variant="contained" onClick={handleAddUrl}>
           Add URL
         </Button>
       </Box>
