@@ -1,0 +1,347 @@
+syntaxVersion: '2.1'
+saasName: Trello
+createdAt: '2022-11-29'
+version: '2022-11-29'
+billing:
+  monthly: 1.0
+  annual: 0.883
+currency: USD
+url: https://web.archive.org/web/20221129200438/https://www.trello.com/pricing/
+features:
+  cards:
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  builtinAutomation:
+    description: Powerful no-code automation is built into every Trello board
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  assigneeDates:
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  dueDates:
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  iosApp:
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  androidApp:
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  desktopApp:
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  activityLogs:
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  trelloTemplates:
+    description: Give your team a blueprint for success with tried-and-true templates from the Trello community
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  2factorAuthentication:
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  mobileDeviceManagement:
+    description: Enforce security controls on mobile app usage through
+      built-in mobile device management (MDM) support for iOS and Android.
+    valueType: BOOLEAN
+    defaultValue: true
+    type: INTEGRATION
+    integrationType: EXTERNAL_DEVICE
+  powerUps:
+    description: "Integrate with more than 200+ apps and tools your team depends on
+      like Slack, Google Drive, Salesforce, Dropbox and more directly into your Trello boards.
+      (Note: Some Power-Ups by our partners require an additional subscription fee.)"
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  boards:
+    valueType: BOOLEAN
+    defaultValue: true
+    type: DOMAIN
+  advancedChecklists:
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  customFields:
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  dashboardView:
+    description: Trello’s reporting tool lets you access real-time insights and
+      communicate your team’s progress in a visual and meaningful way.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  timelineView:
+    description: Plan your project, stay on top of every sprint, and see how
+      all of the moving parts fit together over time with Timeline.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  tableView:
+    description: Bring a clearer perspective to all the work happening across a single board in a
+      list format where you can create and edit cards in just a few clicks
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  calendarView:
+    description: Calendar displays start dates, due dates, and advanced checklist
+      items so you can see what lies ahead for your project and stay on top of today’s to-dos
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  mapView:
+    description: Plan an offsite, scout new office locations, or manage product
+      distribution points by adding locations to your cards and visualizing them geographically on a map
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  workspaceTableView:
+    description: See your projects and tasks across Workspaces and boards in a
+      spreadsheet-style list that can be sorted and filtered to drill down
+      to exactly the cards you need to see
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  workspaceCalendarView:
+    description: Workspace calendar displays items with start dates and due dates
+      across your projects and boards, so you can see what lies ahead for all your teamwork
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INFORMATION
+  workspaceLevelTemplates:
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  commandRunAdministration:
+    description: Premium or Enterprise administrators can disable commands on
+      behalf of other users, and perform other command maintenance
+    valueType: BOOLEAN
+    defaultValue: false
+    type: AUTOMATION
+    automationType: TASK_AUTOMATION
+  boardCollections:
+    description: Premium and Enterprise teams can use Board Collections to
+     easily group boards together whether by Workspace, department, or major projec
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  prioritySupport:
+    description: Customers with Premium or Enterprise get priority email support,
+      meaning we’ll make sure your questions get answered within one business day
+    valueType: BOOLEAN
+    defaultValue: false
+    type: SUPPORT
+  observers:
+    description: Observers are a Premium security setting that limit a user’s actions within a board.
+    valueType: BOOLEAN
+    defaultValue: false
+    type: DOMAIN
+  domainRestrictedInvites:
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  deactivateMembers:
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  simpleDataExport:
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  enforce2FA:
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  singleSignOn:
+    description: Atlassian Access is a separate subscription that your company
+      can enable across all your Atlassian products and starts at $3/month/user
+    valueType: BOOLEAN
+    defaultValue: false
+    type: INTEGRATION
+    integrationType: IDENTITY_PROVIDER
+  workspaces:
+    valueType: BOOLEAN
+    defaultValue: true
+    type: MANAGEMENT
+  powerUpAdministration:
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  attachmentRestrictions:
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  organizationWidePermissions:
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  organizationVisibleBoards:
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+  publicBoardManagement:
+    valueType: BOOLEAN
+    defaultValue: false
+    type: MANAGEMENT
+usageLimits:
+  boardsLimit:
+    valueType: NUMERIC
+    defaultValue: 10
+    unit: board/workspace
+    type: NON_RENEWABLE
+    linkedFeatures:
+    - boards
+  powerUpsLimit:
+    valueType: NUMERIC
+    defaultValue: 1_000_000_000
+    unit: Power-up/board
+    type: NON_RENEWABLE
+    linkedFeatures:
+    - powerUps
+  workspacesLimit:
+    valueType: NUMERIC
+    defaultValue: 1
+    unit: workspace
+    type: NON_RENEWABLE
+    linkedFeatures:
+    - workspaces
+plans:
+  FREE:
+    price: 0
+    unit: user/month
+    features: null
+    usageLimits: null
+  STANDARD:
+    price: 5
+    unit: user/month
+    features:
+      advancedChecklists:
+        value: true
+      customFields:
+        value: true
+    usageLimits:
+      boardsLimit:
+        value: .inf
+  PREMIUM:
+    price: 10
+    unit: user/month
+    features:
+      advancedChecklists:
+        value: true
+      customFields:
+        value: true
+      dashboardView:
+        value: true
+      timelineView:
+        value: true
+      tableView:
+        value: true
+      calendarView:
+        value: true
+      mapView:
+        value: true
+      workspaceTableView:
+        value: true
+      workspaceCalendarView:
+        value: true
+      workspaceLevelTemplates:
+        value: true
+      commandRunAdministration:
+        value: true
+      boardCollections:
+        value: true
+      prioritySupport:
+        value: true
+      observers:
+        value: true
+      domainRestrictedInvites:
+        value: true
+      deactivateMembers:
+        value: true
+      simpleDataExport:
+        value: true
+    usageLimits:
+      boardsLimit:
+        value: .inf
+  ENTERPRISE:
+    price: 17.50
+    unit: user/month
+    features:
+      advancedChecklists:
+        value: true
+      customFields:
+        value: true
+      dashboardView:
+        value: true
+      timelineView:
+        value: true
+      tableView:
+        value: true
+      calendarView:
+        value: true
+      mapView:
+        value: true
+      workspaceTableView:
+        value: true
+      workspaceCalendarView:
+        value: true
+      workspaceLevelTemplates:
+        value: true
+      commandRunAdministration:
+        value: true
+      boardCollections:
+        value: true
+      prioritySupport:
+        value: true
+      observers:
+        value: true
+      domainRestrictedInvites:
+        value: true
+      deactivateMembers:
+        value: true
+      simpleDataExport:
+        value: true
+      singleSignOn:
+        value: true
+      powerUpAdministration:
+        value: true
+      attachmentRestrictions:
+        value: true
+      organizationWidePermissions:
+        value: true
+      organizationVisibleBoards:
+        value: true
+      publicBoardManagement:
+        value: true
+    usageLimits:
+      boardsLimit:
+        value: .inf
+      workspacesLimit:
+        value: .inf
+addOns:
+  ATLASSIAN_ACCESS:
+    description: Atlassian Access is a separate subscription that your company can
+      enable across all your Atlassian products and starts at $4/month/user.
+      Trello is an Atlassian product
+    price: 4
+    unit: user/month
+    availableFor:
+      - FREE
+      - STANDARD
+      - PREMIUM
+    features:
+      enforce2FA:
+        value: true
+      singleSignOn:
+        value: true

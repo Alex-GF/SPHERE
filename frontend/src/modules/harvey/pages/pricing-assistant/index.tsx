@@ -1,5 +1,13 @@
 import { FormEvent, useEffect, useMemo, useState } from 'react';
-import { Box, Container, Typography, Button, Paper } from '@mui/material';
+import {
+  Box,
+  Container,
+  Typography,
+  Button,
+  Paper,
+  Alert,
+  listItemSecondaryActionClasses,
+} from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { grey } from '../../../core/theme/palette';
 
@@ -10,6 +18,7 @@ import type {
   ChatRequest,
   ContextInputType,
   NotificationUrlEvent,
+  PresetContextInput,
   PricingContextItem,
   PricingContextUrlWithId,
   PromptPreset,
@@ -25,39 +34,51 @@ import {
   extractPricingUrls,
   uploadYamlPricing,
 } from '../../utils';
+import PlaygroundProvider from '../../components/PlaygroundProvider';
+import PresetProvider from '../../components/PresetProvider';
+import {
+  playgroundMockUrlTrnasformEvent,
+  sseUrlTransformEvent,
+  UrlTransformEvent,
+} from '../../sse';
+import { UseCases } from '../../use-cases';
 
 const HARVEY_API_BASE_URL = import.meta.env.VITE_HARVEY_URL ?? 'http://localhost:8086';
 
-function PricingAssistantPage() {
+interface Props {
+  playground?: boolean;
+}
+
+function PricingAssistantPage({ playground = false }: Props) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [question, setQuestion] = useState('');
   const [contextItems, setContextItems] = useState<PricingContextItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [preset, setPreset] = useState<PromptPreset | null>(null);
+
+  const urlTransformEvent: UrlTransformEvent = !playground
+    ? sseUrlTransformEvent
+    : playgroundMockUrlTrnasformEvent;
+
+  const handleUrlNotification = (notification: NotificationUrlEvent) =>
+    setContextItems(previous =>
+      previous.map(item =>
+        item.kind === 'url' && item.id === notification.id
+          ? { ...item, transform: 'done', value: notification.yaml_content }
+          : item
+      )
+    );
 
   useEffect(() => {
-    const eventSource = new EventSource(`${HARVEY_API_BASE_URL}/events`);
-
-    eventSource.onopen = () => console.log('Connection established');
-
-    eventSource.addEventListener('url_transform', (event: MessageEvent) => {
-      const notification: NotificationUrlEvent = JSON.parse(event.data);
-      setContextItems(previous =>
-        previous.map(item =>
-          item.kind === 'url' && item.id === notification.id
-            ? { ...item, transform: 'done', value: notification.yaml_content }
-            : item
-        )
-      );
-    });
-    return () => eventSource.close();
-  }, []);
+    return urlTransformEvent.connect(handleUrlNotification);
+  }, [playground]);
 
   const detectedPricingUrls = useMemo(() => extractPricingUrls(question), [question]);
 
   const isSubmitDisabled = useMemo(() => {
     const hasQuestion = Boolean(question.trim());
-    return isLoading || !hasQuestion;
-  }, [question, isLoading]);
+    return isLoading || !hasQuestion || (playground && messages.length > 0);
+  }, [question, isLoading, messages]);
 
   const createPricingContextItems = (contextInputItems: ContextInputType[]): PricingContextItem[] =>
     contextInputItems
@@ -80,17 +101,19 @@ function PricingAssistantPage() {
 
     const newPricingContextItems: PricingContextItem[] = createPricingContextItems(inputs);
 
-    const uploadPromises = newPricingContextItems
-      .filter(
-        item =>
-          item.kind === 'yaml' &&
-          item.origin &&
-          (item.origin === 'user' || item.origin === 'preset')
-      )
-      .map(item => uploadYamlPricing(`${item.id}.yaml`, item.value));
+    if (!playground) {
+      const uploadPromises = newPricingContextItems
+        .filter(
+          item =>
+            item.kind === 'yaml' &&
+            item.origin &&
+            (item.origin === 'user' || item.origin === 'preset')
+        )
+        .map(item => uploadYamlPricing(`${item.id}.yaml`, item.value));
 
-    if (uploadPromises.length > 0) {
-      Promise.all(uploadPromises).catch(err => console.error('Upload failed', err));
+      if (uploadPromises.length > 0) {
+        Promise.all(uploadPromises).catch(err => console.error('Upload failed', err));
+      }
     }
 
     setContextItems(previous => [...previous, ...newPricingContextItems]);
@@ -103,18 +126,21 @@ function PricingAssistantPage() {
   };
 
   const removeContextItem = (id: string) => {
-    const deletePromises = contextItems
-      .filter(
-        item =>
-          item.id === id &&
-          item.kind === 'yaml' &&
-          item.origin &&
-          (item.origin === 'user' || item.origin === 'preset')
-      )
-      .map(item => deleteYamlPricing(`${item.id}.yaml`));
-    if (deletePromises.length > 0) {
-      Promise.all(deletePromises);
+    if (!playground) {
+      const deletePromises = contextItems
+        .filter(
+          item =>
+            item.id === id &&
+            item.kind === 'yaml' &&
+            item.origin &&
+            (item.origin === 'user' || item.origin === 'preset')
+        )
+        .map(item => deleteYamlPricing(`${item.id}.yaml`));
+      if (deletePromises.length > 0) {
+        Promise.all(deletePromises);
+      }
     }
+
     setContextItems(previous => previous.filter(item => item.id !== id));
   };
 
@@ -126,14 +152,16 @@ function PricingAssistantPage() {
 
   const clearContext = () => {
     setContextItems([]);
-    const storedYamls = contextItems
-      .filter(
-        item =>
-          (item.kind === 'yaml' && item.origin && item.origin !== 'sphere') ||
-          (item.kind === 'url' && item.transform === 'done')
-      )
-      .map(item => deleteYamlPricing(`${item.id}.yaml`));
-    Promise.all(storedYamls).catch(() => console.error('Failed to delete yamls'));
+    if (!playground) {
+      const storedYamls = contextItems
+        .filter(
+          item =>
+            (item.kind === 'yaml' && item.origin && item.origin !== 'sphere') ||
+            (item.kind === 'url' && item.transform === 'done')
+        )
+        .map(item => deleteYamlPricing(`${item.id}.yaml`));
+      Promise.all(storedYamls).catch(() => console.error('Failed to delete yamls'));
+    }
   };
 
   const handleFilesSelected = (files: FileList | null) => {
@@ -183,17 +211,28 @@ function PricingAssistantPage() {
       });
   };
 
+  const mapPresetContexttoContext = (contextInput: PresetContextInput): ContextInputType => {
+    if (contextInput.kind === 'url') {
+      return {
+        kind: 'url',
+        label: contextInput.label,
+        value: contextInput.value,
+        url: contextInput.value,
+        transform: 'not-started',
+        origin: 'preset',
+      };
+    }
+
+    return { kind: 'yaml', label: contextInput.label, value: contextInput.value, origin: 'preset' };
+  };
+
   const handlePromptSelect = (preset: PromptPreset) => {
     setQuestion(preset.question);
     if (preset.context.length > 0) {
-      addContextItems(
-        preset.context.map(entry => ({
-          kind: entry.kind,
-          label: entry.label,
-          value: entry.value,
-          origin: 'preset',
-        }))
+      const mappedInput: ContextInputType[] = preset.context.map(entry =>
+        mapPresetContexttoContext(entry)
       );
+      addContextItems(mappedInput);
     }
   };
 
@@ -202,6 +241,7 @@ function PricingAssistantPage() {
     setQuestion('');
     setContextItems([]);
     setIsLoading(false);
+    setPreset(null);
   };
 
   const getUrlItems = () =>
@@ -299,67 +339,98 @@ function PricingAssistantPage() {
     }
   };
 
+  const handlePlaygroundSubmit = (event: FormEvent) => {
+    event.preventDefault();
+
+    if (preset) {
+      const message: ChatMessage = {
+        id: preset.id,
+        role: 'assistant',
+        content: preset.response?.answer ?? '',
+        createdAt: new Date().toLocaleString(),
+        metadata: {
+          plan: preset.response?.plan ?? {},
+          result: preset.response?.result ?? {},
+        },
+      };
+      if (preset.id === UseCases.AMINT) {
+        setContextItems(items =>
+          items.map(item => (item.kind === 'url' ? { ...item, transform: 'done' } : item))
+        );
+      }
+
+      setMessages(messages => [...messages, message]);
+    }
+  };
+
   return (
-    <PricingContext.Provider value={contextItems}>
-      <Container
-        maxWidth="xl"
-        sx={{ height: '100vh', display: 'flex', flexDirection: 'column', py: 3 }}
-      >
-        <Box sx={{ mb: 4 }}>
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'flex-start',
-              gap: 2,
-            }}
+    <PlaygroundProvider playground={playground}>
+      <PresetProvider presetContext={{ preset, setPreset }}>
+        <PricingContext.Provider value={contextItems}>
+          <Container
+            maxWidth="xl"
+            sx={{ height: '100vh', display: 'flex', flexDirection: 'column', py: 3 }}
           >
-            <Box>
-              <Typography variant="h4" component="h1" sx={{ fontWeight: 600, mb: 1 }}>
-                H.A.R.V.E.Y. Pricing Assistant
-              </Typography>
-              <Typography variant="body1" sx={{ color: grey[600] }}>
-                Ask about optimal subscriptions and pricing insights using the Holistic Agent for
-                Reasoning on Value and Economic analYsis (HARVEY).
-              </Typography>
+            <Box sx={{ mb: 4 }}>
+              <Box>{playground && <Alert severity="warning">Playground mode is active</Alert>}</Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'flex-start',
+                  gap: 2,
+                }}
+              >
+                <Box>
+                  <Typography variant="h4" component="h1" sx={{ fontWeight: 600, mb: 1 }}>
+                    H.A.R.V.E.Y. Pricing Assistant
+                  </Typography>
+
+                  <Typography variant="body1" sx={{ color: grey[600] }}>
+                    Ask about optimal subscriptions and pricing insights using the Holistic Agent
+                    for Reasoning on Value and Economic analYsis (HARVEY).
+                  </Typography>
+                </Box>
+                <Box sx={{ display: 'flex', gap: 1 }}>
+                  <Button variant="contained" onClick={handleNewConversation} disabled={isLoading}>
+                    New conversation
+                  </Button>
+                </Box>
+              </Box>
             </Box>
-            <Box sx={{ display: 'flex', gap: 1 }}>
-              <Button variant="contained" onClick={handleNewConversation} disabled={isLoading}>
-                New conversation
-              </Button>
-            </Box>
-          </Box>
-        </Box>
-        <Grid container spacing={2} sx={{ flex: 1, overflow: 'hidden' }}>
-          <Grid size={{ xs: 12, md: 8 }} sx={{ height: '100%' }}>
-            <Paper sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-              <ChatTranscript
-                messages={messages}
-                isLoading={isLoading}
-                promptPresets={PROMPT_PRESETS}
-                onPresetSelect={handlePromptSelect}
-              />
-            </Paper>
-          </Grid>
-          <Grid size={{ xs: 12, md: 4 }} sx={{ height: '100%', overflowY: 'auto' }}>
-            <ControlPanel
-              question={question}
-              detectedPricingUrls={detectedPricingUrls}
-              contextItems={contextItems}
-              isSubmitting={isLoading}
-              isSubmitDisabled={isSubmitDisabled}
-              onQuestionChange={setQuestion}
-              onSubmit={handleSubmit}
-              onFileSelect={handleFilesSelected}
-              onContextAdd={addContextItem}
-              onContextRemove={removeContextItem}
-              onSphereContextRemove={removeSphereContextItem}
-              onContextClear={clearContext}
-            />
-          </Grid>
-        </Grid>
-      </Container>
-    </PricingContext.Provider>
+            <Grid container spacing={2} sx={{ flex: 1, overflow: 'hidden' }}>
+              <Grid size={{ xs: 12, md: 8 }} sx={{ height: '100%' }}>
+                <Paper sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                  <ChatTranscript
+                    messages={messages}
+                    isLoading={isLoading}
+                    promptPresets={PROMPT_PRESETS}
+                    onPresetSelect={handlePromptSelect}
+                  />
+                </Paper>
+              </Grid>
+              <Grid size={{ xs: 12, md: 4 }} sx={{ height: '100%', overflowY: 'auto' }}>
+                <ControlPanel
+                  question={question}
+                  detectedPricingUrls={detectedPricingUrls}
+                  contextItems={contextItems}
+                  isSubmitting={isLoading}
+                  isSubmitDisabled={isSubmitDisabled}
+                  onQuestionChange={setQuestion}
+                  onSubmit={!playground ? handleSubmit : handlePlaygroundSubmit}
+                  onFileSelect={handleFilesSelected}
+                  onContextAdd={addContextItem}
+                  onContextRemove={removeContextItem}
+                  onSphereContextRemove={removeSphereContextItem}
+                  onContextClear={clearContext}
+                  onPresetSelect={handlePromptSelect}
+                />
+              </Grid>
+            </Grid>
+          </Container>
+        </PricingContext.Provider>
+      </PresetProvider>
+    </PlaygroundProvider>
   );
 }
 
