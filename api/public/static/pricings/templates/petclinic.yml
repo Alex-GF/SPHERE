@@ -1,6 +1,6 @@
 saasName: PetClinic
 syntaxVersion: "3.0"
-version: "latest"
+version: "1.0.0"
 createdAt: "2025-09-19"
 currency: EUR
 features:
@@ -8,14 +8,15 @@ features:
     description: Pets description
     valueType: BOOLEAN
     defaultValue: true
-    expression: subscriptionContext['pets'] < pricingContext['usageLimits']['maxPets']
-    serverExpression: subscriptionContext['pets'] <= pricingContext['usageLimits']['maxPets']
+    expression: pricingContext['features']['pets'] && subscriptionContext['maxPets'] < pricingContext['usageLimits']['maxPets']
+    serverExpression: pricingContext['features']['pets'] && subscriptionContext['maxPets'] <= pricingContext['usageLimits']['maxPets']
     type: DOMAIN
   visits:
     description: visits description
     valueType: BOOLEAN
     defaultValue: true
-    expression: subscriptionContext['visits'] < pricingContext['usageLimits']['maxVisitsPerMonthAndPet']
+    expression: pricingContext['features']['visits'] && subscriptionContext['maxVisitsPerMonthAndPet'] < pricingContext['usageLimits']['maxVisitsPerMonthAndPet']
+    serverExpression: pricingContext['features']['visits'] && subscriptionContext['maxVisitsPerMonthAndPet'] <= pricingContext['usageLimits']['maxVisitsPerMonthAndPet']
     type: DOMAIN
   supportPriority:
     description: supportPriority description
