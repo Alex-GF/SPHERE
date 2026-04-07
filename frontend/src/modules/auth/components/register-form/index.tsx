@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography, TextField, Button, Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { primary } from '../../../core/theme/palette';
 import { validateRegister } from '../../utils/validators/register-validators';
 import { registerUser } from '../../api/usersApi';
 import { useAuth } from '../../hooks/useAuth';
@@ -62,261 +60,90 @@ const RegisterForm: React.FC = () => {
   }
 
   return (
-    <Box
-      component="form"
+    <form
       onSubmit={handleRegister}
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 2,
-        width: '95dvw',
-        maxWidth: 550,
-        backgroundColor: '#fff',
-        padding: 3,
-        borderRadius: 2.5,
-        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
-        position: 'relative',
-      }}
+      className="relative flex w-[95dvw] max-w-[550px] flex-col gap-2 rounded-[20px] bg-white p-3 shadow-[0px_4px_10px_rgba(0,0,0,0.1)]"
     >
       {/* Title */}
-      <Typography
-        variant="h5"
-        sx={{
-          fontSize: '40px',
-          color: 'royalblue',
-          fontWeight: 600,
-          letterSpacing: '-1px',
-          display: 'flex',
-          alignItems: 'center',
-          position: 'relative',
-          pl: '30px',
-          '&::before': {
-            content: '""',
-            position: 'absolute',
-            height: '18px',
-            width: '18px',
-            borderRadius: '50%',
-            left: 0,
-            backgroundColor: 'royalblue',
-          },
-          '&::after': {
-            content: '""',
-            position: 'absolute',
-            height: '18px',
-            width: '18px',
-            borderRadius: '50%',
-            left: 0,
-            backgroundColor: 'royalblue',
-            animation: 'pulse 1s linear infinite',
-          },
-        }}
-      >
+      <h1 className="relative flex items-center pl-[30px] text-[40px] font-semibold tracking-[-1px] text-[royalblue]">
+        <span className="absolute left-0 h-[18px] w-[18px] rounded-full bg-[royalblue]" />
+        <span className="absolute left-0 h-[18px] w-[18px] rounded-full bg-[royalblue] animate-register-pulse" />
         Register
-      </Typography>
+      </h1>
 
       {errors.length > 0 ? (
-        <Box
-          sx={{
-            width: '100%',
-            borderRadius: '20px',
-            backgroundColor: 'rgba(255,0,0,0.8)',
-            color: 'white',
-            p: 2,
-            mb: 2,
-            textAlign: 'center',
-          }}
-        >
+        <div className="mb-2 w-full rounded-[20px] bg-[rgba(255,0,0,0.8)] p-2 text-center text-white">
           {errors.map((error, index) => (
-            <Typography key={index}>{error}</Typography>
+            <p key={index}>{error}</p>
           ))}
-        </Box>
+        </div>
       ) : (
-        <Typography
-          sx={{
-            fontSize: '16px',
-            color: 'rgba(88, 87, 87, 0.822)',
-          }}
-        >
+        <p className="text-base text-[rgba(88,87,87,0.822)]">
           Signup now and get full access SPHERE 🥳
-        </Typography>
+        </p>
       )}
 
       {/* Name Fields */}
-      <Grid container spacing={1}>
-        <Grid item xs={6}>
-          <TextField
-            required
-            label="Firstname"
-            variant="outlined"
-            name="firstName"
-            fullWidth
-            slotProps={{
-              input: {
-                sx: {
-                  borderRadius: 1.25,
-                },
-              },
-            }}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <TextField
-            required
-            label="Lastname"
-            variant="outlined"
-            name="lastName"
-            fullWidth
-            slotProps={{
-              input: {
-                sx: {
-                  borderRadius: 1.25,
-                },
-              },
-            }}
-          />
-        </Grid>
-      </Grid>
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+        <input required placeholder="Firstname" type="text" name="firstName" className="w-full rounded-[10px] border border-sphere-grey-300 px-3 py-2 outline-none focus:border-sphere-primary-700" />
+        <input required placeholder="Lastname" type="text" name="lastName" className="w-full rounded-[10px] border border-sphere-grey-300 px-3 py-2 outline-none focus:border-sphere-primary-700" />
+      </div>
 
       {/* Username Field */}
-      <TextField
+      <input
         required
-        label="Username"
+        placeholder="Username"
         type="text"
-        variant="outlined"
         name="username"
-        fullWidth
-        slotProps={{
-          input: {
-            sx: {
-              borderRadius: 1.25,
-            },
-          },
-        }}
+        className="w-full rounded-[10px] border border-sphere-grey-300 px-3 py-2 outline-none focus:border-sphere-primary-700"
       />
 
       {/* Email Field */}
-      <TextField
+      <input
         required
-        label="Email"
+        placeholder="Email"
         type="email"
-        variant="outlined"
         name="email"
-        fullWidth
-        slotProps={{
-          input: {
-            sx: {
-              borderRadius: 1.25,
-            },
-          },
-        }}
+        className="w-full rounded-[10px] border border-sphere-grey-300 px-3 py-2 outline-none focus:border-sphere-primary-700"
       />
 
       {/* Password Fields */}
-      <Grid container spacing={1}>
-        <Grid item xs={6}>
-          <TextField
-            required
-            label="Password"
-            type="password"
-            name="password"
-            variant="outlined"
-            fullWidth
-            slotProps={{
-              input: {
-                sx: {
-                  borderRadius: 1.25,
-                },
-              },
-            }}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <TextField
-            required
-            label="Confirm Password"
-            type="password"
-            variant="outlined"
-            name="confirmPassword"
-            fullWidth
-            slotProps={{
-              input: {
-                sx: {
-                  borderRadius: 1.25,
-                },
-              },
-            }}
-          />
-        </Grid>
-      </Grid>
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+        <input required placeholder="Password" type="password" name="password" className="w-full rounded-[10px] border border-sphere-grey-300 px-3 py-2 outline-none focus:border-sphere-primary-700" />
+        <input required placeholder="Confirm Password" type="password" name="confirmPassword" className="w-full rounded-[10px] border border-sphere-grey-300 px-3 py-2 outline-none focus:border-sphere-primary-700" />
+      </div>
 
-      <TextField
+      <input
         required
-        label="Phone (+1234567890)"
+        placeholder="Phone (+1234567890)"
         type="text"
-        variant="outlined"
         name="phone"
-        fullWidth
-        slotProps={{
-          input: {
-            sx: {
-              borderRadius: 1.25,
-            },
-          },
-        }}
+        className="w-full rounded-[10px] border border-sphere-grey-300 px-3 py-2 outline-none focus:border-sphere-primary-700"
       />
 
-      <TextField
-        label="Address"
+      <input
+        placeholder="Address"
         type="text"
-        variant="outlined"
         name="address"
-        fullWidth
-        slotProps={{
-          input: {
-            sx: {
-              borderRadius: 1.25,
-            },
-          },
-        }}
+        className="w-full rounded-[10px] border border-sphere-grey-300 px-3 py-2 outline-none focus:border-sphere-primary-700"
       />
 
       {/* Submit Button */}
-      <Button
+      <button
         type="submit"
-        variant="contained"
-        sx={{
-          backgroundColor: 'royalblue',
-          color: '#fff',
-          borderRadius: 1.25,
-          padding: '10px',
-          fontSize: '16px',
-          '&:hover': {
-            backgroundColor: primary[800],
-          },
-        }}
+        className="rounded-[10px] bg-[royalblue] px-[10px] py-[10px] text-base text-white transition-colors hover:bg-[#023e8a]"
       >
         Submit
-      </Button>
+      </button>
 
       {/* Signin Link */}
-      <Typography
-        sx={{
-          fontSize: '18px',
-          color: 'rgba(88, 87, 87, 0.822)',
-          textAlign: 'center',
-        }}
-      >
+      <p className="text-center text-[18px] text-[rgba(88,87,87,0.822)]">
         Already have an account?{' '}
-        <Link
-          to="/login"
-          style={{
-            color: primary[700],
-          }}
-        >
+        <Link to="/login" className="text-sphere-primary-700">
           Sign In
         </Link>
-      </Typography>
-    </Box>
+      </p>
+    </form>
   );
 };
 

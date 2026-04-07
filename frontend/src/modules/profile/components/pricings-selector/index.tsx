@@ -1,7 +1,5 @@
 // MultiSelectCards.tsx
 import { useEffect, useState } from 'react';
-//ts-ignore
-import { Grid2 } from '@mui/material';
 import SelectablePricingCard from '../selectable-pricing-card';
 import { usePricingsApi } from '../../../pricing/api/pricingsApi';
 
@@ -41,21 +39,21 @@ export default function PricingSelector({ value, onChange }: MultiSelectCardsPro
   }, [])
 
   return pricings.length > 0 ? (
-    <Grid2 container spacing={2} sx={{border: '1px solid #ccc', borderRadius: 4, padding: 2}}>
+    <div className="grid grid-cols-1 gap-2 rounded-2xl border border-[#ccc] p-2 md:grid-cols-2 lg:grid-cols-3">
       {pricings ? pricings.map((name: string) => (
-        <Grid2 key={name}>
+        <div key={name}>
           <SelectablePricingCard
             name={name}
             selected={value.includes(name)}
             onClick={() => handleCardClick(name)}
           />
-        </Grid2>
+        </div>
       ))
       :
-      <Grid2>
+      <div>
         You have no pricings without collection
-      </Grid2>
+      </div>
     }
-    </Grid2>
+    </div>
   ) : <></>;
 }

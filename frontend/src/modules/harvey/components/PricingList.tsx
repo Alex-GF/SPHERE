@@ -1,8 +1,6 @@
-import { Box, Typography } from '@mui/material';
 import { PricingSearchResultItem } from '../sphere';
 import { SphereContextItemInput } from '../types/types';
 import PricingVersions from './PricingVersions';
-import { grey } from '@mui/material/colors';
 
 interface PricingListProps {
   pricings: PricingSearchResultItem[];
@@ -15,19 +13,19 @@ function PricingsList({ pricings, onContextAdd, onContextRemove }: PricingListPr
     `${pricing.owner}-${pricing.name}-${pricing.version}-${pricing.collectionName ?? 'nocollection'}`;
 
   if (pricings.length === 0) {
-    return <Box>No pricings found</Box>;
+    return <div>No pricings found</div>;
   }
 
   return (
-    <Box>
+    <div className="space-y-4">
       {pricings.map(item => (
-        <Box key={generateKey(item)}>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Typography variant="h6" component="h3">
+        <div key={generateKey(item)} className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="flex flex-wrap items-start justify-between gap-2">
+            <h3 className="text-lg font-semibold">
               {item.collectionName ? item.collectionName + '/' + item.name : item.name}
-            </Typography>
-            <Typography variant="subtitle2" sx={{fontWeight: 600, color: grey[600]}}>Owned by: {item.owner}</Typography>
-          </Box>
+            </h3>
+            <div className="text-sm font-semibold text-slate-600">Owned by: {item.owner}</div>
+          </div>
           <PricingVersions
             owner={item.owner}
             name={item.name}
@@ -35,9 +33,9 @@ function PricingsList({ pricings, onContextAdd, onContextRemove }: PricingListPr
             onContextAdd={onContextAdd}
             onContextRemove={onContextRemove}
           />
-        </Box>
+        </div>
       ))}
-    </Box>
+    </div>
   );
 }
 

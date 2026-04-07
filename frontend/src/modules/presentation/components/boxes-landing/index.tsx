@@ -1,59 +1,30 @@
-import { Box, Container } from '@mui/system';
-import { Avatar, Card, CardContent, Grid2, Typography } from '@mui/material';
-import { flex } from '../../../core/theme/css';
-
 export default function BoxesLanding({elements, title, description, isPrimary=true}: {elements: {title: string, icon: JSX.Element, description: string}[], title: string, description?: string, isPrimary?: boolean}) {
     return (
-        <Box sx={{ width: '100dvw', ...flex({ direction: 'column' }) }}>
-          <Container maxWidth="xl">
-            <Box sx={{my: { xs: 8, sm: 12 }}}>
-                <Typography component="h2"
-                variant="h3"
-                align="center"
-                sx={{
-                    mb: 2,
-                    fontWeight: 700,
-                    fontSize: { xs: 32, sm: 40 }}}>
+        <div className="flex w-dvw flex-col">
+          <div className="mx-auto w-full max-w-[1280px] px-4">
+            <div className="my-8 sm:my-12">
+                <h2 className="mb-2 text-center text-[32px] font-bold sm:text-[40px]">
                     {title}
-                </Typography>
+                </h2>
                 
-                <Typography
-                variant="h6"
-                align="center"
-                color="text.secondary"
-                sx={{
-                    maxWidth: 'md',
-                    mx: 'auto',
-                    lineHeight: 1.6,
-                }}
-                >
+                <p className="mx-auto max-w-[768px] text-center text-lg leading-relaxed text-sphere-grey-600">
                 {description}
-                </Typography>
-            </Box>
-            <Grid2 container spacing={3} sx={{mb: {xs: 8, sm: 12}}}>
+                </p>
+            </div>
+            <div className="mb-8 grid grid-cols-1 gap-3 sm:mb-12 md:grid-cols-2 xl:grid-cols-4">
                 {elements.map((e, index) => (
-                <Grid2 size={3} key={index}>
-                    <Card sx={{
-                            minHeight: "200px",
-                            transition: 'transform 0.3s, box-shadow 0.3s',
-                            '&:hover': {
-                                transform: 'translateY(-25px)',
-                                boxShadow: 3,
-                                cursor: 'pointer'
-                            }
-                        }}>
-                    <CardContent>
-                        <Avatar sx={{ bgcolor: isPrimary?'primary.main':'secondary.main', mb: 2 }}>{e.icon}</Avatar>
-                        <Typography variant="h6" component="h3" gutterBottom>
+                <div key={index} className="min-h-[200px] rounded-lg bg-white p-4 transition duration-300 hover:translate-y-[-25px] hover:cursor-pointer hover:shadow-md">
+                    <div className={`mb-2 flex h-10 w-10 items-center justify-center rounded-full text-white ${isPrimary ? 'bg-sphere-primary-700' : 'bg-slate-700'}`}>
+                      {e.icon}
+                    </div>
+                        <h3 className="mb-2 text-xl font-semibold">
                         {e.title}
-                        </Typography>
-                        <Typography variant="body2">{e.description}</Typography>
-                    </CardContent>
-                    </Card>
-                </Grid2>
+                        </h3>
+                        <p className="text-sm text-sphere-grey-700">{e.description}</p>
+                </div>
                 ))}
-            </Grid2>
-          </Container>
-        </Box>
+            </div>
+          </div>
+        </div>
     );
 }

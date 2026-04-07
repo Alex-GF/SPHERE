@@ -1,16 +1,4 @@
 import { useEffect, useState } from 'react';
-import {
-  Box,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Typography,
-  Checkbox,
-  FormControlLabel,
-  Button,
-} from '@mui/material';
-import { primary, palette } from '../../../core/theme/palette';
 import SliderFilter from '../slider-filter';
 import { FilterLimits } from '../../pages/list';
 
@@ -49,19 +37,18 @@ export default function PricingFilters({
   };
 
   const handleFilter = () => {
-    const filterValues = {
+    setFilterValues({
       sort,
       sortBy,
       subscriptionRange,
       minPriceRange,
       maxPriceRange,
       selectedOwners,
-    };
-
-    setFilterValues(filterValues);
+    });
   };
 
   const handleClear = () => {
+    setSort('asc');
     setSortBy('');
     setSelectedOwners([]);
     setFilterValues({
@@ -86,64 +73,51 @@ export default function PricingFilters({
       setMinPriceRange([filterLimits.minPrice.min, filterLimits.minPrice.max]);
       setMaxPriceRange([filterLimits.maxPrice.min, filterLimits.maxPrice.max]);
     }
-  }, [textFilterValue, filterLimits]);
+  }, [textFilterValue, filterLimits, receivedOwners]);
 
   return (
-    <Box
-      sx={{
-        width: '100%',
-        marginTop: '50px',
-        padding: '16px',
-      }}
-    >
-      <Typography variant="h4" gutterBottom textAlign="center" marginBottom={5}>
-        Filters
-      </Typography>
+    <div className="mt-[50px] w-full p-4">
+      <h2 className="mb-5 text-center text-3xl font-semibold">Filters</h2>
 
-      {/* Sort By */}
-      <FormControl fullWidth sx={{ mb: 3 }}>
-        <InputLabel
-          id="sort-by-label"
-          sx={{
-            backgroundColor: `${palette().background.neutral}`,
-            padding: '0 5px',
-          }}
-        >
+      <div className="mb-3 flex flex-col gap-2">
+        <label htmlFor="sort-by" className="text-sm font-medium text-slate-700">
           Sort By
-        </InputLabel>
-        <Select labelId="sort-by-label" value={sortBy} onChange={e => setSortBy(e.target.value)}>
-          <MenuItem value="">None</MenuItem>
-          <MenuItem value="pricingName">Pricing Name</MenuItem>
-          <MenuItem value="configurationSpaceSize">Configuration Space Size</MenuItem>
-          <MenuItem value="featuresCount">Features</MenuItem>
-          <MenuItem value="usageLimitsCount">Usage Limits</MenuItem>
-          <MenuItem value="plansCount">Plans</MenuItem>
-          <MenuItem value="addonsCount"> Add-Ons</MenuItem>
-          <MenuItem value="minPrice">Min Price</MenuItem>
-          <MenuItem value="maxPrice">Max price</MenuItem>
-        </Select>
-      </FormControl>
+        </label>
+        <select
+          id="sort-by"
+          value={sortBy}
+          onChange={e => setSortBy(e.target.value)}
+          className="rounded-md border border-slate-300 px-3 py-2"
+        >
+          <option value="">None</option>
+          <option value="pricingName">Pricing Name</option>
+          <option value="configurationSpaceSize">Configuration Space Size</option>
+          <option value="featuresCount">Features</option>
+          <option value="usageLimitsCount">Usage Limits</option>
+          <option value="plansCount">Plans</option>
+          <option value="addonsCount">Add-Ons</option>
+          <option value="minPrice">Min Price</option>
+          <option value="maxPrice">Max price</option>
+        </select>
+      </div>
 
-      {/* Sort Order */}
       {sortBy !== '' && (
-        <FormControl fullWidth sx={{ mb: 3 }}>
-          <InputLabel
-            id="sort-order-label"
-            sx={{
-              backgroundColor: 'white',
-              padding: '0 5px',
-            }}
-          >
+        <div className="mb-3 flex flex-col gap-2">
+          <label htmlFor="sort-order" className="text-sm font-medium text-slate-700">
             Sort Order
-          </InputLabel>
-          <Select labelId="sort-order-label" value={sort} onChange={e => setSort(e.target.value)}>
-            <MenuItem value="asc">Ascending</MenuItem>
-            <MenuItem value="desc">Descending</MenuItem>
-          </Select>
-        </FormControl>
+          </label>
+          <select
+            id="sort-order"
+            value={sort}
+            onChange={e => setSort(e.target.value)}
+            className="rounded-md border border-slate-300 px-3 py-2"
+          >
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+          </select>
+        </div>
       )}
 
-      {/* Filter: Configuration Space */}
       {filterLimits && (
         <SliderFilter
           label="Configuration Space Size"
@@ -154,7 +128,6 @@ export default function PricingFilters({
         />
       )}
 
-      {/* Filter: Min Price */}
       {filterLimits && (
         <SliderFilter
           label="Min Price (€)"
@@ -165,7 +138,6 @@ export default function PricingFilters({
         />
       )}
 
-      {/* Filter: Max Price */}
       {filterLimits && (
         <SliderFilter
           label="Max Price (€)"
@@ -176,38 +148,41 @@ export default function PricingFilters({
         />
       )}
 
-      {/* Filter: Owners */}
       {textFilterValue !== '' && (
-        <Box sx={{ width: '100%', padding: '16px', maxWidth: '500px', margin: 'auto' }}>
-          <Typography variant="h6" gutterBottom>
-            Owner
-          </Typography>
+        <div className="mx-auto w-full max-w-[500px] p-4">
+          <h3 className="mb-2 text-xl font-semibold">Owner</h3>
           {Object.entries(owners).map(([owner, count]) => (
-            <FormControlLabel
-              key={owner}
-              control={
-                <Checkbox
-                  checked={selectedOwners.includes(owner)}
-                  onChange={() => handleOwnerChange(owner)}
-                />
-              }
-              label={`${owner} (${count})`}
-            />
+            <label key={owner} className="flex items-center gap-2 py-1">
+              <input
+                type="checkbox"
+                checked={selectedOwners.includes(owner)}
+                onChange={() => handleOwnerChange(owner)}
+                className="h-4 w-4"
+              />
+              <span>
+                {owner} ({count})
+              </span>
+            </label>
           ))}
-        </Box>
+        </div>
       )}
-      <Box sx={{ display: 'flex', justifyContent: 'space-evenly', marginTop: '16px' }}>
-        <Button variant="outlined" color="primary" onClick={handleClear}>
+
+      <div className="mt-4 flex justify-evenly gap-3">
+        <button
+          type="button"
+          className="rounded-md border border-slate-400 px-4 py-2"
+          onClick={handleClear}
+        >
           Clear
-        </Button>
-        <Button
-          variant="contained"
-          sx={{ backgroundColor: primary[300], '&:hover': { backgroundColor: primary[500] } }}
+        </button>
+        <button
+          type="button"
+          className="rounded-md bg-sphere-primary-300 px-4 py-2 text-white hover:bg-sphere-primary-500"
           onClick={handleFilter}
         >
           Filter
-        </Button>
-      </Box>
-    </Box>
+        </button>
+      </div>
+    </div>
   );
 }

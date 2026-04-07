@@ -1,16 +1,4 @@
 import { FormEvent, useEffect, useMemo, useState } from 'react';
-import {
-  Box,
-  Container,
-  Typography,
-  Button,
-  Paper,
-  Alert,
-  listItemSecondaryActionClasses,
-} from '@mui/material';
-import Grid from '@mui/material/Grid2';
-import { grey } from '../../../core/theme/palette';
-
 import ChatTranscript from '../../components/ChatTranscript';
 import ControlPanel from '../../components/ControlPanel';
 import type {
@@ -367,49 +355,41 @@ function PricingAssistantPage({ playground = false }: Props) {
     <PlaygroundProvider playground={playground}>
       <PresetProvider presetContext={{ preset, setPreset }}>
         <PricingContext.Provider value={contextItems}>
-          <Container
-            maxWidth="xl"
-            sx={{ height: '100vh', display: 'flex', flexDirection: 'column', py: 3 }}
-          >
-            <Box sx={{ mb: 4 }}>
-              <Box>{playground && <Alert severity="warning">Playground mode is active</Alert>}</Box>
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'flex-start',
-                  gap: 2,
-                }}
-              >
-                <Box>
-                  <Typography variant="h4" component="h1" sx={{ fontWeight: 600, mb: 1 }}>
+          <div className="flex h-screen flex-col px-4 py-6 lg:px-6">
+            <div className="mb-4 space-y-4">
+              {playground && (
+                <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
+                  Playground mode is active
+                </div>
+              )}
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <h1 className="mb-1 text-4xl font-semibold">
                     H.A.R.V.E.Y. Pricing Assistant
-                  </Typography>
+                  </h1>
 
-                  <Typography variant="body1" sx={{ color: grey[600] }}>
+                  <p className="max-w-3xl text-sm text-slate-600 md:text-base">
                     Ask about optimal subscriptions and pricing insights using the Holistic Agent
                     for Reasoning on Value and Economic analYsis (HARVEY).
-                  </Typography>
-                </Box>
-                <Box sx={{ display: 'flex', gap: 1 }}>
-                  <Button variant="contained" onClick={handleNewConversation} disabled={isLoading}>
+                  </p>
+                </div>
+                <div className="flex gap-2">
+                  <button type="button" onClick={handleNewConversation} disabled={isLoading} className="rounded-md bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-700 disabled:cursor-not-allowed disabled:bg-slate-300">
                     New conversation
-                  </Button>
-                </Box>
-              </Box>
-            </Box>
-            <Grid container spacing={2} sx={{ flex: 1, overflow: 'hidden' }}>
-              <Grid size={{ xs: 12, md: 8 }} sx={{ height: '100%' }}>
-                <Paper sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className="grid flex-1 gap-4 overflow-hidden lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+              <div className="min-h-0 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
                   <ChatTranscript
                     messages={messages}
                     isLoading={isLoading}
                     promptPresets={PROMPT_PRESETS}
                     onPresetSelect={handlePromptSelect}
                   />
-                </Paper>
-              </Grid>
-              <Grid size={{ xs: 12, md: 4 }} sx={{ height: '100%', overflowY: 'auto' }}>
+              </div>
+              <div className="min-h-0 overflow-y-auto">
                 <ControlPanel
                   question={question}
                   detectedPricingUrls={detectedPricingUrls}
@@ -425,9 +405,9 @@ function PricingAssistantPage({ playground = false }: Props) {
                   onContextClear={clearContext}
                   onPresetSelect={handlePromptSelect}
                 />
-              </Grid>
-            </Grid>
-          </Container>
+              </div>
+            </div>
+          </div>
         </PricingContext.Provider>
       </PresetProvider>
     </PlaygroundProvider>

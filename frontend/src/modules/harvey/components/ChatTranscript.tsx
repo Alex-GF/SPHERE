@@ -1,15 +1,5 @@
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import {
-  Box,
-  Typography,
-  Paper,
-  Button,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  CircularProgress,
-} from '@mui/material';
 import { grey, primary } from '../../core/theme/palette';
 
 import type { ChatMessage, PromptPreset } from '../types/types';
@@ -28,136 +18,81 @@ function ChatTranscript({ messages, isLoading, promptPresets = [], onPresetSelec
   const isPresetGalleyEnabled = !isPlaygroundEnabled && promptPresets.length > 0 && onPresetSelect;
 
   return (
-    <Box sx={{ height: '100%', overflowY: 'auto', p: 2 }} aria-live="polite" aria-busy={isLoading}>
+    <div className="h-full overflow-y-auto p-2" aria-live="polite" aria-busy={isLoading}>
       {messages.length === 0 && !isLoading ? (
-        <Box sx={{ textAlign: 'center', mt: 8 }}>
-          <Box sx={{ mb: 4 }}>
-            <Typography variant="h1" sx={{ fontSize: '3rem', mb: 2 }}>
-              💬
-            </Typography>
-            <Typography variant="h4" sx={{ fontWeight: 600, mb: 2, color: grey[800] }}>
+        <div className="mt-8 text-center">
+          <div className="mb-4">
+            <p className="mb-2 text-5xl">💬</p>
+            <h2 className="mb-2 text-3xl font-semibold text-slate-800">
               Welcome to H.A.R.V.E.Y.
-            </Typography>
-            <Typography variant="body1" sx={{ color: grey[600] }}>
+            </h2>
+            <p className="text-slate-600">
               Enabling seamless execution of the Pricing Intelligence Interpretation Process.
-            </Typography>
-          </Box>
+            </p>
+          </div>
           {isPresetGalleyEnabled && (
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 2,
-                maxWidth: '600px',
-                mx: 'auto',
-              }}
-            >
+            <div className="mx-auto flex max-w-[600px] flex-col gap-2">
               {promptPresets.map(preset => (
-                <Button
+                <button
                   key={preset.id}
-                  variant="outlined"
                   onClick={() => onPresetSelect(preset)}
-                  sx={{
-                    textAlign: 'left',
-                    justifyContent: 'flex-start',
-                    p: 2,
-                    textTransform: 'none',
-                    borderColor: grey[300],
-                    '&:hover': {
-                      borderColor: primary[500],
-                      backgroundColor: primary[100],
-                    },
-                  }}
+                  className="rounded-md border border-slate-300 p-4 text-left normal-case hover:border-sphere-primary-500 hover:bg-sphere-primary-100"
                 >
-                  <Typography>{preset.label}</Typography>
-                </Button>
+                  <span>{preset.label}</span>
+                </button>
               ))}
-            </Box>
+            </div>
           )}
-        </Box>
+        </div>
       ) : null}
       {messages.map(message => (
-        <Paper
+        <div
           key={message.id}
-          sx={{
-            mb: 2,
-            p: 2,
-            backgroundColor: message.role === 'user' ? primary[100] : grey[100],
-            borderLeft: `4px solid ${message.role === 'user' ? primary[500] : grey[500]}`,
-          }}
+          className={`mb-2 rounded-md p-4 ${message.role === 'user' ? 'bg-sphere-primary-100 border-l-4 border-sphere-primary-500' : 'bg-slate-100 border-l-4 border-slate-500'}`}
         >
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-            <Typography variant="subtitle2" sx={{ fontWeight: 600, color: grey[800] }}>
+          <div className="mb-1 flex justify-between">
+            <span className="text-sm font-semibold text-slate-800">
               {message.role === 'user' ? 'You' : 'H.A.R.V.E.Y.'}
-            </Typography>
-            <Typography variant="caption" sx={{ color: grey[600] }}>
+            </span>
+            <span className="text-xs text-slate-600">
               {new Date(message.createdAt).toLocaleTimeString()}
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              '& p': { mb: 1 },
-              '& pre': { backgroundColor: grey[200], p: 1, borderRadius: 1, overflowX: 'auto' },
-            }}
-          >
+            </span>
+          </div>
+          <div className="prose max-w-none [&_p]:mb-1 [&_pre]:overflow-x-auto [&_pre]:rounded-md [&_pre]:bg-slate-200 [&_pre]:p-2">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{message.content}</ReactMarkdown>
-          </Box>
+          </div>
           {message.metadata?.plan || message.metadata?.result ? (
-            <Accordion sx={{ mt: 2 }}>
-              <AccordionSummary>
-                <Typography variant="body2">View H.A.R.V.E.Y. context</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
+            <details className="mt-2 rounded-md border border-slate-200 p-2">
+              <summary className="cursor-pointer text-sm">View H.A.R.V.E.Y. context</summary>
+              <div className="mt-2">
                 {message.metadata.plan ? (
-                  <Box sx={{ mb: 2 }}>
-                    <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
-                      Planner
-                    </Typography>
-                    <Box
-                      component="pre"
-                      sx={{
-                        backgroundColor: grey[200],
-                        p: 1,
-                        borderRadius: 1,
-                        overflowX: 'auto',
-                        fontSize: '0.875rem',
-                      }}
-                    >
+                  <div className="mb-2">
+                    <p className="mb-1 text-sm font-semibold">Planner</p>
+                    <pre className="overflow-x-auto rounded-md bg-slate-200 p-2 text-sm">
                       {JSON.stringify(message.metadata.plan, null, 2)}
-                    </Box>
-                  </Box>
+                    </pre>
+                  </div>
                 ) : null}
                 {message.metadata.result ? (
-                  <Box>
-                    <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
-                      Result
-                    </Typography>
-                    <Box
-                      component="pre"
-                      sx={{
-                        backgroundColor: grey[200],
-                        p: 1,
-                        borderRadius: 1,
-                        overflowX: 'auto',
-                        fontSize: '0.875rem',
-                      }}
-                    >
+                  <div>
+                    <p className="mb-1 text-sm font-semibold">Result</p>
+                    <pre className="overflow-x-auto rounded-md bg-slate-200 p-2 text-sm">
                       {JSON.stringify(message.metadata.result, null, 2)}
-                    </Box>
-                  </Box>
+                    </pre>
+                  </div>
                 ) : null}
-              </AccordionDetails>
-            </Accordion>
+              </div>
+            </details>
           ) : null}
-        </Paper>
+        </div>
       ))}
       {isLoading ? (
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 2 }}>
-          <CircularProgress size={24} />
-          <Typography>Processing request...</Typography>
-        </Box>
+        <div className="flex items-center gap-2 p-2">
+          <div className="h-6 w-6 animate-spin rounded-full border-2 border-slate-300 border-t-sphere-primary-500" />
+          <span>Processing request...</span>
+        </div>
       ) : null}
-    </Box>
+    </div>
   );
 }
 

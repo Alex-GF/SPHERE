@@ -1,4 +1,3 @@
-import { Box, Modal, Paper, Tab, Tabs, Typography } from '@mui/material';
 import Header from './header';
 import Main from './main';
 import { useState } from 'react';
@@ -6,7 +5,6 @@ import { createUrlWithEncodedYaml, parseStringYamlToEncodedYaml } from '../servi
 import CopyToClipboardIcon from '../../core/components/copy-icon';
 import { EditorValueContext } from '../contexts/editorValueContext';
 import FileUpload from '../../core/components/file-upload-input';
-import { flex } from '../../core/theme/css';
 import customAlert from '../../core/utils/custom-alert';
 import { useCacheApi } from '../components/pricing-renderer/api/cacheApi';
 import { v4 as uuidv4 } from 'uuid';
@@ -73,108 +71,62 @@ export default function EditorLayout({ children }: { children?: React.ReactNode 
 
   return (
     <EditorValueContext.Provider value={{ editorValue, setEditorValue }}>
-      <Box
-        component="div"
-        sx={{ display: 'grid', minHeight: '100dvh', gridTemplateRows: 'auto 1fr' }}
-      >
+      <div className="grid min-h-dvh grid-rows-[auto_1fr]">
         <Header renderSharedLink={renderSharedLink} renderYamlImport={renderYamlImport} />
         <Main>{children}</Main>
-      </Box>
-      <Modal
-        open={sharedLinkModalOpen}
-        onClose={handleSharedLinkClose}
-        aria-labelledby="modal-shared-link-title"
-        aria-describedby="modal-shared-link-description"
-      >
-        <Paper
-          elevation={3}
-          sx={{
-            maxWidth: 600,
-            width: '90vw',
-            mx: 'auto',
-            mt: 4,
-            p: 4,
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translateX(-50%) translateY(-50%)',
-            borderRadius: '20px',
-          }}
-        >
-          <Typography
-            variant="h6"
-            component="h2"
-            gutterBottom
-            sx={{
-              textAlign: 'center',
-              fontWeight: 'bold',
-            }}
-          >
+      </div>
+      {sharedLinkModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" role="dialog" aria-modal="true">
+          <div className="w-full max-w-2xl rounded-3xl bg-white p-6 shadow-2xl">
+          <h2 className="text-center text-lg font-bold">
             Your pricing is a step away from the world
-          </Typography>
-          <Typography sx={{ mt: 2, mb: 3, textAlign: 'center' }}>
+          </h2>
+          <p className="mt-2 mb-4 text-center text-sm text-slate-600">
             Share this link to allow other users to see and edit their own version of your pricing
-          </Typography>
+          </p>
 
-          <Box sx={{ ...flex({justify: "center"}), mb: 2 }}>
-            <Tabs value={tabValue} onChange={(_, v) => setTabValue(v)}>
-              <Tab label="Short encoding" />
-              <Tab label="Full encoding" />
-            </Tabs>
-          </Box>
+          <div className="mb-4 flex justify-center gap-2">
+            <button type="button" onClick={() => setTabValue(0)} className={`rounded-full px-4 py-2 text-sm font-medium ${tabValue === 0 ? 'bg-sky-600 text-white' : 'border border-slate-300 text-slate-700 hover:bg-slate-50'}`}>
+              Short encoding
+            </button>
+            <button type="button" onClick={() => setTabValue(1)} className={`rounded-full px-4 py-2 text-sm font-medium ${tabValue === 1 ? 'bg-sky-600 text-white' : 'border border-slate-300 text-slate-700 hover:bg-slate-50'}`}>
+              Full encoding
+            </button>
+          </div>
 
-          {
-            tabValue === 1 ? (
-              <Typography
-                variant="body2"
-                color="error"
-                sx={{ textAlign: 'center', mb: 2 }}
-              >
-                <strong>WARNING:</strong> If the YAML is too large, the URL might not be processed correctly.
-              </Typography>
-            )
-            :
-            (
-              <Typography
-                variant="body2"
-                color="info"
-                sx={{ textAlign: 'center', mb: 2 }}
-              >
-                <strong>INFO:</strong> The generated URL will only be available for 24h.
-              </Typography>
-            )
-          }
+          {tabValue === 1 ? (
+            <p className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-center text-sm text-amber-900">
+              <strong>WARNING:</strong> If the YAML is too large, the URL might not be processed correctly.
+            </p>
+          ) : (
+            <p className="mb-4 rounded-lg border border-sky-200 bg-sky-50 px-3 py-2 text-center text-sm text-sky-900">
+              <strong>INFO:</strong> The generated URL will only be available for 24h.
+            </p>
+          )}
 
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <div className="flex items-center">
             <CopyToClipboardIcon value={handleCopyToClipboard()} />
-          </Box>
-        </Paper>
-      </Modal>
-      <Modal
-        open={importModalOpen}
-        onClose={handleYamlImportClose}
-        aria-labelledby="modal-import-title"
-        aria-describedby="modal-import-description"
-      >
-        <Paper
-          elevation={3}
-          sx={{
-            maxWidth: 500,
-            width: '90dvw',
-            mx: 'auto',
-            mt: 4,
-            p: 4,
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translateX(-50%) translateY(-50%)',
-            borderRadius: '20px',
-            ...flex({ direction: 'column' }),
-          }}
-        >
-          <FileUpload onSubmit={onSubmitImport} />
-        </Paper>
-      </Modal>
+          </div>
+          <div className="mt-4 flex justify-end">
+            <button type="button" onClick={handleSharedLinkClose} className="rounded-md border border-slate-300 px-3 py-2 text-sm hover:bg-slate-50">
+              Close
+            </button>
+          </div>
+        </div>
+        </div>
+      )}
+      {importModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" role="dialog" aria-modal="true">
+          <div className="w-full max-w-xl rounded-3xl bg-white p-6 shadow-2xl">
+            <FileUpload onSubmit={onSubmitImport} />
+            <div className="mt-4 flex justify-end">
+              <button type="button" onClick={handleYamlImportClose} className="rounded-md border border-slate-300 px-3 py-2 text-sm hover:bg-slate-50">
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </EditorValueContext.Provider>
   );
 }

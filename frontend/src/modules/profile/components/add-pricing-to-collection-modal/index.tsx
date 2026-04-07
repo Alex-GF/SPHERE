@@ -1,7 +1,5 @@
-import { Button, Modal, Paper } from '@mui/material';
 import CollectionsGrid from '../collections-grid';
 import { CollectionEntry } from '../../types/profile-types';
-import { flex } from '../../../core/theme/css';
 import { useRef } from 'react';
 import { usePricingsApi } from '../../../pricing/api/pricingsApi';
 import customAlert from '../../../core/utils/custom-alert';
@@ -37,39 +35,29 @@ export default function AddPricingToCollectionModal({
   }
 
   return (
-    <Modal
-      open={modalState}
-      onClose={handleClose}
-      aria-labelledby="modal-import-title"
-      aria-describedby="modal-import-description"
-    >
-      <Paper
-        elevation={3}
-        sx={{
-          maxWidth: 2000,
-          width: '90dvw',
-          mx: 'auto',
-          mt: 4,
-          p: 4,
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translateX(-50%) translateY(-50%)',
-          borderRadius: '20px',
-          ...flex({ direction: 'column' }),
-        }}
+    modalState ? (
+      <div
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/35 px-4"
+        onClick={handleClose}
+        role="presentation"
+        aria-labelledby="modal-import-title"
+        aria-describedby="modal-import-description"
+      >
+      <div
+        className="mt-4 flex w-[90dvw] max-w-[2000px] flex-col rounded-[20px] bg-white p-4 shadow-lg"
+        onClick={(event) => event.stopPropagation()}
       >
         <h2>Select a collection to save the pricing</h2>
         <CollectionsGrid collections={collections} selector ref={collectionSelector} />
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{ mt: 2 }}
+        <button
+          type="button"
+          className="mt-2 rounded-md bg-sphere-primary-700 px-4 py-2 text-white"
           onClick={handleAddPricingToCollection}
         >
           Save
-        </Button>
-      </Paper>
-    </Modal>
+        </button>
+      </div>
+    </div>
+    ) : null
   );
 }

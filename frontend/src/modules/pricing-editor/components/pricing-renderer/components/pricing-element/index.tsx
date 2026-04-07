@@ -1,18 +1,12 @@
-import { RenderingStyles } from '../../types';
-import DEFAULT_RENDERING_STYLES from '../../shared/constants';
 import { pluralizeUnit } from '../../../../services/pricing.service';
 import { formatPricingValue } from '../../shared/value-helpers';
-import { Tooltip, Typography, TableCell, TableRow, useTheme } from '@mui/material';
 import { RiErrorWarningFill } from 'react-icons/ri';
 import { motion } from 'framer-motion';
 import { listItemVariants } from '../../shared/motion-variants';
-import { getColorForIndex } from '../../shared/color-palette';
-import { alpha } from '@mui/material/styles';
 
 export default function PricingElement({
   name,
   values,
-  style,
 }: Readonly<{
   name: string;
   values: {
@@ -22,64 +16,47 @@ export default function PricingElement({
     addonValue: string | number | boolean | null;
     addonExtension: boolean;
   }[];
-  style: RenderingStyles;
 }>): JSX.Element {
-
-  const theme = useTheme();
-
   return (
-    <TableRow>
-      <TableCell
-        component="th"
-        scope="row"
-        sx={{ borderTopColor: style.dividerColor ?? DEFAULT_RENDERING_STYLES.dividerColor, px: 2 }}
-      >
-        <Typography variant="subtitle1" sx={{ color: style.namesColor ?? DEFAULT_RENDERING_STYLES.namesColor }}>
+    <tr>
+      <th scope="row" className="border-t border-slate-200 px-2 py-3 text-left align-middle">
+        <div className="text-base font-semibold text-slate-900">
           {name}
-        </Typography>
-      </TableCell>
+        </div>
+      </th>
       {values.map(({ value, unit, addonName, addonValue, addonExtension }, key) => {
-        const accent = getColorForIndex(key);
-        const bg = theme.palette.mode === 'dark' ? alpha(accent, 0.06) : alpha(accent, 0.04);
-
-        const cellSx = {
-          borderTopColor: style.dividerColor ?? DEFAULT_RENDERING_STYLES.dividerColor,
-          textAlign: 'center' as const,
-          verticalAlign: 'middle' as const,
-          px: 2,
-          backgroundColor: bg,
-        };
+        const toneClass = key % 2 === 0 ? 'bg-slate-50' : 'bg-slate-100';
 
         // Build content for boolean cells without nested ternaries
         if (typeof value === 'boolean') {
           let content: JSX.Element | string;
           if (value) {
             content = (
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-label="Included" style={{ color: style.checkColor ?? DEFAULT_RENDERING_STYLES.checkColor, width: 20, height: 20 }}>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-label="Included" className="h-5 w-5 text-emerald-600">
                 <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
               </svg>
             );
           } else if (addonValue) {
-            content = <Typography variant="body2">Add-on</Typography>;
+            content = <span className="text-sm">Add-on</span>;
           } else {
             content = (
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-label="Not included" style={{ color: style.crossColor ?? DEFAULT_RENDERING_STYLES.crossColor, width: 18, height: 18 }}>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-label="Not included" className="h-[18px] w-[18px] text-slate-400">
                 <path fillRule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd"></path>
               </svg>
             );
           }
 
           return (
-            <TableCell key={`${name}-${key}`} sx={cellSx}>
-              <motion.div variants={listItemVariants} custom={key} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <td key={`${name}-${key}`} className={`border-t border-slate-200 px-2 py-3 text-center align-middle ${toneClass}`}>
+              <motion.div variants={listItemVariants} custom={key} className="flex items-center justify-center">
                 {content}
               </motion.div>
-            </TableCell>
+            </td>
           );
         }
 
         // Non-boolean (string or number) cells
-  const formatted = formatPricingValue(value as unknown as string | number, unit, typeof addonValue === 'number' ? addonValue : null, addonExtension);
+        const formatted = formatPricingValue(value as unknown as string | number, unit, typeof addonValue === 'number' ? addonValue : null, addonExtension);
         const showTooltip = typeof value === 'number' && typeof addonValue === 'number' && (((!addonExtension && addonValue > value) || addonExtension) && addonValue > 0);
 
         let addonUnit = '';
@@ -91,22 +68,20 @@ export default function PricingElement({
           : `You can extend this limit up to ${addonValue} ${addonUnit} by contracting the add-on '${addonName!}'`;
 
         return (
-          <TableCell key={`${name}-${key}`} sx={cellSx}>
-            <motion.div variants={listItemVariants} custom={key} style={{ display: 'flex', justifyContent: 'center' }}>
-              <Typography variant="body2" sx={{ color: style.valuesColor ?? DEFAULT_RENDERING_STYLES.valuesColor }}>
+          <td key={`${name}-${key}`} className={`border-t border-slate-200 px-2 py-3 text-center align-middle ${toneClass}`}>
+            <motion.div variants={listItemVariants} custom={key} className="flex justify-center">
+              <span className="text-sm text-slate-700">
                 {formatted}
                 {showTooltip ? (
-                  <Tooltip title={tooltipText} placement="top">
-                    <span style={{ marginLeft: 6 }}>
+                  <span title={tooltipText} className="ml-1 inline-flex align-middle">
                       <RiErrorWarningFill />
-                    </span>
-                  </Tooltip>
+                  </span>
                 ) : null}
-              </Typography>
+              </span>
             </motion.div>
-          </TableCell>
+          </td>
         );
       })}
-    </TableRow>
+    </tr>
   );
 }

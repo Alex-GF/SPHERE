@@ -1,28 +1,6 @@
 import { useMemo, useState, useEffect, useCallback } from 'react';
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-  TextField,
-  Switch,
-  FormControlLabel,
-  Slider,
-  Box,
-  Typography,
-  Paper,
-  IconButton,
-  Grid,
-  Divider,
-  Stack,
-  Tooltip,
-} from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
-import CloseIcon from '@mui/icons-material/Close';
-import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
-import CalculateIcon from '@mui/icons-material/Calculate';
-import ToggleOnIcon from '@mui/icons-material/ToggleOn';
+import { FaRegCircleXmark, FaWandMagicSparkles, FaCalculator, FaToggleOn } from 'react-icons/fa6';
 import { camelToTitle } from '../shared/stringUtils';
 
 type VarValue = string | number | boolean;
@@ -78,40 +56,38 @@ export default function VariablesEditor({ open, onClose, variables, onApply }: P
   };
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="md" scroll="paper">
-      <Paper
-        component={motion.div}
+    <div
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 transition ${open ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+      aria-hidden={!open}
+    >
+      <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 8 }}
-        sx={{ overflow: 'hidden' }}
+        className="max-h-[90vh] w-full max-w-5xl overflow-hidden rounded-2xl bg-white shadow-2xl"
       >
-        <DialogTitle sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2 }}>
-          <Box>
-            <Typography variant="h6">Variables calculator</Typography>
-            <Typography variant="body2" color="text.secondary">Preview & tweak variables to see pricing changes in real time.</Typography>
-          </Box>
+        <div className="flex items-start justify-between gap-4 border-b border-slate-200 p-4">
+          <div>
+            <h2 className="text-lg font-semibold">Variables calculator</h2>
+            <p className="text-sm text-slate-600">Preview and tweak variables to see pricing changes in real time.</p>
+          </div>
 
-          <Stack direction="row" spacing={1} alignItems="center">
-            <Tooltip title="Reset changes">
-              <IconButton onClick={handleReset} size="small" color="inherit">
-                <AutoFixHighIcon />
-              </IconButton>
-            </Tooltip>
-            <IconButton onClick={onClose} size="small" aria-label="close">
-              <CloseIcon fontSize="small" />
-            </IconButton>
-          </Stack>
-        </DialogTitle>
+          <div className="flex items-center gap-1">
+            <button type="button" onClick={handleReset} className="rounded-md p-2 hover:bg-slate-100" title="Reset changes">
+              <FaWandMagicSparkles />
+            </button>
+            <button type="button" onClick={onClose} className="rounded-md p-2 hover:bg-slate-100" aria-label="close">
+              <FaRegCircleXmark />
+            </button>
+          </div>
+        </div>
 
-        <Divider />
-
-        <DialogContent dividers sx={{ p: 3, maxHeight: '72vh' }}>
+        <div className="max-h-[72vh] overflow-y-auto p-4">
           {keys.length === 0 ? (
-            <Box sx={{ py: 8, textAlign: 'center' }}>
-              <Typography variant="h6" color="text.secondary">No variables found</Typography>
-              <Typography variant="body2" color="text.secondary">This pricing does not declare any editable variables.</Typography>
-            </Box>
+            <div className="py-16 text-center text-slate-500">
+              <div className="text-lg font-semibold">No variables found</div>
+              <div className="text-sm">This pricing does not declare any editable variables.</div>
+            </div>
           ) : (
             <AnimatePresence initial={false} mode="popLayout">
               <motion.div
@@ -119,70 +95,62 @@ export default function VariablesEditor({ open, onClose, variables, onApply }: P
                 initial="hidden"
                 animate="show"
               >
-                <Grid container spacing={2}>
+                <div className="grid gap-4 md:grid-cols-2">
                   {keys.map((k, idx) => {
                     const original = initial[k];
                     const value = local[k];
                     const type = typeof original;
 
                     return (
-                      <Grid item xs={12} md={6} key={k}>
+                      <div key={k}>
                         <motion.div
                           initial={{ opacity: 0, y: 8 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: 8 }}
                           transition={{ type: 'spring', stiffness: 400, damping: 28, delay: idx * 0.02 }}
                         >
-                          <Paper elevation={6} sx={{ p: 2.25, borderRadius: 2 }}>
-                            <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1 }}>
-                              <Box>
-                                <Typography sx={{ fontWeight: 800 }}>{camelToTitle(k)}</Typography>
-                                <Typography variant="caption" color="text.secondary">Type: {type}</Typography>
-                              </Box>
-                              <Box sx={{ textAlign: 'right' }}>
-                                {type === 'number' && (
-                                  <Typography sx={{ fontWeight: 700 }}>{String(value)}</Typography>
-                                )}
-                                {type === 'string' && (
-                                  <Typography sx={{ fontWeight: 700 }}>{String(value)}</Typography>
-                                )}
-                                {type === 'boolean' && (
-                                  <Typography sx={{ fontWeight: 700 }}>{value === true ? 'True' : 'False'}</Typography>
-                                )}
-                              </Box>
-                            </Stack>
+                          <div className="rounded-xl border border-slate-200 p-4 shadow-sm">
+                            <div className="mb-3 flex items-start justify-between gap-3">
+                              <div>
+                                <div className="font-extrabold">{camelToTitle(k)}</div>
+                                <div className="text-xs text-slate-500">Type: {type}</div>
+                              </div>
+                              <div className="text-right font-semibold">
+                                {type === 'boolean' ? (value === true ? 'True' : 'False') : String(value)}
+                              </div>
+                            </div>
 
                             {type === 'boolean' && (
-                              <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
-                                <Switch
-                                  checked={value === true}
-                                  onChange={(e) => setLocal(s => ({ ...s, [k]: e.target.checked }))}
-                                  size="small"
-                                  inputProps={{ 'aria-label': `${k}-switch` }}
-                                />
-                              </Box>
+                              <button
+                                type="button"
+                                onClick={() => setLocal(s => ({ ...s, [k]: value === true ? false : true }))}
+                                className={`inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium ${value === true ? 'bg-sky-600 text-white' : 'border border-slate-300 text-slate-700'}`}
+                              >
+                                <FaToggleOn />
+                                {value === true ? 'Enabled' : 'Disabled'}
+                              </button>
                             )}
 
                             {type === 'number' && (
-                              <Stack spacing={1}>
-                                <Stack direction="row" spacing={1} alignItems="center" justifyContent="space-between">
-                                  <TextField
-                                    size="small"
-                                    type="number"
-                                    value={value ?? ''}
-                                    onChange={(e) => {
-                                      const raw = e.target.value;
-                                      if (raw === '') return setLocal(s => ({ ...s, [k]: '' }));
-                                      const n = Number(raw);
-                                      if (Number.isNaN(n)) return;
-                                      setLocal(s => ({ ...s, [k]: decimalsAllowed[k] ? Number(n.toFixed(2)) : Math.round(n) }));
-                                    }}
-                                    inputProps={{ step: decimalsAllowed[k] ? 0.01 : 1 }}
-                                    sx={{ width: 120 }}
-                                  />
-                                </Stack>
+                              <div className="space-y-3">
+                                <input
+                                  type="number"
+                                  value={value ?? ''}
+                                  onChange={(e) => {
+                                    const raw = e.target.value;
+                                    if (raw === '') return setLocal(s => ({ ...s, [k]: '' }));
+                                    const n = Number(raw);
+                                    if (Number.isNaN(n)) return;
+                                    setLocal(s => ({ ...s, [k]: decimalsAllowed[k] ? Number(n.toFixed(2)) : Math.round(n) }));
+                                  }}
+                                  step={decimalsAllowed[k] ? 0.01 : 1}
+                                  className="w-32 rounded-md border border-slate-300 px-3 py-2 text-sm"
+                                />
 
-                                <Slider
+                                <input
+                                  type="range"
+                                  min={0}
+                                  max={100}
                                   value={(() => {
                                     const base = Number(original) || 0;
                                     const cur = Number(value) || 0;
@@ -193,10 +161,8 @@ export default function VariablesEditor({ open, onClose, variables, onApply }: P
                                     const s = Math.max(0, Math.min(100, ((log / maxLog) * 100) + 50));
                                     return Math.round(s);
                                   })()}
-                                  min={0}
-                                  max={100}
-                                  onChange={(_, v) => {
-                                    const s = Array.isArray(v) ? v[0] : (v as number);
+                                  onChange={(e) => {
+                                    const s = Number(e.target.value);
                                     const base = Number(original) || 0;
                                     const maxLog = 6;
                                     const log = ((s - 50) / 100) * maxLog;
@@ -205,41 +171,55 @@ export default function VariablesEditor({ open, onClose, variables, onApply }: P
                                     const fixed = decimalsAllowed[k] ? Number(newVal.toFixed(2)) : Math.round(newVal);
                                     setLocal(st => ({ ...st, [k]: fixed }));
                                   }}
+                                  className="w-full accent-sky-600"
                                 />
 
-                                <Stack direction="row" spacing={1} alignItems="center" justifyContent="space-between">
-                                  <FormControlLabel
-                                    control={<Switch checked={decimalsAllowed[k] === true} onChange={(e) => setDecimalsAllowed(s => ({ ...s, [k]: e.target.checked }))} />}
-                                    label={<Typography variant="caption">{decimalsAllowed[k] ? 'Allow 2 decimals' : 'Integers'}</Typography>}
-                                  />
-                                  <Typography variant="caption" color="text.secondary">Base: {String(original)}</Typography>
-                                </Stack>
-                              </Stack>
+                                <label className="flex items-center justify-between gap-3 text-xs text-slate-600">
+                                  <span className="inline-flex items-center gap-2">
+                                    <input
+                                      type="checkbox"
+                                      checked={decimalsAllowed[k] === true}
+                                      onChange={(e) => setDecimalsAllowed(s => ({ ...s, [k]: e.target.checked }))}
+                                    />
+                                    {decimalsAllowed[k] ? 'Allow 2 decimals' : 'Integers'}
+                                  </span>
+                                  <span>Base: {String(original)}</span>
+                                </label>
+                              </div>
                             )}
 
                             {type === 'string' && (
-                              <TextField size="small" fullWidth value={String(value ?? '')} onChange={(e) => setLocal(s => ({ ...s, [k]: e.target.value }))} />
+                              <input
+                                type="text"
+                                value={String(value ?? '')}
+                                onChange={(e) => setLocal(s => ({ ...s, [k]: e.target.value }))}
+                                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                              />
                             )}
-                          </Paper>
+                          </div>
                         </motion.div>
-                      </Grid>
+                      </div>
                     );
                   })}
-                </Grid>
+                </div>
               </motion.div>
             </AnimatePresence>
           )}
-        </DialogContent>
+        </div>
 
-        <Divider />
-
-        <DialogActions sx={{ px: 3, py: 2, gap: 2 }}>
-          <Button onClick={handleReset} startIcon={<AutoFixHighIcon />}>Reset</Button>
-          <Box sx={{ flex: 1 }} />
-          <Button onClick={onClose}>Cancel</Button>
-          <Button variant="contained" onClick={handleApply} style={{color: "white"}}>Compute</Button>
-        </DialogActions>
-      </Paper>
-    </Dialog>
+        <div className="flex items-center gap-2 border-t border-slate-200 p-4">
+          <button type="button" onClick={handleReset} className="rounded-md border border-slate-300 px-3 py-2 text-sm hover:bg-slate-50">
+            Reset
+          </button>
+          <div className="flex-1" />
+          <button type="button" onClick={onClose} className="rounded-md border border-slate-300 px-3 py-2 text-sm hover:bg-slate-50">
+            Cancel
+          </button>
+          <button type="button" onClick={handleApply} className="rounded-md bg-sky-600 px-3 py-2 text-sm font-medium text-white hover:bg-sky-700">
+            <span className="inline-flex items-center gap-2"><FaCalculator /> Compute</span>
+          </button>
+        </div>
+      </motion.div>
+    </div>
   );
 }

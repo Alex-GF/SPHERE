@@ -1,9 +1,6 @@
-import { Box, Typography } from '@mui/material';
 import { FaFolder } from 'react-icons/fa';
 import { useRouter } from '../../../core/hooks/useRouter';
-import { flex } from '../../../core/theme/css';
 import { CollectionEntry } from '../../../profile/types/profile-types';
-import { primary } from '../../../core/theme/palette';
 
 export default function CollectionListCard({
   collection,
@@ -17,15 +14,8 @@ export default function CollectionListCard({
   const router = useRouter();
 
   return (
-    <Box
-      sx={{
-        border: selected ? `2px solid ${primary[400]}` : '1px solid #ddd',
-        borderRadius: 2,
-        p: 2,
-        ...flex({ direction: 'column' }),
-        width: '200px',
-        cursor: 'pointer',
-      }}
+    <div
+      className={`flex w-[200px] cursor-pointer flex-col rounded-lg p-2 ${selected ? 'border-2 border-sphere-primary-400' : 'border border-[#ddd]'}`}
       key={`collection-${collection.name}`}
       onClick={
         handleCustomClick
@@ -34,11 +24,11 @@ export default function CollectionListCard({
       }
     >
       <FaFolder fontSize={100} />
-      <Typography variant="subtitle1">{collection.name}</Typography>
-      <Typography variant="body2" color="text.secondary">
+      <p className="text-base font-medium">{collection.name}</p>
+      <p className="text-sm text-slate-500">
         {collection.numberOfPricings} pricings
         {/* · Updated Jun 29, 2023 · 105 descargas */}
-      </Typography>
-    </Box>
+      </p>
+    </div>
   );
 }

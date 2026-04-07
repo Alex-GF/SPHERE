@@ -1,17 +1,25 @@
-import { styled, Button } from '@mui/material';
-import { alpha } from '@mui/material';
+import type { ButtonHTMLAttributes, PropsWithChildren } from 'react';
 import { primary } from '../../../../core/theme/palette';
 
-export const StyledButton = styled(Button)(
-  ({ mode }: { mode: 'light' | 'dark'}) => ({
-    textTransform: 'none',
-    color: mode === 'light' ? primary[700] : primary[100],
-    fontWeight: 900,
-    '&:hover': {
-      backgroundColor: alpha(primary[100], 0.4),
-      color: mode === 'light' ? primary[800] : primary[500],
-    },
-    transition: 'all 0.3s ease',
-    position: 'relative',
-  })
-);
+type StyledButtonProps = PropsWithChildren<
+  ButtonHTMLAttributes<HTMLButtonElement> & {
+    mode: 'light' | 'dark';
+  }
+>;
+
+export function StyledButton({ mode, className = '', children, ...props }: StyledButtonProps) {
+  const baseClasses =
+    mode === 'light'
+      ? 'text-slate-700 hover:bg-slate-100 hover:text-slate-900'
+      : 'text-slate-100 hover:bg-slate-800 hover:text-white';
+
+  return (
+    <button
+      type="button"
+      className={`relative inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-semibold transition ${baseClasses} ${className}`}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+}

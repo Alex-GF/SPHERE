@@ -1,5 +1,3 @@
-import { Typography } from "@mui/material";
-import { Box } from "@mui/system";
 import { Pricing } from "pricing4ts";
 import { AnalyticsDataEntry } from "../../../../assets/data/analytics";
 import { formatDistanceToNow, parseISO } from 'date-fns';
@@ -18,35 +16,35 @@ export const getCurrency = (currency: string) => {
 export default function Stats({ currentPricing, pricing } : StatsProps) {
     return (
         <>
-              <Box display="flex" justifyContent="space-between" alignItems="center">
-                  <Typography variant="h6" gutterBottom>
+              <div className="flex items-center justify-between">
+                  <h3 className="mb-2 text-xl font-semibold">
                       Stats
-                  </Typography>
-              </Box>
-              <Box display="flex" justifyContent="space-between" alignItems="center" mt={2}>
-                  <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column">
+                  </h3>
+              </div>
+              <div className="mt-2 flex items-center justify-between gap-3">
+                  <div className="flex flex-col items-center justify-center text-center">
                         {currentPricing && formatDistanceToNow(parseISO(currentPricing.extractionDate))} ago
-                      <Typography variant="body2" color="text.secondary">
+                      <p className="text-sm text-slate-500">
                           last updated
-                      </Typography>
-                  </Box>
-                  <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column">
-                      <Typography variant="body1">
+                      </p>
+                  </div>
+                  <div className="flex flex-col items-center justify-center text-center">
+                      <p>
                           {currentPricing?.analytics.configurationSpaceSize}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
+                      </p>
+                      <p className="text-sm text-slate-500">
                           possible subscriptions
-                      </Typography>
-                  </Box>
-                  <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column">
-                      <Typography variant="body1">
+                      </p>
+                  </div>
+                  <div className="flex flex-col items-center justify-center text-center">
+                      <p>
                           Min {currentPricing?.analytics.minSubscriptionPrice}{pricing?getCurrency(pricing.currency):''} - Max {currentPricing?.analytics.maxSubscriptionPrice}{pricing?getCurrency(pricing.currency):''}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
+                      </p>
+                      <p className="text-sm text-slate-500">
                           monthly cost
-                      </Typography>
-                  </Box>
-              </Box>
+                      </p>
+                  </div>
+              </div>
             </>
     );
 }

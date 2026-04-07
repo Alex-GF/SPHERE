@@ -1,4 +1,4 @@
-import {Code, Memory, Monitor } from "@mui/icons-material"
+import { FaCode, FaMicrochip, FaDesktop } from "react-icons/fa"
 import BoxesLanding from "../boxes-landing"
 import { FaWandMagic } from "react-icons/fa6"
 
@@ -12,19 +12,19 @@ export default function ToolsLanding() {
         },
         {
             title: 'Pricing2Yaml Editor',
-            icon: <Code />,
+            icon: <FaCode />,
             description:
             'Easily transform and edit pricing data using our intuitive YAML editor, built to streamline the modeling process.',
         },
         {
             title: 'HARVEY',
-            icon: <Memory />,
+            icon: <FaMicrochip />,
             description:
             'Get personalized insights and recommendations for your SaaS pricing strategy with HARVEY, our AI-powered virtual assistant.',
         },
         {
             title: 'Pricing2Yaml Renderer',
-            icon: <Monitor />,
+            icon: <FaDesktop />,
             description:
             'Visualize your SaaS pricing in a standardized format and customize it to your needs with our powerful rendering tool.',
         },

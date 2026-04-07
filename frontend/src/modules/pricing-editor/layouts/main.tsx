@@ -1,26 +1,18 @@
 import PropTypes from 'prop-types';
 
-import Box from '@mui/material/Box';
-
-import { flex } from '../../core/theme/css';
-
-export default function Main({ children, sx, ...other } : { children: React.ReactNode, sx?: object }) {
+export default function Main({ children, className = '', ...other }: { children: React.ReactNode; className?: string }) {
 
   return (
-    <Box
-      component="main"
-      sx={{
-        ...flex({}),
-        ...sx,
-      }}
+    <main
+      className={`flex min-h-0 ${className}`}
       {...other}
     >
       {children}
-    </Box>
+    </main>
   );
 }
 
 Main.propTypes = {
   children: PropTypes.node,
-  sx: PropTypes.object,
+  className: PropTypes.string,
 };

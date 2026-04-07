@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Box, Typography } from '@mui/material';
 import PricingNameInput from '../pricing-name-input';
 import VisibilityOptions from '../visibility-options';
 import FileUpload from '../../../core/components/file-upload-input';
@@ -14,17 +13,17 @@ export default function CreatePricingForm () {
   };
 
   return (
-    <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+    <form className="flex flex-col gap-3">
+      <div className="flex justify-center">
         <PricingLogo size={100} />
-      </Box>
-      <Typography variant="h5" align="center" marginBottom={10} fontWeight="bold">Upload a pricing to SPHERE</Typography>
+      </div>
+      <h2 className="mb-10 text-center text-2xl font-bold">Upload a pricing to SPHERE</h2>
       <PricingNameInput value={modelName} onChange={setModelName} />
       {/* <LicenseInput value={license} onChange={setLicense} /> */}
       {/* <TemplateSelector /> */}
       <VisibilityOptions value={visibility} onChange={setVisibility} />
       <FileUpload onSubmit={handleSubmit} submitButtonText="Add Pricing" submitButtonWidth={200}/>
-      <Box sx={{ height: 50 }} />
+      <div className="h-12" />
       {/* <Button 
         variant="contained" 
         onClick={handleSubmit} 
@@ -32,6 +31,6 @@ export default function CreatePricingForm () {
       >
         Add pricing
       </Button> */}
-    </Box>
+    </form>
   );
 };

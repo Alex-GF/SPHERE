@@ -1,5 +1,3 @@
-import { Typography } from '@mui/material';
-import { Box } from '@mui/system';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 import { CURRENCIES } from '../../pages/card';
 import { Collection } from '../../types/collection';
@@ -16,49 +14,49 @@ export const getCurrency = (currency: string) => {
 export default function CollectionStats({ collection }: StatsProps) {
   return (
     <>
-      <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Typography variant="h6" gutterBottom>
+      <div className="flex items-center justify-between">
+        <h3 className="mb-2 text-xl font-semibold">
           Stats
-        </Typography>
-      </Box>
-      <Box display="flex" justifyContent="space-evenly" alignItems="center" mt={2}>
-        <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column">
+        </h3>
+      </div>
+      <div className="mt-2 flex items-center justify-evenly gap-4">
+        <div className="flex flex-col items-center justify-center text-center">
           {collection?.pricings[0].pricings && collection?.pricings[0].pricings.length > 0 ? (
             <>
               {formatDistanceToNow(parseISO(collection.lastUpdate))} ago
-              <Typography variant="body2" color="text.secondary">
+              <p className="text-sm text-slate-500">
                 last updated
-              </Typography>
+              </p>
             </>
           ) : (
             <>
-              <Typography variant="body2" color="text.secondary">
+              <p className="text-sm text-slate-500">
                 No data available
-              </Typography>
+              </p>
             </>
           )}
-        </Box>
-        <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column">
+        </div>
+        <div className="flex flex-col items-center justify-center text-center">
           {collection?.pricings[0].pricings && collection?.pricings[0].pricings.length > 0 ? (
             <>
-              <Typography variant="body1">
+              <p>
                 {collection &&
                   collection.pricings.length > 0 &&
                   collection.pricings[0].pricings.length}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
+              </p>
+              <p className="text-sm text-slate-500">
                 pricings
-              </Typography>
+              </p>
             </>
           ) : (
             <>
-              <Typography variant="body2" color="text.secondary">
+              <p className="text-sm text-slate-500">
                 No data available
-              </Typography>
+              </p>
             </>
           )}
-        </Box>
-      </Box>
+        </div>
+      </div>
     </>
   );
 }

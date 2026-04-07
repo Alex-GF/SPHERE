@@ -1,10 +1,9 @@
-import { Container } from "@mui/material";
 import CreatePricingForm from "../../components/create-pricing-form";
 
 export default function CreatePricingPage(){
   return (
-    <Container maxWidth="md" sx={{ mt: 4 }}>
+    <div className="mx-auto mt-4 w-full max-w-3xl">
       <CreatePricingForm />
-    </Container>
+    </div>
   );
 }

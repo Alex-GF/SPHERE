@@ -1,12 +1,7 @@
 import Globe from 'globe.gl';
 import { useEffect, useRef, useState } from 'react';
-import { Box } from '@mui/system';
 import * as THREE from 'three';
-import { Button, Typography } from '@mui/material';
-import { flex } from '../../../core/theme/css';
-import { StyledButtonLanding } from '../styled-button-landing';
-import LanguageIcon from '@mui/icons-material/Language';
-import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite';
+import { FaPlayCircle } from 'react-icons/fa';
 import { useRouter } from '../../../core/hooks/useRouter';
 
 export default function HeroLanding() {
@@ -87,40 +82,24 @@ export default function HeroLanding() {
   globeControls.autoRotate = true; // Activa rotación automática
 
   return (
-    <Box sx={{ width: '100dvw', ...flex({}) }}>
-      <Box sx={{ ...flex({ direction: 'column' }), flexGrow: 1 }}>
-        <Typography
-          component="h1"
-          variant="h2"
-          align="center"
-          sx={{
-            mb: 2,
-            fontWeight: 700,
-            fontSize: { xs: 32, sm: 40 },
-          }}
-        >
+    <div className="flex w-dvw justify-center">
+      <div className="flex flex-grow flex-col items-center justify-center">
+        <h1 className="mb-2 text-center text-[32px] font-bold sm:text-[40px]">
           {' '}
           Your Hub for Intelligent SaaS Pricing{' '}
-        </Typography>
-        <Typography
-          variant="h6"
-          align="center"
-          color="text.secondary"
-          sx={{
-            maxWidth: 'sm',
-            mx: 'auto',
-            lineHeight: 1.6,
-          }}
-        >
+        </h1>
+        <p className="mx-auto max-w-[640px] text-center text-lg leading-relaxed text-sphere-grey-600">
           {' '}
           Explore our suite of Pricing-driven tools and unleash the full potential of SaaS pricings{' '}
-        </Typography>
-        <Box sx={{ minWidth: '50%', ...flex({ justify: 'center' }), mt: 5 }}>
-          <Button onClick={() => {router.push("/register")}} variant="outlined" size='large' endIcon={<PlayCircleFilledWhiteIcon />}>Get Started</Button>
+        </p>
+        <div className="mt-5 flex min-w-[50%] justify-center">
+          <button onClick={() => {router.push("/register")}} type="button" className="inline-flex items-center gap-2 rounded-md border border-sphere-primary-700 px-5 py-2 text-sphere-primary-700 transition-colors hover:bg-sphere-primary-700 hover:text-white">
+            Get Started <FaPlayCircle />
+          </button>
           {/* <Button onClick={() => {router.push("#about")}} variant="outlined" size='large' endIcon={<LanguageIcon />}>About SPHERE</Button> */}
-        </Box>
-      </Box>
-      <Box ref={globeRef} />
-    </Box>
+        </div>
+      </div>
+      <div ref={globeRef} />
+    </div>
   );
 }

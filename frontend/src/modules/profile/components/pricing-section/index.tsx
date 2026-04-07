@@ -1,4 +1,3 @@
-import { Box, Typography, IconButton } from '@mui/material';
 import { useEffect, useState, useMemo } from 'react';
 import { usePricingsApi } from '../../../pricing/api/pricingsApi';
 import { PricingEntry } from '../../../pricing/pages/list';
@@ -53,27 +52,18 @@ export default function PricingSection({
   }, [pricings, sortOrder]);
 
   return (
-    <Box>
+    <div>
       {sortedPricings && sortedPricings.length > 0 && (
         <>
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-            <Typography variant="h6">
+          <div className="mb-1 flex items-center">
+            <h2 className="text-xl font-semibold">
               Unassigned {sortedPricings.length > 0 && `(${sortedPricings.length})`}
-            </Typography>
-            <IconButton onClick={toggleSortOrder} size="medium">
+            </h2>
+            <button onClick={toggleSortOrder} type="button" className="ml-2 p-2">
               {sortOrder === "asc" ? <FaSortAlphaDown /> : <FaSortAlphaUpAlt />}
-            </IconButton>
-          </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-              gap: 2,
-              marginTop: '30px',
-            }}
-          >
+            </button>
+          </div>
+          <div className="mt-[30px] flex flex-col items-center justify-center gap-2">
             {sortedPricings.map((pricing: PricingEntry) => (
               <PricingListCard
                 name={pricing.name}
@@ -85,9 +75,9 @@ export default function PricingSection({
                 key={`pricing-${pricing.name}`}
               />
             ))}
-          </Box>
+          </div>
         </>
       )}
-    </Box>
+    </div>
   );
 }

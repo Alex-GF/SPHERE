@@ -1,13 +1,12 @@
 import PropTypes, { InferProps } from "prop-types";
 import { forwardRef } from "react";
 
-import Link from "@mui/material/Link";
 import RouterLink from "../../components/router-link";
 import { ReactSVG } from "react-svg";
 
 type LogoProps = {
   disabledLink?: boolean;
-  sx?: object;
+  sx?: string;
 };
 
 const Logo = forwardRef(
@@ -16,13 +15,7 @@ const Logo = forwardRef(
       <ReactSVG
         src="../../../../assets/logo/SPHERE-logo.svg"
         useRequestCache={true}
-        style={{
-          width: 300,
-          height: "80%",
-          cursor: "pointer",
-          margin: "0 !important",
-          ...sx,
-        }}
+        className={`m-0 h-[80%] w-[300px] cursor-pointer ${sx ?? ''}`}
       />
     );
 
@@ -31,16 +24,16 @@ const Logo = forwardRef(
     }
 
     return (
-      <Link component={RouterLink} href="/" sx={{ display: "contents" }}>
+      <RouterLink href="/" className="contents">
         {logo}
-      </Link>
+      </RouterLink>
     );
   }
 );
 
 Logo.propTypes = {
   disabledLink: PropTypes.bool,
-  sx: PropTypes.object,
+  sx: PropTypes.string,
 };
 
 export default Logo;

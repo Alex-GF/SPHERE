@@ -1,10 +1,26 @@
 import { Plan } from 'pricing4ts';
 import { RenderingStyles } from '../../types';
 import DEFAULT_RENDERING_STYLES from '../../shared/constants';
-import { Box, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
 import { listItemVariants } from '../../shared/motion-variants';
-import { getColorForIndex } from '../../shared/color-palette';
+
+const HEADER_CLASSES = [
+  'from-sky-500 to-sky-700',
+  'from-emerald-500 to-emerald-700',
+  'from-violet-500 to-violet-700',
+  'from-amber-500 to-amber-700',
+  'from-rose-500 to-rose-700',
+  'from-cyan-500 to-cyan-700',
+];
+
+const TEXT_CLASSES = [
+  'text-sky-700',
+  'text-emerald-700',
+  'text-violet-700',
+  'text-amber-700',
+  'text-rose-700',
+  'text-cyan-700',
+];
 
 export default function PlanHeader({
   plan,
@@ -18,28 +34,30 @@ export default function PlanHeader({
   style: RenderingStyles;
   index?: number;
 }>): JSX.Element {
-  const accent = typeof index === 'number' ? getColorForIndex(index) : style.plansColor ?? DEFAULT_RENDERING_STYLES.plansColor;
+  const gradientClass = typeof index === 'number' ? HEADER_CLASSES[index % HEADER_CLASSES.length] : HEADER_CLASSES[0];
+  const textClass = typeof index === 'number' ? TEXT_CLASSES[index % TEXT_CLASSES.length] : TEXT_CLASSES[0];
 
   return (
-    <motion.th variants={listItemVariants} custom={index ?? 0} scope="col">
-      <Box sx={{ textAlign: 'center', px: 1 }}>
-        <Typography
-          variant="h6"
-          component="div"
-          sx={{ color: accent, fontWeight: 600 }}
-        >
+    <motion.th
+      variants={listItemVariants}
+      custom={index ?? 0}
+      scope="col"
+      className={`px-1 text-center align-top text-white bg-gradient-to-br ${gradientClass}`}
+    >
+      <div className="space-y-1 py-4">
+        <div className={`text-lg font-semibold ${textClass} text-white`}>
           {plan.name}
-        </Typography>
+        </div>
 
-        <Typography variant="h5" sx={{ color: accent, fontWeight: 700 }}>
+        <div className="text-2xl font-bold text-white">
           {plan.price === 0 ? 'FREE' : <>{plan.price}{typeof plan.price === 'number' ? currency : ''}</>}
-        </Typography>
+        </div>
         {typeof plan.price === 'number' && (
-          <Typography variant="caption" sx={{ color: accent, opacity: 0.9 }}>
+          <div className="text-xs opacity-90 text-white">
             {plan.unit ? plan.unit : '/month'}
-          </Typography>
+          </div>
         )}
-      </Box>
+      </div>
     </motion.th>
   );
 }

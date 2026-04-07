@@ -1,7 +1,5 @@
-import { Container, Toolbar, useMediaQuery, useTheme } from '@mui/material';
 import { primary } from '../../core/theme/palette';
 import ShortLogo from '../../core/components/short-logo';
-import { StyledAppBar } from './components/styled-appbar';
 import { useMode } from '../../core/hooks/useTheme';
 import MobileHeaderItems from './components/mobile-header-items';
 import DesktopHeaderItems from './components/desktop-header-items';
@@ -20,9 +18,6 @@ export interface MenuItems {
 
 const Header = ({ renderSharedLink, renderYamlImport }: { renderSharedLink: () => void, renderYamlImport: () => void }) => {
   const [errors, setErrors] = useState<string[]>([]);
-
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const { mode } = useMode();
   const { editorValue, setEditorValue } = useEditorValue();
   const [originalEditorValue, setOriginalEditorValue] = useState<string>("");
@@ -81,19 +76,19 @@ const Header = ({ renderSharedLink, renderYamlImport }: { renderSharedLink: () =
 
   return (
     <>
-      <StyledAppBar position="sticky" mode={mode}>
-        <Container maxWidth={false} sx={{ marginLeft: 0 }}>
-          <Toolbar disableGutters>
-            <ShortLogo sx={{ fill: mode === 'light' ? primary[800] : primary[100] }} />
+      <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/90 backdrop-blur">
+        <div className="flex items-center gap-4 px-4 py-3 lg:px-6">
+          <ShortLogo sx={{ fill: mode === 'light' ? primary[800] : primary[100] }} />
 
-            {isMobile ? (
-              <MobileHeaderItems menuItems={menuItems} />
-            ) : (
-              <DesktopHeaderItems menuItems={menuItems} />
-            )}
-          </Toolbar>
-        </Container>
-      </StyledAppBar>
+          <div className="hidden flex-1 md:flex">
+            <DesktopHeaderItems menuItems={menuItems} />
+          </div>
+
+          <div className="ml-auto md:hidden">
+            <MobileHeaderItems menuItems={menuItems} />
+          </div>
+        </div>
+      </header>
       <Alerts messages={errors} />
     </>
   );

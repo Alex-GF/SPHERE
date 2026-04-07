@@ -1,23 +1,7 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
-import {
-  Box,
-  TextField,
-  Button,
-  Dialog,
-  Typography,
-  DialogTitle,
-  DialogActions,
-  DialogContent,
-  Stack,
-  Divider,
-  IconButton,
-} from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-
 import ContextManager from './ContextManager';
 import type { ContextInputType, PricingContextItem, PromptPreset } from '../types/types';
 import SearchPricings from './SearchPricings';
-import { grey } from '@mui/material/colors';
 import usePlayground from '../hooks/usePlayground';
 import UseCaseSelect from './UseCaseSelect';
 
@@ -63,29 +47,29 @@ function ControlPanel({
   const handleCloseModal = () => setPricingModal(false);
 
   return (
-    <Box
-      component="form"
+    <form
       onSubmit={onSubmit}
-      sx={{ display: 'flex', flexDirection: 'column', gap: 3, p: 2 }}
+      className="flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm"
     >
       {isPlaygroundEnabled && <UseCaseSelect onPresetSelect={onPresetSelect} />}
-      <TextField
-        label="Question"
+      <label className="space-y-2">
+        <span className="text-sm font-medium">Question</span>
+        <textarea
         name="question"
         required
-        multiline
-        rows={4}
         disabled={isPlaygroundEnabled}
         value={question}
         onChange={handleQuestionChange}
         placeholder="Which is the best available subscription for a team of five users?"
-        fullWidth
+        rows={4}
+        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm disabled:bg-slate-100"
       />
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <Button type="submit" variant="contained" disabled={isSubmitDisabled} size="large">
+      </label>
+      <div className="flex justify-end">
+        <button type="submit" disabled={isSubmitDisabled} className="rounded-md bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-700 disabled:cursor-not-allowed disabled:bg-slate-300">
           {isSubmitting ? 'Processing...' : 'Ask'}
-        </Button>
-      </Box>
+        </button>
+      </div>
       <ContextManager
         items={contextItems}
         detectedUrls={detectedPricingUrls}
@@ -95,15 +79,16 @@ function ControlPanel({
       />
 
       {!isPlaygroundEnabled && (
-        <Typography variant="h6" component="h2" sx={{ fontWeight: 600, mb: 2, color: grey[800] }}>
+        <h2 className="mb-2 text-lg font-semibold text-slate-800">
           Add Pricing Context
-        </Typography>
+        </h2>
       )}
 
       {!isPlaygroundEnabled && (
-        <Stack direction="row" spacing={2} divider={<Divider orientation="vertical" flexItem />}>
-          <Box component="section">
-            <Button variant="outlined" component="label" fullWidth>
+        <div className="grid gap-4 lg:grid-cols-2 lg:divide-x lg:divide-slate-200">
+          <section className="space-y-3 lg:pr-4">
+            <label className="block">
+              <span className="inline-flex w-full cursor-pointer justify-center rounded-md border border-slate-300 px-4 py-2 text-sm font-medium hover:bg-slate-50">
               Select archives
               <input
                 type="file"
@@ -115,55 +100,50 @@ function ControlPanel({
                   onFileSelect(files);
                 }}
               />
-            </Button>
-            <Typography
-              variant="h6"
-              component="h3"
-              sx={{ fontWeight: 600, mb: 2, color: grey[800] }}
-            >
+              </span>
+            </label>
+            <h3 className="text-lg font-semibold text-slate-800">
               Upload pricing YAML (optional)
-            </Typography>
-            <Typography variant="body1">
+            </h3>
+            <p className="text-sm text-slate-700">
               Uploaded YAMLs appear in the pricing context above so you can remove them at any time.
-            </Typography>
-          </Box>
+            </p>
+          </section>
 
-          <Box component="section">
-            <Button variant="outlined" onClick={handleOpenModal} fullWidth>
+          <section className="space-y-3 lg:pl-4">
+            <button type="button" onClick={handleOpenModal} className="w-full rounded-md border border-slate-300 px-4 py-2 text-sm font-medium hover:bg-slate-50">
               Search pricings
-            </Button>
-            <Typography
-              variant="h6"
-              component="h3"
-              sx={{ fontWeight: 600, mb: 2, color: grey[800] }}
-            >
+            </button>
+            <h3 className="text-lg font-semibold text-slate-800">
               Add SPHERE iPricing (optional)
-            </Typography>
-            <Typography variant="body1">
+            </h3>
+            <p className="text-sm text-slate-700">
               Add iPricings with our SPHERE integration (our iPricing repository).
-            </Typography>
-            <Typography variant="body1">
+            </p>
+            <p className="text-sm text-slate-700">
               You can further customize the search if you type a pricing name in the search bar.
-            </Typography>
+            </p>
 
-            <Dialog maxWidth="lg" fullWidth open={showPricingModal} onClose={handleCloseModal}>
-              <DialogActions>
-                <IconButton aria-label="close" onClick={handleCloseModal}>
-                  <CloseIcon />
-                </IconButton>
-              </DialogActions>
-              <DialogTitle>Search Pricings</DialogTitle>
-              <DialogContent>
+            {showPricingModal && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4">
+                <div className="max-h-[90vh] w-full max-w-5xl overflow-y-auto rounded-2xl bg-white p-4 shadow-2xl">
+                  <div className="mb-4 flex items-center justify-between gap-4">
+                    <h3 className="text-lg font-semibold">Search Pricings</h3>
+                    <button type="button" onClick={handleCloseModal} className="rounded-md border border-slate-300 px-3 py-2 text-sm hover:bg-slate-50">
+                      Close
+                    </button>
+                  </div>
                 <SearchPricings
                   onContextAdd={onContextAdd}
                   onContextRemove={onSphereContextRemove}
                 />
-              </DialogContent>
-            </Dialog>
-          </Box>
-        </Stack>
+                </div>
+              </div>
+            )}
+          </section>
+        </div>
       )}
-    </Box>
+    </form>
   );
 }
 

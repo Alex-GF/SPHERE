@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9fafb;
+  color: #212b36;
+}
+
+@layer utilities {
+  @keyframes alert-slide-in {
+    0% {
+      transform: translateX(100%);
+    }
+
+    60% {
+      transform: translateX(-10%);
+    }
+
+    80% {
+      transform: translateX(10%);
+    }
+
+    100% {
+      transform: translateX(0);
+    }
+  }
+
+  .animate-alert-slide-in {
+    animation: alert-slide-in 0.5s ease-in-out;
+  }
+
+  @keyframes banter-box {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    50% {
+      transform: scale(0.55);
+      opacity: 0.45;
+    }
+  }
+
+  .animate-banter-box {
+    animation: banter-box 1.2s ease-in-out infinite;
+  }
+
+  .banter-box:nth-child(1) {
+    animation-delay: 0s;
+  }
+
+  .banter-box:nth-child(2) {
+    animation-delay: 0.08s;
+  }
+
+  .banter-box:nth-child(3) {
+    animation-delay: 0.16s;
+  }
+
+  .banter-box:nth-child(4) {
+    animation-delay: 0.24s;
+  }
+
+  .banter-box:nth-child(5) {
+    animation-delay: 0.32s;
+  }
+
+  .banter-box:nth-child(6) {
+    animation-delay: 0.4s;
+  }
+
+  .banter-box:nth-child(7) {
+    animation-delay: 0.48s;
+  }
+
+  .banter-box:nth-child(8) {
+    animation-delay: 0.56s;
+  }
+
+  .banter-box:nth-child(9) {
+    animation-delay: 0.64s;
+  }
+
+  @keyframes register-pulse {
+    from {
+      transform: scale(0.95);
+      opacity: 1;
+    }
+
+    to {
+      transform: scale(1.65);
+      opacity: 0;
+    }
+  }
+
+  .animate-register-pulse {
+    animation: register-pulse 1s linear infinite;
+  }
+}

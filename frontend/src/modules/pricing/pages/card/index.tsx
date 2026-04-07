@@ -1,18 +1,6 @@
 import { Helmet } from 'react-helmet';
 import { useEffect, useState } from 'react';
-import {
-  Box,
-  Button,
-  Chip,
-  Container,
-  Paper,
-  Tab,
-  Tabs,
-  TextField,
-  Typography,
-  styled,
-} from '@mui/material';
-import { Favorite, LibraryAdd, LibraryAddCheck, FavoriteBorder } from '@mui/icons-material';
+import { FaHeart, FaRegHeart, FaBookmark, FaRegBookmark } from 'react-icons/fa6';
 import PricingTree from '../../components/pricing-tree';
 import { PricingRenderer } from '../../../pricing-editor/components/pricing-renderer';
 import { Pricing, retrievePricingFromYaml } from 'pricing4ts';
@@ -30,11 +18,6 @@ import { useAuth } from '../../../auth/hooks/useAuth';
 import { Link } from 'react-router-dom';
 import { useQueryParams } from '../../../core/hooks/useQueryParams';
 import ConfigurationSpaceView from '../../components/configuration-space-view';
-
-export const StyledChip = styled(Chip)(({ theme }) => ({
-  margin: theme.spacing(0.5),
-  borderRadius: '4px',
-}));
 
 export const CURRENCIES = {
   USD: '$',
@@ -204,124 +187,100 @@ export default function CardPage() {
       <Helmet>
         <title> {`SPHERE - ${pricing?.saasName} Pricing`} </title>
       </Helmet>
-      <Container maxWidth="xl">
-        <Box sx={{ my: 4 }}>
-          <Box display="flex" justifyContent="space-between" alignItems="center">
-            <Box display="flex" flexDirection="column">
-              <Box display="flex" alignItems="center" gap={2} mb={2}>
-                <Typography variant="h5" letterSpacing={1}>
-                  {currentPricing?.collectionName && (
-                    <>
-                      <Box component="span" sx={{ color: 'text.secondary', mr: 0.25 }}>
-                        {currentPricing?.collectionName}
-                      </Box>
-                      <Box component="span" sx={{ color: 'text.secondary', mr: 0.25 }}>
-                        /
-                      </Box>
-                    </>
-                  )}
-                  {pricing?.saasName}
-                </Typography>
-                <Button
-                  variant="outlined"
-                  size="small"
-                  startIcon={isLiked ? <Favorite /> : <FavoriteBorder />}
-                  onClick={() => setIsLiked(!isLiked)}
-                  sx={{ mr: 1 }}
-                >
-                  {isLiked ? '151' : '150'}
-                </Button>
-                <Button
-                  variant="outlined"
-                  startIcon={isFollowing ? <LibraryAddCheck /> : <LibraryAdd />}
-                  size="small"
-                  onClick={() => setIsFollowing(!isFollowing)}
-                >
-                  {isFollowing ? 'Following' : 'Follow'}
-                </Button>
-              </Box>
-
-              {/* <Box display="flex" flexWrap="wrap" gap={1} mb={2}>
-              <StyledChip label="Productivity" variant="outlined" />
-              <StyledChip label="Freemium" variant="outlined" />
-              <StyledChip label="Microsoft" variant="outlined" />
-              <StyledChip label="+1M users" variant="outlined" />
-              <StyledChip label="USD" variant="outlined" />
-              <StyledChip label="USA" variant="outlined" />
-            </Box>
-
-            <Typography variant="body2" color="text.secondary" mb={2}>
-              More info
-            </Typography> */}
-
-              {currentPricing && currentPricing.collectionName && (
-                <Typography variant="h6" color="text.secondary" mb={2} fontWeight="bold">
-                  Collection:{' '}
-                  <Link
-                    to={`/pricings/collections/${currentPricing.owner.id}/${currentPricing.collectionName}`}
-                  >
-                    {currentPricing.collectionName}
-                  </Link>
-                </Typography>
-              )}
-
-              <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs value={tabValue} onChange={(_, v) => setTabValue(v)}>
-                  <Tab label="Pricing card" />
-                  <Tab label="Configuration Space Details" />
-                  <Tab label="Files and versions" />
-                  {currentPricing &&
-                    authUser.user &&
-                    currentPricing.owner.username === authUser.user.username && (
-                      <Tab label="Settings" />
-                    )}
-                </Tabs>
-              </Box>
-            </Box>
-            <Box display="flex" flexDirection="column" gap={2}>
-              <Box display="flex" gap={2}>
-                {oldestPricingDate && (
+      <div className="mx-auto my-4 w-full max-w-screen-xl px-4">
+        <div className="flex items-start justify-between gap-6">
+          <div className="flex flex-col">
+            <div className="mb-2 flex items-center gap-2">
+              <h1 className="text-2xl tracking-wide">
+                {currentPricing?.collectionName && (
                   <>
-                    <TextField
-                      label="Start Date"
-                      type="date"
-                      fullWidth
-                      defaultValue={new Date(oldestPricingDate).toISOString().split('T')[0]}
-                      slotProps={{ inputLabel: { shrink: true } }}
-                      onChange={handleInputDate}
-                    />
-                    <TextField
-                      label="End Date"
-                      type="date"
-                      fullWidth
-                      slotProps={{ inputLabel: { shrink: true } }}
-                      onChange={handleOutputDate}
-                    />
+                    <span className="mr-1 text-slate-500">{currentPricing?.collectionName}</span>
+                    <span className="mr-1 text-slate-500">/</span>
                   </>
                 )}
-              </Box>
-              <TextField
-                label="Version"
-                select
-                fullWidth
-                slotProps={{ select: { native: true }, inputLabel: { shrink: true } }}
-                onChange={handleVersionChange}
+                {pricing?.saasName}
+              </h1>
+              <button
+                type="button"
+                className="inline-flex items-center gap-2 rounded-md border border-slate-300 px-3 py-1 text-sm"
+                onClick={() => setIsLiked(!isLiked)}
               >
-                {pricingData?.map((entry, index) => (
-                  <option key={index} value={entry.yaml}>
-                    {entry.yaml
-                      .split('/')
-                      // eslint-disable-next-line no-unexpected-multiline
-                      [entry.yaml.split('/').length - 1].replace('.yaml', '')
-                      .replace('.yml', ' ')}
-                  </option>
-                ))}
-              </TextField>
-            </Box>
-          </Box>
-        </Box>
+                {isLiked ? <FaHeart /> : <FaRegHeart />}
+                {isLiked ? '151' : '150'}
+              </button>
+              <button
+                type="button"
+                className="inline-flex items-center gap-2 rounded-md border border-slate-300 px-3 py-1 text-sm"
+                onClick={() => setIsFollowing(!isFollowing)}
+              >
+                {isFollowing ? <FaBookmark /> : <FaRegBookmark />}
+                {isFollowing ? 'Following' : 'Follow'}
+              </button>
+            </div>
 
-        <Box display="flex" gap={4} sx={{ mb: 4 }}>
+            {currentPricing && currentPricing.collectionName && (
+              <p className="mb-2 text-lg font-bold text-slate-600">
+                Collection:{' '}
+                <Link
+                  to={`/pricings/collections/${currentPricing.owner.id}/${currentPricing.collectionName}`}
+                >
+                  {currentPricing.collectionName}
+                </Link>
+              </p>
+            )}
+
+            <div className="border-b border-slate-300">
+              <div className="flex flex-wrap gap-1">
+                <button type="button" className={`px-4 py-2 ${tabValue === 0 ? 'border-b-2 border-sphere-primary-500 font-semibold' : 'text-slate-500'}`} onClick={() => setTabValue(0)}>Pricing card</button>
+                <button type="button" className={`px-4 py-2 ${tabValue === 1 ? 'border-b-2 border-sphere-primary-500 font-semibold' : 'text-slate-500'}`} onClick={() => setTabValue(1)}>Configuration Space Details</button>
+                <button type="button" className={`px-4 py-2 ${tabValue === 2 ? 'border-b-2 border-sphere-primary-500 font-semibold' : 'text-slate-500'}`} onClick={() => setTabValue(2)}>Files and versions</button>
+                {currentPricing && authUser.user && currentPricing.owner.username === authUser.user.username && (
+                  <button type="button" className={`px-4 py-2 ${tabValue === 3 ? 'border-b-2 border-sphere-primary-500 font-semibold' : 'text-slate-500'}`} onClick={() => setTabValue(3)}>Settings</button>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-2">
+              {oldestPricingDate && (
+                <>
+                  <input
+                    className="w-full rounded-md border border-slate-300 px-3 py-2"
+                    type="date"
+                    defaultValue={new Date(oldestPricingDate).toISOString().split('T')[0]}
+                    onChange={handleInputDate}
+                  />
+                  <input
+                    className="w-full rounded-md border border-slate-300 px-3 py-2"
+                    type="date"
+                    defaultValue={new Date().toISOString().split('T')[0]}
+                    onChange={handleOutputDate}
+                  />
+                </>
+              )}
+            </div>
+            <select
+              className="w-full rounded-md border border-slate-300 px-3 py-2"
+              onChange={handleVersionChange}
+              defaultValue=""
+            >
+              <option value="" disabled>
+                Version
+              </option>
+              {pricingData?.map((entry, index) => (
+                <option key={index} value={entry.yaml}>
+                  {entry.yaml
+                    .split('/')
+                    [entry.yaml.split('/').length - 1].replace('.yaml', '')
+                    .replace('.yml', ' ')}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <div className="mb-4 mt-6 flex gap-4">
           {tabValue === 3 && pricingData && pricing && (
             <PricingSettings
               pricingName={pricing.saasName}
@@ -333,11 +292,11 @@ export default function CardPage() {
           {tabValue === 1 && currentPricing && <ConfigurationSpaceView pricingId={currentPricing.id} />}
           {tabValue === 0 && (
             <>
-              <Box flex={1} sx={{ maxWidth: '66.7%' }}>
-                <Typography variant="h6" gutterBottom>
+              <div className="max-w-[66.7%] flex-1">
+                <h2 className="mb-2 text-xl font-semibold">
                   Pricing Information
-                </Typography>
-                <Typography variant="body1" sx={{ mb: 4 }}>
+                </h2>
+                <p className="mb-4">
                   This is the pricing information for {pricing?.saasName}. The pricing version that
                   is currently displayed is from{' '}
                   {currentPricing?.extractionDate
@@ -345,7 +304,7 @@ export default function CardPage() {
                     : 'Unknown date'}
                   . The prices are displayed with {pricing?.currency} currency. In future versions,
                   more data will be provided in this card.
-                </Typography>
+                </p>
                 {pricing && (
                   <PricingRenderer
                     pricing={pricing}
@@ -353,32 +312,32 @@ export default function CardPage() {
                     onApplyVariables={handleApplyVariables}
                   />
                 )}
-              </Box>
+              </div>
 
-              <Box sx={{ minWidth: '33.3%' }}>
+              <div className="min-w-[33.3%]">
                 {currentPricing && pricing && (
-                  <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
+                  <div className="mb-2 rounded border border-slate-200 p-2">
                     <Stats currentPricing={currentPricing} pricing={pricing} />
-                  </Paper>
+                  </div>
                 )}
 
                 {pricingData && (
-                  <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
+                  <div className="mb-2 rounded border border-slate-200 p-2">
                     <Analytics pricingData={pricingData} toggleModal={toggleModal} />
-                  </Paper>
+                  </div>
                 )}
                 {/* <Paper variant="outlined" sx={{ p: 2, mt: 2 }}>
               <Harvey />
             </Paper> */}
 
-                <Paper variant="outlined" sx={{ p: 2, mt: 2 }}>
+                <div className="mt-2 rounded border border-slate-200 p-2">
                   <PricingTree pricing={currentPricing} name={pricing?.saasName} />
-                </Paper>
-              </Box>
+                </div>
+              </div>
             </>
           )}
-        </Box>
-      </Container>
+        </div>
+      </div>
 
       <AnalyticsModal open={isModalOpen} onClose={toggleModal} pricingData={pricingData!} />
     </>

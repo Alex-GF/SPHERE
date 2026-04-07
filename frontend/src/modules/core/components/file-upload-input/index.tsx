@@ -1,31 +1,9 @@
 import { useState, useCallback } from 'react';
-import {
-  Box,
-  Typography,
-  Paper,
-  List,
-  ListItem,
-  ListItemText,
-  IconButton,
-  Button,
-} from '@mui/material';
-import { styled } from '@mui/system';
 import { FaUpload } from 'react-icons/fa';
 import { Accept, useDropzone } from 'react-dropzone';
 import { MdDeleteForever } from 'react-icons/md';
-import { error, grey, primary } from '../../theme/palette';
+import { error } from '../../theme/palette';
 import customAlert from '../../utils/custom-alert';
-
-const UploadBox = styled(Paper)({
-  padding: '10px',
-  textAlign: 'center',
-  cursor: 'pointer',
-  backgroundColor: 'white',
-  border: '2px dashed #ccc',
-  '&:hover': {
-    backgroundColor: '#f0f0f0',
-  },
-});
 
 export default function FileUpload({
   onSubmit,
@@ -75,24 +53,26 @@ export default function FileUpload({
   const handleSubmit = () => {
     // set editor's value with the contents of the file as a string
 
-    onSubmit(file as File);
+    if (!file) {
+      return;
+    }
+
+    onSubmit(file);
     handleDelete();
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, alignItems: 'center' }}>
-      <Box sx={{ width: '100%', margin: 'auto', mt: 2, mb: 2 }}>
-        <UploadBox
+    <div className="flex flex-col items-center gap-3">
+      <div className="my-2 w-full">
+        <div
           {...getRootProps()}
-          sx={{ opacity: file ? 0.5 : 1, pointerEvents: file ? 'none' : 'auto' }}
+          className={`border-2 border-dashed border-[#ccc] bg-white p-[10px] text-center transition-colors hover:bg-[#f0f0f0] ${file ? 'pointer-events-none opacity-50' : 'cursor-pointer opacity-100'}`}
           role="button"
           tabIndex={0}
         >
-          <input {...getInputProps()} type="file" style={{ display: 'none' }} />
-          <FaUpload
-            style={{ fontSize: 48, marginBottom: '16px', display: 'block', margin: '0 auto' }}
-          />
-          <Typography variant="h6" gutterBottom>
+          <input {...getInputProps()} type="file" className="hidden" />
+          <FaUpload className="mx-auto mb-4 block text-5xl" />
+          <h3 className="mb-2 mt-4 text-xl font-semibold text-sphere-grey-900">
             {isDragActive
               ? isDragActiveText
                 ? isDragActiveText
@@ -100,42 +80,33 @@ export default function FileUpload({
               : isNotDragActiveText
               ? isNotDragActiveText
               : 'Drag and drop a Pricing2Yaml file here'}
-          </Typography>
-          <Typography variant="body2" color="textSecondary">
+          </h3>
+          <p className="text-sm text-sphere-grey-600">
             or click to select a file
-          </Typography>
-        </UploadBox>
+          </p>
+        </div>
 
         {file && (
-          <List>
-            <ListItem
-              secondaryAction={
-                <IconButton edge="end" aria-label="delete" onClick={handleDelete}>
-                  <MdDeleteForever fill={error.dark} />
-                </IconButton>
-              }
-            >
-              <ListItemText primary={file.name} secondary={`${(file.size / 1024).toFixed(2)} KB`} />
-            </ListItem>
-          </List>
+          <ul className="mt-3 divide-y divide-sphere-grey-300 rounded-md border border-sphere-grey-300">
+            <li className="flex items-center justify-between px-3 py-2">
+              <div>
+                <p className="text-sm font-medium text-sphere-grey-900">{file.name}</p>
+                <p className="text-xs text-sphere-grey-600">{`${(file.size / 1024).toFixed(2)} KB`}</p>
+              </div>
+              <button type="button" aria-label="delete" onClick={handleDelete}>
+                <MdDeleteForever fill={error.dark} />
+              </button>
+            </li>
+          </ul>
         )}
-      </Box>
-      <Button
+      </div>
+      <button
         onClick={handleSubmit}
-        sx={{
-          backgroundColor: primary[700],
-          color: grey[100],
-          fontWeight: 'bold',
-          fontSize: 16,
-          px: 5,
-          py: 2,
-          mt: 5,
-          borderRadius: 3,
-          width: submitButtonWidth ?? '100%',
-        }}
+        type="button"
+        className={`mt-5 rounded-xl bg-sphere-primary-700 px-5 py-2 text-base font-bold text-white ${submitButtonWidth ? 'w-auto' : 'w-full'}`}
       >
         {submitButtonText ?? 'Submit file'}
-      </Button>
-    </Box>
+      </button>
+    </div>
   );
 }

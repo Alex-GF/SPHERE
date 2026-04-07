@@ -1,21 +1,6 @@
 import * as React from 'react'
-import {
-  Box,
-  Container,
-  Typography,
-  Card,
-  CardContent,
-  useTheme,
-  alpha,
-  Grid2,
-} from '@mui/material'
-import CodeIcon from '@mui/icons-material/Code'
-import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew'
-import DevicesIcon from '@mui/icons-material/Devices'
-import BuildIcon from '@mui/icons-material/Build'
-import { flex } from '../../../core/theme/css'
-import { Dataset } from '@mui/icons-material'
-import { FaBrain } from 'react-icons/fa'
+import { FiCode, FiDatabase, FiMonitor, FiTool } from 'react-icons/fi'
+import { FaUniversalAccess, FaBrain } from 'react-icons/fa'
 
 interface FeatureCardProps {
   icon: React.ReactNode
@@ -24,66 +9,39 @@ interface FeatureCardProps {
 }
 
 const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description }) => {
-  const theme = useTheme()
-  
   return (
-    <Card
-      elevation={0}
-      sx={{
-        height: '100%',
-        backgroundColor: 'transparent',
-        '&:hover': {
-          backgroundColor: alpha(theme.palette.primary.main, 0.04),
-          cursor: 'pointer',
-        },
-        transition: 'background-color 0.3s ease',
-      }}
-    >
-      <CardContent sx={{ p: 3 }}>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: 48,
-            height: 48,
-            borderRadius: 1.5,
-            backgroundColor: alpha(theme.palette.primary.main, 0.1),
-            color: 'primary.main',
-            mb: 2,
-          }}
-        >
+    <div className="h-full rounded-lg bg-transparent p-3 transition-colors duration-300 hover:cursor-pointer hover:bg-[rgba(2,62,138,0.04)]">
+      <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-md bg-[rgba(2,62,138,0.1)] text-sphere-primary-700">
           {icon}
-        </Box>
-        <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
+      </div>
+        <h3 className="mb-2 text-xl font-semibold">
           {title}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
+        </h3>
+        <p className="text-sm text-sphere-grey-600">
           {description}
-        </Typography>
-      </CardContent>
-    </Card>
+        </p>
+    </div>
   )
 }
 
 const features = [
   {
-    icon: <Dataset />,
+    icon: <FiDatabase />,
     title: 'Real Data',
     description: 'Access real-world pricing data from top SaaS companies to analyze their strategy.',
   },
   {
-    icon: <DevicesIcon />,
+    icon: <FiMonitor />,
     title: 'Real Time Renderization',
     description: 'See your pricing changes take effect instantly with our real-time rendering and intuitive interface.',
   },
   {
-    icon: <CodeIcon />,
+    icon: <FiCode />,
     title: 'Developer Experience',
     description: 'Our integrated YAML editor makes it easy to create and edit pricing models, so you can focus on what matters most.',
   },
   {
-    icon: <AccessibilityNewIcon />,
+    icon: <FaUniversalAccess />,
     title: 'Efficient Management',
     description: 'Track and manage changes to your pricing and the SaaS pricings you rely on using integrated VCS tools.',
   },
@@ -93,7 +51,7 @@ const features = [
     description: 'Leverage HARVEY, our virtual assistant, for a customized analysis on SaaS pricings or use AI4Pricing to automatically transform static web pricing into iPricing.',
   },
   {
-    icon: <BuildIcon />,
+    icon: <FiTool />,
     title: 'Customization',
     description: 'Customize SPHERE to fit your unique needs with our powerful API and flexible integration options.',
   },
@@ -101,66 +59,38 @@ const features = [
 
 export default function FeaturesLanding() {
   return (
-    <Box sx={{ width: '100dvw', ...flex({}) }}>
+    <div className="flex w-dvw justify-center gap-6">
       <img
         alt=""
         src="assets/landing/team.webp"
         width={350}
         height={700}
-        style={{
-            borderRadius: '16px',
-            objectFit: 'cover',
-            aspectRatio: '1/2',
-        }}
+        className="aspect-[1/2] rounded-2xl object-cover"
       />
-      <Box
-        component="section"
-        sx={{
-          py: { xs: 8, sm: 12, md: 16 },
-          backgroundColor: 'background.default',
-        }}
-      >
-        <Container maxWidth="lg">
-          <Box sx={{ mb: { xs: 8, sm: 12 } }}>
-            <Typography
-              component="h2"
-              variant="h3"
-              align="center"
-              sx={{
-                mb: 2,
-                fontWeight: 700,
-                fontSize: { xs: 32, sm: 40 },
-              }}
-            >
+      <section className="bg-transparent py-8 sm:py-12 md:py-16">
+        <div className="mx-auto w-full max-w-[1024px] px-4">
+          <div className="mb-8 sm:mb-12">
+            <h2 className="mb-2 text-center text-[32px] font-bold sm:text-[40px]">
               What is SPHERE?
-            </Typography>
-            <Typography
-              variant="h6"
-              align="center"
-              color="text.secondary"
-              sx={{
-                maxWidth: 'md',
-                mx: 'auto',
-                lineHeight: 1.6,
-              }}
-            >
+            </h2>
+            <p className="mx-auto max-w-[768px] text-center text-lg leading-relaxed text-sphere-grey-600">
               SPHERE (SaaS Pricing Holistic Evaluation and Regulation Environment) is your comprehensive platform for intelligent pricing-driven solutions. Grouping all our advanced applications, datasets and tools, SPHERE offers a unified experience to model, analyze, and optimize SaaS pricing with ease.
-            </Typography>
-          </Box>
+            </p>
+          </div>
           
-          <Grid2 container spacing={4}>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
             {features.map((feature, index) => (
-              <Grid2 size={4} key={index}>
+              <div key={index}>
                 <FeatureCard
                   icon={feature.icon}
                   title={feature.title}
                   description={feature.description}
                 />
-              </Grid2>
+              </div>
             ))}
-          </Grid2>
-        </Container>
-      </Box>
-    </Box>
+          </div>
+        </div>
+      </section>
+    </div>
   )
 }

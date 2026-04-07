@@ -1,13 +1,85 @@
-// React import not required in modern JSX runtime
 import { motion } from 'framer-motion';
-import { Table, TableBody, TableCell, TableHead, TableRow, Box, Typography, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import { Feature, Plan, AddOn, UsageLimit } from 'pricing4ts';
 import { getPlanGradient } from '../shared/planPalette';
 import { camelToTitle } from '../shared/stringUtils';
 import { formatUsageDisplay } from '../shared/value-helpers';
 import { formatMoneyDisplay } from '../shared/value-helpers';
+
+const PLAN_HEADER_CLASSES = [
+  'bg-gradient-to-br from-sky-500 to-sky-700',
+  'bg-gradient-to-br from-emerald-500 to-emerald-700',
+  'bg-gradient-to-br from-violet-500 to-violet-700',
+  'bg-gradient-to-br from-amber-500 to-amber-700',
+  'bg-gradient-to-br from-rose-500 to-rose-700',
+  'bg-gradient-to-br from-cyan-500 to-cyan-700',
+];
+
+const VALUE_BG_CLASSES = [
+  'bg-sky-50',
+  'bg-emerald-50',
+  'bg-violet-50',
+  'bg-amber-50',
+  'bg-rose-50',
+  'bg-cyan-50',
+];
+
+function Box({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+  return <div className={className}>{children}</div>;
+}
+
+function Typography({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+  return <div className={className}>{children}</div>;
+}
+
+function Table({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+  return <table className={className}>{children}</table>;
+}
+
+function TableHead({ children }: { children: React.ReactNode }) {
+  return <thead>{children}</thead>;
+}
+
+function TableBody({ children }: { children: React.ReactNode }) {
+  return <tbody>{children}</tbody>;
+}
+
+function TableRow({ children }: { children: React.ReactNode }) {
+  return <tr>{children}</tr>;
+}
+
+function TableCell({
+  children,
+  component,
+  scope,
+  align,
+  className = '',
+}: {
+  children: React.ReactNode;
+  component?: 'th' | 'td';
+  scope?: 'row' | 'col';
+  align?: 'center' | 'left' | 'right';
+  className?: string;
+}) {
+  const Tag = component ?? 'td';
+  return (
+    <Tag scope={scope} className={`${className} ${align === 'center' ? 'text-center' : align === 'right' ? 'text-right' : 'text-left'}`}>
+      {children}
+    </Tag>
+  );
+}
+
+function Accordion({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+  return <details className={className}>{children}</details>;
+}
+
+function AccordionSummary({ children }: { children: React.ReactNode }) {
+  return <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-3 font-semibold">{children}</summary>;
+}
+
+function AccordionDetails({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+  return <div className={className}>{children}</div>;
+}
 
 interface FeatureTableV2Props {
   plans: Record<string, Plan>;
@@ -276,15 +348,15 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
                     if (hasEffectiveNonZero) {
                       return (
                         <TableCell key={planKey} align='center'>
-                          <Box sx={{ display: 'inline-block', px: 1.5, py: 0.5, borderRadius: 2, background: 'linear-gradient(90deg,#34d399,#10b981)', color: '#fff', fontWeight: 700 }}>
+                          <span className="inline-block rounded-md bg-emerald-500 px-3 py-1 font-bold text-white">
                             {formatUsageDisplay(effective, ul)}
-                          </Box>
+                          </span>
                         </TableCell>
                       );
                     }else{
                       return (
                         <TableCell key={planKey} align='center'>
-                          <FaTimesCircle style={{ color: '#9ca3af', fontSize: '1.25rem' }} />
+                          <FaTimesCircle className="text-xl text-slate-400" />
                         </TableCell>
                       );
                     }
@@ -293,7 +365,7 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
                   if (typeof rawValue === 'boolean' && rawValue === true) {
                     return (
                       <TableCell key={planKey} align='center'>
-                        <FaCheckCircle style={{ color: '#16a34a', fontSize: '1.25rem' }} />
+                        <FaCheckCircle className="text-xl text-emerald-600" />
                       </TableCell>
                     );
                   }
@@ -301,7 +373,7 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
                   if (typeof rawValue === 'string' || typeof rawValue === 'number') {
                     return (
                       <TableCell key={planKey} align='center'>
-                        <Box sx={{ fontWeight: 700 }}>{String(rawValue)}</Box>
+                        <Box className="font-bold text-slate-900">{String(rawValue)}</Box>
                       </TableCell>
                     );
                   }
@@ -309,14 +381,14 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
                   if (providedByAddOn) {
                     return (
                       <TableCell key={planKey} align='center'>
-                        <Box sx={{ color: 'text.secondary' }}>Add-on</Box>
+                        <Box className="text-slate-500">Add-on</Box>
                       </TableCell>
                     );
                   }
 
                   return (
                     <TableCell key={planKey} align='center'>
-                      <FaTimesCircle style={{ color: '#9ca3af', fontSize: '1.25rem' }} />
+                      <FaTimesCircle className="text-xl text-slate-400" />
                     </TableCell>
                   );
                 })}
@@ -338,16 +410,16 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
                 if (hasEffective) {
                   return (
                     <TableCell key={planKey} align='center'>
-                      <Box sx={{ display: 'inline-block', px: 1.5, py: 0.5, borderRadius: 2, background: 'linear-gradient(90deg,#34d399,#10b981)', color: '#fff', fontWeight: 700 }}>
+                      <span className="inline-block rounded-md bg-emerald-500 px-3 py-1 font-bold text-white">
                         {formatUsageDisplay(effective, ul)}
-                      </Box>
+                      </span>
                     </TableCell>
                   );
                 }
 
                 return (
                   <TableCell key={planKey} align='center'>
-                    <FaTimesCircle style={{ color: '#9ca3af', fontSize: '1.25rem' }} />
+                    <FaTimesCircle className="text-xl text-slate-400" />
                   </TableCell>
                 );
               })}
@@ -359,43 +431,53 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
   }
 
   return (
-    <Box sx={{ overflowX: 'auto', mt: 2 }}>
-      <Table sx={{ minWidth: 600 }}>
+    <div className="mt-2 overflow-x-auto">
+      <Table className="min-w-[600px]">
         <TableHead>
           <TableRow>
-            <TableCell sx={{ fontWeight: 700 }}></TableCell>
+            <TableCell className="font-bold" />
             {planKeys.map((planKey, idx) => (
-              <TableCell key={planKey} align='center' sx={{ background: getPlanGradient(idx), color: '#fff', fontWeight: "bolder", minWidth: 160, fontSize: 18 }}>
-                <Typography sx={{ fontWeight: 700, fontSize: 24 }}>{plans[planKey].name ?? camelToTitle(planKey)}</Typography>
-                <Typography sx={{ fontWeight: 800, fontSize: 20 }}>{plans[planKey].price === 0 ? 'FREE' : <>{formatMoneyDisplay(plans[planKey].price)}{typeof plans[planKey].price === 'number' ? (currency ?? '') : ''}</>}</Typography>
+              <TableCell
+                key={planKey}
+                align="center"
+                className={`min-w-[160px] text-center font-extrabold text-white ${PLAN_HEADER_CLASSES[idx % PLAN_HEADER_CLASSES.length]}`}
+              >
+                <Typography className="text-2xl font-bold">{plans[planKey].name ?? camelToTitle(planKey)}</Typography>
+                <Typography className="text-xl font-extrabold">
+                  {plans[planKey].price === 0 ? 'FREE' : <>{formatMoneyDisplay(plans[planKey].price)}{typeof plans[planKey].price === 'number' ? (currency ?? '') : ''}</>}
+                </Typography>
                 {typeof plans[planKey].unit === 'string' && (
-                  <Typography variant='caption' sx={{fontSize: 16}}>{plans[planKey].unit}</Typography>
+                  <Typography className="text-base">{plans[planKey].unit}</Typography>
                 )}
               </TableCell>
             ))}
           </TableRow>
         </TableHead>
-        {/* render untagged features table first */}
         {renderTableForFeatureKeys(untaggedFeatureKeys)}
       </Table>
 
-      {/* render an accordion per tag */}
       {sortedTags.map((tag) => (
-        <Accordion key={tag} sx={{ mt: 2 }}>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}> 
-            <Typography sx={{ fontWeight: 700 }}>{tag}</Typography>
+        <Accordion key={tag} className="mt-2 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+          <AccordionSummary>
+            <Typography className="font-bold">{tag}</Typography>
           </AccordionSummary>
-          <AccordionDetails sx={{ p: 0 }}>
-            <Table sx={{ minWidth: 600 }}>
+          <AccordionDetails className="p-0">
+            <Table className="min-w-[600px]">
               <TableHead>
                 <TableRow>
-                  <TableCell sx={{ fontWeight: 700 }}></TableCell>
+                  <TableCell className="font-bold" />
                   {planKeys.map((planKey, idx) => (
-                    <TableCell key={planKey} align='center' sx={{ background: getPlanGradient(idx), color: '#fff', fontWeight: "bolder", minWidth: 160, fontSize: 18 }}>
-                      <Typography sx={{ fontWeight: 700, fontSize: 24 }}>{plans[planKey].name ?? camelToTitle(planKey)}</Typography>
-                      <Typography sx={{ fontWeight: 800, fontSize: 20 }}>{plans[planKey].price === 0 ? 'FREE' : <>{formatMoneyDisplay(plans[planKey].price)}{typeof plans[planKey].price === 'number' ? (currency ?? '') : ''}</>}</Typography>
+                    <TableCell
+                      key={planKey}
+                      align="center"
+                      className={`min-w-[160px] text-center font-extrabold text-white ${PLAN_HEADER_CLASSES[idx % PLAN_HEADER_CLASSES.length]}`}
+                    >
+                      <Typography className="text-2xl font-bold">{plans[planKey].name ?? camelToTitle(planKey)}</Typography>
+                      <Typography className="text-xl font-extrabold">
+                        {plans[planKey].price === 0 ? 'FREE' : <>{formatMoneyDisplay(plans[planKey].price)}{typeof plans[planKey].price === 'number' ? (currency ?? '') : ''}</>}
+                      </Typography>
                       {typeof plans[planKey].unit === 'string' && (
-                        <Typography variant='caption' sx={{fontSize: 16}}>{plans[planKey].unit}</Typography>
+                        <Typography className="text-base">{plans[planKey].unit}</Typography>
                       )}
                     </TableCell>
                   ))}
@@ -405,8 +487,8 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
             </Table>
           </AccordionDetails>
         </Accordion>
-  ))}
-    </Box>
+      ))}
+    </div>
   );
 }
 

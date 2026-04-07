@@ -1,4 +1,3 @@
-import { Box, IconButton, Typography } from '@mui/material';
 import { IoMdAddCircleOutline } from 'react-icons/io';
 import { FaSortAlphaDown, FaSortAlphaUpAlt } from "react-icons/fa";
 import { usePricingCollectionsApi } from '../../api/pricingCollectionsApi';
@@ -70,32 +69,25 @@ export default function CollectionSection({
 
   return (
     <>
-      <Box sx={{ mb: 4 }}>
+      <div className="mb-4">
         {/* Header */}
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            mb: 1,
-          }}
-        >
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography variant="h6">
+        <div className="mb-1 flex items-center justify-between">
+          <div className="flex items-center">
+            <h2 className="text-xl font-semibold">
               Collections {collections.length > 0 && `(${collections.length})`}
-            </Typography>
-            <IconButton onClick={toggleSortOrder} size="medium">
+            </h2>
+            <button onClick={toggleSortOrder} type="button" className="ml-2 p-2">
               {sortOrder === "asc" ? <FaSortAlphaDown /> : <FaSortAlphaUpAlt />}
-            </IconButton>
-          </Box>
-          <IconButton size="large" onClick={handleAddCollection}>
+            </button>
+          </div>
+          <button type="button" className="p-2" onClick={handleAddCollection}>
             <IoMdAddCircleOutline />
-          </IconButton>
-        </Box>
+          </button>
+        </div>
 
         {/* List of collections */}
         <CollectionsGrid collections={sortedCollections} />
-      </Box>
+      </div>
       <AddPricingToCollectionModal
         pricingName={pricingToAdd}
         modalState={addPricingToCollectionModalOpen}

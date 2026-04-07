@@ -1,8 +1,4 @@
-import { Alert, Button, CircularProgress, ListItem, Stack, Typography } from '@mui/material';
 import { PricingContextItem } from '../types/types';
-import { Box } from '@mui/system';
-import { grey } from '@mui/material/colors';
-import { OpenInNew } from '@mui/icons-material';
 import { usePreset } from '../hooks/usePreset';
 import usePlayground from '../hooks/usePlayground';
 import { UseCases } from '../use-cases';
@@ -96,46 +92,43 @@ function ContextManagerItem({ item, onRemove }: ContextManagerItemProps) {
     item.kind === 'yaml' || (item.kind === 'url' && item.transform === 'done');
 
   return (
-    <ListItem
-      key={item.id}
-      sx={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        py: 1,
-        px: 0,
-        borderBottom: `1px solid ${grey[200]}`,
-      }}
-    >
-      <Box>
-        <Typography variant="body2" sx={{ fontWeight: 500 }}>
+    <li className="flex items-center justify-between gap-3 px-4 py-3">
+      <div className="min-w-0">
+        <div className="truncate text-sm font-medium">
           {item.label}
-        </Typography>
-        <Typography variant="caption" sx={{ color: grey[600] }}>
+        </div>
+        <div className="text-xs text-slate-600">
           {computeContextItemMetadata(item)}
-        </Typography>
+        </div>
         {item.kind === 'url' && item.transform === 'not-started' && (
-          <Alert severity="info">URL waiting to be processed by A-MINT...</Alert>
+          <div className="mt-2 rounded-md border border-sky-200 bg-sky-50 px-2 py-1 text-xs text-sky-800">
+            URL waiting to be processed by A-MINT...
+          </div>
         )}
-      </Box>
-      <Stack direction="row" spacing={2}>
-        <Button size="small" onClick={() => onRemove(item.id)} color="error">
+      </div>
+      <div className="flex items-center gap-2">
+        <button
+          type="button"
+          className="rounded-md border border-red-500 px-3 py-2 text-sm text-red-600 hover:bg-red-500 hover:text-white"
+          onClick={() => onRemove(item.id)}
+        >
           Remove
-        </Button>
+        </button>
         {isSphereEditorLinkEnabled && (
-          <Button
-            size="small"
-            variant="text"
+          <a
             target="_blank"
             href={!isPlaygroundEnabled ? formatEditorLink() : formatPlaygroundModeLink()}
-            startIcon={<OpenInNew />}
+            rel="noreferrer"
+            className="rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
           >
             Open in editor
-          </Button>
+          </a>
         )}
-        {item.kind === 'url' && item.transform === 'pending' && <CircularProgress size="30px" />}
-      </Stack>
-    </ListItem>
+        {item.kind === 'url' && item.transform === 'pending' && (
+          <div className="h-5 w-5 animate-spin rounded-full border-2 border-slate-300 border-t-sky-600" />
+        )}
+      </div>
+    </li>
   );
 }
 

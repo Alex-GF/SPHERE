@@ -1,52 +1,16 @@
 import { useState } from 'react';
-import {
-  AppBar,
-  Box,
-  Toolbar,
-  IconButton,
-  Typography,
-  Menu,
-  Container,
-  Avatar,
-  Tooltip,
-  MenuItem,
-  useTheme,
-  useMediaQuery,
-  Button,
-} from '@mui/material';
-import { styled } from '@mui/system';
 import Logo from '../../core/components/logo';
-import { grey, primary } from '../../core/theme/palette';
 import { useAuth } from '../../auth/hooks/useAuth';
 import MobileHeaderItems from './components/mobile-header-items';
 import DesktopHeaderItems from './components/desktop-header-items';
 import { headerRoutes } from './router/header-routes';
 import { useRouter } from '../../core/hooks/useRouter';
-
-const StyledAppBar = styled(AppBar)(() => ({
-  background: grey[100],
-  boxShadow: '0 2px 4px rgba(0,0,0,0.08)',
-}));
-
-const StyledToolbar = styled(Toolbar)({
-  display: 'flex',
-  justifyContent: 'space-between',
-});
-
-const NavItems = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '1rem',
-  [theme.breakpoints.down('md')]: {
-    display: 'none',
-  },
-}));
+import { useResponsive } from '../../core/hooks/useResponsive';
 
 const Header = ({ setUploadModalOpen }: { setUploadModalOpen: (state: boolean) => void }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useResponsive('down', 'md');
 
   const { authUser, logout } = useAuth();
   const router = useRouter();
@@ -75,19 +39,18 @@ const Header = ({ setUploadModalOpen }: { setUploadModalOpen: (state: boolean) =
     },
   ];
 
-  const handleOpenUserMenu = (event: any) => {
-    setAnchorEl(event.currentTarget);
+  const handleOpenUserMenu = () => {
+    setIsMenuOpen(true);
   };
 
   const handleCloseUserMenu = () => {
-    setAnchorEl(null);
+    setIsMenuOpen(false);
   };
 
   return (
-    <StyledAppBar position="sticky">
-      <Container maxWidth="xl">
-        <StyledToolbar>
-          <Logo sx={{ fill: primary[800] }} />
+    <header className="sticky top-0 z-40 bg-sphere-grey-100 shadow-[0_2px_4px_rgba(0,0,0,0.08)]">
+      <div className="mx-auto flex w-full max-w-[1280px] items-center justify-between px-4 py-2">
+          <Logo sx="fill-sphere-primary-800" />
 
           {isMobile ? (
             <MobileHeaderItems headerRoutes={headerRoutes} />
@@ -95,92 +58,60 @@ const Header = ({ setUploadModalOpen }: { setUploadModalOpen: (state: boolean) =
             <DesktopHeaderItems headerRoutes={headerRoutes} />
           )}
 
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <NavItems>
+          <div className="flex items-center gap-2">
+            <div className="hidden items-center gap-4 md:flex">
               {authUser.isAuthenticated ? (
-                <Tooltip title="Open settings">
-                  <IconButton onClick={handleOpenUserMenu} aria-label="user settings">
-                    <Avatar src={authUser.user?.avatar} />
-                  </IconButton>
-                </Tooltip>
+                <button onClick={handleOpenUserMenu} aria-label="user settings" className="h-10 w-10 overflow-hidden rounded-full border border-sphere-grey-300 bg-white">
+                  {authUser.user?.avatar ? (
+                    <img src={authUser.user.avatar} alt={authUser.user.firstName ?? 'User avatar'} className="h-full w-full object-cover" />
+                  ) : (
+                    <span className="flex h-full w-full items-center justify-center text-sm font-bold text-sphere-primary-700">
+                      {authUser.user?.firstName?.[0] ?? 'U'}
+                    </span>
+                  )}
+                </button>
               ) : (
                 <>
-                  <Button
-                    variant="outlined"
-                    sx={{
-                      color: primary[500],
-                      borderColor: primary[500],
-                      '&:hover': {
-                        borderColor: primary[600],
-                        color: primary[600],
-                      },
-                      textTransform: 'none',
-                    }}
+                  <button
+                    type="button"
+                    className="rounded-md border border-sphere-primary-500 px-4 py-2 text-sphere-primary-500 transition-colors hover:border-sphere-primary-600 hover:text-sphere-primary-600"
                     aria-label="login"
                     onClick={() => router.push('/login')}
                   >
                     Login
-                  </Button>
-                  <Button
-                    variant="contained"
-                    sx={{
-                      bgcolor: primary[800],
-                      color: primary[100],
-                      '&:hover': {
-                        bgcolor: 'transparent',
-                        borderColor: primary[600],
-                        color: primary[600],
-                      },
-                      textTransform: 'none',
-                    }}
+                  </button>
+                  <button
+                    type="button"
+                    className="rounded-md border border-sphere-primary-800 bg-sphere-primary-800 px-4 py-2 text-sphere-primary-100 transition-colors hover:bg-transparent hover:text-sphere-primary-600"
                     aria-label="register"
                     onClick={() => router.push('/register')}
                   >
                     Register
-                  </Button>
+                  </button>
                 </>
               )}
-            </NavItems>
-            <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={handleCloseUserMenu}
-              transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-              anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-            >
-              <MenuItem
-                sx={{
-                  cursor: 'default',
-                  width: 200,
-                  textAlign: 'center',
-                  marginBottom: 1,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                }}
-              >
-                <Typography fontSize={16} fontWeight="bold" marginBottom={2}>
-                  {authUser.user?.firstName}
-                </Typography>
-                <Box
-                  sx={{
-                    cursor: 'default',
-                    width: '90%',
-                    height: '1px',
-                    backgroundColor: grey[500],
-                  }}
-                />
-              </MenuItem>
-              {settings.map(setting => (
-                <MenuItem key={setting.name} onClick={setting.onClick}>
-                  <Typography textAlign="center">{setting.name}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-        </StyledToolbar>
-      </Container>
-    </StyledAppBar>
+            </div>
+            {isMenuOpen && authUser.isAuthenticated && (
+              <div className="absolute right-4 top-[64px] w-[200px] rounded-md border border-sphere-grey-300 bg-white shadow-md">
+                <div className="mb-1 flex cursor-default flex-col items-center px-3 py-2 text-center">
+                  <p className="mb-2 text-base font-bold">{authUser.user?.firstName}</p>
+                  <div className="h-px w-[90%] bg-sphere-grey-500" />
+                </div>
+                {settings.map(setting => (
+                  <button
+                    key={setting.name}
+                    type="button"
+                    onClick={setting.onClick}
+                    className="block w-full px-3 py-2 text-center transition-colors hover:bg-sphere-grey-100"
+                  >
+                    {setting.name}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+      </div>
+    </header>
   );
 };
 

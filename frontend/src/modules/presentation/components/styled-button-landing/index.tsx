@@ -1,9 +1,26 @@
-import { styled, Button } from '@mui/material';
-import { primary } from '../../../core/theme/palette';
+import React from 'react';
 
-export const StyledButtonLanding = styled(Button)({
-  textAlign: 'center',
-  backgroundColor: primary[300],
-  transition: 'background-color color .5s',
-  '&:hover': { backgroundColor: primary[500], color: 'white' },
-});
+type StyledButtonLandingProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  startIcon?: React.ReactNode;
+  endIcon?: React.ReactNode;
+};
+
+export function StyledButtonLanding({
+  startIcon,
+  endIcon,
+  className = '',
+  children,
+  ...props
+}: StyledButtonLandingProps) {
+  return (
+    <button
+      type="button"
+      className={`inline-flex items-center justify-center gap-2 rounded-md bg-sphere-primary-300 px-5 py-2 text-center transition-colors duration-500 hover:bg-sphere-primary-500 hover:text-white ${className}`}
+      {...props}
+    >
+      {startIcon}
+      {children}
+      {endIcon}
+    </button>
+  );
+}

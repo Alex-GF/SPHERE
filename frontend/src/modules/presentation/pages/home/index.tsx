@@ -1,7 +1,4 @@
-import { flex } from '../../../core/theme/css';
 import { Helmet } from 'react-helmet';
-import { Box } from '@mui/system';
-import { Divider } from '@mui/material';
 import HeroLanding from '../../components/hero-landing';
 import BulletsLanding from '../../components/bullets-landing';
 import ToolsLanding from '../../components/tools-landing';
@@ -20,25 +17,25 @@ export default function HomePage() {
           content="**SaaS Pricing Holistic Evaluation and Regulation Environment (SPHERE)** is a platform designed to comprehensively evaluate and regulate pricing models in Software as a Service (SaaS). This tool enables the analysis of all aspects of pricing plans, from the operational costs associated with each feature to customer value perception. With a focus on transparency and efficiency, the environment assists pricing designers in optimizing monetization strategies, ensuring regulatory compliance, and aligning offerings with market expectations."
         />
       </Helmet>
-      <Box sx={{ width: '100dvw', ...flex({ direction: 'column' }) }}>
+      <div className="flex w-dvw flex-col">
         <HeroLanding />
-        <Divider sx={{ width: '100dvw' }} />
+        <div className="w-dvw border-b border-slate-200" />
         <FeaturesLanding />
-        <Divider sx={{ width: '100dvw' }} />
+        <div className="w-dvw border-b border-slate-200" />
         <StatsLanding />
-        <Divider sx={{ width: '100dvw' }} />
+        <div className="w-dvw border-b border-slate-200" />
         <ToolsLanding />
-        <Divider sx={{ width: '100dvw' }} />
+        <div className="w-dvw border-b border-slate-200" />
         <BulletsLanding />
         {/* <Divider sx={{ width: '100dvw' }} />
         <SimplificationLanding /> */}
-        <Divider sx={{ width: '100dvw' }} />
+        <div className="w-dvw border-b border-slate-200" />
         <ResearchLanding />
-        <Divider sx={{ width: '100dvw' }} />
+        <div className="w-dvw border-b border-slate-200" />
         <FoundingLanding />
         {/* <Divider sx={{ width: '100dvw' }} />
         <FinalLanding /> */}
-      </Box>
+      </div>
     </>
   );
 }

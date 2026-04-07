@@ -19,42 +19,31 @@ import DEFAULT_RENDERING_STYLES from './shared/constants';
 import AddOnElement from './components/addon-element';
 import { useState } from 'react';
 import VariablesEditor from './components/VariablesEditor';
-import { Button } from '@mui/material';
 
 export function PricingRenderer({
   pricing,
   style,
   onApplyVariables,
 }: Readonly<PricingProps>): JSX.Element {
-  style ??= {};
   const [variablesModalOpen, setVariablesModalOpen] = useState(false);
 
   // UI billing selector currently disabled in renderer
 
   return (
-    <section
-      style={{
-        backgroundColor: style.backgroundColor ?? DEFAULT_RENDERING_STYLES.backgroundColor,
-      }}
-    >
-      <div className="container">
-        <PricingCard pricing={pricing} style={style} defaultStyle={DEFAULT_RENDERING_STYLES} />
+    <section className="bg-slate-50 py-4">
+      <div className="container mx-auto max-w-7xl px-4">
+        <PricingCard pricing={pricing} />
 
         {/* Variables editor trigger - placed before features table */}
 
         {Object.keys(pricing.variables).length > 0 && (
           <>
             <div
-              style={{
-                display: 'flex',
-                justifyContent: 'flex-end',
-                marginTop: 12,
-                marginBottom: 6,
-              }}
+              className="mt-3 mb-1 flex justify-end"
             >
-              <Button variant="outlined" size="small" onClick={() => setVariablesModalOpen(true)}>
+              <button type="button" className="rounded-md border border-slate-300 px-3 py-2 text-sm hover:bg-slate-50" onClick={() => setVariablesModalOpen(true)}>
                 Open variables calculator
-              </Button>
+              </button>
             </div>
             <VariablesEditor
               open={variablesModalOpen}
@@ -81,13 +70,10 @@ export function PricingRenderer({
 
         {pricing.addOns && Object.values(pricing.addOns).length > 0 && (
           <>
-            <div
-              className="pricing-page-title"
-              style={{ color: style.headerColor ?? DEFAULT_RENDERING_STYLES.headerColor }}
-            >
-              <h1>Add-Ons</h1>
+            <div className="pricing-page-title mt-8 mb-4">
+              <h1 className="text-2xl font-bold text-slate-900">Add-Ons</h1>
             </div>
-            <div className="add-ons-container" style={{ marginBottom: '100px' }}>
+            <div className="add-ons-container mb-24 flex flex-wrap gap-2">
               {Object.values(pricing.addOns).map(addOn => (
                 <AddOnElement
                   addOn={addOn}
@@ -96,7 +82,6 @@ export function PricingRenderer({
                       ? CURRENCIES[pricing.currency as keyof typeof CURRENCIES]
                       : pricing.currency
                   }
-                  style={style}
                   key={addOn.name}
                 />
               ))}

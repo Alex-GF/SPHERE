@@ -1,6 +1,5 @@
-import { Code, OpenInFull, Send } from "@mui/icons-material";
-import { Button, IconButton, TextField, Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { Code, Send } from 'react-icons/io5';
+import { LuExpand } from 'react-icons/lu';
 import { useState } from "react";
 
 
@@ -10,35 +9,35 @@ export default function Harvey() {
 
     return (
         <>
-              <Box display="flex" justifyContent="space-between" alignItems="center">
-                  <Typography variant="h6" gutterBottom>
-                  HARVEY
-                  </Typography>
-                  <IconButton title="Expand chat">
-                      <OpenInFull />
-                  </IconButton>
-              </Box>
-              <Box sx={{ mt: 2 }}>
-                <TextField
-                  fullWidth
-                  variant="outlined"
+              <div className="flex items-center justify-between">
+                  <h3 className="text-xl font-semibold">HARVEY</h3>
+                  <button type="button" title="Expand chat" className="rounded-full p-2 hover:bg-slate-100">
+                      <LuExpand />
+                  </button>
+              </div>
+              <div className="mt-2">
+                <textarea
+                  className="min-h-28 w-full rounded-md border border-slate-300 p-3 outline-none focus:border-sphere-primary-500"
                   placeholder="Input a message to start chatting with HARVEY..."
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  multiline
                   rows={4}
                 />
-                <Box display="flex" justifyContent="space-between" mt={1}>
-                  <Button startIcon={<Code />}>View Code</Button>
-                  <Button
-                    variant="contained"
-                    endIcon={<Send />}
+                <div className="mt-2 flex items-center justify-between">
+                  <button type="button" className="inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium hover:bg-slate-100">
+                    <Code />
+                    View Code
+                  </button>
+                  <button
+                    type="button"
+                    className="inline-flex items-center gap-2 rounded-md bg-sphere-primary-500 px-4 py-2 text-sm font-medium text-white hover:bg-sphere-primary-700"
                     onClick={() => setMessage('')}
                   >
+                    <Send />
                     Send
-                  </Button>
-                </Box>
-              </Box>
+                  </button>
+                </div>
+              </div>
             </>
     );
 }

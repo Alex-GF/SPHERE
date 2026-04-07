@@ -1,23 +1,13 @@
-import { CheckCircleOutline } from "@mui/icons-material";
-import { List, ListItem, ListItemIcon, ListItemText, Typography, useTheme } from "@mui/material";
-import { alpha, Box } from "@mui/system";
-import { flex } from "../../../core/theme/css";
+import { FaCheckCircle } from "react-icons/fa";
 
 export default function BulletsLanding() {
-    const theme = useTheme()
     return (
-        <Box sx={{ width: '100dvw', ...flex({}), my: { xs: 8, sm: 12 } }}>
-          <Typography component="h2"
-                variant="h3"
-                align="center"
-                sx={{
-                    mb: 2,
-                    mr: 5,
-                    fontWeight: 700,
-                    fontSize: { xs: 32, sm: 40 }}}>
+        <div className="my-8 flex w-dvw justify-center sm:my-12">
+          <div className="w-full max-w-[1280px] px-4">
+          <h2 className="mb-2 mr-5 text-center text-[32px] font-bold sm:text-[40px]">
             Our Key Features
-          </Typography>
-          <List>
+          </h2>
+          <ul>
             {[
               {
                 title: 'Unified Platform',
@@ -40,18 +30,16 @@ export default function BulletsLanding() {
                   'Enjoy a platform that grows with your needs, incorporating new features and improvements regularly.',
               },
             ].map((feature, index) => (
-              <ListItem key={index} sx={{'&:hover': {
-          backgroundColor: alpha(theme.palette.primary.main, 0.04),
-          cursor: 'pointer',
-        },
-        transition: 'background-color 0.3s ease',}}>
-                <ListItemIcon>
-                  <CheckCircleOutline color="primary" />
-                </ListItemIcon>
-                <ListItemText primary={feature.title} secondary={feature.description} />
-              </ListItem>
+              <li key={index} className="flex items-start gap-3 rounded-md p-2 transition-colors duration-300 hover:cursor-pointer hover:bg-[rgba(2,62,138,0.04)]">
+                <FaCheckCircle className="mt-1 text-sphere-primary-700" />
+                <div>
+                  <p className="font-semibold">{feature.title}</p>
+                  <p className="text-sm text-sphere-grey-600">{feature.description}</p>
+                </div>
+              </li>
             ))}
-          </List>
-        </Box>
+          </ul>
+          </div>
+        </div>
     );
 }

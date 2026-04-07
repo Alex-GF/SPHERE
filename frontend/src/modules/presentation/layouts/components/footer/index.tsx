@@ -1,67 +1,41 @@
-import { Box, Container, Stack, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import Logo from '../../../../core/components/logo';
-import { grey } from '../../../../core/theme/palette';
 import { headerRoutes } from '../../router/header-routes';
 
 export default function Footer() {
   return (
-    <Box
-      component="footer"
-      sx={{
-        backgroundColor: '#033E8A',
-        py: 3,
-        color: 'white',
-      }}
-    >
-      <Container maxWidth="lg">
-        <Stack spacing={3}>
+    <footer className="bg-[#033E8A] py-3 text-white">
+      <div className="mx-auto w-full max-w-[1024px] px-4">
+        <div className="flex flex-col gap-3">
           {/* Top row with logo and navigation */}
-          <Stack direction="row" justifyContent="space-between" alignItems="center">
+          <div className="flex items-center justify-between gap-4">
             {/* Logo */}
-            <Stack direction="row" spacing={1} alignItems="center">
-              <Logo sx={{ fill: grey[100] }} />
-            </Stack>
+            <div className="flex items-center gap-1">
+              <Logo sx="fill-sphere-grey-100" />
+            </div>
 
             {/* Navigation Links */}
-            <Stack direction="row" spacing={4} component="nav">
+            <nav className="flex gap-4">
               {headerRoutes.map(
                 (link, index) =>
                   !link.children && (
                     <Link
                       key={index}
                       to={link.to ? link.to : '#'}
-                      style={{
-                        color: 'white',
-                        textDecoration: 'none',
-                        fontSize: '0.875rem',
-                      }}
+                      className="text-sm text-white no-underline"
                     >
                       {link.name}
                     </Link>
                   )
               )}
-            </Stack>
-          </Stack>
+            </nav>
+          </div>
 
           {/* Bottom row with copyright and social icons */}
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-            sx={{
-              borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-              pt: 3,
-            }}
-          >
-            <Typography
-              variant="body2"
-              sx={{
-                color: 'rgba(255, 255, 255, 0.7)',
-              }}
-            >
+          <div className="flex items-center justify-between border-t border-[rgba(255,255,255,0.1)] pt-3">
+            <p className="text-[rgba(255,255,255,0.7)]">
               © {new Date().getFullYear()} SPHERE. All rights reserved.
-            </Typography>
+            </p>
 
             {/* Social Media Icons */}
             {/* <Stack direction="row" spacing={2}>
@@ -89,9 +63,9 @@ export default function Footer() {
                 </IconButton>
               ))}
             </Stack> */}
-          </Stack>
-        </Stack>
-      </Container>
-    </Box>
+          </div>
+        </div>
+      </div>
+    </footer>
   );
 }

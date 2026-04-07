@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
-import { alpha, Box, IconButton, Stack } from '@mui/material';
 import { MdBrightness4, MdBrightness7 } from 'react-icons/md';
-import { StyledButton } from '../styled-button';
 import { MenuItems } from '../../header';
 import { useMode } from '../../../../core/hooks/useTheme';
 import { grey, primary } from '../../../../core/theme/palette';
@@ -57,25 +55,20 @@ export default function DesktopHeaderItems({ menuItems }: { menuItems: MenuItems
 
   return (
     <>
-      <Stack
-        direction="row"
-        spacing={2}
-        sx={{ flexGrow: 1, ml: 2 }}
-        role="nav"
-        aria-label="Main navigation"
-      >
+      <nav className="flex flex-1 items-center gap-2 pl-2" aria-label="Main navigation">
         {menuItems.map((item, index) => (
-          <Box
-            sx={{ position: 'relative' }}
+          <div
+            className="relative"
             key={index}
             onMouseEnter={item.children ? handleMenuItemChildrenEnter : () => {}}
             onMouseLeave={item.children ? handleMenuItemChildrenLeave : () => {}}
           >
-            <StyledButton
+            <button
+              type="button"
               aria-label={item.name}
               tabIndex={0}
-              mode={mode}
               onClick={item.onClick ? item.onClick : () => {}}
+              className={`flex items-center gap-1 rounded-md px-3 py-2 text-sm font-semibold transition ${mode === 'light' ? 'text-slate-700 hover:bg-slate-100 hover:text-slate-900' : 'text-slate-100 hover:bg-slate-800 hover:text-white'}`}
             >
               {item.name}
               {item.children && (
@@ -85,59 +78,37 @@ export default function DesktopHeaderItems({ menuItems }: { menuItems: MenuItems
                   aria-label={item.name}
                 />
               )}
-            </StyledButton>
+            </button>
             {item.children && (
-              <Box
-                sx={{
-                  position: 'absolute',
-                  top: '100%',
-                  left: '0',
-                  opacity: openedMenuItemChildren[item.name] ? 1 : 0,
-                  maxHeight: openedMenuItemChildren[item.name] ? '2000px' : 0,
-                  transition: 'all .5s ease',
-                  overflow: 'hidden',
-                  backgroundColor: mode === 'light' ? grey[200] : grey[600],
-                  borderRadius: '5px',
-                  padding: openedMenuItemChildren[item.name] ? '10px' : 0,
-                  width: openedMenuItemChildren[item.name] ? '200px' : 0,
-                  boxShadow: '0px 2px 10px rgba(0, 0, 0, 0.2)',
-                  pointerEvents: openedMenuItemChildren[item.name] ? 'auto' : 'none',
-                }}
+              <div
+                className={`absolute left-0 top-full z-50 mt-2 w-52 overflow-hidden rounded-md shadow-lg transition-all duration-300 ${openedMenuItemChildren[item.name] ? 'max-h-[2000px] bg-slate-200 p-2 opacity-100' : 'max-h-0 w-0 p-0 opacity-0 pointer-events-none'}`}
               >
                 {item.children.map((childItem, childIndex) => (
-                  <StyledButton
+                  <button
+                    type="button"
                     key={childIndex}
                     aria-label={childItem.name}
                     tabIndex={0}
-                    mode={mode}
                     onClick={childItem.onClick}
-                    sx={{
-                      width: '100%',
-                      backgroundColor: 'transparent',
-                      color: mode === 'light' ? primary[700] : primary[300],
-                      '&:hover': {
-                        backgroundColor: alpha(primary[100], 0.8),
-                        color: mode === 'light' ? primary[800] : grey[900],
-                      },
-                    }}
+                    className="block w-full rounded-md px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 hover:text-slate-900"
                   >
                     {childItem.name}
-                  </StyledButton>
+                  </button>
                 ))}
-              </Box>
+              </div>
             )}
-          </Box>
+          </div>
         ))}
-      </Stack>
-      <Box>
-        <IconButton sx={{ ml: 1 }} onClick={toggleColorMode} color="inherit">
+      </nav>
+      <div>
+        <button type="button" className="ml-1 rounded-md p-2 hover:bg-slate-100" onClick={toggleColorMode}>
           {mode === 'dark' ? (
             <MdBrightness4 fill={primary[100]} />
           ) : (
             <MdBrightness7 fill={primary[800]} />
           )}
-        </IconButton>
-      </Box>
+        </button>
+      </div>
     </>
   );
 }

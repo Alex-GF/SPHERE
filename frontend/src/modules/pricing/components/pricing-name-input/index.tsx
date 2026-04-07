@@ -1,4 +1,3 @@
-import { Box, Menu, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { useAuth } from '../../../auth/hooks/useAuth';
 
 interface PricingNameInputProps {
@@ -12,39 +11,35 @@ export default function PricingNameInput({ value, onChange }: PricingNameInputPr
   
   
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-      {/* Campo de texto para Owner */}
-      <Box sx={{ flex: 1, position: 'relative'}}>
-        <Typography variant="caption" sx={{ display: 'block', mb: 0.5, fontSize: 16, position: 'absolute', top: -30, left: 0 }}>
+    <div className="flex items-center gap-1">
+      <div className="relative flex-1">
+        <label className="absolute -top-8 left-0 block text-base text-slate-700">
           Owner
-        </Typography>
-        <Select
-          value={authUser.user?.username}
-          fullWidth
-          size="small"
+        </label>
+        <select
+          value={authUser.user?.username || ''}
+          className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm"
+          readOnly
         >
-          <MenuItem value={`${authUser.user?.username}`}>{authUser.user?.username}</MenuItem>
-        </Select>
-      </Box>
+          <option value={`${authUser.user?.username}`}>{authUser.user?.username}</option>
+        </select>
+      </div>
 
-      {/* Barra inclinada */}
-      <Typography variant="h4" sx={{ color: 'gray' }}>
+      <div className="text-4xl text-slate-400">
         /
-      </Typography>
+      </div>
 
-      {/* Campo de texto para Model Name */}
-      <Box sx={{ flex: 2, position: 'relative' }}>
-        <Typography variant="caption" sx={{ display: 'block', mb: 0.5, fontSize: 16, position: 'absolute', top: -30, left: 0 }}>
+      <div className="relative flex-[2]">
+        <label className="absolute -top-8 left-0 block text-base text-slate-700">
           Pricing Name
-        </Typography>
-        <TextField
+        </label>
+        <input
           placeholder="New pricing name"
           value={value}
           onChange={e => onChange(e.target.value)}
-          fullWidth
-          size="small"
+          className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-sphere-primary-500"
         />
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 }

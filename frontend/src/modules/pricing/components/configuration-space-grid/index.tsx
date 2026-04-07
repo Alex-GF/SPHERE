@@ -1,5 +1,4 @@
 import { Configuration } from '../configuration-space-view';
-import { Masonry } from '@mui/lab';
 import ConfigurationSpaceItem from '../configuration-space-item';
 import ConfigurationDetailsModal from '../configuration-details-modal';
 import { useState } from 'react';
@@ -26,11 +25,11 @@ export default function ConfigurationSpaceGrid({
 
   return (
     <>
-      <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} spacing={2}>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {configurationSpace.map((configuration) => (
           <ConfigurationSpaceItem key={uuidv4()} configuration={configuration} onClick={handleCardClick} />
         ))}
-      </Masonry>
+      </div>
       <ConfigurationDetailsModal configuration={selectedConfiguration} isOpen={open} handleClose={handleClose}/>
     </>
   );

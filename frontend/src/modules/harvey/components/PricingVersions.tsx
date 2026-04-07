@@ -1,4 +1,3 @@
-import { Box, Button, Chip, Divider, Typography } from '@mui/material';
 import { usePricingContext } from '../hooks/usePricingContext';
 import { usePricingVersions } from '../hooks/useVersion';
 import { fetchPricingYaml } from '../sphere';
@@ -68,32 +67,35 @@ function PricingVersions({
   return (
     <>
       {totalVersions && (
-        <Chip size="small" label={`${totalVersions} ${calculateTotalVersionLabel()} available`} />
+        <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-sm">
+          {totalVersions} {calculateTotalVersionLabel()} available
+        </span>
       )}
-      <Box component="ul">
+      <ul className="mt-3 space-y-2">
         {versions?.versions.map(item => (
-          <Box
-            component="li"
-            key={item.id}
-            sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}
-          >
-            <Typography>{item.version}</Typography>
+          <li key={item.id} className="flex items-center justify-between gap-3 rounded-md border border-slate-200 px-4 py-3">
+            <span>{item.version}</span>
             {!isVersionIncludedInContext(item.yaml) ? (
-              <Button
-                variant="outlined"
+              <button
+                type="button"
+                className="rounded-md border border-slate-300 px-3 py-2 hover:bg-slate-50"
                 onClick={() => handleAddSpherePricing(item.id, item.yaml, item.version)}
               >
                 Add
-              </Button>
+              </button>
             ) : (
-              <Button color="error" variant="outlined" onClick={() => onContextRemove(item.id)}>
+              <button
+                type="button"
+                className="rounded-md border border-red-500 px-3 py-2 text-red-500 hover:bg-red-500 hover:text-white"
+                onClick={() => onContextRemove(item.id)}
+              >
                 Remove
-              </Button>
+              </button>
             )}
-          </Box>
+          </li>
         ))}
-      </Box>
-      <Divider />
+      </ul>
+      <div className="mt-3 border-t border-slate-200" />
     </>
   );
 }

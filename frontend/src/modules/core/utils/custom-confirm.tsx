@@ -1,55 +1,5 @@
 import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import { styled } from '@mui/material/styles';
-
-const ConfirmButton = styled(Button)(() => ({
-  position: 'relative',
-  padding: '10px',
-  border: 'none',
-  borderRadius: '15px',
-  color: 'black',
-  fontFamily: 'Login',
-  fontSize: '20px',
-  overflow: 'hidden',
-
-  '&::before, &::after': {
-    content: "''",
-    position: 'absolute',
-    width: '20%',
-    height: '20%',
-    border: '2px solid',
-    borderRadius: '2px',
-    transition: 'all 0.6s ease',
-  },
-  '&::before': {
-    top: 0,
-    left: 0,
-    borderBottomColor: 'transparent',
-    borderRightColor: 'transparent',
-    borderTopColor: 'black',
-    borderLeftColor: 'black',
-  },
-  '&::after': {
-    bottom: 0,
-    right: 0,
-    borderTopColor: 'transparent',
-    borderLeftColor: 'transparent',
-    borderBottomColor: 'black',
-    borderRightColor: 'black',
-  },
-  '&:hover::before, &:hover::after': {
-    width: '100%',
-    height: '100%',
-  },
-  '&:hover': {
-    cursor: 'pointer',
-  },
-}));
 
 interface ConfirmDialogProps {
   message: string;
@@ -73,24 +23,39 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({ message, onConfirm, onCan
   };
 
   return (
-    <Dialog
-      open={open}
-      onClose={handleCancel}
-      maxWidth="sm"
-      fullWidth
-      aria-labelledby="custom-confirm-dialog"
-      PaperProps={{ style: { textAlign: 'center' } }}
+    <div
+      className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/35 px-4"
+      onClick={handleCancel}
+      role="presentation"
     >
-      <DialogContent>
-        <Typography variant="h5" sx={{ fontFamily: 'Login', textAlign: 'center' }}>
+      <div
+        className="w-full max-w-xl rounded-2xl bg-white p-6 text-center shadow-lg"
+        onClick={(event) => event.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="custom-confirm-dialog"
+      >
+        <h2 id="custom-confirm-dialog" className="text-2xl font-semibold">
           {message}
-        </Typography>
-      </DialogContent>
-      <DialogActions sx={{ justifyContent: 'space-between', padding: '5% 10%' }}>
-        <ConfirmButton onClick={handleConfirm}>Confirm</ConfirmButton>
-        <ConfirmButton onClick={handleCancel}>Deny</ConfirmButton>
-      </DialogActions>
-    </Dialog>
+        </h2>
+        <div className="mt-8 flex items-center justify-between gap-4 px-4">
+          <button
+            type="button"
+            onClick={handleConfirm}
+            className="rounded-xl border-2 border-black px-4 py-2 text-xl transition hover:bg-slate-100"
+          >
+            Confirm
+          </button>
+          <button
+            type="button"
+            onClick={handleCancel}
+            className="rounded-xl border-2 border-black px-4 py-2 text-xl transition hover:bg-slate-100"
+          >
+            Deny
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
 

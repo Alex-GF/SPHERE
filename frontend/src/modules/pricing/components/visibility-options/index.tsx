@@ -1,5 +1,3 @@
-import { FormControl, FormControlLabel, RadioGroup, Radio } from '@mui/material';
-
 interface VisibilityOptionsProps {
   value: string;
   onChange: (value: string) => void;
@@ -7,14 +5,29 @@ interface VisibilityOptionsProps {
 
 export default function VisibilityOptions({ value, onChange }: VisibilityOptionsProps){
   return (
-    <FormControl>
-      <RadioGroup
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      >
-        <FormControlLabel value="Public" control={<Radio />} label="Public" />
-        <FormControlLabel value="Private" control={<Radio />} label="Private" />
-      </RadioGroup>
-    </FormControl>
+    <fieldset className="flex flex-col gap-2">
+      <label className="flex items-center gap-2 text-sm text-slate-700">
+        <input
+          type="radio"
+          name="visibility"
+          value="Public"
+          checked={value === 'Public'}
+          onChange={(e) => onChange(e.target.value)}
+          className="h-4 w-4"
+        />
+        Public
+      </label>
+      <label className="flex items-center gap-2 text-sm text-slate-700">
+        <input
+          type="radio"
+          name="visibility"
+          value="Private"
+          checked={value === 'Private'}
+          onChange={(e) => onChange(e.target.value)}
+          className="h-4 w-4"
+        />
+        Private
+      </label>
+    </fieldset>
   );
 };

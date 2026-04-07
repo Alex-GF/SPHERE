@@ -1,20 +1,10 @@
-import { Box, IconButton, Drawer, List, ListItem } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { useMode } from '../../../../core/hooks/useTheme';
-import { grey, primary } from '../../../../core/theme/palette';
 import { HeaderRoute } from '../../router/header-routes';
-import { styled, alpha } from '@mui/system';
 import { RiArrowDropDownFill } from 'react-icons/ri';
 import { StyledButton } from '../styled-button';
 import { useRouter } from '../../../../core/hooks/useRouter';
-
-const MobileNavButton = styled(IconButton)(({ theme }) => ({
-  display: 'none',
-  [theme.breakpoints.down('md')]: {
-    display: 'block',
-  },
-}));
 
 export default function MobileHeaderItems({ headerRoutes }: { headerRoutes: HeaderRoute[] }) {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -55,38 +45,27 @@ export default function MobileHeaderItems({ headerRoutes }: { headerRoutes: Head
 
   return (
     <>
-      <Box sx={{ flexGrow: 1 }} />
-      <MobileNavButton
+      <div className="flex-grow" />
+      <button
         aria-label="open navigation menu"
         onClick={toggleMobileNav}
-        sx={{ color: primary[900] }}
+        className="block p-2 text-sphere-primary-900 md:hidden"
       >
         {mobileOpen ? (
-          <FaTimes fill={primary[700]} />
+          <FaTimes className="text-sphere-primary-700" />
         ) : (
-          <FaBars fill={primary[700]} />
+          <FaBars className="text-sphere-primary-700" />
         )}
-      </MobileNavButton>
+      </button>
 
-      <Drawer
-        anchor="right"
-        open={mobileOpen}
-        onClose={toggleMobileNav}
-        sx={{
-          display: { md: 'none' },
-        }}
-      >
-        <Box sx={{ width: 250, pt: 2, backgroundColor: grey[100]}}>
-          <List>
+      {mobileOpen && (
+      <div className="fixed inset-0 z-50 md:hidden" onClick={toggleMobileNav} role="presentation">
+        <div className="ml-auto h-full w-[250px] bg-sphere-grey-100 pt-2" onClick={(e) => e.stopPropagation()} role="presentation">
+          <div>
             {headerRoutes.map((item, index) => (
-              <ListItem
+              <div
                 key={index}
-                sx={{
-                  color: primary[800],
-                  fontWeight: 900,
-                  display: 'flex',
-                  flexDirection: 'column',
-                }}
+                className="flex flex-col font-black text-sphere-primary-800"
               >
                 <StyledButton
                   key={index}
@@ -94,30 +73,20 @@ export default function MobileHeaderItems({ headerRoutes }: { headerRoutes: Head
                   tabIndex={0}
                   mode={mode}
                   onClick={item.children ? handleMenuItemChildrenClick : () => item.to ? router.push(item.to) : {}}
-                  sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}
+                  className="flex w-full items-center justify-between"
                 >
                   {item.name}
                   {item.children && (
                     <RiArrowDropDownFill
-                      fill={primary[700]}
+                      className="text-sphere-primary-700"
                       size="20px"
                       aria-label={item.name}
                     />
                   )}
                 </StyledButton>
                 {item.children && (
-                  <Box
-                    sx={{
-                      maxHeight: openedMenuItemChildren[item.name] ? '2000px' : 0,
-                      transition: 'all .5s ease',
-                      overflow: 'hidden',
-                      backgroundColor: grey[200],
-                      borderRadius: '5px',
-                      padding: openedMenuItemChildren[item.name] ? '10px' : 0,
-                      width: '100%',
-                      boxShadow: '0px 2px 10px rgba(0, 0, 0, 0.2)',
-                      pointerEvents: openedMenuItemChildren[item.name] ? 'auto' : 'none',
-                    }}
+                  <div
+                    className={`w-full overflow-hidden rounded-[5px] bg-sphere-grey-200 shadow-[0px_2px_10px_rgba(0,0,0,0.2)] transition-all duration-500 ${openedMenuItemChildren[item.name] ? 'pointer-events-auto max-h-[2000px] p-[10px]' : 'pointer-events-none max-h-0 p-0'}`}
                   >
                     {item.children.map((childItem, childIndex) => (
                       <StyledButton
@@ -126,39 +95,20 @@ export default function MobileHeaderItems({ headerRoutes }: { headerRoutes: Head
                         tabIndex={0}
                         mode={mode}
                         onClick={() => childItem.to ? router.push(childItem.to) : {}}
-                        sx={{
-                          width: '100%',
-                          backgroundColor: 'transparent',
-                          color: primary[700],
-                          '&:hover': {
-                            backgroundColor: alpha(primary[100], 0.8),
-                            color: primary[800],
-                          },
-                        }}
+                        className="w-full bg-transparent text-left text-sphere-primary-700 hover:bg-[rgba(202,240,248,0.8)] hover:text-sphere-primary-800"
                       >
                         {childItem.name}
                       </StyledButton>
                     ))}
-                  </Box>
+                  </div>
                 )}
-              </ListItem>
+              </div>
             ))}
-            {/* <ListItem>
-              <ListItemText primary="Login" />
-            </ListItem>
-            <ListItem>
-              <ListItemText primary="Register" />
-            </ListItem> */}
-          </List>
-        </Box>
-        <Box
-          sx={{
-            height: '100%',
-            width: '100%',
-            backgroundColor: mode === 'light' ? grey[100] : 'black',
-          }}
-        />
-      </Drawer>
+          </div>
+          <div className={`h-full w-full ${mode === 'light' ? 'bg-sphere-grey-100' : 'bg-black'}`} />
+        </div>
+      </div>
+      )}
     </>
   );
 }

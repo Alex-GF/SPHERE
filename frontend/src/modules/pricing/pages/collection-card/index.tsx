@@ -1,19 +1,6 @@
 import { Helmet } from 'react-helmet';
 import { useEffect, useState, useMemo } from 'react';
-import {
-  Box,
-  Button,
-  Chip,
-  Container,
-  Paper,
-  Tab,
-  Tabs,
-  TextField,
-  Typography,
-  styled,
-  IconButton,
-} from '@mui/material';
-import { Favorite, LibraryAdd, LibraryAddCheck, FavoriteBorder } from '@mui/icons-material';
+import { FaHeart, FaRegHeart, FaBookmark, FaRegBookmark } from 'react-icons/fa6';
 import { usePathname } from '../../../core/hooks/usePathname';
 import { useRouter } from '../../../core/hooks/useRouter';
 import CollectionStats from '../../components/collection-stats';
@@ -27,11 +14,6 @@ import { useAuth } from '../../../auth/hooks/useAuth';
 import CollectionSettings from '../../components/collection-settings';
 import { FaSortAlphaDown, FaSortAlphaUpAlt } from 'react-icons/fa';
 import { primary } from '../../../core/theme/palette';
-
-export const StyledChip = styled(Chip)(({ theme }) => ({
-  margin: theme.spacing(0.5),
-  borderRadius: '4px',
-}));
 
 export default function CollectionCardPage() {
   const [isFollowing, setIsFollowing] = useState(false);
@@ -109,123 +91,91 @@ export default function CollectionCardPage() {
       <Helmet>
         <title>{`SPHERE - ${collection?.name} Collection`}</title>
       </Helmet>
-      <Container maxWidth="xl">
-        <Box sx={{ my: 4 }}>
-          <Box display="flex" justifyContent="space-between" alignItems="center">
-            <Box display="flex" flexDirection="column">
-              <Box display="flex" alignItems="center" gap={2} mb={2}>
-                <Typography variant="h5" letterSpacing={1}>
-                  {/* <Box component="span" sx={{ color: 'text.secondary', mr: 0.25 }}>
-                    {collection?.owner.username}
-                  </Box>
-                  <Box component="span" sx={{ color: 'text.secondary', mr: 0.25 }}>
-                    /
-                  </Box> */}
-                  {collection?.name}
-                </Typography>
-                <Button
-                  variant="outlined"
-                  size="small"
-                  startIcon={isLiked ? <Favorite /> : <FavoriteBorder />}
-                  onClick={() => setIsLiked(!isLiked)}
-                  sx={{ mr: 1 }}
-                >
-                  {isLiked ? '151' : '150'}
-                </Button>
-                <Button
-                  variant="outlined"
-                  startIcon={isFollowing ? <LibraryAddCheck /> : <LibraryAdd />}
-                  size="small"
-                  onClick={() => setIsFollowing(!isFollowing)}
-                >
-                  {isFollowing ? 'Following' : 'Follow'}
-                </Button>
-              </Box>
+      <div className="mx-auto my-4 w-full max-w-screen-xl px-4">
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex flex-col">
+            <div className="flex items-center gap-2 mb-2">
+              <h1 className="text-2xl tracking-wide">
+                {collection?.name}
+              </h1>
+              <button
+                type="button"
+                className="inline-flex items-center gap-2 rounded-md border border-slate-300 px-3 py-1 text-sm"
+                onClick={() => setIsLiked(!isLiked)}
+              >
+                {isLiked ? <FaHeart /> : <FaRegHeart />}
+                {isLiked ? '151' : '150'}
+              </button>
+              <button
+                type="button"
+                className="inline-flex items-center gap-2 rounded-md border border-slate-300 px-3 py-1 text-sm"
+                onClick={() => setIsFollowing(!isFollowing)}
+              >
+                {isFollowing ? <FaBookmark /> : <FaRegBookmark />}
+                {isFollowing ? 'Following' : 'Follow'}
+              </button>
+            </div>
 
-              <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs value={tabValue} onChange={(_, v) => setTabValue(v)}>
-                  <Tab label="Collection card" />
-                  {collection &&
-                    authUser.user &&
-                    collection.owner.username === authUser.user.username && (
-                      <Tab label="Settings" />
-                    )}
-                </Tabs>
-              </Box>
-            </Box>
-            <Box display="flex" flexDirection="column" gap={2}>
-              <Box display="flex" gap={2}>
-                {collection &&
-                  collection.analytics &&
-                  collection.analytics.evolutionOfPlans.dates.length > 0 && (
-                    <>
-                      <TextField
-                        label="Start Date"
-                        type="date"
-                        fullWidth
-                        defaultValue={
-                          new Date(collection.analytics.evolutionOfPlans.dates[0])
-                            .toISOString()
-                            .split('T')[0]
-                        }
-                        slotProps={{ inputLabel: { shrink: true } }}
-                        onChange={handleInputDate}
-                      />
-                      <TextField
-                        label="End Date"
-                        type="date"
-                        fullWidth
-                        defaultValue={new Date().toISOString().split('T')[0]}
-                        slotProps={{ inputLabel: { shrink: true } }}
-                        onChange={handleOutputDate}
-                      />
-                    </>
-                  )}
-              </Box>
-            </Box>
-          </Box>
-        </Box>
+            <div className="border-b border-slate-300">
+              <div className="flex gap-2">
+                <button type="button" className={`px-4 py-2 ${tabValue === 0 ? 'border-b-2 border-sphere-primary-500 font-semibold' : 'text-slate-500'}`} onClick={() => setTabValue(0)}>Collection card</button>
+                {collection && authUser.user && collection.owner.username === authUser.user.username && (
+                  <button type="button" className={`px-4 py-2 ${tabValue === 1 ? 'border-b-2 border-sphere-primary-500 font-semibold' : 'text-slate-500'}`} onClick={() => setTabValue(1)}>Settings</button>
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-2">
+              {collection && collection.analytics && collection.analytics.evolutionOfPlans.dates.length > 0 && (
+                <>
+                  <input
+                    type="date"
+                    className="rounded-md border border-slate-300 px-3 py-2"
+                    defaultValue={new Date(collection.analytics.evolutionOfPlans.dates[0]).toISOString().split('T')[0]}
+                    onChange={handleInputDate}
+                  />
+                  <input
+                    type="date"
+                    className="rounded-md border border-slate-300 px-3 py-2"
+                    defaultValue={new Date().toISOString().split('T')[0]}
+                    onChange={handleOutputDate}
+                  />
+                </>
+              )}
+            </div>
+          </div>
+        </div>
 
-        <Box display="flex" gap={4} sx={{ mb: 4 }}>
+        <div className="mt-4 flex gap-4">
           {tabValue === 1 && collection && (
             <CollectionSettings collection={collection} updateCollectionMethod={setCollection} />
           )}
           {tabValue === 0 && (
             <>
-              <Box flex={1} sx={{ maxWidth: '66.7%' }}>
-                <Typography variant="h6" gutterBottom fontWeight="bold">
+              <div className="flex-1 max-w-[66.7%]">
+                <h2 className="mb-2 text-xl font-bold">
                   Description
-                </Typography>
-                <Typography variant="body1" sx={{ mb: 4 }}>
+                </h2>
+                <p className="mb-4">
                   {collection?.description
                     ? collection.description
                     : 'This collection has no description.'}
-                </Typography>
+                </p>
                 {collection && (
                   <>
-                    <Box display="flex" alignItems="center" justifyContent="space-between">
-                      <Box display="flex" alignItems="center" mb={-2}>
-                        <Typography variant="h6" fontWeight="bold">
+                    <div className="flex items-center justify-between">
+                      <div className="mb-2 flex items-center">
+                        <h2 className="text-xl font-bold">
                           Pricings in Collection
-                        </Typography>
-                        <IconButton onClick={toggleSortOrder} size="medium">
+                        </h2>
+                        <button type="button" className="ml-2 rounded-full p-2" onClick={toggleSortOrder}>
                           {sortOrder === 'asc' ? <FaSortAlphaDown /> : <FaSortAlphaUpAlt />}
-                        </IconButton>
-                      </Box>
-                      <Button
-                        sx={{
-                          border: `1px solid ${primary[400]}`,
-                          color: `${primary[400]}`,
-                          width: 150,
-                          height: 40,
-                          fontSize: 16,
-                          fontWeight: 'bold',
-                          marginBottom: -2,
-                          '&:hover': {
-                            backgroundColor: primary[400],
-                            color: 'white',
-                          },
-                        }}
+                        </button>
+                      </div>
+                      <button
+                        type="button"
+                        className="h-10 w-[150px] rounded-md border border-sphere-primary-400 text-base font-bold text-sphere-primary-400 hover:bg-sphere-primary-400 hover:text-white"
                         onClick={() =>
                           downloadCollection(
                             collection?.owner.id as string,
@@ -234,18 +184,9 @@ export default function CollectionCardPage() {
                         }
                       >
                         DOWNLOAD
-                      </Button>
-                    </Box>
-                    <PricingsGrid
-                      sx={{
-                        height: '100%',
-                        maxHeight: 800,
-                        overflowY: 'scroll',
-                        border: '1px solid #e0e0e0',
-                        borderRadius: '10px',
-                        padding: '20px 0',
-                      }}
-                    >
+                      </button>
+                    </div>
+                    <div className="max-h-[800px] h-full overflow-y-scroll rounded-[10px] border border-slate-200 py-5">
                       {sortedPricings.length > 0 ? (
                         sortedPricings.map((pricing: any) => {
                           const ownerName = pricing.owner || '';
@@ -260,51 +201,42 @@ export default function CollectionCardPage() {
                           );
                         })
                       ) : (
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            gap: 2,
-                            flexDirection: 'column',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            height: '100%',
-                          }}
-                        >
+                        <div className="flex h-full flex-col items-center justify-center gap-2">
                           NO PRICINGS FOUND
-                          <Button
-                            variant="outlined"
-                            color="primary"
+                          <button
+                            type="button"
+                            className="rounded-md border border-slate-300 px-4 py-2"
                             onClick={() => router.push('/me/pricings')}
                           >
                             Add
-                          </Button>
-                        </Box>
+                          </button>
+                        </div>
                       )}
-                    </PricingsGrid>
+                    </div>
                   </>
                 )}
-              </Box>
+              </div>
 
-              <Box sx={{ minWidth: '33.3%' }}>
-                <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
+              <div className="min-w-[33.3%]">
+                <div className="mb-2 rounded border border-slate-200 p-2">
                   <CollectionStats collection={collection} />
-                </Paper>
+                </div>
 
                 {collection && (
-                  <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
+                  <div className="mb-2 rounded border border-slate-200 p-2">
                     <CollectionAnalytics
                       collectionData={collection.analytics}
                       toggleModal={toggleModal}
                       startDate={startDate}
                       endDate={endDate}
                     />
-                  </Paper>
+                  </div>
                 )}
-              </Box>
+              </div>
             </>
           )}
-        </Box>
-      </Container>
+        </div>
+      </div>
 
       {collection && (
         <CollectionAnalyticsModal

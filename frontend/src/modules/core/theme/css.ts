@@ -1,4 +1,13 @@
-import { alpha } from "@mui/material";
+function withAlpha(hexColor: string, alphaValue: number) {
+  const normalized = hexColor.replace('#', '');
+  const bigint = Number.parseInt(normalized, 16);
+
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+
+  return `rgba(${r}, ${g}, ${b}, ${alphaValue})`;
+}
 
 export function bgGradient(props: { direction?: string; startColor?: string; endColor?: string; imgUrl?: string; color?: string; }) {
     const direction = props?.direction || 'to bottom';
@@ -44,7 +53,7 @@ export function bgBlur(props: { color?: string; blur?: number; opacity?: number;
         height: '100%',
         backdropFilter: `blur(${blur}px)`,
         WebkitBackdropFilter: `blur(${blur}px)`,
-        backgroundColor: alpha(color, opacity),
+        backgroundColor: withAlpha(color, opacity),
       },
     };
   }
@@ -52,7 +61,7 @@ export function bgBlur(props: { color?: string; blur?: number; opacity?: number;
   return {
     backdropFilter: `blur(${blur}px)`,
     WebkitBackdropFilter: `blur(${blur}px)`,
-    backgroundColor: alpha(color, opacity),
+    backgroundColor: withAlpha(color, opacity),
   };
 }
 

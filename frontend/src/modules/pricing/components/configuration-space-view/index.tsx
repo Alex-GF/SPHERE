@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { usePricingsApi } from '../../api/pricingsApi';
 import customAlert from '../../../core/utils/custom-alert';
-import { Box } from '@mui/material';
-import { flex } from '../../../core/theme/css';
 import ConfigurationSpaceGrid from '../configuration-space-grid';
 import BanterLoader from '../../../core/components/loaders/banter-loader';
 
@@ -82,21 +80,21 @@ export default function ConfigurationSpaceView({ pricingId }: { pricingId: strin
   }, [loading, limit]);
 
   return (
-    <Box sx={{ padding: 2, margin: 'auto', ...flex({ direction: 'column' }), width: '100%' }}>
+    <div className="mx-auto flex w-full flex-col p-2">
       {loading ? (
-        <Box sx={{ marginTop: 10 }}>
+        <div className="mt-10">
           <BanterLoader />
-        </Box>
+        </div>
       ) : (
         <>
           <ConfigurationSpaceGrid configurationSpace={renderedConfigurationSpace} />
           {renderedConfigurationSpace.length < renderedConfigurationSpaceSize && (
-            <Box sx={{ marginTop: 10 }} ref={loaderRef}>
+            <div className="mt-10" ref={loaderRef}>
               <BanterLoader />
-            </Box>
+            </div>
           )}
         </>
       )}
-    </Box>
+    </div>
   );
 }
