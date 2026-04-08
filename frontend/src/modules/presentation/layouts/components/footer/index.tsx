@@ -32,7 +32,7 @@ export default function Footer() {
           </div>
 
           {/* Bottom row with copyright and social icons */}
-          <div className="flex items-center justify-between border-t border-[rgba(255,255,255,0.1)] pt-3">
+          <div className="flex items-center justify-center border-t border-[rgba(255,255,255,0.1)] pt-3">
             <p className="text-[rgba(255,255,255,0.7)]">
               © {new Date().getFullYear()} SPHERE. All rights reserved.
             </p>
