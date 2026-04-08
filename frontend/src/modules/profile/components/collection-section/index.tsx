@@ -72,16 +72,16 @@ export default function CollectionSection({
       <div className="mb-4">
         {/* Header */}
         <div className="mb-1 flex items-center justify-between">
-          <div className="flex items-center">
-            <h2 className="text-xl font-semibold">
+          <div className="flex items-center p-[16px]">
+            <h2 className="text-xl">
               Collections {collections.length > 0 && `(${collections.length})`}
             </h2>
             <button onClick={toggleSortOrder} type="button" className="ml-2 p-2">
-              {sortOrder === "asc" ? <FaSortAlphaDown /> : <FaSortAlphaUpAlt />}
+              {sortOrder === "asc" ? <FaSortAlphaDown size={25} color="#637381" /> : <FaSortAlphaUpAlt size={25} color="#637381" />}
             </button>
           </div>
           <button type="button" className="p-2" onClick={handleAddCollection}>
-            <IoMdAddCircleOutline />
+            <IoMdAddCircleOutline size={28} />
           </button>
         </div>
 

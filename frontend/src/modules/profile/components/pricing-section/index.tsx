@@ -55,12 +55,12 @@ export default function PricingSection({
     <div>
       {sortedPricings && sortedPricings.length > 0 && (
         <>
-          <div className="mb-1 flex items-center">
-            <h2 className="text-xl font-semibold">
+          <div className="mb-1 flex items-center p-[16px]">
+            <h2 className="text-xl">
               Unassigned {sortedPricings.length > 0 && `(${sortedPricings.length})`}
             </h2>
             <button onClick={toggleSortOrder} type="button" className="ml-2 p-2">
-              {sortOrder === "asc" ? <FaSortAlphaDown /> : <FaSortAlphaUpAlt />}
+              {sortOrder === "asc" ? <FaSortAlphaDown size={25} color="#637381" /> : <FaSortAlphaUpAlt size={25} color="#637381" />}
             </button>
           </div>
           <div className="mt-[30px] flex flex-col items-center justify-center gap-2">
