@@ -15,14 +15,12 @@ const CURRENCIES = {
   NZD: 'NZ$',
 };
 
-import DEFAULT_RENDERING_STYLES from './shared/constants';
 import AddOnElement from './components/addon-element';
 import { useState } from 'react';
 import VariablesEditor from './components/VariablesEditor';
 
 export function PricingRenderer({
   pricing,
-  style,
   onApplyVariables,
 }: Readonly<PricingProps>): JSX.Element {
   const [variablesModalOpen, setVariablesModalOpen] = useState(false);
@@ -30,8 +28,8 @@ export function PricingRenderer({
   // UI billing selector currently disabled in renderer
 
   return (
-    <section className="bg-slate-50 py-4">
-      <div className="container mx-auto max-w-7xl px-4">
+    <section className="bg-[#E7E8EC] py-5">
+      <div className="mx-auto w-full max-w-[1320px] px-5">
         <PricingCard pricing={pricing} />
 
         {/* Variables editor trigger - placed before features table */}
@@ -39,9 +37,9 @@ export function PricingRenderer({
         {Object.keys(pricing.variables).length > 0 && (
           <>
             <div
-              className="mt-3 mb-1 flex justify-end"
+              className="mb-2 mt-4 flex justify-end"
             >
-              <button type="button" className="rounded-md border border-slate-300 px-3 py-2 text-sm hover:bg-slate-50" onClick={() => setVariablesModalOpen(true)}>
+              <button type="button" className="rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" onClick={() => setVariablesModalOpen(true)}>
                 Open variables calculator
               </button>
             </div>
@@ -70,10 +68,10 @@ export function PricingRenderer({
 
         {pricing.addOns && Object.values(pricing.addOns).length > 0 && (
           <>
-            <div className="pricing-page-title mt-8 mb-4">
-              <h1 className="text-2xl font-bold text-slate-900">Add-Ons</h1>
+            <div className="pricing-page-title mb-6 mt-14">
+              <h1 className="text-6xl font-extrabold tracking-tight text-slate-900">Add-Ons</h1>
             </div>
-            <div className="add-ons-container mb-24 flex flex-wrap gap-2">
+            <div className="add-ons-container mb-16 flex flex-wrap justify-center gap-8">
               {Object.values(pricing.addOns).map(addOn => (
                 <AddOnElement
                   addOn={addOn}

@@ -1,29 +1,24 @@
 import { Pricing } from 'pricing4ts';
-import { RenderingStyles } from '../../types';
 import { motion } from 'framer-motion';
 import { cardVariants } from '../../shared/motion-variants';
 
 export default function PricingCard({
   pricing,
-  style,
-  defaultStyle,
 }: Readonly<{
   pricing: Pricing;
-  style: RenderingStyles;
-  defaultStyle: RenderingStyles;
 }>) {
 
   return (
     <motion.div variants={cardVariants} initial="hidden" animate="visible">
-      <section className="mb-3 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <section className="mb-6 rounded-lg border border-slate-300 bg-white px-6 py-8 shadow-[0_4px_10px_rgba(15,23,42,0.12)]">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-sky-700">
+          <h1 className="text-[34px] font-extrabold tracking-tight text-slate-900">
             {pricing?.saasName}
           </h1>
 
-          <div className="mt-2 flex flex-wrap justify-center gap-3 text-sm text-slate-600">
-            <span><strong>Plans:</strong> {Object.values(pricing.plans ?? {}).length}</span>
-            <span><strong>Add-ons:</strong> {Object.values(pricing.addOns ?? {}).length || 0}</span>
+          <div className="mt-3 flex flex-wrap justify-center gap-8 text-[14px] text-slate-500">
+            <span><span className='font-semibold'>Plans:</span> {Object.values(pricing.plans ?? {}).length}</span>
+            <span><span className='font-semibold'>Add-ons:</span> {Object.values(pricing.addOns ?? {}).length || 0}</span>
           </div>
         </div>
       </section>
