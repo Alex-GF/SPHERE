@@ -8,12 +8,12 @@ import CollectionAnalytics from '../../components/collection-analytics';
 import CollectionAnalyticsModal from '../../components/collection-analytics-modal';
 import { usePricingCollectionsApi } from '../../../profile/api/pricingCollectionsApi';
 import { Collection } from '../../types/collection';
-import { PricingsGrid } from '../../../pricing/pages/list';
+import type { PricingEntry } from '../list';
 import PricingListCard from '../../../pricing/components/pricing-list-card';
 import { useAuth } from '../../../auth/hooks/useAuth';
 import CollectionSettings from '../../components/collection-settings';
 import { FaSortAlphaDown, FaSortAlphaUpAlt } from 'react-icons/fa';
-import { primary } from '../../../core/theme/palette';
+import type { AnalyticsDataEntry } from '../../../../assets/data/analytics';
 
 export default function CollectionCardPage() {
   const [isFollowing, setIsFollowing] = useState(false);
@@ -55,7 +55,7 @@ export default function CollectionCardPage() {
         console.log(error);
         // router.push('/error');
       });
-  }, [pathname, router]);
+  }, [pathname, router, getCollectionByOwnerAndName]);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -73,12 +73,15 @@ export default function CollectionCardPage() {
     setSortOrder(prev => (prev === 'asc' ? 'desc' : 'asc'));
   };
 
-  const sortedPricings = useMemo(() => {
+  const sortedPricings = useMemo<PricingEntry[]>(() => {
     if (!collection || !collection.pricings || collection.pricings.length === 0) {
       return [];
     }
     // Convertir el objeto a un array
-    const pricingArray = Object.values(collection.pricings[0].pricings) as any[];
+    const pricingArray: PricingEntry[] = (collection.pricings[0].pricings as AnalyticsDataEntry[]).map(pricing => ({
+      ...pricing,
+      owner: pricing.owner.username,
+    })) as PricingEntry[];
     return pricingArray.sort((a, b) => {
       const nameA = a.name?.toLowerCase() || '';
       const nameB = b.name?.toLowerCase() || '';
@@ -94,7 +97,7 @@ export default function CollectionCardPage() {
       <div className="mx-auto my-4 w-full max-w-screen-xl px-4">
         <div className="flex items-center justify-between gap-4">
           <div className="flex flex-col">
-            <div className="flex items-center gap-2 mb-2">
+            <div className="flex items-center gap-2 mb-1 mt-6">
               <h1 className="text-2xl tracking-wide">
                 {collection?.name}
               </h1>
@@ -116,31 +119,53 @@ export default function CollectionCardPage() {
               </button>
             </div>
 
-            <div className="border-b border-slate-300">
-              <div className="flex gap-2">
-                <button type="button" className={`px-4 py-2 ${tabValue === 0 ? 'border-b-2 border-sphere-primary-500 font-semibold' : 'text-slate-500'}`} onClick={() => setTabValue(0)}>Collection card</button>
+            <div>
+              <div className="flex gap-6 my-6">
+                <button
+                  type="button"
+                  className={`border-b-2 px-0 pb-2 pt-1 text-sm uppercase tracking-wide ${tabValue === 0 ? 'border-sphere-primary-500 text-sphere-primary-500' : 'border-slate-300 text-slate-500'}`}
+                  onClick={() => setTabValue(0)}
+                >
+                  Collection Card
+                </button>
                 {collection && authUser.user && collection.owner.username === authUser.user.username && (
-                  <button type="button" className={`px-4 py-2 ${tabValue === 1 ? 'border-b-2 border-sphere-primary-500 font-semibold' : 'text-slate-500'}`} onClick={() => setTabValue(1)}>Settings</button>
+                  <button
+                    type="button"
+                    className={`border-b-2 px-0 pb-2 pt-1 text-sm uppercase tracking-wide ${tabValue === 1 ? 'border-sphere-primary-500 text-sphere-primary-500' : 'border-slate-300 text-slate-500'}`}
+                    onClick={() => setTabValue(1)}
+                  >
+                    Settings
+                  </button>
                 )}
               </div>
             </div>
           </div>
           <div className="flex flex-col gap-2">
-            <div className="flex gap-2">
+            <div className="flex gap-4">
               {collection && collection.analytics && collection.analytics.evolutionOfPlans.dates.length > 0 && (
                 <>
-                  <input
-                    type="date"
-                    className="rounded-md border border-slate-300 px-3 py-2"
-                    defaultValue={new Date(collection.analytics.evolutionOfPlans.dates[0]).toISOString().split('T')[0]}
-                    onChange={handleInputDate}
-                  />
-                  <input
-                    type="date"
-                    className="rounded-md border border-slate-300 px-3 py-2"
-                    defaultValue={new Date().toISOString().split('T')[0]}
-                    onChange={handleOutputDate}
-                  />
+                  <label className="relative min-w-[170px] rounded-md border border-slate-300 bg-slate-50 px-3 pb-2 pt-4 transition-colors focus-within:border-sphere-primary-500">
+                    <span className="absolute left-3 top-0 -translate-y-1/2 bg-[#F9FAFB] px-1 text-[16px] text-slate-500">
+                      Start Date
+                    </span>
+                    <input
+                      type="date"
+                      className="w-full border-0 bg-transparent p-0 text-center text-slate-700 outline-none"
+                      defaultValue={new Date(collection.analytics.evolutionOfPlans.dates[0]).toISOString().split('T')[0]}
+                      onChange={handleInputDate}
+                    />
+                  </label>
+                  <label className="relative min-w-[170px] rounded-md border border-slate-300 bg-slate-50 px-3 pb-2 pt-4 transition-colors focus-within:border-sphere-primary-500">
+                    <span className="absolute left-3 top-0 -translate-y-1/2 bg-[#F9FAFB] px-1 text-[16px] text-slate-500">
+                      End Date
+                    </span>
+                    <input
+                      type="date"
+                      className="w-full border-0 bg-transparent p-0 text-center text-slate-700 outline-none"
+                      defaultValue={new Date().toISOString().split('T')[0]}
+                      onChange={handleOutputDate}
+                    />
+                  </label>
                 </>
               )}
             </div>
@@ -157,20 +182,20 @@ export default function CollectionCardPage() {
                 <h2 className="mb-2 text-xl font-bold">
                   Description
                 </h2>
-                <p className="mb-4">
+                <p className="mb-4 text-justify">
                   {collection?.description
                     ? collection.description
                     : 'This collection has no description.'}
                 </p>
                 {collection && (
                   <>
-                    <div className="flex items-center justify-between">
-                      <div className="mb-2 flex items-center">
+                    <div className="mb-4 flex items-center justify-between">
+                      <div className="flex items-center">
                         <h2 className="text-xl font-bold">
                           Pricings in Collection
                         </h2>
                         <button type="button" className="ml-2 rounded-full p-2" onClick={toggleSortOrder}>
-                          {sortOrder === 'asc' ? <FaSortAlphaDown /> : <FaSortAlphaUpAlt />}
+                          {sortOrder === 'asc' ? <FaSortAlphaDown size={25} color="#637381"/> : <FaSortAlphaUpAlt size={25} color="#637381"/>}
                         </button>
                       </div>
                       <button
@@ -186,20 +211,22 @@ export default function CollectionCardPage() {
                         DOWNLOAD
                       </button>
                     </div>
-                    <div className="max-h-[800px] h-full overflow-y-scroll rounded-[10px] border border-slate-200 py-5">
+                    <div className="h-full max-h-[800px] overflow-y-scroll rounded-[10px] border border-slate-200 py-5">
                       {sortedPricings.length > 0 ? (
-                        sortedPricings.map((pricing: any) => {
-                          const ownerName = pricing.owner || '';
-                          return (
-                            <PricingListCard
-                              key={pricing.name}
-                              name={pricing.name}
-                              owner={ownerName}
-                              dataEntry={pricing}
-                              showOptions
-                            />
-                          );
-                        })
+                        <div className="flex flex-wrap justify-center gap-6 px-3">
+                          {sortedPricings.map((pricing) => {
+                            const ownerName = pricing.owner || '';
+                            return (
+                              <PricingListCard
+                                key={pricing.name}
+                                name={pricing.name}
+                                owner={ownerName}
+                                dataEntry={pricing}
+                                showOptions
+                              />
+                            );
+                          })}
+                        </div>
                       ) : (
                         <div className="flex h-full flex-col items-center justify-center gap-2">
                           NO PRICINGS FOUND

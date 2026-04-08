@@ -1,7 +1,7 @@
 import { CollectionAnalytics } from '../../types/collection';
 import { formatStringDates } from '../../../profile/utils/dates-util';
 import { LuShrink } from 'react-icons/lu';
-import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 interface CollectionAnalyticsModalProps {
   open: boolean;
@@ -18,36 +18,53 @@ export default function CollectionAnalyticsModal({
   startDate,
   endDate
 }: CollectionAnalyticsModalProps) {
+  const chartColor = '#08aeb3';
+  const axisTickStyle = { fill: '#374151', fontSize: 12 };
+  const compactNumber = new Intl.NumberFormat('en', {
+    notation: 'compact',
+    maximumFractionDigits: 1,
+  });
 
   if (!open) {
     return null;
   }
 
-  function dateIntervalFilter(_: any, index: number) {
-    const entryDate = new Date(collectionData.evolutionOfConfigurationSpaceSize.dates[index]);
+  function withinDateRange(date: string) {
+    if (!startDate || !endDate) return true;
+    const entryDate = new Date(date);
+    return entryDate >= new Date(startDate) && entryDate <= new Date(endDate);
+  }
 
-    return entryDate >= new Date(startDate!) && entryDate <= new Date(endDate!);
+  function formatYAxisTick(value: number) {
+    if (!Number.isFinite(value)) return '';
+    if (Math.abs(value) >= 1000) return compactNumber.format(value);
+    if (Number.isInteger(value)) return String(value);
+    return value.toFixed(1);
   }
 
   const seriesEntries = Object.entries(collectionData).map(([key, value]) => {
-    const dates = startDate && endDate ? value.dates.filter(dateIntervalFilter) : value.dates;
-    const values = startDate && endDate ? value.values.filter(dateIntervalFilter) : value.values;
+    const points = value.dates
+      .map((date: string, index: number) => ({
+        rawDate: date,
+        date: formatStringDates([date])[0],
+        value: typeof value.values[index] === 'number'
+          ? parseFloat(Number(value.values[index]).toFixed(2))
+          : value.values[index],
+      }))
+      .filter((entry: { rawDate: string; date: string; value: number }) => withinDateRange(entry.rawDate));
 
     return {
       key,
       label: key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase()),
-      points: dates.map((date: string, index: number) => ({
-        date: formatStringDates([date])[0],
-        value: typeof values[index] === 'number' ? parseFloat(Number(values[index]).toFixed(2)) : values[index],
-      })),
-      singlePoint: value.values.length <= 1,
+      points,
+      singlePoint: points.length <= 1,
     };
   });
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 p-4" onClick={onClose}>
       <div
-        className="max-h-[90vh] min-w-[50%] max-w-[80%] overflow-auto rounded-xl bg-white p-4"
+        className="max-h-[90vh] min-w-[50%] max-w-[80%] overflow-auto rounded-xl bg-white p-10"
         onClick={e => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
@@ -68,21 +85,35 @@ export default function CollectionAnalyticsModal({
         <div className="grid max-h-[80vh] grid-cols-1 gap-3 overflow-y-auto xl:grid-cols-2">
           {collectionData && seriesEntries.map(({ key, label, points, singlePoint }) => (
             <div key={key}>
-              <p className="mb-2 text-sm text-slate-500">
-                {label} Over Time
-              </p>
+              <div className="mb-2 flex items-center gap-2 text-sm font-medium text-slate-700">
+                <span className="inline-block h-3.5 w-3.5 bg-[#08aeb3]" aria-hidden />
+                <p>{label} Over Time</p>
+              </div>
               <div className="h-[300px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={points}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis />
+                  <LineChart data={points} margin={{ top: 0, right: 10, left: -8, bottom: 0 }}>
+                    <XAxis
+                      dataKey="date"
+                      tick={axisTickStyle}
+                      axisLine={{ stroke: '#6b7280', strokeWidth: 1.2 }}
+                      tickLine={{ stroke: '#6b7280' }}
+                    />
+                    <YAxis
+                      tick={axisTickStyle}
+                      axisLine={{ stroke: '#6b7280', strokeWidth: 1.2 }}
+                      tickLine={{ stroke: '#6b7280' }}
+                      tickCount={6}
+                      domain={['auto', 'auto']}
+                      tickFormatter={formatYAxisTick}
+                      width={56}
+                    />
                     <Tooltip />
                     <Line
                       type="monotone"
                       dataKey="value"
                       name={`Average ${label}`}
-                      stroke="#0f766e"
+                      stroke={chartColor}
+                      strokeWidth={3}
                       dot={singlePoint}
                     />
                   </LineChart>
