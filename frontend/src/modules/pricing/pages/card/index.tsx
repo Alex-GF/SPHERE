@@ -175,7 +175,7 @@ export default function CardPage() {
     }
   };
 
-  const handleVersionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleVersionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newPricing = pricingData?.find(entry => entry.yaml == e.target.value);
     if (newPricing) {
       setCurrentPricing(newPricing);
@@ -264,7 +264,7 @@ export default function CardPage() {
             <select
               className="w-full rounded-md border border-slate-300 px-3 py-2"
               onChange={handleVersionChange}
-              defaultValue=""
+              value={currentPricing?.yaml ?? ''}
             >
               <option value="" disabled>
                 Version
