@@ -17,7 +17,7 @@ export default function FoundingLanding() {
         <StyledButtonLanding className="mt-5" startIcon={<FaMoneyCheckDollar />}>
           Find Out Our Partners
         </StyledButtonLanding>
-        <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="mt-5 flex items-center gap-4 md:grid-cols-3">
             <a href="https://score.us.es" target="_blank" rel="noreferrer">
               <img
                   alt="SCORE Lab"
