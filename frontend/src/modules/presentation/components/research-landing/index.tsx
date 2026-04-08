@@ -24,28 +24,28 @@ export default function ResearchLanding() {
         <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
           <img
             alt=""
-            src="assets/landing/research/presenter1.heic"
+            src="assets/landing/research/presenter1.webp"
             width={400}
             height={250}
             className="rounded-2xl object-cover"
           />
           <img
             alt=""
-            src="assets/landing/research/presenter3.heic"
+            src="assets/landing/research/presenter3.webp"
             width={400}
             height={250}
             className="rounded-2xl object-cover"
           />
           <img
             alt=""
-            src="assets/landing/research/group.heic"
+            src="assets/landing/research/group.webp"
             width={400}
             height={250}
             className="rounded-2xl object-cover"
           />
           <img
             alt=""
-            src="assets/landing/research/award.jpg"
+            src="assets/landing/research/award.webp"
             width={400}
             height={250}
             className="rounded-2xl object-cover"
