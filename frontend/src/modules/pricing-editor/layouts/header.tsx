@@ -63,7 +63,7 @@ const Header = ({ renderSharedLink, renderYamlImport }: { renderSharedLink: () =
     {
       name: 'Documentation',
       disabled: false,
-      onClick: () => window.open('https://pricing4saas-docs.vercel.app/docs/2.0.1/api/pricing-description-languages/Pricing2Yaml/pricing2yaml-v30-specification'),
+      onClick: () => window.open('https://sphere-docs.vercel.app/docs/2.0.1/api/pricing-description-languages/Pricing2Yaml/the-pricing2yaml-syntax'),
     },
   ];
 
