@@ -69,7 +69,7 @@ export default function DesktopHeaderItems({ headerRoutes }: { headerRoutes: Hea
               tabIndex={0}
               mode={mode}
               onClick={() => item.to ? router.push(item.to) : {}}
-              className="cursor-pointer text-sphere-primary-700"
+              className="inline-flex cursor-pointer items-center gap-1 text-sphere-primary-700"
             >
               {item.name}
               {item.children && (
@@ -91,7 +91,7 @@ export default function DesktopHeaderItems({ headerRoutes }: { headerRoutes: Hea
                     tabIndex={0}
                     mode={mode}
                     onClick={() => childItem.to ? router.push(childItem.to) : {}}
-                    className="w-full bg-transparent text-left text-sphere-primary-700 hover:bg-[rgba(202,240,248,0.8)] hover:text-sphere-primary-800"
+                    className="flex w-full items-center justify-center bg-transparent text-center text-sphere-primary-700 hover:bg-[rgba(202,240,248,0.8)] hover:text-sphere-primary-800"
                   >
                     {childItem.name}
                   </StyledButton>
