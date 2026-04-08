@@ -128,14 +128,9 @@ export default function EditorLayout({ children }: { children?: React.ReactNode 
         </div>
       )}
       {importModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" role="dialog" aria-modal="true">
-          <div className="w-full max-w-xl rounded-3xl bg-white p-6 shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" role="dialog" aria-modal="true" onClick={handleYamlImportClose}>
+          <div className="w-full max-w-xl rounded-3xl bg-white p-6 shadow-2xl" onClick={(e) => e.stopPropagation()}>
             <FileUpload onSubmit={onSubmitImport} />
-            <div className="mt-4 flex justify-end">
-              <button type="button" onClick={handleYamlImportClose} className="rounded-md border border-slate-300 px-3 py-2 text-sm hover:bg-slate-50">
-                Close
-              </button>
-            </div>
           </div>
         </div>
       )}
