@@ -19,7 +19,7 @@ export default function SearchBar({
   };
 
   return (
-    <div className="relative flex h-[60px] w-[95dvw] max-w-[500px] items-center justify-between gap-2 rounded-[50px] bg-slate-100 shadow-[0px_4px_6px_rgba(0,0,0,0.5)]">
+    <div className="relative mx-auto flex h-[60px] w-[95dvw] max-w-[500px] items-center justify-between gap-2 rounded-[50px] bg-slate-100 shadow-[0px_4px_6px_rgba(0,0,0,0.5)]">
       <input
         placeholder="Filter by name"
         type="text"
