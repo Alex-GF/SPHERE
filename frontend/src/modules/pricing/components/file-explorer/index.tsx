@@ -12,12 +12,13 @@ import { useAuth } from '../../../auth/hooks/useAuth';
 import { v4 as uuidv4 } from 'uuid';
 import { useCacheApi } from '../../../pricing-editor/components/pricing-renderer/api/cacheApi';
 import { FaDownload, FaExternalLinkAlt } from 'react-icons/fa';
+import { AnimatePresence, motion } from 'framer-motion';
+import { FaFolder, FaRegFileAlt } from 'react-icons/fa';
+import { FiChevronDown } from 'react-icons/fi';
 
 type ExplorerItem = {
   id: string;
-  label: string;
   yaml: string;
-  fileType: 'doc';
 };
 
 function ExplorerRow({
@@ -27,6 +28,9 @@ function ExplorerRow({
   onCopyLink,
   onDelete,
   canDelete,
+  isActive,
+  onSelect,
+  depth,
 }: {
   item: ExplorerItem;
   onDownload: (yaml: string) => void;
@@ -34,27 +38,42 @@ function ExplorerRow({
   onCopyLink: (yaml: string) => void;
   onDelete: (yaml: string) => void;
   canDelete: boolean;
+  isActive: boolean;
+  onSelect: () => void;
+  depth: number;
 }) {
   const fileName = item.yaml.split('/')[item.yaml.split('/').length - 1].replace('.yaml', '').replace('.yml', '');
 
   return (
-    <div className="flex items-center justify-between gap-3 rounded-md border border-slate-200 px-4 py-3 hover:bg-slate-50">
-      <div className="min-w-0 flex-1">
-        <p className="truncate font-medium">{fileName}</p>
-        <p className="truncate text-sm text-slate-500">{item.yaml}</p>
+    <div
+      className={`flex items-center justify-between gap-3 rounded-md px-3 py-2 transition ${isActive ? 'bg-[#dff4ff]' : 'hover:bg-slate-50'}`}
+      style={{ paddingLeft: `${depth * 20 + 12}px` }}
+      onClick={onSelect}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          onSelect();
+        }
+      }}
+    >
+      <div className="min-w-0 flex-1 flex items-center gap-3 text-slate-700">
+        <FaRegFileAlt className="shrink-0" />
+        <p className="truncate text-[16px] font-medium">{fileName}</p>
       </div>
       <div className="flex items-center gap-2">
-        <button type="button" className="rounded-full p-2 hover:bg-slate-100" onClick={() => onDownload(item.yaml)} title="Download">
+        <button type="button" className="rounded-full p-2 text-slate-500 hover:bg-slate-100" onClick={(e) => { e.stopPropagation(); onDownload(item.yaml); }} title="Download">
           <FaDownload />
         </button>
-        <button type="button" className="rounded-full p-2 hover:bg-slate-100" onClick={() => onOpen(item.yaml)} title="Open">
+        <button type="button" className="rounded-full p-2 text-slate-500 hover:bg-slate-100" onClick={(e) => { e.stopPropagation(); onOpen(item.yaml); }} title="Open">
           <FaExternalLinkAlt />
         </button>
-        <button type="button" className="rounded-full p-2 hover:bg-slate-100" onClick={() => onCopyLink(item.yaml)} title="Copy link">
+        <button type="button" className="rounded-full p-2 text-slate-500 hover:bg-slate-100" onClick={(e) => { e.stopPropagation(); onCopyLink(item.yaml); }} title="Copy link">
           <IoIosLink fontSize={24} />
         </button>
         {canDelete && (
-          <button type="button" className="rounded-full p-2 text-red-600 hover:bg-slate-100" onClick={() => onDelete(item.yaml)} title="Delete version">
+          <button type="button" className="rounded-full p-2 text-red-600 hover:bg-slate-100" onClick={(e) => { e.stopPropagation(); onDelete(item.yaml); }} title="Delete version">
             <MdDeleteForever fontSize={24} />
           </button>
         )}
@@ -101,6 +120,8 @@ function YamlLinkModal({
 export default function FileExplorer({ pricingData }: { pricingData: AnalyticsDataEntry[] }) {
   const [selectedYamlLink, setSelectedYamlLink] = useState<string>('');
   const [yamlLinkModalOpen, setYamlLinkModalOpen] = useState<boolean>(false);
+  const [isFolderExpanded, setIsFolderExpanded] = useState<boolean>(true);
+  const [activeNode, setActiveNode] = useState<string>('folder-pricings');
 
   const { removePricingVersion } = usePricingsApi();
   const { authUser } = useAuth();
@@ -112,9 +133,7 @@ export default function FileExplorer({ pricingData }: { pricingData: AnalyticsDa
     () =>
       pricingData.map((entry, index) => ({
         id: `pricing-${index}`,
-        label: entry.yaml,
         yaml: entry.yaml,
-        fileType: 'doc',
       })),
     [pricingData]
   );
@@ -203,27 +222,57 @@ export default function FileExplorer({ pricingData }: { pricingData: AnalyticsDa
   return (
     <FileExplorerContext.Provider value={contextValue}>
       <div className="flex w-full flex-col">
-        <div className="flex items-center justify-between border-b border-slate-200 p-4">
-          <h2 className="text-xl font-semibold">File Explorer</h2>
-        </div>
-
         <div className="flex flex-col gap-2 p-4">
-          <div className="rounded-md border border-slate-200 bg-slate-50 p-3 font-medium">
-            Pricings
-          </div>
-          <div className="flex flex-col gap-2">
-            {items.map(item => (
-              <ExplorerRow
-                key={item.id}
-                item={item}
-                onDownload={handleDownload}
-                onOpen={handleOpen}
-                onCopyLink={handleCopyLink}
-                onDelete={handleDeleteVersion}
-                canDelete={Boolean(authUser.user && pricingOwner === authUser.user.username)}
-              />
-            ))}
-          </div>
+          <button
+            type="button"
+            className={`flex w-full items-center justify-between rounded-md px-3 py-2 text-left text-[16px] font-medium transition ${activeNode === 'folder-pricings' ? 'bg-[#7fd4e6] text-slate-900' : 'bg-[#b6e7f3] text-slate-800 hover:bg-[#a9e2f0]'}`}
+            onClick={() => {
+              setActiveNode('folder-pricings');
+              setIsFolderExpanded(prev => !prev);
+            }}
+          >
+            <span className="flex items-center gap-3">
+              <FaFolder />
+              Pricings
+            </span>
+            <motion.span
+              animate={{ rotate: isFolderExpanded ? 0 : -90 }}
+              transition={{ duration: 0.18 }}
+              className="inline-flex"
+            >
+              <FiChevronDown />
+            </motion.span>
+          </button>
+
+          <AnimatePresence initial={false}>
+            {isFolderExpanded && (
+              <motion.div
+                key="pricings-content"
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.22, ease: 'easeInOut' }}
+                className="overflow-hidden"
+              >
+                <div className="mt-2 ml-4 border-l border-slate-200 pl-2 flex flex-col gap-2">
+                  {items.map(item => (
+                    <ExplorerRow
+                      key={item.id}
+                      item={item}
+                      onDownload={handleDownload}
+                      onOpen={handleOpen}
+                      onCopyLink={handleCopyLink}
+                      onDelete={handleDeleteVersion}
+                      canDelete={Boolean(authUser.user && pricingOwner === authUser.user.username)}
+                      isActive={activeNode === item.id}
+                      onSelect={() => setActiveNode(item.id)}
+                      depth={1}
+                    />
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
       <YamlLinkModal
