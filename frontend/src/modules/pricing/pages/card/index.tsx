@@ -189,9 +189,9 @@ export default function CardPage() {
       </Helmet>
       <div className="mx-auto my-4 w-full max-w-screen-xl px-4">
         <div className="flex items-start justify-between gap-6">
-          <div className="flex flex-col">
+          <div className="flex flex-col mt-6 mb-2">
             <div className="mb-2 flex items-center gap-2">
-              <h1 className="text-2xl tracking-wide">
+              <h1 className="text-2xl tracking-wide mr-4">
                 {currentPricing?.collectionName && (
                   <>
                     <span className="mr-1 text-slate-500">{currentPricing?.collectionName}</span>
@@ -222,6 +222,7 @@ export default function CardPage() {
               <p className="mb-2 text-lg font-bold text-slate-600">
                 Collection:{' '}
                 <Link
+                  className='text-blue-500 hover:text-blue-700'
                   to={`/pricings/collections/${currentPricing.owner.id}/${currentPricing.collectionName}`}
                 >
                   {currentPricing.collectionName}
@@ -229,13 +230,13 @@ export default function CardPage() {
               </p>
             )}
 
-            <div className="border-b border-slate-300">
+            <div className="border-b border-slate-300 mt-4">
               <div className="flex flex-wrap gap-1">
-                <button type="button" className={`px-4 py-2 ${tabValue === 0 ? 'border-b-2 border-sphere-primary-500 font-semibold' : 'text-slate-500'}`} onClick={() => setTabValue(0)}>Pricing card</button>
-                <button type="button" className={`px-4 py-2 ${tabValue === 1 ? 'border-b-2 border-sphere-primary-500 font-semibold' : 'text-slate-500'}`} onClick={() => setTabValue(1)}>Configuration Space Details</button>
-                <button type="button" className={`px-4 py-2 ${tabValue === 2 ? 'border-b-2 border-sphere-primary-500 font-semibold' : 'text-slate-500'}`} onClick={() => setTabValue(2)}>Files and versions</button>
+                <button type="button" className={`px-4 py-2 text-sm uppercase tracking-wide ${tabValue === 0 ? 'border-b-2 border-sphere-primary-500 text-sphere-primary-500' : 'text-slate-500'}`} onClick={() => setTabValue(0)}>Pricing card</button>
+                <button type="button" className={`px-4 py-2 text-sm uppercase tracking-wide ${tabValue === 1 ? 'border-b-2 border-sphere-primary-500 text-sphere-primary-500' : 'text-slate-500'}`} onClick={() => setTabValue(1)}>Configuration Space Details</button>
+                <button type="button" className={`px-4 py-2 text-sm uppercase tracking-wide ${tabValue === 2 ? 'border-b-2 border-sphere-primary-500 text-sphere-primary-500' : 'text-slate-500'}`} onClick={() => setTabValue(2)}>Files and versions</button>
                 {currentPricing && authUser.user && currentPricing.owner.username === authUser.user.username && (
-                  <button type="button" className={`px-4 py-2 ${tabValue === 3 ? 'border-b-2 border-sphere-primary-500 font-semibold' : 'text-slate-500'}`} onClick={() => setTabValue(3)}>Settings</button>
+                  <button type="button" className={`px-4 py-2 text-sm uppercase tracking-wide ${tabValue === 3 ? 'border-b-2 border-sphere-primary-500 text-sphere-primary-500' : 'text-slate-500'}`} onClick={() => setTabValue(3)}>Settings</button>
                 )}
               </div>
             </div>
@@ -326,9 +327,6 @@ export default function CardPage() {
                     <Analytics pricingData={pricingData} toggleModal={toggleModal} />
                   </div>
                 )}
-                {/* <Paper variant="outlined" sx={{ p: 2, mt: 2 }}>
-              <Harvey />
-            </Paper> */}
 
                 <div className="mt-2 rounded border border-slate-200 p-2">
                   <PricingTree pricing={currentPricing} name={pricing?.saasName} />

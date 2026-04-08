@@ -82,14 +82,14 @@ export default function ConfigurationSpaceView({ pricingId }: { pricingId: strin
   return (
     <div className="mx-auto flex w-full flex-col p-2">
       {loading ? (
-        <div className="mt-10">
+        <div className="mt-10 flex justify-center">
           <BanterLoader />
         </div>
       ) : (
         <>
           <ConfigurationSpaceGrid configurationSpace={renderedConfigurationSpace} />
           {renderedConfigurationSpace.length < renderedConfigurationSpaceSize && (
-            <div className="mt-10" ref={loaderRef}>
+            <div className="mt-10 flex justify-center" ref={loaderRef}>
               <BanterLoader />
             </div>
           )}
