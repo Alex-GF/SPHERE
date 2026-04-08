@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { AnalyticsDataEntry } from '../../../../assets/data/analytics';
+import { AnimatePresence, motion } from 'framer-motion';
+import { FiChevronDown, FiChevronRight } from 'react-icons/fi';
 
 type TreeItemType = {
   id: string;
@@ -160,34 +162,79 @@ function buildCounter(tree: TreeItemType[], itemId: string): string {
   return `0 ${getWordsEnding(0, itemId)}`;
 }
 
-function renderNode(tree: TreeItemType[], node: TreeItemType, level = 0): React.ReactNode {
+type TreeNodeProps = {
+  tree: TreeItemType[];
+  node: TreeItemType;
+  level?: number;
+  expandedIds: Set<string>;
+  onToggle: (id: string) => void;
+  focusedId: string;
+  onFocus: (id: string) => void;
+};
+
+function TreeNode({
+  tree,
+  node,
+  level = 0,
+  expandedIds,
+  onToggle,
+  focusedId,
+  onFocus,
+}: TreeNodeProps) {
   const hasChildren = Boolean(node.children && node.children.length > 0);
-  const indentClass = level > 0 ? 'ml-6' : '';
+  const isExpanded = expandedIds.has(node.id);
+  const isFocused = focusedId === node.id;
+  const countLabel = node.id !== 'pricing' ? buildCounter(tree, node.id) : '';
 
   return (
-    <li key={node.id} className={indentClass}>
-      <div className="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-slate-100">
-        {hasChildren ? (
-          <details className="w-full" open={node.id === 'pricing'}>
-            <summary className="flex cursor-pointer items-center justify-between gap-2">
-              <span className="font-medium">{node.label}</span>
-              {node.id !== 'pricing' && (
-                <span className="ml-auto text-sm text-slate-500">{buildCounter(tree, node.id)}</span>
-              )}
-            </summary>
-            {node.children && (
-              <ul className="mt-2 space-y-1">
-                {node.children.map(child => renderNode(tree, child, level + 1))}
-              </ul>
-            )}
-          </details>
-        ) : (
+    <li key={node.id}>
+      <button
+        type="button"
+        className={`flex w-full items-center rounded-md px-2 py-1.5 text-left transition-colors ${isFocused ? 'bg-[#d8edf4]' : 'bg-white hover:bg-slate-100'}`}
+        style={{ paddingLeft: `${level * 22 + 8}px` }}
+        onClick={() => {
+          onFocus(node.id);
+          if (hasChildren) {
+            onToggle(node.id);
+          }
+        }}
+      >
+        <span className="mr-1.5 inline-flex w-4 items-center justify-center text-slate-600">
+          {hasChildren ? (isExpanded ? <FiChevronDown /> : <FiChevronRight />) : null}
+        </span>
+        <span className="font-medium text-slate-800">{node.label}</span>
+        {countLabel && (
           <>
-            <span>{node.label}</span>
-            <span className="ml-auto text-sm text-slate-500">{buildCounter(tree, node.id)}</span>
+            <span className="mx-2 mt-0.5 flex-1 border-b border-dotted border-slate-500/80" aria-hidden />
+            <span className="text-slate-500">{countLabel}</span>
           </>
         )}
-      </div>
+      </button>
+
+      <AnimatePresence initial={false}>
+        {hasChildren && isExpanded && node.children && (
+          <motion.ul
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2, ease: 'easeInOut' }}
+            className="overflow-hidden"
+          >
+            {node.children.map((child) => (
+              <TreeNode
+                key={child.id}
+                tree={tree}
+                node={child}
+                level={level + 1}
+                expandedIds={expandedIds}
+                onToggle={onToggle}
+                focusedId={focusedId}
+                onFocus={onFocus}
+              />
+            ))}
+          </motion.ul>
+        )}
+      </AnimatePresence>
     </li>
   );
 }
@@ -199,6 +246,20 @@ type PricingTreeProps = {
 
 export default function PricingTree({ pricing, name }: PricingTreeProps) {
   const [treeItem, setTreeItem] = React.useState<TreeItemType[]>(BASE_TREE);
+  const [expandedIds, setExpandedIds] = React.useState<Set<string>>(() => new Set(['pricing', 'features']));
+  const [focusedId, setFocusedId] = React.useState<string>('features');
+
+  const handleToggle = (id: string) => {
+    setExpandedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  };
 
   function getProperValue(currentPricing: AnalyticsDataEntry, itemId: string): number {
     switch (itemId) {
@@ -295,11 +356,23 @@ export default function PricingTree({ pricing, name }: PricingTreeProps) {
 
   return (
     <div className="min-h-[200px] min-w-[350px]">
-      <div className="mb-2 flex items-center gap-1">
-        <h3 className="text-xl font-semibold">Pricing tree for</h3>
+      <div className="mb-2 flex items-center gap-1 p-4">
+        <h3 className="text-xl">Pricing tree for</h3>
         <span className="font-mono text-xl text-slate-500">{name}</span>
       </div>
-      <ul className="space-y-1">{treeItem.map(item => renderNode(treeItem, item))}</ul>
+      <ul className="space-y-1">
+        {treeItem.map(item => (
+          <TreeNode
+            key={item.id}
+            tree={treeItem}
+            node={item}
+            expandedIds={expandedIds}
+            onToggle={handleToggle}
+            focusedId={focusedId}
+            onFocus={setFocusedId}
+          />
+        ))}
+      </ul>
     </div>
   );
 }
