@@ -1,8 +1,10 @@
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
+import { FaChevronDown } from 'react-icons/fa6';
 import { AddOn, Feature, Plan, UsageLimit } from 'pricing4ts';
 import { camelToTitle } from '../shared/stringUtils';
 import { formatMoneyDisplay, formatUsageDisplay } from '../shared/value-helpers';
+import { useState } from 'react';
 
 interface FeatureTableV2Props {
   plans: Record<string, Plan>;
@@ -240,6 +242,20 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
   }
 
   const sortedTags = Object.keys(tagToFeatureKeys).sort((a, b) => a.localeCompare(b));
+  const [openTags, setOpenTags] = useState<Record<string, boolean>>({});
+
+  function isTagOpen(tag: string, index: number): boolean {
+    const local = openTags[tag];
+    if (typeof local === 'boolean') return local;
+    return index === 0;
+  }
+
+  function toggleTag(tag: string, index: number) {
+    setOpenTags(prev => ({
+      ...prev,
+      [tag]: !isTagOpen(tag, index),
+    }));
+  }
 
   function renderTable(featureBucket: string[]) {
     const rows = buildRowsForFeatures(featureBucket);
@@ -273,8 +289,9 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
           </tr>
         </thead>
 
-        <tbody>
-          {rows.map((row, rowIndex) => {
+        <motion.tbody layout>
+          <AnimatePresence initial={false} mode="popLayout">
+            {rows.map((row, rowIndex) => {
             if (row.type === 'feature') {
               const featureKey = row.key;
               const feature = features[featureKey];
@@ -283,9 +300,11 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
               return (
                 <motion.tr
                   key={row.id}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.04 * rowIndex, duration: 0.18 }}
+                  layout
+                  initial={{ opacity: 0, x: -8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 8 }}
+                  transition={{ delay: 0.04 * rowIndex, duration: 0.35 }}
                 >
                   <th scope="row" className="p-[16px] text-left text-[16px] font-bold leading-tight text-slate-700">
                     {camelToTitle(feature.name) ?? camelToTitle(featureKey)}
@@ -374,8 +393,10 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
             return (
               <motion.tr
                 key={row.id}
+                layout
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
                 transition={{ delay: 0.04 * rowIndex, duration: 0.18 }}
               >
                 <th scope="row" className="px-4 py-5 text-left text-[16px] font-bold leading-tight text-slate-700">
@@ -406,7 +427,8 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
               </motion.tr>
             );
           })}
-        </tbody>
+          </AnimatePresence>
+        </motion.tbody>
       </table>
     );
   }
@@ -415,14 +437,48 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
     <div className="mt-8 w-full overflow-x-auto">
       {renderTable(untaggedFeatureKeys)}
 
-      {sortedTags.map((tag, index) => (
-        <details key={tag} className="mt-5 overflow-hidden rounded-xl border border-slate-300 bg-white shadow-sm" open={index === 0}>
-          <summary className="cursor-pointer px-5 py-4 text-[16px] font-semibold text-slate-800">
-            {tag}
-          </summary>
-          <div className="overflow-x-auto border-t border-slate-200 px-1 pb-3 pt-2">{renderTable(tagToFeatureKeys[tag])}</div>
-        </details>
-      ))}
+      {sortedTags.map((tag, index) => {
+        const open = isTagOpen(tag, index);
+        const tagPanelId = `tag-panel-${tag.replace(/\s+/g, '-').toLowerCase()}`;
+
+        return (
+          <div key={tag} className="mt-5 overflow-hidden rounded-xl border border-slate-300 bg-white shadow-sm">
+            <button
+              type="button"
+              onClick={() => toggleTag(tag, index)}
+              className="flex w-full items-center justify-between bg-slate-100 px-5 py-4 text-left text-[16px] font-semibold text-slate-800 transition-colors hover:bg-slate-200"
+              aria-expanded={open}
+              aria-controls={tagPanelId}
+            >
+              <span>{tag}</span>
+              <motion.span
+                initial={false}
+                animate={{ rotate: open ? 180 : 0 }}
+                transition={{ duration: 0.2, ease: 'easeOut' }}
+                className="inline-flex text-slate-500"
+                aria-hidden
+              >
+                <FaChevronDown className="h-4 w-4" />
+              </motion.span>
+            </button>
+
+            <AnimatePresence initial={false}>
+              {open && (
+                <motion.div
+                  id={tagPanelId}
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.24, ease: 'easeInOut' }}
+                  className="overflow-hidden"
+                >
+                  <div className="overflow-x-auto border-t border-slate-200 px-1 pb-3 pt-2">{renderTable(tagToFeatureKeys[tag])}</div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        );
+      })}
     </div>
   );
 }
