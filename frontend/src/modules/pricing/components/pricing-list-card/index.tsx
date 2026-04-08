@@ -1,18 +1,15 @@
 import { useRouter } from '../../../core/hooks/useRouter';
 import { PricingEntry } from '../../pages/list';
-import { formatDistanceToNow, parseISO } from 'date-fns';
+import { formatDistanceToNow, parseISO, set } from 'date-fns';
 import { getCurrency } from '../stats';
 import { IoMdPricetags } from 'react-icons/io';
 import { FaFileInvoiceDollar } from 'react-icons/fa6';
 import { MdMoreVert } from 'react-icons/md';
-import { grey, primary } from '../../../core/theme/palette';
+import { grey } from '../../../core/theme/palette';
 import { useEffect, useRef, useState } from 'react';
 import { usePricingsApi } from '../../api/pricingsApi';
 import customAlert from '../../../core/utils/custom-alert';
 import customConfirm from '../../../core/utils/custom-confirm';
-
-// const CARD_HEIGHT = 400;
-const CARD_HEIGHT = 150;
 
 export default function PricingListCard({
   name,
@@ -35,7 +32,10 @@ export default function PricingListCard({
   const { removePricingFromCollection, removePricingByName } = usePricingsApi();
 
   const handleAddToCollection = () => {
-    setAddToCollectionModalOpen ? setAddToCollectionModalOpen(true) : null;
+    if (setAddToCollectionModalOpen){
+      setAddToCollectionModalOpen(true);
+    }
+    
     setPricingToAdd(name);
   };
 
@@ -131,7 +131,7 @@ export default function PricingListCard({
         <button
           type="button"
           className="flex h-[45px] w-full items-center px-[10px] text-left transition-colors hover:text-sphere-primary-600"
-          onClick={() =>
+          onClick={() => 
             router.push(`/pricings/${owner}/${name}?collectionName=${dataEntry.collectionName}`)
           }
         >

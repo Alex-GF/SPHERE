@@ -55,7 +55,8 @@ export default function CollectionCardPage() {
         console.log(error);
         // router.push('/error');
       });
-  }, [pathname, router, getCollectionByOwnerAndName]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -82,6 +83,7 @@ export default function CollectionCardPage() {
       ...pricing,
       owner: pricing.owner.username,
     })) as PricingEntry[];
+
     return pricingArray.sort((a, b) => {
       const nameA = a.name?.toLowerCase() || '';
       const nameB = b.name?.toLowerCase() || '';
@@ -215,7 +217,7 @@ export default function CollectionCardPage() {
                       {sortedPricings.length > 0 ? (
                         <div className="flex flex-wrap justify-center gap-6 px-3">
                           {sortedPricings.map((pricing) => {
-                            const ownerName = pricing.owner || '';
+                            const ownerName = collection.owner.username;
                             return (
                               <PricingListCard
                                 key={pricing.name}
