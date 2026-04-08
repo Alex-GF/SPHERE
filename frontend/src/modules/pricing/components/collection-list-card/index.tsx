@@ -15,7 +15,7 @@ export default function CollectionListCard({
 
   return (
     <div
-      className={`flex w-[200px] cursor-pointer flex-col rounded-lg p-2 ${selected ? 'border-2 border-sphere-primary-400' : 'border border-[#ddd]'}`}
+      className={`flex items-center w-[200px] cursor-pointer flex-col rounded-lg p-2 ${selected ? 'border-2 border-sphere-primary-400' : 'border border-[#ddd]'}`}
       key={`collection-${collection.name}`}
       onClick={
         handleCustomClick
