@@ -67,9 +67,15 @@ export default function Analytics({ pricingData, toggleModal } : StatsProps) {
                 </ResponsiveContainer>
               </div>
               <div className="mt-2 h-[300px] w-full max-w-[500px]">
-                <div className="mb-2 flex items-center justify-center gap-2 text-[16px] text-slate-800">
-                  <span className="inline-block h-5 w-5 bg-[#2563eb]" aria-hidden />
-                  <span>Price of Subscriptions Over Time</span>
+                <div className="mb-2 flex items-center justify-center gap-3 text-[16px] text-slate-800">
+                  <div className="flex items-center gap-2 text-sm">
+                    <span className="inline-block h-3.5 w-3.5 bg-[#2563eb]" aria-hidden />
+                    <span>Min subscription price</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm">
+                    <span className="inline-block h-3.5 w-3.5 bg-[#dc2626]" aria-hidden />
+                    <span>Max subscription price</span>
+                  </div>
                 </div>
                 <ResponsiveContainer width="100%" height="86%">
                   <LineChart data={chartData} margin={{ top: 0, right: 10, left: -8, bottom: 0 }}>
@@ -85,8 +91,8 @@ export default function Analytics({ pricingData, toggleModal } : StatsProps) {
                       width={56}
                     />
                     <Tooltip />
-                    <Line type="monotone" dataKey="minPrice" stroke="#2563eb" strokeWidth={3} dot={chartData.length <= 1} />
-                    <Line type="monotone" dataKey="maxPrice" stroke="#dc2626" strokeWidth={3} dot={chartData.length <= 1} />
+                    <Line type="monotone" dataKey="minPrice" name="Min subscription price" stroke="#2563eb" strokeWidth={3} dot={chartData.length <= 1} />
+                    <Line type="monotone" dataKey="maxPrice" name="Max subscription price" stroke="#dc2626" strokeWidth={3} dot={chartData.length <= 1} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
