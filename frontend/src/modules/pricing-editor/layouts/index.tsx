@@ -76,43 +76,55 @@ export default function EditorLayout({ children }: { children?: React.ReactNode 
         <Main>{children}</Main>
       </div>
       {sharedLinkModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" role="dialog" aria-modal="true">
-          <div className="w-full max-w-2xl rounded-3xl bg-white p-6 shadow-2xl">
-          <h2 className="text-center text-lg font-bold">
-            Your pricing is a step away from the world
-          </h2>
-          <p className="mt-2 mb-4 text-center text-sm text-slate-600">
-            Share this link to allow other users to see and edit their own version of your pricing
-          </p>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" role="dialog" aria-modal="true" onClick={handleSharedLinkClose}>
+          <div className="w-full max-w-[600px] rounded-3xl bg-white px-8 pb-7 pt-8 shadow-[0_22px_60px_rgba(15,23,42,0.35)]" onClick={(e) => e.stopPropagation()}>
+            <h2 className="text-center text-[20px] font-extrabold leading-tight text-slate-800">
+              Your pricing is a step away from the world
+            </h2>
 
-          <div className="mb-4 flex justify-center gap-2">
-            <button type="button" onClick={() => setTabValue(0)} className={`rounded-full px-4 py-2 text-sm font-medium ${tabValue === 0 ? 'bg-sky-600 text-white' : 'border border-slate-300 text-slate-700 hover:bg-slate-50'}`}>
-              Short encoding
-            </button>
-            <button type="button" onClick={() => setTabValue(1)} className={`rounded-full px-4 py-2 text-sm font-medium ${tabValue === 1 ? 'bg-sky-600 text-white' : 'border border-slate-300 text-slate-700 hover:bg-slate-50'}`}>
-              Full encoding
-            </button>
-          </div>
-
-          {tabValue === 1 ? (
-            <p className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-center text-sm text-amber-900">
-              <strong>WARNING:</strong> If the YAML is too large, the URL might not be processed correctly.
+            <p className="mb-10 mt-5 text-center text-[16px] leading-snug text-slate-700">
+              Share this link to allow other users to see and edit their own version of your pricing
             </p>
-          ) : (
-            <p className="mb-4 rounded-lg border border-sky-200 bg-sky-50 px-3 py-2 text-center text-sm text-sky-900">
-              <strong>INFO:</strong> The generated URL will only be available for 24h.
-            </p>
-          )}
 
-          <div className="flex items-center">
-            <CopyToClipboardIcon value={handleCopyToClipboard()} />
+            <div className="mb-7 flex justify-center gap-8">
+              <button
+                type="button"
+                onClick={() => setTabValue(0)}
+                className={`border-b-2 px-1 pb-2 text-[15px] uppercase tracking-wide transition ${
+                  tabValue === 0
+                    ? 'border-sky-500 text-sky-500'
+                    : 'border-transparent text-slate-500 hover:text-slate-700'
+                }`}
+              >
+                Short encoding
+              </button>
+              <button
+                type="button"
+                onClick={() => setTabValue(1)}
+                className={`border-b-2 px-1 pb-2 text-[15px] uppercase tracking-wide transition ${
+                  tabValue === 1
+                    ? 'border-sky-500 text-sky-500'
+                    : 'border-transparent text-slate-500 hover:text-slate-700'
+                }`}
+              >
+                Full encoding
+              </button>
+            </div>
+
+            {tabValue === 1 ? (
+              <p className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-center text-sm text-amber-900">
+                <strong>WARNING:</strong> If the YAML is too large, the URL might not be processed correctly.
+              </p>
+            ) : (
+              <p className="mb-4 rounded-lg border border-sky-200 bg-sky-50 px-3 py-2 text-center text-sm text-sky-900">
+                <strong>INFO:</strong> The generated URL will only be available for 24h.
+              </p>
+            )}
+
+            <div className="mt-3 flex items-center">
+              <CopyToClipboardIcon value={handleCopyToClipboard()} />
+            </div>
           </div>
-          <div className="mt-4 flex justify-end">
-            <button type="button" onClick={handleSharedLinkClose} className="rounded-md border border-slate-300 px-3 py-2 text-sm hover:bg-slate-50">
-              Close
-            </button>
-          </div>
-        </div>
         </div>
       )}
       {importModalOpen && (
