@@ -13,7 +13,7 @@ export default function ResearchPage() {
       <Helmet>
         <title> SPHERE - Research </title>
       </Helmet>
-      <div className="h-full w-full overflow-y-scroll bg-[#f5f5f5] p-2">
+      <div className="h-full w-full overflow-y-scroll bg-[#f5f5f5] p-2 pb-10">
         <VerticalTimeline lineColor={primary[700]} className="research-timeline">
           {timelineData.map((item, index) => (
             <VerticalTimelineElement
@@ -57,7 +57,13 @@ export default function ResearchPage() {
               )}
             </VerticalTimelineElement>
           ))}
-          <VerticalTimelineElement className="research-timeline-element research-timeline-element--final" icon={<FaStar />} iconClassName="research-timeline-element-icon" />
+          <VerticalTimelineElement
+            className="research-timeline-element research-timeline-element--final"
+            icon={<FaStar />}
+            iconClassName="research-timeline-element-icon research-timeline-element-icon--final"
+            contentStyle={{ display: 'none' }}
+            contentArrowStyle={{ display: 'none' }}
+          />
         </VerticalTimeline>
       </div>
     </>
