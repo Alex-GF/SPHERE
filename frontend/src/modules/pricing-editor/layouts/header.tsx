@@ -1,4 +1,3 @@
-import { primary } from '../../core/theme/palette';
 import ShortLogo from '../../core/components/short-logo';
 import { useMode } from '../../core/hooks/useTheme';
 import MobileHeaderItems from './components/mobile-header-items';
@@ -72,13 +71,19 @@ const Header = ({ renderSharedLink, renderYamlImport }: { renderSharedLink: () =
     if (originalEditorValue === ""){
       setOriginalEditorValue(editorValue);
     }
-  }, [editorValue]);
+  }, [editorValue, originalEditorValue]);
 
   return (
     <>
-      <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/90 backdrop-blur">
+      <header
+        className={`sticky top-0 z-40 border-b backdrop-blur ${
+          mode === 'light'
+            ? 'border-slate-200 bg-[#f3f4f6]/95'
+            : 'border-[#1f2d3d] bg-[#0b1119]/95'
+        }`}
+      >
         <div className="flex items-center gap-4 px-4 py-3 lg:px-6">
-          <ShortLogo sx={{ fill: mode === 'light' ? primary[800] : primary[100] }} />
+          <ShortLogo fill={mode === 'light' ? '#0077b6' : '#d7f7ff'} />
 
           <div className="hidden flex-1 md:flex">
             <DesktopHeaderItems menuItems={menuItems} />
