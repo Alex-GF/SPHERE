@@ -1,17 +1,68 @@
-import { Breakpoint, useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { useEffect, useState } from 'react';
+
+type Breakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+
+const BREAKPOINTS: Record<Breakpoint, number> = {
+  xs: 0,
+  sm: 600,
+  md: 900,
+  lg: 1200,
+  xl: 1536,
+};
+
+function useMatchMedia(query: string) {
+  const getMatches = () => {
+    if (typeof window === 'undefined') {
+      return false;
+    }
+
+    return window.matchMedia(query).matches;
+  };
+
+  const [matches, setMatches] = useState(getMatches);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const mediaQueryList = window.matchMedia(query);
+
+    const listener = (event: MediaQueryListEvent) => {
+      setMatches(event.matches);
+    };
+
+    setMatches(mediaQueryList.matches);
+    mediaQueryList.addEventListener('change', listener);
+
+    return () => {
+      mediaQueryList.removeEventListener('change', listener);
+    };
+  }, [query]);
+
+  return matches;
+}
 
 
 export function useResponsive(query: string, start : Breakpoint, end: Breakpoint = 'md') {
-  const theme = useTheme();
+  const startPx = BREAKPOINTS[start];
+  const endPx = BREAKPOINTS[end];
 
-  const mediaUp = useMediaQuery(theme.breakpoints.up(start));
+  const mediaUp = useMatchMedia(`(min-width: ${startPx}px)`);
 
-  const mediaDown = useMediaQuery(theme.breakpoints.down(start));
+  const mediaDown = useMatchMedia(`(max-width: ${Math.max(startPx - 0.05, 0)}px)`);
 
-  const mediaBetween = useMediaQuery(theme.breakpoints.between(start, end));
+  const mediaBetween = useMatchMedia(
+    `(min-width: ${startPx}px) and (max-width: ${Math.max(endPx - 0.05, 0)}px)`
+  );
 
-  const mediaOnly = useMediaQuery(theme.breakpoints.only(start));
+  const orderedBreakpoints: Breakpoint[] = ['xs', 'sm', 'md', 'lg', 'xl'];
+  const currentIndex = orderedBreakpoints.indexOf(start);
+  const nextBreakpoint = orderedBreakpoints[currentIndex + 1];
+  const nextValue = nextBreakpoint ? BREAKPOINTS[nextBreakpoint] : Number.MAX_SAFE_INTEGER;
+  const mediaOnly = useMatchMedia(
+    `(min-width: ${startPx}px) and (max-width: ${Math.max(nextValue - 0.05, 0)}px)`
+  );
 
   if (query === 'up') {
     return mediaUp;
@@ -30,16 +81,31 @@ export function useResponsive(query: string, start : Breakpoint, end: Breakpoint
 
 
 export function useWidth() {
-  const theme = useTheme();
+  const [currentWidth, setCurrentWidth] = useState<Breakpoint>('xs');
 
-  const keys = [...theme.breakpoints.keys].reverse();
+  useEffect(() => {
+    const getBreakpoint = (): Breakpoint => {
+      const width = window.innerWidth;
 
-  return (
-    keys.reduce((output, key) => {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      const matches = useMediaQuery(theme.breakpoints.up(key));
+      if (width >= BREAKPOINTS.xl) return 'xl';
+      if (width >= BREAKPOINTS.lg) return 'lg';
+      if (width >= BREAKPOINTS.md) return 'md';
+      if (width >= BREAKPOINTS.sm) return 'sm';
 
-      return !output && matches ? key : output;
-    }, ) || 'xs'
-  );
+      return 'xs';
+    };
+
+    const handleResize = () => {
+      setCurrentWidth(getBreakpoint());
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  return currentWidth;
 }

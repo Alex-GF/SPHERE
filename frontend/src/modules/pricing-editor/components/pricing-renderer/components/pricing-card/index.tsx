@@ -1,48 +1,27 @@
 import { Pricing } from 'pricing4ts';
-import { RenderingStyles } from '../../types';
-import { Card, CardContent, Typography, Box } from '@mui/material';
 import { motion } from 'framer-motion';
 import { cardVariants } from '../../shared/motion-variants';
 
 export default function PricingCard({
   pricing,
-  style,
-  defaultStyle,
 }: Readonly<{
   pricing: Pricing;
-  style: RenderingStyles;
-  defaultStyle: RenderingStyles;
 }>) {
 
   return (
     <motion.div variants={cardVariants} initial="hidden" animate="visible">
-      <Card
-        elevation={3}
-        sx={{
-          mb: 3,
-          bgcolor: 'background.paper',
-        }}
-      >
-        <CardContent>
-          <Box sx={{ textAlign: 'center' }}>
-            <Typography
-              variant="h4"
-              sx={{ color: style.headerColor ?? defaultStyle.headerColor, fontWeight: 700 }}
-            >
-              {pricing?.saasName}
-            </Typography>
+      <section className="mb-6 rounded-lg border border-slate-300 bg-white px-6 py-8 shadow-[0_4px_10px_rgba(15,23,42,0.12)]">
+        <div className="text-center">
+          <h1 className="text-[34px] font-extrabold tracking-tight text-slate-900">
+            {pricing?.saasName}
+          </h1>
 
-            <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3, mt: 1 }}>
-              <Typography variant="body2" color="text.secondary">
-                <strong>Plans:</strong> {Object.values(pricing.plans ?? {}).length}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                <strong>Add-ons:</strong> {Object.values(pricing.addOns ?? {}).length || 0}
-              </Typography>
-            </Box>
-          </Box>
-        </CardContent>
-      </Card>
+          <div className="mt-3 flex flex-wrap justify-center gap-8 text-[14px] text-slate-500">
+            <span><span className='font-semibold'>Plans:</span> {Object.values(pricing.plans ?? {}).length}</span>
+            <span><span className='font-semibold'>Add-ons:</span> {Object.values(pricing.addOns ?? {}).length || 0}</span>
+          </div>
+        </div>
+      </section>
     </motion.div>
   );
 }

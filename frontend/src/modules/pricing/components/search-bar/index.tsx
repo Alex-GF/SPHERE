@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { Box, Button, InputBase } from '@mui/material';
-import { grey, primary } from '../../../core/theme/palette';
 import MagnifyingGlassIcon from '../magnifying-glass';
 
 export default function SearchBar({
@@ -21,67 +19,22 @@ export default function SearchBar({
   };
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: '8px',
-        width: '95dvw',
-        maxWidth: '500px',
-        height: '60px',
-        backgroundColor: grey[200],
-        borderRadius: '50px',
-        position: 'relative',
-        boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.5)',
-      }}
-    >
-      <InputBase
+    <div className="relative mx-auto flex h-[60px] w-[95dvw] max-w-[500px] items-center justify-between gap-2 rounded-[50px] bg-slate-100 shadow-[0px_4px_6px_rgba(0,0,0,0.5)]">
+      <input
         placeholder="Filter by name"
         type="text"
         value={searchValue}
         onChange={e => setSearchValue(e.target.value)}
         onKeyUp={handleKeyPress}
-        sx={{
-          flex: 1,
-          padding: '12px 46px 12px 16px',
-          color: '#333',
-          fontSize: '20px',
-          borderRadius: '50px',
-          '& input::placeholder': {
-            color: '#000000',
-            fontSize: '20px',
-          },
-        }}
+        className="flex-1 rounded-[50px] bg-transparent px-4 py-3 pr-12 text-[20px] text-[#333] placeholder:text-[20px] placeholder:text-black focus:outline-none"
       />
-      <Button
+      <button
+        type="button"
         onClick={handleSearch}
-        sx={{
-          position: 'absolute',
-          right: '8px',
-          width: '40px',
-          height: '40px',
-          minWidth: '40px',
-          borderRadius: '50%',
-          background: primary[500],
-          color: 'white',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          transition: 'all 300ms cubic-bezier(.23, 1, 0.32, 1)',
-          '&:hover': {
-            backgroundColor: primary[700],
-            boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.5)',
-            transform: 'translateY(-3px)',
-          },
-          '&:active': {
-            boxShadow: 'none',
-            transform: 'translateY(0)',
-          },
-        }}
+        className="absolute right-2 flex h-10 w-10 items-center justify-center rounded-full bg-sphere-primary-500 text-white transition-all duration-300 [transition-timing-function:cubic-bezier(.23,1,0.32,1)] hover:-translate-y-[3px] hover:bg-sphere-primary-700 hover:shadow-[0px_10px_20px_rgba(0,0,0,0.5)] active:translate-y-0 active:shadow-none"
       >
         <MagnifyingGlassIcon />
-      </Button>
-    </Box>
+      </button>
+    </div>
   );
 }

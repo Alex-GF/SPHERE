@@ -1,12 +1,10 @@
 // LoginForm.tsx
 import React from 'react';
-import { Box, Typography, TextField, Button, Link} from '@mui/material';
-import AppleIcon from '@mui/icons-material/Apple';
-import GoogleIcon from '@mui/icons-material/Google';
 import { validateLogin } from '../../utils/validators/login-validators';
 import { loginUser } from '../../api/usersApi';
 import { useAuth } from '../../hooks/useAuth';
 import { useRouter } from '../../../core/hooks/useRouter';
+import { Link } from 'react-router-dom';
 
 export type LoginFormProps = {
   loginField: string;
@@ -59,89 +57,33 @@ const LoginForm: React.FC = () => {
   }
   
   return (
-    <Box
-      sx={{
-        width: '95dvw',
-        maxWidth: 450,
-        height: '95dvh',
-        maxHeight: 600,
-        backgroundColor: '#fff',
-        boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
-        borderRadius: 2,
-        boxSizing: 'border-box',
-        p: 3,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <Typography
-        variant="h5"
-        sx={{
-          fontSize: '30px',
-          textAlign: 'center',
-          fontWeight: 800,
-          mb: 4,
-        }}
-      >
+    <div className="flex h-[95dvh] max-h-[600px] w-[95dvw] max-w-[450px] flex-col items-center justify-center rounded-lg bg-white p-3 shadow-[rgba(0,0,0,0.35)_0px_5px_15px]">
+      <h1 className="mb-4 text-center text-[30px] font-extrabold text-sphere-grey-900">
         Welcome back!
-      </Typography>
+      </h1>
       
       {errors.length > 0 && (
-        <Box
-          sx={{
-            width: '100%',
-            borderRadius: '20px',
-            backgroundColor: 'rgba(255,0,0,0.8)',
-            color: 'white',
-            p: 2,
-            mb: 2,
-            textAlign: 'center',
-          }}
-        >
+        <div className="mb-2 w-full rounded-[20px] bg-[rgba(255,0,0,0.8)] p-2 text-center text-white">
           {errors.map((error, index) => (
-            <Typography key={index}>{error}</Typography>
+            <p key={index}>{error}</p>
           ))}
-        </Box>
+        </div>
       )}
 
-      <Box
-        component="form"
+      <form
         onSubmit={handleLogin}
-        sx={{
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 2,
-          mb: 2,
-        }}
+        className="mb-2 flex w-full flex-col gap-2"
       >
-        <TextField
-          fullWidth
-          variant="outlined"
+        <input
           placeholder="Username or Email"
           name="loginField"
-          sx={{
-            borderRadius: '20px',
-          }}
-          slotProps={{
-            input: {
-              sx: { borderRadius: '20px' },
-            },
-          }}
+          className="w-full rounded-[20px] border border-sphere-grey-300 px-4 py-2 outline-none focus:border-sphere-primary-700"
         />
-        <TextField
-          fullWidth
-          variant="outlined"
+        <input
           placeholder="Password"
           type="password"
           name="password"
-          slotProps={{
-            input: {
-              sx: { borderRadius: '20px' },
-            },
-          }}
+          className="w-full rounded-[20px] border border-sphere-grey-300 px-4 py-2 outline-none focus:border-sphere-primary-700"
         />
         {/* <Link
           href="#"
@@ -159,45 +101,20 @@ const LoginForm: React.FC = () => {
         >
           Forgot Password?
         </Link> */}
-        <Button
-          variant="contained"
-          fullWidth
+        <button
           type="submit"
-          sx={{
-            backgroundColor: 'teal',
-            color: 'white',
-            borderRadius: '20px',
-            p: 1,
-            '&:hover': { backgroundColor: 'darkslategray' },
-            boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
-          }}
+          className="w-full rounded-[20px] bg-teal-600 p-2 text-white shadow-[rgba(0,0,0,0.24)_0px_3px_8px] transition-colors hover:bg-teal-800"
         >
           Log in
-        </Button>
-      </Box>
+        </button>
+      </form>
 
-      <Typography
-        sx={{
-          fontSize: '14px',
-          color: '#747474',
-          mb: 2,
-          textAlign: 'center',
-        }}
-      >
+      <p className="mb-2 text-center text-sm text-[#747474]">
         Don't have an account?{' '}
-        <Link
-          href="/register"
-          sx={{
-            fontSize: '14px',
-            textDecoration: 'underline',
-            color: 'teal',
-            fontWeight: 800,
-            cursor: 'pointer',
-          }}
-        >
+        <Link to="/register" className="cursor-pointer text-sm font-extrabold text-teal-600 underline">
           Sign up
         </Link>
-      </Typography>
+      </p>
 
       {/* <Box
         sx={{
@@ -237,7 +154,7 @@ const LoginForm: React.FC = () => {
           Log in with Google
         </Button>
       </Box> */}
-    </Box>
+    </div>
   );
 };
 

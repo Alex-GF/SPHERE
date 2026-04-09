@@ -1,24 +1,15 @@
-import { Box, styled } from '@mui/material';
 import { Helmet } from 'react-helmet';
 import { useEffect, useState } from 'react';
 import PricingListCard from '../../components/pricing-list-card';
 import { usePricingsApi } from '../../api/pricingsApi';
 import SearchBar from '../../components/search-bar';
-import { flex } from '../../../core/theme/css';
 import PricingFilters from '../../components/pricing-filters';
-import { grey } from '../../../core/theme/palette';
 import PricingsPagination from '../../components/pricings-pagination';
 import PricingsListContainer from '../../components/pricings-list-container';
 
-export const PricingsGrid = styled(Box)(() => ({
-  display: 'flex',
-  flexWrap: 'wrap',
-  width: '100%',
-  justifyContent: 'space-evenly',
-  gap: '3rem',
-  marginTop: '50px',
-  padding: '0 10px',
-}));
+export function PricingsGrid({ children }: { children: React.ReactNode }) {
+  return <div className="mt-[50px] mb-[50px] flex w-full flex-wrap justify-evenly gap-12 px-2.5">{children}</div>;
+}
 
 export type PricingEntry = {
   name: string;
@@ -99,27 +90,9 @@ export default function PricingListPage() {
       <Helmet>
         <title> SPHERE - Pricings </title>
       </Helmet>
-      <Box
-        sx={{
-          ...flex({}),
-          width: '100vw',
-          maxWidth: '2000px',
-          height: '100%',
-        }}
-      >
-        <Box
-          component="div"
-          sx={{
-            ...flex({ direction: 'column', justify: 'start' }),
-            maxWidth: '600px',
-            height: '100%',
-            margin: 'auto',
-            backgroundColor: grey[200],
-            borderRight: '1px solid',
-            borderRightColor: grey[300],
-          }}
-        >
-          <Box component="div" width="20vw"></Box>
+      <div className="flex h-full w-screen max-w-[2000px]">
+        <div className="mx-auto flex h-full w-full max-w-[600px] flex-col justify-start border-r border-slate-300 bg-slate-100">
+          <div className="w-[20vw]" />
           {filterLimits && (
             <PricingFilters
               filterLimits={filterLimits}
@@ -131,18 +104,11 @@ export default function PricingListPage() {
               setFilterValues={setFilterValues}
             />
           )}
-        </Box>
-        <Box
-          component="div"
-          sx={{
-            ...flex({ direction: 'column' }),
-            marginTop: '50px',
-            flexGrow: 1,
-          }}
-        >
+        </div>
+        <div className="mt-[50px] flex grow flex-col">
           <SearchBar setTextFilterValue={setTextFilterValue} />
           <PricingsListContainer>
-            <PricingsGrid sx={{ marginBottom: '50px' }}>
+            <PricingsGrid>
               {pricingsList.length > 0 ? (
                 Object.values(pricingsList).map(pricing => (
                   <PricingListCard
@@ -153,7 +119,7 @@ export default function PricingListPage() {
                   />
                 ))
               ) : (
-                <Box>No pricings found</Box>
+                <div>No pricings found</div>
               )}
             </PricingsGrid>
 
@@ -167,8 +133,8 @@ export default function PricingListPage() {
               }}
             />
           </PricingsListContainer>
-        </Box>
-      </Box>
+        </div>
+      </div>
     </>
   );
 }

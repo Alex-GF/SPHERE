@@ -1,6 +1,4 @@
-import { Box, Modal, Paper } from '@mui/material';
 import CollectionLoader from '../collection-loader';
-import { flex } from '../../theme/css';
 
 export default function LoadingModal({
   loader,
@@ -11,32 +9,20 @@ export default function LoadingModal({
   message?: string;
   showLoading: boolean;
 }) {
+  if (!showLoading) {
+    return null;
+  }
+
   return (
-    <Modal open={showLoading}>
-      <Paper
-        elevation={3}
-        sx={{
-          maxWidth: 600,
-          width: '90dvw',
-          maxHeight: 'auto',
-          mx: 'auto',
-          mt: 4,
-          p: 4,
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translateX(-50%) translateY(-50%)',
-          borderRadius: '20px',
-          ...flex({ direction: 'column' }),
-        }}
-      >
-        <Box sx={{ ...flex({ direction: 'column' }), height: '100%' }}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/35 px-4">
+      <div className="mt-4 flex w-[90dvw] max-w-[600px] flex-col rounded-[20px] bg-white p-4 shadow-lg">
+        <div className="flex h-full flex-col items-center justify-center">
           {loader ? loader : <CollectionLoader />}
-        </Box>
-        <h3 style={{ textAlign: 'center', zIndex: 1 }}>
+        </div>
+        <h3 className="z-[1] text-center">
           {message ?? 'Uploading pricings to collection. This may take a few minutes...'}
         </h3>
-      </Paper>
-    </Modal>
+      </div>
+    </div>
   );
 }

@@ -1,8 +1,6 @@
-import { SvgIcon } from "@mui/material";
-
 export default function MagnifyingGlassIcon() {
     return(
-        <SvgIcon viewBox="0 0 29 29" sx={{ width: '24px', height: '24px', fill: "none" }}>
+        <svg viewBox="0 0 29 29" className="h-6 w-6 fill-none" xmlns="http://www.w3.org/2000/svg">
           <g clipPath="url(#clip0_2_17)">
             <g filter="url(#filter0_d_2_17)">
               <path
@@ -60,6 +58,6 @@ export default function MagnifyingGlassIcon() {
               ></rect>
             </clipPath>
           </defs>
-        </SvgIcon>
+        </svg>
     );
 }

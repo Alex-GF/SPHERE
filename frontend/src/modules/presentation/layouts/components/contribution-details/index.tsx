@@ -1,5 +1,4 @@
 import { Contribution } from '../../../pages/contributions/data/contributions-data';
-import { Box, Modal, Typography, Fade, Divider } from '@mui/material';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
@@ -13,126 +12,74 @@ export default function ContributionDetailsModal({
   handleClose: () => void;
 }>) {
   return (
-    <Modal
-      open={isOpen}
-      onClose={handleClose}
-      closeAfterTransition
-      slotProps={{
-        backdrop: {
-          timeout: 500,
-        },
-      }}
-    >
-      <Fade in={isOpen}>
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '90%',
-            maxWidth: 1200,
-            height: '90dvh',
-            bgcolor: 'background.paper',
-            boxShadow: 24,
-            p: 4,
-            borderRadius: 2,
-            overflow: 'hidden',
-            display: 'flex',
-            flexDirection: 'column',
-          }}
+    isOpen ? (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/35 p-4" onClick={handleClose} role="presentation">
+        <div
+          className="flex h-[90dvh] w-[90%] max-w-[1200px] flex-col overflow-hidden rounded-lg bg-white p-4 shadow-2xl"
+          onClick={(event) => event.stopPropagation()}
+          role="dialog"
+          aria-modal="true"
         >
           {selectedContribution && (
             <>
               {/* Title */}
-              <Typography variant="h3" sx={{ mb: 10, fontWeight: 'bold', textAlign: 'center' }}>
+              <h2 className="mb-10 text-center text-4xl font-bold">
                 {selectedContribution.title}
-              </Typography>
+              </h2>
 
               {/* Content section with two columns */}
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: { xs: 'column', md: 'row' },
-                  height: '100%',
-                  overflow: 'hidden',
-                }}
-              >
+              <div className="flex h-full flex-col overflow-hidden md:flex-row">
                 {/* Description Column */}
-                <Box
-                  sx={{
-                    flex: 7,
-                    overflowY: 'auto',
-                    pr: { md: 2 },
-                    textAlign: 'justify',
-                  }}
-                >
+                <div className="flex-[7] overflow-y-auto pr-0 text-justify md:pr-2">
                   <ReactMarkdown
                     remarkPlugins={[remarkGfm]}
                     components={{
                       a: ({ node, ...props }) => (
-                        <a {...props} target="_blank" rel="noopener noreferrer">
+                        <a {...props} target="_blank" rel="noopener noreferrer" className="text-sphere-primary-700 underline">
                           {props.children}
                         </a>
                       ),
                       h3: ({ node, ...props }) => (
-                        <h3 style={{ fontWeight: 'bold', marginTop: '1.5em' }} {...props} />
+                        <h3 className="mt-6 font-bold" {...props} />
                       ),
                       ul: ({ node, ...props }) => (
-                        <ul style={{ paddingLeft: '1.5em', listStyleType: 'disc' }} {...props}>
+                        <ul className="list-disc pl-6" {...props}>
                           {props.children}
                         </ul>
                       ),
                       li: ({ node, ...props }) => (
-                        <li style={{ marginBottom: '0.5em' }} {...props} />
+                        <li className="mb-2" {...props} />
                       ),
                     }}
                   >
                     {selectedContribution.markdownDescription}
                   </ReactMarkdown>
-                </Box>
+                </div>
 
                 {/* Divider */}
-                <Divider
-                  orientation="vertical"
-                  flexItem
-                  sx={{
-                    display: { xs: 'none', md: 'block' },
-                    width: '2px',
-                    backgroundColor: 'grey.300',
-                    mx: 2,
-                  }}
-                />
+                <div className="mx-2 hidden w-[2px] bg-slate-300 md:block" />
 
                 {/* Supervisor and Tags Column */}
-                <Box
-                  sx={{
-                    flex: 3,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: 2,
-                    overflowY: 'auto',
-                  }}
-                >
-                  <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+                <div className="flex flex-[3] flex-col gap-2 overflow-y-auto">
+                  <p className="font-bold">
                     Supervisor/s:
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
+                  </p>
+                  <p className="text-sm text-sphere-grey-600">
                     {selectedContribution.supervisor}
-                  </Typography>
+                  </p>
 
-                  <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mt: 2 }}>
+                  <p className="mt-2 font-bold">
                     Tags:
-                  </Typography>
-                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                  </p>
+                  <div className="flex flex-wrap gap-1">
                     {selectedContribution.tags.map(tag => tag)}
-                  </Box>
-                </Box>
-              </Box>
+                  </div>
+                </div>
+              </div>
             </>
           )}
-        </Box>
-      </Fade>
-    </Modal>
+        </div>
+      </div>
+    ) : null
   );
 }

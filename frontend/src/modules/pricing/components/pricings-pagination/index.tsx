@@ -1,7 +1,5 @@
-import { Box, IconButton, Typography } from '@mui/material';
 import { AnimatePresence, motion } from 'framer-motion';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 type Props = {
   limit: number;
@@ -20,23 +18,16 @@ export default function PricingsPagination({ limit, offset, total, onChange }: P
   };
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 2,
-        mt: 4,
-        mb: 4,
-      }}
-    >
-      <IconButton
+    <div className="my-4 flex items-center justify-center gap-2">
+      <button
+        type="button"
+        className="rounded-full p-2 disabled:cursor-not-allowed disabled:opacity-50"
         onClick={() => goToPage(Math.max(1, currentPage - 1))}
         disabled={currentPage <= 1}
         aria-label="previous page"
       >
-        <ChevronLeftIcon />
-      </IconButton>
+        <FaChevronLeft />
+      </button>
 
       <AnimatePresence mode="wait">
         <motion.div
@@ -45,19 +36,21 @@ export default function PricingsPagination({ limit, offset, total, onChange }: P
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -6 }}
         >
-          <Typography variant="body2">
+          <p className="text-sm">
             Page {currentPage} / {totalPages}
-          </Typography>
+          </p>
         </motion.div>
       </AnimatePresence>
 
-      <IconButton
+      <button
+        type="button"
+        className="rounded-full p-2 disabled:cursor-not-allowed disabled:opacity-50"
         onClick={() => goToPage(Math.min(totalPages, currentPage + 1))}
         disabled={currentPage >= totalPages}
         aria-label="next page"
       >
-        <ChevronRightIcon />
-      </IconButton>
-    </Box>
+        <FaChevronRight />
+      </button>
+    </div>
   );
 }

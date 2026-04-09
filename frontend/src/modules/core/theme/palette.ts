@@ -1,4 +1,13 @@
-import { alpha } from '@mui/material/styles';
+function withAlpha(hexColor: string, alphaValue: number) {
+  const normalized = hexColor.replace('#', '');
+  const bigint = Number.parseInt(normalized, 16);
+
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+
+  return `rgba(${r}, ${g}, ${b}, ${alphaValue})`;
+}
 
 
 // SETUP COLORS
@@ -83,11 +92,11 @@ export const header= {
 }
 
 export const action = {
-  hover: alpha(grey[500], 0.08),
-  selected: alpha(grey[500], 0.16),
-  disabled: alpha(grey[500], 0.8),
-  disabledBackground: alpha(grey[500], 0.24),
-  focus: alpha(grey[500], 0.24),
+  hover: withAlpha(grey[500], 0.08),
+  selected: withAlpha(grey[500], 0.16),
+  disabled: withAlpha(grey[500], 0.8),
+  disabledBackground: withAlpha(grey[500], 0.24),
+  focus: withAlpha(grey[500], 0.24),
   hoverOpacity: 0.08,
   disabledOpacity: 0.48,
 };
@@ -102,7 +111,7 @@ const base = {
   grey,
   common,
   header,
-  divider: alpha(grey[500], 0.2),
+  divider: withAlpha(grey[500], 0.2),
   action,
 };
 

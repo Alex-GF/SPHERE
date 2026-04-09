@@ -1,125 +1,70 @@
-import {
-  Card,
-  CardContent,
-  Typography,
-  Avatar,
-  IconButton,
-  Tooltip,
-  Box,
-  styled,
-} from '@mui/material';
 import { MdEmail, MdLanguage } from 'react-icons/md';
 import { FaLinkedin, FaTwitter, FaGithub, FaOrcid } from 'react-icons/fa';
 import {FaGoogleScholar} from 'react-icons/fa6';
 import { AiOutlineProject } from 'react-icons/ai';
 import { TeamMember } from '../../../pages/team/data/team-data';
 
-const StyledCard = styled(Card)(() => ({
-  maxWidth: 400,
-  width: '90dvw',
-  margin: 'auto',
-  transition: '0.3s',
-  boxShadow: '0 8px 40px -12px rgba(0,0,0,0.3)',
-  '&:hover': {
-    boxShadow: '0 16px 70px -12.125px rgba(0,0,0,0.3)',
-  },
-}));
-
-const StyledAvatar = styled(Avatar)(({ theme }) => ({
-  width: 250,
-  height: 250,
-  margin: '20px auto',
-  border: `4px solid ${theme.palette.background.paper}`,
-  boxShadow: theme.shadows[3],
-}));
-
-const StyledCardContent = styled(CardContent)({
-  textAlign: 'center',
-});
-
-const SocialIcons = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  flexWrap: 'wrap',
-  gap: theme.spacing(1),
-  paddingTop: theme.spacing(2),
-}));
-
 export default function TeamMemberCard({ member }: { member: TeamMember }) {
+  const iconButtonClass = 'rounded-full p-2 text-sphere-grey-700 transition-colors hover:bg-sphere-grey-200';
+
   return (
-    <StyledCard>
-      <StyledAvatar
-        src={member.profilePicture!}
-        alt={`${member.firstName} ${member.lastName}`}
-      >
-        <Typography variant='h2'>{!member.profilePicture && `${member.firstName[0]}${member.lastName[0]}`}</Typography>
-      </StyledAvatar>
-      <StyledCardContent>
-        <Typography gutterBottom variant="h5" component="div">
+    <div className="mx-auto w-[90dvw] max-w-[400px] rounded-xl bg-white shadow-[0_8px_40px_-12px_rgba(0,0,0,0.3)] transition duration-300 hover:shadow-[0_16px_70px_-12.125px_rgba(0,0,0,0.3)]">
+      <div className="mx-auto my-5 flex h-[250px] w-[250px] items-center justify-center overflow-hidden rounded-full border-4 border-white shadow-md">
+        {member.profilePicture ? (
+          <img src={member.profilePicture} alt={`${member.firstName} ${member.lastName}`} className="h-full w-full object-cover" />
+        ) : (
+          <p className="text-5xl font-bold">{`${member.firstName[0]}${member.lastName[0]}`}</p>
+        )}
+      </div>
+      <div className="p-4 text-center">
+        <h3 className="text-2xl font-semibold">
           {member.firstName} {member.lastName}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
+        </h3>
+        <p className="text-sm text-sphere-grey-600">
           {member.role}
-        </Typography>
+        </p>
         {member.affiliation}
-        <SocialIcons>
-          <Tooltip title="Email">
-            <IconButton href={`mailto:${member.email}`} aria-label="Email">
+        <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
+          <a title="Email" href={`mailto:${member.email}`} aria-label="Email" className={iconButtonClass}>
               <MdEmail />
-            </IconButton>
-          </Tooltip>
+          </a>
           {member.website && (
-            <Tooltip title="Website">
-              <IconButton href={member.website} target="_blank" rel="noopener noreferrer" aria-label="Website">
+              <a title="Website" href={member.website} target="_blank" rel="noopener noreferrer" aria-label="Website" className={iconButtonClass}>
                 <MdLanguage />
-              </IconButton>
-            </Tooltip>
+              </a>
           )}
           {member.linkedin && (
-            <Tooltip title="LinkedIn">
-              <IconButton href={member.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <a title="LinkedIn" href={member.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className={iconButtonClass}>
                 <FaLinkedin />
-              </IconButton>
-            </Tooltip>
+              </a>
           )}
           {member.twitter && (
-            <Tooltip title="Twitter">
-              <IconButton href={member.twitter} target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+              <a title="Twitter" href={member.twitter} target="_blank" rel="noopener noreferrer" aria-label="Twitter" className={iconButtonClass}>
                 <FaTwitter />
-              </IconButton>
-            </Tooltip>
+              </a>
           )}
           {member.github && (
-            <Tooltip title="GitHub">
-              <IconButton href={member.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+              <a title="GitHub" href={member.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub" className={iconButtonClass}>
                 <FaGithub />
-              </IconButton>
-            </Tooltip>
+              </a>
           )}
           {member.googlescholar && (
-            <Tooltip title="Google Scholar">
-              <IconButton href={member.googlescholar} target="_blank" rel="noopener noreferrer" aria-label="Google Scholar">
+              <a title="Google Scholar" href={member.googlescholar} target="_blank" rel="noopener noreferrer" aria-label="Google Scholar" className={iconButtonClass}>
                 <FaGoogleScholar />
-              </IconButton>
-            </Tooltip>
+              </a>
           )}
           {member.researchGate && (
-            <Tooltip title="ResearchGate">
-              <IconButton href={member.researchGate} target="_blank" rel="noopener noreferrer" aria-label="ResearchGate">
+              <a title="ResearchGate" href={member.researchGate} target="_blank" rel="noopener noreferrer" aria-label="ResearchGate" className={iconButtonClass}>
                 <AiOutlineProject />
-              </IconButton>
-            </Tooltip>
+              </a>
           )}
           {member.orcid && (
-            <Tooltip title="ORCID">
-              <IconButton href={`https://orcid.org/${member.orcid}`} target="_blank" rel="noopener noreferrer" aria-label="ORCID">
+              <a title="ORCID" href={`https://orcid.org/${member.orcid}`} target="_blank" rel="noopener noreferrer" aria-label="ORCID" className={iconButtonClass}>
                 <FaOrcid/>
-              </IconButton>
-            </Tooltip>
+              </a>
           )}
-        </SocialIcons>
-      </StyledCardContent>
-    </StyledCard>
+        </div>
+      </div>
+    </div>
   );
 }

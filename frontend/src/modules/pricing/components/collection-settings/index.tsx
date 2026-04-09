@@ -1,4 +1,3 @@
-import { Box, Button, Stack, TextField, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import VisibilityOptions from '../visibility-options';
 import customConfirm from '../../../core/utils/custom-confirm';
@@ -103,103 +102,79 @@ export default function CollectionSettings({
 
   return (
     <SettingsPage>
-      <Box marginBottom={3}>
-        <Typography variant="h5" fontWeight="bold">
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold">
           Global Settings
-        </Typography>
-        <Box marginTop={3} paddingLeft={5} display="flex" alignItems="center" maxWidth={800}>
-          <TextField
+        </h2>
+        <div className="mt-3 flex max-w-[800px] items-center gap-3 pl-5">
+          <input
             defaultValue={collection.name}
             id="collectionNameInput"
-            variant="outlined"
-            size="small"
-            fullWidth
-            style={{ marginRight: '10px' }}
+            className="w-full rounded-md border border-slate-300 px-3 py-2"
           />
-          <Button variant="outlined" color="primary" onClick={handleRename}>
+          <button type="button" className="rounded-md border border-slate-400 px-4 py-2" onClick={handleRename}>
             Rename
-          </Button>
-        </Box>
-        <Box marginTop={3} paddingLeft={5} display="flex" alignItems="center" maxWidth={800}>
-          <TextField
-            type="textarea"
+          </button>
+        </div>
+        <div className="mt-3 flex max-w-[800px] items-center gap-3 pl-5">
+          <textarea
             id="collectionDescriptionInput"
             placeholder="Description of this collection"
             defaultValue={collection.description}
-            fullWidth
-            multiline
             rows={5}
-            style={{ marginRight: '10px' }}
+            className="w-full rounded-md border border-slate-300 px-3 py-2"
           />
-          <Button variant="outlined" color="primary" onClick={handleDescriptionChange}>
+          <button type="button" className="rounded-md border border-slate-400 px-4 py-2" onClick={handleDescriptionChange}>
             Change
-          </Button>
-        </Box>
-      </Box>
-      <Typography variant="h5" fontWeight="bold" marginBottom={3}>
+          </button>
+        </div>
+      </div>
+      <h2 className="mb-3 text-2xl font-bold">
         Visibility
-      </Typography>
-      <Box paddingLeft={5}>
+      </h2>
+      <div className="pl-5">
         <VisibilityOptions value={visibility} onChange={handleVisibilityChange} />
-      </Box>
-      <Typography variant="h5" fontWeight="bold" marginTop={3}>
+      </div>
+      <h2 className="mt-3 text-2xl font-bold">
         Danger zone
-      </Typography>
+      </h2>
       <DangerZone>
-        <Box
-          sx={{
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: 2,
-          }}
-        >
-          <Stack spacing={2} direction={'column'}>
-            <Typography variant="h6" fontWeight="bold" marginBottom={2}>
+        <div className="mb-2 flex w-full items-center justify-between">
+          <div className="flex flex-col gap-2">
+            <h3 className="mb-2 text-xl font-bold">
               Delete this collection
-            </Typography>
-            <Typography variant="body1" marginBottom={2}>
+            </h3>
+            <p className="mb-2 text-base">
               This action will delete this collection forever, but not its pricings. Please be
               certain.
-            </Typography>
-          </Stack>
-          <Button
-            variant="outlined"
-            color="error"
+            </p>
+          </div>
+          <button
+            type="button"
             onClick={handleDeleteCollection}
-            sx={{ fontWeight: 'bold', '&:hover': { backgroundColor: 'red', color: 'white' } }}
+            className="rounded-md border border-red-500 px-4 py-2 font-bold text-red-500 hover:bg-red-500 hover:text-white"
           >
             Delete collection
-          </Button>
-        </Box>
-        <Box
-          sx={{
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: 2,
-          }}
-        >
-          <Stack spacing={2} direction={'column'}>
-            <Typography variant="h6" fontWeight="bold" marginBottom={2}>
+          </button>
+        </div>
+        <div className="mb-2 flex w-full items-center justify-between">
+          <div className="flex flex-col gap-2">
+            <h3 className="mb-2 text-xl font-bold">
               Delete this collection and its pricings
-            </Typography>
-            <Typography variant="body1" marginBottom={2}>
+            </h3>
+            <p className="mb-2 text-base">
               This action will delete this collection and all pricings associated with it forever.
               Please be certain.
-            </Typography>
-          </Stack>
-          <Button
-            variant="outlined"
-            color="error"
+            </p>
+          </div>
+          <button
+            type="button"
             onClick={handleDeleteCollectionAndPricings}
-            sx={{ fontWeight: 'bold', '&:hover': { backgroundColor: 'red', color: 'white' } }}
+            className="rounded-md border border-red-500 px-4 py-2 font-bold text-red-500 hover:bg-red-500 hover:text-white"
           >
             Delete collection and pricings
-          </Button>
-        </Box>
+          </button>
+        </div>
       </DangerZone>
     </SettingsPage>
   );

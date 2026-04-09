@@ -4,21 +4,8 @@ import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeli
 import { FaStar, FaAward } from 'react-icons/fa';
 import timelineData from './data/research-data';
 import { Helmet } from 'react-helmet';
-import { Box, Typography, Paper, List, ListItem } from '@mui/material';
 import { primary } from '../../../core/theme/palette';
 import { Link } from 'react-router-dom';
-
-const timelineContentBoxStyle = {
-  border: `2px solid ${primary[700]}`,
-  color: '#fff',
-  background: 'transparent',
-  boxShadow: 'none',
-};
-const timelineArrowStyle = { borderRight: `7px solid  ${primary[700]}` };
-const finalIconStyle = {
-  background: 'white',
-  boxShadow: `0 0 0 4px ${primary[700]},inset 0 2px 0 rgba(0,0,0,.08),0 3px 0 4px rgba(0,0,0,.05)`,
-};
 
 export default function ResearchPage() {
   return (
@@ -26,84 +13,59 @@ export default function ResearchPage() {
       <Helmet>
         <title> SPHERE - Research </title>
       </Helmet>
-      <Box
-        sx={{
-          height: '100%',
-          width: '100%',
-          overflowY: 'scroll',
-          backgroundColor: '#f5f5f5',
-          padding: 2,
-        }}
-      >
-        <VerticalTimeline lineColor={primary[700]}>
+      <div className="h-full w-full overflow-y-scroll bg-[#f5f5f5] p-2 pb-10">
+        <VerticalTimeline lineColor={primary[700]} className="research-timeline">
           {timelineData.map((item, index) => (
             <VerticalTimelineElement
               key={index}
-              contentStyle={timelineContentBoxStyle}
-              contentArrowStyle={timelineArrowStyle}
               date={item.date}
               dateClassName="date-style"
-              iconStyle={item.iconStyle}
+              className={`research-timeline-element research-timeline-element--${item.variant}`}
               icon={item.icon}
-              style={{ position: 'relative' }}
+              iconClassName="research-timeline-element-icon"
+              textClassName="relative"
             >
-              <Paper sx={{ p: 2, backgroundColor: 'transparent', boxShadow: 'none' }}>
+              <div className="bg-transparent p-2 shadow-none">
                 <Link to={item.href} target="_blank" rel="noopener noreferrer">
-                  <Typography
-                    variant="h5"
-                    sx={{
-                      fontWeight: 'bold',
-                      textDecoration: 'underline',
-                      textUnderlineOffset: '2px',
-                      color: primary[700],
-                    }}
-                  >
+                  <h3 className="text-2xl font-bold text-sphere-primary-700 underline underline-offset-2">
                     {item.title}
-                  </Typography>
+                  </h3>
                 </Link>
-                <Typography variant="subtitle1" sx={{ mb: 1, color: primary[700] }}>
+                <p className="mb-1 text-base text-sphere-primary-700">
                   {item.subtitle}
-                </Typography>
+                </p>
                 {item.text.map((element, idx) => (
-                  <Typography variant="body2" key={idx} sx={{ color: 'black' }}>
+                  <p className="text-sm text-black" key={idx}>
                     {element}
-                  </Typography>
+                  </p>
                 ))}
                 {item.awards && (
-                  <Box sx={{ fontWeight: 'bold', marginTop: '1.2rem' }}>
+                  <div className="mt-[1.2rem] font-bold">
                     This work has been awarded with:
-                    <List sx={{ listStyleType: 'disc' }}>
+                    <ul className="list-disc">
                       {item.awards.map((award, idx) => (
-                        <ListItem key={idx} sx={{ display: 'list-item', marginLeft: "40px" }}>{award}</ListItem>
+                        <li key={idx} className="ml-10 list-item">{award}</li>
                       ))}
-                    </List>
-                  </Box>
+                    </ul>
+                  </div>
                 )}
-              </Paper>
+              </div>
               {item.awards && (
-                <Box
-                  sx={{
-                    position: 'absolute',
-                    top: '-30px',
-                    right: '-30px',
-                    height: '80px',
-                    width: '80px',
-                    borderRadius: '50%',
-                    backgroundColor: 'white',
-                    border: `4px solid ${primary[700]}`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
+                <div className="absolute right-[-30px] top-[-30px] flex h-[80px] w-[80px] items-center justify-center rounded-full border-4 border-sphere-primary-700 bg-white">
                   <FaAward color={`${primary[700]}`} fontSize={40} />
-                </Box>
+                </div>
               )}
             </VerticalTimelineElement>
           ))}
-          <VerticalTimelineElement iconStyle={finalIconStyle} icon={<FaStar />} />
+          <VerticalTimelineElement
+            className="research-timeline-element research-timeline-element--final"
+            icon={<FaStar />}
+            iconClassName="research-timeline-element-icon research-timeline-element-icon--final"
+            contentStyle={{ display: 'none' }}
+            contentArrowStyle={{ display: 'none' }}
+          />
         </VerticalTimeline>
-      </Box>
+      </div>
     </>
   );
 }

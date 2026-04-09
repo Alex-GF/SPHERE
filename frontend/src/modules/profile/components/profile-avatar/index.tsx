@@ -1,27 +1,20 @@
-import { Box } from '@mui/material';
 import { useAuth } from '../../../auth/hooks/useAuth';
 
 interface ProfileAvatarProps {
-  size?: number;
+  sizeClass?: string;
 }
 
-export default function ProfileAvatar({ size }: ProfileAvatarProps) {
+export default function ProfileAvatar({ sizeClass = 'w-40 h-40' }: ProfileAvatarProps) {
   
   const {authUser} = useAuth();
   
   return (
-    <Box
-      sx={{
-        width: size,
-        height: size,
-        borderRadius: '50%',
-      }}
-    >
+    <div className={`overflow-hidden rounded-full ${sizeClass}`}>
       <img
         src={authUser.user?.avatar}
         alt="Avatar"
-        style={{ width: '100%', height: '100%', borderRadius: '50%' }}
+        className="h-full w-full rounded-full"
       />
-    </Box>
+    </div>
   );
 }

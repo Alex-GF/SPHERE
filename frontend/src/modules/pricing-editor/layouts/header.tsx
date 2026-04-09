@@ -1,7 +1,4 @@
-import { Container, Toolbar, useMediaQuery, useTheme } from '@mui/material';
-import { primary } from '../../core/theme/palette';
 import ShortLogo from '../../core/components/short-logo';
-import { StyledAppBar } from './components/styled-appbar';
 import { useMode } from '../../core/hooks/useTheme';
 import MobileHeaderItems from './components/mobile-header-items';
 import DesktopHeaderItems from './components/desktop-header-items';
@@ -20,9 +17,6 @@ export interface MenuItems {
 
 const Header = ({ renderSharedLink, renderYamlImport }: { renderSharedLink: () => void, renderYamlImport: () => void }) => {
   const [errors, setErrors] = useState<string[]>([]);
-
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const { mode } = useMode();
   const { editorValue, setEditorValue } = useEditorValue();
   const [originalEditorValue, setOriginalEditorValue] = useState<string>("");
@@ -69,7 +63,7 @@ const Header = ({ renderSharedLink, renderYamlImport }: { renderSharedLink: () =
     {
       name: 'Documentation',
       disabled: false,
-      onClick: () => window.open('https://pricing4saas-docs.vercel.app/docs/2.0.1/api/pricing-description-languages/Pricing2Yaml/pricing2yaml-v30-specification'),
+      onClick: () => window.open('https://sphere-docs.vercel.app/docs/2.0.1/api/pricing-description-languages/Pricing2Yaml/the-pricing2yaml-syntax'),
     },
   ];
 
@@ -77,23 +71,29 @@ const Header = ({ renderSharedLink, renderYamlImport }: { renderSharedLink: () =
     if (originalEditorValue === ""){
       setOriginalEditorValue(editorValue);
     }
-  }, [editorValue]);
+  }, [editorValue, originalEditorValue]);
 
   return (
     <>
-      <StyledAppBar position="sticky" mode={mode}>
-        <Container maxWidth={false} sx={{ marginLeft: 0 }}>
-          <Toolbar disableGutters>
-            <ShortLogo sx={{ fill: mode === 'light' ? primary[800] : primary[100] }} />
+      <header
+        className={`sticky top-0 z-40 border-b backdrop-blur ${
+          mode === 'light'
+            ? 'border-slate-200 bg-[#f3f4f6]/95'
+            : 'border-[#1f2d3d] bg-[#0b1119]/95'
+        }`}
+      >
+        <div className="flex items-center gap-4 px-4 py-3 lg:px-6">
+          <ShortLogo fill={mode === 'light' ? '#0077b6' : '#d7f7ff'} />
 
-            {isMobile ? (
-              <MobileHeaderItems menuItems={menuItems} />
-            ) : (
-              <DesktopHeaderItems menuItems={menuItems} />
-            )}
-          </Toolbar>
-        </Container>
-      </StyledAppBar>
+          <div className="hidden flex-1 md:flex">
+            <DesktopHeaderItems menuItems={menuItems} />
+          </div>
+
+          <div className="ml-auto md:hidden">
+            <MobileHeaderItems menuItems={menuItems} />
+          </div>
+        </div>
+      </header>
       <Alerts messages={errors} />
     </>
   );

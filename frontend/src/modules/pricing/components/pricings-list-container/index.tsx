@@ -1,4 +1,3 @@
-import { Box } from '@mui/material';
 import { motion } from 'framer-motion';
 
 type Props = {
@@ -12,7 +11,7 @@ export default function PricingsListContainer({ children }: Props) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -8 }}
     >
-      <Box sx={{ width: '100%' }}>{children}</Box>
+      <div className="w-full">{children}</div>
     </motion.div>
   );
 }

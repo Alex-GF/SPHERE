@@ -1,19 +1,9 @@
-import { Box, IconButton, Drawer, List, ListItem } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { useMode } from '../../../../core/hooks/useTheme';
 import { grey, primary } from '../../../../core/theme/palette';
 import { MenuItems } from '../../header';
-import { styled, alpha } from '@mui/system';
 import { RiArrowDropDownFill } from 'react-icons/ri';
-import { StyledButton } from '../styled-button';
-
-const MobileNavButton = styled(IconButton)(({ theme }) => ({
-  display: 'none',
-  [theme.breakpoints.down('md')]: {
-    display: 'block',
-  },
-}));
 
 export default function MobileHeaderItems({ menuItems }: { menuItems: MenuItems[] }) {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -53,46 +43,35 @@ export default function MobileHeaderItems({ menuItems }: { menuItems: MenuItems[
 
   return (
     <>
-      <Box sx={{ flexGrow: 1 }} />
-      <MobileNavButton
+      <div className="flex-1" />
+      <button
+        type="button"
         aria-label="open navigation menu"
         onClick={toggleMobileNav}
-        sx={{ color: primary[900] }}
+        className="inline-flex items-center justify-center rounded-md p-2 text-slate-900 md:hidden"
       >
         {mobileOpen ? (
           <FaTimes fill={mode === 'light' ? primary[700] : primary[100]} />
         ) : (
           <FaBars fill={mode === 'light' ? primary[700] : primary[100]} />
         )}
-      </MobileNavButton>
+      </button>
 
-      <Drawer
-        anchor="right"
-        open={mobileOpen}
-        onClose={toggleMobileNav}
-        sx={{
-          display: { md: 'none' },
-        }}
-      >
-        <Box sx={{ width: 250, pt: 2, backgroundColor: mode === 'light' ? grey[100] : 'black' }}>
-          <List>
+      {mobileOpen && (
+        <div className="fixed inset-0 z-50 md:hidden">
+          <button type="button" aria-label="close navigation menu" className="absolute inset-0 bg-black/40" onClick={toggleMobileNav} />
+          <div className="absolute right-0 top-0 h-full w-72 bg-slate-50 p-4 shadow-2xl">
             {menuItems.map((item, index) => (
-              <ListItem
+              <div
                 key={index}
-                sx={{
-                  color: mode === 'light' ? primary[800] : primary[100],
-                  fontWeight: 900,
-                  display: 'flex',
-                  flexDirection: 'column',
-                }}
+                className="flex flex-col py-2 text-sm font-semibold text-slate-900"
               >
-                <StyledButton
-                  key={index}
+                <button
+                  type="button"
                   aria-label={item.name}
                   tabIndex={0}
-                  mode={mode}
                   onClick={item.children ? handleMenuItemChildrenClick : item.onClick}
-                  sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}
+                  className="flex w-full items-center justify-between rounded-md px-3 py-2 text-left hover:bg-slate-200"
                 >
                   {item.name}
                   {item.children && (
@@ -102,55 +81,30 @@ export default function MobileHeaderItems({ menuItems }: { menuItems: MenuItems[
                       aria-label={item.name}
                     />
                   )}
-                </StyledButton>
+                </button>
                 {item.children && (
-                  <Box
-                    sx={{
-                      maxHeight: openedMenuItemChildren[item.name] ? '2000px' : 0,
-                      transition: 'all .5s ease',
-                      overflow: 'hidden',
-                      backgroundColor: mode === 'light' ? grey[200] : grey[600],
-                      borderRadius: '5px',
-                      padding: openedMenuItemChildren[item.name] ? '10px' : 0,
-                      width: '100%',
-                      boxShadow: '0px 2px 10px rgba(0, 0, 0, 0.2)',
-                      pointerEvents: openedMenuItemChildren[item.name] ? 'auto' : 'none',
-                    }}
+                  <div
+                    className={`mt-2 w-full overflow-hidden rounded-md bg-slate-200 shadow transition-all duration-300 ${openedMenuItemChildren[item.name] ? 'max-h-[2000px] p-2 opacity-100' : 'max-h-0 p-0 opacity-0 pointer-events-none'}`}
                   >
                     {item.children.map((childItem, childIndex) => (
-                      <StyledButton
+                      <button
+                        type="button"
                         key={childIndex}
                         aria-label={childItem.name}
                         tabIndex={0}
-                        mode={mode}
                         onClick={childItem.onClick}
-                        sx={{
-                          width: '100%',
-                          backgroundColor: 'transparent',
-                          color: mode === 'light' ? primary[700] : primary[300],
-                          '&:hover': {
-                            backgroundColor: alpha(primary[100], 0.8),
-                            color: mode === 'light' ? primary[800] : grey[900],
-                          },
-                        }}
+                        className="block w-full rounded-md px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 hover:text-slate-900"
                       >
                         {childItem.name}
-                      </StyledButton>
+                      </button>
                     ))}
-                  </Box>
+                  </div>
                 )}
-              </ListItem>
+              </div>
             ))}
-          </List>
-        </Box>
-        <Box
-          sx={{
-            height: '100%',
-            width: '100%',
-            backgroundColor: mode === 'light' ? grey[100] : 'black',
-          }}
-        />
-      </Drawer>
+          </div>
+        </div>
+      )}
     </>
   );
 }

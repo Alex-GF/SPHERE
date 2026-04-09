@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Box, Button, Tab, Tabs, Typography } from '@mui/material';
 import VisibilityOptions from '../../../pricing/components/visibility-options';
 import CollectionNameInput from '../collection-name-input';
 import CollectionDescriptionInput from '../collection-description-input';
@@ -7,8 +6,6 @@ import PricingSelector from '../pricings-selector';
 import { usePricingCollectionsApi } from '../../api/pricingCollectionsApi';
 import { useRouter } from '../../../core/hooks/useRouter';
 import FileUpload from '../../../core/components/file-upload-input';
-import { grey, primary } from '../../../core/theme/palette';
-import { flex } from '../../../core/theme/css';
 import customAlert from '../../../core/utils/custom-alert';
 import customConfirm from '../../../core/utils/custom-confirm';
 
@@ -96,43 +93,46 @@ export default function CreateCollectionForm({setShowLoading}: CreateCollectionF
   }
 
   return (
-    <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-      <Typography variant="h5" align="center" marginBottom={5} fontWeight="bold">
+    <form className="flex flex-col gap-3">
+      <h2 className="mb-5 text-center text-2xl font-bold">
         Create a collection to store your pricings
-      </Typography>
+      </h2>
       <CollectionNameInput value={collectionName} onChange={setCollectionName} />
       <CollectionDescriptionInput
         value={collectionDescription}
         onChange={setCollectionDescription}
       />
       <VisibilityOptions value={visibility} onChange={setVisibility} />
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={tabValue} onChange={(_, v) => setTabValue(v)}>
-          <Tab label="Select unassigned pricings" />
-          <Tab label="Upload collection" />
-        </Tabs>
-      </Box>
+      <div className="border-b border-slate-300">
+        <div className="flex gap-2">
+          <button
+            type="button"
+            className={`rounded-t-md px-4 py-2 ${tabValue === 0 ? 'bg-sphere-primary-700 text-white' : 'bg-slate-100 text-slate-700'}`}
+            onClick={() => setTabValue(0)}
+          >
+            Select unassigned pricings
+          </button>
+          <button
+            type="button"
+            className={`rounded-t-md px-4 py-2 ${tabValue === 1 ? 'bg-sphere-primary-700 text-white' : 'bg-slate-100 text-slate-700'}`}
+            onClick={() => setTabValue(1)}
+          >
+            Upload collection
+          </button>
+        </div>
+      </div>
       {tabValue === 0 ? (
         <>
           <PricingSelector value={selectedPricings} onChange={setSelectedPricings} />{' '}
-          <Box sx={{ ...flex({}) }}>
-            <Button
-              sx={{
-                backgroundColor: primary[700],
-                color: grey[100],
-                fontWeight: 'bold',
-                fontSize: 16,
-                px: 5,
-                py: 2,
-                mt: 5,
-                borderRadius: 3,
-                width: 400,
-              }}
+          <div className="flex items-center justify-center">
+            <button
+              type="button"
+              className="mt-5 w-[400px] rounded-xl bg-sphere-primary-700 px-5 py-2 text-base font-bold text-white"
               onClick={handleAddCollectionClick}
                 >
               Add Collection
-            </Button>
-          </Box>
+            </button>
+          </div>
         </>
       ) : (
         <FileUpload
@@ -144,6 +144,6 @@ export default function CreateCollectionForm({setShowLoading}: CreateCollectionF
           accept={{ 'application/zip': ['.zip'] }}
         />
       )}
-    </Box>
+    </form>
   );
 }

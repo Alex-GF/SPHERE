@@ -1,19 +1,5 @@
 import { useEffect, useState } from "react";
-import { Alert, Box } from "@mui/material";
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { keyframes } from '@emotion/react';
-import { styled } from '@mui/system';
-
-const slideIn = keyframes`
-  0% { transform: translateX(100%); }
-  60% { transform: translateX(-10%); }
-  80% { transform: translateX(10%); }
-  100% { transform: translateX(0); }
-`;
-
-const VibratingBox = styled(Box)<{ exit?: boolean }>(() => ({
-  animation: `${slideIn} 0.5s ease-in-out`,
-}));
 
 export default function Alerts({ messages }: { messages: string[] }): JSX.Element {
   const [renderedMessages, setRenderedMessages] = useState<string[]>([]);
@@ -33,25 +19,16 @@ export default function Alerts({ messages }: { messages: string[] }): JSX.Elemen
   }, [messages]);
 
   return (
-    <Box
-      sx={{
-        position: "fixed",
-        bottom: "0",
-        right: "0",
-        padding: "10px",
-        width: "100dvw",
-        maxWidth: "500px",
-      }}
-    >
+    <div className="fixed bottom-0 right-0 w-dvw max-w-[500px] p-[10px]">
       <TransitionGroup>
         {renderedMessages.map((message, index) => (
           <CSSTransition key={index} timeout={500} classNames="alert">
-            <VibratingBox>
-              <Alert severity="error">{message}</Alert>
-            </VibratingBox>
+            <div className="animate-alert-slide-in rounded-md border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-800 shadow-sm">
+              {message}
+            </div>
           </CSSTransition>
         ))}
       </TransitionGroup>
-    </Box>
+    </div>
   );
 }
