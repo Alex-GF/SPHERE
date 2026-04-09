@@ -3,7 +3,6 @@ import { useRouter } from '../../../core/hooks/useRouter';
 import MinimalHeroSection from '../../components/home-v2/minimal-hero-section';
 import WhySphereSection from '../../components/home-v2/why-sphere-section';
 import ToolsCatalogSection from '../../components/home-v2/tools-catalog-section';
-import WorkflowSection from '../../components/home-v2/workflow-section';
 import ResearchShowcaseSection from '../../components/home-v2/research-showcase-section';
 import FoundingPartnersSection from '../../components/home-v2/founding-partners-section';
 import FinalCtaSection from '../../components/home-v2/final-cta-section';
@@ -42,8 +41,6 @@ export default function HomePage() {
           <WhySphereSection />
 
           <ToolsCatalogSection />
-
-          {/* <WorkflowSection /> */}
 
           <ResearchShowcaseSection onOpenResearch={() => router.push('/research')} onOpenTeam={() => router.push('/team')} />
 
