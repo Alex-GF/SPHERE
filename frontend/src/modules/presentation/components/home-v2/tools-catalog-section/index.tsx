@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
-import { useState } from 'react';
-import { FiCheckCircle, FiCode, FiExternalLink } from 'react-icons/fi';
+import { FiCode, FiExternalLink } from 'react-icons/fi';
 import { useRouter } from '../../../../core/hooks/useRouter';
 
 type ToolCard = {
@@ -133,16 +132,8 @@ const cards: ToolCard[] = [
   },
 ];
 
-const bullets = [
-  'End-to-end pricing workflows in a single environment',
-  'AI-powered pricing analysis and decision support',
-  'A suite of tools that tailor to any project',
-  'Scalable performance across large pricing configuration spaces',
-];
-
-export default function ValueHighlightsSection() {
+export default function ToolsCatalogSection() {
   const router = useRouter();
-  const [logoErrors, setLogoErrors] = useState<Record<string, boolean>>({});
 
   const openLink = (href: string, kind: 'internal' | 'external') => {
     if (kind === 'internal') {
@@ -158,33 +149,13 @@ export default function ValueHighlightsSection() {
   };
 
   return (
-    <section className="space-y-7">
-      <motion.div
-        initial={{ opacity: 0, y: 14 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.4 }}
-        className="rounded-3xl border border-slate-200 bg-white p-7 md:p-9"
-      >
-        <div className="grid gap-7 md:grid-cols-[1fr_0.95fr] md:items-start">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Why SPHERE</p>
-            <h2 className="mt-2 text-3xl font-semibold leading-tight text-slate-900 md:text-4xl">
-              One platform to design, analyze, and deliver pricings
-            </h2>
-          </div>
-          <div className="space-y-2.5">
-            {bullets.map((bullet) => (
-              <div key={bullet} className="flex items-start gap-2.5 text-md text-slate-600">
-                <span className="mt-0.5 shrink-0 text-sphere-primary-600">
-                  <FiCheckCircle />
-                </span>
-                <span>{bullet}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </motion.div>
+    <section className="space-y-4">
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Tools</p>
+        <h2 className="mt-2 text-3xl font-semibold leading-tight text-slate-900 md:text-4xl">
+          SPHERE pricing tools ecosystem
+        </h2>
+      </div>
 
       <motion.div
         initial={{ opacity: 0, y: 14 }}
@@ -210,7 +181,9 @@ export default function ValueHighlightsSection() {
                     src={card.logo}
                     alt={`${card.title} logo`}
                     className="h-full w-full object-contain p-2"
-                    onError={() => setLogoErrors((prev) => ({ ...prev, [card.title]: true }))}
+                    onError={(event) => {
+                      event.currentTarget.style.display = 'none';
+                    }}
                   />
                 )}
               </div>
