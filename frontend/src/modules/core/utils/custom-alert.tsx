@@ -1,7 +1,5 @@
 import { useState } from 'react';
-import { Modal, Paper } from '@mui/material';
 import { createRoot } from 'react-dom/client';
-import { flex } from '../theme/css';
 
 const Alert = ({ message, onClose }: { message: string, onClose: () => void }): JSX.Element => {
   const [show, setShow] = useState(true);
@@ -12,27 +10,20 @@ const Alert = ({ message, onClose }: { message: string, onClose: () => void }): 
   };
 
   return (
-    <Modal open={show} onClose={handleClose}>
-      <Paper
-        elevation={3}
-        sx={{
-          maxWidth: 600,
-          width: '90dvw',
-          maxHeight: 400,
-          mx: 'auto',
-          mt: 4,
-          p: 4,
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translateX(-50%) translateY(-50%)',
-          borderRadius: '20px',
-          ...flex({ direction: 'column' }),
-        }}
+    <div
+      className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/35 px-4"
+      onClick={handleClose}
+      role="presentation"
+    >
+      <div
+        className="mt-4 flex w-[90dvw] max-w-[600px] flex-col rounded-[20px] bg-white p-4 shadow-lg"
+        onClick={(event) => event.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
       >
-        <h3 style={{ textAlign: 'center' }}>{message}</h3>
-      </Paper>
-    </Modal>
+        <h3 className="text-center">{message}</h3>
+      </div>
+    </div>
   );
 };
 

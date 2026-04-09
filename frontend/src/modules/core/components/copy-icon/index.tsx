@@ -1,5 +1,4 @@
-import { Box, Button, InputBase, SvgIcon } from '@mui/material';
-import { grey, primary, success } from '../../theme/palette';
+import { grey } from '../../theme/palette';
 import { useState } from 'react';
 
 export default function CopyToClipboardIcon({ value }: { value: string }) {
@@ -16,44 +15,20 @@ export default function CopyToClipboardIcon({ value }: { value: string }) {
   };
 
   return (
-    <Box
-      display="flex"
-      border={1}
-      borderRadius="5px 5px 5px 5px"
-      borderColor={linkCopied ? success.light : primary[800]}
-      width="100%"
-      overflow="hidden"
+    <div
+      className={`flex w-full overflow-hidden rounded-[5px] border ${linkCopied ? 'border-[#5BE49B]' : 'border-sphere-primary-800'}`}
     >
-      <InputBase
+      <input
         value={value}
         readOnly
-        sx={{
-          py: 0,
-          pl: 2,
-          pr: 0,
-          borderRadius: '4px 0 0 4px',
-          flexGrow: '1'
-        }}
+        className="grow rounded-l-[4px] py-0 pl-2 pr-0 outline-none"
       />
-      <Button
+      <button
         onClick={handleCopy}
-        sx={{
-          py: 1,
-          width: '40px',
-          height: '40px',
-          minWidth: 0,
-          backgroundColor: linkCopied ? success.light : primary[800],
-          color: 'white',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          borderRadius: '0 4px 4px 0',
-          '&:hover': {
-            backgroundColor: 'green.400',
-          },
-        }}
+        type="button"
+        className={`flex h-10 w-10 min-w-0 items-center justify-center rounded-r-[4px] py-1 text-white ${linkCopied ? 'bg-[#5BE49B]' : 'bg-sphere-primary-800'}`}
       >
-        <SvgIcon viewBox="0 0 24 24" fontSize="small">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
           <rect fill="none"></rect>
           <rect
             x="4"
@@ -74,8 +49,8 @@ export default function CopyToClipboardIcon({ value }: { value: string }) {
             strokeLinejoin="round"
             strokeDasharray="2 2"
           ></path>
-        </SvgIcon>
-      </Button>
-    </Box>
+        </svg>
+      </button>
+    </div>
   );
 }

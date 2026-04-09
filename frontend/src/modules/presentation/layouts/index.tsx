@@ -1,4 +1,3 @@
-import { Box } from "@mui/material";
 import Header from "./header";
 import Main from "./main";
 import Footer from "./components/footer";
@@ -42,12 +41,12 @@ export default function PresentationLayout({children}: {children?: React.ReactNo
       };
     
     return (
-        <Box component="div" sx={{display: "grid", minHeight: "100dvh", gridTemplateRows: "auto 1fr"}}>
+      <div className="grid min-h-dvh grid-rows-[auto_1fr]">
             <Header setUploadModalOpen={setUploadModalOpen}/>
             <Main>{children}</Main>
             <Footer/>
             <ImportPricingModal modalState={uploadModalOpen} handleClose={handleCloseUploadModal} onSubmit={handleUploadSubmit}/>
             <Alerts messages={errors}/>
-        </Box>
+      </div>
     );
 }

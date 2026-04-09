@@ -1,27 +1,42 @@
 import PropTypes, { InferProps } from "prop-types";
 import { forwardRef } from "react";
 
-import Link from "@mui/material/Link";
 import RouterLink from "../../components/router-link";
 import { ReactSVG } from "react-svg";
 
 type LogoProps = {
   disabledLink?: boolean;
-  sx?: object;
+  sx?: string;
+  fill?: string;
 };
 
 const ShortLogo = forwardRef(
-  ({ disabledLink = false, sx, ...other }: InferProps<LogoProps>) => {
+  ({ disabledLink = false, sx, fill, ...other }: InferProps<LogoProps>) => {
     const logo = (
       <ReactSVG
         src="../../../../assets/logo/SPHERE-logo-short.svg"
         useRequestCache={true}
-        style={{
-          width: 75,
-          height: "80%",
-          cursor: "pointer",
-          margin: "0 !important",
-          ...sx,
+        className={`m-0 h-[80%] w-[75px] cursor-pointer ${sx ?? ''}`}
+        beforeInjection={(svg) => {
+          if (!fill) return;
+
+          svg.setAttribute('fill', fill);
+          svg.style.fill = fill;
+
+          const withFill = svg.querySelectorAll<SVGElement>('[fill]');
+          withFill.forEach((el) => {
+            if (el.getAttribute('fill') !== 'none') {
+              el.setAttribute('fill', fill);
+            }
+          });
+
+          const shapes = svg.querySelectorAll<SVGElement>('path, circle, rect, polygon, ellipse, line, polyline, g');
+          shapes.forEach((el) => {
+            const currentFill = el.getAttribute('fill');
+            if (currentFill !== 'none' && (!currentFill || currentFill === 'currentColor')) {
+              el.setAttribute('fill', fill);
+            }
+          });
         }}
         {...other}
       />
@@ -32,16 +47,17 @@ const ShortLogo = forwardRef(
     }
 
     return (
-      <Link component={RouterLink} href="/" sx={{ display: "contents" }}>
+      <RouterLink href="/" className="contents">
         {logo}
-      </Link>
+      </RouterLink>
     );
   }
 );
 
 ShortLogo.propTypes = {
   disabledLink: PropTypes.bool,
-  sx: PropTypes.object,
+  sx: PropTypes.string,
+  fill: PropTypes.string,
 };
 
 export default ShortLogo;

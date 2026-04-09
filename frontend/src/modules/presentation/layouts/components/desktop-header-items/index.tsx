@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react';
-import { alpha, Box, Stack } from '@mui/material';
 import { StyledButton } from '../styled-button';
 import { HeaderRoute } from '../../router/header-routes';
 import { useMode } from '../../../../core/hooks/useTheme';
-import { grey, primary } from '../../../../core/theme/palette';
 import { RiArrowDropDownFill } from 'react-icons/ri';
 import { useRouter } from '../../../../core/hooks/useRouter';
 
@@ -54,17 +52,14 @@ export default function DesktopHeaderItems({ headerRoutes }: { headerRoutes: Hea
   useEffect(() => {}, [openedMenuItemChildren]);
 
   return (
-    <>
-      <Stack
-        direction="row"
-        spacing={2}
-        sx={{ flexGrow: 1, ml: 2, display: 'flex', justifyContent: 'flex-start' }}
-        role="nav"
-        aria-label="Main navigation"
-      >
+    <div
+      className="ml-2 hidden flex-grow justify-start gap-2 md:flex"
+      role="nav"
+      aria-label="Main navigation"
+    >
         {headerRoutes.map((item, index) => (
-          <Box
-            sx={{ position: 'relative' }}
+          <div
+            className="relative"
             key={index}
             onMouseEnter={item.children ? handleMenuItemChildrenEnter : () => {}}
             onMouseLeave={item.children ? handleMenuItemChildrenLeave : () => {}}
@@ -74,34 +69,20 @@ export default function DesktopHeaderItems({ headerRoutes }: { headerRoutes: Hea
               tabIndex={0}
               mode={mode}
               onClick={() => item.to ? router.push(item.to) : {}}
-              sx={{cursor: 'pointer', color: primary[700]}}
+              className="inline-flex cursor-pointer items-center gap-1 text-sphere-primary-700"
             >
               {item.name}
               {item.children && (
                 <RiArrowDropDownFill
-                  fill={primary[700]}
+                  className="text-sphere-primary-700"
                   size="20px"
                   aria-label={item.name}
                 />
               )}
             </StyledButton>
             {item.children && (
-              <Box
-                sx={{
-                  position: 'absolute',
-                  top: '100%',
-                  left: '0',
-                  opacity: openedMenuItemChildren[item.name] ? 1 : 0,
-                  maxHeight: openedMenuItemChildren[item.name] ? '2000px' : 0,
-                  transition: 'all .5s ease',
-                  overflow: 'hidden',
-                  backgroundColor: grey[200],
-                  borderRadius: '5px',
-                  padding: openedMenuItemChildren[item.name] ? '10px' : 0,
-                  width: openedMenuItemChildren[item.name] ? '200px' : 0,
-                  boxShadow: '0px 2px 10px rgba(0, 0, 0, 0.2)',
-                  pointerEvents: openedMenuItemChildren[item.name] ? 'auto' : 'none',
-                }}
+              <div
+                className={`absolute left-0 top-full overflow-hidden rounded-[5px] bg-sphere-grey-200 shadow-[0px_2px_10px_rgba(0,0,0,0.2)] transition-all duration-500 ${openedMenuItemChildren[item.name] ? 'pointer-events-auto w-[200px] max-h-[2000px] p-[10px] opacity-100' : 'pointer-events-none w-0 max-h-0 p-0 opacity-0'}`}
               >
                 {item.children.map((childItem, childIndex) => (
                   <StyledButton
@@ -110,24 +91,15 @@ export default function DesktopHeaderItems({ headerRoutes }: { headerRoutes: Hea
                     tabIndex={0}
                     mode={mode}
                     onClick={() => childItem.to ? router.push(childItem.to) : {}}
-                    sx={{
-                      width: '100%',
-                      backgroundColor: 'transparent',
-                      color: primary[700],
-                      '&:hover': {
-                        backgroundColor: alpha(primary[100], 0.8),
-                        color: primary[800],
-                      },
-                    }}
+                    className="flex w-full items-center justify-center bg-transparent text-center text-sphere-primary-700 hover:bg-[rgba(202,240,248,0.8)] hover:text-sphere-primary-800"
                   >
                     {childItem.name}
                   </StyledButton>
                 ))}
-              </Box>
+              </div>
             )}
-          </Box>
+          </div>
         ))}
-      </Stack>
-    </>
+    </div>
   );
 }

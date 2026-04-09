@@ -1,13 +1,11 @@
-import { Skeleton } from '@mui/material';
-
 function PricingVersionLoader() {
   return (
-    <>
-      <Skeleton width={1000} height={70} />
-      <Skeleton width={1000} height={70} />
-      <Skeleton width={1000} height={70} />
-      <Skeleton width={1000} height={70} />
-    </>
+    <div className="space-y-3">
+      <div className="h-[70px] w-full animate-pulse rounded-md bg-slate-200" />
+      <div className="h-[70px] w-full animate-pulse rounded-md bg-slate-200" />
+      <div className="h-[70px] w-full animate-pulse rounded-md bg-slate-200" />
+      <div className="h-[70px] w-full animate-pulse rounded-md bg-slate-200" />
+    </div>
   );
 }
 

@@ -1,4 +1,3 @@
-import { Box } from '@mui/material';
 import ProfileSidebar from '../../components/sidebar';
 import CollectionSection from '../../components/collection-section';
 import PricingSection from '../../components/pricing-section';
@@ -12,19 +11,14 @@ export default function MyPricingsPage() {
   const [renderFlag, setRenderFlag] = useState(false);
 
   return (
-    <Box sx={{ display: 'flex', height: '100%', width: '95vw', maxWidth: '1300px' }}>
+    <div className="flex h-full w-[95vw] max-w-[1300px]">
       {/* SIDEBAR */}
-      <Box
-        sx={{
-          width: SIDEBAR_WIDTH + 100,
-          borderRight: '1px solid #ddd',
-        }}
-      >
+      <div className="w-[500px] border-r border-[#ddd]">
         <ProfileSidebar sidebarWidth={SIDEBAR_WIDTH} />
-      </Box>
+      </div>
 
       {/* MAIN CONTENT */}
-      <Box sx={{ flexGrow: 1, p: 2 }}>
+      <div className="flex-grow p-2">
         {/* Collections */}
         <CollectionSection
           addPricingToCollectionModalOpen={addPricingToCollectionModalOpen}
@@ -39,7 +33,7 @@ export default function MyPricingsPage() {
           setPricingToAdd={setPricingToAdd}
           renderFlag={renderFlag}
         />
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 }

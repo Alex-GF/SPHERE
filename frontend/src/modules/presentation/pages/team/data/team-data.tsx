@@ -1,5 +1,3 @@
-import {Chip} from '@mui/material';
-
 import AlejandroGarcia from "./profile-pictures/alejandro-garcia.png";
 import FranciscoJavierCavero from "./profile-pictures/francisco-javier-cavero.jpeg";
 import JoseAntonioParejo from "./profile-pictures/jose-antonio-parejo.png";
@@ -45,12 +43,9 @@ function getAffiliation(affiliation: string) {
         return <></>;
     }else{
         return (
-            <Chip
-              label={aff.name}
-              variant="outlined"
-              size="small"
-              sx={{ mt: 1, backgroundColor: aff.color, color: 'white'}}
-            />
+                        <span className="mt-1 inline-flex rounded-full bg-[#892935] px-3 py-1 text-xs text-white">
+                            {aff.name}
+                        </span>
         );
     }
 }

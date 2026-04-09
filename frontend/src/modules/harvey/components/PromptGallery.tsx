@@ -1,6 +1,3 @@
-import { Box, Typography, Card, CardContent, CardActionArea } from '@mui/material';
-import { grey, primary } from '../../core/theme/palette';
-
 import type { PromptPreset } from '../types/types';
 
 interface Props {
@@ -15,63 +12,32 @@ function PromptGallery({ presets, onSelect, disabled = false }: Props) {
   }
 
   return (
-    <Box sx={{ mb: 3 }}>
-      <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
-        Prompt presets
-      </Typography>
-      <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 2 }}>
+    <div className="mb-3">
+      <h2 className="mb-2 text-lg font-semibold">Prompt presets</h2>
+      <div className="grid gap-3 md:grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
         {presets.map((preset) => (
-          <Card
+          <button
+            type="button"
             key={preset.id}
-            sx={{
-              '&:hover': {
-                boxShadow: 3,
-                borderColor: primary[500]
-              }
-            }}
+            className="rounded-xl border border-slate-200 bg-white p-0 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-sky-500 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60"
+            onClick={() => onSelect(preset)}
+            disabled={disabled}
+            title={preset.description}
           >
-            <CardActionArea
-              onClick={() => onSelect(preset)}
-              disabled={disabled}
-              title={preset.description}
-              sx={{ height: '100%' }}
-            >
-              <CardContent>
-                <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-start' }}>
-                  <Box
-                    sx={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: '50%',
-                      backgroundColor: primary[500],
-                      color: 'white',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontWeight: 600,
-                      flexShrink: 0
-                    }}
-                  >
-                    {preset.label.charAt(0).toUpperCase()}
-                  </Box>
-                  <Box sx={{ flex: 1 }}>
-                    <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 0.5 }}>
-                      {preset.label}
-                    </Typography>
-                    <Typography variant="body2" sx={{ color: grey[600] }}>
-                      {preset.description}
-                    </Typography>
-                  </Box>
-                  <Typography sx={{ color: grey[500], fontSize: '1.5rem' }}>
-                    ↗
-                  </Typography>
-                </Box>
-              </CardContent>
-            </CardActionArea>
-          </Card>
+            <div className="flex h-full gap-3 p-4">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-sky-600 font-semibold text-white">
+                {preset.label.charAt(0).toUpperCase()}
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="font-semibold">{preset.label}</div>
+                <div className="text-sm text-slate-600">{preset.description}</div>
+              </div>
+              <div className="text-2xl text-slate-400">↗</div>
+            </div>
+          </button>
         ))}
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 }
 

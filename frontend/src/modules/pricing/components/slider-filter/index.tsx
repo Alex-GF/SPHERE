@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Box, Slider, Typography } from '@mui/material';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { grey, primary } from '../../../core/theme/palette';
 
@@ -18,7 +17,6 @@ export default function SliderFilter({
 }) {
   const [marks, setMarks] = useState(data.map(d => d.value));
   const [range, setRange] = useState<number[]>([0, max]);
-  const [activeThumb, setActiveThumb] = useState<number>(0); // Tracks the active thump (0 = left, 1 = right)
 
   const calculateInterval = () => {
     const selectedMarks = marks.filter(value => {
@@ -34,24 +32,21 @@ export default function SliderFilter({
     return `${lowerLimit} — ${upperLimit}`;
   };
 
-  const handleSliderChange = (event: Event, newValue: number | number[], thumbIndex: number) => {
-    let [start, end] = newValue as number[];
-
-    // Ajustar el rango a las marcas más cercanas
-    const nearestStart = marks.reduce((prev, curr) =>
-      Math.abs(parseFloat(curr.replace('+', '')) - start) < Math.abs(parseFloat(prev.replace('+', '')) - start)
-        ? curr
-        : prev
+  const getNearestMark = (value: number) => {
+    return marks.reduce((previous, current) =>
+      Math.abs(parseFloat(current.replace('+', '')) - value) < Math.abs(parseFloat(previous.replace('+', '')) - value)
+        ? current
+        : previous
     );
-    let nearestEnd: string | undefined = marks.reduce((prev, curr) =>
-      Math.abs(parseFloat(curr.replace('+', '')) - end) < Math.abs(parseFloat(prev.replace('+', '')) - end)
-        ? curr
-        : prev
-    );
+  };
 
-    onChange([parseFloat(nearestStart.replace('+', '')), undefined]);
-    setRange([parseFloat(nearestStart.replace('+', '')), parseFloat(nearestEnd.replace('+', ''))]);
-    setActiveThumb(thumbIndex);
+  const handleRangeChange = (side: 'start' | 'end', value: number) => {
+    const nearestValue = parseFloat(getNearestMark(value).replace('+', ''));
+
+    const nextRange: number[] = side === 'start' ? [nearestValue, Math.max(nearestValue, range[1])] : [Math.min(range[0], nearestValue), nearestValue];
+
+    setRange(nextRange);
+    onChange(nextRange);
   };
 
   useEffect(() => {
@@ -60,71 +55,53 @@ export default function SliderFilter({
   }, [data])
 
   return (
-    <Box sx={{ width: '100%', padding: '16px', maxWidth: '500px', margin: 'auto' }}>
-      {/* Título */}
-      <Typography variant="h6" gutterBottom>
+    <div className="mx-auto w-full max-w-[500px] p-4">
+      <h3 className="mb-2 text-xl font-semibold">
         {label}
-      </Typography>
+      </h3>
 
-      {/* Histograma */}
       <ResponsiveContainer width="100%" height={100}>
         <BarChart data={data}>
           <XAxis dataKey="value" hide />
           <YAxis hide />
           <Tooltip 
-          labelFormatter={(value: string) => `[${value}]`}
+            labelFormatter={(value: string) => `[${value}]`}
             formatter={(value: string) => `${value} pricings`}
-            itemStyle={{color: grey[900]}}
           />
           <Bar dataKey="count" fill={grey[400]} />
         </BarChart>
       </ResponsiveContainer>
 
-      {/* Intervalo */}
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-        <Typography variant="body2" sx={{
-          fontSize: '15px',
-          fontWeight: "bold",
-        }}>{calculateInterval()}</Typography>
-      </Box>
+      <div className="mt-2 flex justify-center">
+        <p className="text-[15px] font-bold">{calculateInterval()}</p>
+      </div>
 
-      {/* Slider */}
-      <Slider
-        value={range}
-        onChange={handleSliderChange}
-        min={0}
-        max={marks.length > 0 ? parseFloat(marks[marks.length - 1].replace('+', '')) : max}
-        step={null} // No pasos intermedios
-        marks={marks.map(value => ({
-          value: parseFloat(value.replace('+', ''))
-        }))}
-        valueLabelDisplay="off"
-        valueLabelFormat={value => {
-            if (activeThumb === 0) {
-              // Tooltip min
-              return marks.find(mark => parseFloat(mark.replace('+', '')) === value)?.split('-')[0] || `${value}`;
-            } else if (activeThumb === 1) {
-              // Tooltip max
-              return marks.find(mark => parseFloat(mark.replace('+', '')) === value)?.split('-')[1] || `${value}`;
-            }
-            return `${value}`; // Fallback
-        }
-        }
-        sx={{
-          mt: 2,
-          color: primary[500],
-          '& .MuiSlider-thumb': {
-            backgroundColor: primary[500],
-          },
-          '& .MuiSlider-track': {
-            backgroundColor: primary[500],
-          },
-          '& .MuiSlider-rail': {
-            opacity: 0.5,
-            backgroundColor: primary[500],
-          },
-        }}
-      />
-    </Box>
+      <div className="mt-4 flex flex-col gap-3">
+        <label className="text-sm font-medium text-slate-700">
+          Min
+          <input
+            type="range"
+            min={0}
+            max={marks.length > 0 ? parseFloat(marks[marks.length - 1].replace('+', '')) : max}
+            step={1}
+            value={range[0]}
+            onChange={e => handleRangeChange('start', Number(e.target.value))}
+            className="mt-2 w-full accent-sphere-primary-500"
+          />
+        </label>
+        <label className="text-sm font-medium text-slate-700">
+          Max
+          <input
+            type="range"
+            min={0}
+            max={marks.length > 0 ? parseFloat(marks[marks.length - 1].replace('+', '')) : max}
+            step={1}
+            value={range[1]}
+            onChange={e => handleRangeChange('end', Number(e.target.value))}
+            className="mt-2 w-full accent-sphere-primary-500"
+          />
+        </label>
+      </div>
+    </div>
   );
 }

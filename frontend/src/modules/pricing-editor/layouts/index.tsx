@@ -1,4 +1,3 @@
-import { Box, Modal, Paper, Tab, Tabs, Typography } from '@mui/material';
 import Header from './header';
 import Main from './main';
 import { useState } from 'react';
@@ -6,7 +5,6 @@ import { createUrlWithEncodedYaml, parseStringYamlToEncodedYaml } from '../servi
 import CopyToClipboardIcon from '../../core/components/copy-icon';
 import { EditorValueContext } from '../contexts/editorValueContext';
 import FileUpload from '../../core/components/file-upload-input';
-import { flex } from '../../core/theme/css';
 import customAlert from '../../core/utils/custom-alert';
 import { useCacheApi } from '../components/pricing-renderer/api/cacheApi';
 import { v4 as uuidv4 } from 'uuid';
@@ -73,108 +71,69 @@ export default function EditorLayout({ children }: { children?: React.ReactNode 
 
   return (
     <EditorValueContext.Provider value={{ editorValue, setEditorValue }}>
-      <Box
-        component="div"
-        sx={{ display: 'grid', minHeight: '100dvh', gridTemplateRows: 'auto 1fr' }}
-      >
+      <div className="grid min-h-dvh grid-rows-[auto_1fr]">
         <Header renderSharedLink={renderSharedLink} renderYamlImport={renderYamlImport} />
         <Main>{children}</Main>
-      </Box>
-      <Modal
-        open={sharedLinkModalOpen}
-        onClose={handleSharedLinkClose}
-        aria-labelledby="modal-shared-link-title"
-        aria-describedby="modal-shared-link-description"
-      >
-        <Paper
-          elevation={3}
-          sx={{
-            maxWidth: 600,
-            width: '90vw',
-            mx: 'auto',
-            mt: 4,
-            p: 4,
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translateX(-50%) translateY(-50%)',
-            borderRadius: '20px',
-          }}
-        >
-          <Typography
-            variant="h6"
-            component="h2"
-            gutterBottom
-            sx={{
-              textAlign: 'center',
-              fontWeight: 'bold',
-            }}
-          >
-            Your pricing is a step away from the world
-          </Typography>
-          <Typography sx={{ mt: 2, mb: 3, textAlign: 'center' }}>
-            Share this link to allow other users to see and edit their own version of your pricing
-          </Typography>
+      </div>
+      {sharedLinkModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" role="dialog" aria-modal="true" onClick={handleSharedLinkClose}>
+          <div className="w-full max-w-[600px] rounded-3xl bg-white px-8 pb-7 pt-8 shadow-[0_22px_60px_rgba(15,23,42,0.35)]" onClick={(e) => e.stopPropagation()}>
+            <h2 className="text-center text-[20px] font-extrabold leading-tight text-slate-800">
+              Your pricing is a step away from the world
+            </h2>
 
-          <Box sx={{ ...flex({justify: "center"}), mb: 2 }}>
-            <Tabs value={tabValue} onChange={(_, v) => setTabValue(v)}>
-              <Tab label="Short encoding" />
-              <Tab label="Full encoding" />
-            </Tabs>
-          </Box>
+            <p className="mb-10 mt-5 text-center text-[16px] leading-snug text-slate-700">
+              Share this link to allow other users to see and edit their own version of your pricing
+            </p>
 
-          {
-            tabValue === 1 ? (
-              <Typography
-                variant="body2"
-                color="error"
-                sx={{ textAlign: 'center', mb: 2 }}
+            <div className="mb-7 flex justify-center gap-8">
+              <button
+                type="button"
+                onClick={() => setTabValue(0)}
+                className={`border-b-2 px-1 pb-2 text-[15px] uppercase tracking-wide transition ${
+                  tabValue === 0
+                    ? 'border-sky-500 text-sky-500'
+                    : 'border-transparent text-slate-500 hover:text-slate-700'
+                }`}
               >
+                Short encoding
+              </button>
+              <button
+                type="button"
+                onClick={() => setTabValue(1)}
+                className={`border-b-2 px-1 pb-2 text-[15px] uppercase tracking-wide transition ${
+                  tabValue === 1
+                    ? 'border-sky-500 text-sky-500'
+                    : 'border-transparent text-slate-500 hover:text-slate-700'
+                }`}
+              >
+                Full encoding
+              </button>
+            </div>
+
+            {tabValue === 1 ? (
+              <p className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-center text-sm text-amber-900">
                 <strong>WARNING:</strong> If the YAML is too large, the URL might not be processed correctly.
-              </Typography>
-            )
-            :
-            (
-              <Typography
-                variant="body2"
-                color="info"
-                sx={{ textAlign: 'center', mb: 2 }}
-              >
+              </p>
+            ) : (
+              <p className="mb-4 rounded-lg border border-sky-200 bg-sky-50 px-3 py-2 text-center text-sm text-sky-900">
                 <strong>INFO:</strong> The generated URL will only be available for 24h.
-              </Typography>
-            )
-          }
+              </p>
+            )}
 
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <CopyToClipboardIcon value={handleCopyToClipboard()} />
-          </Box>
-        </Paper>
-      </Modal>
-      <Modal
-        open={importModalOpen}
-        onClose={handleYamlImportClose}
-        aria-labelledby="modal-import-title"
-        aria-describedby="modal-import-description"
-      >
-        <Paper
-          elevation={3}
-          sx={{
-            maxWidth: 500,
-            width: '90dvw',
-            mx: 'auto',
-            mt: 4,
-            p: 4,
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translateX(-50%) translateY(-50%)',
-            borderRadius: '20px',
-            ...flex({ direction: 'column' }),
-          }}
-        >
-          <FileUpload onSubmit={onSubmitImport} />
-        </Paper>
-      </Modal>
+            <div className="mt-3 flex items-center">
+              <CopyToClipboardIcon value={handleCopyToClipboard()} />
+            </div>
+          </div>
+        </div>
+      )}
+      {importModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" role="dialog" aria-modal="true" onClick={handleYamlImportClose}>
+          <div className="w-full max-w-xl rounded-3xl bg-white p-6 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <FileUpload onSubmit={onSubmitImport} />
+          </div>
+        </div>
+      )}
     </EditorValueContext.Provider>
   );
 }

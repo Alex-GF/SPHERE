@@ -1,9 +1,6 @@
-import { Box, styled } from '@mui/material';
 import { Helmet } from 'react-helmet';
 import { useEffect, useState } from 'react';
 import SearchBar from '../../components/search-bar';
-import { flex } from '../../../core/theme/css';
-import { grey } from '../../../core/theme/palette';
 import { usePricingCollectionsApi } from '../../../profile/api/pricingCollectionsApi';
 import CollectionListCard from '../../components/collection-list-card';
 import { CollectionEntry } from '../../../profile/types/profile-types';
@@ -11,16 +8,6 @@ import CollectionFilters from '../../components/collection-filters';
 import PricingsPagination from '../../components/pricings-pagination';
 import PricingsListContainer from '../../components/pricings-list-container';
 import { v4 as uuidv4 } from 'uuid';
-
-export const PricingsGrid = styled(Box)(() => ({
-  display: 'flex',
-  flexWrap: 'wrap',
-  width: '100%',
-  justifyContent: 'space-evenly',
-  gap: '3rem',
-  marginTop: '50px',
-  padding: '0 10px',
-}));
 
 export type PricingEntry = {
   name: string;
@@ -103,27 +90,9 @@ export default function CollectionsListPage() {
       <Helmet>
         <title> SPHERE - Collections </title>
       </Helmet>
-      <Box
-        sx={{
-          ...flex({}),
-          width: '100vw',
-          maxWidth: '2000px',
-          height: '100%',
-        }}
-      >
-        <Box
-          component="div"
-          sx={{
-            ...flex({ direction: 'column', justify: 'start' }),
-            maxWidth: '600px',
-            height: '100%',
-            margin: 'auto',
-            backgroundColor: grey[200],
-            borderRight: '1px solid',
-            borderRightColor: grey[300],
-          }}
-        >
-          <Box component="div" width="20vw"></Box>
+      <div className="flex h-full w-screen max-w-[2000px]">
+        <div className="mx-auto flex h-full w-full max-w-[600px] flex-col justify-start border-r border-slate-300 bg-slate-100">
+          <div className="w-[20vw]" />
           {filterLimits && collectionsList.length > 0 && (
             <CollectionFilters
               receivedOwners={collectionsList.reduce((acc, collection) => {
@@ -134,26 +103,19 @@ export default function CollectionsListPage() {
               setFilterValues={setFilterValues}
             />
           )}
-        </Box>
-        <Box
-          component="div"
-          sx={{
-            ...flex({ direction: 'column' }),
-            marginTop: '50px',
-            flexGrow: 1,
-          }}
-        >
+        </div>
+        <div className="mt-[50px] flex grow flex-col">
           <SearchBar setTextFilterValue={setTextFilterValue} />
           <PricingsListContainer>
-            <PricingsGrid sx={{ marginBottom: '50px' }}>
+            <div className="mt-[50px] mb-[50px] flex w-full flex-wrap justify-evenly gap-12 px-2.5">
               {collectionsList.length > 0 ? (
                 Object.values(collectionsList).map(collection => (
                   <CollectionListCard key={uuidv4()} collection={collection} />
                 ))
               ) : (
-                <Box>No collections found</Box>
+                <div>No collections found</div>
               )}
-            </PricingsGrid>
+            </div>
 
             <PricingsPagination
               limit={limit}
@@ -165,8 +127,8 @@ export default function CollectionsListPage() {
               }}
             />
           </PricingsListContainer>
-        </Box>
-      </Box>
+        </div>
+      </div>
     </>
   );
 }

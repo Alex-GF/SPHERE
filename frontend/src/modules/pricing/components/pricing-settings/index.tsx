@@ -1,4 +1,3 @@
-import { Box, Button, Stack, styled, Typography } from '@mui/material';
 import { AnalyticsDataEntry } from '../../../../assets/data/analytics';
 import { useEffect, useState } from 'react';
 import VisibilityOptions from '../visibility-options';
@@ -7,24 +6,13 @@ import customAlert from '../../../core/utils/custom-alert';
 import { usePricingsApi } from '../../api/pricingsApi';
 import { useRouter } from '../../../core/hooks/useRouter';
 
-export const SettingsPage = styled(Box)({
-  display: 'flex',
-  flexDirection: 'column',
-  padding: '20px',
-  width: '100%',
-  height: '100dvh',
-  overflow: 'auto',
-});
+export function SettingsPage({ children }: { children: React.ReactNode }) {
+  return <div className="flex h-dvh w-full flex-col overflow-auto p-5">{children}</div>;
+}
 
-export const DangerZone = styled(Box)({
-  display: 'flex',
-  flexDirection: 'column',
-  padding: '20px',
-  width: '75%',
-  borderRadius: '15px',
-  border: '1px solid red',
-  margin: '20px 0',
-});
+export function DangerZone({ children }: { children: React.ReactNode }) {
+  return <div className="my-5 flex w-3/4 flex-col rounded-[15px] border border-red-500 p-5">{children}</div>;
+}
 
 export default function PricingSettings({
   pricingName,
@@ -84,43 +72,34 @@ export default function PricingSettings({
 
   return (
     <SettingsPage>
-      <Typography variant="h5" fontWeight="bold" marginBottom={3}>
+      <h2 className="mb-3 text-2xl font-bold">
         Visibility
-      </Typography>
-      <Box paddingLeft={5}>
+      </h2>
+      <div className="pl-5">
         <VisibilityOptions value={visibility} onChange={handleVisibilityChange} />
-      </Box>
-      <Typography variant="h5" fontWeight="bold" marginTop={3}>
+      </div>
+      <h2 className="mt-3 text-2xl font-bold">
         Danger zone
-      </Typography>
-      <DangerZone>
-        <Box
-          sx={{
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: 2,
-          }}
-        >
-          <Stack spacing={2} direction={'column'}>
-            <Typography variant="h6" fontWeight="bold" marginBottom={2}>
+      </h2>
+      <div className="my-5 flex w-3/4 flex-col rounded-[15px] border border-red-500 p-5">
+        <div className="mb-2 flex w-full items-center justify-between">
+          <div className="flex flex-col gap-2">
+            <h3 className="mb-2 text-xl font-bold">
               Delete this pricing
-            </Typography>
-            <Typography variant="body1" marginBottom={2}>
+            </h3>
+            <p className="mb-2 text-base">
               Once you delete a pricing, there is no going back. Please be certain.
-            </Typography>
-          </Stack>
-          <Button
-            variant="outlined"
-            color="error"
+            </p>
+          </div>
+          <button
+            type="button"
             onClick={handleDeletePricing}
-            sx={{ fontWeight: 'bold', '&:hover': { backgroundColor: 'red', color: 'white' } }}
+            className="rounded-md border border-red-500 px-4 py-2 font-bold text-red-500 hover:bg-red-500 hover:text-white"
           >
             Delete pricing
-          </Button>
-        </Box>
-      </DangerZone>
+          </button>
+        </div>
+      </div>
     </SettingsPage>
   );
 }

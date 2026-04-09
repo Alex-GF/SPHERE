@@ -1,20 +1,7 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import { RichTreeView } from '@mui/x-tree-view/RichTreeView';
-import { useTreeItem2 } from '@mui/x-tree-view/useTreeItem2';
-import {
-  TreeItem2Content,
-  TreeItem2Root,
-  TreeItem2Props,
-  TreeItem2GroupTransition,
-  TreeItem2IconContainer,
-  TreeItem2Label,
-} from '@mui/x-tree-view/TreeItem2';
-import { TreeItem2Icon } from '@mui/x-tree-view/TreeItem2Icon';
-import { TreeItem2Provider } from '@mui/x-tree-view/TreeItem2Provider';
-import { TreeViewBaseItem } from '@mui/x-tree-view/models';
 import { AnalyticsDataEntry } from '../../../../assets/data/analytics';
+import { AnimatePresence, motion } from 'framer-motion';
+import { FiChevronDown, FiChevronRight } from 'react-icons/fi';
 
 type TreeItemType = {
   id: string;
@@ -23,183 +10,234 @@ type TreeItemType = {
   children?: TreeItemType[];
 };
 
-let MUI_X_PRODUCTS: TreeViewBaseItem<TreeItemType>[] = [
+const BASE_TREE: TreeItemType[] = [
   {
     id: 'pricing',
     label: 'Pricing',
     children: [
-        { id: 'plans', label: 'Plans', value: 10, children: [
-            { id: 'free', label: 'Free', value: 5 },
-            { id: 'paid', label: 'Paid', value: 5 },
-        ] },
-        { id: 'features', label: 'Features', value: 30,
+      {
+        id: 'plans',
+        label: 'Plans',
+        value: 10,
+        children: [
+          { id: 'free', label: 'Free', value: 5 },
+          { id: 'paid', label: 'Paid', value: 5 },
+        ],
+      },
+      {
+        id: 'features',
+        label: 'Features',
+        value: 30,
+        children: [
+          {
+            id: 'automation',
+            label: 'Automation',
+            value: 5,
             children: [
-                { id: 'automation', label: 'Automation', value: 5,
-                    children: [
-                        { id: 'bot', label: 'Bot', value: 2 },
-                        { id: 'filtering', label: 'Filtering', value: 3 },
-                        { id: 'tracking', label: 'Tracking', value: 0 },
-                        { id: 'taskAutomation', label: 'Task Automation', value: 0 },
-                    ]
-                },
-                { id: 'domain', label: 'Domain', value: 5 },
-                { id: 'guarantee', label: 'Guarantee', value: 1 },
-                { id: 'information', label: 'Information', value: 4 },
-                { id: 'integration', label: 'Integration', value: 5,
-                    children: [
-                        { id: 'api', label: 'API', value: 3 },
-                        { id: 'extension', label: 'Extension', value: 1 },
-                        { id: 'identityProvider', label: 'Identity Provider', value: 0 },
-                        { id: 'webSaas', label: 'Web SaaS', value: 1 },
-                        { id: 'marketplace', label: 'Marketplace', value: 0 },
-                        { id: 'externalDevice', label: 'External Device', value: 0 },
-                    ]
-                },
-                { id: 'management', label: 'Management', value: 0 },
-                { id: 'support', label: 'Support', value: 5 },
-                { id: 'payment', label: 'Payment', value: 5 },
-            ]
-
-        },
-        { id: 'usageLimits', label: 'Usage Limits', value: 15,
+              { id: 'bot', label: 'Bot', value: 2 },
+              { id: 'filtering', label: 'Filtering', value: 3 },
+              { id: 'tracking', label: 'Tracking', value: 0 },
+              { id: 'taskAutomation', label: 'Task Automation', value: 0 },
+            ],
+          },
+          { id: 'domain', label: 'Domain', value: 5 },
+          { id: 'guarantee', label: 'Guarantee', value: 1 },
+          { id: 'information', label: 'Information', value: 4 },
+          {
+            id: 'integration',
+            label: 'Integration',
+            value: 5,
             children: [
-                { id: 'renewable', label: 'Renewable', value: 5 },
-                { id: 'nonRenewable', label: 'Non-Renewable', value: 10 },
-                { id: 'responseDriven', label: 'Response-Driven', value: 0 },
-                { id: 'timeDriven', label: 'Time-Driven', value: 0 },
-            ]
-         },
-        { id: 'addOns', label: 'Add-Ons', value: 10,
-            children: [
-                { id: 'singleton', label: 'Singleton', value: 5 },
-                { id: 'usageBased', label: 'Usage-Based', value: 5 },
-            ]
-        },
+              { id: 'api', label: 'API', value: 3 },
+              { id: 'extension', label: 'Extension', value: 1 },
+              { id: 'identityProvider', label: 'Identity Provider', value: 0 },
+              { id: 'webSaas', label: 'Web SaaS', value: 1 },
+              { id: 'marketplace', label: 'Marketplace', value: 0 },
+              { id: 'externalDevice', label: 'External Device', value: 0 },
+            ],
+          },
+          { id: 'management', label: 'Management', value: 0 },
+          { id: 'support', label: 'Support', value: 5 },
+          { id: 'payment', label: 'Payment', value: 5 },
+        ],
+      },
+      {
+        id: 'usageLimits',
+        label: 'Usage Limits',
+        value: 15,
+        children: [
+          { id: 'renewable', label: 'Renewable', value: 5 },
+          { id: 'nonRenewable', label: 'Non-Renewable', value: 10 },
+          { id: 'responseDriven', label: 'Response-Driven', value: 0 },
+          { id: 'timeDriven', label: 'Time-Driven', value: 0 },
+        ],
+      },
+      {
+        id: 'addOns',
+        label: 'Add-Ons',
+        value: 10,
+        children: [
+          { id: 'singleton', label: 'Singleton', value: 5 },
+          { id: 'usageBased', label: 'Usage-Based', value: 5 },
+        ],
+      },
     ],
-  }
+  },
 ];
 
 function getWordsEnding(value: number, itemId: string) {
-    let result = '';
+  let result = '';
 
-    switch (itemId) {
-        case 'plans':
-        case 'free':
-        case 'paid':
-            result = 'plans';
-            break;
-        case 'features':
-        case 'automation':
-        case 'bot':
-        case 'filtering':
-        case 'tracking':
-        case 'taskAutomation':
-        case 'domain':
-        case 'guarantee':
-        case 'information':
-        case 'integration':
-        case 'api':
-        case 'extension':
-        case 'identityProvider':
-        case 'webSaas':
-        case 'marketplace':
-        case 'externalDevice':
-        case 'management':
-        case 'support':
-        case 'payment':
-            result = 'features';
-            break;
-        case 'usageLimits':
-        case 'renewable':
-        case 'nonRenewable':
-        case 'responseDriven':
-        case 'timeDriven':
-            result = 'usage limits';
-            break;
-        case 'addOns':
-        case 'singleton':
-        case 'usageBased':
-            result = 'add-ons';
-            break;
-        default:
-            result = 'items';
-            break;
-    }
+  switch (itemId) {
+    case 'plans':
+    case 'free':
+    case 'paid':
+      result = 'plans';
+      break;
+    case 'features':
+    case 'automation':
+    case 'bot':
+    case 'filtering':
+    case 'tracking':
+    case 'taskAutomation':
+    case 'domain':
+    case 'guarantee':
+    case 'information':
+    case 'integration':
+    case 'api':
+    case 'extension':
+    case 'identityProvider':
+    case 'webSaas':
+    case 'marketplace':
+    case 'externalDevice':
+    case 'management':
+    case 'support':
+    case 'payment':
+      result = 'features';
+      break;
+    case 'usageLimits':
+    case 'renewable':
+    case 'nonRenewable':
+    case 'responseDriven':
+    case 'timeDriven':
+      result = 'usage limits';
+      break;
+    case 'addOns':
+    case 'singleton':
+    case 'usageBased':
+      result = 'add-ons';
+      break;
+    default:
+      result = 'items';
+      break;
+  }
 
-    return value === 1 ? result.slice(0, -1) : result;
-
+  return value === 1 ? result.slice(0, -1) : result;
 }
 
 function findItemById(tree: TreeItemType[], itemId: string): TreeItemType | null {
-    for (const node of tree) {
-      if (node.id === itemId) {
-        return node; // Found the item
-      }
-  
-      // If the node has children, recursively search within them
-      if (node.children) {
-        const result = findItemById(node.children, itemId);
-        if (result) {
-          return result; // Found in children
-        }
-      }
+  for (const node of tree) {
+    if (node.id === itemId) {
+      return node;
     }
-  
-    return null; // Not found
-  };
 
-function buildCounter(tree: TreeItemType[], itemId: string): string {
-    const item = findItemById(tree, itemId);
-    if (item) {
-        const value = item.value ?? 0;
-        return `${value} ${getWordsEnding(value, itemId)}`;
+    if (node.children) {
+      const result = findItemById(node.children, itemId);
+      if (result) {
+        return result;
+      }
     }
-    return `0 ${getWordsEnding(0, itemId)}`;
+  }
+
+  return null;
 }
 
-type CustomTreeItemProps = TreeItem2Props & { treeItem: TreeItemType[] };
+function buildCounter(tree: TreeItemType[], itemId: string): string {
+  const item = findItemById(tree, itemId);
+  if (item) {
+    const value = item.value ?? 0;
+    return `${value} ${getWordsEnding(value, itemId)}`;
+  }
 
-const CustomTreeItem = React.forwardRef(function CustomTreeItem(
-  { id, itemId, label, children, treeItem }: CustomTreeItemProps,
-  ref: React.Ref<HTMLLIElement>,
-) {
-  const {
-    getRootProps,
-    getContentProps,
-    getLabelProps,
-    getGroupTransitionProps,
-    getIconContainerProps,
-    status,
-  } = useTreeItem2({ id, itemId, label, children, rootRef: ref });
+  return `0 ${getWordsEnding(0, itemId)}`;
+}
+
+type TreeNodeProps = {
+  tree: TreeItemType[];
+  node: TreeItemType;
+  level?: number;
+  expandedIds: Set<string>;
+  onToggle: (id: string) => void;
+  focusedId: string;
+  onFocus: (id: string) => void;
+};
+
+function TreeNode({
+  tree,
+  node,
+  level = 0,
+  expandedIds,
+  onToggle,
+  focusedId,
+  onFocus,
+}: TreeNodeProps) {
+  const hasChildren = Boolean(node.children && node.children.length > 0);
+  const isExpanded = expandedIds.has(node.id);
+  const isFocused = focusedId === node.id;
+  const countLabel = node.id !== 'pricing' ? buildCounter(tree, node.id) : '';
 
   return (
-    <TreeItem2Provider itemId={itemId}>
-      <TreeItem2Root {...getRootProps()}>
-        <TreeItem2Content {...getContentProps()}>
-            <Box sx={{ display: 'flex', direction: "row", justifyContent: "space-between", width: "100%", alignItems: "center"}}>
-                <TreeItem2IconContainer {...getIconContainerProps()}>
-                    <TreeItem2Icon status={status}/>
-                </TreeItem2IconContainer>
+    <li key={node.id}>
+      <button
+        type="button"
+        className={`flex w-full items-center rounded-md px-2 py-1.5 text-left transition-colors ${isFocused ? 'bg-[#d8edf4]' : 'bg-white hover:bg-slate-100'}`}
+        style={{ paddingLeft: `${level * 22 + 8}px` }}
+        onClick={() => {
+          onFocus(node.id);
+          if (hasChildren) {
+            onToggle(node.id);
+          }
+        }}
+      >
+        <span className="mr-1.5 inline-flex w-4 items-center justify-center text-slate-600">
+          {hasChildren ? (isExpanded ? <FiChevronDown /> : <FiChevronRight />) : null}
+        </span>
+        <span className="font-medium text-slate-800">{node.label}</span>
+        {countLabel && (
+          <>
+            <span className="mx-2 mt-0.5 flex-1 border-b border-dotted border-slate-500/80" aria-hidden />
+            <span className="text-slate-500">{countLabel}</span>
+          </>
+        )}
+      </button>
 
-                <TreeItem2Label {...getLabelProps()} sx={itemId !== 'pricing' ? {width: 'auto'} : {}}/>
-
-                {itemId !== 'pricing' &&
-                <>
-                    <Box sx={{ flexGrow: 1, borderBottom: '1px dotted', borderColor: 'text.secondary', mx: 1, width: 'auto' }} />
-                    <Box sx={{ display: 'flex', direction: "row", width: 'auto'}}>
-                        <Typography variant="caption" color="text.secondary">
-                            {buildCounter(treeItem, itemId)}
-                        </Typography>
-                    </Box>
-                </>
-                } 
-            </Box>
-        </TreeItem2Content>
-        {children && <TreeItem2GroupTransition {...getGroupTransitionProps()}/>}
-      </TreeItem2Root>
-    </TreeItem2Provider>
+      <AnimatePresence initial={false}>
+        {hasChildren && isExpanded && node.children && (
+          <motion.ul
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2, ease: 'easeInOut' }}
+            className="overflow-hidden"
+          >
+            {node.children.map((child) => (
+              <TreeNode
+                key={child.id}
+                tree={tree}
+                node={child}
+                level={level + 1}
+                expandedIds={expandedIds}
+                onToggle={onToggle}
+                focusedId={focusedId}
+                onFocus={onFocus}
+              />
+            ))}
+          </motion.ul>
+        )}
+      </AnimatePresence>
+    </li>
   );
-});
+}
 
 type PricingTreeProps = {
   pricing: AnalyticsDataEntry | null;
@@ -207,70 +245,84 @@ type PricingTreeProps = {
 };
 
 export default function PricingTree({ pricing, name }: PricingTreeProps) {
-  const [treeItem, setTreeItem] = React.useState<TreeItemType[]>(MUI_X_PRODUCTS);
+  const [treeItem, setTreeItem] = React.useState<TreeItemType[]>(BASE_TREE);
+  const [expandedIds, setExpandedIds] = React.useState<Set<string>>(() => new Set(['pricing', 'features']));
+  const [focusedId, setFocusedId] = React.useState<string>('features');
 
-  function getProperValue(pricing: AnalyticsDataEntry, itemId: string): number {
+  const handleToggle = (id: string) => {
+    setExpandedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  };
+
+  function getProperValue(currentPricing: AnalyticsDataEntry, itemId: string): number {
     switch (itemId) {
       case 'plans':
-        return pricing?.analytics.numberOfPlans;
+        return currentPricing.analytics.numberOfPlans;
       case 'free':
-        return pricing?.analytics.numberOfFreePlans;
+        return currentPricing.analytics.numberOfFreePlans;
       case 'paid':
-        return pricing?.analytics.numberOfPaidPlans;
+        return currentPricing.analytics.numberOfPaidPlans;
       case 'features':
-        return pricing?.analytics.numberOfFeatures;
+        return currentPricing.analytics.numberOfFeatures;
       case 'automation':
-        return pricing?.analytics.numberOfAutomationFeatures;
+        return currentPricing.analytics.numberOfAutomationFeatures;
       case 'bot':
-        return pricing?.analytics.numberOfBotAutomationFeatures;
+        return currentPricing.analytics.numberOfBotAutomationFeatures;
       case 'filtering':
-        return pricing?.analytics.numberOfFilteringAutomationFeatures;
+        return currentPricing.analytics.numberOfFilteringAutomationFeatures;
       case 'tracking':
-        return pricing?.analytics.numberOfTrackingAutomationFeatures;
+        return currentPricing.analytics.numberOfTrackingAutomationFeatures;
       case 'taskAutomation':
-        return pricing?.analytics.numberOfTaskAutomationFeatures;
+        return currentPricing.analytics.numberOfTaskAutomationFeatures;
       case 'domain':
-        return pricing?.analytics.numberOfDomainFeatures;
+        return currentPricing.analytics.numberOfDomainFeatures;
       case 'guarantee':
-        return pricing?.analytics.numberOfGuaranteeFeatures;
+        return currentPricing.analytics.numberOfGuaranteeFeatures;
       case 'information':
-        return pricing?.analytics.numberOfInformationFeatures;
+        return currentPricing.analytics.numberOfInformationFeatures;
       case 'integration':
-        return pricing?.analytics.numberOfIntegrationFeatures;
+        return currentPricing.analytics.numberOfIntegrationFeatures;
       case 'api':
-        return pricing?.analytics.numberOfIntegrationApiFeatures;
+        return currentPricing.analytics.numberOfIntegrationApiFeatures;
       case 'extension':
-        return pricing?.analytics.numberOfIntegrationExtensionFeatures;
+        return currentPricing.analytics.numberOfIntegrationExtensionFeatures;
       case 'identityProvider':
-        return pricing?.analytics.numberOfIntegrationIdentityProviderFeatures;
+        return currentPricing.analytics.numberOfIntegrationIdentityProviderFeatures;
       case 'webSaas':
-        return pricing?.analytics.numberOfIntegrationWebSaaSFeatures;
+        return currentPricing.analytics.numberOfIntegrationWebSaaSFeatures;
       case 'marketplace':
-        return pricing?.analytics.numberOfIntegrationMarketplaceFeatures;
+        return currentPricing.analytics.numberOfIntegrationMarketplaceFeatures;
       case 'externalDevice':
-        return pricing?.analytics.numberOfIntegrationExternalDeviceFeatures;
+        return currentPricing.analytics.numberOfIntegrationExternalDeviceFeatures;
       case 'management':
-        return pricing?.analytics.numberOfManagementFeatures;
+        return currentPricing.analytics.numberOfManagementFeatures;
       case 'support':
-        return pricing?.analytics.numberOfSupportFeatures;
+        return currentPricing.analytics.numberOfSupportFeatures;
       case 'payment':
-        return pricing?.analytics.numberOfPaymentFeatures;
+        return currentPricing.analytics.numberOfPaymentFeatures;
       case 'usageLimits':
-        return pricing?.analytics.numberOfUsageLimits;
+        return currentPricing.analytics.numberOfUsageLimits;
       case 'renewable':
-        return pricing?.analytics.numberOfRenewableUsageLimits;
+        return currentPricing.analytics.numberOfRenewableUsageLimits;
       case 'nonRenewable':
-        return pricing?.analytics.numberOfNonRenewableUsageLimits;
+        return currentPricing.analytics.numberOfNonRenewableUsageLimits;
       case 'responseDriven':
-        return pricing?.analytics.numberOfResponseDrivenUsageLimits;
+        return currentPricing.analytics.numberOfResponseDrivenUsageLimits;
       case 'timeDriven':
-        return pricing?.analytics.numberOfTimeDrivenUsageLimits;
+        return currentPricing.analytics.numberOfTimeDrivenUsageLimits;
       case 'addOns':
-        return pricing?.analytics.numberOfAddOns;
+        return currentPricing.analytics.numberOfAddOns;
       case 'singleton':
-        return pricing?.analytics.numberOfReplacementAddons;
-      case 'usageBased':  
-        return pricing?.analytics.numberOfExtensionAddons;
+        return currentPricing.analytics.numberOfReplacementAddons;
+      case 'usageBased':
+        return currentPricing.analytics.numberOfExtensionAddons;
       default:
         return 0;
     }
@@ -280,16 +332,18 @@ export default function PricingTree({ pricing, name }: PricingTreeProps) {
     if (!pricing) {
       return;
     }
+
     const updateTreeValues = (items: TreeItemType[]): TreeItemType[] => {
       return items.map(item => {
         const value = getProperValue(pricing, item.id);
         if (item.id !== 'pricing') {
           return {
             ...item,
-            value: value,
+            value,
             children: value === 0 ? undefined : item.children ? updateTreeValues(item.children) : undefined,
           };
         }
+
         return {
           ...item,
           children: item.children ? updateTreeValues(item.children) : undefined,
@@ -297,26 +351,28 @@ export default function PricingTree({ pricing, name }: PricingTreeProps) {
       });
     };
 
-    const newTreeItem = updateTreeValues(treeItem);
-
-    setTreeItem(newTreeItem);
+    setTreeItem(updateTreeValues(BASE_TREE));
   }, [pricing]);
 
   return (
-      <Box sx={{ minHeight: 200, minWidth: 350 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 1 }}>
-            <Typography variant="h6" gutterBottom>
-                Pricing tree for
-            </Typography>
-            <Typography variant="h6" gutterBottom color="text.secondary" fontFamily="monospace" letterSpacing={0.25}>
-                {name}
-            </Typography>
-        </Box>
-        <RichTreeView
-          items={treeItem}
-          defaultExpandedItems={['pricing']}
-          slots={{ item: (props: TreeItem2Props) => <CustomTreeItem {...props} treeItem={treeItem} /> }}
-        />
-      </Box>
+    <div className="min-h-[200px] min-w-[350px]">
+      <div className="mb-2 flex items-center gap-1 p-4">
+        <h3 className="text-xl">Pricing tree for</h3>
+        <span className="font-mono text-xl text-slate-500">{name}</span>
+      </div>
+      <ul className="space-y-1">
+        {treeItem.map(item => (
+          <TreeNode
+            key={item.id}
+            tree={treeItem}
+            node={item}
+            expandedIds={expandedIds}
+            onToggle={handleToggle}
+            focusedId={focusedId}
+            onFocus={setFocusedId}
+          />
+        ))}
+      </ul>
+    </div>
   );
 }

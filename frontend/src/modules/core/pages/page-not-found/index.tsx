@@ -1,12 +1,8 @@
 import { Helmet } from 'react-helmet';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
+import { FiHome } from 'react-icons/fi';
 
 import RouterLink from '../../components/router-link';
 import Logo404 from '../../components/404-logo';
-import { Home } from '@mui/icons-material';
 
 export default function NotFoundPage() {
   return (
@@ -15,57 +11,30 @@ export default function NotFoundPage() {
         <title> 404 Page Not Found </title>
       </Helmet>
 
-      <Container>
-        <Box
-          sx={{
-            py: 12,
-            maxWidth: 480,
-            mx: 'auto',
-            display: 'flex',
-            minHeight: '100vh',
-            textAlign: 'center',
-            alignItems: 'center',
-            flexDirection: 'column',
-            justifyContent: 'center',
-          }}
-        >
-          <Typography variant="h3" sx={{ mb: 3 }}>
+      <div className="mx-auto max-w-screen-xl px-4">
+        <div className="mx-auto flex min-h-screen max-w-[480px] flex-col items-center justify-center py-12 text-center">
+          <h1 className="mb-3 text-3xl font-semibold leading-tight text-sphere-grey-900">
             Sorry, page not found!
-          </Typography>
+          </h1>
 
-          <Typography sx={{ color: 'text.secondary' }}>
+          <p className="text-sphere-grey-600">
             Sorry, we couldn’t find the page you’re looking for. Perhaps you’ve mistyped the URL? Be
             sure to check your spelling.
-          </Typography>
+          </p>
 
-          <Box
-            sx={{
-              mx: 'auto',
-              height: 260,
-              mt: { xs: 5, sm: 10 },
-              mb: { xs: 15, sm: 20 },
-            }}
-          >
+          <div className="mx-auto mb-16 mt-10 h-[260px] sm:mb-20 sm:mt-20">
             <Logo404 />
-          </Box>
+          </div>
 
-          <Button
+          <RouterLink
             href="/"
-            size="large"
-            variant="contained"
-            component={RouterLink}
-            startIcon={<Home />}
-            sx={{
-              cursor: 'pointer',
-              '&:hover': {
-                color: 'white',
-              },
-            }}
+            className="inline-flex cursor-pointer items-center gap-2 rounded-md bg-sphere-primary-700 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-sphere-primary-800"
           >
+            <FiHome className="h-4 w-4" />
             Return to Home
-          </Button>
-        </Box>
-      </Container>
+          </RouterLink>
+        </div>
+      </div>
     </>
   );
 }

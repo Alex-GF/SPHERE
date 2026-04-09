@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import type { ChangeEvent } from 'react';
 import { usePreset } from '../hooks/usePreset';
 import { USE_CASES } from '../use-cases';
 import { PromptPreset } from '../types/types';
@@ -18,7 +18,7 @@ function UseCaseSelect({ onPresetSelect }: Props) {
     return res[0];
   };
 
-  const handlePresetChange = (event: SelectChangeEvent) => {
+  const handlePresetChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const currPreset = findPresetById(event.target.value as string);
     setPreset(currPreset);
     if (currPreset) {
@@ -29,23 +29,27 @@ function UseCaseSelect({ onPresetSelect }: Props) {
   const availablePresets = USE_CASES.filter(preset => preset.response)
 
   return (
-    <FormControl>
-      <InputLabel id="use-case-select-label">Select a use case</InputLabel>
-      <Select
-        labelId="use-case-select-label"
+    <div className="flex flex-col gap-2">
+      <label htmlFor="use-case-select" className="text-sm font-medium text-slate-700">
+        Select a use case
+      </label>
+      <select
+        id="use-case-select"
         value={preset ? preset.id : ''}
         required
-        label="Select an use case"
         onChange={handlePresetChange}
+        className="rounded-md border border-slate-300 px-3 py-2"
       >
-        {availablePresets.length > 0 &&
-          availablePresets.map(item => (
-            <MenuItem key={item.id} value={item.id}>
-              {item.label}
-            </MenuItem>
-          ))}
-      </Select>
-    </FormControl>
+        <option value="" disabled>
+          Select an use case
+        </option>
+        {availablePresets.map(item => (
+          <option key={item.id} value={item.id}>
+            {item.label}
+          </option>
+        ))}
+      </select>
+    </div>
   );
 }
 

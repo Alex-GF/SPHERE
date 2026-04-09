@@ -1,4 +1,3 @@
-import { Chip } from "@mui/material";
 import ai4Pricing from './descriptions/AI4Pricing.md';
 import sphereServitization from './descriptions/sphere-servitization.md';
 import opexSimulation from './descriptions/opex-simulation.md';
@@ -34,7 +33,22 @@ function getContributionTag(name: string){
     if (!contributionTag) {
         return <></>;
     }else{
-        return <Chip label={contributionTag.name} style={{backgroundColor: contributionTag.color, color: isDarkColor(contributionTag.color) ? "white": "black", fontWeight: "bold"}}/>;
+        const bgClassMap: Record<string, string> = {
+            '#E5BE01': 'bg-[#E5BE01]',
+            '#1F77B4': 'bg-[#1F77B4]',
+            '#4B0082': 'bg-[#4B0082]',
+            '#2CA02C': 'bg-[#2CA02C]',
+            '#7FB5B5': 'bg-[#7FB5B5]',
+            '#2C5545': 'bg-[#2C5545]',
+        };
+
+        return (
+            <span
+                className={`rounded-full px-3 py-1 text-xs font-bold ${bgClassMap[contributionTag.color] ?? 'bg-slate-300'} ${isDarkColor(contributionTag.color) ? 'text-white' : 'text-black'}`}
+            >
+                {contributionTag.name}
+            </span>
+        );
     }
 }
 

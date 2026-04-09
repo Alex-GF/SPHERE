@@ -1,22 +1,11 @@
 import PropTypes from 'prop-types';
 
-import Box from '@mui/material/Box';
-
-import { flex } from '../../core/theme/css';
-
 export default function Main({ children, sx, ...other } : { children: React.ReactNode, sx?: object }) {
 
   return (
-    <Box
-      component="main"
-      sx={{
-        ...flex({}),
-        ...sx,
-      }}
-      {...other}
-    >
+    <main className="flex items-center justify-center" {...other}>
       {children}
-    </Box>
+    </main>
   );
 }
 
