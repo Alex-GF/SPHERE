@@ -101,7 +101,7 @@ export default function CardPage() {
   }, [pricingData, currentPricing]);
 
   // Handler to apply variables edits coming from the renderer's VariablesEditor
-  const handleApplyVariables = (variables: Record<string, string | number | boolean>) => {
+  const handleApplyVariables = (variables: Record<string, unknown>) => {
     // If we have the original YAML text, rebuild it with the new variables and re-parse so computed prices update
     if (pricingYamlText) {
       const newYaml = (function replaceVariablesInYaml(yaml: string, vars: Record<string, unknown>) {

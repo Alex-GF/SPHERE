@@ -39,5 +39,5 @@ interface PricingProps {
   pricing: Pricing;
   errors: string[];
   style?: RenderingStyles;
-  onApplyVariables?: (variables: Record<string, string | number | boolean>) => void;
+  onApplyVariables?: (variables: Record<string, unknown>) => void;
 }

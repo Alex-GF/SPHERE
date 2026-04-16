@@ -1,11 +1,9 @@
 import Editor, { Monaco } from '@monaco-editor/react';
-import { grey } from '../../../core/theme/palette';
 import { useState, useEffect, useRef } from 'react';
 import { Pricing, retrievePricingFromYaml } from 'pricing4ts';
 
 import { PricingRenderer } from '../../components/pricing-renderer';
 import LoadingView from '../../../core/pages/loading';
-import { flex } from '../../../core/theme/css';
 import { Helmet } from 'react-helmet';
 import Alerts from '../../../core/components/alerts';
 import { useMode } from '../../../core/hooks/useTheme';
@@ -37,8 +35,8 @@ export default function EditorPage() {
           setEditorValue(value);
           const parsedPricing: Pricing = retrievePricingFromYaml(value);
           
-          if (parsedPricing.syntaxVersion !== '3.0'){
-            throw new Error('Only Pricing YAML syntax version 3.0 is supported in this editor.');
+          if (parsedPricing.syntaxVersion !== '3.1'){
+            throw new Error('Only Pricing YAML syntax version 3.1 is supported in this editor.');
           }
           
           setPricing(parsedPricing);
@@ -95,7 +93,7 @@ export default function EditorPage() {
         const syntaxVersion = templatePricing.match(regex)?.[1];
         let parsedPricing: Pricing;
 
-        if (syntaxVersion !== '3.0'){
+        if (syntaxVersion !== '3.1'){
           const response = await fetch('/api/pricings', {
             method: 'PUT',
             headers: {

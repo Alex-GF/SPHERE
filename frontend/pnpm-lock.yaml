@@ -54,8 +54,8 @@ importers:
         specifier: ^0.52.0
         version: 0.52.2
       pricing4ts:
-        specifier: ^0.10.4
-        version: 0.10.4(@openfeature/core@1.9.1)(minizinc@4.4.4)
+        specifier: ^0.11.0
+        version: 0.11.0(@openfeature/core@1.9.1)(minizinc@4.4.4)
       prop-types:
         specifier: ^15.8.1
         version: 15.8.1
@@ -2437,8 +2437,8 @@ packages:
     resolution: {integrity: sha512-G9xUchgTEiNpormdYBl+Pha50gOUovT18IvAe7EYMZ1/f9W/WWMPRn+xI68yXNMUk3QXHDwo/1wV/4NejVNe1w==}
     engines: {node: '>=0.10.0'}
 
-  pricing4ts@0.10.4:
-    resolution: {integrity: sha512-VxJ8WDakLS5cTEHFGy6AdYX9ddUdNsrdIAUy7TXx4LTaUNy50GRQTOo/f/pLbkUEgp0axBBmWMLd14AUKUNu3A==}
+  pricing4ts@0.11.0:
+    resolution: {integrity: sha512-cSxLSzEGtxYzRMLzK0ieCYT5lNOr1cMxvOVs+85ZyMAGNd8XNKaGdlJJRMR8haCoiIlgUzP0lg01yCqCaUZEEQ==}
     peerDependencies:
       minizinc: ^4.3.5
 
@@ -5693,7 +5693,7 @@ snapshots:
       extend-shallow: 2.0.1
       js-beautify: 1.15.4
 
-  pricing4ts@0.10.4(@openfeature/core@1.9.1)(minizinc@4.4.4):
+  pricing4ts@0.11.0(@openfeature/core@1.9.1)(minizinc@4.4.4):
     dependencies:
       '@openfeature/server-sdk': 1.20.0(@openfeature/core@1.9.1)
       '@types/papaparse': 5.5.0
