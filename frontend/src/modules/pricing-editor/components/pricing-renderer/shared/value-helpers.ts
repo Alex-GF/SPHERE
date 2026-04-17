@@ -57,6 +57,12 @@ export function formatUsageDisplay(limitValue: unknown, linkedLimit?: UsageLimit
     return linkedLimit?.defaultValue ?? _safePrimitive(limitValue);
   })();
 
+  // Check if value is >= 100000000 (represents infinity), render as "Unlimited"
+  const numValue = typeof value === 'number' ? value : parseInt(String(value || '0')) || 0;
+  if (numValue >= 100000000) {
+    return 'Unlimited';
+  }
+
   let unit = '';
   if (linkedLimit) {
     const lu = linkedLimit as unknown as Record<string, unknown>;
