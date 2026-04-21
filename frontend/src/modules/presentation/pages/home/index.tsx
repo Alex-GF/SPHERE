@@ -9,11 +9,18 @@ import HomeGlobalStyles from './components/home-global-styles';
 import JourneyChaptersSection from './components/journey-chapters-section';
 import OperationalCadenceSection from './components/operational-cadence-section';
 import PlatformSurfaceSection from './components/platform-surface-section';
-import ProofMarqueeSection from './components/proof-marquee-section';
+// import ProofMarqueeSection from './components/proof-marquee-section';
 import { ResearchSection, ToolingStackSection } from './components/research-section';
 import ScenarioLayersSection from './components/scenario-layers-section';
 import FundersSection from './components/funders-section';
-import { FUNDERS, NAV_ITEMS, PROOF_LOGOS, RESEARCH_HIGHLIGHTS, SPHERE_TOOLS, STORY_CHAPTERS } from './data';
+import {
+  FUNDERS,
+  NAV_ITEMS,
+  // PROOF_LOGOS,
+  RESEARCH_HIGHLIGHTS,
+  SPHERE_TOOLS,
+  STORY_CHAPTERS,
+} from './data';
 import CallToAction from './components/call-to-action';
 
 export default function HomePage() {
@@ -30,8 +37,8 @@ export default function HomePage() {
     const rect = event.currentTarget.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
-    const rotateX = ((y / rect.height) - 0.5) * -8;
-    const rotateY = ((x / rect.width) - 0.5) * 10;
+    const rotateX = (y / rect.height - 0.5) * -8;
+    const rotateY = (x / rect.width - 0.5) * 10;
 
     setTiltByTool(prev => ({
       ...prev,
@@ -71,9 +78,15 @@ export default function HomePage() {
           <FloatingMorphHeader navItems={NAV_ITEMS} onNavigate={handleNavigate} />
 
           <main className="relative z-[3] mx-auto flex w-full max-w-[1240px] flex-col px-4 pb-24 pt-28 md:px-8 md:pb-36 md:pt-40">
-            <HeroSection onRegister={() => handleNavigate('/register')} onPricings={() => handleNavigate('/pricings')} />
-            <ProofMarqueeSection logos={PROOF_LOGOS} />
-            <PlatformSurfaceSection onResearch={() => handleNavigate('/research')} onEditor={() => handleNavigate('/editor')} />
+            <HeroSection
+              onRegister={() => handleNavigate('/register')}
+              onPricings={() => handleNavigate('/pricings')}
+            />
+            {/* <ProofMarqueeSection logos={PROOF_LOGOS} /> */}
+            <PlatformSurfaceSection
+              onResearch={() => handleNavigate('/research')}
+              onEditor={() => handleNavigate('/pricings')}
+            />
             <JourneyChaptersSection chapters={STORY_CHAPTERS} />
             <OperationalCadenceSection />
             <ScenarioLayersSection />
@@ -84,7 +97,11 @@ export default function HomePage() {
               onToolMouseMove={handleToolMouseMove}
               onToolMouseLeave={handleToolMouseLeave}
             />
-            <ResearchSection images={RESEARCH_HIGHLIGHTS} onResearch={() => handleNavigate('/research')} onTeam={() => handleNavigate('/team')} />
+            <ResearchSection
+              images={RESEARCH_HIGHLIGHTS}
+              onResearch={() => handleNavigate('/research')}
+              onTeam={() => handleNavigate('/team')}
+            />
             <FundersSection funders={FUNDERS} />
             <CallToAction onNavigate={handleNavigate} />
           </main>

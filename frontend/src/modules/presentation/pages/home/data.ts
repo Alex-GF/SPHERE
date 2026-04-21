@@ -12,10 +12,19 @@ export type NavItem = {
 export type ToolItem = {
   name: string;
   description: string;
-  to: string;
-  tone: 'blue' | 'emerald' | 'amber' | 'violet';
-  label: string;
-  glyph: 'editor' | 'assistant' | 'playground' | 'catalog' | 'collections' | 'research';
+  logo?: string;
+  badge?: string;
+  customLogo?: 'ipricing-editor' | 'pricing2yaml';
+  primary: {
+    label: string;
+    href: string;
+    kind: 'internal' | 'external';
+  };
+  links: Array<{
+    label: string;
+    href: string;
+    kind: 'internal' | 'external';
+  }>;
 };
 
 export type StoryChapter = {
@@ -51,52 +60,98 @@ export const NAV_ITEMS: NavItem[] = [
 
 export const SPHERE_TOOLS: ToolItem[] = [
   {
-    name: 'Pricing2Yaml Editor',
-    description: 'Transform and validate pricing models into a clean YAML source of truth.',
-    to: '/editor',
-    tone: 'blue',
-    label: 'Model authoring',
-    glyph: 'editor',
+    name: 'iPricing Editor',
+    description: 'Real-time iPricing editor and renderer using Pricing2Yaml syntax, integrated into SPHERE.',
+    customLogo: 'ipricing-editor',
+    badge: 'Inside SPHERE',
+    primary: {
+      label: 'Try it out',
+      href: '/editor',
+      kind: 'internal',
+    },
+    links: [],
   },
   {
-    name: 'HARVEY Assistant',
-    description: 'Get guided pricing strategy suggestions from an AI-native planning copilot.',
-    to: '/harvey',
-    tone: 'emerald',
-    label: 'AI copilot',
-    glyph: 'assistant',
+    name: 'AMINT',
+    description:
+      'Automatically transform any public pricing from the web into an iPricing for analysis and experimentation.',
+    logo: '/assets/logos/amint.webp',
+    badge: 'Inside SPHERE',
+    primary: {
+      label: 'Try in HARVEY',
+      href: '/harvey',
+      kind: 'internal',
+    },
+    links: [
+      { label: 'Repository', href: '#', kind: 'external' },
+    ],
   },
   {
-    name: 'HARVEY Playground',
-    description: 'Run exploratory prompt flows and evaluate alternative monetization narratives.',
-    to: '/harvey-play',
-    tone: 'violet',
-    label: 'Prompt labs',
-    glyph: 'playground',
+    name: 'PRIME',
+    description: 'API for iPricing analysis and validation to extract metrics from plans, features, and configurations.',
+    logo: '/assets/logos/prime-short.webp',
+    badge: 'Inside SPHERE',
+    primary: {
+      label: 'Try it out',
+      href: '/pricings',
+      kind: 'internal',
+    },
+    links: [
+      {
+        label: 'Repository',
+        href: 'https://github.com/isa-group/Pricing-Intelligence-Interpretation-Process/tree/main/analysis_api',
+        kind: 'external',
+      },
+    ],
   },
   {
-    name: 'Pricings Catalog',
-    description: 'Browse structured pricing artifacts, compare revisions, and inspect live variants.',
-    to: '/pricings',
-    tone: 'amber',
-    label: 'Catalog explorer',
-    glyph: 'catalog',
+    name: 'SPACE',
+    description:
+      'Self-adaptive software that keeps your SaaS aligned with pricing changes without requiring development',
+    logo: '/assets/logos/space.webp',
+    badge: 'External tool',
+    primary: {
+      label: 'Open repository',
+      href: 'https://github.com/isa-group/space',
+      kind: 'external',
+    },
+    links: [
+      {
+        label: 'Documentation',
+        href: 'https://sphere-docs.vercel.app/docs/2.0.1/api/space/introduction',
+        kind: 'external',
+      },
+    ],
   },
   {
-    name: 'Collections',
-    description: 'Group related pricing assets into reusable collection workspaces for teams.',
-    to: '/pricings/collections',
-    tone: 'blue',
-    label: 'Team workspace',
-    glyph: 'collections',
+    name: 'Pricing2Yaml',
+    description: 'YAML-based language for structured, readable, and reusable iPricing representation.',
+    customLogo: 'pricing2yaml',
+    badge: 'iPricing Model',
+    primary: {
+      label: 'Read syntax',
+      href: 'https://sphere-docs.vercel.app/docs/2.0.1/api/pricing-description-languages/Pricing2Yaml/the-pricing2yaml-syntax',
+      kind: 'external',
+    },
+    links: [],
   },
   {
-    name: 'Research Library',
-    description: 'Access papers, benchmarks, and evidence-backed guidance for pricing decisions.',
-    to: '/research',
-    tone: 'emerald',
-    label: 'Evidence base',
-    glyph: 'research',
+    name: 'HARVEY',
+    description: 'AI-powered assistant for pricing strategy analysis and decision-making support.',
+    logo: '/assets/logos/harvey.webp',
+    badge: 'Inside Sphere',
+    primary: {
+      label: 'Try it out',
+      href: '/harvey',
+      kind: 'internal',
+    },
+    links: [
+      {
+        label: 'Repository',
+        href: 'https://github.com/isa-group/Pricing-Intelligence-Interpretation-Process',
+        kind: 'external',
+      },
+    ],
   },
 ];
 
@@ -104,19 +159,19 @@ export const PROOF_LOGOS = ['ISA Group', 'SCORE Lab', 'SPHERE Research', 'Pricin
 
 export const STORY_CHAPTERS: StoryChapter[] = [
   {
-    title: 'Frame the pricing hypothesis',
+    title: 'Design',
     description:
-      'Compose package structures, limits, and monetization rules while preserving version lineage and semantic consistency.',
+      'your pricing strategy as a structured iPricing, and iterate on it with AI assistance until it’s ready for deployment.',
   },
   {
-    title: 'Stress-test scenarios quickly',
+    title: 'Simulate',
     description:
-      'Simulate adoption and revenue shifts under controlled assumptions, then compare candidate strategies side by side.',
+      'adoption and revenue shifts under controlled assumptions, then compare candidate strategies side by side.',
   },
   {
-    title: 'Publish with governance controls',
+    title: 'Ship',
     description:
-      'Ship approved artifacts into downstream systems with transparent review checkpoints and rollback-ready snapshots.',
+      'new versions of your pricing without changing the code of your app. A perfect balance between flexibility and stability.',
   },
 ];
 

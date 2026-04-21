@@ -72,28 +72,59 @@ export default function FullFooterSection({ onNavigate }: { onNavigate: (to: str
               </div>
 
               <div>
-                <p className="text-[11px] uppercase tracking-[0.2em] text-white/60">Assistants</p>
+                <p className="text-[11px] uppercase tracking-[0.2em] text-white/60">Tools</p>
                 <div className="mt-3 flex flex-col gap-2 text-sm text-white/75">
+                  <button
+                    type="button"
+                    onClick={() => onNavigate('/editor')}
+                    className="text-left transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-white"
+                  >
+                    iPricing Editor
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      window.open(
+                        'https://sphere-docs.vercel.app/docs/2.0.1/api/space/introduction',
+                        '_blank',
+                        'noopener,noreferrer'
+                      )
+                    }
+                    className="text-left transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-white"
+                  >
+                    SPACE
+                  </button>
                   <button
                     type="button"
                     onClick={() => onNavigate('/harvey')}
                     className="text-left transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-white"
                   >
-                    HARVEY Assistant
+                    HARVEY
                   </button>
                   <button
                     type="button"
-                    onClick={() => onNavigate('/harvey-play')}
+                    onClick={() => onNavigate('/harvey')}
                     className="text-left transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-white"
                   >
-                    HARVEY Playground
+                    A-MINT
                   </button>
                   <button
                     type="button"
-                    onClick={() => onNavigate('/register')}
+                    onClick={() => window.open(
+                        'https://sphere-docs.vercel.app/docs/2.0.1/api/pricing-description-languages/Pricing2Yaml/the-pricing2yaml-syntax',
+                        '_blank',
+                        'noopener,noreferrer'
+                      )}
                     className="text-left transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-white"
                   >
-                    Create account
+                    Pricing2Yaml
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => onNavigate('/pricings')}
+                    className="text-left transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-white"
+                  >
+                    PRIME
                   </button>
                 </div>
               </div>
@@ -108,20 +139,20 @@ export default function FullFooterSection({ onNavigate }: { onNavigate: (to: str
           </p>
           <div className="flex items-center gap-3">
             <a
+              href="https://www.isa.us.es/3.0/"
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-full border border-white/15 bg-white/10 px-3 py-1 transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-white"
+            >
+              ISA Group
+            </a>
+            <a
               href="https://www.us.es"
               target="_blank"
               rel="noreferrer"
               className="rounded-full border border-white/15 bg-white/10 px-3 py-1 transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-white"
             >
               Universidad de Sevilla
-            </a>
-            <a
-              href="https://www.aei.gob.es"
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-full border border-white/15 bg-white/10 px-3 py-1 transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] hover:text-white"
-            >
-              Spanish Research Agency
             </a>
           </div>
         </div>
