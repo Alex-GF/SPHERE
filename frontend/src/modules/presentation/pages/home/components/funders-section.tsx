@@ -24,14 +24,14 @@ export default function FundersSection({ funders }: { funders: Funder[] }) {
               Discover the public entities, projects, and grants that have made SPHERE possible.
             </p>
 
-            <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3">
-              {funders.map((partner, index) => (
+            <div className="mt-10 grid grid-cols-1 items-stretch gap-5 md:grid-cols-3">
+              {funders.map(partner => (
                 <a
                   key={partner.name}
                   href={partner.href}
                   target="_blank"
                   rel="noreferrer"
-                  className={`group rounded-[2rem] border border-black/10 bg-black/[0.03] p-1.5 ring-1 ring-black/5 transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-1 ${index === 1 ? 'md:translate-y-4' : ''}`}
+                  className="group h-full rounded-[2rem] border border-black/10 bg-black/[0.03] p-1.5 ring-1 ring-black/5 transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] hover:-translate-y-1"
                 >
                   <div className="flex h-full flex-col rounded-[calc(2rem-0.375rem)] border border-black/10 bg-white p-6 shadow-[inset_0_1px_1px_rgba(255,255,255,0.75)]">
                     <div className="flex h-24 items-center justify-center rounded-2xl border border-black/10 bg-[#fcfcfb] p-4">
