@@ -1,17 +1,58 @@
+import { useState, type CSSProperties, type MouseEvent } from 'react';
 import { Helmet } from 'react-helmet';
 import { useRouter } from '../../../core/hooks/useRouter';
-import MinimalHeroSection from '../../components/home-v2/minimal-hero-section';
-import WhySphereSection from '../../components/home-v2/why-sphere-section';
-import ToolsCatalogSection from '../../components/home-v2/tools-catalog-section';
-import ResearchShowcaseSection from '../../components/home-v2/research-showcase-section';
-import FoundingPartnersSection from '../../components/home-v2/founding-partners-section';
-import FinalCtaSection from '../../components/home-v2/final-cta-section';
+import BackgroundOrbs from './components/background-orbs';
+import FloatingMorphHeader from './components/floating-morph-header';
+import FullFooterSection from './components/full-footer-section';
+import HeroSection from './components/hero-section';
+import HomeGlobalStyles from './components/home-global-styles';
+import JourneyChaptersSection from './components/journey-chapters-section';
+import OperationalCadenceSection from './components/operational-cadence-section';
+import PlatformSurfaceSection from './components/platform-surface-section';
+import ProofMarqueeSection from './components/proof-marquee-section';
+import { ResearchSection, ToolingStackSection } from './components/research-section';
+import ScenarioLayersSection from './components/scenario-layers-section';
+import FundersSection from './components/funders-section';
+import { FUNDERS, NAV_ITEMS, PROOF_LOGOS, RESEARCH_HIGHLIGHTS, SPHERE_TOOLS, STORY_CHAPTERS } from './data';
+import CallToAction from './components/call-to-action';
 
 export default function HomePage() {
   const router = useRouter();
+  const [tiltByTool, setTiltByTool] = useState<Record<string, CSSProperties>>({});
+
+  const handleNavigate = (to: string) => router.push(to);
+
+  const handleToolMouseMove = (event: MouseEvent<HTMLElement>, name: string) => {
+    if (window.innerWidth < 1024) {
+      return;
+    }
+
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    const rotateX = ((y / rect.height) - 0.5) * -8;
+    const rotateY = ((x / rect.width) - 0.5) * 10;
+
+    setTiltByTool(prev => ({
+      ...prev,
+      [name]: {
+        transform: `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(0)`,
+      },
+    }));
+  };
+
+  const handleToolMouseLeave = (name: string) => {
+    setTiltByTool(prev => ({
+      ...prev,
+      [name]: {
+        transform: 'perspective(900px) rotateX(0deg) rotateY(0deg) translateZ(0)',
+      },
+    }));
+  };
 
   return (
     <>
+      <HomeGlobalStyles />
       <Helmet>
         <title>SPHERE | SaaS Pricing Platform for DevOps Teams</title>
         <meta
@@ -23,33 +64,34 @@ export default function HomePage() {
           content="pricing, SaaS pricing, DevOps, pricing optimization, monetization, pricing analytics, configuration space"
         />
       </Helmet>
-      <div className="relative min-h-screen w-full overflow-hidden bg-[#eff5fb] text-slate-900 [font-family:'Space_Grotesk',sans-serif]">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -left-36 top-8 h-80 w-80 rounded-full bg-cyan-200/40 blur-3xl" />
-          <div className="absolute right-[-120px] top-28 h-96 w-96 rounded-full bg-blue-200/35 blur-3xl" />
-          <div className="absolute top-[45%] left-1/3 h-72 w-72 rounded-full bg-sky-100/70 blur-3xl" />
-          <div className="absolute bottom-[-120px] right-1/4 h-96 w-96 rounded-full bg-cyan-100/60 blur-3xl" />
+
+      <div className="relative min-h-[100dvh] overflow-x-clip bg-[#f8f7f4] text-[#101828] [font-family:'Geist','Plus_Jakarta_Sans',sans-serif]">
+        <div className="relative">
+          <BackgroundOrbs />
+          <FloatingMorphHeader navItems={NAV_ITEMS} onNavigate={handleNavigate} />
+
+          <main className="relative z-[3] mx-auto flex w-full max-w-[1240px] flex-col px-4 pb-24 pt-28 md:px-8 md:pb-36 md:pt-40">
+            <HeroSection onRegister={() => handleNavigate('/register')} onPricings={() => handleNavigate('/pricings')} />
+            <ProofMarqueeSection logos={PROOF_LOGOS} />
+            <PlatformSurfaceSection onResearch={() => handleNavigate('/research')} onEditor={() => handleNavigate('/editor')} />
+            <JourneyChaptersSection chapters={STORY_CHAPTERS} />
+            <OperationalCadenceSection />
+            <ScenarioLayersSection />
+            <ToolingStackSection
+              tools={SPHERE_TOOLS}
+              onNavigate={handleNavigate}
+              tiltByTool={tiltByTool}
+              onToolMouseMove={handleToolMouseMove}
+              onToolMouseLeave={handleToolMouseLeave}
+            />
+            <ResearchSection images={RESEARCH_HIGHLIGHTS} onResearch={() => handleNavigate('/research')} onTeam={() => handleNavigate('/team')} />
+            <FundersSection funders={FUNDERS} />
+            <CallToAction onNavigate={handleNavigate} />
+          </main>
         </div>
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(14,165,233,0.1),_transparent_42%)]" />
 
-        <main className="relative mx-auto flex w-full max-w-7xl flex-col gap-24 px-6 pb-24 md:px-10">
-          <MinimalHeroSection
-            onStart={() => router.push('/register')}
-            onExplore={() => router.push('/pricings')}
-          />
-
-          <WhySphereSection />
-
-          <ToolsCatalogSection />
-
-          <ResearchShowcaseSection onOpenResearch={() => router.push('/research')} onOpenTeam={() => router.push('/team')} />
-
-          <FoundingPartnersSection />
-
-          <FinalCtaSection onCreateAccount={() => router.push('/register')} />
-        </main>
+        <FullFooterSection onNavigate={handleNavigate} />
       </div>
     </>
   );
 }
-
