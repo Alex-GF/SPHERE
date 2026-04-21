@@ -1,11 +1,12 @@
 import Header from "./header";
 import Main from "./main";
 import Footer from "./components/footer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ImportPricingModal from "../../core/components/import-pricing-modal";
 import { retrievePricingFromYaml } from "pricing4ts";
 import Alerts from "../../core/components/alerts";
 import { usePricingsApi } from "../../pricing/api/pricingsApi";
+import { useLocation } from "react-router-dom";
 
 export default function PresentationLayout({children}: {children?: React.ReactNode}){
     
@@ -13,6 +14,20 @@ export default function PresentationLayout({children}: {children?: React.ReactNo
     const [errors, setErrors] = useState<string[]>([]);
 
     const {createPricing} = usePricingsApi();
+    const location = useLocation();
+    const isLandingRoute = location.pathname === '/';
+
+    useEffect(() => {
+      const handleOpenUploadModal = () => {
+        setUploadModalOpen(true);
+      };
+
+      window.addEventListener('open-upload-pricing-modal', handleOpenUploadModal);
+
+      return () => {
+        window.removeEventListener('open-upload-pricing-modal', handleOpenUploadModal);
+      };
+    }, []);
 
     const handleCloseUploadModal = () => {
         setUploadModalOpen(false);
@@ -41,10 +56,10 @@ export default function PresentationLayout({children}: {children?: React.ReactNo
       };
     
     return (
-      <div className="grid min-h-dvh grid-rows-[auto_1fr]">
-            <Header setUploadModalOpen={setUploadModalOpen}/>
-            <Main>{children}</Main>
-            <Footer/>
+      <div className={isLandingRoute ? "min-h-dvh" : "grid min-h-dvh grid-rows-[auto_1fr]"}>
+            {!isLandingRoute && <Header setUploadModalOpen={setUploadModalOpen}/>}
+            {isLandingRoute ? children : <Main>{children}</Main>}
+            {!isLandingRoute && <Footer/>}
             <ImportPricingModal modalState={uploadModalOpen} handleClose={handleCloseUploadModal} onSubmit={handleUploadSubmit}/>
             <Alerts messages={errors}/>
       </div>
