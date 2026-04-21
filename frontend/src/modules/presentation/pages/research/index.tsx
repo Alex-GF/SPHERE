@@ -40,7 +40,7 @@ export default function ResearchPage() {
                   </p>
                 ))}
                 {item.awards && (
-                  <div className="mt-[1.2rem] font-bold">
+                  <div className="mt-[1.2rem] font-bold text-black">
                     This work has been awarded with:
                     <ul className="list-disc">
                       {item.awards.map((award, idx) => (
@@ -52,7 +52,7 @@ export default function ResearchPage() {
               </div>
               {item.awards && (
                 <div className="absolute right-[-30px] top-[-30px] flex h-[80px] w-[80px] items-center justify-center rounded-full border-4 border-sphere-primary-700 bg-white">
-                  <FaAward color={`${primary[700]}`} fontSize={40} />
+                  <FaAward color={primary[700]} fontSize={40} />
                 </div>
               )}
             </VerticalTimelineElement>

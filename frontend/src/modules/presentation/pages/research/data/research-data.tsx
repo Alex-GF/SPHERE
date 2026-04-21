@@ -4,6 +4,16 @@ import { FaPlayCircle } from 'react-icons/fa';
 
 const timelineData = [
   {
+    variant: 'proceedings',
+    title: 'Pricing Intelligence: Rethinking IS Engineering in Volatile SaaS Environments',
+    subtitle:
+      'Francisco Javier Cavero, Alejandro García-Fernández, José Antonio Parejo and Antonio Ruiz-Cortés',
+    text: ['38th International Conference on Advanced Information Systems Engineering (CAISE)'],
+    date: '2026-06-08',
+    icon: <GrWorkshop stroke="white" />,
+    href: 'https://doi.org/10.1109/TSC.2025.3634801',
+  },
+  {
     variant: 'journal',
     title: 'Trends in Industry Support for Pricing-Driven DevOps in SaaS',
     subtitle:
