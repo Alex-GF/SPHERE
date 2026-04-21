@@ -198,4 +198,9 @@ export const FUNDERS: Funder[] = [
     href: 'https://www.us.es',
     image: 'assets/landing/university.png',
   },
+  {
+    name: 'Junta de Andalucía',
+    href: 'https://www.juntadeandalucia.es',
+    image: 'assets/landing/junta.webp',
+  },
 ];

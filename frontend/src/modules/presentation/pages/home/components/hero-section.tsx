@@ -30,7 +30,7 @@ export default function HeroSection({ onRegister, onPricings }: { onRegister: ()
 
       <RevealBlock className="mt-10 flex flex-wrap items-center gap-4" delay={300}>
         <IslandButton label="Start for Free" onClick={onRegister} />
-        <IslandButton label="Explore Product" onClick={onPricings} outlined/>
+        <IslandButton label="Explore Pricings" onClick={onPricings} outlined/>
       </RevealBlock>
     </section>
   );

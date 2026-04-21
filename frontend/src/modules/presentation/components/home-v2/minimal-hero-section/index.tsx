@@ -58,7 +58,7 @@ export default function MinimalHeroSection({ onStart, onExplore }: MinimalHeroSe
               onClick={onExplore}
               className="inline-flex items-center gap-2 rounded-full border border-slate-400 bg-white/70 px-6 py-3 text-sm font-semibold text-slate-700 transition hover:bg-white"
             >
-              Explore Product
+              Explore Pricings
               <FiPlay className="text-xs" />
             </button>
           </motion.div>
