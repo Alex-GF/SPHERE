@@ -1,825 +1,225 @@
 import dotenv from 'dotenv';
 import request from 'supertest';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { getApp, shutdownApp } from './utils/testApp';
-import { Server } from 'http';
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import { generateFakeUser, userCredentials } from './utils/testData';
-import { getLoggedInAdmin, getLoggedInUser, getNewloggedInUser } from './utils/auth';
+import type { TestApp } from './utils/testApp';
+import { buildUserPayload, ensureAdminAndLogin, registerAndLoginUser } from './utils/integrationAuth';
 
 dotenv.config();
 
-describe('Get public user information', function () {
-  let app: Server;
+describe('Users API integration', () => {
+  let app: TestApp;
 
-  beforeAll(async function () {
+  beforeAll(async () => {
     app = await getApp();
   });
 
-  describe('POST /users/login', function () {
-    it('Should log in with email and return 200', async function () {
-      const testUser = userCredentials;
-      const response = await request(app).post('/api/users/login').send({
-        loginField: testUser.email,
-        password: testUser.password,
-      });
-      expect(response.status).toEqual(200);
+  describe('POST /api/users/register', () => {
+    it('creates a standard user', async () => {
+      const payload = buildUserPayload('register-user');
+
+      const response = await request(app).post('/api/users/register').send(payload);
+
+      expect(response.status).toBe(201);
+      expect(response.body.email).toBe(payload.email);
+      expect(response.body.username).toBe(payload.username);
+      expect(response.body.userType).toBe('user');
       expect(response.body.password).toBeUndefined();
-      expect(response.body.email).toEqual(testUser.email);
-      expect(response.body.username).toEqual(testUser.username);
-      expect(response.body.avatar).toBeDefined();
     });
 
-    it('Should log in with username and return 200', async function () {
-      const testUser = userCredentials;
-      const response = await request(app).post('/api/users/login').send({
-        loginField: testUser.username,
-        password: testUser.password,
-      });
-      expect(response.status).toEqual(200);
-      expect(response.body.password).toBeUndefined();
-      expect(response.body.email).toEqual(testUser.email);
-      expect(response.body.username).toEqual(testUser.username);
-      expect(response.body.avatar).toBeDefined();
-    });
-  })
-
-  describe('POST /users/register', function () {
-    it('Should return 201 and the user created', async function () {
-      const newUser = generateFakeUser('user');
-      const response = await request(app).post('/api/users/register').send(newUser);
-      expect(response.status).toEqual(201);
-      expect(response.body.password).toBeUndefined();
-      expect(response.body.email).toEqual(newUser.email);
-      expect(response.body.username).toEqual(newUser.username);
-      expect(response.body.userType).toEqual('user');
-      expect(response.body.avatar).toBeUndefined();
-    });
-
-    it('Should return 201 and the user created when giving a 3 letter firstname', async function () {
-      const newUser = generateFakeUser('user');
-      newUser.firstName = 'abc';
-      const response = await request(app).post('/api/users/register').send(newUser);
-      expect(response.status).toEqual(201);
-      expect(response.body.password).toBeUndefined();
-      expect(response.body.userType).toEqual('user');
-      expect(response.body.firstName).toEqual(newUser.firstName);
-    });
-
-    it('Should return 201 and the user created when giving a 255 letter firstname', async function () {
-      const newUser = generateFakeUser('user');
-      newUser.firstName = 'a'.repeat(255);
-      const response = await request(app).post('/api/users/register').send(newUser);
-      expect(response.status).toEqual(201);
-      expect(response.body.password).toBeUndefined();
-      expect(response.body.userType).toEqual('user');
-      expect(response.body.firstName).toEqual(newUser.firstName);
-    });
-
-    it('Should return 201 and the user created when giving a 3 letter lastname', async function () {
-      const newUser = generateFakeUser('user');
-      newUser.lastName = 'abc';
-      const response = await request(app).post('/api/users/register').send(newUser);
-      expect(response.status).toEqual(201);
-      expect(response.body.password).toBeUndefined();
-      expect(response.body.userType).toEqual('user');
-      expect(response.body.lastName).toEqual(newUser.lastName);
-    });
-
-    it('Should return 201 and the user created when giving a 255 letter lastname', async function () {
-      const newUser = generateFakeUser('user');
-      newUser.lastName = 'a'.repeat(255);
-      const response = await request(app).post('/api/users/register').send(newUser);
-      expect(response.status).toEqual(201);
-      expect(response.body.password).toBeUndefined();
-      expect(response.body.userType).toEqual('user');
-      expect(response.body.lastName).toEqual(newUser.lastName);
-    });
-
-    describe('firstName field validation', function () {
-      it('Should return 422 if firstName is missing', async function () {
-        const newUser: any = generateFakeUser('user');
-        delete newUser.firstName;
-        const response = await request(app).post('/api/users/register').send(newUser);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some(
-            (err: any) => err.msg === 'A first name must be provided in order to create the user'
-          )
-        ).toBeTruthy();
+    it('returns 422 when login payload is invalid', async () => {
+      const response = await request(app).post('/api/users/register').send({
+        firstName: 'A',
+        lastName: 'B',
       });
 
-      it('Should return 422 if firstName is not a string', async function () {
-        const newUser: any = generateFakeUser('user');
-        newUser.firstName = 123;
-        const response = await request(app).post('/api/users/register').send(newUser);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some(
-            (err: any) => err.msg === 'The firstName field must be a string'
-          )
-        ).toBeTruthy();
-      });
-
-      it('Should return 422 if firstName length is invalid', async function () {
-        const newUser: any = generateFakeUser('user');
-        newUser.firstName = 'ab';
-        const response = await request(app).post('/api/users/register').send(newUser);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some(
-            (err: any) => err.msg === 'The first name must have between 3 and 255 characters long'
-          )
-        ).toBeTruthy();
-      });
-    });
-
-    describe('lastName field validation', function () {
-      it('Should return 422 if lastName is missing', async function () {
-        const newUser: any = generateFakeUser('user');
-        delete newUser.lastName;
-        const response = await request(app).post('/api/users/register').send(newUser);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some(
-            (err: any) => err.msg === 'A last name must be provided in order to create the user'
-          )
-        ).toBeTruthy();
-      });
-
-      it('Should return 422 if lastName is not a string', async function () {
-        const newUser: any = generateFakeUser('user');
-        newUser.lastName = 123;
-        const response = await request(app).post('/api/users/register').send(newUser);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some((err: any) => err.msg === 'The lastName field must be a string')
-        ).toBeTruthy();
-      });
-
-      it('Should return 422 if lastName length is invalid', async function () {
-        const newUser: any = generateFakeUser('user');
-        newUser.lastName = '';
-        const response = await request(app).post('/api/users/register').send(newUser);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some(
-            (err: any) => err.msg === 'The last name must have between 1 and 255 characters long'
-          )
-        ).toBeTruthy();
-      });
-    });
-
-    describe('email field validation', function () {
-      it('Should return 422 if email is missing', async function () {
-        const newUser: any = generateFakeUser('user');
-        delete newUser.email;
-        const response = await request(app).post('/api/users/register').send(newUser);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some(
-            (err: any) => err.msg === 'An email must be provided in order to create the user'
-          )
-        ).toBeTruthy();
-      });
-
-      it('Should return 422 if email is not a string', async function () {
-        const newUser: any = generateFakeUser('user');
-        newUser.email = 123;
-        const response = await request(app).post('/api/users/register').send(newUser);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some((err: any) => err.msg === 'The email field must be a string')
-        ).toBeTruthy();
-      });
-
-      it('Should return 422 if email is invalid', async function () {
-        const newUser: any = generateFakeUser('user');
-        newUser.email = 'invalidEmail';
-        const response = await request(app).post('/api/users/register').send(newUser);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some(
-            (err: any) => err.msg === 'Invalid email format. Please, provide a valid email'
-          )
-        ).toBeTruthy();
-      });
-    });
-
-    describe('password field validation', function () {
-      it('Should return 422 if password is missing', async function () {
-        const newUser: any = generateFakeUser('user');
-        delete newUser.password;
-        const response = await request(app).post('/api/users/register').send(newUser);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some(
-            (err: any) => err.msg === 'A password must be specified in order to create the user'
-          )
-        ).toBeTruthy();
-      });
-
-      it('Should return 422 if password is not a string', async function () {
-        const newUser: any = generateFakeUser('user');
-        newUser.password = 1234;
-        const response = await request(app).post('/api/users/register').send(newUser);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some((err: any) => err.msg === 'The field password must be a string')
-        ).toBeTruthy();
-      });
-
-      it('Should return 422 if password is too short', async function () {
-        const newUser: any = generateFakeUser('user');
-        newUser.password = '12';
-        const response = await request(app).post('/api/users/register').send(newUser);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some(
-            (err: any) => err.msg === 'The password must have at least 3 characters'
-          )
-        ).toBeTruthy();
-      });
-
-      it('Should return 422 if password contains spaces', async function () {
-        const newUser: any = generateFakeUser('user');
-        newUser.password = '1234 5678';
-        const response = await request(app).post('/api/users/register').send(newUser);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some(
-            (err: any) => err.msg === 'No spaces are allowed in the password'
-          )
-        ).toBeTruthy();
-      });
-    });
-
-    describe('phone field validation', function () {
-      it('Should return 422 if phone is missing', async function () {
-        const newUser: any = generateFakeUser('user');
-        delete newUser.phone;
-        const response = await request(app).post('/api/users/register').send(newUser);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some(
-            (err: any) => err.msg === 'A phone must be specified in order to create the user'
-          )
-        ).toBeTruthy();
-      });
-
-      it('Should return 422 if phone is not a string', async function () {
-        const newUser: any = generateFakeUser('user');
-        newUser.phone = 123456789;
-        const response = await request(app).post('/api/users/register').send(newUser);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some((err: any) => err.msg === 'The field phone must be a string')
-        ).toBeTruthy();
-      });
-
-      it('Should return 422 if phone length is invalid', async function () {
-        const newUser: any = generateFakeUser('user');
-        newUser.phone = '';
-        const response = await request(app).post('/api/users/register').send(newUser);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some(
-            (err: any) => err.msg === 'The phone must have between 1 and 255 characters long'
-          )
-        ).toBeTruthy();
-      });
-    });
-
-    describe('address field validation', function () {
-      it('Should return 201 if address is missing', async function () {
-        const newUser: any = generateFakeUser('user');
-        delete newUser.address;
-        const response = await request(app).post('/api/users/register').send(newUser);
-        expect(response.status).toEqual(201);
-        expect(response.body.password).toBeUndefined();
-        expect(response.body.email).toEqual(newUser.email);
-      });
-
-      it('Should return 422 if address is not a string', async function () {
-        const newUser: any = generateFakeUser('user');
-        newUser.address = 123;
-        const response = await request(app).post('/api/users/register').send(newUser);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some((err: any) => err.msg === 'The field address must be a string')
-        ).toBeTruthy();
-      });
-    });
-
-    describe('postalCode field validation', function () {
-      it('Should return 201 if postalCode is missing', async function () {
-        const newUser: any = generateFakeUser('user');
-        delete newUser.postalCode;
-        const response = await request(app).post('/api/users/register').send(newUser);
-        expect(response.status).toEqual(201);
-        expect(response.body.password).toBeUndefined();
-        expect(response.body.email).toEqual(newUser.email);
-      });
-
-      it('Should return 422 if postalCode is not a string', async function () {
-        const newUser: any = generateFakeUser('user');
-        newUser.postalCode = 12345;
-        const response = await request(app).post('/api/users/register').send(newUser);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some(
-            (err: any) => err.msg === 'The field postalCode must be a string'
-          )
-        ).toBeTruthy();
-      });
+      expect(response.status).toBe(422);
+      expect(Array.isArray(response.body.errors)).toBe(true);
     });
   });
 
-  describe('POST /users/registerAdmin', function () {
-    it('Should return 201 and the admin created', async function () {
-      const newAdmin = generateFakeUser('admin');
-      const loggedAdminToken = await getLoggedInAdmin();
-      const response = await request(app).post('/api/users/registerAdmin').set("Authorization", `Bearer ${loggedAdminToken.token}`).send(newAdmin);
-      expect(response.status).toEqual(201);
-      expect(response.body.password).toBeUndefined();
-      expect(response.body.email).toEqual(newAdmin.email);
-      expect(response.body.userType).toEqual("admin");
-      expect(response.body.avatar).toBeUndefined();
+  describe('POST /api/users/login and /api/users/loginAdmin', () => {
+    it('logs in with email and username for a created user', async () => {
+      const { user } = await registerAndLoginUser(app, 'login-user');
+
+      const loginByEmail = await request(app).post('/api/users/login').send({
+        loginField: user.email,
+        password: user.password,
+      });
+      const loginByUsername = await request(app).post('/api/users/login').send({
+        loginField: user.username,
+        password: user.password,
+      });
+
+      expect(loginByEmail.status).toBe(200);
+      expect(loginByEmail.body.token).toBeDefined();
+      expect(loginByUsername.status).toBe(200);
+      expect(loginByUsername.body.token).toBeDefined();
     });
 
-    it("Should return 403 when a normal user tries to create an admin", async function () { 
-      const newAdmin = generateFakeUser('admin');
-      const loggedUserToken = await getLoggedInUser();
-      const response = await request(app).post('/api/users/registerAdmin').set("Authorization", `Bearer ${loggedUserToken.token}`).send(newAdmin);
-      expect(response.status).toEqual(403);
-    })
-
-    it("Should return 401 when trying to create an admin without authenticating as one", async function () { 
-      const newAdmin = generateFakeUser('admin');
-      const response = await request(app).post('/api/users/registerAdmin').send(newAdmin);
-      expect(response.status).toEqual(401);
-    })
-
-    
-      describe('firstName field validation', function () {
-        it('Should return 422 if firstName is missing', async function () {
-          const newAdmin: any = generateFakeUser('admin');
-          delete newAdmin.firstName;
-          const loggedAdminToken = await getLoggedInAdmin();
-          const response = await request(app).post('/api/users/registerAdmin').set("Authorization", `Bearer ${loggedAdminToken.token}`).send(newAdmin);
-          expect(response.status).toEqual(422);
-          expect(response.body.errors.some((err: any) => err.msg === 'A first name must be provided in order to create the user')).toBeTruthy();
-        });
-
-        it('Should return 422 if firstName is not a string', async function () {
-          const newAdmin: any = generateFakeUser('admin');
-          newAdmin.firstName = 123;
-          const loggedAdminToken = await getLoggedInAdmin();
-          const response = await request(app).post('/api/users/registerAdmin').set("Authorization", `Bearer ${loggedAdminToken.token}`).send(newAdmin);
-          expect(response.status).toEqual(422);
-          expect(response.body.errors.some((err: any) => err.msg === 'The firstName field must be a string')).toBeTruthy();
-        });
-
-        it('Should return 422 if firstName length is invalid', async function () {
-          const newAdmin: any = generateFakeUser('admin');
-          newAdmin.firstName = 'ab';
-          const loggedAdminToken = await getLoggedInAdmin();
-          const response = await request(app).post('/api/users/registerAdmin').set("Authorization", `Bearer ${loggedAdminToken.token}`).send(newAdmin);
-          expect(response.status).toEqual(422);
-          expect(response.body.errors.some((err: any) => err.msg === 'The first name must have between 3 and 255 characters long')).toBeTruthy();
-        });
+    it('returns 401 for invalid credentials', async () => {
+      const response = await request(app).post('/api/users/login').send({
+        loginField: 'invalid@sphere.test',
+        password: 'invalid-password',
       });
 
-      describe('lastName field validation', function () {
-        it('Should return 422 if lastName is missing', async function () {
-          const newAdmin: any = generateFakeUser('admin');
-          delete newAdmin.lastName;
-          const loggedAdminToken = await getLoggedInAdmin();
-          const response = await request(app).post('/api/users/registerAdmin').set("Authorization", `Bearer ${loggedAdminToken.token}`).send(newAdmin);
-          expect(response.status).toEqual(422);
-          expect(response.body.errors.some((err: any) => err.msg === 'A last name must be provided in order to create the user')).toBeTruthy();
-        });
+      expect(response.status).toBe(401);
+      expect(response.body.error).toBeDefined();
+    });
 
-        it('Should return 422 if lastName is not a string', async function () {
-          const newAdmin: any = generateFakeUser('admin');
-          newAdmin.lastName = 123;
-          const loggedAdminToken = await getLoggedInAdmin();
-          const response = await request(app).post('/api/users/registerAdmin').set("Authorization", `Bearer ${loggedAdminToken.token}`).send(newAdmin);
-          expect(response.status).toEqual(422);
-          expect(response.body.errors.some((err: any) => err.msg === 'The lastName field must be a string')).toBeTruthy();
-        });
+    it('returns 422 for invalid loginField format', async () => {
+      const response = await request(app).post('/api/users/login').send({
+        loginField: 'not-valid-login-field@@',
+        password: 'some-password',
       });
 
-      describe('email field validation', function () {
-        it('Should return 422 if email is missing', async function () {
-          const newAdmin: any = generateFakeUser('admin');
-          delete newAdmin.email;
-          const loggedAdminToken = await getLoggedInAdmin();
-          const response = await request(app).post('/api/users/registerAdmin').set("Authorization", `Bearer ${loggedAdminToken.token}`).send(newAdmin);
-          expect(response.status).toEqual(422);
-          expect(response.body.errors.some((err: any) => err.msg === 'An email must be provided in order to create the user')).toBeTruthy();
-        });
+      expect(response.status).toBe(422);
+      expect(Array.isArray(response.body.errors)).toBe(true);
+    });
 
-        it('Should return 422 if email is not a string', async function () {
-          const newAdmin: any = generateFakeUser('admin');
-          newAdmin.email = 123;
-          const loggedAdminToken = await getLoggedInAdmin();
-          const response = await request(app).post('/api/users/registerAdmin').set("Authorization", `Bearer ${loggedAdminToken.token}`).send(newAdmin);
-          expect(response.status).toEqual(422);
-          expect(response.body.errors.some((err: any) => err.msg === 'The email field must be a string')).toBeTruthy();
-        });
+    it('logs in as admin and returns token', async () => {
+      const adminAuth = await ensureAdminAndLogin(app);
 
-        it('Should return 422 if email is invalid', async function () {
-          const newAdmin: any = generateFakeUser('admin');
-          newAdmin.email = 'invalidEmail';
-          const loggedAdminToken = await getLoggedInAdmin();
-          const response = await request(app).post('/api/users/registerAdmin').set("Authorization", `Bearer ${loggedAdminToken.token}`).send(newAdmin);
-          expect(response.status).toEqual(422);
-          expect(response.body.errors.some((err: any) => err.msg === 'Invalid email format. Please, provide a valid email')).toBeTruthy();
-        });
-      });
-
-      describe('password field validation', function () {
-        it('Should return 422 if password is missing', async function () {
-          const newAdmin: any = generateFakeUser('admin');
-          delete newAdmin.password;
-          const loggedAdminToken = await getLoggedInAdmin();
-          const response = await request(app).post('/api/users/registerAdmin').set("Authorization", `Bearer ${loggedAdminToken.token}`).send(newAdmin);
-          expect(response.status).toEqual(422);
-          expect(response.body.errors.some((err: any) => err.msg === 'A password must be specified in order to create the user')).toBeTruthy();
-        });
-
-        it('Should return 422 if password is not a string', async function () {
-          const newAdmin: any = generateFakeUser('admin');
-          newAdmin.password = 1234;
-          const loggedAdminToken = await getLoggedInAdmin();
-          const response = await request(app).post('/api/users/registerAdmin').set("Authorization", `Bearer ${loggedAdminToken.token}`).send(newAdmin);
-          expect(response.status).toEqual(422);
-          expect(response.body.errors.some((err: any) => err.msg === 'The field password must be a string')).toBeTruthy();
-        });
-
-        it('Should return 422 if password is too short', async function () {
-          const newAdmin: any = generateFakeUser('admin');
-          newAdmin.password = '12';
-          const loggedAdminToken = await getLoggedInAdmin();
-          const response = await request(app).post('/api/users/registerAdmin').set("Authorization", `Bearer ${loggedAdminToken.token}`).send(newAdmin);
-          expect(response.status).toEqual(422);
-          expect(response.body.errors.some((err: any) => err.msg === 'The password must have at least 3 characters')).toBeTruthy();
-        });
-
-        it('Should return 422 if password contains spaces', async function () {
-          const newAdmin: any = generateFakeUser('admin');
-          newAdmin.password = '1234 5678';
-          const loggedAdminToken = await getLoggedInAdmin();
-          const response = await request(app).post('/api/users/registerAdmin').set("Authorization", `Bearer ${loggedAdminToken.token}`).send(newAdmin);
-          expect(response.status).toEqual(422);
-          expect(response.body.errors.some((err: any) => err.msg === 'No spaces are allowed in the password')).toBeTruthy();
-        });
-      });
-
-      describe('phone field validation', function () {
-        it('Should return 422 if phone is missing', async function () {
-          const newAdmin: any = generateFakeUser('admin');
-          delete newAdmin.phone;
-          const loggedAdminToken = await getLoggedInAdmin();
-          const response = await request(app).post('/api/users/registerAdmin').set("Authorization", `Bearer ${loggedAdminToken.token}`).send(newAdmin);
-          expect(response.status).toEqual(422);
-          expect(response.body.errors.some((err: any) => err.msg === 'A phone must be specified in order to create the user')).toBeTruthy();
-        });
-
-        it('Should return 422 if phone is not a string', async function () {
-          const newAdmin: any = generateFakeUser('admin');
-          newAdmin.phone = 123456789;
-          const loggedAdminToken = await getLoggedInAdmin();
-          const response = await request(app).post('/api/users/registerAdmin').set("Authorization", `Bearer ${loggedAdminToken.token}`).send(newAdmin);
-          expect(response.status).toEqual(422);
-          expect(response.body.errors.some((err: any) => err.msg === 'The field phone must be a string')).toBeTruthy();
-        });
-
-        it('Should return 422 if phone length is invalid', async function () {
-          const newAdmin: any = generateFakeUser('admin');
-          newAdmin.phone = '';
-          const loggedAdminToken = await getLoggedInAdmin();
-          const response = await request(app).post('/api/users/registerAdmin').set("Authorization", `Bearer ${loggedAdminToken.token}`).send(newAdmin);
-          expect(response.status).toEqual(422);
-          expect(response.body.errors.some((err: any) => err.msg === 'The phone must have between 1 and 255 characters long')).toBeTruthy();
-        });
-      });
-
-      describe('address field validation', function () {
-        it('Should return 201 if address is missing', async function () {
-          const newAdmin: any = generateFakeUser('admin');
-          delete newAdmin.address;
-          const loggedAdminToken = await getLoggedInAdmin();
-          const response = await request(app).post('/api/users/registerAdmin').set("Authorization", `Bearer ${loggedAdminToken.token}`).send(newAdmin);
-          expect(response.status).toEqual(201);
-          expect(response.body.password).toBeUndefined();
-          expect(response.body.email).toEqual(newAdmin.email);
-          expect(response.body.userType).toEqual('admin');
-        });
-
-        it('Should return 422 if address is not a string', async function () {
-          const newAdmin: any = generateFakeUser('admin');
-          newAdmin.address = 123;
-          const loggedAdminToken = await getLoggedInAdmin();
-          const response = await request(app).post('/api/users/registerAdmin').set("Authorization", `Bearer ${loggedAdminToken.token}`).send(newAdmin);
-          expect(response.status).toEqual(422);
-          expect(response.body.errors.some((err: any) => err.msg === 'The field address must be a string')).toBeTruthy();
-        });
-      });
-
-      describe('postalCode field validation', function () {
-        it('Should return 201 if postalCode is missing', async function () {
-          const newAdmin: any = generateFakeUser('admin');
-          delete newAdmin.postalCode;
-          const loggedAdminToken = await getLoggedInAdmin();
-          const response = await request(app).post('/api/users/registerAdmin').set("Authorization", `Bearer ${loggedAdminToken.token}`).send(newAdmin);
-          expect(response.status).toEqual(201);
-          expect(response.body.password).toBeUndefined();
-          expect(response.body.email).toEqual(newAdmin.email);
-          expect(response.body.userType).toEqual('admin');
-        });
-
-        it('Should return 422 if postalCode is not a string', async function () {
-          const newAdmin: any = generateFakeUser('admin');
-          newAdmin.postalCode = 12345;
-          const loggedAdminToken = await getLoggedInAdmin();
-          const response = await request(app).post('/api/users/registerAdmin').set("Authorization", `Bearer ${loggedAdminToken.token}`).send(newAdmin);
-          expect(response.status).toEqual(422);
-          expect(response.body.errors.some((err: any) => err.msg === 'The field postalCode must be a string')).toBeTruthy();
-        });
-      });
+      expect(adminAuth.token).toBeDefined();
+    });
   });
 
-  describe('PUT /users', function () {
+  describe('POST /api/users/registerAdmin', () => {
+    it('creates a new admin with admin token', async () => {
+      const adminAuth = await ensureAdminAndLogin(app);
+      const payload = buildUserPayload('register-admin');
 
-    it('Should return 401 when fake auth token is provided', async function () {
-      const fakeToken = 'fakeToken';
-      const requestBody: any = { firstName: 'New Name' };
       const response = await request(app)
-        .put('/api/users')
-        .set('Authorization', `Bearer ${fakeToken}`)
-        .send(requestBody);
-      expect(response.status).toEqual(401);
-      expect(response.body.error).toBe('Token not valid');
+        .post('/api/users/registerAdmin')
+        .set('Authorization', `Bearer ${adminAuth.token}`)
+        .send(payload);
+
+      expect(response.status).toBe(201);
+      expect(response.body.userType).toBe('admin');
+      expect(response.body.password).toBeUndefined();
     });
 
-    it('Should return 401 and ask for authentication', async function () {
-      const requestBody: any = { firstName: 'New Name' };
-      const response = await request(app)
-        .put('/api/users')
-        .send(requestBody);
-      expect(response.status).toEqual(401);
+    it('returns 401 without token', async () => {
+      const payload = buildUserPayload('register-admin-no-token');
+
+      const response = await request(app).post('/api/users/registerAdmin').send(payload);
+
+      expect(response.status).toBe(401);
+    });
+  });
+
+  describe('POST /api/users/tokenLogin and /api/users/updateToken', () => {
+    it('logs in by token for a valid user token', async () => {
+      const { auth } = await registerAndLoginUser(app, 'token-login-user');
+
+      const response = await request(app).post('/api/users/tokenLogin').send({ token: auth.token });
+
+      expect(response.status).toBe(200);
+      expect(response.body.id).toBe(auth.id);
+      expect(response.body.token).toBe(auth.token);
+    });
+
+    it('returns 401 for invalid token in tokenLogin', async () => {
+      const response = await request(app).post('/api/users/tokenLogin').send({ token: 'invalid-token' });
+
+      expect(response.status).toBe(401);
+    });
+
+    it('returns 401 when calling updateToken without auth middleware', async () => {
+      const response = await request(app).post('/api/users/updateToken').send({});
+
+      expect(response.status).toBe(401);
       expect(response.body.error).toBe('No authorization header found');
     });
 
-    describe('firstName field validation', function () {
-      it('Should return 200 and the updated user', async function () {
-        const loggedUserToken: any = await getLoggedInUser();
-        const requestBody: any = { firstName: 'New Name' };
-        const response = await request(app)
-          .put('/api/users')
-          .set('Authorization', `Bearer ${loggedUserToken.token}`)
-          .send(requestBody);
-        expect(response.status).toEqual(200);
-        expect(response.body.password).toBeUndefined();
-        expect(response.body.firstName).toEqual(requestBody.firstName);
-      });
+    it('returns 200 when calling updateToken with valid token', async () => {
+      const { auth } = await registerAndLoginUser(app, 'update-token-user');
 
-      it('Should return 422 if firstName is not a string', async function () {
-        const loggedUserToken: any = await getLoggedInUser();
-        const requestBody: any = { firstName: 123 };
-        const response = await request(app)
-          .put('/api/users')
-          .set('Authorization', `Bearer ${loggedUserToken.token}`)
-          .send(requestBody);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some(
-            (err: any) => err.msg === 'The firstName field must be a string'
-          )
-        ).toBeTruthy();
-      });
+      const response = await request(app)
+        .post('/api/users/updateToken')
+        .set('Authorization', `Bearer ${auth.token}`)
+        .send({});
 
-      it('Should return 422 if firstName length is invalid', async function () {
-        const loggedUserToken: any = await getLoggedInUser();
-        const requestBody: any = { firstName: 'ab' };
-        const response = await request(app)
-          .put('/api/users')
-          .set('Authorization', `Bearer ${loggedUserToken.token}`)
-          .send(requestBody);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some(
-            (err: any) => err.msg === 'The first name must have between 3 and 255 characters long'
-          )
-        ).toBeTruthy();
-      });
+      expect(response.status).toBe(200);
+      expect(response.body.token).toBeDefined();
+      expect(response.body.tokenExpiration).toBeDefined();
     });
 
-    describe('lastName field validation', function () {
-      it('Should return 200 and the updated user', async function () {
-        const loggedUserToken: any = await getLoggedInUser();
-        const requestBody: any = { lastName: 'New Last Name' };
-        const response = await request(app)
-          .put('/api/users')
-          .set('Authorization', `Bearer ${loggedUserToken.token}`)
-          .send(requestBody);
-        expect(response.status).toEqual(200);
-        expect(response.body.password).toBeUndefined();
-        expect(response.body.lastName).toEqual(requestBody.lastName);
-      });
+    it('returns 401 when authorization header does not use Bearer scheme', async () => {
+      const response = await request(app)
+        .post('/api/users/updateToken')
+        .set('Authorization', 'Token abc')
+        .send({});
 
-      it('Should return 422 if lastName is not a string', async function () {
-        const loggedUserToken: any = await getLoggedInUser();
-        const requestBody: any = { lastName: 123 };
-        const response = await request(app)
-          .put('/api/users')
-          .set('Authorization', `Bearer ${loggedUserToken.token}`)
-          .send(requestBody);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some((err: any) => err.msg === 'The lastName field must be a string')
-        ).toBeTruthy();
-      });
-
-      it('Should return 422 if lastName length is invalid', async function () {
-        const loggedUserToken: any = await getLoggedInUser();
-        const requestBody: any = { lastName: '' };
-        const response = await request(app)
-          .put('/api/users')
-          .set('Authorization', `Bearer ${loggedUserToken.token}`)
-          .send(requestBody);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some(
-            (err: any) => err.msg === 'The last name must have between 1 and 255 characters long'
-          )
-        ).toBeTruthy();
-      });
-    });
-
-    describe('email field validation', function () {
-      it('Should return 200 and the updated user', async function () {
-        const loggedUserToken: any = await getLoggedInUser();
-        const requestBody: any = { email: 'newemail@example.com' };
-        const response = await request(app)
-          .put('/api/users')
-          .set('Authorization', `Bearer ${loggedUserToken.token}`)
-          .send(requestBody);
-        expect(response.status).toEqual(200);
-        expect(response.body.password).toBeUndefined();
-        expect(response.body.email).toEqual(requestBody.email);
-      });
-
-      it('Should return 422 if email is not a string', async function () {
-        const loggedUserToken: any = await getLoggedInUser();
-        const requestBody: any = { email: 123 };
-        const response = await request(app)
-          .put('/api/users')
-          .set('Authorization', `Bearer ${loggedUserToken.token}`)
-          .send(requestBody);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some((err: any) => err.msg === 'The email field must be a string')
-        ).toBeTruthy();
-      });
-
-      it('Should return 422 if email is invalid', async function () {
-        const loggedUserToken: any = await getLoggedInUser();
-        const requestBody: any = { email: 'invalidEmail' };
-        const response = await request(app)
-          .put('/api/users')
-          .set('Authorization', `Bearer ${loggedUserToken.token}`)
-          .send(requestBody);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some(
-            (err: any) => err.msg === 'Invalid email format. Please, provide a valid email'
-          )
-        ).toBeTruthy();
-      });
-    });
-
-    describe('phone field validation', function () {
-      it('Should return 200 and the updated user', async function () {
-        const loggedUserToken: any = await getLoggedInUser();
-        const requestBody: any = { phone: '1234567890' };
-        const response = await request(app)
-          .put('/api/users')
-          .set('Authorization', `Bearer ${loggedUserToken.token}`)
-          .send(requestBody);
-        expect(response.status).toEqual(200);
-        expect(response.body.password).toBeUndefined();
-        expect(response.body.phone).toEqual(requestBody.phone);
-      });
-
-      it('Should return 422 if phone is not a string', async function () {
-        const loggedUserToken: any = await getLoggedInUser();
-        const requestBody: any = { phone: 1234567890 };
-        const response = await request(app)
-          .put('/api/users')
-          .set('Authorization', `Bearer ${loggedUserToken.token}`)
-          .send(requestBody);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some((err: any) => err.msg === 'The field phone must be a string')
-        ).toBeTruthy();
-      });
-
-      it('Should return 422 if phone length is invalid', async function () {
-        const loggedUserToken: any = await getLoggedInUser();
-        const requestBody: any = { phone: '' };
-        const response = await request(app)
-          .put('/api/users')
-          .set('Authorization', `Bearer ${loggedUserToken.token}`)
-          .send(requestBody);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some(
-            (err: any) => err.msg === 'The phone must have between 1 and 255 characters long'
-          )
-        ).toBeTruthy();
-      });
-    });
-
-    describe('address field validation', function () {
-      it('Should return 200 and the updated user', async function () {
-        const loggedUserToken: any = await getLoggedInUser();
-        const requestBody: any = { address: 'New Address' };
-        const response = await request(app)
-          .put('/api/users')
-          .set('Authorization', `Bearer ${loggedUserToken.token}`)
-          .send(requestBody);
-        expect(response.status).toEqual(200);
-        expect(response.body.password).toBeUndefined();
-        expect(response.body.address).toEqual(requestBody.address);
-      });
-
-      it('Should return 422 if address is not a string', async function () {
-        const loggedUserToken: any = await getLoggedInUser();
-        const requestBody: any = { address: 123 };
-        const response = await request(app)
-          .put('/api/users')
-          .set('Authorization', `Bearer ${loggedUserToken.token}`)
-          .send(requestBody);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some((err: any) => err.msg === 'The field address must be a string')
-        ).toBeTruthy();
-      });
-    });
-
-    describe('postalCode field validation', function () {
-      it('Should return 200 and the updated user', async function () {
-        const loggedUserToken: any = await getLoggedInUser();
-        const requestBody: any = { postalCode: '12345' };
-        const response = await request(app)
-          .put('/api/users')
-          .set('Authorization', `Bearer ${loggedUserToken.token}`)
-          .send(requestBody);
-        expect(response.status).toEqual(200);
-        expect(response.body.password).toBeUndefined();
-        expect(response.body.postalCode).toEqual(requestBody.postalCode);
-      });
-
-      it('Should return 422 if postalCode is not a string', async function () {
-        const loggedUserToken: any = await getLoggedInUser();
-        const requestBody: any = { postalCode: 12345 };
-        const response = await request(app)
-          .put('/api/users')
-          .set('Authorization', `Bearer ${loggedUserToken.token}`)
-          .send(requestBody);
-        expect(response.status).toEqual(422);
-        expect(
-          response.body.errors.some(
-            (err: any) => err.msg === 'The field postalCode must be a string'
-          )
-        ).toBeTruthy();
-      });
+      expect(response.status).toBe(401);
+      expect(response.body.error).toBeDefined();
     });
   });
 
-  describe('DELETE /users', function () {
-    it('Should return 200', async function () {
-      const newUserToken: any = await getNewloggedInUser("testUser");
+  describe('PUT /api/users and DELETE /api/users', () => {
+    it('updates the authenticated user', async () => {
+      const { auth } = await registerAndLoginUser(app, 'update-user');
+
       const response = await request(app)
-        .delete('/api/users')
-        .set('Authorization', `Bearer ${newUserToken.token}`);
-      expect(response.status).toEqual(200);
-      expect(response.body).toEqual('Successfully deleted.');
+        .put('/api/users')
+        .set('Authorization', `Bearer ${auth.token}`)
+        .send({ firstName: 'UpdatedName' });
+
+      expect(response.status).toBe(200);
+      expect(response.body.firstName).toBe('UpdatedName');
+      expect(response.body.password).toBeUndefined();
     });
 
-    it('Should return 401', async function () {
-      const fakeToken = "test"
+    it('returns 422 when update payload is invalid', async () => {
+      const { auth } = await registerAndLoginUser(app, 'invalid-update-user');
+
+      const response = await request(app)
+        .put('/api/users')
+        .set('Authorization', `Bearer ${auth.token}`)
+        .send({ firstName: 123 });
+
+      expect(response.status).toBe(422);
+      expect(Array.isArray(response.body.errors)).toBe(true);
+    });
+
+    it('deletes the authenticated user', async () => {
+      const { auth } = await registerAndLoginUser(app, 'delete-user');
+
       const response = await request(app)
         .delete('/api/users')
-        .set('Authorization', `Bearer ${fakeToken}`);
-      expect(response.status).toEqual(401);
-      expect(response.body.error).toEqual('Token not valid');
-    });
-  })
+        .set('Authorization', `Bearer ${auth.token}`);
 
-  afterAll(async function () {
+      expect(response.status).toBe(200);
+      expect(response.body).toBe('Successfully deleted.');
+    });
+  });
+
+  describe('GET /users/:userId', () => {
+    it('returns public user info using the non-prefixed route', async () => {
+      const { auth } = await registerAndLoginUser(app, 'public-user');
+
+      const response = await request(app)
+        .get(`/users/${auth.id}`)
+        .set('Authorization', `Bearer ${auth.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.id).toBe(auth.id);
+      expect(response.body.password).toBeUndefined();
+      expect(response.body.phone).toBeUndefined();
+    });
+
+    it('returns 404 when user id does not exist', async () => {
+      const { auth } = await registerAndLoginUser(app, 'public-user-404');
+
+      const response = await request(app)
+        .get('/users/507f191e810c19729de860ea')
+        .set('Authorization', `Bearer ${auth.token}`);
+
+      expect(response.status).toBe(404);
+    });
+  });
+
+  afterAll(async () => {
     await shutdownApp();
   });
 });

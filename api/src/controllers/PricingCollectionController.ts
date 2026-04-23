@@ -124,7 +124,10 @@ class PricingCollectionController {
       res.json(pricing);
     } catch (err: any) {
       const msg = (err as Error).message || '';
-      if (msg.includes('Ya existe una colección')) {
+      if (
+        msg.toLowerCase().includes('already exists') ||
+        msg.toLowerCase().includes('duplicate')
+      ) {
         res.status(409).send({ error: msg });
         return;
       }
@@ -143,7 +146,10 @@ class PricingCollectionController {
       res.json({collection, pricingsWithErrors});
     } catch (err: any) {
       const msg = (err as Error).message || '';
-      if (msg.includes('Ya existe una colección')) {
+      if (
+        msg.toLowerCase().includes('already exists') ||
+        msg.toLowerCase().includes('duplicate')
+      ) {
         res.status(409).send({ error: msg });
         return;
       }

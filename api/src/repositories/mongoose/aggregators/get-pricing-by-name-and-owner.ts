@@ -44,6 +44,13 @@ export function getPricingByNameAndOwnerAggregator(
         versions: {
           $push: {
             id: { $toString: '$_id' },
+            _collectionId: {
+              $cond: [
+                { $ifNull: ['$_collectionId', false] },
+                { $toString: '$_collectionId' },
+                null,
+              ],
+            },
             version: '$version',
             private: '$private',
             collectionName: { $ifNull: ['$collection.name', null] },

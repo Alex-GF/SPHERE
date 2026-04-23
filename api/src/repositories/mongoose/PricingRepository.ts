@@ -13,6 +13,11 @@ class PricingRepository extends RepositoryBase {
     let filteringAggregators = [];
     let sortAggregator = [];
 
+    const limitRaw = queryParams?.limit;
+    const offsetRaw = queryParams?.offset;
+    delete queryParams.limit;
+    delete queryParams.offset;
+
     if (Object.keys(queryParams).length > 0) {
       const { name, subscriptions, minPrice, maxPrice, selectedOwners, sortBy, sort } = queryParams;
 
@@ -131,10 +136,6 @@ class PricingRepository extends RepositoryBase {
     try {
       const aggregator = getAllPricingsAggregator(filteringAggregators, sortAggregator);
 
-      // parse pagination params to integers
-      const limitRaw = queryParams?.limit;
-      const offsetRaw = queryParams?.offset;
-
       let limit: number | undefined;
       let offset: number | undefined;
 
@@ -152,7 +153,7 @@ class PricingRepository extends RepositoryBase {
       const basePipeline: any[] = [
         {
           $match: {
-            private: false,
+            private: { $ne: true },
           },
         },
         ...aggregator,
@@ -250,6 +251,19 @@ class PricingRepository extends RepositoryBase {
         ]);
       }
 
+      if (!pricing || pricing.length === 0) {
+        return null;
+      }
+
+      return pricing[0];
+    } catch (err) {
+      return null;
+    }
+  }
+
+  async findAnyByNameAndOwner(name: string, owner: string, ...args: any) {
+    try {
+      const pricing = await PricingMongoose.aggregate(getPricingByNameAndOwnerAggregator(name, owner));
       if (!pricing || pricing.length === 0) {
         return null;
       }

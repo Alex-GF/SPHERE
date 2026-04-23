@@ -1,3 +1,4 @@
+import request from 'supertest';
 import type { Server } from 'http';
 import { initializeServer, disconnectDatabase } from '../../src/app';
 import { Application } from 'express';
@@ -5,13 +6,15 @@ import { Application } from 'express';
 let testServer: Server | null = null;
 let testApp: Application | null = null;
 
-const getApp = async (): Promise<Server> => {
+export type TestApp = Parameters<typeof request>[0];
+
+const getApp = async (): Promise<TestApp> => {
   if (!testServer) {
     const { server, app } = await initializeServer();
     testServer = server;
     testApp = app;
   }
-  return testServer;
+  return testServer as TestApp;
 };
 
 const shutdownApp = async () => {

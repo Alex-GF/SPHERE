@@ -93,7 +93,7 @@ class PricingCollectionRepository extends RepositoryBase {
       const basePipeline: any[] = [
         {
           $match: {
-            private: false,
+            private: { $ne: true },
           },
         },
         ...addNumberOfPricingsAggregator(),

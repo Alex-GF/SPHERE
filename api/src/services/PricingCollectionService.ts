@@ -30,6 +30,8 @@ class PricingCollectionService {
       throw new Error('Pricing collection not found');
     }
 
+    collection.analytics = this._normalizeCollectionAnalytics(collection.analytics);
+
     return collection;
   }
 
@@ -250,9 +252,16 @@ class PricingCollectionService {
   }
 
   _computeCollectionAnalytics(collection: RetrievedCollection) {
-    const collectionPricings = collection.pricings[0].pricings;
+    const collectionPricings = collection.pricings?.[0]?.pricings ?? [];
     const numberOfPricings = collectionPricings.length;
-    if (collectionPricings.length === 0) return null;
+    if (collectionPricings.length === 0) {
+      return {
+        evolutionOfPlans: { date: new Date().toISOString(), value: 0 },
+        evolutionOfAddOns: { date: new Date().toISOString(), value: 0 },
+        evolutionOfConfigurationSpaceSize: { date: new Date().toISOString(), value: 0 },
+        evolutionOfFeatures: { date: new Date().toISOString(), value: 0 },
+      };
+    }
 
     // Compute the new average analytics
     const aggregated = collectionPricings.reduce(
@@ -327,6 +336,20 @@ class PricingCollectionService {
     }
 
     throw new Error(errMsg);
+  }
+
+  _normalizeCollectionAnalytics(analytics: any) {
+    const ensureSeries = (series: any) => ({
+      dates: Array.isArray(series?.dates) ? series.dates : [],
+      values: Array.isArray(series?.values) ? series.values : [],
+    });
+
+    return {
+      evolutionOfPlans: ensureSeries(analytics?.evolutionOfPlans),
+      evolutionOfAddOns: ensureSeries(analytics?.evolutionOfAddOns),
+      evolutionOfFeatures: ensureSeries(analytics?.evolutionOfFeatures),
+      evolutionOfConfigurationSpaceSize: ensureSeries(analytics?.evolutionOfConfigurationSpaceSize),
+    };
   }
 }
 

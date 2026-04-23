@@ -115,10 +115,14 @@ class UserController {
 
   async updateToken(req: any, res: any) {
     try {
-      const token = await this.userService.updateToken((req as any).user.id);
+      const token = await this.userService.updateToken((req as any).user.token);
       res.json(token);
     } catch (err: any) {
-      res.status(500).send({error: err.message});
+      if (err.message.toLowerCase().includes('token')) {
+        res.status(401).send({ error: err.message });
+      } else {
+        res.status(500).send({error: err.message});
+      }
     }
   }
 

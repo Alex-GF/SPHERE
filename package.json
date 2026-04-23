@@ -5,6 +5,7 @@
   "scripts": {
     "install": "cd frontend && pnpm install && cd ../api && pnpm install",
     "dev": "pnpm run dev:api & pnpm run dev:vite",
+    "dev:setup": "cd docker/dev && docker compose up -d",
     "test": "pnpm run test:api",
     "build": "cd frontend && tsc -b && vite build",
     "lint": "eslint .",

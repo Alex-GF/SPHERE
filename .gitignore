@@ -34,3 +34,5 @@ api/public/static/collections
 # SSL
 
 nginx/production/ssl/
+
+coverage/

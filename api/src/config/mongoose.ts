@@ -26,7 +26,13 @@ const initMongoose = () => {
 
 const disconnectMongoose = async () => {
   console.log('Disconnecting from MongoDB')
-  mongoose.connection.db!.dropDatabase();
+  if (mongoose.connection.readyState === 1 && mongoose.connection.db) {
+    try {
+      await mongoose.connection.db.dropDatabase();
+    } catch (_error) {
+      // Ignore drop errors if the session is already closed.
+    }
+  }
   return mongoose.disconnect();
 }
 

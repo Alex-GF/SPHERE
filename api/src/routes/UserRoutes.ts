@@ -52,7 +52,7 @@ const loadFileRoutes = function (app: express.Application) {
     .route(baseUrl + '/users/loginAdmin')
     .post(UserValidation.login, handleValidation, userController.loginAdmin);
     app.route(baseUrl + '/users/tokenLogin').post(userController.loginByToken);
-  app.route(baseUrl + '/users/updateToken').post(userController.updateToken);
+  app.route(baseUrl + '/users/updateToken').post(isLoggedIn, userController.updateToken);
   app
     .route('/users/:userId')
     .get(checkEntityExists(userService, 'userId'), isLoggedIn, userController.show);
