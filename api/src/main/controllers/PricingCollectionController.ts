@@ -1,4 +1,4 @@
-import container from '../config/container.js';
+import container from '../../config/container.js';
 import PricingCollectionService from '../services/PricingCollectionService.js';
 import PricingService from '../services/PricingService.js';
 import { CollectionIndexQueryParams } from '../types/services/PricingCollection.js';

@@ -1,6 +1,6 @@
 import request from 'supertest';
 import type { Server } from 'http';
-import { initializeServer, disconnectDatabase } from '../../src/app';
+import { initializeServer, disconnectDatabase } from '../../main/app';
 import { Application } from 'express';
 
 let testServer: Server | null = null;
@@ -26,13 +26,4 @@ const shutdownApp = async () => {
   }
 };
 
-const getIdType = () => {
-  switch (process.env.DATABASE_TECHNOLOGY) {
-    case 'mongoDB':
-      return String;
-    default:
-      throw new Error('Unsupported database technology');
-  }
-};
-
-export { getApp, shutdownApp, getIdType };
+export { getApp, shutdownApp };

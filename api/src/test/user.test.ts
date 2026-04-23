@@ -1,33 +1,79 @@
 import dotenv from 'dotenv';
 import request from 'supertest';
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { getApp, shutdownApp } from './utils/testApp';
 import type { TestApp } from './utils/testApp';
-import { buildUserPayload, ensureAdminAndLogin, registerAndLoginUser } from './utils/integrationAuth';
+import { createTestUser, deleteTestUser } from './utils/users/userTestUtils';
 
 dotenv.config();
 
 describe('Users API integration', () => {
   let app: TestApp;
+  let usersToDelete: string[] = [];
 
   beforeAll(async () => {
     app = await getApp();
   });
 
+  afterEach(async () => {
+    // Clean up any test users created during the tests
+    for (const username of usersToDelete) {
+      await deleteTestUser(username);
+    }
+  });
+
+  afterAll(async () => {
+    await shutdownApp();
+  })
+
   describe('POST /api/users/register', () => {
-    it('creates a standard user', async () => {
-      const payload = buildUserPayload('register-user');
+    it('Returns 201 and creates a user with standard data', async () => {
+      const payload = {
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'john.doe@example.com',
+        username: 'johndoe',
+        password: 'password123',
+        role: 'USER',
+      };
 
       const response = await request(app).post('/api/users/register').send(payload);
 
       expect(response.status).toBe(201);
-      expect(response.body.email).toBe(payload.email);
+      expect(response.body.firstName).toBe(payload.firstName);
+      expect(response.body.lastName).toBe(payload.lastName);
       expect(response.body.username).toBe(payload.username);
-      expect(response.body.userType).toBe('user');
       expect(response.body.password).toBeUndefined();
+      expect(response.body.email).toBe(payload.email);
+      expect(response.body.role).toBe('USER');
+
+      usersToDelete.push(payload.username);
+    });
+    
+    it('Returns 201 and creates a user with lowercase role', async () => {
+      const payload = {
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'john.doe@example.com',
+        username: 'johndoe',
+        password: 'password123',
+        role: 'user',
+      };
+
+      const response = await request(app).post('/api/users/register').send(payload);
+
+      expect(response.status).toBe(201);
+      expect(response.body.firstName).toBe(payload.firstName);
+      expect(response.body.lastName).toBe(payload.lastName);
+      expect(response.body.username).toBe(payload.username);
+      expect(response.body.password).toBeUndefined();
+      expect(response.body.email).toBe(payload.email);
+      expect(response.body.role).toBe('USER');
+
+      usersToDelete.push(payload.username);
     });
 
-    it('returns 422 when login payload is invalid', async () => {
+    it('Returns 422 when login payload is invalid', async () => {
       const response = await request(app).post('/api/users/register').send({
         firstName: 'A',
         lastName: 'B',
@@ -38,26 +84,36 @@ describe('Users API integration', () => {
     });
   });
 
-  describe('POST /api/users/login and /api/users/loginAdmin', () => {
-    it('logs in with email and username for a created user', async () => {
-      const { user } = await registerAndLoginUser(app, 'login-user');
+  describe('POST /api/users/login', () => {
+    it('Returns 200 and logs in with email', async () => {
+      const user = await createTestUser('USER');
 
       const loginByEmail = await request(app).post('/api/users/login').send({
         loginField: user.email,
         password: user.password,
       });
+
+      expect(loginByEmail.status).toBe(200);
+      expect(loginByEmail.body.token).toBeDefined();
+
+      usersToDelete.push(user.username);
+    });
+    
+    it('Returns 200 and logs in with username', async () => {
+      const user = await createTestUser('USER');
+
       const loginByUsername = await request(app).post('/api/users/login').send({
         loginField: user.username,
         password: user.password,
       });
 
-      expect(loginByEmail.status).toBe(200);
-      expect(loginByEmail.body.token).toBeDefined();
       expect(loginByUsername.status).toBe(200);
       expect(loginByUsername.body.token).toBeDefined();
+
+      usersToDelete.push(user.username);
     });
 
-    it('returns 401 for invalid credentials', async () => {
+    it('Returns 401 for invalid credentials', async () => {
       const response = await request(app).post('/api/users/login').send({
         loginField: 'invalid@sphere.test',
         password: 'invalid-password',
@@ -67,7 +123,7 @@ describe('Users API integration', () => {
       expect(response.body.error).toBeDefined();
     });
 
-    it('returns 422 for invalid loginField format', async () => {
+    it('Returns 422 for invalid loginField format', async () => {
       const response = await request(app).post('/api/users/login').send({
         loginField: 'not-valid-login-field@@',
         password: 'some-password',
@@ -77,14 +133,20 @@ describe('Users API integration', () => {
       expect(Array.isArray(response.body.errors)).toBe(true);
     });
 
-    it('logs in as admin and returns token', async () => {
-      const adminAuth = await ensureAdminAndLogin(app);
+    it('Returns 200 and logs in as admin and returns token', async () => {
+      const testAdmin = await createTestUser('ADMIN');
 
-      expect(adminAuth.token).toBeDefined();
+      const adminAuthResponse = await request(app).post('/api/users/loginAdmin').send({
+        loginField: testAdmin.username,
+        password: testAdmin.password,
+      });
+
+      expect(adminAuthResponse.body.token).toBeDefined();
+      usersToDelete.push(testAdmin.username);
     });
   });
 
-  describe('POST /api/users/registerAdmin', () => {
+  describe('POST /api/users/register', () => {
     it('creates a new admin with admin token', async () => {
       const adminAuth = await ensureAdminAndLogin(app);
       const payload = buildUserPayload('register-admin');
@@ -120,7 +182,9 @@ describe('Users API integration', () => {
     });
 
     it('returns 401 for invalid token in tokenLogin', async () => {
-      const response = await request(app).post('/api/users/tokenLogin').send({ token: 'invalid-token' });
+      const response = await request(app)
+        .post('/api/users/tokenLogin')
+        .send({ token: 'invalid-token' });
 
       expect(response.status).toBe(401);
     });

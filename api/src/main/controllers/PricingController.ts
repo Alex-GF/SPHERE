@@ -1,5 +1,5 @@
 import fs from 'fs';
-import container from '../config/container.js';
+import container from '../../config/container.js';
 import PricingService from '../services/PricingService';
 import path from 'path';
 import { PricingIndexQueryParams } from '../types/services/PricingService.js';

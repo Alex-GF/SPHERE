@@ -1,4 +1,4 @@
-import container from '../config/container';
+import container from '../../config/container';
 import CacheService from '../services/CacheService';
 
 class CacheController {

@@ -1,7 +1,26 @@
-import mongoose, { Schema } from 'mongoose'
+import mongoose, { Document, Schema } from 'mongoose'
 import bcrypt from 'bcryptjs'
+import { USER_ROLES, UserRole } from '../../../types/config/permissions'
+import { processFileUris } from '../../../services/FileService'
 
 const userSchema = new Schema({
+  username: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  password: {
+    type: String,
+    minlength: 5,
+    required: true,
+    select: false
+  },
+  role: {
+    type: String,
+    required: true,
+    enum: USER_ROLES,
+    default: USER_ROLES[USER_ROLES.length - 1]
+  },
   firstName: {
     type: String,
     required: true
@@ -16,44 +35,25 @@ const userSchema = new Schema({
     unique: true,
     match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
   },
-  username: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  password: {
-    type: String,
-    minlength: 5,
-    required: true,
-    select: false
-  },
   phone: {
     type: String,
-    required: true
   },
   avatar: {
     type: String
   },
   address: {
     type: String,
-    required: false
   },
   postalCode: {
     type: String,
-    required: false
   },
-  userType: {
+  token: {
     type: String,
-    required: true,
-    enum: ['user', 'admin']
+  },
+  tokenExpiration: {
+    type: Date,
   }
 }, {
-  methods: {
-    async verifyPassword (password) {
-      return await bcrypt.compare(password, this.password)
-    }
-  },
-  strict: false,
   timestamps: true,
   toJSON: {
     virtuals: true,
@@ -61,6 +61,9 @@ const userSchema = new Schema({
       delete resultObject._id
       delete resultObject.__v
       delete resultObject.password
+      
+      processFileUris(resultObject, ['avatar'])
+      
       return resultObject
     }
   }
@@ -83,6 +86,22 @@ userSchema.pre('save', function (callback) {
   })
 })
 
-const userModel = mongoose.model('User', userSchema, 'users')
+export interface UserDocument extends Document {
+  id: string;
+  username: string;
+  password: string;
+  role: UserRole;
+  firstName: string;
+  lastName: string;
+  email: string;
+  avatar?: string;
+  phone?: string;
+  address?: string;
+  postalCode?: string;
+  token?: string;
+  tokenExpiration?: Date;
+}
+
+const userModel = mongoose.model<UserDocument>('User', userSchema, 'users')
 
 export default userModel

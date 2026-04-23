@@ -3,7 +3,6 @@ import request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { getApp, shutdownApp } from './utils/testApp';
 import type { TestApp } from './utils/testApp';
-import { ensureAdminAndLogin, registerAndLoginUser } from './utils/integrationAuth';
 
 dotenv.config();
 
@@ -42,30 +41,6 @@ describe('Pairwise auth and routing integration', () => {
           endpoint: '/api/users/login',
           loginField: 'not-an-email',
           password: userSession.user.password,
-          expected: 422,
-        },
-        {
-          endpoint: '/api/users/loginAdmin',
-          loginField: 'integration-admin@sphere.com',
-          password: 'IntegrationAdmin_123',
-          expected: 200,
-        },
-        {
-          endpoint: '/api/users/loginAdmin',
-          loginField: 'integ_admin',
-          password: 'IntegrationAdmin_123',
-          expected: 200,
-        },
-        {
-          endpoint: '/api/users/loginAdmin',
-          loginField: 'integration-admin@sphere.com',
-          password: 'wrong-password',
-          expected: 401,
-        },
-        {
-          endpoint: '/api/users/loginAdmin',
-          loginField: 'admin-invalid-format',
-          password: 'IntegrationAdmin_123',
           expected: 422,
         },
       ] as const;
