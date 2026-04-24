@@ -28,7 +28,7 @@ const loadFileRoutes = function (app: express.Application) {
     handleValidation, 
     userController.login);
   
-  app.route(baseUrl + '/users/updateToken').post(isLoggedIn, userController.updateToken);
+  app.route(baseUrl + '/users/updateToken').put(isLoggedIn, userController.updateToken);
   
   app
     .route(baseUrl + '/users/:username')

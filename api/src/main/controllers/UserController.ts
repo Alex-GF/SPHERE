@@ -1,5 +1,6 @@
 import container from '../config/container';
 import UserService from '../services/UserService';
+import { LeanUser } from '../types/models/User';
 import { handleError } from '../utils/users/helpers';
 
 class UserController {
@@ -16,10 +17,30 @@ class UserController {
   }
 
   async show(req: any, res: any) {
-    // Only returns PUBLIC information of users
+    // Only returns PUBLIC information of if reqUser ask for another username
     try {
-      const user = await this.userService.show(req.params.username);
-      res.json(user);
+      const targetUsername = req.params.username;
+      const user = await this.userService.show(targetUsername);
+
+      if (req.user.username === targetUsername || req.user.role === "ADMIN") {
+        return res.json(user);
+      } else {
+        const propertiesToBeRemoved = [
+          'password',
+          'createdAt',
+          'updatedAt',
+          'token',
+          'tokenExpiration',
+          'phone',
+        ];
+
+        const userObject = Object.assign({}, user);
+        propertiesToBeRemoved.forEach(property => {
+          delete (userObject as Record<string, any>)[property];
+        });
+
+        res.json(userObject);
+      }
     } catch (err: any) {
       const { status, message } = handleError(err);
       res.status(status).send({ error: message });
@@ -28,9 +49,8 @@ class UserController {
 
   async register(req: any, res: any) {
     try {
-      let registeredUser;
+      const registeredUser = await this.userService.register(req.body, req.user);
 
-      registeredUser = await this.userService.register(req.body, req.user);
       res.status(201).json(registeredUser);
     } catch (err: any) {
       const { status, message } = handleError(err);
@@ -40,11 +60,16 @@ class UserController {
 
   async login(req: any, res: any) {
     try {
-      const user = await this.userService.login(req.body.loginField, req.body.password);
-      res.json(user);
+      const user: LeanUser = await this.userService.login(req.body.loginField, req.body.password);
+
+      res.json({ token: user.token });
     } catch (err: any) {
-      const { status, message } = handleError(err);
-      res.status(status).send({ error: message });
+      if (err.message.toLowerCase().includes('invalid credentials')) {
+        return res.status(401).send({ error: err.message });
+      } else {
+        const { status, message } = handleError(err);
+        res.status(status).send({ error: message });
+      }
     }
   }
 

@@ -1,7 +1,7 @@
-import mongoose, { Document, Schema } from 'mongoose'
-import bcrypt from 'bcryptjs'
-import { USER_ROLES, UserRole } from '../../../types/config/permissions'
-import { processFileUris } from '../../../services/FileService'
+import mongoose, { Document, Schema } from 'mongoose';
+import bcrypt from 'bcryptjs';
+import { USER_ROLES, UserRole } from '../../../types/config/permissions';
+import { processFileUris } from '../../../services/FileService';
 
 const userSchema = new Schema({
   username: {
@@ -58,33 +58,33 @@ const userSchema = new Schema({
   toJSON: {
     virtuals: true,
     transform: function (doc, resultObject, options) {
-      delete resultObject._id
-      delete resultObject.__v
-      delete resultObject.password
+      delete resultObject._id;
+      delete resultObject.__v;
+      delete resultObject.password;
       
-      processFileUris(resultObject, ['avatar'])
+      processFileUris(resultObject, ['avatar']);
       
-      return resultObject
+      return resultObject;
     }
   }
-})
+});
 
 userSchema.pre('save', function (callback) {
-  const user = this
+  const user = this;
   // Break out if the password hasn't changed
-  if (!user.isModified('password')) return callback()
+  if (!user.isModified('password')) return callback();
 
   // Password changed so we need to hash it
   bcrypt.genSalt(5, function (err, salt) {
-    if (err) return callback(err)
+    if (err) return callback(err);
 
     bcrypt.hash(user.password, salt, function (err, hash) {
-      if (err) return callback(err)
-      user.password = hash
-      callback()
-    })
-  })
-})
+      if (err) return callback(err);
+      user.password = hash;
+      callback();
+    });
+  });
+});
 
 export interface UserDocument extends Document {
   id: string;
@@ -102,6 +102,6 @@ export interface UserDocument extends Document {
   tokenExpiration?: Date;
 }
 
-const userModel = mongoose.model<UserDocument>('User', userSchema, 'users')
+const userModel = mongoose.model<UserDocument>('User', userSchema, 'users');
 
-export default userModel
+export default userModel;

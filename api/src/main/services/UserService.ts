@@ -13,29 +13,16 @@ class UserService {
     this.userRepository = container.resolve('userRepository');
   }
 
-  async show(username: string) {
+  async show(username: string): Promise<LeanUser> {
     const user = await this.userRepository.findByUsername(username);
 
     if (!user) {
-      throw new Error('User not found');
+      throw new Error('NOT FOUND: User not found');
     }
 
     processFileUris(user, ['avatar']);
 
-    const propertiesToBeRemoved = [
-      'password',
-      'createdAt',
-      'updatedAt',
-      'token',
-      'tokenExpiration',
-      'phone',
-    ];
-
-    const userObject = Object.assign({}, user);
-    propertiesToBeRemoved.forEach(property => {
-      delete (userObject as Record<string, any>)[property];
-    });
-    return userObject;
+    return user;
   }
 
   async register(newUser: any, creatorData: LeanUser) {
@@ -89,7 +76,7 @@ class UserService {
     return { token: updatedUser!.token, tokenExpiration: updatedUser!.tokenExpiration };
   }
 
-  async login(loginField: string, password: string) {
+  async login(loginField: string, password: string): Promise<LeanUser> {
     let user: LeanUser | null = await this.userRepository.findByUsername(loginField);
 
     if (!user) {
@@ -110,7 +97,7 @@ class UserService {
       generateUserTokenDTO()
     );
 
-    return updatedUser;
+    return updatedUser!;
   }
 
   async update(reqUser: LeanUser, targetUsername: string, data: any) {
@@ -121,10 +108,10 @@ class UserService {
       throw new Error('PERMISSION ERROR: You can only update user roles if you are an admin');
     }
 
-    let userToUpdate = await this.userRepository.findByUsername(targetUsername);
+    const userToUpdate = await this.userRepository.findByUsername(targetUsername);
     
     if (!userToUpdate) {
-      throw new Error('INVALID DATA: User not found');
+      throw new Error('NOT FOUND: User not found');
     }
 
     // Validación: no permitir degradar al último admin
@@ -162,7 +149,7 @@ class UserService {
     const userToDelete = await this.userRepository.findByUsername(targetUsername);
 
     if (!userToDelete) {
-      throw new Error('INVALID DATA: User not found');
+      throw new Error('NOT FOUND: User not found');
     }
 
     // Validación: no permitir eliminar al último admin
@@ -176,7 +163,7 @@ class UserService {
 
     const result = await this.userRepository.destroy(targetUsername);
     if (!result) {
-      throw new Error('INVALID DATA: User not found');
+      throw new Error('NOT FOUND: User not found');
     }
     return true;
   }
