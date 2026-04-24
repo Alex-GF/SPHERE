@@ -25,8 +25,8 @@ const create = [
     .withMessage('A username must be provided in order to create the user')
     .isString()
     .withMessage('The username field must be a string')
-    .isLength({ min: 3, max: 15 })
-    .withMessage('The username must have between 3 and 15 characters long')
+    .isLength({ min: 3, max: 30 })
+    .withMessage('The username must have between 3 and 30 characters long')
     .trim(),
   check('email')
     .exists()
@@ -89,8 +89,8 @@ const update = [
     .optional()
     .isString()
     .withMessage('The username field must be a string')
-    .isLength({ min: 3, max: 15 })
-    .withMessage('The username must have between 3 and 15 characters long')
+    .isLength({ min: 3, max: 30 })
+    .withMessage('The username must have between 3 and 30 characters long')
     .trim(),
   check('email')
     .optional()
@@ -135,9 +135,9 @@ const login = [
     .withMessage('The loginField must be a string')
     .custom((value) => {
       const isEmail = /\S+@\S+\.\S+/.test(value);
-      const isUsername = /^[a-zA-Z0-9_]{3,15}$/.test(value);
+      const isUsername = /^[a-zA-Z0-9_]{3,30}$/.test(value);
       if (!isEmail && !isUsername) {
-        throw new Error('The loginField must be a valid email or username');
+        throw new Error('The loginField must be a valid email or username. This is, a string with 3-30 characters that can only contain letters, numbers and underscores, or a valid email address');
       }
       return true;
     }),

@@ -1,11 +1,12 @@
 import UserMongoose from '../../../main/repositories/mongoose/models/UserMongoose';
 import { UserRole, USER_ROLES } from '../../../main/types/config/permissions';
+import { TEST_PASSWORD } from '../config/variables';
 
 // Create a test user directly in the database
 export const createTestUser = async (role: UserRole = USER_ROLES[USER_ROLES.length - 1], username: string = `test_user_${Date.now()}`): Promise<any> => {
   const userData = {
     username: username,
-    password: 'password123',
+    password: TEST_PASSWORD,
     role,
     firstName: 'John',
     lastName: 'Doe',

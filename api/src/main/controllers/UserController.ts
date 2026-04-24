@@ -32,6 +32,10 @@ class UserController {
           'token',
           'tokenExpiration',
           'phone',
+          'role',
+          'email',
+          'address',
+          'postalCode'
         ];
 
         const userObject = Object.assign({}, user);
@@ -85,7 +89,7 @@ class UserController {
 
   async updateToken(req: any, res: any) {
     try {
-      const token = await this.userService.updateToken(req.user.token);
+      const token = await this.userService.updateToken(req.params.username, req.user);
       res.json(token);
     } catch (err: any) {
       const { status, message } = handleError(err);
@@ -95,7 +99,7 @@ class UserController {
 
   async destroy(req: any, res: any) {
     try {
-      const result = await this.userService.destroy(req.user.username, req.params.username);
+      const result = await this.userService.destroy(req.user, req.params.username);
       const message = result ? 'Successfully deleted.' : 'Could not delete user.';
       res.json({ message });
     } catch (err: any) {

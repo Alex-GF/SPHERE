@@ -1,6 +1,5 @@
 import express from 'express';
 import PricingCollectionController from '../controllers/PricingCollectionController';
-import { isLoggedIn } from '../middlewares/AuthMiddleware';
 import PricingController from '../controllers/PricingController';
 import { handleValidation } from '../middlewares/ValidationHandlingMiddleware';
 import * as PricingCollectionValidator from '../controllers/validation/PricingCollectionValidation';
@@ -16,34 +15,33 @@ const loadFileRoutes = function (app: express.Application) {
     path.resolve(process.cwd(), 'public', 'static', 'collections')
   );
 
-  const baseUrl = process.env.BASE_URL_PATH;
+  const baseUrl = (process.env.BASE_URL_PATH ?? "") + '/api/v1';
 
   app
     .route(baseUrl + '/pricings/collections')
     .get(pricingCollectionController.index)
-    .post(isLoggedIn, pricingCollectionController.create);
+    .post(pricingCollectionController.create);
 
   app
     .route(baseUrl + '/pricings/collections/bulk')
-    .post(isLoggedIn, upload, pricingCollectionController.bulkCreate);
+    .post(upload, pricingCollectionController.bulkCreate);
 
-  app.route(baseUrl + '/me/collections').get(isLoggedIn, pricingCollectionController.showByUserId);
+  app.route(baseUrl + '/me/collections').get(pricingCollectionController.showByUserId);
 
   app
     .route(baseUrl + '/me/collections/pricings/:pricingName')
-    .delete(isLoggedIn, pricingController.removePricingFromCollection);
+    .delete(pricingController.removePricingFromCollection);
 
   app
     .route(baseUrl + '/pricings/collections/:userId/:collectionName')
     .get(pricingCollectionController.showByNameAndUserId)
-    .post(isLoggedIn, pricingCollectionController.generateAnalytics)
+    .post(pricingCollectionController.generateAnalytics)
     .put(
-      isLoggedIn,
       PricingCollectionValidator.update,
       handleValidation,
       pricingCollectionController.update
     )
-    .delete(isLoggedIn, pricingCollectionController.destroy);
+    .delete(pricingCollectionController.destroy);
 
   app
     .route(baseUrl + '/pricings/collections/:userId/:collectionName/download')

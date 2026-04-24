@@ -32,18 +32,18 @@ class UserRepository extends RepositoryBase {
     return await UserMongoose.findOne({ token });
   }
 
-  async findByEmail(email: string): Promise<LeanUser | null> {
+  async findByEmail(email: string, selector: string = ""): Promise<LeanUser | null> {
     try {
-      const user = await UserMongoose.findOne({ email }, { password: 1 }).exec();
+      const user = await UserMongoose.findOne({ email }).select(selector).exec();
       return user ? user.toObject({ getters: true, virtuals: true, versionKey: false }) : null;
     } catch (err) {
       return null;
     }
   }
 
-  async findByUsername(username: string): Promise<LeanUser | null> {
+  async findByUsername(username: string, selector: string = ""): Promise<LeanUser | null> {
     try {
-      const user = await UserMongoose.findOne({ username }, { password: 1 }).exec();
+      const user = await UserMongoose.findOne({ username }).select(selector).exec();
       return user ? user.toObject({ getters: true, virtuals: true, versionKey: false }) : null;
     } catch (err) {
       return null;
@@ -63,7 +63,7 @@ class UserRepository extends RepositoryBase {
     });
 
     if (!updatedUser) {
-      throw new Error('INVALID DATA: User not found');
+      throw new Error('ERROR: Error while updating user. User not found.');
     }
 
     return updatedUser?.toObject({ getters: true, virtuals: true, versionKey: false }) || null;
@@ -76,8 +76,8 @@ class UserRepository extends RepositoryBase {
     return await this.update(username, tokenDTO);
   }
 
-  async destroy(id: string): Promise<boolean> {
-    const result = await UserMongoose.deleteOne({ _id: id });
+  async destroy(username: string): Promise<boolean> {
+    const result = await UserMongoose.deleteOne({ username }).exec();
     return result?.deletedCount === 1;
   }
 }

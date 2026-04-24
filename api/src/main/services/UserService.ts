@@ -51,25 +51,19 @@ class UserService {
     return registeredUser;
   }
 
-  async loginByToken(token: string): Promise<LeanUser> {
-    const user = await this.userRepository.findByToken(token);
-    if (user && user.tokenExpiration! > new Date()) {
-      processFileUris(user, ['avatar']);
-      return user;
+  async updateToken(targetUsername: string, reqUser: LeanUser) {
+    if (targetUsername !== reqUser.username && reqUser.role !== 'ADMIN') {
+      throw new Error('PERMISSION ERROR: You can only update your own token');
     }
-    const errorMessage = user?.tokenExpiration! <= new Date() ? 'Token expired' : 'Token not valid';
-    throw new Error(errorMessage);
-  }
-
-  async updateToken(token: string) {
-    const user = await this.loginByToken(token);
+    
+    const user = await this.userRepository.findByUsername(targetUsername);
 
     if (!user) {
-      throw new Error('INVALID DATA: Token not valid');
+      throw new Error('INVALID DATA: User not found');
     }
 
     const updatedUser = await this.userRepository.updateToken(
-      user.username,
+      targetUsername,
       generateUserTokenDTO()
     );
 
@@ -77,10 +71,10 @@ class UserService {
   }
 
   async login(loginField: string, password: string): Promise<LeanUser> {
-    let user: LeanUser | null = await this.userRepository.findByUsername(loginField);
+    let user: LeanUser | null = await this.userRepository.findByUsername(loginField, "+password");
 
     if (!user) {
-      user = await this.userRepository.findByEmail(loginField);
+      user = await this.userRepository.findByEmail(loginField, "+password");
       if (!user) {
         throw new Error('INVALID DATA: Invalid credentials');
       }

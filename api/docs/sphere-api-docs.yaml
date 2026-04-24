@@ -126,45 +126,6 @@ paths:
               example:
                 error: Invalid credentials
 
-  /users/updateToken:
-    put:
-      summary: Regenerate user's token
-      description: |
-        Generates a new User API Token for the specified user. This immediately invalidates 
-        any previous API token for that user.
-
-        **Authentication**: ADMIN Role
-
-      tags:
-        - Users
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - $ref: '#/components/parameters/Username'
-      responses:
-        '200':
-          description: API Token regenerated
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  token:
-                    $ref: '#/components/schemas/ApiToken'
-        '401':
-          description: Authentication required
-        '403':
-          description: Insufficient permissions
-        '404':
-          description: User not found
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-
   /users/{username}:
     get:
       summary: Get user details by username
@@ -282,6 +243,45 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+
+  /users/{username}/updateToken:
+    put:
+      summary: Regenerate user's token
+      description: |
+        Generates a new User API Token for the specified user. This immediately invalidates 
+        any previous API token for that user.
+
+        **Authentication**: ADMIN Role
+
+      tags:
+        - Users
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+      responses:
+        '200':
+          description: API Token regenerated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    $ref: '#/components/schemas/ApiToken'
+        '401':
+          description: Authentication required
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: User not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
 
   /organizations:
     get:

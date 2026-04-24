@@ -1,5 +1,4 @@
 import express from 'express';
-import { isLoggedIn } from '../middlewares/AuthMiddleware';
 import PricingController from '../controllers/PricingController';
 import { handlePricingUpload } from '../middlewares/FileHandlerMiddleware';
 import * as PricingValidator from '../controllers/validation/PricingValidation';
@@ -9,35 +8,36 @@ import path from 'path';
 const loadFileRoutes = function (app: express.Application) {
   const pricingController = new PricingController();
   const upload = handlePricingUpload(
-  ["yaml"],
-  path.resolve(process.cwd(), "public", "static", "pricings", "uploaded")
-)
+    ['yaml'],
+    path.resolve(process.cwd(), 'public', 'static', 'pricings', 'uploaded')
+  );
 
-  const baseUrl = process.env.BASE_URL_PATH;
+  const baseUrl = (process.env.BASE_URL_PATH ?? "") + '/api/v1';
 
   app
     .route(baseUrl + '/pricings')
     .get(pricingController.index)
-    .post(isLoggedIn, upload, pricingController.create)
+    .post(upload, pricingController.create)
     .put(pricingController.updateVersion);
 
-  app.route(baseUrl + '/pricings/:pricingId/configuration-space')
-    .get(pricingController.getConfigurationSpace)
+  app
+    .route(baseUrl + '/pricings/:pricingId/configuration-space')
+    .get(pricingController.getConfigurationSpace);
 
   app
     .route(baseUrl + '/pricings/:owner/:pricingName')
     .get(pricingController.show)
-    .put(isLoggedIn, PricingValidator.update, handleValidation, pricingController.update)
-    .delete(isLoggedIn, pricingController.destroyByNameAndOwner);
-  
+    .put(PricingValidator.update, handleValidation, pricingController.update)
+    .delete(pricingController.destroyByNameAndOwner);
+
   app
     .route(baseUrl + '/pricings/:owner/:pricingName/:pricingVersion')
-    .delete(isLoggedIn, pricingController.destroyVersionByNameAndOwner);
+    .delete(pricingController.destroyVersionByNameAndOwner);
 
   app
     .route(baseUrl + '/me/pricings')
-    .get(isLoggedIn, pricingController.indexByUserWithoutCollection)
-    .put(isLoggedIn, pricingController.addPricingToCollection);
+    .get(pricingController.indexByUserWithoutCollection)
+    .put(pricingController.addPricingToCollection);
 };
 
 export default loadFileRoutes;

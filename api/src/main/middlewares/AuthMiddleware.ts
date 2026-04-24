@@ -1,39 +1,123 @@
 
-import { NextFunction } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import container from '../config/container';
+import { HttpMethod } from '../types/permissions';
+import { extractApiPath, matchPath } from '../utils/routeMatcher';
+import { DEFAULT_PERMISSION_DENIED_MESSAGE, ROUTE_PERMISSIONS } from '../config/permissions';
+import UserRepository from '../repositories/mongoose/UserRepository';
 
-const hasRole = (...roles: string[]) => (req: any, res: any, next: NextFunction) => {
-  if (!req.user) {
-    return res.status(403).send({ error: 'Not logged in' })
+/**
+ * Middleware to authenticate API Keys (both User and Organization types)
+ *
+ * Supports two types of API Keys:
+ * 1. User API Keys (prefix: "usr_") - Authenticates a specific user
+ * 2. Organization API Keys (prefix: "org_") - Authenticates at organization level
+ *
+ * Sets req.user for User API Keys
+ * Sets req.org for Organization API Keys
+ */
+const authenticateTokenMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+  const authHeader: string = req.headers.authorization || "";
+
+  try {
+    const token = authHeader.startsWith('Bearer ') ? authHeader.split(' ')[1] : '';
+    if (!token) {
+      return checkPermissions(req, res, next);
+    } else {
+      await authenticateToken(req, token);
+    }
+
+    return checkPermissions(req, res, next);
+  } catch (err: any) {
+    if (!res.headersSent) {
+      return res.status(401).json({
+        error: err.message || 'Invalid API Key',
+      });
+    }
   }
-  if (!roles.includes(req.user.userType)) {
-    return res.status(403).send({ error: 'Not enough privileges' })
+};
+
+/**
+ * Authenticates a User API Key and populates req.user
+ */
+async function authenticateToken(req: Request, token: string): Promise<void> {
+  const userRepository: UserRepository = container.resolve('userRepository');
+
+  const user = await userRepository.findOne({ token: token });
+
+  if (!user) {
+    throw new Error('Invalid User Token');
   }
-  return next()
+
+  (req as any).user = user;
 }
 
-const isLoggedIn = async (req: any, res: any, next: NextFunction) => {
-  const userService = container.resolve('userService');
-  
-  const authHeader = req.headers.authorization;
-  if (!authHeader) {
-    return res.status(401).send({ error: 'No authorization header found' });
-  }
+/**
+ * Middleware to verify permissions based on route configuration
+ *
+ * Checks if the authenticated entity (user or organization) has permission
+ * to access the requested route with the specified HTTP method.
+ *
+ * Must be used AFTER authenticateApiKey middleware.
+ */
+const checkPermissions = (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const method = req.method.toUpperCase() as HttpMethod;
+    const baseUrlPath = (process.env.BASE_URL_PATH ?? "") + '/api/v1';
+    const apiPath = extractApiPath(req.path, baseUrlPath);
 
-  if (!authHeader.startsWith('Bearer ')) {
-    return res.status(401).send({ error: 'Invalid authorization header. Remeber to use `Bearer {token}`' });
-  }
+    // Find matching permission rule
+    const matchingRule = ROUTE_PERMISSIONS.find(rule => {
+      const methodMatches = rule.methods.includes(method);
+      const pathMatches = matchPath(rule.path, apiPath);
+      return methodMatches && pathMatches;
+    });
 
-  const token = authHeader.split(' ')[1];
+    // If no rule matches, deny by default
+    if (!matchingRule) {
+      return res.status(403).json({
+        error: DEFAULT_PERMISSION_DENIED_MESSAGE,
+        details: `No permission rule found for ${method} ${apiPath}`,
+      });
+    }
 
-  try{
-    const user = await userService.loginByToken(token);
-    req.user = user;
+    // Allow public routes without authentication
+    if (matchingRule.isPublic) {
+      return next();
+    }
+
+    // Protected route - require authentication
+    if (!(req as any).user) {
+      return res.status(401).json({
+        error:
+          'Token not found. Please ensure to add a token as value of the "Authorization" header, using `Bearer {token}` format.',
+      });
+    }
+
+    // Verify permissions based on auth type
+    if ((req as any).user) {
+      if (
+        !matchingRule.allowedUserRoles ||
+        !matchingRule.allowedUserRoles.includes((req as any).user.role)
+      ) {
+        return res.status(403).json({
+          error: `Your user role (${(req as any).user.role}) does not have permission to ${method} ${apiPath}`,
+        });
+      }
+    } else {
+      // No valid authentication found
+      return res.status(401).json({
+        error: 'Authentication required',
+      });
+    }
+
+    // Permission granted
     next();
-  }catch(err){
-    return res.status(401).send({ error: (err as Error).message });
+  } catch (error) {
+    return res.status(500).json({
+      error: 'Internal error while verifying permissions',
+    });
   }
+};
 
-}
-
-export { hasRole, isLoggedIn }
+export { authenticateTokenMiddleware };

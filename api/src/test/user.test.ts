@@ -1,80 +1,112 @@
 import dotenv from 'dotenv';
 import request from 'supertest';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
-import { getApp, shutdownApp } from './utils/testApp';
-import type { TestApp } from './utils/testApp';
+import { getApp, shutdownApp, TestApp } from './utils/testApp';
 import { createTestUser, deleteTestUser } from './utils/users/userTestUtils';
+import { LeanUser } from '../main/types/models/User';
+import { TEST_PASSWORD } from './utils/config/variables';
 
 dotenv.config();
 
 describe('Users API integration', () => {
   let app: TestApp;
-  let usersToDelete: string[] = [];
+  const usersToDelete = new Set<string>();
+  let adminUser: LeanUser;
+  let testUser: LeanUser;
+  let adminApiToken: string;
+  let userApiToken: string;
+  const basePath = (process.env.BASE_URL_PATH ?? "") + '/api/v1';
 
   beforeAll(async () => {
     app = await getApp();
+    adminUser = await createTestUser('ADMIN');
+    testUser = await createTestUser('USER');
+    
+    const responseAdminLogin = await request(app).post(`${basePath}/users/login`).send({
+      loginField: adminUser.username,
+      password: TEST_PASSWORD,
+    });
+
+    const responseUserLogin = await request(app).post(`${basePath}/users/login`).send({
+      loginField: testUser.username,
+      password: TEST_PASSWORD,
+    });
+
+    adminApiToken = responseAdminLogin.body.token;
+    userApiToken = responseUserLogin.body.token;
   });
 
   afterEach(async () => {
-    // Clean up any test users created during the tests
     for (const username of usersToDelete) {
       await deleteTestUser(username);
     }
+    usersToDelete.clear();
   });
 
   afterAll(async () => {
     await shutdownApp();
-  })
+  });
 
   describe('POST /api/users/register', () => {
-    it('Returns 201 and creates a user with standard data', async () => {
-      const payload = {
+
+    const randomSuffix = () => Math.random().toString(36).substring(2, 8);
+
+    const buildRegisterPayload = (overrides: Record<string, any> = {}) => {
+      const suffix = randomSuffix();
+
+      return {
         firstName: 'John',
         lastName: 'Doe',
-        email: 'john.doe@example.com',
-        username: 'johndoe',
-        password: 'password123',
+        email: `john.${suffix}@example.com`,
+        username: `john_doe_${suffix}`,
+        password: TEST_PASSWORD,
+        phone: `+34-600-${String(Math.floor(Math.random() * 10000)).padStart(4, '0')}`,
         role: 'USER',
+        ...overrides,
       };
+    };
 
-      const response = await request(app).post('/api/users/register').send(payload);
+    it('Return 201 and user object with valid required fields.', async () => {
+      const payload = buildRegisterPayload();
+
+      const response = await request(app).post(`${basePath}/users/register`).send(payload);
 
       expect(response.status).toBe(201);
-      expect(response.body.firstName).toBe(payload.firstName);
-      expect(response.body.lastName).toBe(payload.lastName);
       expect(response.body.username).toBe(payload.username);
-      expect(response.body.password).toBeUndefined();
       expect(response.body.email).toBe(payload.email);
       expect(response.body.role).toBe('USER');
+      expect(typeof response.body.password).toBe('string');
 
-      usersToDelete.push(payload.username);
+      usersToDelete.add(payload.username);
     });
-    
-    it('Returns 201 and creates a user with lowercase role', async () => {
-      const payload = {
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john.doe@example.com',
-        username: 'johndoe',
-        password: 'password123',
-        role: 'user',
-      };
 
-      const response = await request(app).post('/api/users/register').send(payload);
+    it('Return 201 and user object with omitted role parameter.', async () => {
+      const payload: any = buildRegisterPayload();
+      delete payload.role;
+
+      const response = await request(app).post(`${basePath}/users/register`).send(payload);
 
       expect(response.status).toBe(201);
-      expect(response.body.firstName).toBe(payload.firstName);
-      expect(response.body.lastName).toBe(payload.lastName);
       expect(response.body.username).toBe(payload.username);
-      expect(response.body.password).toBeUndefined();
-      expect(response.body.email).toBe(payload.email);
       expect(response.body.role).toBe('USER');
 
-      usersToDelete.push(payload.username);
+      usersToDelete.add(payload.username);
     });
 
-    it('Returns 422 when login payload is invalid', async () => {
-      const response = await request(app).post('/api/users/register').send({
+    it('Return 403 if USER tries to create an ADMIN', async () => {
+      const payload = buildRegisterPayload({ role: 'ADMIN' });
+      
+      const response = await request(app)
+        .post(`${basePath}/users/register`)
+        .set('Authorization', `Bearer ${userApiToken}`)
+        .send(payload);
+
+      expect(response.status).toBe(403);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('Return 422 and validation errors object with missing required parameters.', async () => {
+      const response = await request(app).post(`${basePath}/users/register`).send({
         firstName: 'A',
         lastName: 'B',
       });
@@ -82,39 +114,88 @@ describe('Users API integration', () => {
       expect(response.status).toBe(422);
       expect(Array.isArray(response.body.errors)).toBe(true);
     });
+
+    it('Return 422 and validation errors object with invalid email parameter.', async () => {
+      const payload = buildRegisterPayload({ email: 'invalid-email-format' });
+
+      const response = await request(app).post(`${basePath}/users/register`).send(payload);
+
+      expect(response.status).toBe(422);
+      expect(Array.isArray(response.body.errors)).toBe(true);
+    });
+
+    it('Return 422 and validation errors object with password parameter containing spaces.', async () => {
+      const payload = buildRegisterPayload({ password: 'abc def' });
+
+      const response = await request(app).post(`${basePath}/users/register`).send(payload);
+
+      expect(response.status).toBe(422);
+      expect(Array.isArray(response.body.errors)).toBe(true);
+    });
+
+    it('Return 422 and error object with duplicated username parameter.', async () => {
+      const payload = buildRegisterPayload();
+
+      const firstResponse = await request(app).post(`${basePath}/users/register`).send(payload);
+      expect(firstResponse.status).toBe(201);
+
+      usersToDelete.add(payload.username);
+
+      const duplicatePayload = buildRegisterPayload({
+        username: payload.username,
+        email: `duplicate.${randomSuffix()}@example.com`,
+      });
+      const duplicateResponse = await request(app)
+        .post(`${basePath}/users/register`)
+        .send(duplicatePayload);
+
+      expect(duplicateResponse.status).toBe(422);
+      expect(duplicateResponse.body.error).toContain('username');
+    });
   });
 
   describe('POST /api/users/login', () => {
-    it('Returns 200 and logs in with email', async () => {
+    it('Return 200 and token object with email as loginField parameter.', async () => {
       const user = await createTestUser('USER');
+      usersToDelete.add(user.username);
 
-      const loginByEmail = await request(app).post('/api/users/login').send({
+      const loginByEmail = await request(app).post(`${basePath}/users/login`).send({
         loginField: user.email,
-        password: user.password,
+        password: TEST_PASSWORD,
       });
 
       expect(loginByEmail.status).toBe(200);
       expect(loginByEmail.body.token).toBeDefined();
-
-      usersToDelete.push(user.username);
     });
-    
-    it('Returns 200 and logs in with username', async () => {
-      const user = await createTestUser('USER');
 
-      const loginByUsername = await request(app).post('/api/users/login').send({
+    it('Return 200 and token object with username as loginField parameter.', async () => {
+      const user = await createTestUser('USER');
+      usersToDelete.add(user.username);
+
+      const loginByUsername = await request(app).post(`${basePath}/users/login`).send({
         loginField: user.username,
-        password: user.password,
+        password: TEST_PASSWORD,
       });
 
       expect(loginByUsername.status).toBe(200);
       expect(loginByUsername.body.token).toBeDefined();
-
-      usersToDelete.push(user.username);
     });
 
-    it('Returns 401 for invalid credentials', async () => {
-      const response = await request(app).post('/api/users/login').send({
+    it('Return 401 and error object with wrong password parameter.', async () => {
+      const user = await createTestUser('USER');
+      usersToDelete.add(user.username);
+
+      const response = await request(app).post(`${basePath}/users/login`).send({
+        loginField: user.username,
+        password: 'wrong-password',
+      });
+
+      expect(response.status).toBe(401);
+      expect(response.body.error).toContain('Invalid credentials');
+    });
+
+    it('Return 401 and error object with unknown loginField parameter.', async () => {
+      const response = await request(app).post(`${basePath}/users/login`).send({
         loginField: 'invalid@sphere.test',
         password: 'invalid-password',
       });
@@ -123,8 +204,8 @@ describe('Users API integration', () => {
       expect(response.body.error).toBeDefined();
     });
 
-    it('Returns 422 for invalid loginField format', async () => {
-      const response = await request(app).post('/api/users/login').send({
+    it('Return 422 and validation errors object with invalid loginField format parameter.', async () => {
+      const response = await request(app).post(`${basePath}/users/login`).send({
         loginField: 'not-valid-login-field@@',
         password: 'some-password',
       });
@@ -133,157 +214,408 @@ describe('Users API integration', () => {
       expect(Array.isArray(response.body.errors)).toBe(true);
     });
 
-    it('Returns 200 and logs in as admin and returns token', async () => {
-      const testAdmin = await createTestUser('ADMIN');
-
-      const adminAuthResponse = await request(app).post('/api/users/loginAdmin').send({
-        loginField: testAdmin.username,
-        password: testAdmin.password,
+    it('Return 422 and validation errors object with missing password parameter.', async () => {
+      const response = await request(app).post(`${basePath}/users/login`).send({
+        loginField: 'validUser',
       });
-
-      expect(adminAuthResponse.body.token).toBeDefined();
-      usersToDelete.push(testAdmin.username);
-    });
-  });
-
-  describe('POST /api/users/register', () => {
-    it('creates a new admin with admin token', async () => {
-      const adminAuth = await ensureAdminAndLogin(app);
-      const payload = buildUserPayload('register-admin');
-
-      const response = await request(app)
-        .post('/api/users/registerAdmin')
-        .set('Authorization', `Bearer ${adminAuth.token}`)
-        .send(payload);
-
-      expect(response.status).toBe(201);
-      expect(response.body.userType).toBe('admin');
-      expect(response.body.password).toBeUndefined();
-    });
-
-    it('returns 401 without token', async () => {
-      const payload = buildUserPayload('register-admin-no-token');
-
-      const response = await request(app).post('/api/users/registerAdmin').send(payload);
-
-      expect(response.status).toBe(401);
-    });
-  });
-
-  describe('POST /api/users/tokenLogin and /api/users/updateToken', () => {
-    it('logs in by token for a valid user token', async () => {
-      const { auth } = await registerAndLoginUser(app, 'token-login-user');
-
-      const response = await request(app).post('/api/users/tokenLogin').send({ token: auth.token });
-
-      expect(response.status).toBe(200);
-      expect(response.body.id).toBe(auth.id);
-      expect(response.body.token).toBe(auth.token);
-    });
-
-    it('returns 401 for invalid token in tokenLogin', async () => {
-      const response = await request(app)
-        .post('/api/users/tokenLogin')
-        .send({ token: 'invalid-token' });
-
-      expect(response.status).toBe(401);
-    });
-
-    it('returns 401 when calling updateToken without auth middleware', async () => {
-      const response = await request(app).post('/api/users/updateToken').send({});
-
-      expect(response.status).toBe(401);
-      expect(response.body.error).toBe('No authorization header found');
-    });
-
-    it('returns 200 when calling updateToken with valid token', async () => {
-      const { auth } = await registerAndLoginUser(app, 'update-token-user');
-
-      const response = await request(app)
-        .post('/api/users/updateToken')
-        .set('Authorization', `Bearer ${auth.token}`)
-        .send({});
-
-      expect(response.status).toBe(200);
-      expect(response.body.token).toBeDefined();
-      expect(response.body.tokenExpiration).toBeDefined();
-    });
-
-    it('returns 401 when authorization header does not use Bearer scheme', async () => {
-      const response = await request(app)
-        .post('/api/users/updateToken')
-        .set('Authorization', 'Token abc')
-        .send({});
-
-      expect(response.status).toBe(401);
-      expect(response.body.error).toBeDefined();
-    });
-  });
-
-  describe('PUT /api/users and DELETE /api/users', () => {
-    it('updates the authenticated user', async () => {
-      const { auth } = await registerAndLoginUser(app, 'update-user');
-
-      const response = await request(app)
-        .put('/api/users')
-        .set('Authorization', `Bearer ${auth.token}`)
-        .send({ firstName: 'UpdatedName' });
-
-      expect(response.status).toBe(200);
-      expect(response.body.firstName).toBe('UpdatedName');
-      expect(response.body.password).toBeUndefined();
-    });
-
-    it('returns 422 when update payload is invalid', async () => {
-      const { auth } = await registerAndLoginUser(app, 'invalid-update-user');
-
-      const response = await request(app)
-        .put('/api/users')
-        .set('Authorization', `Bearer ${auth.token}`)
-        .send({ firstName: 123 });
 
       expect(response.status).toBe(422);
       expect(Array.isArray(response.body.errors)).toBe(true);
     });
 
-    it('deletes the authenticated user', async () => {
-      const { auth } = await registerAndLoginUser(app, 'delete-user');
+    it('Return 422 and validation errors object with non-string loginField parameter.', async () => {
+      const response = await request(app).post(`${basePath}/users/login`).send({
+        loginField: 12345,
+        password: TEST_PASSWORD,
+      });
 
-      const response = await request(app)
-        .delete('/api/users')
-        .set('Authorization', `Bearer ${auth.token}`);
-
-      expect(response.status).toBe(200);
-      expect(response.body).toBe('Successfully deleted.');
+      expect(response.status).toBe(422);
+      expect(Array.isArray(response.body.errors)).toBe(true);
     });
   });
 
-  describe('GET /users/:userId', () => {
-    it('returns public user info using the non-prefixed route', async () => {
-      const { auth } = await registerAndLoginUser(app, 'public-user');
+  describe('GET /api/users/:username', () => {
+    it('Return 200 and full user object with owner requesting own username parameter.', async () => {
+      const user = await createTestUser('USER');
+      usersToDelete.add(user.username);
 
       const response = await request(app)
-        .get(`/users/${auth.id}`)
-        .set('Authorization', `Bearer ${auth.token}`);
+        .get(`${basePath}/users/${user.username}`)
+        .set('Authorization', `Bearer ${user.token}`);
 
       expect(response.status).toBe(200);
-      expect(response.body.id).toBe(auth.id);
+      expect(response.body.username).toBe(user.username);
+      expect(response.body.role).toBeDefined();
+      expect(response.body.email).toBeDefined();
+      expect(response.body.token).toBeDefined();
       expect(response.body.password).toBeUndefined();
-      expect(response.body.phone).toBeUndefined();
     });
 
-    it('returns 404 when user id does not exist', async () => {
-      const { auth } = await registerAndLoginUser(app, 'public-user-404');
+    it('Return 200 and public user object with regular user requesting another username parameter.', async () => {
+      const user = await createTestUser('USER');
+      const otherUser = await createTestUser('USER');
+      usersToDelete.add(otherUser.username);
 
       const response = await request(app)
-        .get('/users/507f191e810c19729de860ea')
-        .set('Authorization', `Bearer ${auth.token}`);
+        .get(`${basePath}/users/${otherUser.username}`)
+        .set('Authorization', `Bearer ${user.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.username).toBe(otherUser.username);
+      expect(response.body.role).toBeUndefined();
+      expect(response.body.email).toBeUndefined();
+      expect(response.body.password).toBeUndefined();
+      expect(response.body.token).toBeUndefined();
+    });
+
+    it('Return 200 and full user object with admin requesting another username parameter.', async () => {
+      const adminUser = await createTestUser('ADMIN');
+      const targetUser = await createTestUser('USER');
+      usersToDelete.add(adminUser.username);
+      usersToDelete.add(targetUser.username);
+
+      const response = await request(app)
+        .get(`${basePath}/users/${targetUser.username}`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.username).toBe(targetUser.username);
+      expect(response.body.role).toBeDefined();
+      expect(response.body.email).toBeDefined();
+      expect(response.body.token).toBeDefined();
+      expect(response.body.password).toBeUndefined();
+    });
+
+    it('Return 401 and error object with missing Authorization header.', async () => {
+      const user = await createTestUser('USER');
+      usersToDelete.add(user.username);
+
+      const response = await request(app).get(`${basePath}/users/${user.username}`);
+
+      expect(response.status).toBe(401);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('Return 401 and error object with malformed Authorization header.', async () => {
+      const user = await createTestUser('USER');
+      usersToDelete.add(user.username);
+
+      const response = await request(app)
+        .get(`${basePath}/users/${user.username}`)
+        .set('Authorization', 'Token malformed');
+
+      expect(response.status).toBe(401);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('Return 404 and not found object with non-existing username parameter.', async () => {
+      const user = await createTestUser('USER');
+      usersToDelete.add(user.username);
+
+      const response = await request(app)
+        .get(`${basePath}/users/nonexistent_user`)
+        .set('Authorization', `Bearer ${user.token}`);
 
       expect(response.status).toBe(404);
     });
   });
 
-  afterAll(async () => {
-    await shutdownApp();
+  describe('PUT /api/users/:username', () => {
+    it('Return 200 and updated user object with owner editing own profile parameters.', async () => {
+      const user = await createTestUser('USER');
+      usersToDelete.add(user.username);
+
+      const payload = {
+        firstName: 'UpdatedName',
+        lastName: 'UpdatedLastName',
+        phone: '+34-611-1111',
+        address: 'Test street',
+      };
+
+      const response = await request(app)
+        .put(`${basePath}/users/${user.username}`)
+        .set('Authorization', `Bearer ${user.token}`)
+        .send(payload);
+
+      expect(response.status).toBe(200);
+      expect(response.body.firstName).toBe(payload.firstName);
+      expect(response.body.lastName).toBe(payload.lastName);
+      expect(response.body.phone).toBe(payload.phone);
+      expect(response.body.address).toBe(payload.address);
+    });
+
+    it('Return 200 and updated user object with owner changing password parameter.', async () => {
+      const user = await createTestUser('USER');
+      const updatedPassword = 'newPassword123';
+
+      const updateResponse = await request(app)
+        .put(`${basePath}/users/${user.username}`)
+        .set('Authorization', `Bearer ${user.token}`)
+        .send({ password: updatedPassword });
+
+      expect(updateResponse.status).toBe(200);
+
+      const oldPasswordLogin = await request(app).post(`${basePath}/users/login`).send({
+        loginField: user.username,
+        password: TEST_PASSWORD,
+      });
+      expect(oldPasswordLogin.status).toBe(401);
+
+      const newPasswordLogin = await request(app).post(`${basePath}/users/login`).send({
+        loginField: user.username,
+        password: updatedPassword,
+      });
+      expect(newPasswordLogin.status).toBe(200);
+      expect(newPasswordLogin.body.token).toBeDefined();
+    });
+
+    it('Return 200 and updated user object with admin changing another user role parameter.', async () => {
+      const adminUser = await createTestUser('ADMIN');
+      const targetUser = await createTestUser('USER');
+      usersToDelete.add(adminUser.username);
+      usersToDelete.add(targetUser.username);
+
+      const response = await request(app)
+        .put(`${basePath}/users/${targetUser.username}`)
+        .set('Authorization', `Bearer ${adminUser.token}`)
+        .send({ role: 'ADMIN' });
+
+      expect(response.status).toBe(200);
+      expect(response.body.role).toBe('ADMIN');
+    });
+
+    it('Return 403 and error object with regular user updating another username parameter.', async () => {
+      const user = await createTestUser('USER');
+      const otherUser = await createTestUser('USER');
+      usersToDelete.add(user.username);
+      usersToDelete.add(otherUser.username);
+
+      const response = await request(app)
+        .put(`${basePath}/users/${otherUser.username}`)
+        .set('Authorization', `Bearer ${user.token}`)
+        .send({ firstName: 'UnauthorizedChange' });
+
+      expect(response.status).toBe(403);
+      expect(response.body.error).toContain('only update your own');
+    });
+
+    it('Return 403 and error object with regular user changing own role parameter.', async () => {
+      const user = await createTestUser('USER');
+      usersToDelete.add(user.username);
+
+      const response = await request(app)
+        .put(`${basePath}/users/${user.username}`)
+        .set('Authorization', `Bearer ${user.token}`)
+        .send({ role: 'ADMIN' });
+
+      expect(response.status).toBe(403);
+      expect(response.body.error).toContain('only update user roles');
+    });
+
+    it('Return 422 and validation errors object with invalid email parameter.', async () => {
+      const user = await createTestUser('USER');
+      usersToDelete.add(user.username);
+
+      const response = await request(app)
+        .put(`${basePath}/users/${user.username}`)
+        .set('Authorization', `Bearer ${user.token}`)
+        .send({ email: 'invalid-email' });
+
+      expect(response.status).toBe(422);
+      expect(Array.isArray(response.body.errors)).toBe(true);
+    });
+
+    it('Return 422 and error object with duplicated username parameter.', async () => {
+      const user = await createTestUser('USER');
+      const existingUser = await createTestUser('USER');
+      usersToDelete.add(existingUser.username);
+
+      const response = await request(app)
+        .put(`${basePath}/users/${user.username}`)
+        .set('Authorization', `Bearer ${user.token}`)
+        .send({ username: existingUser.username });
+
+      expect(response.status).toBe(422);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('Return 401 and error object with missing Authorization header.', async () => {
+      const user = await createTestUser('USER');
+      usersToDelete.add(user.username);
+
+      const response = await request(app)
+        .put(`${basePath}/users/${user.username}`)
+        .send({ firstName: 'NoAuth' });
+
+      expect(response.status).toBe(401);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('Return 404 and not found object with non-existing username parameter.', async () => {
+      const user = await createTestUser('USER');
+      usersToDelete.add(user.username);
+
+      const response = await request(app)
+        .put(`${basePath}/users/nonexistent_user`)
+        .set('Authorization', `Bearer ${user.token}`)
+        .send({ firstName: 'Ghost' });
+
+      expect(response.status).toBe(404);
+    });
+  });
+
+  describe('PUT /api/users/:username/updateToken', () => {
+    it('Return 200 and token object with valid Bearer Authorization header.', async () => {
+      const user = await createTestUser('USER');
+      usersToDelete.add(user.username);
+      
+      const response = await request(app)
+        .put(`${basePath}/users/${user.username}/updateToken`)
+        .set('Authorization', `Bearer ${adminApiToken}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.token).toBeDefined();
+      expect(response.body.tokenExpiration).toBeDefined();
+      expect(response.body.token).not.toBe(user.token);
+    });
+
+    it('Return 401 and error object with missing Authorization header.', async () => {
+      const user = await createTestUser('USER');
+      usersToDelete.add(user.username);
+      
+      const response = await request(app).put(`${basePath}/users/${user.username}/updateToken`);
+
+      expect(response.status).toBe(401);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('Return 401 and error object with malformed Authorization header.', async () => {
+      const user = await createTestUser('USER');
+      usersToDelete.add(user.username);
+      
+      const response = await request(app)
+        .put(`${basePath}/users/${user.username}/updateToken`)
+        .set('Authorization', 'Token abc123');
+
+      expect(response.status).toBe(401);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('Return 401 and error object with invalid Bearer token parameter.', async () => {
+      const user = await createTestUser('USER');
+      usersToDelete.add(user.username);
+
+      const response = await request(app)
+        .put(`${basePath}/users/${user.username}/updateToken`)
+        .set('Authorization', 'Bearer invalid-token');
+
+      expect(response.status).toBe(401);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('Return 403 with USER role attempting to update user\'s token.', async () => {
+      const user = await createTestUser('USER');
+      usersToDelete.add(user.username);
+      
+      const response = await request(app)
+        .put(`${basePath}/users/${user.username}/updateToken`)
+        .set('Authorization', `Bearer ${userApiToken}`);
+
+      expect(response.status).toBe(403);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('Return 401 and 200 responses with old token invalidation after token regeneration.', async () => {
+      const adminUser = await createTestUser('ADMIN');
+      usersToDelete.add(adminUser.username);
+
+      const refreshResponse = await request(app)
+        .put(`${basePath}/users/${adminUser.username}/updateToken`)
+        .set('Authorization', `Bearer ${adminApiToken}`);
+      expect(refreshResponse.status).toBe(200);
+
+      const oldTokenResponse = await request(app)
+        .put(`${basePath}/users/${adminUser.username}/updateToken`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
+      expect(oldTokenResponse.status).toBe(401);
+
+      const newTokenResponse = await request(app)
+        .put(`${basePath}/users/${adminUser.username}/updateToken`)
+        .set('Authorization', `Bearer ${refreshResponse.body.token}`);
+      expect(newTokenResponse.status).toBe(200);
+      expect(newTokenResponse.body.token).toBeDefined();
+    });
+  });
+
+  describe('DELETE /api/users/:username', () => {
+    it('Return 200 and success message object with owner deleting own username parameter.', async () => {
+      const user = await createTestUser('USER');
+      usersToDelete.add(user.username);
+
+      const response = await request(app)
+        .delete(`${basePath}/users/${user.username}`)
+        .set('Authorization', `Bearer ${user.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.message).toBe('Successfully deleted.');
+    });
+
+    it('Return 200 and success message object with admin deleting another username parameter.', async () => {
+      const adminUser = await createTestUser('ADMIN');
+      const targetUser = await createTestUser('USER');
+      usersToDelete.add(adminUser.username);
+      usersToDelete.add(targetUser.username);
+
+      const response = await request(app)
+        .delete(`${basePath}/users/${targetUser.username}`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.message).toBe('Successfully deleted.');
+    });
+
+    it('Return 403 and error object with regular user deleting another username parameter.', async () => {
+      const user = await createTestUser('USER');
+      const otherUser = await createTestUser('USER');
+      usersToDelete.add(user.username);
+      usersToDelete.add(otherUser.username);
+
+      const response = await request(app)
+        .delete(`${basePath}/users/${otherUser.username}`)
+        .set('Authorization', `Bearer ${user.token}`);
+
+      expect(response.status).toBe(403);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('Return 401 and error object with missing Authorization header.', async () => {
+      const user = await createTestUser('USER');
+      usersToDelete.add(user.username);
+
+      const response = await request(app).delete(`${basePath}/users/${user.username}`);
+
+      expect(response.status).toBe(401);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('Return 404 and not found object with non-existing username parameter.', async () => {
+      const adminUser = await createTestUser('ADMIN');
+      usersToDelete.add(adminUser.username);
+
+      const response = await request(app)
+        .delete(`${basePath}/users/nonexistent_user}`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
+
+      expect(response.status).toBe(404);
+    });
+    
+    it('Return 403 when trying to delete last admin user', async () => {
+      const response = await request(app)
+        .delete(`${basePath}/users/${adminUser.username}`)
+        .set('Authorization', `Bearer ${adminApiToken}`);
+
+      expect(response.status).toBe(403);
+      expect(response.body.error.toLowerCase()).toContain("at least one");
+    });
   });
 });

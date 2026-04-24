@@ -2,6 +2,7 @@ import mongoose, { Document, Schema } from 'mongoose';
 import bcrypt from 'bcryptjs';
 import { USER_ROLES, UserRole } from '../../../types/config/permissions';
 import { processFileUris } from '../../../services/FileService';
+import { generateUserTokenDTO, hashPassword } from '../../../utils/users/helpers';
 
 const userSchema = new Schema({
   username: {
@@ -58,9 +59,9 @@ const userSchema = new Schema({
   toJSON: {
     virtuals: true,
     transform: function (doc, resultObject, options) {
-      delete resultObject._id;
-      delete resultObject.__v;
-      delete resultObject.password;
+      delete (resultObject as any)._id;
+      delete (resultObject as any).__v;
+      delete (resultObject as any).password;
       
       processFileUris(resultObject, ['avatar']);
       
@@ -69,21 +70,24 @@ const userSchema = new Schema({
   }
 });
 
-userSchema.pre('save', function (callback) {
+userSchema.pre('save', async function (callback) {
   const user = this;
   // Break out if the password hasn't changed
   if (!user.isModified('password')) return callback();
 
-  // Password changed so we need to hash it
-  bcrypt.genSalt(5, function (err, salt) {
-    if (err) return callback(err);
+  user.password = await hashPassword(user.password);
 
-    bcrypt.hash(user.password, salt, function (err, hash) {
-      if (err) return callback(err);
-      user.password = hash;
-      callback();
-    });
-  });
+  if (!user.token){
+    const tokenDTO = generateUserTokenDTO();
+    user.token = tokenDTO.token;
+    user.tokenExpiration = tokenDTO.tokenExpiration;
+  }
+
+  if (!user.avatar) {
+    user.avatar = 'avatars/default-avatar.png';
+  }
+
+  callback();
 });
 
 export interface UserDocument extends Document {
