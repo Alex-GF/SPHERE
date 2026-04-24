@@ -1,23 +1,16 @@
 import container from '../config/container';
 import UserRepository from '../repositories/mongoose/UserRepository';
-import { USER_ROLES, UserRole } from '../types/config/permissions';
-import { LeanUser } from '../types/models/user';
+import { USER_ROLES } from '../types/config/permissions';
+import { LeanUser } from '../types/models/User';
 import { processFileUris } from './FileService';
 import bcrypt from 'bcryptjs';
-import crypto from 'crypto';
+import { generateUserTokenDTO, hashPassword } from '../utils/users/helpers';
 
 class UserService {
   private userRepository: UserRepository;
 
   constructor() {
     this.userRepository = container.resolve('userRepository');
-  }
-
-  _createUserTokenDTO() {
-    return {
-      token: crypto.randomBytes(20).toString('hex'),
-      tokenExpiration: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours from now
-    };
   }
 
   async show(username: string) {
@@ -64,7 +57,7 @@ class UserService {
     }
 
     newUser.avatar = newUser.avatar || 'avatars/default-avatar.png';
-    newUser = { ...newUser, ...this._createUserTokenDTO() };
+    newUser = { ...newUser, ...generateUserTokenDTO() };
 
     const registeredUser = await this.userRepository.create(newUser);
 
@@ -90,7 +83,7 @@ class UserService {
 
     const updatedUser = await this.userRepository.updateToken(
       user.username,
-      this._createUserTokenDTO()
+      generateUserTokenDTO()
     );
 
     return { token: updatedUser!.token, tokenExpiration: updatedUser!.tokenExpiration };
@@ -114,44 +107,71 @@ class UserService {
 
     const updatedUser = await this.userRepository.updateToken(
       user.username,
-      this._createUserTokenDTO()
+      generateUserTokenDTO()
     );
 
     return updatedUser;
   }
 
   async update(reqUser: LeanUser, targetUsername: string, data: any) {
+    
+    if(reqUser.username !== targetUsername && reqUser.role !== 'ADMIN') {
+      throw new Error('PERMISSION ERROR: You can only update your own user data');
+    }else if (data.role && reqUser.role !== 'ADMIN') {
+      throw new Error('PERMISSION ERROR: You can only update user roles if you are an admin');
+    }
+
     let userToUpdate = await this.userRepository.findByUsername(targetUsername);
     
     if (!userToUpdate) {
       throw new Error('INVALID DATA: User not found');
     }
 
-    if (reqUser.username !== targetUsername && reqUser.role !== 'ADMIN') {
-      throw new Error('PERMISSION ERROR: You can only update your own user data');
+    // Validación: no permitir degradar al último admin
+    if (userToUpdate.role === 'ADMIN' && data.role && data.role !== 'ADMIN') {
+      const allAdmins = await this.userRepository.find({role: 'ADMIN'});
+      const adminCount = allAdmins.filter((u: LeanUser) => u.username !== targetUsername).length;
+      if (adminCount < 1) {
+        throw new Error('PERMISSION ERROR: There must always be at least one ADMIN user in the system.');
+      }
+    }
+
+    if (data.username && data.username !== targetUsername) {
+      const existingUser = await this.userRepository.findByUsername(data.username);
+      if (existingUser) {
+        throw new Error('INVALID DATA: There is already a user with the username that you are trying to set');
+      }
     }
 
     if (data.password) {
-      const salt = await bcrypt.genSalt(5)
-      data.password = await bcrypt.hash(data.password, salt)
+      data.password = await hashPassword(data.password);
     }
-
-    userToUpdate = {
-      ...userToUpdate,
-      ...data,
-    };
 
     const user = await this.userRepository.update(targetUsername, data);
-    if (!user) {
-      throw new Error('User not found');
-    }
+    
     processFileUris(user, ['avatar']);
+
     return user;
   }
 
   async destroy(reqUser: LeanUser, targetUsername: string) {
     if (reqUser.username !== targetUsername && reqUser.role !== 'ADMIN') {
       throw new Error('PERMISSION ERROR: You can only delete your own user');
+    }
+
+    const userToDelete = await this.userRepository.findByUsername(targetUsername);
+
+    if (!userToDelete) {
+      throw new Error('INVALID DATA: User not found');
+    }
+
+    // Validación: no permitir eliminar al último admin
+    if (userToDelete.role === 'ADMIN') {
+      const allAdmins = await this.userRepository.find({role: 'ADMIN'});
+      const adminCount = allAdmins.filter((u: LeanUser) => u.username !== targetUsername).length;
+      if (adminCount < 1) {
+        throw new Error('PERMISSION ERROR: There must always be at least one ADMIN user in the system.');
+      }
     }
 
     const result = await this.userRepository.destroy(targetUsername);

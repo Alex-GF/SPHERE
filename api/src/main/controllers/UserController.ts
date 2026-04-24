@@ -1,5 +1,6 @@
 import container from '../config/container';
 import UserService from '../services/UserService';
+import { handleError } from '../utils/users/helpers';
 
 class UserController {
   private userService: UserService;
@@ -20,7 +21,8 @@ class UserController {
       const user = await this.userService.show(req.params.username);
       res.json(user);
     } catch (err: any) {
-      res.status(500).send({ error: err.message });
+      const { status, message } = handleError(err);
+      res.status(status).send({ error: message });
     }
   }
 
@@ -31,13 +33,8 @@ class UserController {
       registeredUser = await this.userService.register(req.body, req.user);
       res.status(201).json(registeredUser);
     } catch (err: any) {
-      if (err.message.toLowerCase().includes('permission error')) {
-        res.status(403).send({ error: err.message });
-      } else if (err.message.toLowerCase().includes('invalid data')) {
-        res.status(422).send({ error: err.message });
-      } else {
-        res.status(500).send({ error: err.message });
-      }
+      const { status, message } = handleError(err);
+      res.status(status).send({ error: message });
     }
   }
 
@@ -46,10 +43,8 @@ class UserController {
       const user = await this.userService.login(req.body.loginField, req.body.password);
       res.json(user);
     } catch (err: any) {
-      if (err.message.toLowerCase().includes('invalid data')) {
-        return res.status(401).send({ error: err.message });
-      }
-      return res.status(500).send({ error: err.message });
+      const { status, message } = handleError(err);
+      res.status(status).send({ error: message });
     }
   }
 
@@ -58,7 +53,8 @@ class UserController {
       const user = await this.userService.update(req.user, req.params.username, req.body);
       res.json(user);
     } catch (err: any) {
-      res.status(500).send({ error: err.message });
+      const { status, message } = handleError(err);
+      res.status(status).send({ error: message });
     }
   }
 
@@ -67,11 +63,8 @@ class UserController {
       const token = await this.userService.updateToken(req.user.token);
       res.json(token);
     } catch (err: any) {
-      if (err.message.toLowerCase().includes('token')) {
-        res.status(401).send({ error: err.message });
-      } else {
-        res.status(500).send({ error: err.message });
-      }
+      const { status, message } = handleError(err);
+      res.status(status).send({ error: message });
     }
   }
 
@@ -79,9 +72,10 @@ class UserController {
     try {
       const result = await this.userService.destroy(req.user.username, req.params.username);
       const message = result ? 'Successfully deleted.' : 'Could not delete user.';
-      res.json(message);
+      res.json({ message });
     } catch (err: any) {
-      res.status(500).send({ error: err.message });
+      const { status, message } = handleError(err);
+      res.status(status).send({ error: message });
     }
   }
 }

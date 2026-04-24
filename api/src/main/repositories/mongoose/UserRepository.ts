@@ -1,4 +1,4 @@
-import { LeanUser } from '../../types/models/user';
+import { LeanUser } from '../../types/models/User';
 import RepositoryBase from '../RepositoryBase';
 import UserMongoose from './models/UserMongoose';
 
@@ -59,8 +59,12 @@ class UserRepository extends RepositoryBase {
   async update(username: string, businessEntity: any): Promise<LeanUser | null> {
     const updatedUser = await UserMongoose.findOneAndUpdate({ username }, businessEntity, {
       new: true,
-      exclude: ['password'],
+      projection: { password: 0 },
     });
+
+    if (!updatedUser) {
+      throw new Error('INVALID DATA: User not found');
+    }
 
     return updatedUser?.toObject({ getters: true, virtuals: true, versionKey: false }) || null;
   }
