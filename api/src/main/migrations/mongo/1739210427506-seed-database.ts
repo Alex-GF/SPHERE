@@ -23,7 +23,7 @@ export async function up (connection: Connection): Promise<void> {
   
   const seeder = new Seeder(config)
   
-  const collections = seeder.readCollectionsFromPath(path.resolve("./src/database/seeders/mongo/"))
+  const collections = seeder.readCollectionsFromPath(path.resolve("./src/main/database/seeders/mongo/"))
   
     try {
       await seeder.import(collections)

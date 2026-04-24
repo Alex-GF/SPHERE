@@ -10,7 +10,7 @@
     "build": "cd frontend && tsc -b && vite build",
     "lint": "eslint .",
     "migrate": "cd api && npx migrate up",
-    "dev:api": "cd api && npx migrate up && npx tsx --tsconfig tsconfig.json --watch src/backend.ts",
+    "dev:api": "cd api && npx migrate up && npx tsx --tsconfig tsconfig.json --watch src/main/backend.ts",
     "dev:vite": "cd frontend && npx vite",
     "test:api": "cd api && npx vitest --run && cd .. && pnpm run seed:mongo-local:small",
     "deploy:vercel": "cd frontend && vite build",
