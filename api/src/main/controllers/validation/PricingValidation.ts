@@ -1,5 +1,17 @@
 import { check } from 'express-validator';
 
+const create = [
+  check('private')
+    .exists({ checkNull: true, checkFalsy: true })
+    .isBoolean()
+    .withMessage('The private field is required and must be boolean'),
+  check('collectionId')
+    .optional()
+    .isString()
+    .withMessage('The collectionId field must be a string')
+    .trim(),
+];
+
 const update = [
   check('name')
     .optional()
@@ -24,10 +36,10 @@ const update = [
     .isString()
     .withMessage('The _collectionId field must be a string')
     .trim(),
-  check('extractionDate')
+  check('createdAt')
     .optional()
     .isISO8601()
-    .withMessage('The extractionDate field must be a valid ISO8601 date')
+    .withMessage('The createdAt field must be a valid ISO8601 date')
     .toDate(),
   check('url')
     .optional()
@@ -177,4 +189,4 @@ const update = [
     .withMessage('maxSubscriptionPrice must be a number'),
 ];
 
-export { update };
+export { create, update };

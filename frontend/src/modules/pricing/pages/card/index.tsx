@@ -53,7 +53,7 @@ export default function CardPage() {
       setFullPricingData(pricing.versions);
       setPricingData(pricing.versions);
       setCurrentPricing(currentPricing);
-      setOldestPricingDate(oldestPricing.extractionDate);
+      setOldestPricingDate(oldestPricing.createdAt);
     } else {
       throw new Error('No pricing versions found');
     }
@@ -155,7 +155,7 @@ export default function CardPage() {
 
   const handleInputDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newPricingData = fullPricingData?.filter(
-      entry => new Date(entry.extractionDate) >= new Date(e.target.value)
+      entry => new Date(entry.createdAt) >= new Date(e.target.value)
     );
     if (newPricingData) {
       setPricingData(newPricingData);
@@ -166,7 +166,7 @@ export default function CardPage() {
 
   const handleOutputDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newPricingData = fullPricingData?.filter(
-      entry => new Date(entry.extractionDate) <= new Date(e.target.value)
+      entry => new Date(entry.createdAt) <= new Date(e.target.value)
     );
     if (newPricingData) {
       setPricingData(newPricingData);
@@ -300,8 +300,8 @@ export default function CardPage() {
                 <p className="mb-4">
                   This is the pricing information for {pricing?.saasName}. The pricing version that
                   is currently displayed is from{' '}
-                  {currentPricing?.extractionDate
-                    ? new Date(currentPricing.extractionDate).toLocaleDateString()
+                  {currentPricing?.createdAt
+                    ? new Date(currentPricing.createdAt).toLocaleDateString()
                     : 'Unknown date'}
                   . The prices are displayed with {pricing?.currency} currency. In future versions,
                   more data will be provided in this card.

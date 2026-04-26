@@ -6,7 +6,7 @@ const pricingSchema = new Schema(
     owner: { type: String, required: true },
     _collectionId: { type: Schema.Types.ObjectId, ref: 'PricingCollection', required: false },
     version: { type: String, required: true },
-    extractionDate: { type: Date, required: true },
+    createdAt: { type: Date, required: true },
     url: { type: String, required: false },
     currency: { type: String, required: true },
     yaml: { type: String, required: true },
@@ -51,8 +51,8 @@ const pricingSchema = new Schema(
     toJSON: {
       virtuals: true,
       transform: function (doc, resultObject, options) {
-        delete resultObject._id;
-        delete resultObject.__v;
+        delete (resultObject as any)._id;
+        delete (resultObject as any).__v;
         return resultObject;
       },
     },

@@ -5,7 +5,7 @@ export function addLastPricingUpdateAggregator(): PipelineStage[]{
     {
       $set: {
         lastUpdate: {
-          $max: "$pricings.pricings.extractionDate"
+          $max: "$pricings.pricings.createdAt"
         }
       }
     },

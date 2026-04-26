@@ -129,7 +129,7 @@ class PricingCollectionService {
             _collectionId: collection._id,
             owner: username,
             currency: uploadedPricing.currency,
-            extractionDate: new Date(uploadedPricing.createdAt),
+            createdAt: new Date(uploadedPricing.createdAt),
             url: '',
             yaml: yamlPath,
             analytics: await pricingAnalytics.getAnalytics(),

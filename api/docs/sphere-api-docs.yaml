@@ -60,7 +60,13 @@ tags:
   - name: Authentication
     description: User authentication and API key management
   - name: Users
-    description: User account management (User API Key only)
+    description: User account management
+  - name: Pricings
+    description: Pricing Version Control System (PVCS)
+  - name: Collections
+    description: Collection management for grouping pricings
+
+
   - name: Organizations
     description: Organization management (User API Key only)
   - name: Services
@@ -186,7 +192,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserUpdate'
+              $ref: '#/components/requestBodies/UserUpdate'
       responses:
         '200':
           description: Operation Completed
@@ -282,2767 +288,58 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
-
-  /organizations:
+  /pricings:
     get:
-      summary: List organizations with optional filtering and pagination
+      summary: Get and filter pricings
       description: |
-        Retrieves a list of organizations accessible to the authenticated user.
+        Retrieves a paginated list of PUBLIC pricings that match the provided filter.
 
-        **Authentication**: User API Key
-
-        **Permission**: 
-        - ADMIN users: can see all organizations with pagination and filtering
-        - Regular users: can see only their own organizations (as owner or member) without pagination
-
-        **Two response formats based on user role**:
-        
-        1. **ADMIN Users** (paginated response):
-           - Returns all organizations in the system with pagination
-           - Supports search filtering by organization name
-           - Use `offset` and `limit` to paginate through results
-           - Returns object with `data` array and `pagination` metadata
-        
-        2. **Regular Users** (non-paginated response):
-           - Returns only organizations where user is owner or member
-           - No pagination applied
-           - Returns object with `data` array only (no pagination metadata)
-           - Query parameters for pagination are ignored
+        **Authentication**: User token
 
       tags:
-        - Organizations
+        - Pricings
       security:
         - ApiKeyAuth: []
       parameters:
-        - name: q
-          in: query
-          required: false
-          schema:
-            type: string
-          description: |
-            Search query to match against organization names (case-insensitive regex).
-            Only applies to ADMIN users.
-            - If provided: filters organizations by name
-            - If not provided or empty: returns all organizations
-          example: ACME
-        - name: limit
-          in: query
-          required: false
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 50
-            default: 10
-          description: |
-            Maximum number of results to return per page.
-            Only applies to ADMIN users. Regular users receive all their organizations.
-          example: 20
-        - name: offset
-          in: query
-          required: false
-          schema:
-            type: integer
-            minimum: 0
-            default: 0
-          description: |
-            Number of records to skip (for pagination).
-            Only applies to ADMIN users.
-          example: 0
+        - $ref: '#/components/parameters/Name'
+        - $ref: '#/components/parameters/SortByPricings'
+        - $ref: '#/components/parameters/Sort'
+        - $ref: '#/components/parameters/MinSubscription'
+        - $ref: '#/components/parameters/MaxSubscription'
+        - $ref: '#/components/parameters/MinMinPrice'
+        - $ref: '#/components/parameters/MaxMinPrice'
+        - $ref: '#/components/parameters/MinMaxPrice'
+        - $ref: '#/components/parameters/MaxMaxPrice'
+        - $ref: '#/components/parameters/SelectedOwners'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
       responses:
         '200':
-          description: Organizations list (format varies by user role)
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - type: object
-                    description: Paginated response for ADMIN users
-                    properties:
-                      data:
-                        type: array
-                        items:
-                          $ref: '#/components/schemas/Organization'
-                        description: Array of organization objects
-                      pagination:
-                        type: object
-                        properties:
-                          offset:
-                            type: integer
-                            description: Current offset value
-                            example: 0
-                          limit:
-                            type: integer
-                            description: Current limit value
-                            example: 10
-                          total:
-                            type: integer
-                            description: Total number of organizations (filtered by search query if provided)
-                            example: 42
-                          page:
-                            type: integer
-                            description: Current page number (1-indexed)
-                            example: 1
-                          pages:
-                            type: integer
-                            description: Total number of pages
-                            example: 5
-                  - type: object
-                    description: Non-paginated response for regular users
-                    properties:
-                      data:
-                        type: array
-                        items:
-                          $ref: '#/components/schemas/Organization'
-                        description: Array of organizations where user is owner or member
-              examples:
-                adminSearchResults:
-                  summary: ADMIN - Search results for organizations matching "ACME"
-                  value:
-                    data:
-                      - id: 507f1f77bcf86cd799439011
-                        name: ACME Corporation
-                        owner: john_doe
-                        members: []
-                        apiKeys:
-                          - key: org_abc123
-                            scope: ALL
-                        default: true
-                      - id: 507f1f77bcf86cd799439012
-                        name: ACME Industries
-                        owner: jane_smith
-                        members:
-                          - username: john_doe
-                            role: MANAGER
-                        apiKeys:
-                          - key: org_def456
-                            scope: ALL
-                        default: false
-                    pagination:
-                      offset: 0
-                      limit: 10
-                      total: 2
-                      page: 1
-                      pages: 1
-                adminListAll:
-                  summary: ADMIN - List of all organizations (page 1)
-                  value:
-                    data:
-                      - id: 507f1f77bcf86cd799439011
-                        name: ACME Corporation
-                        owner: john_doe
-                        members: []
-                        apiKeys:
-                          - key: org_abc123
-                            scope: ALL
-                        default: true
-                      - id: 507f1f77bcf86cd799439012
-                        name: Tech Startup
-                        owner: jane_smith
-                        members: []
-                        apiKeys:
-                          - key: org_def456
-                            scope: ALL
-                        default: false
-                    pagination:
-                      offset: 0
-                      limit: 10
-                      total: 42
-                      page: 1
-                      pages: 5
-                regularUserOrganizations:
-                  summary: Regular User - Organizations where user is owner or member
-                  value:
-                    data:
-                      - id: 507f1f77bcf86cd799439011
-                        name: My Organization
-                        owner: john_doe
-                        members: []
-                        apiKeys:
-                          - key: org_abc123
-                            scope: ALL
-                        default: true
-                      - id: 507f1f77bcf86cd799439013
-                        name: Shared Project
-                        owner: jane_smith
-                        members:
-                          - username: john_doe
-                            role: EVALUATOR
-                        apiKeys:
-                          - key: org_ghi789
-                            scope: ALL
-                        default: false
-        '400':
-          description: Invalid query parameters
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-              examples:
-                invalidLimit:
-                  summary: Limit out of range
-                  value:
-                    error: "INVALID DATA: Limit must be between 1 and 50"
-                invalidOffset:
-                  summary: Negative offset
-                  value:
-                    error: "INVALID DATA: Offset must be a non-negative number"
-        '401':
-          description: Unauthorized - missing or invalid API key
-
-    post:
-      summary: Create organization
-      description: |
-        Creates a new organization with the specified owner and details.
-
-        **Authentication**: User API Key
-
-        **Permission**: 
-        - ADMIN users: can create for any user
-        - Regular users: can only create for themselves
-
-        **Automatic Setup**:
-        - Creator becomes organization owner
-        - Organization receives initial API Key with ALL scope
-
-      tags:
-        - Organizations
-      security:
-        - ApiKeyAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - name
-                - owner
-              properties:
-                name:
-                  type: string
-                  example: ACME Corporation
-                owner:
-                  type: string
-                  example: john_doe
-      responses:
-        '201':
-          description: Organization created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Organization'
-        '400':
-          description: Invalid organization data
-        '403':
-          description: Forbidden - cannot create for other users (USER role)
-        '404':
-          description: Owner user does not exist
-        '409':
-          description: Owner already has a default organization
-
-  /organizations/{organizationId}:
-    get:
-      summary: Get organization details
-      description: |
-        Retrieves complete information about a specific organization including 
-        members, API keys, and metadata.
-
-        **Authentication**: User API Key
-
-        **Permission**: 
-        - USER user can only view organizations they own or are a member of
-        - ADMIN users can view any organization
-
-      tags:
-        - Organizations
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: organizationId
-          in: path
-          required: true
-          schema:
-            type: string
-            format: MongoDB ObjectId
-          example: 507f1f77bcf86cd799439011
-      responses:
-        '200':
-          description: Organization details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Organization'
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden - not a member of this organization
-        '404':
-          description: Organization not found
-
-    put:
-      summary: Update organization
-      description: |
-        Updates organization properties including name and ownership.
-
-        **Authentication**: User API Key
-
-        **Permission**: 
-        - Organization OWNER: can update name and transfer ownership
-        - Organization ADMIN: can update name only
-        - Organization MANAGER: can update name only
-        - ADMIN user: can update name and transfer ownership
-
-      tags:
-        - Organizations
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: organizationId
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  example: Updated Organization Name
-                owner:
-                  type: string
-                  example: new_owner_username
-                  description: Must be an existing username (owner permission required)
-      responses:
-        '200':
-          description: Organization updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Organization'
-        '400':
-          description: Invalid update data
-        '403':
-          description: Forbidden - insufficient permissions
-        '404':
-          description: Organization or specified owner not found
-        '409':
-          description: New owner already has a default organization
-
-    delete:
-      summary: Delete organization
-      description: |
-        Deletes an organization and all its resources (services, contracts, API keys, members).
-
-        **Authentication**: User API Key
-
-        **Permission**: 
-        - Organization OWNER: can delete the organization they own
-        - ADMIN user: can delete any organization
-
-        **Constarints**:
-        - Cannot delete default organizations
-
-        **Cascading Deletions**:
-        - All services and pricing versions are deleted
-        - All contracts are deleted
-        - All members are removed
-        - All API keys are invalidated
-
-      tags:
-        - Organizations
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: organizationId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Organization deleted successfully
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden - cannot delete default organization or insufficient permissions
-        '404':
-          description: Organization not found
-
-  /organizations/{organizationId}/members:
-    post:
-      summary: Add member to organization
-      description: |
-        Adds a user to the organization with a specified role.
-
-        **Authentication**: User API Key
-
-        **Permission**: 
-        - Organization OWNER: can add any member with any role
-        - Organization ADMIN: can add any member with any role
-        - Organization MANAGER: can add any member with MANAGER/EVALUATOR roles (not OWNER/ADMIN)
-        - ADMIN user: can add with any role
-
-      tags:
-        - Organizations
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: organizationId
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - username
-                - role
-              properties:
-                username:
-                  type: string
-                  example: user_to_add
-                role:
-                  type: string
-                  enum: [ADMIN, MANAGER, EVALUATOR]
-                  example: MANAGER
-      responses:
-        '200':
-          description: Member added successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Organization'
-        '400':
-          description: Invalid member data
-        '403':
-          description: Forbidden - cannot grant this role (insufficient permissions)
-        '404':
-          description: Organization or user not found
-
-  /organizations/{organizationId}/members/{username}:
-    put:
-      summary: Update member role in organization
-      description: |
-        Updates the role of a member within the organization. Only users with appropriate permissions can change member roles.
-
-        **Authentication**: User API Key
-
-        **Permission Model**:
-        - **SPACE Admin**: Can promote/demote any member to any role (except OWNER)
-        - **Organization OWNER**: Can promote/demote any member (except themselves) to any role (except OWNER)
-        - **Organization ADMIN**: Can promote/demote any member (except OWNER and other ADMINs) to any role (except OWNER and ADMIN)
-        - **Organization MANAGER**: Can promote/demote MANAGER and EVALUATOR members to lower roles (MANAGER/EVALUATOR only)
-        - **Organization EVALUATOR and below**: No permission to change roles
-
-        **Available Roles**: ADMIN, MANAGER, EVALUATOR
-
-        **Constraints**:
-        - Cannot change OWNER's role (organization owner cannot be downgraded)
-        - Cannot assign OWNER role (OWNER role is special, only changed via organization transfer)
-        - Cannot update a member to their current role (must be a different role)
-        - Member must initially exist in the organization
-
-      tags:
-        - Organizations
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: organizationId
-          in: path
-          required: true
-          description: The organization ID (must be valid MongoDB ObjectId)
-          schema:
-            type: string
-            format: uuid
-        - name: username
-          in: path
-          required: true
-          description: The username of the member whose role is being updated
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - role
-              properties:
-                role:
-                  type: string
-                  enum: [ADMIN, MANAGER, EVALUATOR]
-                  description: The new role to assign to the member
-            examples:
-              promoteToAdmin:
-                summary: Promote member to ADMIN
-                value:
-                  role: ADMIN
-              demoteToEvaluator:
-                summary: Demote member to EVALUATOR
-                value:
-                  role: EVALUATOR
-      responses:
-        '200':
-          description: Member role updated successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Organization'
-        '400':
-          description: Invalid data or request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-              examples:
-                nonExistentMember:
-                  summary: Member does not exist
-                  value:
-                    error: "INVALID DATA: User with username nonexistent_user is not a member of the organization."
-                ownerRole:
-                  summary: Cannot change owner's role
-                  value:
-                    error: "INVALID DATA: Cannot change the role of the organization owner."
-                invalidOrganization:
-                  summary: Invalid organization ID format
-                  value:
-                    error: "INVALID DATA: Invalid organization ID"
-        '403':
-          description: Forbidden - User lacks required permissions
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-              examples:
-                noPermission:
-                  summary: User cannot update member roles
-                  value:
-                    error: "PERMISSION ERROR: Only SPACE admins or organization-level OWNER, ADMIN and MANAGER can update member roles."
-                escalatedPermission:
-                  summary: Manager trying to promote to ADMIN
-                  value:
-                    error: "PERMISSION ERROR: Only SPACE admins or organization-level OWNER/ADMIN can add high-level members."
-        '404':
-          description: Organization not found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-              examples:
-                notFound:
-                  summary: Organization does not exist
-                  value:
-                    error: "Organization with ID 000000000000000000000000 not found"
-        '409':
-          description: Conflict - Member already has the target role
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-              examples:
-                sameRole:
-                  summary: Member already has this role
-                  value:
-                    error: "CONFLICT: User with username john_doe already has the role EVALUATOR."
-        '422':
-          description: Validation error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-              examples:
-                missingRole:
-                  summary: Missing role field
-                  value:
-                    error: "Validation error: role field is required"
-                invalidRole:
-                  summary: Invalid role value
-                  value:
-                    error: "Validation error: role must be one of ADMIN, MANAGER, EVALUATOR"
-                invalidRoleType:
-                  summary: Role is not a string
-                  value:
-                    error: "Validation error: role must be a string"
-                ownerRoleAttempt:
-                  summary: Attempting to assign OWNER role
-                  value:
-                    error: "Validation error: OWNER role cannot be assigned via this endpoint"
-
-    delete:
-      summary: Remove specific member from organization
-      description: |
-        Removes a user from the organization.
-
-        **Authentication**: User API Key
-
-        **Permission**: 
-        - Organization OWNER: can remove any member
-        - Organization ADMIN: can remove members except other ADMINs or OWNER
-        - Organization MANAGER: can remove MANAGER/EVALUATOR only  
-        - Organization EVALUATOR: can only remove themselves
-        - ADMIN user: can remove any member
-
-      tags:
-        - Organizations
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: organizationId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: username
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Member removed successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Organization'
-        '403':
-          description: Forbidden
-        '404':
-          description: Organization or member not found
-
-  /organizations/{organizationId}/api-keys:
-    post:
-      summary: Create organization API Key
-      description: |
-        Creates a new API Key for the organization with the specified scope.
-
-        **Authentication**: User API Key
-
-        **Permission**: 
-        - Organization OWNER: can create any scope
-        - Organization ADMIN: can create any scope
-        - Organization MANAGER: can create MANAGEMENT/EVALUATION scopes only
-        - ADMIN user: can create any scope
-
-        **Scopes**:
-        - `ALL`: Unrestricted access to all organization operations
-        - `MANAGEMENT`: Create, update, delete operations (read access included)
-        - `EVALUATION`: Read-only access to services/pricings + feature evaluation
-
-      tags:
-        - Organizations
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: organizationId
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - scope
-              properties:
-                scope:
-                  type: string
-                  enum: [ALL, MANAGEMENT, EVALUATION]
-                  example: MANAGEMENT
-      responses:
-        '200':
-          description: API Key created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Organization'
-        '400':
-          description: Invalid scope value
-        '403':
-          description: Forbidden - cannot grant this scope (MANAGER cannot create ALL scope)
-        '404':
-          description: Organization not found
-
-  /organizations/{organizationId}/api-keys/{apiKeyId}:
-    delete:
-      summary: Remove organization API Key
-      description: |
-        Removes an API Key from the organization, immediately invalidating it.
-
-        **Authentication**: User API Key
-
-        **Permission**: 
-        - Organization OWNER: can remove any key
-        - Organization ADMIN: can remove any key
-        - Organization MANAGER: can remove non-ALL scope keys only
-        - ADMIN user: can remove any key
-
-      tags:
-        - Organizations
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: organizationId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: apiKey
-          in: path
-          required: true
-          schema:
-            type: string
-          description: The API Key value to remove
-      responses:
-        '200':
-          description: API Key removed successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Organization'
-        '403':
-          description: Forbidden - cannot remove ALL-scope key (MANAGER)
-        '404':
-          description: API Key not found
-
-  /organizations/{organizationId}/services:
-    get:
-      summary: List services in organization
-      description: |
-        Lists all services configured in the organization.
-
-        **Authentication**: User API Key
-
-        **Permission**: 
-        - USER user: must be an organization member with any role (OWNER/ADMIN/MANAGER/EVALUATOR)
-        - ADMIN user: can view services in any organization
-
-      tags:
-        - Services
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: organizationId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: List of services
+          description: Operation Completed
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Service'
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden - not a member of this organization or insufficient scope
-
-    post:
-      summary: Create service in organization
-      description: |
-        Creates a new service in the organization.
-
-        **Authentication**: User API Key
-
-        **Permission**: 
-        - USER user: OWNER/ADMIN/MANAGER role required
-        - ADMIN user: can create services in any organization
-
-      tags:
-        - Services
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: organizationId
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              required:
-                - name
-                - description
-              properties:
-                name:
-                  type: string
-                  example: Zoom
-                description:
-                  type: string
-                  example: Video conferencing and web meeting platform
-                pricing:
-                  type: string
-                  format: binary
-                  description: Optional pricing YAML/JSON file
-      responses:
-        '201':
-          description: Service created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Service'
-        '400':
-          description: Invalid service data
-        '403':
-          description: Forbidden - insufficient permissions
-        '404':
-          description: Organization not found
-
-    delete:
-      summary: Delete all services in organization
-      description: |
-        Deletes all services and associated pricings in the organization (irreversible operation).
-
-        **Authentication**: User API Key
-
-        **Permission**: 
-        - USER user: OWNER/ADMIN role required
-        - ADMIN user: can delete services in any organization
-
-      tags:
-        - Services
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: organizationId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '204':
-          description: All services deleted successfully
-        '403':
-          description: Forbidden - insufficient permissions
-        '404':
-          description: Organization not found
-
-  /organizations/{organizationId}/services/{serviceName}:
-    get:
-      summary: Get service details
-      description: |
-        Retrieves detailed information about a specific service in a organization.
-
-        **Authentication**: User API Key
-
-        **Permission**: 
-        - USER user: must be an organization member with any role (OWNER/ADMIN/MANAGER/EVALUATOR)
-        - ADMIN user: can view service details in any organization
-
-      tags:
-        - Services
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: organizationId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: serviceName
-          in: path
-          required: true
-          schema:
-            type: string
-          example: Zoom
-      responses:
-        '200':
-          description: Service details including pricings
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Service'
-        '403':
-          description: Forbidden
-        '404':
-          description: Service not found
-
-    put:
-      summary: Update service
-      description: |
-        Updates service metadata (name, organization).
-
-        **Authentication**: User API Key
-
-        **Permission**: 
-        - USER user: OWNER/ADMIN/MANAGER role required
-        - ADMIN user: can update services in any organization
-
-        **Cascading Operations**:
-        - Renaming a service propagates the change by updating the corresponding `contractedServices` references in all associated contracts.
-        - Updating `organizationId` triggers one of the following behaviors:
-            - If contracts include **only the updated service**, each contract’s `organizationId`` is updated to reflect the new organization.
-            - If contracts include **multiple contracted services**, the updated service is removed from them.
-
-      tags:
-        - Services
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: organizationId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: serviceName
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                organizationId:
-                  type: string
-      responses:
-        '200':
-          description: Service updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Service'
-        '400':
-          description: Invalid update data (e.g., organization not found)
-        '403':
-          description: Forbidden
-        '404':
-          description: Service not found
-        '409':
-          description: Service name already exists
-
-    delete:
-      summary: Disable service
-      description: |
-        Disables a service. Cannot be permanently deleted; use disable to mark unavailable.
-
-        **Authentication**: User API Key
-
-        **Permission**: 
-        - USER user: OWNER/ADMIN role required
-        - ADMIN user: can disable services in any organization
-
-      tags:
-        - Services
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: organizationId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: serviceName
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Service disabled successfully
-        '403':
-          description: Forbidden
-        '404':
-          description: Service not found
-
-  /organizations/{organizationId}/services/{serviceName}/pricings:
-    get:
-      summary: List service pricings
-      description: |
-        Lists all pricing versions for a specific service in a organization.
-
-        **Authentication**: User API Key
-
-        **Permission**: 
-        - USER user: organization member with any role
-        - ADMIN user: can view pricings of any service in any organization
-
-      tags:
-        - Services
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: organizationId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: serviceName
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: List of pricing versions
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pricing'
-        '403':
-          description: Forbidden
-        '404':
-          description: Service not found
-
-    post:
-      summary: Add pricing version to service
-      description: |
-        Uploads and adds a new pricing version to the service.
-
-        **Authentication**: User API Key
-
-        **Permission**: 
-        - USER user: OWNER/ADMIN/MANAGER role required
-        - ADMIN user: can add pricings to any service in any organization
-
-        **Constraints**:
-        - Pricing `saasName` and `serviceName` must be the same
-
-      tags:
-        - Services
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: organizationId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: serviceName
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              required:
-                - pricing
-              properties:
-                pricing:
-                  type: string
-                  format: binary
-                  description: Pricing file in YAML or JSON format
-      responses:
-        '201':
-          description: Pricing version added
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pricing'
-        '400':
-          description: Invalid pricing data
-        '403':
-          description: Forbidden
-        '404':
-          description: Service not found
-
-  /organizations/{organizationId}/services/{serviceName}/pricings/{pricingVersion}:
-    get:
-      summary: Get pricing version details
-      description: |
-        Retrieves complete details about a specific pricing version including 
-        plans, add-ons, and availability.
-
-        **Authentication**: User API Key
-
-        **Permission**: 
-        - USER user: organization member with any role
-        - ADMIN user: can view any pricing version from any service in any organization
-
-      tags:
-        - Services
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: organizationId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: serviceName
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: pricingVersion
-          in: path
-          required: true
-          schema:
-            type: string
-          example: "1.0.0"
-      responses:
-        '200':
-          description: Pricing version details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pricing'
-        '404':
-          description: Pricing version not found
-
-    put:
-      summary: Update pricing availability
-      description: |
-        Updates the availability status of a pricing version.
-
-        **Authentication**: User API Key
-
-        **Permission**: 
-        - USER user: OWNER/ADMIN/MANAGER role required
-        - ADMIN user: can update availability of any pricing version from any service in any organization
-
-      tags:
-        - Services
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: organizationId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: serviceName
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: pricingVersion
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                available:
-                  type: boolean
-                  example: true
-      responses:
-        '200':
-          description: Pricing availability updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pricing'
-        '403':
-          description: Forbidden
-        '404':
-          description: Pricing version not found
-
-    delete:
-      summary: Delete pricing version
-      description: |
-        Removes a pricing version from the given service in the given organization (irreversible operation).
-
-        **Authentication**: User API Key
-
-        **Permission**: 
-        - USER user: OWNER/ADMIN role required
-        - ADMIN user: can delete any pricing version from any service in any organization
-
-      tags:
-        - Services
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: organizationId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: serviceName
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: pricingVersion
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Pricing version deleted successfully
-        '403':
-          description: Forbidden
-        '404':
-          description: Pricing version not found
-
-  /services:
-    get:
-      summary: List all services
-      description: |
-        Lists all services configured in the organization.
-
-        **Authentication**: Organization API Key | User API Key
-
-        **Organization API Key Permission**:
-          - ALL scope: can view and filter all services from the organization
-          - MANAGEMENT scope: can view and filter all services from the organization
-          - EVALUATION scope: can view and filter all services from the organization
-
-        **User API Key Permission**:
-          - ADMIN user: can view all services from any organization
-      tags:
-        - Services
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: name
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Case-insensitive partial match on service name (regex "contains").
-        - name: page
-          in: query
-          required: false
-          schema:
-            type: integer
-            minimum: 1
-            default: 1
-          description: Page number for pagination. Ignored when `offset` is provided and greater than 0.
-        - name: offset
-          in: query
-          required: false
-          schema:
-            type: integer
-            minimum: 0
-            default: 0
-          description: Number of items to skip. When `offset` is greater than 0, it overrides `page`.
-        - name: limit
-          in: query
-          required: false
-          schema:
-            type: integer
-            minimum: 1
-            default: 20
-          description: Max number of items to return per request.
-        - name: order
-          in: query
-          required: false
-          schema:
-            type: string
-            enum: [asc, desc]
-            default: asc
-          description: Sort order by service name.
-      responses:
-        '200':
-          description: List of all services
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Service'
-        '401':
-          description: Unauthorized or invalid API key
-        '403':
-          description: Forbidden - User API Keys cannot access this endpoint
-
-    post:
-      summary: Create service
-      description: |
-        Creates a new service in the organization.
-
-        **Authentication**: Organization API Key
-
-        **Permission**: 
-          - Org Key with ALL or MANAGEMENT scope
-
-      tags:
-        - Services
-      security:
-        - ApiKeyAuth: []
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              required:
-                - name
-                - description
-              properties:
-                name:
-                  type: string
-                description:
-                  type: string
-                pricing:
-                  type: string
-                  format: binary
-      responses:
-        '201':
-          description: Service created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Service'
-        '403':
-          description: Forbidden
-
-    delete:
-      summary: Delete all services
-      description: |
-        Deletes all services and associated pricings in the organization (irreversible operation).
-
-        **Authentication**: Organization API Key | User API Key
-
-        **Organization Permission**:
-          - ALL scope: delete all services from the organization.
-
-        **User Permission**:
-          - ADMIN user: can delete all services allocated in a SPACE instance.
-      tags:
-        - Services
-      security:
-        - ApiKeyAuth: []
-      responses:
-        '204':
-          description: All services deleted
-        '403':
-          description: Forbidden
-
-  /services/{serviceName}:
-    get:
-      summary: Get service
-      description: |
-        Retrieves detailed information about a specific service in a organization.
-
-        **Authentication**: Organization API Key
-
-        **Permission**: Org Key with any scope
-
-      tags:
-        - Services
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: serviceName
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Service details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Service'
-        '404':
-          description: Service not found
-
-    put:
-      summary: Update service
-      description: |
-        Updates service metadata (name, organization).
-
-        **Authentication**: Organization API Key
-
-        **Permission**: 
-          - ALL scope: can update service name and organization.
-          - MANAGEMENT scope: can update service name and organization
-
-        **Cascading Operations**:
-        - Renaming a service propagates the change by updating the corresponding `contractedServices` references in all associated contracts.
-        - Updating `organizationId` triggers one of the following behaviors:
-            - If contracts include **only the updated service**, each contract’s `organizationId` is updated to reflect the new organization.
-            - If contracts include **multiple contracted services**, the updated service is removed from them.
-
-      tags:
-        - Services
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: serviceName
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                organizationId:
-                  type: string
-      responses:
-        '200':
-          description: Service updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Service'
-        '403':
-          description: Forbidden
-
-    delete:
-      summary: Disable service
-      description: |
-        Disables a service. Cannot be permanently deleted; use disable to mark unavailable.
-
-        **Authentication**: Organization API Key
-
-        **Permission**:
-          - ALL scope: can disable any service from the organization.
-
-      tags:
-        - Services
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: serviceName
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Service disabled
-        '403':
-          description: Forbidden
-
-  /services/{serviceName}/pricings:
-    get:
-      summary: List pricings
-      description: |
-        Lists all pricing versions for a specific service in a organization.
-
-        **Authentication**: Organization API Key
-
-        **Permission**: Org Key with any scope
-
-      tags:
-        - Services
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: serviceName
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: List of pricings
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pricing'
-        '404':
-          description: Service not found
-
-    post:
-      summary: Add pricing
-      description: |
-        Uploads and adds a new pricing version to the service.
-
-        **Constraints**:
-        - Pricing `saasName` and `serviceName` must be the same
-
-        **Authentication**: Organization API Key
-
-        **Permission**: 
-          - ALL scope: can add pricings to any service in the organization.
-          - MANAGEMENT scope: can add pricings to any service in the organization.
-
-      tags:
-        - Services
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: serviceName
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                pricing:
-                  type: string
-                  format: binary
-      responses:
-        '201':
-          description: Pricing added
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pricing'
-        '403':
-          description: Forbidden
-
-  /services/{serviceName}/pricings/{pricingVersion}:
-    get:
-      summary: Get pricing
-      description: |
-        Retrieves complete details about a specific pricing version including 
-        plans, add-ons, and availability.
-
-        **Authentication**: Organization API Key
-
-        **Permission**: Org Key with any scope
-
-      tags:
-        - Services
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: serviceName
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: pricingVersion
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Pricing details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pricing'
-        '404':
-          description: Pricing not found
-
-    put:
-      summary: Update pricing availability
-      description: |
-        Updates the availability status of a pricing version.
-
-        **Authentication**: Organization API Key only
-
-        **Permission**:
-          - ALL scope: can update availability of any pricing version from any service in the organization.
-          - MANAGEMENT scope: can update availability of any pricing version from any service in the organization.
-
-      tags:
-        - Services
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: serviceName
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: pricingVersion
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                available:
-                  type: boolean
-      responses:
-        '200':
-          description: Pricing updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pricing'
-        '403':
-          description: Forbidden
-
-    delete:
-      summary: Delete pricing
-      description: |
-        Removes a pricing version from the given service in the given organization (irreversible operation).
-
-        **Authentication**: Organization API Key
-
-        **Permission**:
-          - ALL scope: can delete any pricing version from any service in the organization.
-
-      tags:
-        - Services
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: serviceName
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: pricingVersion
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Pricing deleted
-        '403':
-          description: Forbidden
-
-  /organizations/{organizationId}/contracts:
-    get:
-      summary: List contracts in organization
-      description: |
-        Lists all contracts in the organization with optional filtering and pagination.
-
-        **Authentication**: User API Key
-
-        **Permission**: 
-        - USER user: must be an organization member with any role (OWNER/ADMIN/MANAGER/EVALUATOR)
-        - ADMIN user: can view contracts in any organization
-
-        **Request Filters**:
-        - Query parameters (`/organizations/{id}/contracts?username=john&limit=50`): Basic filters with pagination
-        - Request body (with filters object): Complex/advanced filtering via JSON body
-        - Combined: Both query and body filters are merged (body filters override query filters)
-
-        **Response Format**:
-        - Plain array of Contract objects (not paginated wrapper)
-        - Total count provided via `X-Total-Count` response header
-
-      tags:
-        - Contracts
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: organizationId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: The organization ID (must be valid MongoDB ObjectId)
-          example: 507f1f77bcf86cd799439011
-        - name: username
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Filter contracts by username (case-insensitive regex match)
-          example: john_doe
-        - name: firstName
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Filter contracts by user's first name (case-insensitive regex match)
-          example: John
-        - name: lastName
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Filter contracts by user's last name (case-insensitive regex match)
-          example: Doe
-        - name: email
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Filter contracts by user email (case-insensitive regex match)
-          example: john@example.com
-        - name: groupId
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Filter contracts by group ID
-          example: my-group
-        - name: page
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 1
-            minimum: 1
-          description: |
-            Page number for pagination (1-based). 
-            **Note**: Ignored when `offset > 0`.
-          example: 1
-        - name: offset
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 0
-            minimum: 0
-          description: |
-            Number of contracts to skip (0-based offset). 
-            **Precedence**: When `offset > 0`, it overrides the `page` parameter.
-          example: 0
-        - name: limit
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 20
-            minimum: 1
-          description: Maximum number of contracts to return per page
-          example: 20
-        - name: sort
-          in: query
-          required: false
-          schema:
-            type: string
-            enum: [firstName, lastName, username, email]
-          description: Field to sort contracts by
-          example: firstName
-        - name: order
-          in: query
-          required: false
-          schema:
-            type: string
-            enum: [asc, desc]
-            default: asc
-          description: Sort order (ascending or descending)
-          example: asc
-      responses:
-        '200':
-          description: List of contracts (plain array with total count in header)
-          headers:
-            X-Total-Count:
-              schema:
-                type: integer
-              description: Total number of contracts matching the filters
-              example: 25
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Contract'
-              examples:
-                contractsList:
-                  summary: List of contracts for organization
-                  value:
-                    - id: 507f1f77bcf86cd799439011
-                      userId: user123
-                      organizationId: org456
-                      userContact:
-                        username: john_doe
-                        firstName: John
-                        lastName: Doe
-                        email: john@example.com
-                      billingPeriod:
-                        startDate: "2024-01-01"
-                        endDate: "2024-12-31"
-                      contractedServices: []
-                      subscriptionPlans: []
-                      subscriptionAddons: []
-                      subscriptionSnapshot: {}
-                      usageLevels: []
-        '400':
-          description: Invalid query parameters or request body
+                  $ref: '#/components/responses/PricingList'
+        default:
+          description: Unexpected error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-        '401':
-          description: Unauthorized - missing or invalid API key
-        '403':
-          description: Forbidden - not a member of this organization
-
-    post:
-      summary: Create contract in organization
-      description: |
-        Creates a new subscription contract in the organization.
-
-        **Authentication**: User API Key
-
-        **Permission**: 
-        - USER user: must have OWNER/ADMIN/MANAGER role
-        - ADMIN user: can create contracts in any organization
-
-      tags:
-        - Contracts
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: organizationId
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        $ref: '#/components/requestBodies/SubscriptionCreation'
-      responses:
-        '201':
-          description: Contract created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Contract'
-        '403':
-          description: Forbidden
-
-    put:
-      summary: Update contracts by group ID
-      description: |
-        Updates the details of all contracts in a group (contract novation - subscription composition change).
-
-        **Authentication**: User API Key (ADMIN) | Organization API Key
-
-        **User Permission**: 
-        - ADMIN user: can update contracts in any organization
-
-        **Organization Permission**:
-        - ALL scope: can update contracts in the organization
-        - MANAGEMENT scope: can update contracts in the organization
-
-      tags:
-        - Contracts
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: groupId
-          in: query
-          required: true
-          schema:
-            type: string
-      requestBody:
-        $ref: '#/components/requestBodies/SubscriptionCompositionNovation'
-      responses:
-        '200':
-          description: Contracts updated
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Contract'
-
-    delete:
-      summary: Delete all contracts in organization
-      description: |
-        Deletes all subscription contracts in the organization (irreversible).
-
-        **Authentication**: User API Key
-
-        **Permission**: 
-        - USER user: must have OWNER/ADMIN role with the organization
-        - ADMIN user: can delete contracts in any organization
-
-      tags:
-        - Contracts
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: organizationId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '204':
-          description: All contracts deleted
-        '403':
-          description: Forbidden
-
-  /organizations/{organizationId}/contracts/{userId}:
-    get:
-      summary: Get contract details
-      description: |
-        Retrieves details of a specific user's contract in the organization.
-
-        **Authentication**: User API Key
-
-        **Permission**: 
-        - USER user: must be an organization member with any role (OWNER/ADMIN/MANAGER/EVALUATOR)
-        - ADMIN user: can view contracts in any organization
-
-      tags:
-        - Contracts
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: organizationId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Contract details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Contract'
-        '404':
-          description: Contract not found
-
-    put:
-      summary: Update contract (novate)
-      description: |
-        Updates contract details (contract novation - subscription composition change).
-
-        **Authentication**: User API Key
-
-        **Permission**: 
-        - USER user: must have OWNER/ADMIN/MANAGER role
-        - ADMIN user: can update contracts in any organization
-
-      tags:
-        - Contracts
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: organizationId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        $ref: '#/components/requestBodies/SubscriptionCompositionNovation'
-      responses:
-        '200':
-          description: Contract updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Contract'
-        '403':
-          description: Forbidden
-
-    delete:
-      summary: Delete contract
-      description: |
-        Deletes a specific subscription contract.
-
-        **Authentication**: User API Key
-
-        **Permission**: 
-        - USER user: must have OWNER/ADMIN role in the organization
-        - ADMIN user: can delete contracts in any organization
-
-      tags:
-        - Contracts
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: organizationId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Contract deleted
-        '403':
-          description: Forbidden
-
-  /contracts:
-    get:
-      summary: List all contracts
-      description: |
-        Lists all contracts with optional filtering and pagination.
-
-        **Authentication**: User API Key (ADMIN) | Organization API Key
-
-        **User Permission**: 
-        - ADMIN user: can view all contracts from any organization (without organizationId filter)
-
-        **Organization Permission**:
-        - ALL scope: can view all contracts from the organization
-        - MANAGEMENT scope: can view all contracts from the organization
-
-        **Request Filters**:
-        - Query parameters (`/contracts?username=john&limit=50`): Basic filters with pagination
-        - Request body (`POST` with filters object): Complex/advanced filtering via JSON body
-        - Combined: Both query and body filters are merged (body filters override query filters)
-
-        **Response Format**:
-        - Plain array of Contract objects (not paginated wrapper)
-        - Total count provided via `X-Total-Count` response header
-
-      tags:
-        - Contracts
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: username
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Filter contracts by username (case-insensitive regex match)
-          example: john_doe
-        - name: firstName
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Filter contracts by user's first name (case-insensitive regex match)
-          example: John
-        - name: lastName
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Filter contracts by user's last name (case-insensitive regex match)
-          example: Doe
-        - name: email
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Filter contracts by user email (case-insensitive regex match)
-          example: john@example.com
-        - name: groupId
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Filter contracts by group ID
-          example: my-group
-        - name: page
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 1
-            minimum: 1
-          description: |
-            Page number for pagination (1-based). 
-            **Note**: Ignored when `offset > 0`.
-          example: 1
-        - name: offset
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 0
-            minimum: 0
-          description: |
-            Number of contracts to skip (0-based offset). 
-            **Precedence**: When `offset > 0`, it overrides the `page` parameter.
-          example: 0
-        - name: limit
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 20
-            minimum: 1
-          description: Maximum number of contracts to return per page
-          example: 20
-        - name: sort
-          in: query
-          required: false
-          schema:
-            type: string
-            enum: [firstName, lastName, username, email]
-          description: Field to sort contracts by
-          example: firstName
-        - name: order
-          in: query
-          required: false
-          schema:
-            type: string
-            enum: [asc, desc]
-            default: asc
-          description: Sort order (ascending or descending)
-          example: asc
-      responses:
-        '200':
-          description: List of contracts (plain array with total count in header)
-          headers:
-            X-Total-Count:
-              schema:
-                type: integer
-              description: Total number of contracts matching the filters
-              example: 42
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Contract'
-              examples:
-                withFilters:
-                  summary: Contracts filtered by username and sorted by firstName
-                  value:
-                    - id: 507f1f77bcf86cd799439011
-                      userId: user123
-                      organizationId: org456
-                      userContact:
-                        username: john_doe
-                        firstName: John
-                        lastName: Doe
-                        email: john@example.com
-                      billingPeriod:
-                        startDate: "2024-01-01"
-                        endDate: "2024-12-31"
-                      contractedServices: []
-                      subscriptionPlans: []
-                      subscriptionAddons: []
-                      subscriptionSnapshot: {}
-                      usageLevels: []
-                    - id: 507f1f77bcf86cd799439012
-                      userId: user124
-                      organizationId: org456
-                      userContact:
-                        username: johnny_test
-                        firstName: Johnny
-                        lastName: Test
-                        email: johnny@example.com
-                      billingPeriod:
-                        startDate: "2024-01-01"
-                        endDate: "2024-12-31"
-                      contractedServices: []
-                      subscriptionPlans: []
-                      subscriptionAddons: []
-                      subscriptionSnapshot: {}
-                      usageLevels: []
-        '400':
-          description: Invalid query parameters or request body
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '401':
-          description: Unauthorized - missing or invalid API key
-        '403':
-          description: Forbidden - insufficient permissions
-
-    post:
-      summary: Create contract
-      description: |
-        Creates a new subscription contract in the organization.
-
-        **Authentication**: User API Key (ADMIN) | Organization API Key
-
-        **User Permission**: 
-        - ADMIN user: can create contracts in any organization
-
-        **Organization Permission**:
-        - ALL scope: can create contracts in the organization
-        - MANAGEMENT scope: can create contracts in the organization
-
-      tags:
-        - Contracts
-      security:
-        - ApiKeyAuth: []
-      requestBody:
-        $ref: '#/components/requestBodies/SubscriptionCreation'
-      responses:
-        '201':
-          description: Contract created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Contract'
     
     put:
-      summary: Update contracts by group ID
+      summary: Update pricing version
       description: |
-        Updates the details of all contracts in a group (contract novation - subscription composition change).
-
-        **Authentication**: User API Key (ADMIN) | Organization API Key
-
-        **User Permission**: 
-        - ADMIN user: can update contracts in any organization
-
-        **Organization Permission**:
-        - ALL scope: can update contracts in the organization
-        - MANAGEMENT scope: can update contracts in the organization
+        Receives a plain text YAML file containing an iPricing in Pricing2Yaml and updates its syntaxVersion to the latest Pricign2Yaml syntax version. 
+        
+        **Authentication**: User API Key
 
       tags:
-        - Contracts
+        - Pricings
       security:
         - ApiKeyAuth: []
-      parameters:
-        - name: groupId
-          in: query
-          required: true
-          schema:
-            type: string
-      requestBody:
-        $ref: '#/components/requestBodies/SubscriptionCompositionNovation'
-      responses:
-        '200':
-          description: Contracts updated
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Contract'
-
-    delete:
-      summary: Delete all contracts
-      description: |
-        Deletes all subscription contracts in the organization (irreversible).
-
-        **Authentication**: User API Key (ADMIN) | Organization API Key
-
-        **User Permission**: 
-        - ADMIN user: can delete all contracts from any organization
-
-        **Organization Permission**:
-        - ALL scope: can delete all contracts from the organization
-
-      tags:
-        - Contracts
-      security:
-        - ApiKeyAuth: []
-      responses:
-        '204':
-          description: All contracts deleted
-
-  /contracts/billingPeriod:
-    put:
-      summary: Bulk update billing period
-      description: |
-        Updates the billing period configuration for all contracts in a group.
-
-        **Authentication**: User API Key (ADMIN) | Organization API Key
-
-        **User Permission**: 
-        - ADMIN user: can update billing period in any organization
-
-        **Organization Permission**:
-        - ALL scope: can update billing period in the organization
-        - MANAGEMENT scope: can update billing period in the organization
-
-      tags:
-        - Contracts
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: groupId
-          in: query
-          required: true
-          schema:
-            type: string
-      requestBody:
-        $ref: '#/components/requestBodies/SubscriptionBillingNovation'
-      responses:
-        '200':
-          description: Billing period updated for all contracts in the group
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Contract'
-
-  /contracts/{userId}:
-    get:
-      summary: Get contract
-      description: |
-        Retrieves details of a specific user's contract in the organization.
-
-        **Authentication**: User API Key (ADMIN) | Organization API Key
-
-        **User Permission**: 
-        - ADMIN user: can view contracts in any organization
-
-        **Organization Permission**:
-        - ALL scope: can view contracts in the organization
-        - MANAGEMENT scope: can view contracts in the organization
-
-      tags:
-        - Contracts
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Contract details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Contract'
-
-    put:
-      summary: Update contract
-      description: |
-        Updates contract details (contract novation - subscription composition change).
-
-        **Authentication**: User API Key (ADMIN) | Organization API Key
-
-        **User Permission**: 
-        - ADMIN user: can update contracts in any organization
-
-        **Organization Permission**:
-        - ALL scope: can update contracts in the organization
-        - MANAGEMENT scope: can update contracts in the organization
-
-      tags:
-        - Contracts
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        $ref: '#/components/requestBodies/SubscriptionCompositionNovation'
-      responses:
-        '200':
-          description: Contract updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Contract'
-
-    delete:
-      summary: Delete contract
-      description: |
-        Deletes a specific subscription contract.
-
-        **Authentication**: User API Key (ADMIN) | Organization API Key
-
-        **User Permission**: 
-        - ADMIN user: can delete contracts in any organization
-
-        **Organization Permission**:
-        - ALL scope: can delete contracts in the organization
-
-      tags:
-        - Contracts
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Contract deleted
-
-  /contracts/{userId}/usageLevels:
-    put:
-      summary: Reset usage levels
-      description: |
-        Resets usage level counters for a contract.
-
-        **Authentication**: User API Key (ADMIN) | Organization API Key
-
-        **User Permission**: 
-        - ADMIN user: can reset usage levels in any organization
-
-        **Organization Permission**:
-        - ALL scope: can reset usage levels in the organization
-        - MANAGEMENT scope: can reset usage levels in the organization
-
-      tags:
-        - Contracts
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        $ref: '#/components/requestBodies/SubscriptionUsageLevelsUpdate'
-      responses:
-        '200':
-          description: Usage levels reset
-          content:
-            application/json:
-              schema:
-                type: object
-
-  /contracts/{userId}/userContact:
-    put:
-      summary: Update user contact information
-      description: |
-        Updates the contact information stored in a contract.
-
-        **Authentication**: User API Key (ADMIN) | Organization API Key
-
-        **User Permission**: 
-        - ADMIN user: can update contact information in any organization
-
-        **Organization Permission**:
-        - ALL scope: can update contact information in the organization
-        - MANAGEMENT scope: can update contact information in the organization
-
-      tags:
-        - Contracts
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        $ref: '#/components/requestBodies/SubscriptionUserContactNovation'
-      responses:
-        '200':
-          description: Contact updated
-          content:
-            application/json:
-              schema:
-                type: object
-
-  /contracts/{userId}/billingPeriod:
-    put:
-      summary: Update billing period
-      description: |
-        Updates the billing period configuration for a contract.
-
-        **Authentication**: User API Key (ADMIN) | Organization API Key
-
-        **User Permission**: 
-        - ADMIN user: can update billing period in any organization
-
-        **Organization Permission**:
-        - ALL scope: can update billing period in the organization
-        - MANAGEMENT scope: can update billing period in the organization
-
-      tags:
-        - Contracts
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        $ref: '#/components/requestBodies/SubscriptionBillingNovation'
-      responses:
-        '200':
-          description: Billing period updated
-          content:
-            application/json:
-              schema:
-                type: object
-
-  /features:
-    get:
-      summary: List available features
-      description: |
-        Retrieves all features available in the system for evaluation.
-
-        **Authentication**: Organization API Key
-
-        **Permission**: Org Key with any scope (ALL/MANAGEMENT/EVALUATION)
-
-      tags:
-        - Features
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: featureName
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Filter features by name (case-insensitive regex match)
-        - name: serviceName
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Filter features by service name (case-insensitive regex match)
-        - name: pricingVersion
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Filter features by pricing version
-        - name: page
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 1
-          description: |
-            Page number for pagination (1-based). 
-            Ignored when offset is greater than 0.
-        - name: offset
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 0
-          description: |
-            Number of features to skip (0-based offset). 
-            When offset is greater than 0, it overrides the page parameter.
-        - name: limit
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 20
-          description: Maximum number of features to return per page
-        - name: sort
-          in: query
-          required: false
-          schema:
-            type: string
-            enum: [featureName, serviceName]
-          description: Field to sort features by
-        - name: order
-          in: query
-          required: false
-          schema:
-            type: string
-            enum: [asc, desc]
-            default: asc
-          description: Sort order (ascending or descending)
-        - name: show
-          in: query
-          required: false
-          schema:
-            type: string
-            enum: [active, archived, all]
-          description: Filter features by status (active, archived, or all)
-      responses:
-        '200':
-          description: List of available features
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Feature'
-
-  /features/{userId}:
-    post:
-      summary: Evaluate features for user
-      description: |
-        Evaluates which features are available for a specific user based on their 
-        subscription contract and pricing plan.
-
-        **Authentication**: Organization API Key only
-
-        **Permission**: Org Key with any scope
-
-      tags:
-        - Features
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: details
-          in: query
-          required: false
-          schema:
-            type: boolean
-            default: false
-          description: Return detailed feature evaluation information including limits and consumption
-        - name: server
-          in: query
-          required: false
-          schema:
-            type: boolean
-            default: false
-          description: Perform evaluation using server-side context instead of token-based evaluation
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-      responses:
-        '200':
-          description: Feature evaluation results
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  features:
-                    type: array
-                    items:
-                      type: object
-
-  /features/{userId}/pricing-token:
-    post:
-      summary: Generate pricing token
-      description: |
-        Generates a JWT token containing the user's pricing and subscription information 
-        for use by client-side feature evaluation.
-
-        **Authentication**: Organization API Key only
-
-        **Permission**: Org Key with any scope
-
-      tags:
-        - Features
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: server
-          in: query
-          required: false
-          schema:
-            type: boolean
-            default: false
-          description: Perform evaluation using server-side context instead of token-based evaluation
-      responses:
-        '200':
-          description: Pricing token generated
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  token:
-                    type: string
-                    description: JWT token with pricing information
-
-  /features/{userId}/{featureId}:
-    post:
-      summary: Evaluate single feature
-      description: |
-        Evaluates a specific feature for a user with expected consumption, returning 
-        whether the feature is allowed and any usage warnings.
-
-        **Authentication**: Organization API Key only
-
-        **Permission**: Org Key with any scope
-
-      tags:
-        - Features
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: featureId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: server
-          in: query
-          required: false
-          schema:
-            type: boolean
-            default: false
-          description: Perform evaluation using server-side context instead of token-based evaluation
-        - name: revert
-          in: query
-          required: false
-          schema:
-            type: boolean
-            default: false
-          description: Reset feature usage levels after evaluation
-        - name: latest
-          in: query
-          required: false
-          schema:
-            type: boolean
-            default: false
-          description: Use the latest feature configuration
       requestBody:
         required: true
         content:
@@ -3050,235 +347,263 @@ paths:
             schema:
               type: object
               properties:
-                expectedConsumption:
-                  type: number
-                  example: 1.5
-      responses:
-        '200':
-          description: Feature evaluation result
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  allowed:
-                    type: boolean
-                  reason:
-                    type: string
-
-  /analytics/api-calls:
-    get:
-      summary: Get API call statistics
-      description: |
-        Retrieves statistics about API call usage in the system.
-
-        **Authentication**: User API Key (ADMIN, USER) | Organization API Key
-
-        **User Permission**:
-          - USER user: can view API call statistics
-          - ADMIN user: can view API call statistics
-
-        **Organization Permission**:
-          - ALL scope: can view API call statistics
-          - MANAGEMENT scope: can view API call statistics
-          - EVALUATION scope: can view API call statistics
-
-      tags:
-        - Analytics
-      security:
-        - ApiKeyAuth: []
-      responses:
-        '200':
-          description: API call statistics
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  total:
-                    type: integer
-                  byEndpoint:
-                    type: object
-
-  /analytics/evaluations:
-    get:
-      summary: Get feature evaluation statistics
-      description: |
-        Retrieves statistics about feature evaluations performed by the system.
-
-        **Authentication**: User API Key (ADMIN, USER) | Organization API Key
-
-        **User Permission**:
-          - USER user: can view feature evaluation statistics
-          - ADMIN user: can view feature evaluation statistics
-
-        **Organization Permission**:
-          - ALL scope: can view feature evaluation statistics
-          - MANAGEMENT scope: can view feature evaluation statistics
-          - EVALUATION scope: can view feature evaluation statistics
-
-      tags:
-        - Analytics
-      security:
-        - ApiKeyAuth: []
-      responses:
-        '200':
-          description: Evaluation statistics
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  totalEvaluations:
-                    type: integer
-                  byFeature:
-                    type: object
-
-  /cache/get:
-    get:
-      summary: Get cached value
-      description: |
-        Retrieves a value from the system cache by key.
-
-        **Authentication**: User API Key (ADMIN only)
-
-        **Permission**: ADMIN role required
-
-      tags:
-        - Cache
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: key
-          in: query
-          required: true
-          schema:
-            type: string
-          example: pricing_cache_zoom
-      responses:
-        '200':
-          description: Cached value retrieved
-          content:
-            application/json:
-              schema:
-                type: object
-
-  /cache/set:
-    post:
-      summary: Set cache value
-      description: |
-        Stores a value in the system cache with the specified key.
-
-        **Authentication**: User API Key (ADMIN only)
-
-        **Permission**: ADMIN role required
-
-      tags:
-        - Cache
-      security:
-        - ApiKeyAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - key
-                - value
-              properties:
-                key:
+                pricing:
                   type: string
-                  example: pricing_cache_zoom
-                value:
-                  type: object
+                  description: Plain text YAML content of the pricing definition to be updated
+                  example: |-
+                    saasName: Your SaaS Name
+                    syntaxVersion: "3.0"
+                    version: "latest"
+                    createdAt: 2026-04-26
+                    billing:
+                      monthly: 1
+                    currency: EUR
+                    features:
+                      feature1:
+                        description: Feature 1 description
+                        valueType: BOOLEAN
+                        defaultValue: true
+                        type: DOMAIN
+                    usageLimits: null
+                    plans:
+                      BASIC:
+                        description: Basic plan
+                        price: 0.0
+                        unit: user/month
+                        features: null
+                        usageLimits: null
+                    addOns: null
+
       responses:
         '200':
-          description: Value cached successfully
+          description: Pricing Updated
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/Pricing'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
-  /events/status:
+  /pricings/{username}:
     get:
-      summary: Get event service status
+      summary: Get all pricings from a user.
       description: |
-        Checks if the WebSocket event service is running and operational.
+        Retrieves a paginated list of a user's pricings.
 
-        **Authentication**: Public (no API key required)
+        **Authentication**: User token
+
+        **Permission**: 
+        - USER: can list all their pricings (PUBLIC, PRIVATE) and PUBLIC pricings of other users.
+        - ADMIN: can access any user's pricings.
 
       tags:
-        - Events
+        - Pricings
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+        - $ref: '#/components/parameters/Name'
+        - $ref: '#/components/parameters/SortByPricings'
+        - $ref: '#/components/parameters/Sort'
+        - $ref: '#/components/parameters/MinSubscription'
+        - $ref: '#/components/parameters/MaxSubscription'
+        - $ref: '#/components/parameters/MinMinPrice'
+        - $ref: '#/components/parameters/MaxMinPrice'
+        - $ref: '#/components/parameters/MinMaxPrice'
+        - $ref: '#/components/parameters/MaxMaxPrice'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
       responses:
         '200':
-          description: Service status
+          description: Operation Completed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/responses/PricingList'
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: User not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create pricing for a given user.
+      description: |
+        Creates a new pricing for a given user.
+
+        **Authentication**: User API Key
+
+        **Permission**: 
+        - USER: can create pricings for their own account.
+        - ADMIN: can create pricings for any user.
+
+      tags:
+        - Pricings
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                yaml:
+                  type: string
+                  format: binary
+                private:
+                  type: boolean
+                  default: false
+                collectionId:
+                  type: string
+                  description: Optional collection ID to add the pricing to upon creation
+      responses:
+        '201':
+          description: Pricing Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pricing'
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: User not found
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /pricings/{username}/{pricingName}:
+    get:
+      summary: Get public pricing details.
+      description: |
+        Retrieves a pricing by name for a given user. If the user requesting is the owner of the pricing, they can then access private pricings. Otherwise, only public ones.
+
+        **Authentication**: User token
+
+        **Permission**: 
+        - USER: can access their own pricings (PUBLIC, PRIVATE) and PUBLIC pricings of other users.
+        - ADMIN: can access any user's pricings.
+
+      tags:
+        - Pricings
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+        - $ref: '#/components/parameters/PricingName'
+      responses:
+        '200':
+          description: Operation Completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PricingDetails'
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: User or pricing not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+    put:
+      summary: Update metadata of a pricing.
+      description: |
+        Updates the metadata of all pricing versions of a given pricing.
+
+        **Authentication**: User API Key
+
+        **Permission**: 
+        - USER: can update their own pricings.
+        - ADMIN: can update any pricing.
+      tags:
+        - Pricings
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+        - $ref: '#/components/parameters/PricingName'
+      requestBody:
+        $ref: '#/components/requestBodies/PricingUpdate'
+      responses:
+        '200':
+          description: Operation Completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PricingDetails'
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: User or pricing not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+    # TODO: Seguir aquí
+    delete:
+      summary: Delete a pricing.
+      description: |
+        Deletes all versions of a given pricing.
+
+        **Authentication**: User API Key
+
+        **Permission**: 
+        - USER: can delete their own pricings.
+        - ADMIN: can delete any pricing.
+
+      tags:
+        - Pricings
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+        - $ref: '#/components/parameters/PricingName'
+      responses:
+        '200':
+          description: Operation Completed
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  status:
+                  message:
                     type: string
-                    example: The WebSocket event service is active
-
-  # /events/test-event:
-  #   post:
-  #     summary: Send test event (for testing)
-  #     description: |
-  #       Sends a test event to all connected WebSocket clients (used for testing purposes).
-
-  #       **Authentication**: Public
-
-  #     tags:
-  #       - Events
-  #     requestBody:
-  #       required: true
-  #       content:
-  #         application/json:
-  #           schema:
-  #             type: object
-  #             required:
-  #               - serviceName
-  #               - pricingVersion
-  #             properties:
-  #               serviceName:
-  #                 type: string
-  #                 example: Zoom
-  #               pricingVersion:
-  #                 type: string
-  #                 example: "1.0"
-  #     responses:
-  #       '200':
-  #         description: Event sent successfully
-  #         content:
-  #           application/json:
-  #             schema:
-  #               type: object
-  #               properties:
-  #                 success:
-  #                   type: boolean
-  #                 message:
-  #                   type: string
-
-  /events/client:
-    get:
-      summary: Get WebSocket client HTML
-      description: |
-        Returns an HTML file for testing WebSocket connections to the event service.
-
-        **Authentication**: Public
-
-      tags:
-        - Events
-      responses:
-        '200':
-          description: WebSocket client HTML
+                    example: Pricing deleted successfully
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: User or pricing not found
+        default:
+          description: Unexpected error
           content:
-            text/html:
+            application/json:
               schema:
-                type: string
-
+                $ref: '#/components/schemas/Error'
+  
   /healthcheck:
     get:
       summary: Service health check
@@ -3304,6 +629,11 @@ paths:
 
 components:
   schemas:
+
+    # ------------------------------
+    # --          FIELDS          --
+    # ------------------------------
+
     ApiToken:
       type: string
       description: User API token for authentication in subsequent requests
@@ -3336,13 +666,19 @@ components:
       enum: [ADMIN, USER]
       example: USER
 
-    ApiKey:
+    Date:
       type: string
-      description: Random 32 byte string encoded in hexadecimal
-      example: usr_9cedd24632167a021667df44a26362dfb778c1566c3d4564e132cb58770d8c67
-      pattern: '^usr_[a-f0-9]{64}$'
-      readOnly: true
+      format: date-time
+      description: Date in UTC
+      example: '2025-12-31T00:00:00Z'
 
+    ObjectId:
+      type: string
+      description: ObjectId of the corresponding MongoDB document
+      example: 68050bd09890322c57842f6f
+      pattern: '^[a-f0-9]{24}$'
+      readOnly: true
+    
     Error:
       type: object
       properties:
@@ -3350,84 +686,77 @@ components:
           type: string
       required:
         - error
-
-    FieldValidationError:
-      type: object
-      properties:
-        type:
-          type: string
-          example: field
-        msg:
-          type: string
-          example: Password must be a string
-        path:
-          type: string
-          example: password
-        location:
-          type: string
-          example: body
-        value:
-          example: invalid
-      required:
-        - type
-        - msg
-        - path
-        - location
-
-    UserInput:
-      type: object
-      properties:
-        username:
-          $ref: '#/components/schemas/Username'
-        password:
-          $ref: '#/components/schemas/Password'
-        role:
-          $ref: '#/components/schemas/Role'
-      required:
-        - username
-        - password
-
-    UserUpdate:
-      type: object
-      properties:
-        username:
-          type: string
-        role:
-          $ref: '#/components/schemas/Role'
-        firstName:
-          type: string
-        lastName:
-          type: string
-        email:
-          type: string
-          format: email
-        phone:
-          type: string
-          nullable: true
-        avatar:
-          type: string
-          nullable: true
-          description: URI to the user's avatar (processed)
-        address:
-          type: string
-          nullable: true
-        postalCode:
-          type: string
-          nullable: true
-        token:
-          type: string
-          nullable: true
-        tokenExpiration:
-          type: string
-          format: date-time
-          nullable: true
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
     
+    Name:
+      type: string
+      description: Name of an entity (e.g. pricing definition name)
+      example: Zoom
+
+    SortByPricings:
+      type: string
+      description: Field to sort pricings by
+      enum: [name, configurationSpaceSize, featuresCount, usageLimitsCount, plansCount, addOnsCount, minPrice, maxPrice]
+      example: name
+    
+    Sort:
+      type: string
+      description: Sort order for listing endpoints. Will take "desc" as value by default.
+      enum: [asc, desc]
+      example: asc
+
+    MinSubscription:
+      type: number
+      description: Minimum subscription price for a pricing (used for sorting and filtering)
+      example: 9.99
+
+    MaxSubscription:
+      type: number
+      description: Maximum subscription price for a pricing (used for sorting and filtering)
+      example: 99.99
+
+    MinMinPrice:
+      type: number
+      description: Minimum price for a pricing's cheapest subscription (used for sorting and filtering)
+      example: 4.99
+
+    MaxMinPrice:
+      type: number
+      description: Maximum price for a pricing's cheapest subscription (used for sorting and filtering)
+      example: 99.99
+
+    MinMaxPrice:
+      type: number
+      description: Minimum price for a pricing's most expensive subscription (used for sorting and filtering)
+      example: 19.99
+
+    MaxMaxPrice:
+      type: number
+      description: Maximum price for a pricing's most expensive subscription (used for sorting and filtering)
+      example: 199.99
+
+    SelectedOwners:
+      type: array
+      description: List of selected pricing definition owners for filtering
+      items:
+        type: string
+      example: ["agarcia29", "john_doe", "sphere"]
+
+    Limit:
+      type: number
+      description: A numeric limit value for a list provided by a GET request
+      example: 100
+    
+    Offset:
+      type: number
+      description: A numeric offset value for a list provided by a GET request
+      example: 2
+
+
+
+    # ------------------------------
+    # --           USERS          --
+    # ------------------------------
+
     PublicUser:
       type: object
       required:
@@ -3491,437 +820,442 @@ components:
           type: string
           format: date-time
 
-    Organization:
+    # ------------------------------
+    # --         PRICINGS         --
+    # ------------------------------
+
+    Pricing:
+      type: object
+      properties:
+        name:
+          type: string
+        owner:
+          type: string
+        collectionName:
+          type: string
+          description: Name of the pricing collection to which this pricing belongs
+          example: "MyCollection"
+        version:
+          type: string
+          description: Any string representing the version of the pricing definition (e.g. "1.0", "2.1.3", "2024-09-30")
+          example: "1.0.0"
+        createdAt:
+          $ref: '#/components/schemas/Date'
+        currency:
+          type: string
+          description: ISO 4217 currency code for the pricing definition
+          example: "USD"
+        analytics:
+          type: object
+          nullable: true
+          properties:
+            numberOfFeatures:
+              type: integer
+              example: 10
+            numberOfPlans:
+              type: integer
+              example: 3
+            numberOfAddOns:
+              type: integer
+              example: 2
+            configurationSpaceSize:
+              type: number
+              example: 120
+            minSubscriptionPrice:
+              type: number
+              example: 9.99
+            maxSubscriptionPrice:
+              type: number
+              example: 199.99
+
+    PricingDetails:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Common name of all pricing versions
+        collectionName:
+          type: string
+          description: Name of the pricing collection to which this pricing belongs
+          example: "MyCollection"
+        versions:
+          type: array
+          description: List of all versions of the pricing definition with their details
+          items:
+            $ref: '#/components/schemas/PricingVersion'
+
+    PricingVersion:
       type: object
       properties:
         id:
           type: string
-          example: 507f1f77bcf86cd799439012
-        name:
+        version:
           type: string
-          example: ACME Corporation
-        owner:
-          type: string
-          example: john_doe
-        default:
+          description: Any string representing the version of the pricing definition (e.g. "1.0", "2.1.3", "2024-09-30")
+          example: "1.0.0"
+        private:
           type: boolean
-          example: false
-        members:
-          type: array
-          items:
+          default: false
+        collectionName:
+          type: string
+          description: Name of the pricing collection to which this pricing belongs
+          example: "MyCollection"
+        createdAt:
+          $ref: '#/components/schemas/Date'
+        url:
+          type: string
+          format: uri
+          nullable: true
+        yaml:
+          type: string
+          description: Path of serialized pricing definition in YAML format
+          example: "/pricings/zoom_1.0.0.yaml"
+        owner:
+          type: object
+          properties:
+            id:
+              type: string
+            username:
+              type: string
+              example: "john_doe"
+        analytics:
+          type: object
+          nullable: true
+          properties:
+            numberOfFeatures:
+              type: integer
+            numberOfInformationFeatures:
+              type: integer
+            numberOfIntegrationFeatures:
+              type: integer
+            numberOfIntegrationApiFeatures:
+              type: integer
+            numberOfIntegrationExtensionFeatures:
+              type: integer
+            numberOfIntegrationIdentityProviderFeatures:
+              type: integer
+            numberOfIntegrationWebSaaSFeatures:
+              type: integer
+            numberOfIntegrationMarketplaceFeatures:
+              type: integer
+            numberOfIntegrationExternalDeviceFeatures:
+              type: integer
+            numberOfDomainFeatures:
+              type: integer
+            numberOfAutomationFeatures:
+              type: integer
+            numberOfBotAutomationFeatures:
+              type: integer
+            numberOfFilteringAutomationFeatures:
+              type: integer
+            numberOfTrackingAutomationFeatures:
+              type: integer
+            numberOfTaskAutomationFeatures:
+              type: integer
+            numberOfManagementFeatures:
+              type: integer
+            numberOfGuaranteeFeatures:
+              type: integer
+            numberOfSupportFeatures:
+              type: integer
+            numberOfPaymentFeatures:
+              type: integer
+            numberOfUsageLimits:
+              type: integer
+            numberOfRenewableUsageLimits:
+              type: integer
+            numberOfNonRenewableUsageLimits:
+              type: integer
+            numberOfResponseDrivenUsageLimits:
+              type: integer
+            numberOfTimeDrivenUsageLimits:
+              type: integer
+            numberOfPlans:
+              type: integer
+            numberOfFreePlans:
+              type: integer
+            numberOfPaidPlans:
+              type: integer
+            numberOfAddOns:
+              type: integer
+            numberOfReplacementAddons:
+              type: integer
+            numberOfExtensionAddons:
+              type: integer
+            configurationSpaceSize:
+              type: number
+            minSubscriptionPrice:
+              type: number
+            maxSubscriptionPrice:
+              type: number
+
+    # ------------------------------
+    # --          ERRORS          --
+    # ------------------------------
+
+    FieldValidationError:
+      type: object
+      properties:
+        type:
+          type: string
+          example: field
+        msg:
+          type: string
+          example: Password must be a string
+        path:
+          type: string
+          example: password
+        location:
+          type: string
+          example: body
+        value:
+          example: invalid
+      required:
+        - type
+        - msg
+        - path
+        - location
+
+  requestBodies:
+    UserUpdate:
+      description: User information update object
+      required: true
+      content:
+        application/json:
+          schema:
             type: object
             properties:
               username:
                 type: string
               role:
-                type: string
-                enum: [OWNER, ADMIN, MANAGER, EVALUATOR]
-        apiKeys:
-          type: array
-          items:
-            type: object
-            properties:
-              key:
-                type: string
-              scope:
-                type: string
-                enum: [ALL, MANAGEMENT, EVALUATION]
-        createdAt:
-          type: string
-          format: date-time
-
-    Service:
-      type: object
-      properties:
-        name:
-          type: string
-          example: Zoom
-        description:
-          type: string
-          example: Video conferencing platform
-        organization:
-          type: string
-        available:
-          type: boolean
-        pricings:
-          type: array
-          items:
-            $ref: '#/components/schemas/Pricing'
-        createdAt:
-          type: string
-          format: date-time
-
-    Pricing:
-      type: object
-      properties:
-        version:
-          type: string
-          example: "1.0.0"
-        service:
-          type: string
-        available:
-          type: boolean
-        plans:
-          type: array
-          items:
-            type: object
-        addOns:
-          type: array
-          items:
-            type: object
-        createdAt:
-          type: string
-          format: date-time
-
-    Contract:
-      type: object
-      description: |
-        Contract representation compatible with iSubscription.
-      required:
-        - billingPeriod
-        - organizationId
-        - usageLevels
-        - contractedServices
-        - subscriptionPlans
-        - history
-      properties:
-        id:
-          $ref: '#/components/schemas/ObjectId'
-        organizationId:
-          type: string
-          description: Organization identifier owning the contract
-          example: 507f1f77bcf86cd799439012
-        userContact:
-          $ref: '#/components/schemas/UserContact'
-        billingPeriod:
-          $ref: '#/components/schemas/BillingPeriod'
-        usageLevels:
-          $ref: '#/components/schemas/UsageLevels'
-        contractedServices:
-          $ref: '#/components/schemas/ContractedService'
-        subscriptionPlans:
-          $ref: '#/components/schemas/SubscriptionPlans'
-        subscriptionAddOns:
-          $ref: '#/components/schemas/SubscriptionAddons'
-        history:
-          type: array
-          items:
-            $ref: '#/components/schemas/SubscriptionSnapshot'
-
-    UserContact:
-      type: object
-      required:
-        - userId
-        - username
-      properties:
-        userId:
-          type: string
-          description: The id of the contract of the user
-          example: 01c36d29-0d6a-4b41-83e9-8c6d9310c508
-        username:
-          type: string
-          description: Username of the user
-          example: johndoe
-        firstName:
-          type: string
-          description: The first name of the user
-          example: John
-        lastName:
-          type: string
-          description: The last name of the user
-          example: Doe
-        email:
-          type: string
-          description: The email of the user
-          example: john.doe@my-domain.com
-        phone:
-          type: string
-          description: The phone number of the user, with international code
-          example: +34 666 666 666
-
-    BillingPeriod:
-      type: object
-      required:
-        - startDate
-        - endDate
-      properties:
-        startDate:
-          description: The date on which the current billing period started
-          $ref: '#/components/schemas/Date'
-          example: '2025-04-18T00:00:00Z'
-        endDate:
-          description: The date on which the current billing period is expected to end or to be renewed
-          $ref: '#/components/schemas/Date'
-          example: '2025-12-31T00:00:00Z'
-        autoRenew:
-          type: boolean
-          description: Determines whether the current billing period will be extended renewalDays days once it ends
-          example: true
-          default: true
-        renewalDays:
-          $ref: '#/components/schemas/RenewalDays'
-
-    ContractedService:
-      type: object
-      description: Map where keys are service names and values are pricing versions
-      additionalProperties:
-        type: string
-        format: path
-        description: Pricing version to which the user is subscribed
-      example:
-        zoom: "2025"
-        petclinic: "2024"
-
-    SubscriptionPlans:
-      type: object
-      description: Map of service name to plan name
-      additionalProperties:
-        type: string
-        minLength: 1
-      example:
-        zoom: ENTERPRISE
-        petclinic: GOLD
-
-    SubscriptionAddons:
-      type: object
-      description: Map of service name to add-ons and quantities
-      additionalProperties:
-        type: object
-        additionalProperties:
-          type: integer
-          minimum: 0
-      example:
-        zoom:
-          extraSeats: 2
-          hugeMeetings: 1
-        petclinic:
-          petsAdoptionCentre: 1
-
-    UsageLevels:
-      type: object
-      description: Usage levels for contracted services
-      additionalProperties:
-        type: object
-        additionalProperties:
-          type: object
-          required:
-            - consumed
-          properties:
-            resetTimestamp:
-              description: Reset timestamp (only for renewable usage limits)
-              $ref: '#/components/schemas/Date'
-            consumed:
-              type: number
-              description: Consumed quota for the usage limit
-              example: 5
-      example:
-        zoom:
-          maxSeats:
-            consumed: 10
-        petclinic:
-          maxPets:
-            consumed: 2
-          maxVisits:
-            consumed: 5
-            resetTimestamp: "2025-07-31T00:00:00Z"
-
-    SubscriptionSnapshot:
-      type: object
-      properties:
-        startDate:
-          description: The date on which the user started using the snapshot
-          $ref: '#/components/schemas/Date'
-          example: '2024-04-18T00:00:00Z'
-        endDate:
-          description: The date on which the user finished using the snapshot
-          $ref: '#/components/schemas/Date'
-          example: '2024-04-17T00:00:00Z'
-        contractedServices:
-          $ref: '#/components/schemas/ContractedService'
-        subscriptionPlans:
-          $ref: '#/components/schemas/SubscriptionPlans'
-        subscriptionAddOns:
-          $ref: '#/components/schemas/SubscriptionAddons'
-
-    Date:
-      type: string
-      format: date-time
-      description: Date in UTC
-      example: '2025-12-31T00:00:00Z'
-
-    ObjectId:
-      type: string
-      description: ObjectId of the corresponding MongoDB document
-      example: 68050bd09890322c57842f6f
-      pattern: '^[a-f0-9]{24}$'
-      readOnly: true
-
-    RenewalDays:
-      type: integer
-      description: Number of days by which the billing period will be extended
-      example: 365
-      default: 30
-      minimum: 1
-
-    Feature:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-          example: Premium Support
-        description:
-          type: string
-        service:
-          type: string
-
-  requestBodies:
-    SubscriptionCreation:
-      description: Creates a new subscription within SPACE
-      required: true
-      content:
-        application/json:
-          schema:
-            type: object
-            required:
-              - userContact
-              - contractedServices
-              - subscriptionPlans
-              - subscriptionAddOns
-            properties:
-              userContact:
-                $ref: '#/components/schemas/UserContact'
-              billingPeriod:
-                type: object
-                properties:
-                  autoRenew:
-                    type: boolean
-                    description: Whether the billing period auto-renews
-                    example: true
-                    default: true
-                  renewalDays:
-                    $ref: '#/components/schemas/RenewalDays'
-              contractedServices:
-                $ref: '#/components/schemas/ContractedService'
-              subscriptionPlans:
-                $ref: '#/components/schemas/SubscriptionPlans'
-              subscriptionAddOns:
-                $ref: '#/components/schemas/SubscriptionAddons'
-          example:
-            userContact:
-              userId: 01c36d29-0d6a-4b41-83e9-8c6d9310c508
-              username: johndoe
-              firstName: John
-              lastName: Doe
-              email: john.doe@my-domain.com
-            billingPeriod:
-              autoRenew: true
-              renewalDays: 30
-            contractedServices:
-              zoom: "2025"
-              petclinic: "2024"
-            subscriptionPlans:
-              zoom: ENTERPRISE
-              petclinic: GOLD
-            subscriptionAddOns:
-              zoom:
-                extraSeats: 2
-              petclinic:
-                petsAdoptionCentre: 1
-
-    SubscriptionCompositionNovation:
-      description: Novates the composition of an existent contract
-      required: true
-      content:
-        application/json:
-          schema:
-            type: object
-            required:
-              - subscriptionPlans
-              - subscriptionAddOns
-            properties:
-              contractedServices:
-                $ref: '#/components/schemas/ContractedService'
-              subscriptionPlans:
-                $ref: '#/components/schemas/SubscriptionPlans'
-              subscriptionAddOns:
-                $ref: '#/components/schemas/SubscriptionAddons'
-          example:
-            contractedServices:
-              zoom: "2025"
-              petclinic: "2024"
-            subscriptionPlans:
-              zoom: PRO
-              petclinic: GOLD
-            subscriptionAddOns:
-              zoom:
-                extraSeats: 1
-
-    SubscriptionUserContactNovation:
-      description: Updates the contact information of a user from their contract
-      required: true
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
+                $ref: '#/components/schemas/Role'
               firstName:
                 type: string
-                example: John
               lastName:
                 type: string
-                example: Doe
               email:
                 type: string
-                example: john.doe@my-domain.com
-              username:
-                type: string
-                example: johndoe
+                format: email
               phone:
                 type: string
-                example: +34 666 666 666
-
-    SubscriptionBillingNovation:
-      description: Updates the billing information from a contract
+                nullable: true
+              avatar:
+                type: string
+                nullable: true
+                description: URI to the user's avatar (processed)
+              address:
+                type: string
+                nullable: true
+              postalCode:
+                type: string
+                nullable: true
+              token:
+                type: string
+                nullable: true
+              tokenExpiration:
+                type: string
+                format: date-time
+                nullable: true
+              createdAt:
+                type: string
+                format: date-time
+              updatedAt:
+                type: string
+                format: date-time
+    
+    PricingUpdate:
+      description: Pricing metadata update object. (All fields are optional, but at least one must be provided)
       required: true
       content:
         application/json:
           schema:
             type: object
             properties:
-              endDate:
-                $ref: '#/components/schemas/Date'
-              autoRenew:
+              name:
+                type: string
+                minLength: 1
+                maxLength: 255
+              owner:
+                type: string
+                minLength: 1
+                maxLength: 255
+              private:
                 type: boolean
-                example: true
-                default: true
-              renewalDays:
-                $ref: '#/components/schemas/RenewalDays'
-          example:
-            endDate: '2025-12-31T00:00:00Z'
-            autoRenew: true
-            renewalDays: 30
-
-    SubscriptionUsageLevelsUpdate:
-      description: Updates usage levels for a contract
-      required: true
+              _collectionId:
+                type: string
+                description: MongoDB ObjectId reference
+              createdAt:
+                type: string
+                format: date-time
+              url:
+                type: string
+                format: uri
+              yaml:
+                type: string
+                description: Serialized pricing definition in YAML format
+              analytics:
+                type: object
+                properties:
+                  numberOfFeatures:
+                    type: number
+                  numberOfInformationFeatures:
+                    type: number
+                  numberOfIntegrationFeatures:
+                    type: number
+                  numberOfIntegrationApiFeatures:
+                    type: number
+                  numberOfIntegrationExtensionFeatures:
+                    type: number
+                  numberOfIntegrationIdentityProviderFeatures:
+                    type: number
+                  numberOfIntegrationWebSaaSFeatures:
+                    type: number
+                  numberOfIntegrationMarketplaceFeatures:
+                    type: number
+                  numberOfIntegrationExternalDeviceFeatures:
+                    type: number
+                  numberOfDomainFeatures:
+                    type: number
+                  numberOfAutomationFeatures:
+                    type: number
+                  numberOfBotAutomationFeatures:
+                    type: number
+                  numberOfFilteringAutomationFeatures:
+                    type: number
+                  numberOfTrackingAutomationFeatures:
+                    type: number
+                  numberOfTaskAutomationFeatures:
+                    type: number
+                  numberOfManagementFeatures:
+                    type: number
+                  numberOfGuaranteeFeatures:
+                    type: number
+                  numberOfSupportFeatures:
+                    type: number
+                  numberOfPaymentFeatures:
+                    type: number
+                  numberOfUsageLimits:
+                    type: number
+                  numberOfRenewableUsageLimits:
+                    type: number
+                  numberOfNonRenewableUsageLimits:
+                    type: number
+                  numberOfResponseDrivenUsageLimits:
+                    type: number
+                  numberOfTimeDrivenUsageLimits:
+                    type: number
+                  numberOfPlans:
+                    type: number
+                  numberOfFreePlans:
+                    type: number
+                  numberOfPaidPlans:
+                    type: number
+                  numberOfAddOns:
+                    type: number
+                  numberOfReplacementAddons:
+                    type: number
+                  numberOfExtensionAddons:
+                    type: number
+                  configurationSpaceSize:
+                    type: number
+                  minSubscriptionPrice:
+                    type: number
+                  maxSubscriptionPrice:
+                    type: number
+            example:
+              name: "Zoom"
+  responses:
+    PricingList:
+      description: A list of pricings matching the provided filter
       content:
         application/json:
           schema:
             type: object
-            additionalProperties:
-              type: object
-              additionalProperties:
-                type: number
-          example:
-            zoom:
-              maxSeats: 10
-            petclinic:
-              maxPets: 2
-              maxVisits: 5
+            properties:
+              total:
+                type: integer
+                description: Total number of pricings matching the provided filter (without pagination)
+                example: 250
+              minPrice:
+                type: object
+                description: Minimum price stats for the pricings matching the provided filter (without pagination)
+                properties:
+                  min:
+                    type: number
+                    description: The minimum min price amount used for filtering
+                    example: 10.00
+                  max:
+                    type: number
+                    description: The maximum min price amount used for filtering
+                    example: 100.00
+                  data:
+                    type: object
+                    description: An object containing the count of pricings for each min price amount (without pagination)
+                    additionalProperties:
+                      type: object
+                      properties:
+                        value:
+                          type: string
+                          description: Range of min price values
+                          example: 10-20
+                  percentileIndex:
+                    type: number
+                    example: 62
+              maxPrice:
+                type: object
+                description: Maximum price stats for the pricings matching the provided filter (without pagination)
+                properties:
+                  min:
+                    type: number
+                    description: The minimum max price amount used for filtering
+                    example: 10.00
+                  max:
+                    type: number
+                    description: The maximum max price amount used for filtering
+                    example: 100.00
+                  data:
+                    type: object
+                    description: An object containing the count of pricings for each max price amount (without pagination)
+                    additionalProperties:
+                      type: object
+                      properties:
+                        value:
+                          type: string
+                          description: Range of max price values
+                          example: 10-20
+                  percentileIndex:
+                    type: number
+                    example: 62
+              configurationSpaceSize:
+                type: object
+                description: Configuration space size stats for the pricings matching the provided filter (without pagination)
+                properties:
+                  min:
+                    type: number
+                    description: The minimum configuration space size used for filtering
+                    example: 10.00
+                  max:
+                    type: number
+                    description: The maximum configuration space size used for filtering
+                    example: 100.00
+                  data:
+                    type: object
+                    description: An object containing the count of pricings for each configuration space size (without pagination)
+                    additionalProperties:
+                      type: object
+                      properties:
+                        value:
+                          type: string
+                          description: Range of configuration space size values
+                          example: 10-20
+                  percentileIndex:
+                    type: number
+                    example: 62
 
-  responses:
+              pricings:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pricing'
     UnprocessableEntity:
       description: Request sent could not be processed properly
       content:
@@ -3941,6 +1275,96 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/Username'
+    
+    PricingName:
+      name: pricingName
+      in: path
+      required: true
+      schema:
+        type: string
+
+    Name:
+      name: name
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/Name'
+    
+    SortByPricings:
+      name: sortBy
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/SortByPricings'
+    
+    Sort:
+      name: sort
+      in: query
+      required: false      
+      schema:
+        $ref: '#/components/schemas/Sort'
+
+    MinSubscription:
+      name: min-subscription
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/MinSubscription'
+
+    MaxSubscription:
+      name: max-subscription
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/MaxSubscription'
+
+    MinMinPrice:
+      name: min-minPrice
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/MinMinPrice'
+    
+    MaxMinPrice:
+      name: max-minPrice
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/MaxMinPrice'
+
+    MinMaxPrice:
+      name: min-maxPrice
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/MinMaxPrice'
+    
+    MaxMaxPrice:
+      name: max-maxPrice
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/MaxMaxPrice'
+
+    SelectedOwners:
+      name: selectedOwners
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/SelectedOwners'
+
+    Limit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/Limit'
+    Offset:
+      name: offset
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/Offset'
 
   securitySchemes:
     ApiKeyAuth:

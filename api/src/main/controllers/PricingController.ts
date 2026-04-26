@@ -2,7 +2,8 @@ import fs from 'fs';
 import container from '../config/container';
 import PricingService from '../services/PricingService';
 import path from 'path';
-import { PricingIndexQueryParams } from '../types/services/PricingService.js';
+import { PricingIndexQueryParams, SortByType } from '../types/services/PricingService.js';
+import { handleError } from '../utils/users/helpers';
 
 class PricingController {
   private pricingService: PricingService;
@@ -10,7 +11,6 @@ class PricingController {
   constructor() {
     this.pricingService = container.resolve('pricingService');
     this.index = this.index.bind(this);
-    this.indexByUserWithoutCollection = this.indexByUserWithoutCollection.bind(this);
     this.show = this.show.bind(this);
     this.getConfigurationSpace = this.getConfigurationSpace.bind(this);
     this.create = this.create.bind(this);
@@ -26,25 +26,29 @@ class PricingController {
     try {
       const queryParams: PricingIndexQueryParams = this._transformIndexQueryParams(req.query);
 
-      // include pagination params if provided
-      const pagination = {
-        limit: req.query.limit,
-        offset: req.query.offset,
-      };
-
-      const pricings = await this.pricingService.index(Object.assign({}, queryParams, pagination));
+      const pricings = await this.pricingService.index(queryParams);
       res.json(pricings);
     } catch (err: any) {
       res.status(500).send({ error: err.message });
     }
   }
 
-  async indexByUserWithoutCollection(req: any, res: any) {
+  async indexByOwner(req: any, res: any) {
     try {
-      const pricings = await this.pricingService.indexByUserWithoutCollection(req.user.username);
-      res.json({ pricings });
+      const queryParams: PricingIndexQueryParams = this._transformIndexQueryParams(req.query);
+      queryParams.selectedOwners = [req.params.username]; // Set selectedOwners filter for indexByOwner route
+
+      if (
+        (req.user.username !== req.params.username && req.user.roles.includes('ADMIN')) ||
+        req.user.username === req.params.username
+      ) {
+        queryParams.includePrivate = true;
+      }
+
+      const pricings = await this.pricingService.index(queryParams);
+      res.json(pricings);
     } catch (err: any) {
-      res.status(500).send(err.message);
+      res.status(500).send({ error: err.message });
     }
   }
 
@@ -53,7 +57,8 @@ class PricingController {
       const queryParams = req.query;
       const pricing = await this.pricingService.show(
         req.params.pricingName,
-        req.params.owner,
+        req.params.username,
+        req.user,
         queryParams
       );
       res.json(pricing);
@@ -85,7 +90,15 @@ class PricingController {
 
   async create(req: any, res: any) {
     try {
-      const pricing = await this.pricingService.create(req.file, req.user.username);
+      const isPrivate = req.body.private === 'true' || req.body.private === true;
+      const collectionId = req.body.collectionId;
+      const pricing = await this.pricingService.create(
+        req.file,
+        req.params.username,
+        isPrivate,
+        req.user,
+        collectionId
+      );
       res.json(pricing);
     } catch (err: any) {
       try {
@@ -96,7 +109,8 @@ class PricingController {
         } else {
           fs.rmSync(file.path);
         }
-        res.status(500).send({ error: err.message });
+        const { status, message } = handleError(err);
+        res.status(status).send({ error: message });
       } catch (err) {
         res.status(500).send({ error: (err as Error).message });
       }
@@ -112,7 +126,8 @@ class PricingController {
       );
       res.json(result);
     } catch (err: any) {
-      res.status(500).send({ error: err.message });
+      const {status, message} = handleError(err);
+      res.status(status).send({ error: message });
     }
   }
 
@@ -120,12 +135,14 @@ class PricingController {
     try {
       const pricing = await this.pricingService.update(
         req.params.pricingName,
-        req.user.username,
+        req.params.username,
+        req.user,
         req.body
       );
       res.json(pricing);
     } catch (err: any) {
-      res.status(500).send({ error: err.message });
+      const {status, message} = handleError(err);
+      res.status(status).send({ error: message });
     }
   }
 
@@ -134,11 +151,8 @@ class PricingController {
       const pricing = await this.pricingService.updateVersion(req.body.pricing);
       res.json(pricing);
     } catch (err: any) {
-      if (err.message.toLowerCase().includes('error updating pricing')) {
-        res.status(400).send({ error: err.message });
-      } else {
-        res.status(500).send({ error: err.message });
-      }
+      const {status, message} = handleError(err);
+      res.status(status).send({ error: message });
     }
   }
 
@@ -150,7 +164,8 @@ class PricingController {
       );
       res.json(result);
     } catch (err: any) {
-      res.status(500).send({ error: err.message });
+      const {status, message} = handleError(err);
+      res.status(status).send({ error: message });
     }
   }
 
@@ -168,7 +183,8 @@ class PricingController {
         res.status(200).send({ message: 'Pricing deleted successfully' });
       }
     } catch (err: any) {
-      res.status(500).send({ error: err.message });
+      const {status, message} = handleError(err);
+      res.status(status).send({ error: message });
     }
   }
 
@@ -185,10 +201,8 @@ class PricingController {
         res.status(200).send({ message: 'Pricing version deleted successfully' });
       }
     } catch (err: any) {
-      if (err.message.toLowerCase().includes('not exist')) {
-        return res.status(404).send({ error: err.message });
-      }
-      return res.status(500).send({ error: err.message });
+      const {status, message} = handleError(err);
+      res.status(status).send({ error: message });
     }
   }
 
@@ -197,8 +211,8 @@ class PricingController {
   ): PricingIndexQueryParams {
     const transformedData: PricingIndexQueryParams = {
       name: indexQueryParams.name as string,
-      sortBy: indexQueryParams.sortBy as string,
-      sort: indexQueryParams.sort as string,
+      sortBy: indexQueryParams.sortBy as SortByType,
+      sort: indexQueryParams.sort === 'asc' ? 'asc' : 'desc',
       subscriptions: {
         min: parseFloat(indexQueryParams['min-subscription'] as string),
         max: parseFloat(indexQueryParams['max-subscription'] as string),
@@ -214,6 +228,8 @@ class PricingController {
       selectedOwners: indexQueryParams.selectedOwners
         ? (indexQueryParams.selectedOwners as string).split(',')
         : undefined,
+      limit: indexQueryParams.limit || 10,
+      offset: indexQueryParams.offset || 0,
     };
 
     // pass through pagination (as strings) if present

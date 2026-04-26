@@ -142,7 +142,7 @@ export default function PricingListCard({
         <div className="mt-2 flex items-center justify-evenly gap-3">
           <div>
             <span>Updated </span>
-            {dataEntry && formatDistanceToNow(parseISO(dataEntry.extractionDate))} ago
+            {dataEntry && formatDistanceToNow(parseISO(dataEntry.createdAt))} ago
           </div>
           <div className="h-1.5 w-1.5 rounded-full bg-black mx-2" />
           <div className="flex items-center justify-center">

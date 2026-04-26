@@ -17,15 +17,15 @@ const loadFileRoutes = function (app: express.Application) {
   app
     .route(baseUrl + '/pricings')
     .get(pricingController.index)
-    .post(upload, pricingController.create)
     .put(pricingController.updateVersion);
 
   app
-    .route(baseUrl + '/pricings/:pricingId/configuration-space')
-    .get(pricingController.getConfigurationSpace);
+    .route(baseUrl + '/pricings/:username')
+    .get(pricingController.indexByOwner)
+    .post(upload, PricingValidator.create, handleValidation, pricingController.create);
 
   app
-    .route(baseUrl + '/pricings/:owner/:pricingName')
+    .route(baseUrl + '/pricings/:username/:pricingName')
     .get(pricingController.show)
     .put(PricingValidator.update, handleValidation, pricingController.update)
     .delete(pricingController.destroyByNameAndOwner);
@@ -35,8 +35,11 @@ const loadFileRoutes = function (app: express.Application) {
     .delete(pricingController.destroyVersionByNameAndOwner);
 
   app
+    .route(baseUrl + '/pricings/:username/:pricingName/:pricingVersion/configuration-space')
+    .get(pricingController.getConfigurationSpace);
+
+  app
     .route(baseUrl + '/me/pricings')
-    .get(pricingController.indexByUserWithoutCollection)
     .put(pricingController.addPricingToCollection);
 };
 

@@ -54,7 +54,7 @@ export function getPricingByNameAndOwnerAggregator(
             version: '$version',
             private: '$private',
             collectionName: { $ifNull: ['$collection.name', null] },
-            extractionDate: '$extractionDate',
+            createdAt: '$createdAt',
             url: '$url',
             yaml: '$yaml',
             analytics: '$analytics',
@@ -72,7 +72,7 @@ export function getPricingByNameAndOwnerAggregator(
         name: 1, // `name` global
         owner: 1, // `owner` global
         collectionName: 1,
-        versions: { $sortArray: { input: '$versions', sortBy: { extractionDate: -1 } } }, // Orden descendente por fecha
+        versions: { $sortArray: { input: '$versions', sortBy: { createdAt: -1 } } }, // Orden descendente por fecha
       },
     },
   ];

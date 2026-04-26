@@ -44,7 +44,7 @@
 //         name: `LegacyPricing-${Date.now()}`,
 //         owner: uniqueOwner,
 //         version: '1.0.0',
-//         extractionDate: new Date(),
+//         createdAt: new Date(),
 //         currency: 'USD',
 //         url: '',
 //         yaml: 'static/pricings/templates/petclinic.yml',

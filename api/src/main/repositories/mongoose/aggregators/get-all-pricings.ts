@@ -1,6 +1,6 @@
 export function getAllPricingsAggregator(filteringAggregators: any, sortAggregator: any) {
   return [
-    { $sort: { extractionDate: -1 } },
+    { $sort: { createdAt: -1 } },
     latestPricingsByNameAggregator,
     refactorRootAggregator,
     ...parseCollectionNameAggregator,
@@ -22,7 +22,7 @@ const latestPricingsByNameAggregator = {
       $first: '$$ROOT',
     },
     latestExtractionDate: {
-      $max: '$extractionDate',
+      $max: '$createdAt',
     },
   },
 };
@@ -80,7 +80,7 @@ const computeFiltersDataAggregator = {
           owner: 1,
           collectionName: 1,
           version: 1,
-          extractionDate: 1,
+          createdAt: 1,
           currency: 1,
           analytics: {
             configurationSpaceSize: 1,

@@ -1,9 +1,23 @@
-export type PricingIndexQueryParams = Record<string, string | string[] | {min: number, max: number} | undefined>
-
-// Pagination params for price listing
-export type PaginationParams = {
-	limit?: string | number;
-	offset?: string | number;
+export type PricingIndexQueryParams = {
+  name?: string;
+  sortBy?: SortByType;
+  sort?: 'asc' | 'desc';
+  includePrivate?: boolean;
+  subscriptions?: {
+    min: number;
+    max: number;
+  };
+  minPrice?: {
+    min: number;
+    max: number;
+  };
+  maxPrice?: {
+    min: number;
+    max: number;
+  };
+  selectedOwners?: string[];
+  limit: string | number;
+  offset: string | number;
 }
 
-export type SortByType = 'configurationSpaceSize' | 'featuresCount' | 'usageLimitsCount' | 'plansCount' | 'addonsCount' | 'minPrice' | 'maxPrice' | ''
+export type SortByType = 'name' | 'configurationSpaceSize' | 'featuresCount' | 'usageLimitsCount' | 'plansCount' | 'addonsCount' | 'minPrice' | 'maxPrice' | ''

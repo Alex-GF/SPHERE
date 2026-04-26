@@ -10,7 +10,7 @@ export interface PricingSearchResultItem {
   name: string;
   owner: string;
   version: string;
-  extractionDate: string;
+  createdAt: string;
   currency: string;
   analytycs: {
     numberOfFeatures: number;

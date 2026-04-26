@@ -23,7 +23,7 @@ export default function Stats({ currentPricing, pricing } : StatsProps) {
               </div>
               <div className="mt-2 flex items-center justify-between gap-3">
                   <div className="flex flex-col items-center justify-center text-center">
-                        {currentPricing && formatDistanceToNow(parseISO(currentPricing.extractionDate))} ago
+                        {currentPricing && formatDistanceToNow(parseISO(currentPricing.createdAt))} ago
                       <p className="text-sm text-slate-500">
                           last updated
                       </p>

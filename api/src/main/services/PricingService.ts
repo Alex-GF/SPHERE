@@ -11,9 +11,12 @@ import { PricingIndexQueryParams } from '../types/services/PricingService';
 import PricingCollectionService from './PricingCollectionService';
 import PricingRepository from '../repositories/mongoose/PricingRepository';
 import CacheService from './CacheService';
+import { LeanUser } from '../types/models/User';
+import UserService from './UserService';
 
 class PricingService {
   private pricingRepository: PricingRepository;
+  private userService: UserService;
   private pricingCollectionService: PricingCollectionService;
   private cacheService: CacheService;
 
@@ -21,15 +24,11 @@ class PricingService {
     this.pricingRepository = container.resolve('pricingRepository');
     this.pricingCollectionService = container.resolve('pricingCollectionService');
     this.cacheService = container.resolve('cacheService');
+    this.userService = container.resolve('userService');
   }
 
   async index(queryParams: PricingIndexQueryParams) {
     const pricings = await this.pricingRepository.findAll(queryParams);
-    return pricings;
-  }
-
-  async indexByUserWithoutCollection(username: string) {
-    const pricings = await this.pricingRepository.findByOwnerWithoutCollection(username);
     return pricings;
   }
 
@@ -38,17 +37,22 @@ class PricingService {
     return pricings;
   }
 
-  async show(name: string, owner: string, queryParams?: { collectionName?: string }) {
+  async show(name: string, owner: string, reqUser: LeanUser, queryParams: { collectionName?: string, includePrivate: boolean } = {includePrivate: false}) {
+        
+    queryParams.includePrivate = owner === reqUser.username || reqUser.role === 'ADMIN';
+    
     const pricing: { name: string; versions: PricingModel[] } | null =
       await this.pricingRepository.findByNameAndOwner(name, owner, queryParams);
-    if (!pricing) {
-      throw new Error('Pricing not found');
+    
+      if (!pricing) {
+      throw new Error('NOT FOUND: Pricing not found');
     }
+
     for (const version of pricing.versions) {
       processFileUris(version, ['yaml']);
     }
-    const pricingObject = Object.assign({}, pricing);
-    return pricingObject;
+
+    return pricing;
   }
 
   async getConfigurationSpace(
@@ -106,8 +110,20 @@ class PricingService {
     ];
   }
 
-  async create(pricingFile: any, owner: string, collectionId?: string) {
+  async create(pricingFile: any, owner: string, isPrivate: boolean, reqUser: LeanUser, collectionId?: string) {
     try {
+
+      if (owner !== reqUser.username && reqUser.role !== 'ADMIN') {
+        throw new Error('PERMISSION ERROR: You do not have permission to create a pricing for another user');
+      }
+      
+      if (owner !== reqUser.username) {
+        const user = await this.userService.exists(owner);
+        if (!user) {
+          throw new Error('NOT FOUND: User not found');
+        }
+      }
+
       const uploadedPricing: Pricing = retrievePricingFromPath(
         typeof pricingFile === 'string' ? pricingFile : pricingFile.path
       );
@@ -120,10 +136,6 @@ class PricingService {
       if (!collectionId && previousPricing && previousPricing.versions[0]._collectionId) {
         collectionId = previousPricing.versions[0]._collectionId.toString();
       }
-
-      console.log("-------------------");
-      console.log(pricingFile.path);
-      console.log("-------------------");
 
       const rawPath = typeof pricingFile === 'string' ? pricingFile : pricingFile.path;
       const normalizedPath = rawPath.replace(/\\/g, '/');
@@ -140,8 +152,9 @@ class PricingService {
         version: uploadedPricing.version,
         _collectionId: collectionId,
         owner: owner,
+        private: isPrivate,
         currency: uploadedPricing.currency,
-        extractionDate: new Date(uploadedPricing.createdAt),
+        createdAt: new Date(uploadedPricing.createdAt),
         url: '',
         yaml: yamlPath,
         analytics: {},
@@ -189,10 +202,15 @@ class PricingService {
     }
   }
 
-  async update(pricingName: string, owner: string, data: any) {
+  async update(pricingName: string, owner: string, reqUser: LeanUser, data: any) {
+
+    if (owner !== reqUser.username && reqUser.role !== 'ADMIN') {
+      throw new Error('PERMISSION ERROR: You do not have permission to update a pricing for another user');
+    }
+
     const pricing = await this.pricingRepository.findByNameAndOwner(pricingName, owner);
     if (!pricing) {
-      throw new Error('Either the pricing does not exist or you are not its owner');
+      throw new Error('PERMISSION ERROR: Either the pricing does not exist or you are not its owner');
     }
 
     for (const pricingVersion of pricing.versions) {

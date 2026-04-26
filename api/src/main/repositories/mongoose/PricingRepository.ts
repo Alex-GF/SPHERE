@@ -10,16 +10,20 @@ class PricingRepository extends RepositoryBase {
   async findAll(...args: any) {
     const queryParams: PricingIndexQueryParams = args[0];
 
-    let filteringAggregators = [];
-    let sortAggregator = [];
-
-    const limitRaw = queryParams?.limit;
-    const offsetRaw = queryParams?.offset;
-    delete queryParams.limit;
-    delete queryParams.offset;
+    const filteringAggregators = [];
+    const sortAggregator = [];
 
     if (Object.keys(queryParams).length > 0) {
-      const { name, subscriptions, minPrice, maxPrice, selectedOwners, sortBy, sort } = queryParams;
+      const {
+        name,
+        subscriptions,
+        minPrice,
+        maxPrice,
+        includePrivate,
+        selectedOwners,
+        sortBy,
+        sort,
+      } = queryParams;
 
       if (name) {
         filteringAggregators.push({
@@ -28,6 +32,14 @@ class PricingRepository extends RepositoryBase {
               $regex: name,
               $options: 'i', // case-insensitive
             },
+          },
+        });
+      }
+
+      if (includePrivate) {
+        filteringAggregators.push({
+          $match: {
+            private: true,
           },
         });
       }
@@ -90,10 +102,10 @@ class PricingRepository extends RepositoryBase {
       }
       if (sortBy && sort) {
         let sortParameter = '';
-        let sortOrder = sort === 'asc' ? 1 : -1;
+        const sortOrder = sort === 'asc' ? 1 : -1;
 
         switch (sortBy) {
-          case 'pricingName':
+          case 'name':
             sortParameter = 'name';
             break;
           case 'configurationSpaceSize':
@@ -136,19 +148,6 @@ class PricingRepository extends RepositoryBase {
     try {
       const aggregator = getAllPricingsAggregator(filteringAggregators, sortAggregator);
 
-      let limit: number | undefined;
-      let offset: number | undefined;
-
-      if (limitRaw !== undefined) {
-        limit = typeof limitRaw === 'string' ? parseInt(limitRaw, 10) : Number(limitRaw);
-        if (Number.isNaN(limit) || limit! < 0) limit = undefined;
-      }
-
-      if (offsetRaw !== undefined) {
-        offset = typeof offsetRaw === 'string' ? parseInt(offsetRaw, 10) : Number(offsetRaw);
-        if (Number.isNaN(offset) || offset! < 0) offset = undefined;
-      }
-
       // Build base pipeline and optionally add pagination stages that operate inside aggregation
       const basePipeline: any[] = [
         {
@@ -158,6 +157,9 @@ class PricingRepository extends RepositoryBase {
         },
         ...aggregator,
       ];
+
+      const offset = queryParams.offset;
+      const limit = queryParams.limit;
 
       // If pagination params present, compute total and slice pricings inside the aggregation for efficiency
       if (typeof offset !== 'undefined' || typeof limit !== 'undefined') {
@@ -189,12 +191,26 @@ class PricingRepository extends RepositoryBase {
         ];
 
         const pricings = await PricingMongoose.aggregate([...basePipeline, ...paginationStages]);
-        return pricings[0] || { pricings: [], minPrice: [], maxPrice: [], configurationSpaceSize: [], total: 0 };
+        return (
+          pricings[0] || {
+            pricings: [],
+            minPrice: [],
+            maxPrice: [],
+            configurationSpaceSize: [],
+            total: 0,
+          }
+        );
       }
 
       // No pagination: return full result (and include total)
       const pricings = await PricingMongoose.aggregate(basePipeline);
-      const result = pricings[0] || { pricings: [], minPrice: [], maxPrice: [], configurationSpaceSize: [], total: 0 };
+      const result = pricings[0] || {
+        pricings: [],
+        minPrice: [],
+        maxPrice: [],
+        configurationSpaceSize: [],
+        total: 0,
+      };
       // ensure total is set
       if (typeof result.total === 'undefined') {
         result.total = Array.isArray(result.pricings) ? result.pricings.length : 0;
@@ -205,34 +221,23 @@ class PricingRepository extends RepositoryBase {
     }
   }
 
-  async findByOwnerWithoutCollection(owner: string, ...args: any) {
-    try {
-      const pricings = await PricingMongoose.aggregate([
-        {
-          $match: {
-            owner: owner,
-            _collectionId: { $exists: false },
-          },
-        },
-        ...getAllPricingsAggregator([], []),
-      ]);
-
-      return pricings[0];
-    } catch (err) {
-      return [];
-    }
-  }
-
   async findByNameAndOwner(
     name: string,
     owner: string,
-    queryParams?: { collectionName?: string },
-    ...args: any
+    queryParams?: { collectionName?: string; includePrivate?: boolean }
   ) {
+    // Filtro de visibilidad
+    const visibilityMatch = queryParams?.includePrivate
+      ? {} // include all (public + private)
+      : { private: false }; // only include public
+
     try {
       let pricing;
       if (queryParams?.collectionName) {
         pricing = await PricingMongoose.aggregate([
+          {
+            $match: visibilityMatch,
+          },
           ...getPricingByNameAndOwnerAggregator(name, owner),
           {
             $match: {
@@ -245,6 +250,7 @@ class PricingRepository extends RepositoryBase {
           {
             $match: {
               _collectionId: { $exists: false },
+              ...visibilityMatch,
             },
           },
           ...getPricingByNameAndOwnerAggregator(name, owner),
@@ -263,7 +269,9 @@ class PricingRepository extends RepositoryBase {
 
   async findAnyByNameAndOwner(name: string, owner: string, ...args: any) {
     try {
-      const pricing = await PricingMongoose.aggregate(getPricingByNameAndOwnerAggregator(name, owner));
+      const pricing = await PricingMongoose.aggregate(
+        getPricingByNameAndOwnerAggregator(name, owner)
+      );
       if (!pricing || pricing.length === 0) {
         return null;
       }
@@ -299,10 +307,18 @@ class PricingRepository extends RepositoryBase {
         item._collectionId = new mongoose.Types.ObjectId(item._collectionId);
       }
 
-      if (item.analytics && item.analytics.minSubscriptionPrice && Number.isNaN(item.analytics.minSubscriptionPrice)){
+      if (
+        item.analytics &&
+        item.analytics.minSubscriptionPrice &&
+        Number.isNaN(item.analytics.minSubscriptionPrice)
+      ) {
         item.analytics.minSubscriptionPrice = undefined;
       }
-      if (item.analytics && item.analytics.minSubscriptionPrice && Number.isNaN(item.analytics.maxSubscriptionPrice)){
+      if (
+        item.analytics &&
+        item.analytics.minSubscriptionPrice &&
+        Number.isNaN(item.analytics.maxSubscriptionPrice)
+      ) {
         item.analytics.maxSubscriptionPrice = undefined;
       }
     });
@@ -327,10 +343,7 @@ class PricingRepository extends RepositoryBase {
     return pricing.toJSON();
   }
 
-  async updatePricingsCollectionName(
-    pricingsToUpdate: any,
-    ...args: any
-  ) {
+  async updatePricingsCollectionName(pricingsToUpdate: any, ...args: any) {
     const bulkOps = pricingsToUpdate.map((pricing: any) => ({
       updateOne: {
         filter: { _id: pricing._id },

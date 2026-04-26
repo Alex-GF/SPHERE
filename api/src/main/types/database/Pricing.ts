@@ -2,7 +2,7 @@ export interface Pricing {
   id: string;
   name: string;
   _collectionId?: string;
-  extractionDate: Date;
+  createdAt: Date;
   url?: string;
   yaml: string;
   analytics?: PricingAnalytics;

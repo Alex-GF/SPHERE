@@ -46,7 +46,7 @@ export interface AnalyticsDataEntry {
   _collectionId: string;
   collection: string;
   version: string;
-  extractionDate: string;
+  createdAt: string;
   currency: string;
   yaml: string;
   analytics: SaaSAnalytics;

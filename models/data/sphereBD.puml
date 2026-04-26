@@ -28,7 +28,7 @@ class CollectionAnalytics {
 class Pricing {
     name: String
     version: String
-    extractionDate: Date
+    createdAt: Date
     url: String [Optional]
     currency: String
     yaml: String

@@ -30,7 +30,7 @@ export const calculateAnalyticsForPricings = (pricings: any) => {
 function _simulateCollectionEvolution(pricings: Pricing[]) {
   const pricingsByDate: Record<string, any[]> = {};
 
-  const extractionDates = pricings.map((pricing: any) => new Date(pricing.extractionDate));
+  const extractionDates = pricings.map((pricing: any) => new Date(pricing.createdAt));
   const minDate = new Date(Math.min(...extractionDates.map(date => date.getTime())));
   const maxDate = new Date(Math.max(...extractionDates.map(date => date.getTime())));
   maxDate.setMonth(maxDate.getMonth() + 12); // Added four months to include the pricing with the las extraction date and stabilise the analytics
@@ -38,7 +38,7 @@ function _simulateCollectionEvolution(pricings: Pricing[]) {
   for (let date = new Date(minDate); date <= maxDate; date.setMonth(date.getMonth() + 12)) {
     const isoDate = date.toISOString().split('T')[0];
     const filteredPricings = pricings.filter(
-      (pricing: any) => new Date(pricing.extractionDate) <= date
+      (pricing: any) => new Date(pricing.createdAt) <= date
     );
 
     const latestPricings: Record<string, any> = {};
@@ -47,7 +47,7 @@ function _simulateCollectionEvolution(pricings: Pricing[]) {
     for (const pricing of filteredPricings) {
       if (
         !latestPricings[pricing.name] ||
-        new Date(pricing.extractionDate) > new Date(latestPricings[pricing.name].extractionDate)
+        new Date(pricing.createdAt) > new Date(latestPricings[pricing.name].createdAt)
       ) {
         latestPricings[pricing.name] = pricing;
       }
