@@ -15,16 +15,7 @@ class PricingRepository extends RepositoryBase {
     const sortAggregator = [];
 
     if (Object.keys(queryParams).length > 0) {
-      const {
-        name,
-        subscriptions,
-        minPrice,
-        maxPrice,
-        includePrivate,
-        selectedOwners,
-        sortBy,
-        sort,
-      } = queryParams;
+      const { name, subscriptions, minPrice, maxPrice, selectedOwners, sortBy, sort } = queryParams;
 
       if (name) {
         filteringAggregators.push({
@@ -33,14 +24,6 @@ class PricingRepository extends RepositoryBase {
               $regex: name,
               $options: 'i', // case-insensitive
             },
-          },
-        });
-      }
-
-      if (includePrivate) {
-        filteringAggregators.push({
-          $match: {
-            private: true,
           },
         });
       }
@@ -151,11 +134,9 @@ class PricingRepository extends RepositoryBase {
 
       // Build base pipeline and optionally add pagination stages that operate inside aggregation
       const basePipeline: any[] = [
-        {
-          $match: {
-            private: { $ne: true },
-          },
-        },
+        ...(queryParams?.includePrivate
+          ? [] // no añadir nada
+          : [{ $match: { private: false } }]), // añadir etapa
         ...aggregator,
       ];
 
@@ -302,7 +283,11 @@ class PricingRepository extends RepositoryBase {
     return pricing.toObject<LeanPricing>();
   }
 
-  async findVersionByNameAndOwner(name: string, version: string, owner: string): Promise<LeanPricing | null> {
+  async findVersionByNameAndOwner(
+    name: string,
+    version: string,
+    owner: string
+  ): Promise<LeanPricing | null> {
     const pricing = await PricingMongoose.findOne({
       $expr: {
         $and: [

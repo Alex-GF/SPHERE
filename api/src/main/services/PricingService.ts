@@ -229,7 +229,7 @@ class PricingService {
       const updatedPricing: Pricing = retrievePricingFromText(pricingString);
       return updatedPricing;
     } catch (err) {
-      throw new Error('Error updating pricing: ' + (err as Error).message);
+      throw new Error('INVALID DATA: Error updating pricing: ' + (err as Error).message);
     }
   }
 
@@ -266,7 +266,7 @@ class PricingService {
       const pricing = await this.pricingRepository.findAnyByNameAndOwner(pricingName, owner);
 
       if (!pricing) {
-        throw new Error('Either the pricing does not exist or you are not its owner');
+        throw new Error('NOT FOUND: Either the pricing does not exist or you are not its owner');
       }
 
       await this.pricingRepository.removePricingFromCollection(pricingName, owner);
@@ -275,7 +275,7 @@ class PricingService {
           pricing.versions[0]._collectionId
         );
       } else {
-        throw new Error('Pricing is not in a collection');
+        throw new Error('NOT FOUND: Pricing is not in a collection');
       }
 
       return true;
@@ -303,7 +303,7 @@ class PricingService {
         owner
       );
       if (!collection) {
-        throw new Error('Collection not found');
+        throw new Error('NOT FOUND: Collection not found');
       }
 
       collectionId = collection._id.toString();
@@ -315,7 +315,7 @@ class PricingService {
       collectionId
     );
     if (!result) {
-      throw new Error('Either the pricing does not exist or you are not its owner');
+      throw new Error('NOT FOUND: Either the pricing does not exist or you are not its owner');
     }
     return true;
   }
@@ -343,7 +343,7 @@ class PricingService {
     }
 
     if (!result) {
-      throw new Error('Either the pricing does not exist or you are not its owner');
+      throw new Error('NOT FOUND: Either the pricing does not exist or you are not its owner');
     }
 
     return true;

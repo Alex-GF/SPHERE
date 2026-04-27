@@ -51,8 +51,8 @@ externalDocs:
   url: https://sphere.score.us.es/
 
 servers:
-  # - url: 'https://api.space.es/api/v1'
-  #   description: Production
+  - url: 'https://sphere.score.us.es/api/v1'
+    description: Production
   - url: 'http://localhost:3000/api/v1'
     description: Development (local)
 
@@ -65,22 +65,6 @@ tags:
     description: Pricing Version Control System (PVCS)
   - name: Collections
     description: Collection management for grouping pricings
-
-
-  - name: Organizations
-    description: Organization management (User API Key only)
-  - name: Services
-    description: Service and pricing management (both API key types)
-  - name: Contracts
-    description: Subscription contract management (both API key types)
-  - name: Features
-    description: Feature evaluation and toggle management (Org API Key only)
-  - name: Analytics
-    description: System usage analytics (User ADMIN or Org Key with MANAGEMENT)
-  - name: Cache
-    description: Cache management (User ADMIN only)
-  - name: Events
-    description: WebSocket event management (Public)
   - name: Healthcheck
     description: Service health verification (Public)
 

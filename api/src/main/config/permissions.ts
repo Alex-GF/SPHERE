@@ -22,7 +22,7 @@ import { RoutePermission } from "../types/permissions";
  */
 export const ROUTE_PERMISSIONS: RoutePermission[] = [
   // ============================================
-  // User Management Routes (User API Keys ONLY)
+  // User Management Routes
   // ============================================
   {
     path: '/users/login',
@@ -42,6 +42,21 @@ export const ROUTE_PERMISSIONS: RoutePermission[] = [
   {
     path: '/users/**',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    allowedUserRoles: ['ADMIN', 'USER'],
+  },
+
+  // ============================================
+  // Pricing Management Routes 
+  // ============================================
+
+  {
+    path: '/pricings/**',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    allowedUserRoles: ['ADMIN', 'USER'],
+  },
+  {
+    path: '/me/pricings',
+    methods: ['PUT'],
     allowedUserRoles: ['ADMIN', 'USER'],
   },
 

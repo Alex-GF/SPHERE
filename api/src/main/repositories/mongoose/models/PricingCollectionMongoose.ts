@@ -25,9 +25,9 @@ const pricingCollectionSchema = new Schema(
     toJSON: {
       virtuals: true,
       transform: function (doc, resultObject, options) {
-        delete resultObject._id;
-        delete resultObject.__v;
-        delete resultObject._ownerId;
+        delete (resultObject as any)._id;
+        delete (resultObject as any).__v;
+        delete (resultObject as any)._ownerId;
         return resultObject;
       },
     },

@@ -11,6 +11,7 @@ class PricingController {
   constructor() {
     this.pricingService = container.resolve('pricingService');
     this.index = this.index.bind(this);
+    this.indexByOwner = this.indexByOwner.bind(this);
     this.show = this.show.bind(this);
     this.getConfigurationSpace = this.getConfigurationSpace.bind(this);
     this.create = this.create.bind(this);
@@ -40,7 +41,7 @@ class PricingController {
       queryParams.selectedOwners = [req.params.username]; // Set selectedOwners filter for indexByOwner route
 
       if (
-        (req.user.username !== req.params.username && req.user.roles.includes('ADMIN')) ||
+        (req.user.username !== req.params.username && req.user.role === 'ADMIN') ||
         req.user.username === req.params.username
       ) {
         queryParams.includePrivate = true;
