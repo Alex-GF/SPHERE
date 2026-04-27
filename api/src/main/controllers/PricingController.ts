@@ -29,7 +29,8 @@ class PricingController {
       const pricings = await this.pricingService.index(queryParams);
       res.json(pricings);
     } catch (err: any) {
-      res.status(500).send({ error: err.message });
+      const {status, message} = handleError(err);
+      res.status(status).send({ error: message });
     }
   }
 
@@ -48,7 +49,8 @@ class PricingController {
       const pricings = await this.pricingService.index(queryParams);
       res.json(pricings);
     } catch (err: any) {
-      res.status(500).send({ error: err.message });
+      const {status, message} = handleError(err);
+      res.status(status).send({ error: message });
     }
   }
 
@@ -63,28 +65,22 @@ class PricingController {
       );
       res.json(pricing);
     } catch (err: any) {
-      if (err.message.toLowerCase().includes('not found')) {
-        res.status(404).send({ error: err.message });
-      } else {
-        res.status(500).send({ error: err.message });
-      }
+      const {status, message} = handleError(err);
+      res.status(status).send({ error: message });
     }
   }
 
   async getConfigurationSpace(req: any, res: any) {
     try {
       const [configurationSpace, configurationSpaceSize] =
-        await this.pricingService.getConfigurationSpace(req.params.pricingId, req.query);
+        await this.pricingService.getConfigurationSpace(req.params.username, req.params.pricingName, req.params.pricingVersion, req.query);
       res.json({
         configurationSpace: configurationSpace,
         configurationSpaceSize: configurationSpaceSize,
       });
     } catch (err: any) {
-      if (err.message.toLowerCase().includes('not found')) {
-        res.status(404).send({ error: err.message });
-      } else {
-        res.status(500).send({ error: err.message });
-      }
+      const {status, message} = handleError(err);
+      res.status(status).send({ error: message });
     }
   }
 
@@ -124,7 +120,12 @@ class PricingController {
         req.user.username,
         req.body.collectionId
       );
-      res.json(result);
+
+      if (!result) {
+        res.status(404).send({ error: 'ERROR: Pricing not found or you are not the owner' });
+      }
+      
+      res.json({ message: "Pricing added to collection successfully" });
     } catch (err: any) {
       const {status, message} = handleError(err);
       res.status(status).send({ error: message });
@@ -174,7 +175,8 @@ class PricingController {
       const queryParams = req.query;
       const result = await this.pricingService.destroy(
         req.params.pricingName,
-        req.user.username,
+        req.params.username,
+        req.user,
         queryParams
       );
       if (!result) {
@@ -193,7 +195,8 @@ class PricingController {
       const result = await this.pricingService.destroyVersion(
         req.params.pricingName,
         req.params.pricingVersion,
-        req.user.username
+        req.params.username,
+        req.user
       );
       if (!result) {
         res.status(404).send({ error: 'Pricing version not found' });

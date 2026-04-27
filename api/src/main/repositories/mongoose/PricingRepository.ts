@@ -5,6 +5,7 @@ import { getAllPricingsAggregator } from './aggregators/get-all-pricings';
 import { PricingIndexQueryParams } from '../../types/services/PricingService';
 import mongoose from 'mongoose';
 import { getPricingByNameAndOwnerAggregator } from './aggregators/get-pricing-by-name-and-owner';
+import { LeanPricing } from '../../types/models/Pricing';
 
 class PricingRepository extends RepositoryBase {
   async findAll(...args: any) {
@@ -282,7 +283,7 @@ class PricingRepository extends RepositoryBase {
     }
   }
 
-  async findByCollection(collectionId: string, ...args: any) {
+  async findByCollection(collectionId: string) {
     try {
       const pricings = await PricingMongoose.find({ _collectionId: collectionId });
 
@@ -292,16 +293,34 @@ class PricingRepository extends RepositoryBase {
     }
   }
 
-  async findById(id: string, ...args: any[]): Promise<any> {
+  async findById(id: string): Promise<LeanPricing | null> {
     const pricing = await PricingMongoose.findOne({ _id: new mongoose.Types.ObjectId(id) });
     if (!pricing) {
       return null;
     }
 
-    return pricing.toJSON();
+    return pricing.toObject<LeanPricing>();
   }
 
-  async create(data: any[], ...args: any) {
+  async findVersionByNameAndOwner(name: string, version: string, owner: string): Promise<LeanPricing | null> {
+    const pricing = await PricingMongoose.findOne({
+      $expr: {
+        $and: [
+          { $eq: [{ $toLower: '$name' }, name.toLowerCase()] },
+          { $eq: ['$owner', owner] },
+          { $eq: ['$version', version] },
+        ],
+      },
+    });
+
+    if (!pricing) {
+      return null;
+    }
+
+    return pricing.toObject<LeanPricing>();
+  }
+
+  async create(data: any[]) {
     data.forEach(item => {
       if (item._collectionId) {
         item._collectionId = new mongoose.Types.ObjectId(item._collectionId);

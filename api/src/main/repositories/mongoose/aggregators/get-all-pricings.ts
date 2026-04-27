@@ -53,7 +53,7 @@ const parseCollectionNameAggregator = [
       collectionName: '$collection.name',
     },
   },
-]
+];
 
 const refactorOutputAggregator = {
   $project: {

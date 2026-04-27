@@ -31,7 +31,7 @@ const loadFileRoutes = function (app: express.Application) {
     .delete(pricingController.destroyByNameAndOwner);
 
   app
-    .route(baseUrl + '/pricings/:owner/:pricingName/:pricingVersion')
+    .route(baseUrl + '/pricings/:username/:pricingName/:pricingVersion')
     .delete(pricingController.destroyVersionByNameAndOwner);
 
   app

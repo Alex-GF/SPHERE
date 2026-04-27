@@ -56,16 +56,18 @@ class PricingService {
   }
 
   async getConfigurationSpace(
-    pricingId: string,
+    owner: string,
+    pricingName: string,
+    pricingVersion: string,
     queryParams?: { limit?: string; offset?: string }
   ) {
     // Validations
     if (queryParams?.limit && !/^\d+$/.test(queryParams.limit)) {
-      throw new Error('Invalid limit parameter, it must be a numeric value');
+      throw new Error('INVALID DATA: Invalid limit parameter, it must be a numeric value');
     }
 
     if (queryParams?.offset && !/^\d+$/.test(queryParams.offset)) {
-      throw new Error('Invalid offset parameter, it must be a numeric value');
+      throw new Error('INVALID DATA: Invalid offset parameter, it must be a numeric value');
     }
 
     const formattedQueryParams = {
@@ -73,9 +75,9 @@ class PricingService {
       offset: queryParams?.offset ? parseInt(queryParams.offset) : undefined,
     };
 
-    const retrievedPricing = await this.pricingRepository.findById(pricingId);
+    const retrievedPricing = await this.pricingRepository.findVersionByNameAndOwner(pricingName, pricingVersion, owner);
     if (!retrievedPricing) {
-      throw new Error('Pricing not found');
+      throw new Error('NOT FOUND: Pricing not found');
     }
 
     if (!process.env.SERVER_STATICS_FOLDER) {
@@ -83,7 +85,7 @@ class PricingService {
     }
 
     let configurationSpace = null;
-    const key: string = 'configurationSpace:' + pricingId;
+    const key: string = `${owner}.${pricingName}.${pricingVersion}.configurationSpace`;
     const cachedConfigurationSpace = await this.cacheService.get(key);
 
     if (cachedConfigurationSpace) {
@@ -190,7 +192,7 @@ class PricingService {
     try {
       const pricing = await this.pricingRepository.findByNameAndOwner(pricingName, owner);
       if (!pricing) {
-        throw new Error('Either the pricing does not exist or you are not its owner');
+        throw new Error('NOT FOUND: Either the pricing does not exist or you are not its owner');
       }
 
       await this.pricingRepository.addPricingToCollection(pricingName, owner, collectionId);
@@ -210,7 +212,7 @@ class PricingService {
 
     const pricing = await this.pricingRepository.findByNameAndOwner(pricingName, owner);
     if (!pricing) {
-      throw new Error('PERMISSION ERROR: Either the pricing does not exist or you are not its owner');
+      throw new Error('NOT FOUND: Either the pricing does not exist or you are not its owner');
     }
 
     for (const pricingVersion of pricing.versions) {
@@ -282,8 +284,18 @@ class PricingService {
     }
   }
 
-  async destroy(pricingName: string, owner: string, queryParams?: { collectionName?: string }) {
+  async destroy(pricingName: string, owner: string, reqUser: LeanUser, queryParams?: { collectionName?: string }) {
     let collectionId;
+
+    if (owner !== reqUser.username && reqUser.role !== 'ADMIN') {
+      throw new Error('PERMISSION ERROR: You do not have permission to delete a pricing for another user');
+    }
+
+    const ownerUser = await this.userService.exists(owner);
+
+    if (!ownerUser) {
+      throw new Error('NOT FOUND: User not found');
+    }
 
     if (queryParams?.collectionName) {
       const collection = await this.pricingCollectionService.showByNameAndUserId(
@@ -308,7 +320,12 @@ class PricingService {
     return true;
   }
 
-  async destroyVersion(pricingName: string, pricingVersion: string, owner: string) {
+  async destroyVersion(pricingName: string, pricingVersion: string, owner: string, reqUser: LeanUser) {
+    
+    if (owner !== reqUser.username && reqUser.role !== 'ADMIN') {
+      throw new Error('PERMISSION ERROR: You do not have permission to delete a pricing version for another user');
+    }
+    
     let result;
 
     result = await this.pricingRepository.destroyVersionByNameAndOwner(
