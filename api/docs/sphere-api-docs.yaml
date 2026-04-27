@@ -57,18 +57,41 @@ servers:
     description: Development (local)
 
 tags:
+  - name: Healthcheck
+    description: Service health verification (Public)
   - name: Authentication
     description: User authentication and API key management
   - name: Users
     description: User account management
   - name: Pricings
     description: Pricing Version Control System (PVCS)
-  - name: Collections
+  - name: PricingCollections
     description: Collection management for grouping pricings
-  - name: Healthcheck
-    description: Service health verification (Public)
 
 paths:
+  /healthcheck:
+    get:
+      summary: Service health check
+      description: |
+        Verifies that the SPACE API service is operational and responsive. 
+        Use this endpoint for load balancer health checks.
+
+        **Authentication**: Public (no API key required)
+
+      tags:
+        - Healthcheck
+      responses:
+        '200':
+          description: Service is operational
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Service is up and running!
+
   /users/login:
     post:
       summary: Authenticate user and obtain API Key
@@ -675,28 +698,79 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
-  /healthcheck:
+  /collections:
     get:
-      summary: Service health check
+      summary: Get all public collections.
       description: |
-        Verifies that the SPACE API service is operational and responsive. 
-        Use this endpoint for load balancer health checks.
+        Retrieves a paginated list of all public collections.
 
-        **Authentication**: Public (no API key required)
+        **Authentication**: User token
 
       tags:
-        - Healthcheck
+        - PricingCollections
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Name'
+        - $ref: '#/components/parameters/SortByCollections'
+        - $ref: '#/components/parameters/Sort'
+        - $ref: '#/components/parameters/SelectedOwners'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
       responses:
         '200':
-          description: Service is operational
+          description: Operation Completed
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Service is up and running!
+                type: array
+                items:
+                  $ref: '#/components/responses/CollectionList'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /collections/{username}:
+    get:
+      summary: Get all collections from a user.
+      description: |
+        Retrieves a paginated list of a user's collections.
+
+        **Authentication**: User token
+
+        **Permission**: 
+        - USER: can list all their collections (PUBLIC, PRIVATE) and PUBLIC collections of other users.
+        - ADMIN: can access any user's collections.
+
+      tags:
+        - PricingCollections
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+      responses:
+        '200':
+          description: Operation Completed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/responses/UserCollectionList'
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: User not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
 
 components:
   schemas:
@@ -767,6 +841,12 @@ components:
       type: string
       description: Field to sort pricings by
       enum: [name, configurationSpaceSize, featuresCount, usageLimitsCount, plansCount, addOnsCount, minPrice, maxPrice]
+      example: name
+    
+    SortByCollections:
+      type: string
+      description: Field to sort collections by
+      enum: [name, numberOfPricings, configurationSpaceSize, numberOfFeatures, numberOfPlans, numberOfAddOns]
       example: name
     
     Sort:
@@ -1061,6 +1141,33 @@ components:
               type: number
 
     # ------------------------------
+    # --       COLLECTIONS        --
+    # ------------------------------
+
+    PublicPricingCollection:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        numberOfPricings:
+          type: integer
+        owner:
+          type: object
+          properties:
+            id:
+              type: string
+              example: 63f74bf8eeed64058364b52e
+            username:
+              type: string
+              example: "john_doe"
+            avatar:
+              type: string
+              format: uri
+              example: https://sphere.score.us.es/avatars/default-avatar.png
+    
+    # ------------------------------
     # --          ERRORS          --
     # ------------------------------
 
@@ -1327,6 +1434,35 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/Pricing'
+    
+    CollectionList:
+      description: A list of pricing collections matching the provided filter
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              collections:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PublicPricingCollection'
+              total:
+                type: integer
+                description: Total number of collections matching the provided filter (without pagination)
+                example: 50
+    
+    UserCollectionList:
+      description: A list of a user's pricing collections
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              collections:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PublicPricingCollection'
+
     UnprocessableEntity:
       description: Request sent could not be processed properly
       content:
@@ -1374,6 +1510,13 @@ components:
       required: false
       schema:
         $ref: '#/components/schemas/SortByPricings'
+
+    SortByCollections:
+      name: sortBy
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/SortByCollections'
     
     Sort:
       name: sort

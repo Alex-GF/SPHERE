@@ -18,23 +18,22 @@ const loadFileRoutes = function (app: express.Application) {
   const baseUrl = (process.env.BASE_URL_PATH ?? "") + '/api/v1';
 
   app
-    .route(baseUrl + '/pricings/collections')
-    .get(pricingCollectionController.index)
-    .post(pricingCollectionController.create);
-
+    .route(baseUrl + '/collections')
+    .get(pricingCollectionController.index);
+    
+    
   app
-    .route(baseUrl + '/pricings/collections/bulk')
+    .route(baseUrl + '/collections/:username')
+    .get(pricingCollectionController.indexByUsername)
+    .post(pricingCollectionController.create);
+    
+  app
+    .route(baseUrl + '/collections/:username/bulk')
     .post(upload, pricingCollectionController.bulkCreate);
 
-  app.route(baseUrl + '/me/collections').get(pricingCollectionController.showByUserId);
-
   app
-    .route(baseUrl + '/me/collections/pricings/:pricingName')
-    .delete(pricingController.removePricingFromCollection);
-
-  app
-    .route(baseUrl + '/pricings/collections/:userId/:collectionName')
-    .get(pricingCollectionController.showByNameAndUserId)
+    .route(baseUrl + '/collections/:username/:collectionName')
+    .get(pricingCollectionController.show)
     .post(pricingCollectionController.generateAnalytics)
     .put(
       PricingCollectionValidator.update,
@@ -44,8 +43,12 @@ const loadFileRoutes = function (app: express.Application) {
     .delete(pricingCollectionController.destroy);
 
   app
-    .route(baseUrl + '/pricings/collections/:userId/:collectionName/download')
+    .route(baseUrl + '/collections/:username/:collectionName/download')
     .get(pricingCollectionController.downloadCollection);
+
+  app
+    .route(baseUrl + '/me/collections/pricings/:pricingName')
+    .delete(pricingController.removePricingFromCollection);
 };
 
 export default loadFileRoutes;

@@ -4,6 +4,7 @@ import PricingService from '../services/PricingService.js';
 import { CollectionIndexQueryParams } from '../types/services/PricingCollection.js';
 import path from 'path';
 import archiver from 'archiver';
+import { handleError } from '../utils/users/helpers';
 
 class PricingCollectionController {
   private readonly pricingCollectionService: PricingCollectionService;
@@ -13,8 +14,8 @@ class PricingCollectionController {
     this.pricingCollectionService = container.resolve('pricingCollectionService');
     this.pricingService = container.resolve('pricingService');
     this.index = this.index.bind(this);
-    this.showByNameAndUserId = this.showByNameAndUserId.bind(this);
-    this.showByUserId = this.showByUserId.bind(this);
+    this.show = this.show.bind(this);
+    this.indexByUsername = this.indexByUsername.bind(this);
     this.downloadCollection = this.downloadCollection.bind(this);
     this.create = this.create.bind(this);
     this.bulkCreate = this.bulkCreate.bind(this);
@@ -31,42 +32,43 @@ class PricingCollectionController {
       // result contains { collections, total }
       res.json(result);
     } catch (err: any) {
-      res.status(500).send({ error: err.message });
+      const {status, message} = handleError(err);
+      res.status(status).send({ error: message });
     }
   }
 
-  async showByNameAndUserId(req: any, res: any) {
+  async show(req: any, res: any) {
     try {
-      const collection = await this.pricingCollectionService.showByNameAndUserId(
+      const collection = await this.pricingCollectionService.show(
+        req.params.username,
         req.params.collectionName,
-        req.params.userId
+        req.user
       );
       res.json(collection);
     } catch (err: any) {
-      if (err.message.toLowerCase().includes('not found')) {
-        res.status(404).send({ error: err.message });
-      } else {
-        res.status(500).send({ error: err.message });
-      }
+      const {status, message} = handleError(err);
+      res.status(status).send({ error: message });
     }
   }
 
-  async showByUserId(req: any, res: any) {
+  async indexByUsername(req: any, res: any) {
     try {
-      const collections = await this.pricingCollectionService.showByUserId(req.user.id);
+      const collections = await this.pricingCollectionService.indexByUsername(req.params.username, req.user);
       res.json({ collections: collections });
     } catch (err: any) {
-      res.status(500).send({ error: err.message });
+      const {status, message} = handleError(err);
+      res.status(status).send({ error: message });
     }
   }
 
   async downloadCollection(req: any, res: any) {
     try {
       const collectionName = req.params.collectionName;
-      const userId = req.params.userId;
-      const collection = await this.pricingCollectionService.showByNameAndUserId(
+      const username = req.params.username;
+      const collection = await this.pricingCollectionService.show(
+        username,
         collectionName,
-        userId
+        req.user
       );
       const pricings = await this.pricingService.indexByCollection(collection._id.toString());
       const pricingsToDownload = pricings.map(pricing => pricing.yaml);
@@ -123,15 +125,8 @@ class PricingCollectionController {
       );
       res.json(pricing);
     } catch (err: any) {
-      const msg = (err as Error).message || '';
-      if (
-        msg.toLowerCase().includes('already exists') ||
-        msg.toLowerCase().includes('duplicate')
-      ) {
-        res.status(409).send({ error: msg });
-        return;
-      }
-      res.status(500).send({ error: msg });
+      const {status, message} = handleError(err);
+      res.status(status).send({ error: message });
     }
   }
 
@@ -145,20 +140,13 @@ class PricingCollectionController {
       );
       res.json({collection, pricingsWithErrors});
     } catch (err: any) {
-      const msg = (err as Error).message || '';
-      if (
-        msg.toLowerCase().includes('already exists') ||
-        msg.toLowerCase().includes('duplicate')
-      ) {
-        res.status(409).send({ error: msg });
-        return;
-      }
-      res.status(500).send({ error: msg });
+      const {status, message} = handleError(err);
+      res.status(status).send({ error: message });
     }
   }
 
   async generateAnalytics(req: any, res: any) {
-    if (req.user.id === req.params.userId) {
+    if (req.user.username === req.params.username || req.user.role === 'ADMIN') {
       try {
         await this.pricingCollectionService.generateCollectionAnalytics(
           req.params.collectionName,
@@ -166,10 +154,11 @@ class PricingCollectionController {
         );
         res.status(200).send({ message: 'Analytics generated successfully.' });
       } catch (err: any) {
-        res.status(500).send({ error: err.message});
+        const {status, message} = handleError(err);
+        res.status(status).send({ error: message});
       }
     }else{
-      res.status(403).send({ error: 'This collection is not yours.' });
+      res.status(403).send({ error: 'PERMISSION ERROR: This collection is not yours.' });
     }
   }
 
@@ -188,7 +177,8 @@ class PricingCollectionController {
       );
       res.json(collection);
     } catch (err: any) {
-      res.status(400).send({ error: err.message });
+      const {status, message} = handleError(err);
+      res.status(status).send({ error: message });
     }
   }
 
@@ -205,7 +195,8 @@ class PricingCollectionController {
       const message = result ? 'Successfully deleted.' : 'Could not delete collection.';
       res.json({ message: message });
     } catch (err: any) {
-      res.status(400).send({ error: err.message });
+      const {status, message} = handleError(err);
+      res.status(status).send({ error: message });
     }
   }
 

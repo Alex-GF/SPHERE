@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { PricingCollectionAnalytics, PricingCollectionAnalyticsToAdd } from '../../types/database/PricingCollection';
+import { PricingCollectionAnalyticsToAdd } from '../../types/database/PricingCollection';
 import RepositoryBase from '../RepositoryBase';
 import PricingCollectionMongoose from './models/PricingCollectionMongoose';
 import PricingMongoose from './models/PricingMongoose';
@@ -13,8 +13,8 @@ import { CollectionIndexQueryParams } from '../../types/services/PricingCollecti
 class PricingCollectionRepository extends RepositoryBase {
   async findAll(queryParams: CollectionIndexQueryParams, ...args: any) {
     
-    let filteringAggregators = [];
-    let sortAggregator = [];
+    const filteringAggregators = [];
+    const sortAggregator = [];
 
     if (Object.keys(queryParams).length > 0){
       const { name, selectedOwners, sortBy, sort } = queryParams;
@@ -44,9 +44,12 @@ class PricingCollectionRepository extends RepositoryBase {
       if (sortBy && sort){
 
         let sortParameter = "";
-        let sortOrder: 1 | -1 = sort === "asc" ? 1 : -1;
+        const sortOrder: 1 | -1 = sort === "asc" ? 1 : -1;
 
         switch (sortBy) {
+          case 'name':
+            sortParameter = "name";
+            break;
           case 'numberOfPricings':
             sortParameter = "numberOfPricings";
             break;
@@ -153,37 +156,13 @@ class PricingCollectionRepository extends RepositoryBase {
     }
   }
 
-  async findById(id: string, ...args: any) {
+  async findByUsername(username: string, includePrivate: boolean = false) {
     try {
       const collections = await PricingCollectionMongoose.aggregate([
         {
           $match: {
-            _id: new mongoose.Types.ObjectId(id),
-          },
-        },
-        ...getAllPricingsFromCollection(),
-        {
-          $project: {
-            name: 1,
-            description: 1,
-            analytics: 1,
-            pricings: 1,
-          },
-        },
-      ]);
-
-      return collections[0];
-    } catch (err) {
-      return null;
-    }
-  }
-
-  async findByUserId(userId: string, ...args: any) {
-    try {
-      const collections = await PricingCollectionMongoose.aggregate([
-        {
-          $match: {
-            _ownerId: new mongoose.Types.ObjectId(userId),
+            owner: username,
+            ...(includePrivate ? {} : { private: { $ne: true } }),
           },
         },
         ...addNumberOfPricingsAggregator(),
@@ -200,7 +179,6 @@ class PricingCollectionRepository extends RepositoryBase {
             owner: {
               username: 1,
               avatar: 1,
-              id: { $toString: '$owner._id' },
             },
             name: 1,
             numberOfPricings: 1,
@@ -214,7 +192,7 @@ class PricingCollectionRepository extends RepositoryBase {
     }
   }
 
-  async findByNameAndUserId(name: string, userId: string, ...args: any) {
+  async findByOwnerAndName(owner: string, name: string) {
     try {
       const collections = await PricingCollectionMongoose.aggregate([
         {
@@ -223,7 +201,7 @@ class PricingCollectionRepository extends RepositoryBase {
               $regex: name,
               $options: 'i',
             },
-            _ownerId: new mongoose.Types.ObjectId(userId),
+            owner: owner,
           },
         },
         ...getAllPricingsFromCollection(),
@@ -240,7 +218,6 @@ class PricingCollectionRepository extends RepositoryBase {
             owner: {
               username: 1,
               avatar: 1,
-              id: { $toString: '$owner._id' },
             },
             name: 1,
             description: 1,
@@ -259,7 +236,7 @@ class PricingCollectionRepository extends RepositoryBase {
     }
   }
 
-  async findCollectionPricings(name: string, userId: string, ...args: any) {
+  async findCollectionPricings(name: string, username: string) {
     try {
       const collections = await PricingCollectionMongoose.aggregate([
         {
@@ -268,7 +245,7 @@ class PricingCollectionRepository extends RepositoryBase {
               $regex: name,
               $options: 'i',
             },
-            _ownerId: new mongoose.Types.ObjectId(userId),
+            owner: username,
           },
         },
         {
@@ -284,7 +261,7 @@ class PricingCollectionRepository extends RepositoryBase {
             pricings: 1,
           },
         },
-      ]);
+      ]).exec();
 
       return collections[0];
     } catch (err) {
@@ -292,7 +269,7 @@ class PricingCollectionRepository extends RepositoryBase {
     }
   }
 
-  async create(data: any, ...args: any) {
+  async create(data: any) {
     const collection = new PricingCollectionMongoose(data);
     await collection.save();
 

@@ -8,14 +8,18 @@ import { decompressZip } from '../utils/zip-manager';
 import { PricingService as PricingAnalytics, retrievePricingFromPath } from 'pricing4ts/server';
 import fs from 'fs';
 import { calculateAnalyticsForPricings } from '../utils/pricing-collections-utils';
+import { LeanUser } from '../types/models/User';
+import UserService from './UserService';
 
 class PricingCollectionService {
   private readonly pricingCollectionRepository: PricingCollectionRepository;
   private readonly pricingRepository: PricingRepository;
+  private readonly userService: UserService;
 
   constructor() {
     this.pricingCollectionRepository = container.resolve('pricingCollectionRepository');
     this.pricingRepository = container.resolve('pricingRepository');
+    this.userService = container.resolve('userService');
   }
 
   async index(queryParams: CollectionIndexQueryParams) {
@@ -24,10 +28,29 @@ class PricingCollectionService {
     return result;
   }
 
-  async showByNameAndUserId(name: string, userId: string) {
-    const collection = await this.pricingCollectionRepository.findByNameAndUserId(name, userId);
+  async indexByUsername(username: string, reqUser: LeanUser) {
+
+    const user = await this.userService.exists(username);
+
+    if (!user) {
+      throw new Error('NOT FOUND: User not found');
+    }
+
+    const includePrivate = username === reqUser.username || reqUser.role === 'ADMIN';
+
+    const collections = await this.pricingCollectionRepository.findByUsername(username, includePrivate);
+
+    return collections;
+  }
+
+  async show(owner: string, collectionName: string, reqUser: LeanUser) {
+    const collection = await this.pricingCollectionRepository.findByOwnerAndName(owner, collectionName);
     if (!collection) {
-      throw new Error('Pricing collection not found');
+      throw new Error('NOT FOUND: Pricing collection not found');
+    }
+
+    if (collection.private && owner !== reqUser.username && reqUser.role !== 'ADMIN') {
+      throw new Error('PERMISSION ERROR: You are not the owner of this private collection');
     }
 
     collection.analytics = this._normalizeCollectionAnalytics(collection.analytics);
@@ -35,25 +58,15 @@ class PricingCollectionService {
     return collection;
   }
 
-  async showByUserId(userId: string) {
-    const collections = await this.pricingCollectionRepository.findByUserId(userId);
-
-    return collections;
-  }
-
-  async show(userId: string) {
-    const collection = await this.pricingCollectionRepository.findByUserId(userId);
-    if (!collection) {
-      throw new Error('Pricing collection not found');
+  async create(newCollection: any, owner: string, reqUser: LeanUser) {
+    
+    if (owner !== reqUser.username && reqUser.role !== 'ADMIN') {
+      throw new Error('PERMISSION ERROR: You can only create collections for yourself');
     }
-
-    return collection;
-  }
-
-  async create(newCollection: any, userId: string, username: string) {
+    
     let collection: any;
     try {
-      newCollection._ownerId = new mongoose.Types.ObjectId(userId);
+      newCollection.owner = owner;
       newCollection.analytics = {
         evolutionOfPlans: {
           dates: [],
@@ -77,7 +90,7 @@ class PricingCollectionService {
 
       await this.pricingRepository.addPricingsToCollection(
         collection._id.toString(),
-        username,
+        owner,
         newCollection.pricings
       );
 
@@ -85,19 +98,24 @@ class PricingCollectionService {
 
       return collection;
     } catch (err) {
-      await this._handleCollectionCreationError(err as Error, collection, newCollection, userId);
+      await this._handleCollectionCreationError(err as Error, collection, newCollection, owner);
     }
   }
 
-  async bulkCreate(file: any, newCollectionData: any, userId: string, username: string) {
+  async bulkCreate(file: any, newCollectionData: any, owner: string, reqUser: LeanUser) {
+    
+    if (owner !== reqUser.username && reqUser.role !== 'ADMIN') {
+      throw new Error('PERMISSION ERROR: You can only create collections for yourself');
+    }
+    
     let collection: any;
     try {
-      const extractPath = this._getExtractPath(userId, newCollectionData.name);
+      const extractPath = this._getExtractPath(owner, newCollectionData.name);
       const zipPath = file.path;
 
       const extractedFiles = await decompressZip(zipPath, extractPath);
 
-      newCollectionData._ownerId = new mongoose.Types.ObjectId(userId);
+      newCollectionData.owner = owner;
 
       // Create collection and keep reference so we only attempt cleanup if it was created
       collection = await this.pricingCollectionRepository.create(newCollectionData);
@@ -116,7 +134,7 @@ class PricingCollectionService {
           const staticIndex = normalizedPath.indexOf('static/');
 
           if (staticIndex === -1) {
-            throw new Error('Invalid pricing path: it must contain "static/".');
+            throw new Error('INVALID DATA: Invalid pricing path - it must contain "static/".');
           }
 
           const yamlPath = normalizedPath.slice(staticIndex);
@@ -127,7 +145,7 @@ class PricingCollectionService {
               uploadedPricing.saasName.split(' ')[0].slice(1).toLowerCase(),
             version: uploadedPricing.version,
             _collectionId: collection._id,
-            owner: username,
+            owner: owner,
             currency: uploadedPricing.currency,
             createdAt: new Date(uploadedPricing.createdAt),
             url: '',
@@ -153,19 +171,19 @@ class PricingCollectionService {
         err as Error,
         collection,
         newCollectionData,
-        userId
+        owner
       );
     }
   }
 
-  async generateCollectionAnalytics(collectionName: string, ownerId: string) {
+  async generateCollectionAnalytics(collectionName: string, owner: string) {
     try {
       const collectionPricings = await this.pricingCollectionRepository.findCollectionPricings(
         collectionName,
-        ownerId
+        owner
       );
       if (!collectionPricings) {
-        throw new Error('Collection not found');
+        throw new Error('NOT FOUND: Collection not found');
       }
 
       const analytics = calculateAnalyticsForPricings(collectionPricings.pricings);
@@ -180,13 +198,13 @@ class PricingCollectionService {
     }
   }
 
-  async update(collectionName: string, ownerId: string, data: any) {
-    const collection = await this.pricingCollectionRepository.findByNameAndUserId(
-      collectionName,
-      ownerId
+  async update(collectionName: string, owner: string, data: any) {
+    const collection = await this.pricingCollectionRepository.findByOwnerAndName(
+      owner,
+      collectionName
     );
     if (!collection) {
-      throw new Error('Either the collection does not exist or you are not its owner');
+      throw new Error('NOT FOUND: Either the collection does not exist or you are not its owner');
     }
 
     await this.pricingCollectionRepository.update(collection._id.toString(), data);
@@ -197,8 +215,8 @@ class PricingCollectionService {
 
     if (updatedCollection.name !== collectionName) {
       fs.renameSync(
-        this._getExtractPath(ownerId, collectionName),
-        this._getExtractPath(ownerId, updatedCollection.name)
+        this._getExtractPath(owner, collectionName),
+        this._getExtractPath(owner, updatedCollection.name)
       );
     }
 
@@ -209,7 +227,7 @@ class PricingCollectionService {
     const collection = await this.pricingCollectionRepository.findById(collectionId);
 
     if (!collection) {
-      throw new Error('Pricing collection not found');
+      throw new Error('NOT FOUND: Pricing collection not found');
     }
 
     const newAnalyticsEntry = this._computeCollectionAnalytics(collection);
@@ -219,16 +237,16 @@ class PricingCollectionService {
 
   async destroy(
     collectionName: string,
-    ownerId: string,
+    owner: string,
     deleteCascade: boolean,
     ignoreResult: boolean = false
   ) {
-    const collection = await this.pricingCollectionRepository.findByNameAndUserId(
-      collectionName,
-      ownerId
+    const collection = await this.pricingCollectionRepository.findByOwnerAndName(
+      owner,
+      collectionName
     );
     if (!collection) {
-      throw new Error('Either the collection does not exist or you are not its owner');
+      throw new Error('NOT FOUND: Either the collection does not exist or you are not its owner');
     }
 
     let result;
@@ -238,14 +256,14 @@ class PricingCollectionService {
         collection._id.toString()
       );
 
-      fs.rmdirSync(this._getExtractPath(ownerId, collectionName), { recursive: true });
+      fs.rmdirSync(this._getExtractPath(owner, collectionName), { recursive: true });
     } else {
       await this.pricingRepository.removePricingsFromCollection(collection._id.toString());
       result = await this.pricingCollectionRepository.destroy(collection._id.toString());
     }
 
     if (!result && !ignoreResult) {
-      throw new Error('Collection not found');
+      throw new Error('NOT FOUND: Collection not found');
     }
 
     return true;
@@ -311,16 +329,16 @@ class PricingCollectionService {
     err: Error,
     collection: any,
     newCollectionData: any,
-    userId: string
+    owner: string
   ): Promise<Error> {
     // If a collection was created before the error, remove it (cleanup of partial state)
     try {
       if (collection?._id) {
-        await this.destroy(newCollectionData.name, userId, true, true);
+        await this.destroy(newCollectionData.name, owner, true, true);
       }
     } catch (cleanupErr) {
       // If cleanup fails, log it but continue to throw the original error
-      // eslint-disable-next-line no-console
+       
       console.error('Error during cleanup after bulkCreate failure:', cleanupErr);
     }
 
