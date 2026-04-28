@@ -2,7 +2,7 @@ export type TestCollection = {
   id: string;
   name: string;
   description: string;
-  owner: string;
+  _ownerName: string;
   private: boolean;
   analytics: {
     evolutionOfPlans: ParameterEvolutionSchema,

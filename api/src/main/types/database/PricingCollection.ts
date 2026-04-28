@@ -7,8 +7,13 @@ export interface PricingCollection {
 }
 
 export interface RetrievedCollection {
-    name: string,
-    owner: User,
+  id: string,  
+  name: string,
+    owner: {
+        id: string,
+        username: string,
+        avatar: string
+    },
     pricings: any,
     analytics: PricingCollectionAnalytics
 }

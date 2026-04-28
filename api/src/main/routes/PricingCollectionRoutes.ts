@@ -8,7 +8,7 @@ import path from 'path';
 
 const loadFileRoutes = function (app: express.Application) {
   const pricingCollectionController = new PricingCollectionController();
-  const pricingController = new PricingController();
+  // const pricingController = new PricingController();
 
   const upload = handleCollectionUpload(
     ['zip'],

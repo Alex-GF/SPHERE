@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { PricingCollectionAnalyticsToAdd } from '../../types/database/PricingCollection';
+import { PricingCollectionAnalyticsToAdd, RetrievedCollection } from '../../types/database/PricingCollection';
 import RepositoryBase from '../RepositoryBase';
 import PricingCollectionMongoose from './models/PricingCollectionMongoose';
 import PricingMongoose from './models/PricingMongoose';
@@ -156,6 +156,24 @@ class PricingCollectionRepository extends RepositoryBase {
     }
   }
 
+  async findById(id: string): Promise<RetrievedCollection | null> {
+    try {
+      const collection = await PricingCollectionMongoose.findById(id).populate('owner', {
+        username: 1,
+        avatar: 1,
+        id: 1,
+      }).exec();
+      
+      if (!collection) {
+        return null;
+      }
+      const collectionObj = collection.toObject<RetrievedCollection>();
+      return collectionObj;
+    } catch (err) {
+      return null;
+    }
+  }
+
   async findByUsername(username: string, includePrivate: boolean = false) {
     try {
       const collections = await PricingCollectionMongoose.aggregate([
@@ -281,9 +299,8 @@ class PricingCollectionRepository extends RepositoryBase {
   }
 
   async updateAnalytics(
-    collectionId: mongoose.Types.ObjectId,
+    collectionId: string,
     analytics: PricingCollectionAnalyticsToAdd,
-    ...args: any
   ) {
     const updateData: any = {};
     for (const key in analytics) {

@@ -66,7 +66,7 @@ class PricingCollectionService {
     
     let collection: any;
     try {
-      newCollection.owner = owner;
+      newCollection._ownerName = owner;
       newCollection.analytics = {
         evolutionOfPlans: {
           dates: [],
@@ -115,7 +115,7 @@ class PricingCollectionService {
 
       const extractedFiles = await decompressZip(zipPath, extractPath);
 
-      newCollectionData.owner = owner;
+      newCollectionData._ownerName = owner;
 
       // Create collection and keep reference so we only attempt cleanup if it was created
       collection = await this.pricingCollectionRepository.create(newCollectionData);
@@ -213,6 +213,10 @@ class PricingCollectionService {
       collection._id.toString()
     );
 
+    if (!updatedCollection) {
+      throw new Error('NOT FOUND: Collection not found after update');
+    }
+
     if (updatedCollection.name !== collectionName) {
       fs.renameSync(
         this._getExtractPath(owner, collectionName),
@@ -232,7 +236,7 @@ class PricingCollectionService {
 
     const newAnalyticsEntry = this._computeCollectionAnalytics(collection);
 
-    await this.pricingCollectionRepository.updateAnalytics(collection._id, newAnalyticsEntry);
+    await this.pricingCollectionRepository.updateAnalytics(collection.id, newAnalyticsEntry);
   }
 
   async destroy(

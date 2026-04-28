@@ -3,7 +3,6 @@ import path from 'path';
 import os from 'os';
 import archiver from 'archiver';
 import { createWriteStream } from 'fs';
-import { buildUniqueString } from './integrationAuth';
 
 const templatePath = path.resolve(
   process.cwd(),
@@ -25,7 +24,7 @@ export const createTempPricingYaml = async (namePrefix = 'IntegrationPricing') =
     .replace(/^version:\s*.*$/m, `version: "${uniqueVersion}"`)
     .replace(/^createdAt:\s*.*$/m, `createdAt: "${today}"`);
 
-  const filePath = path.join(os.tmpdir(), `${buildUniqueString('pricing')}.yml`);
+  const filePath = path.join(os.tmpdir(), `${Math.random().toString(36).slice(2, 6)}.yml`);
   await fs.writeFile(filePath, content, 'utf8');
 
   return {
@@ -36,7 +35,7 @@ export const createTempPricingYaml = async (namePrefix = 'IntegrationPricing') =
 };
 
 const createZipFromDirectory = async (sourceDir: string) => {
-  const zipPath = path.join(os.tmpdir(), `${buildUniqueString('pricing-bulk')}.zip`);
+  const zipPath = path.join(os.tmpdir(), `${Math.random().toString(36).slice(2, 6)}.zip`);
 
   await new Promise<void>((resolve, reject) => {
     const output = createWriteStream(zipPath);

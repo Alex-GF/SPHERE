@@ -61,6 +61,16 @@ export const ROUTE_PERMISSIONS: RoutePermission[] = [
   },
 
   // ============================================
+  // Collection Management Routes 
+  // ============================================
+
+  {
+    path: '/collections/**',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    allowedUserRoles: ['ADMIN', 'USER'],
+  },
+
+  // ============================================
   // Health Check (Public)
   // ============================================
   {

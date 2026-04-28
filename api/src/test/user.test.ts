@@ -1,33 +1,33 @@
 import dotenv from 'dotenv';
 import request from 'supertest';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
-import { getApp, shutdownApp, TestApp } from './utils/testApp';
+import { shutdownApp, TestApp } from './utils/testApp';
 import { createTestUser, deleteTestUser } from './utils/users/userTestUtils';
 import { LeanUser } from '../main/types/models/User';
-import { TEST_PASSWORD } from './utils/config/variables';
+import { BASE_PATH, TEST_PASSWORD } from './utils/config/variables';
+import testContainer from './utils/config/testContainer';
 
 dotenv.config();
 
 describe('Users API integration', () => {
   let app: TestApp;
-  const usersToDelete = new Set<string>();
   let adminUser: LeanUser;
   let testUser: LeanUser;
   let adminApiToken: string;
   let userApiToken: string;
-  const basePath = (process.env.BASE_URL_PATH ?? "") + '/api/v1';
+  const usersToDelete: Set<string> = testContainer.resolve('usersToDelete');
 
   beforeAll(async () => {
-    app = await getApp();
+    app = testContainer.resolve('app');
     adminUser = await createTestUser('ADMIN');
     testUser = await createTestUser('USER');
     
-    const responseAdminLogin = await request(app).post(`${basePath}/users/login`).send({
+    const responseAdminLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
       loginField: adminUser.username,
       password: TEST_PASSWORD,
     });
 
-    const responseUserLogin = await request(app).post(`${basePath}/users/login`).send({
+    const responseUserLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
       loginField: testUser.username,
       password: TEST_PASSWORD,
     });
@@ -69,7 +69,7 @@ describe('Users API integration', () => {
     it('Return 201 and user object with valid required fields.', async () => {
       const payload = buildRegisterPayload();
 
-      const response = await request(app).post(`${basePath}/users/register`).send(payload);
+      const response = await request(app).post(`${BASE_PATH}/users/register`).send(payload);
 
       expect(response.status).toBe(201);
       expect(response.body.username).toBe(payload.username);
@@ -84,7 +84,7 @@ describe('Users API integration', () => {
       const payload: any = buildRegisterPayload();
       delete payload.role;
 
-      const response = await request(app).post(`${basePath}/users/register`).send(payload);
+      const response = await request(app).post(`${BASE_PATH}/users/register`).send(payload);
 
       expect(response.status).toBe(201);
       expect(response.body.username).toBe(payload.username);
@@ -97,7 +97,7 @@ describe('Users API integration', () => {
       const payload = buildRegisterPayload({ role: 'ADMIN' });
       
       const response = await request(app)
-        .post(`${basePath}/users/register`)
+        .post(`${BASE_PATH}/users/register`)
         .set('Authorization', `Bearer ${userApiToken}`)
         .send(payload);
 
@@ -106,7 +106,7 @@ describe('Users API integration', () => {
     });
 
     it('Return 422 and validation errors object with missing required parameters.', async () => {
-      const response = await request(app).post(`${basePath}/users/register`).send({
+      const response = await request(app).post(`${BASE_PATH}/users/register`).send({
         firstName: 'A',
         lastName: 'B',
       });
@@ -118,7 +118,7 @@ describe('Users API integration', () => {
     it('Return 422 and validation errors object with invalid email parameter.', async () => {
       const payload = buildRegisterPayload({ email: 'invalid-email-format' });
 
-      const response = await request(app).post(`${basePath}/users/register`).send(payload);
+      const response = await request(app).post(`${BASE_PATH}/users/register`).send(payload);
 
       expect(response.status).toBe(422);
       expect(Array.isArray(response.body.errors)).toBe(true);
@@ -127,7 +127,7 @@ describe('Users API integration', () => {
     it('Return 422 and validation errors object with password parameter containing spaces.', async () => {
       const payload = buildRegisterPayload({ password: 'abc def' });
 
-      const response = await request(app).post(`${basePath}/users/register`).send(payload);
+      const response = await request(app).post(`${BASE_PATH}/users/register`).send(payload);
 
       expect(response.status).toBe(422);
       expect(Array.isArray(response.body.errors)).toBe(true);
@@ -136,7 +136,7 @@ describe('Users API integration', () => {
     it('Return 422 and error object with duplicated username parameter.', async () => {
       const payload = buildRegisterPayload();
 
-      const firstResponse = await request(app).post(`${basePath}/users/register`).send(payload);
+      const firstResponse = await request(app).post(`${BASE_PATH}/users/register`).send(payload);
       expect(firstResponse.status).toBe(201);
 
       usersToDelete.add(payload.username);
@@ -146,7 +146,7 @@ describe('Users API integration', () => {
         email: `duplicate.${randomSuffix()}@example.com`,
       });
       const duplicateResponse = await request(app)
-        .post(`${basePath}/users/register`)
+        .post(`${BASE_PATH}/users/register`)
         .send(duplicatePayload);
 
       expect(duplicateResponse.status).toBe(422);
@@ -159,7 +159,7 @@ describe('Users API integration', () => {
       const user = await createTestUser('USER');
       usersToDelete.add(user.username);
 
-      const loginByEmail = await request(app).post(`${basePath}/users/login`).send({
+      const loginByEmail = await request(app).post(`${BASE_PATH}/users/login`).send({
         loginField: user.email,
         password: TEST_PASSWORD,
       });
@@ -172,7 +172,7 @@ describe('Users API integration', () => {
       const user = await createTestUser('USER');
       usersToDelete.add(user.username);
 
-      const loginByUsername = await request(app).post(`${basePath}/users/login`).send({
+      const loginByUsername = await request(app).post(`${BASE_PATH}/users/login`).send({
         loginField: user.username,
         password: TEST_PASSWORD,
       });
@@ -185,7 +185,7 @@ describe('Users API integration', () => {
       const user = await createTestUser('USER');
       usersToDelete.add(user.username);
 
-      const response = await request(app).post(`${basePath}/users/login`).send({
+      const response = await request(app).post(`${BASE_PATH}/users/login`).send({
         loginField: user.username,
         password: 'wrong-password',
       });
@@ -195,7 +195,7 @@ describe('Users API integration', () => {
     });
 
     it('Return 401 and error object with unknown loginField parameter.', async () => {
-      const response = await request(app).post(`${basePath}/users/login`).send({
+      const response = await request(app).post(`${BASE_PATH}/users/login`).send({
         loginField: 'invalid@sphere.test',
         password: 'invalid-password',
       });
@@ -205,7 +205,7 @@ describe('Users API integration', () => {
     });
 
     it('Return 422 and validation errors object with invalid loginField format parameter.', async () => {
-      const response = await request(app).post(`${basePath}/users/login`).send({
+      const response = await request(app).post(`${BASE_PATH}/users/login`).send({
         loginField: 'not-valid-login-field@@',
         password: 'some-password',
       });
@@ -215,7 +215,7 @@ describe('Users API integration', () => {
     });
 
     it('Return 422 and validation errors object with missing password parameter.', async () => {
-      const response = await request(app).post(`${basePath}/users/login`).send({
+      const response = await request(app).post(`${BASE_PATH}/users/login`).send({
         loginField: 'validUser',
       });
 
@@ -224,7 +224,7 @@ describe('Users API integration', () => {
     });
 
     it('Return 422 and validation errors object with non-string loginField parameter.', async () => {
-      const response = await request(app).post(`${basePath}/users/login`).send({
+      const response = await request(app).post(`${BASE_PATH}/users/login`).send({
         loginField: 12345,
         password: TEST_PASSWORD,
       });
@@ -240,7 +240,7 @@ describe('Users API integration', () => {
       usersToDelete.add(user.username);
 
       const response = await request(app)
-        .get(`${basePath}/users/${user.username}`)
+        .get(`${BASE_PATH}/users/${user.username}`)
         .set('Authorization', `Bearer ${user.token}`);
 
       expect(response.status).toBe(200);
@@ -257,7 +257,7 @@ describe('Users API integration', () => {
       usersToDelete.add(otherUser.username);
 
       const response = await request(app)
-        .get(`${basePath}/users/${otherUser.username}`)
+        .get(`${BASE_PATH}/users/${otherUser.username}`)
         .set('Authorization', `Bearer ${user.token}`);
 
       expect(response.status).toBe(200);
@@ -275,7 +275,7 @@ describe('Users API integration', () => {
       usersToDelete.add(targetUser.username);
 
       const response = await request(app)
-        .get(`${basePath}/users/${targetUser.username}`)
+        .get(`${BASE_PATH}/users/${targetUser.username}`)
         .set('Authorization', `Bearer ${adminUser.token}`);
 
       expect(response.status).toBe(200);
@@ -290,7 +290,7 @@ describe('Users API integration', () => {
       const user = await createTestUser('USER');
       usersToDelete.add(user.username);
 
-      const response = await request(app).get(`${basePath}/users/${user.username}`);
+      const response = await request(app).get(`${BASE_PATH}/users/${user.username}`);
 
       expect(response.status).toBe(401);
       expect(response.body.error).toBeDefined();
@@ -301,7 +301,7 @@ describe('Users API integration', () => {
       usersToDelete.add(user.username);
 
       const response = await request(app)
-        .get(`${basePath}/users/${user.username}`)
+        .get(`${BASE_PATH}/users/${user.username}`)
         .set('Authorization', 'Token malformed');
 
       expect(response.status).toBe(401);
@@ -313,7 +313,7 @@ describe('Users API integration', () => {
       usersToDelete.add(user.username);
 
       const response = await request(app)
-        .get(`${basePath}/users/nonexistent_user`)
+        .get(`${BASE_PATH}/users/nonexistent_user`)
         .set('Authorization', `Bearer ${user.token}`);
 
       expect(response.status).toBe(404);
@@ -333,7 +333,7 @@ describe('Users API integration', () => {
       };
 
       const response = await request(app)
-        .put(`${basePath}/users/${user.username}`)
+        .put(`${BASE_PATH}/users/${user.username}`)
         .set('Authorization', `Bearer ${user.token}`)
         .send(payload);
 
@@ -349,19 +349,19 @@ describe('Users API integration', () => {
       const updatedPassword = 'newPassword123';
 
       const updateResponse = await request(app)
-        .put(`${basePath}/users/${user.username}`)
+        .put(`${BASE_PATH}/users/${user.username}`)
         .set('Authorization', `Bearer ${user.token}`)
         .send({ password: updatedPassword });
 
       expect(updateResponse.status).toBe(200);
 
-      const oldPasswordLogin = await request(app).post(`${basePath}/users/login`).send({
+      const oldPasswordLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
         loginField: user.username,
         password: TEST_PASSWORD,
       });
       expect(oldPasswordLogin.status).toBe(401);
 
-      const newPasswordLogin = await request(app).post(`${basePath}/users/login`).send({
+      const newPasswordLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
         loginField: user.username,
         password: updatedPassword,
       });
@@ -376,7 +376,7 @@ describe('Users API integration', () => {
       usersToDelete.add(targetUser.username);
 
       const response = await request(app)
-        .put(`${basePath}/users/${targetUser.username}`)
+        .put(`${BASE_PATH}/users/${targetUser.username}`)
         .set('Authorization', `Bearer ${adminUser.token}`)
         .send({ role: 'ADMIN' });
 
@@ -391,7 +391,7 @@ describe('Users API integration', () => {
       usersToDelete.add(otherUser.username);
 
       const response = await request(app)
-        .put(`${basePath}/users/${otherUser.username}`)
+        .put(`${BASE_PATH}/users/${otherUser.username}`)
         .set('Authorization', `Bearer ${user.token}`)
         .send({ firstName: 'UnauthorizedChange' });
 
@@ -404,7 +404,7 @@ describe('Users API integration', () => {
       usersToDelete.add(user.username);
 
       const response = await request(app)
-        .put(`${basePath}/users/${user.username}`)
+        .put(`${BASE_PATH}/users/${user.username}`)
         .set('Authorization', `Bearer ${user.token}`)
         .send({ role: 'ADMIN' });
 
@@ -417,7 +417,7 @@ describe('Users API integration', () => {
       usersToDelete.add(user.username);
 
       const response = await request(app)
-        .put(`${basePath}/users/${user.username}`)
+        .put(`${BASE_PATH}/users/${user.username}`)
         .set('Authorization', `Bearer ${user.token}`)
         .send({ email: 'invalid-email' });
 
@@ -431,7 +431,7 @@ describe('Users API integration', () => {
       usersToDelete.add(existingUser.username);
 
       const response = await request(app)
-        .put(`${basePath}/users/${user.username}`)
+        .put(`${BASE_PATH}/users/${user.username}`)
         .set('Authorization', `Bearer ${user.token}`)
         .send({ username: existingUser.username });
 
@@ -444,7 +444,7 @@ describe('Users API integration', () => {
       usersToDelete.add(user.username);
 
       const response = await request(app)
-        .put(`${basePath}/users/${user.username}`)
+        .put(`${BASE_PATH}/users/${user.username}`)
         .send({ firstName: 'NoAuth' });
 
       expect(response.status).toBe(401);
@@ -456,7 +456,7 @@ describe('Users API integration', () => {
       usersToDelete.add(user.username);
 
       const response = await request(app)
-        .put(`${basePath}/users/nonexistent_user`)
+        .put(`${BASE_PATH}/users/nonexistent_user`)
         .set('Authorization', `Bearer ${user.token}`)
         .send({ firstName: 'Ghost' });
 
@@ -470,7 +470,7 @@ describe('Users API integration', () => {
       usersToDelete.add(user.username);
       
       const response = await request(app)
-        .put(`${basePath}/users/${user.username}/updateToken`)
+        .put(`${BASE_PATH}/users/${user.username}/updateToken`)
         .set('Authorization', `Bearer ${adminApiToken}`);
 
       expect(response.status).toBe(200);
@@ -483,7 +483,7 @@ describe('Users API integration', () => {
       const user = await createTestUser('USER');
       usersToDelete.add(user.username);
       
-      const response = await request(app).put(`${basePath}/users/${user.username}/updateToken`);
+      const response = await request(app).put(`${BASE_PATH}/users/${user.username}/updateToken`);
 
       expect(response.status).toBe(401);
       expect(response.body.error).toBeDefined();
@@ -494,7 +494,7 @@ describe('Users API integration', () => {
       usersToDelete.add(user.username);
       
       const response = await request(app)
-        .put(`${basePath}/users/${user.username}/updateToken`)
+        .put(`${BASE_PATH}/users/${user.username}/updateToken`)
         .set('Authorization', 'Token abc123');
 
       expect(response.status).toBe(401);
@@ -506,7 +506,7 @@ describe('Users API integration', () => {
       usersToDelete.add(user.username);
 
       const response = await request(app)
-        .put(`${basePath}/users/${user.username}/updateToken`)
+        .put(`${BASE_PATH}/users/${user.username}/updateToken`)
         .set('Authorization', 'Bearer invalid-token');
 
       expect(response.status).toBe(401);
@@ -518,7 +518,7 @@ describe('Users API integration', () => {
       usersToDelete.add(user.username);
       
       const response = await request(app)
-        .put(`${basePath}/users/${user.username}/updateToken`)
+        .put(`${BASE_PATH}/users/${user.username}/updateToken`)
         .set('Authorization', `Bearer ${userApiToken}`);
 
       expect(response.status).toBe(403);
@@ -530,17 +530,17 @@ describe('Users API integration', () => {
       usersToDelete.add(adminUser.username);
 
       const refreshResponse = await request(app)
-        .put(`${basePath}/users/${adminUser.username}/updateToken`)
+        .put(`${BASE_PATH}/users/${adminUser.username}/updateToken`)
         .set('Authorization', `Bearer ${adminApiToken}`);
       expect(refreshResponse.status).toBe(200);
 
       const oldTokenResponse = await request(app)
-        .put(`${basePath}/users/${adminUser.username}/updateToken`)
+        .put(`${BASE_PATH}/users/${adminUser.username}/updateToken`)
         .set('Authorization', `Bearer ${adminUser.token}`);
       expect(oldTokenResponse.status).toBe(401);
 
       const newTokenResponse = await request(app)
-        .put(`${basePath}/users/${adminUser.username}/updateToken`)
+        .put(`${BASE_PATH}/users/${adminUser.username}/updateToken`)
         .set('Authorization', `Bearer ${refreshResponse.body.token}`);
       expect(newTokenResponse.status).toBe(200);
       expect(newTokenResponse.body.token).toBeDefined();
@@ -553,7 +553,7 @@ describe('Users API integration', () => {
       usersToDelete.add(user.username);
 
       const response = await request(app)
-        .delete(`${basePath}/users/${user.username}`)
+        .delete(`${BASE_PATH}/users/${user.username}`)
         .set('Authorization', `Bearer ${user.token}`);
 
       expect(response.status).toBe(200);
@@ -567,7 +567,7 @@ describe('Users API integration', () => {
       usersToDelete.add(targetUser.username);
 
       const response = await request(app)
-        .delete(`${basePath}/users/${targetUser.username}`)
+        .delete(`${BASE_PATH}/users/${targetUser.username}`)
         .set('Authorization', `Bearer ${adminUser.token}`);
 
       expect(response.status).toBe(200);
@@ -581,7 +581,7 @@ describe('Users API integration', () => {
       usersToDelete.add(otherUser.username);
 
       const response = await request(app)
-        .delete(`${basePath}/users/${otherUser.username}`)
+        .delete(`${BASE_PATH}/users/${otherUser.username}`)
         .set('Authorization', `Bearer ${user.token}`);
 
       expect(response.status).toBe(403);
@@ -592,7 +592,7 @@ describe('Users API integration', () => {
       const user = await createTestUser('USER');
       usersToDelete.add(user.username);
 
-      const response = await request(app).delete(`${basePath}/users/${user.username}`);
+      const response = await request(app).delete(`${BASE_PATH}/users/${user.username}`);
 
       expect(response.status).toBe(401);
       expect(response.body.error).toBeDefined();
@@ -603,7 +603,7 @@ describe('Users API integration', () => {
       usersToDelete.add(adminUser.username);
 
       const response = await request(app)
-        .delete(`${basePath}/users/nonexistent_user}`)
+        .delete(`${BASE_PATH}/users/nonexistent_user}`)
         .set('Authorization', `Bearer ${adminUser.token}`);
 
       expect(response.status).toBe(404);
@@ -611,7 +611,7 @@ describe('Users API integration', () => {
     
     it('Return 403 when trying to delete last admin user', async () => {
       const response = await request(app)
-        .delete(`${basePath}/users/${adminUser.username}`)
+        .delete(`${BASE_PATH}/users/${adminUser.username}`)
         .set('Authorization', `Bearer ${adminApiToken}`);
 
       expect(response.status).toBe(403);
