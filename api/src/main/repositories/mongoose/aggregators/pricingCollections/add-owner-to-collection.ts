@@ -3,7 +3,7 @@ export function addOwnerToCollectionAggregator() {
     {
       $lookup: {
         from: 'users',
-        localField: 'owner',
+        localField: '_ownerName',
         foreignField: 'username',
         as: 'owner',
       },

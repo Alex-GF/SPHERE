@@ -1,6 +1,5 @@
 import express from 'express';
 import PricingCollectionController from '../controllers/PricingCollectionController';
-import PricingController from '../controllers/PricingController';
 import { handleValidation } from '../middlewares/ValidationHandlingMiddleware';
 import * as PricingCollectionValidator from '../controllers/validation/PricingCollectionValidation';
 import { handleCollectionUpload } from '../middlewares/FileHandlerMiddleware';

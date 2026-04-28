@@ -20,7 +20,9 @@ export const createTestUser = async (role: UserRole = USER_ROLES[USER_ROLES.leng
   const user = new UserMongoose(userData);
   await user.save();
 
-  testContainer.resolve('usersToDelete').add(username);
+  if (username !== 'testAdmin' && username !== 'testUser') {
+    testContainer.resolve('usersToDelete').add(username);
+  }
   
   return user.toObject();
 };

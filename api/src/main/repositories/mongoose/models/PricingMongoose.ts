@@ -4,7 +4,7 @@ const pricingSchema = new Schema(
   {
     name: { type: String, required: true },
     owner: { type: String, required: true },
-    _collectionId: { type: Schema.Types.ObjectId, ref: 'PricingCollection', required: false },
+    _collectionId: { type: String, ref: 'PricingCollection', required: false },
     version: { type: String, required: true },
     createdAt: { type: Date, required: true },
     url: { type: String, required: false },

@@ -375,12 +375,11 @@ class PricingRepository extends RepositoryBase {
   async addPricingsToCollection(
     collectionId: string,
     owner: string,
-    pricings: string[],
-    ...args: any
+    pricings: string[]
   ) {
     const result = await PricingMongoose.updateMany(
-      { name: { $in: pricings }, owner: owner },
-      { $set: { _collectionId: new mongoose.Types.ObjectId(collectionId) } }
+      { name: { $in: pricings }, _ownerName: owner },
+      { $set: { _collectionId: collectionId } }
     );
 
     return result.modifiedCount === pricings.length;

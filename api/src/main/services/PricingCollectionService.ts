@@ -29,7 +29,6 @@ class PricingCollectionService {
   }
 
   async indexByUsername(username: string, reqUser: LeanUser) {
-
     const user = await this.userService.exists(username);
 
     if (!user) {
@@ -38,13 +37,19 @@ class PricingCollectionService {
 
     const includePrivate = username === reqUser.username || reqUser.role === 'ADMIN';
 
-    const collections = await this.pricingCollectionRepository.findByUsername(username, includePrivate);
+    const collections = await this.pricingCollectionRepository.findByUsername(
+      username,
+      includePrivate
+    );
 
     return collections;
   }
 
   async show(owner: string, collectionName: string, reqUser: LeanUser) {
-    const collection = await this.pricingCollectionRepository.findByOwnerAndName(owner, collectionName);
+    const collection = await this.pricingCollectionRepository.findByOwnerAndName(
+      owner,
+      collectionName
+    );
     if (!collection) {
       throw new Error('NOT FOUND: Pricing collection not found');
     }
@@ -59,11 +64,10 @@ class PricingCollectionService {
   }
 
   async create(newCollection: any, owner: string, reqUser: LeanUser) {
-    
     if (owner !== reqUser.username && reqUser.role !== 'ADMIN') {
       throw new Error('PERMISSION ERROR: You can only create collections for yourself');
     }
-    
+
     let collection: any;
     try {
       newCollection._ownerName = owner;
@@ -88,13 +92,15 @@ class PricingCollectionService {
 
       collection = await this.pricingCollectionRepository.create(newCollection);
 
-      await this.pricingRepository.addPricingsToCollection(
-        collection._id.toString(),
-        owner,
-        newCollection.pricings
-      );
+      if (newCollection.pricings && newCollection.pricings.length > 0) {
+        await this.pricingRepository.addPricingsToCollection(
+          collection.id,
+          owner,
+          newCollection.pricings
+        );
 
-      await this.updateCollectionAnalytics(collection._id.toString());
+        await this.updateCollectionAnalytics(collection.id);
+      }
 
       return collection;
     } catch (err) {
@@ -103,11 +109,10 @@ class PricingCollectionService {
   }
 
   async bulkCreate(file: any, newCollectionData: any, owner: string, reqUser: LeanUser) {
-    
     if (owner !== reqUser.username && reqUser.role !== 'ADMIN') {
       throw new Error('PERMISSION ERROR: You can only create collections for yourself');
     }
-    
+
     let collection: any;
     try {
       const extractPath = this._getExtractPath(owner, newCollectionData.name);
@@ -342,7 +347,7 @@ class PricingCollectionService {
       }
     } catch (cleanupErr) {
       // If cleanup fails, log it but continue to throw the original error
-       
+
       console.error('Error during cleanup after bulkCreate failure:', cleanupErr);
     }
 

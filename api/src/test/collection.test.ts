@@ -4,11 +4,9 @@ import fs from 'fs/promises';
 import { afterAll, beforeAll, afterEach, describe, expect, it } from 'vitest';
 import { shutdownApp, TestApp } from './utils/testApp';
 import { createAndLoginUser, createTestUser, deleteTestUser } from './utils/users/userTestUtils';
-import { createCollectionViaApi, createTestCollection } from './utils/collections/collectionTestUtils';
-import {
-  createBulkZipFixture,
-  removeTempPaths,
-} from './utils/pricingFixtures';
+import { createTestCollection } from './utils/collections/collectionTestUtils';
+import { createBulkZipFixture, removeTempPaths } from './utils/pricingFixtures';
+import { createPricingForUser } from './utils/pricings/pricingTestUtils';
 import PricingCollectionMongoose from '../main/repositories/mongoose/models/PricingCollectionMongoose';
 import testContainer from './utils/config/testContainer';
 import { BASE_PATH, TEST_PASSWORD } from './utils/config/variables';
@@ -28,10 +26,8 @@ describe('Pricing Collections API integration', () => {
 
   beforeAll(async () => {
     app = testContainer.resolve('app');
-    adminUser = await createTestUser('ADMIN');
-    testUser = await createTestUser('USER');
-    usersToDelete.add(adminUser.username);
-    usersToDelete.add(testUser.username);
+    adminUser = await createTestUser('ADMIN', 'testAdmin');
+    testUser = await createTestUser('USER', 'testUser');
 
     const responseAdminLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
       loginField: adminUser.username,
@@ -99,8 +95,7 @@ describe('Pricing Collections API integration', () => {
     it('returns 200 and user collections when owner requests own collections', async () => {
       const owner = await createAndLoginUser('USER');
 
-      const collection = await createTestCollection(owner.username);
-      collectionIdsToDelete.add(collection.id);
+      await createTestCollection(owner.username);
 
       const response = await request(app)
         .get(`${BASE_PATH}/collections/${owner.username}`)
@@ -116,16 +111,9 @@ describe('Pricing Collections API integration', () => {
 
       // create one public and one private collection
       const publicCollection = await createTestCollection(owner.username);
-      const privateCollection = new PricingCollectionMongoose({
-        name: `Private_${randomSuffix()}`,
-        description: 'private',
-        owner: owner.username,
+      const privateCollection = await createTestCollection(owner.username, {
         private: true,
-        analytics: {},
       });
-      const savedPrivate = await privateCollection.save();
-      collectionIdsToDelete.add(publicCollection.id);
-      collectionIdsToDelete.add(savedPrivate._id.toString());
 
       const response = await request(app)
         .get(`${BASE_PATH}/collections/${owner.username}`)
@@ -136,23 +124,16 @@ describe('Pricing Collections API integration', () => {
       // requester should only see public collections
       const names = response.body.collections.map((c: any) => c.name);
       expect(names).toContain(publicCollection.name);
-      expect(names).not.toContain(savedPrivate.name);
+      expect(names).not.toContain(privateCollection.name);
     });
 
     it('returns 200 and all collections when ADMIN requests another username', async () => {
       const owner = await createTestUser('USER');
 
       const publicCollection = await createTestCollection(owner.username);
-      const privateCollection = new PricingCollectionMongoose({
-        name: `Private_${randomSuffix()}`,
-        description: 'private',
-        owner: owner.username,
+      const privateCollection = await createTestCollection(owner.username, {
         private: true,
-        analytics: {},
       });
-      const savedPrivate = await privateCollection.save();
-      collectionIdsToDelete.add(publicCollection.id);
-      collectionIdsToDelete.add(savedPrivate._id.toString());
 
       const response = await request(app)
         .get(`${BASE_PATH}/collections/${owner.username}`)
@@ -162,7 +143,7 @@ describe('Pricing Collections API integration', () => {
       expect(Array.isArray(response.body.collections)).toBe(true);
       const names = response.body.collections.map((c: any) => c.name);
       expect(names).toContain(publicCollection.name);
-      expect(names).toContain(savedPrivate.name);
+      expect(names).toContain(privateCollection.name);
     });
 
     it('returns 401 when missing Authorization header', async () => {
@@ -173,7 +154,7 @@ describe('Pricing Collections API integration', () => {
   });
 
   describe('POST /api/v1/collections/:username', () => {
-    it('allows owner to create a collection and returns 201 or 200', async () => {
+    it('Return 201 when user with requested username tries to create a collection', async () => {
       const owner = await createAndLoginUser('USER');
 
       const payload = {
@@ -182,8 +163,55 @@ describe('Pricing Collections API integration', () => {
         private: false,
       };
 
-      const res = await createCollectionViaApi(owner.token!, owner.username, payload);
-      expect([200, 201]).toContain(res.status);
+      const res = await request(app)
+        .post(`${BASE_PATH}/collections/${owner.username}`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send(payload);
+
+      expect(res.status).toBe(201);
+      if (res.body._id) collectionIdsToDelete.add(res.body._id);
+    });
+
+    it('Return 201 when providing pricings list', async () => {
+      const owner = await createAndLoginUser('USER');
+
+      const p1 = await createPricingForUser({ token: owner.token!, username: owner.username });
+      const p2 = await createPricingForUser({ token: owner.token!, username: owner.username });
+
+      const payload = {
+        name: `CollectionWithPricings_${randomSuffix()}`,
+        description: 'Collection that references existing pricings',
+        private: false,
+        pricings: [p1.serviceName, p2.serviceName],
+      };
+
+      const res = await request(app)
+        .post(`${BASE_PATH}/collections/${owner.username}`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send(payload);
+
+      expect(res.status).toBe(201);
+      // response should include the linked pricings
+      expect(Array.isArray(res.body.pricings)).toBe(true);
+      const linkedNames = res.body.pricings.map((p: any) => p.name ?? p);
+      expect(linkedNames).toEqual(expect.arrayContaining([p1.serviceName, p2.serviceName]));
+    });
+
+    it('Return 201 when ADMIN creates a collection for another user', async () => {
+      const owner = await createAndLoginUser('USER');
+
+      const payload = {
+        name: `Collection_${randomSuffix()}`,
+        description: 'A test collection',
+        private: false,
+      };
+
+      const res = await request(app)
+        .post(`${BASE_PATH}/collections/${owner.username}`)
+        .set('Authorization', `Bearer ${adminApiToken}`)
+        .send(payload);
+
+      expect(res.status).toBe(201);
       if (res.body._id) collectionIdsToDelete.add(res.body._id);
     });
 
@@ -192,14 +220,24 @@ describe('Pricing Collections API integration', () => {
       const other = await createAndLoginUser('USER');
 
       const payload = { name: `Collection_${randomSuffix()}`, private: false };
-      const res = await createCollectionViaApi(owner.token!, other.username, payload);
+
+      const res = await request(app)
+        .post(`${BASE_PATH}/collections/${other.username}`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send(payload);
+
       expect(res.status).toBe(403);
     });
 
     it('returns 422 when required fields are missing', async () => {
       const owner = await createAndLoginUser('USER');
 
-      const res = await createCollectionViaApi(owner.token!, owner.username, { description: 'no name' });
+      const res = await request(app)
+        .post(`${BASE_PATH}/collections/${owner.username}`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({
+          description: 'no name',
+        });
       expect(res.status).toBe(422);
       expect(Array.isArray(res.body.errors)).toBe(true);
     });
@@ -240,7 +278,7 @@ describe('Pricing Collections API integration', () => {
 
     it('returns 404 for non-existing collection', async () => {
       const res = await request(app)
-        .get(`${BASE_PATH}/collections/${testUser.username}/nonexistent`) 
+        .get(`${BASE_PATH}/collections/${testUser.username}/nonexistent`)
         .set('Authorization', `Bearer ${userApiToken}`);
 
       expect(res.status).toBe(404);
@@ -316,7 +354,9 @@ describe('Pricing Collections API integration', () => {
       collectionIdsToDelete.add(collection.id);
 
       const res = await request(app)
-        .get(`${BASE_PATH}/collections/${owner.username}/${encodeURIComponent(collection.name)}/download`)
+        .get(
+          `${BASE_PATH}/collections/${owner.username}/${encodeURIComponent(collection.name)}/download`
+        )
         .set('Authorization', `Bearer ${owner.token}`);
 
       expect(res.status).toBe(200);

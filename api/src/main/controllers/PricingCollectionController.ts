@@ -123,7 +123,7 @@ class PricingCollectionController {
         req.params.username,
         req.user
       );
-      res.json(pricing);
+      res.status(201).json(pricing);
     } catch (err: any) {
       const {status, message} = handleError(err);
       res.status(status).send({ error: message });
@@ -138,7 +138,7 @@ class PricingCollectionController {
         req.params.username,
         req.user
       );
-      res.json({collection, pricingsWithErrors});
+      res.status(201).json({collection, pricingsWithErrors});
     } catch (err: any) {
       const {status, message} = handleError(err);
       res.status(status).send({ error: message });
@@ -172,7 +172,7 @@ class PricingCollectionController {
       await this.pricingService.updatePricingsCollectionName(
         req.params.collectionName,
         collection.name,
-        collection._id.toString(),
+        collection.id.toString(),
         req.user.id
       );
       res.json(collection);

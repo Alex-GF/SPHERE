@@ -179,7 +179,7 @@ class PricingCollectionRepository extends RepositoryBase {
       const collections = await PricingCollectionMongoose.aggregate([
         {
           $match: {
-            owner: username,
+            _ownerName: username,
             ...(includePrivate ? {} : { private: { $ne: true } }),
           },
         },
@@ -291,11 +291,13 @@ class PricingCollectionRepository extends RepositoryBase {
     const collection = new PricingCollectionMongoose(data);
     await collection.save();
 
-    return collection.populate('owner', {
+    const populatedCollection = await collection.populate('owner', {
       username: 1,
       avatar: 1,
       id: 1,
     });
+    
+    return populatedCollection.toObject<RetrievedCollection>();
   }
 
   async updateAnalytics(

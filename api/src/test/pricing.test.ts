@@ -26,8 +26,8 @@ describe('Pricings API integration', () => {
 
   beforeAll(async () => {
     app = testContainer.resolve('app');
-    adminUser = await createTestUser('ADMIN');
-    testUser = await createTestUser('USER');
+    adminUser = await createTestUser('ADMIN', 'testAdmin');
+    testUser = await createTestUser('USER', 'testUser');
     
     const responseAdminLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
       loginField: adminUser.username,

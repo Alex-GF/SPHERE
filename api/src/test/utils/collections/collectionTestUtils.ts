@@ -4,8 +4,8 @@ import testContainer from '../config/testContainer';
 import { BASE_PATH } from '../config/variables';
 import request from 'supertest';
 
-export const createTestCollection = (owner: string): Promise<TestCollection> => {
-  const collectionData: Omit<TestCollection, 'id'> = {
+export const createTestCollection = (owner: string, overwrite: Partial<TestCollection> = {}): Promise<TestCollection> => {
+  let collectionData: Omit<TestCollection, 'id'> = {
     name: 'Test_Collection_' + Math.random().toString(36).substring(2, 15),
     description: 'This is a test collection',
     _ownerName: owner,
@@ -18,8 +18,12 @@ export const createTestCollection = (owner: string): Promise<TestCollection> => 
     },
   };
 
+  collectionData = { ...collectionData, ...overwrite };
+
   const collection = new PricingCollectionMongoose(collectionData);
   return collection.save().then(savedCollection => {
+    testContainer.resolve('collectionIdsToDelete').add(savedCollection._id.toString());
+    
     return {
       id: savedCollection._id.toString(),
       ...collectionData,
@@ -33,10 +37,3 @@ export const createCollectionForUser = async (owner: string) => {
   testContainer.resolve('collectionIdsToDelete').add(collection.id);
   return collection;
 };
-
-export const createCollectionViaApi = async (token: string, username: string, body: any): Promise<request.Response> => {
-    return request(testContainer.resolve('app'))
-      .post(`${BASE_PATH}/collections/${username}`)
-      .set('Authorization', `Bearer ${token}`)
-      .send(body);
-  };
