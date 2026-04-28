@@ -9,7 +9,7 @@ class UserRepository extends RepositoryBase {
         .skip(offset)
         .limit(limit)
         .exec();
-      return users.map(user => user.toObject({ getters: true, virtuals: true, versionKey: false }));
+      return users.map(user => user.toObject());
     } catch (err) {
       return [];
     }
@@ -18,7 +18,7 @@ class UserRepository extends RepositoryBase {
   async findOne(filter: any): Promise<LeanUser | null> {
     try {
       const user = await UserMongoose.findOne(filter, { password: 0 }).exec();
-      return user ? user.toObject({ getters: true, virtuals: true, versionKey: false }) : null;
+      return user ? user.toObject() : null;
     } catch (err) {
       return null;
     }
@@ -35,7 +35,7 @@ class UserRepository extends RepositoryBase {
   async findByEmail(email: string, selector: string = ""): Promise<LeanUser | null> {
     try {
       const user = await UserMongoose.findOne({ email }).select(selector).exec();
-      return user ? user.toObject({ getters: true, virtuals: true, versionKey: false }) : null;
+      return user ? user.toObject() : null;
     } catch (err) {
       return null;
     }
@@ -44,7 +44,8 @@ class UserRepository extends RepositoryBase {
   async findByUsername(username: string, selector: string = ""): Promise<LeanUser | null> {
     try {
       const user = await UserMongoose.findOne({ username }).select(selector).exec();
-      return user ? user.toObject({ getters: true, virtuals: true, versionKey: false }) : null;
+      const userObj = user ? user.toObject() : null;
+      return userObj;
     } catch (err) {
       return null;
     }
@@ -53,7 +54,7 @@ class UserRepository extends RepositoryBase {
   async create(businessEntity: any) {
     const user = await new UserMongoose(businessEntity).save();
 
-    return user.toObject({ getters: true, virtuals: true, versionKey: false });
+    return user.toObject();
   }
 
   async update(username: string, businessEntity: any): Promise<LeanUser | null> {
@@ -66,7 +67,7 @@ class UserRepository extends RepositoryBase {
       throw new Error('ERROR: Error while updating user. User not found.');
     }
 
-    return updatedUser?.toObject({ getters: true, virtuals: true, versionKey: false }) || null;
+    return updatedUser?.toObject() || null;
   }
 
   async updateToken(

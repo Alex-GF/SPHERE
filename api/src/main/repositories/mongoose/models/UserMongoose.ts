@@ -1,5 +1,4 @@
 import mongoose, { Document, Schema } from 'mongoose';
-import bcrypt from 'bcryptjs';
 import { USER_ROLES, UserRole } from '../../../types/config/permissions';
 import { processFileUris } from '../../../services/FileService';
 import { generateUserTokenDTO, hashPassword } from '../../../utils/users/helpers';
@@ -56,12 +55,11 @@ const userSchema = new Schema({
   }
 }, {
   timestamps: true,
-  toJSON: {
+  toObject: {
     virtuals: true,
     transform: function (doc, resultObject, options) {
       delete (resultObject as any)._id;
       delete (resultObject as any).__v;
-      delete (resultObject as any).password;
       
       processFileUris(resultObject, ['avatar']);
       

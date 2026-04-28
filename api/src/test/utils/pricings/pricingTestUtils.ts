@@ -10,8 +10,71 @@ import {
 import yaml from 'js-yaml';
 import { v4 as uuidv4 } from 'uuid';
 import path from 'path';
-import fs from 'fs';
 import { biasedRandomInt } from '../random';
+import testContainer from '../config/testContainer';
+import { BASE_PATH } from '../config/variables';
+import { promises as fs, existsSync } from 'fs';
+import request from 'supertest';
+import os from 'os';
+import { randomSuffix } from '../helpers';
+
+export const createValidPricingYaml = async (requestedName?: string, explicitVersion?: string) => {
+    const templatePath = path.resolve(
+      process.cwd(),
+      'public',
+      'static',
+      'pricings',
+      'templates',
+      'petclinic.yml'
+    );
+
+    const rawTemplate = await fs.readFile(templatePath, 'utf8');
+    const saasName = requestedName ?? `IntegrationPricing_${randomSuffix()}`;
+    const version = explicitVersion ?? `${Date.now()}.0.0`;
+    const today = new Date().toISOString().slice(0, 10);
+
+    const content = rawTemplate
+      .replace(/^saasName:\s*.*$/m, `saasName: ${saasName}`)
+      .replace(/^version:\s*.*$/m, `version: "${version}"`)
+      .replace(/^createdAt:\s*.*$/m, `createdAt: "${today}"`);
+
+    const filePath = path.join(os.tmpdir(), `pricing_${randomSuffix()}.yml`);
+    await fs.writeFile(filePath, content, 'utf8');
+    testContainer.resolve('generatedFilesToDelete').add(filePath);
+
+    return { filePath, saasName, version };
+  };
+
+  export const createAndTrackPricingYaml = async (serviceName?: string, version?: string) => {
+    const filePath = await generatePricingFile(serviceName, version);
+    testContainer.resolve('generatedFilesToDelete').add(filePath);
+    return filePath;
+  };
+
+  export const createPricingForUser = async (params: {
+    token: string;
+    username: string;
+    serviceName?: string;
+    version?: string;
+    isPrivate?: boolean;
+  }): Promise<{ response: any; serviceName: string; version: string }> => {
+    const requestedName = params.serviceName ?? `pricing_${randomSuffix()}`;
+    const requestedVersion = params.version;
+    const fixture = await createValidPricingYaml(requestedName, requestedVersion);
+    const serviceName = fixture.saasName;
+    const version = fixture.version;
+
+    const response = await request(testContainer.resolve('app'))
+      .post(`${BASE_PATH}/pricings/${params.username}`)
+      .set('Authorization', `Bearer ${params.token}`)
+      .field('private', String(params.isPrivate ?? false))
+      .field('saasName', serviceName)
+      .field('version', version)
+      .attach('yaml', fixture.filePath);
+
+    return { response, serviceName, version };
+  };
+
 
 export async function generatePricingFile(serviceName?: string, version?: string): Promise<string> {
   
@@ -39,7 +102,7 @@ export async function generatePricingFile(serviceName?: string, version?: string
 
   const filePath = path.resolve(__dirname, `../../data/generated/${version}.yaml`);
 
-  if (!fs.existsSync(path.dirname(filePath))) {
+  if (!existsSync(path.dirname(filePath))) {
     await mkdir(path.dirname(filePath), { recursive: true });
   }
 
@@ -48,7 +111,7 @@ export async function generatePricingFile(serviceName?: string, version?: string
   return filePath;
 }
 
-export function generatePricing(version?: string): TestPricing {
+function generatePricing(version?: string): TestPricing {
   const featureCount = faker.number.int({ min: 5, max: 20 });
   const usageLimitCount = faker.number.int({ min: 3, max: 15 });
   const planCount = faker.number.int({ min: 1, max: 5 });
@@ -159,7 +222,7 @@ export function generatePricing(version?: string): TestPricing {
   };
 }
 
-export function generateFeature(name?: string): TestFeature {
+function generateFeature(name?: string): TestFeature {
   const featureName = name ?? faker.word.words(1);
   const featureValueType = faker.datatype.boolean({probability: 0.8}) ? 'BOOLEAN' : 'TEXT';
   const featureType = faker.helpers.arrayElement([
@@ -219,7 +282,7 @@ export function generateFeature(name?: string): TestFeature {
   };
 }
 
-export function generateUsageLimit(name?: string, linkedFeatures?: string[]): TestUsageLimit {
+function generateUsageLimit(name?: string, linkedFeatures?: string[]): TestUsageLimit {
   const usageLimitValueType = faker.helpers.arrayElement(['BOOLEAN', 'NUMERIC']);
   const usageLimitType = faker.helpers.arrayElement(['RENEWABLE', 'NON_RENEWABLE']);
 
@@ -256,7 +319,7 @@ export function generateUsageLimit(name?: string, linkedFeatures?: string[]): Te
   };
 }
 
-export function generatePlan(
+function generatePlan(
   features: { [key: string]: TestFeature },
   usageLimitKeys: { [key: string]: TestUsageLimit }
 ): TestPlan {
@@ -289,7 +352,7 @@ export function generatePlan(
   };
 }
 
-export function generateAddOn(
+function generateAddOn(
   features: TestFeature[],
   usageLimits: TestUsageLimit[],
   usageLimitsExtensions: TestUsageLimit[],

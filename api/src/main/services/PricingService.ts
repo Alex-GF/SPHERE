@@ -298,9 +298,10 @@ class PricingService {
     }
 
     if (queryParams?.collectionName) {
-      const collection = await this.pricingCollectionService.showByNameAndUserId(
+      const collection = await this.pricingCollectionService.show(
+        owner,
         queryParams.collectionName,
-        owner
+        reqUser
       );
       if (!collection) {
         throw new Error('NOT FOUND: Collection not found');
