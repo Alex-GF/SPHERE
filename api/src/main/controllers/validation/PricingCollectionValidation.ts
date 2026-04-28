@@ -13,12 +13,12 @@ const update = [
     .isString()
     .withMessage('The name field must be a string')
     .trim(),
-  check('ownerId')
+  check('owner')
     .optional()
     .isString()
     .withMessage('The owner field must be a string')
-    .isLength({ min: 24, max: 48 })
-    .withMessage('The owner must be exactly 24 or 48 characters long')
+    .isLength({ min: 3, max: 30 })
+    .withMessage('The owner must be between 3 and 30 characters long')
     .trim(),
   check('private')
     .optional()

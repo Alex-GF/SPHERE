@@ -34,7 +34,7 @@ const loadFileRoutes = function (app: express.Application) {
   app
     .route(baseUrl + '/collections/:username/:collectionName')
     .get(pricingCollectionController.show)
-    .post(pricingCollectionController.generateAnalytics)
+    // .post(pricingCollectionController.generateAnalytics)
     .put(
       PricingCollectionValidator.update,
       handleValidation,
@@ -46,9 +46,9 @@ const loadFileRoutes = function (app: express.Application) {
     .route(baseUrl + '/collections/:username/:collectionName/download')
     .get(pricingCollectionController.downloadCollection);
 
-  app
-    .route(baseUrl + '/me/collections/pricings/:pricingName')
-    .delete(pricingController.removePricingFromCollection);
+  // app
+  //   .route(baseUrl + '/me/collections/pricings/:pricingName')
+  //   .delete(pricingController.removePricingFromCollection);
 };
 
 export default loadFileRoutes;

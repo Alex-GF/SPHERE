@@ -19,7 +19,7 @@ class PricingCollectionController {
     this.downloadCollection = this.downloadCollection.bind(this);
     this.create = this.create.bind(this);
     this.bulkCreate = this.bulkCreate.bind(this);
-    this.generateAnalytics = this.generateAnalytics.bind(this);
+    // this.generateAnalytics = this.generateAnalytics.bind(this);
     this.update = this.update.bind(this);
     this.destroy = this.destroy.bind(this);
   }
@@ -120,8 +120,8 @@ class PricingCollectionController {
     try {
       const pricing = await this.pricingCollectionService.create(
         req.body,
-        req.user.id,
-        req.user.username
+        req.params.username,
+        req.user
       );
       res.json(pricing);
     } catch (err: any) {
@@ -135,8 +135,8 @@ class PricingCollectionController {
       const [collection, pricingsWithErrors] = await this.pricingCollectionService.bulkCreate(
         req.file,
         req.body,
-        req.user.id,
-        req.user.username
+        req.params.username,
+        req.user
       );
       res.json({collection, pricingsWithErrors});
     } catch (err: any) {
@@ -145,22 +145,22 @@ class PricingCollectionController {
     }
   }
 
-  async generateAnalytics(req: any, res: any) {
-    if (req.user.username === req.params.username || req.user.role === 'ADMIN') {
-      try {
-        await this.pricingCollectionService.generateCollectionAnalytics(
-          req.params.collectionName,
-          req.user.id
-        );
-        res.status(200).send({ message: 'Analytics generated successfully.' });
-      } catch (err: any) {
-        const {status, message} = handleError(err);
-        res.status(status).send({ error: message});
-      }
-    }else{
-      res.status(403).send({ error: 'PERMISSION ERROR: This collection is not yours.' });
-    }
-  }
+  // async generateAnalytics(req: any, res: any) {
+  //   if (req.user.username === req.params.username || req.user.role === 'ADMIN') {
+  //     try {
+  //       await this.pricingCollectionService.generateCollectionAnalytics(
+  //         req.params.collectionName,
+  //         req.params.username
+  //       );
+  //       res.status(200).send({ message: 'Analytics generated successfully.' });
+  //     } catch (err: any) {
+  //       const {status, message} = handleError(err);
+  //       res.status(status).send({ error: message});
+  //     }
+  //   }else{
+  //     res.status(403).send({ error: 'PERMISSION ERROR: This collection is not yours.' });
+  //   }
+  // }
 
   async update(req: any, res: any) {
     try {

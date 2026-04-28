@@ -65,7 +65,7 @@ tags:
     description: User account management
   - name: Pricings
     description: Pricing Version Control System (PVCS)
-  - name: PricingCollections
+  - name: Collections
     description: Collection management for grouping pricings
 
 paths:
@@ -707,7 +707,7 @@ paths:
         **Authentication**: User token
 
       tags:
-        - PricingCollections
+        - Collections
       security:
         - ApiKeyAuth: []
       parameters:
@@ -746,7 +746,7 @@ paths:
         - ADMIN: can access any user's collections.
 
       tags:
-        - PricingCollections
+        - Collections
       security:
         - ApiKeyAuth: []
       parameters:
@@ -770,8 +770,251 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+    
+    post:
+      summary: Create collection for a given user.
+      description: |
+        Creates a new collection for a given user.
 
+        **Authentication**: User API Key
 
+        **Permission**: 
+        - USER: can create collections for their own account.
+        - ADMIN: can create collections for any user.
+
+      tags:
+        - Collections
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+      requestBody:
+        $ref: '#/components/requestBodies/CollectionCreate'
+      responses:
+        '201':
+          description: Collection Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PricingCollection'
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: User not found
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /collections/{username}/bulk:
+    post:
+      summary: Creates a collection from a list of pricings.
+      description: |
+        Creates a new collection for a given user from a list of existing pricings.
+
+        **Authentication**: User API Key
+
+        **Permission**: 
+        - USER: can create collections for their own account.
+        - ADMIN: can create collections for any user.
+
+      tags:
+        - Collections
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+      requestBody:
+        $ref: '#/components/requestBodies/CollectionBulkCreate'
+      responses:
+        '201':
+          description: Collection Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  collection:
+                    $ref: '#/components/schemas/PricingCollection'
+                  pricingsWithErrors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        pricingName:
+                          type: string
+                        error:
+                          type: string
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: User not found
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /collections/{username}/{collectionName}:
+    get:
+      summary: Get collection details.
+      description: |
+        Retrieves a collection by name for a given user. If the user requesting is the owner of the collection, they can then access private collections. Otherwise, only public ones.
+
+        **Authentication**: User token
+
+        **Permission**: 
+        - USER: can access their own collections (PUBLIC, PRIVATE) and PUBLIC collections of other users.
+        - ADMIN: can access any user's collections.
+
+      tags:
+        - Collections
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+        - $ref: '#/components/parameters/CollectionName'
+      responses:
+        '200':
+          description: Operation Completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PricingCollection'
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: User or collection not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      summary: Update metadata of a collection.
+      description: |
+        Updates the metadata of a given collection.
+
+        **Authentication**: User API Key
+
+        **Permission**: 
+        - USER: can update their own collections.
+        - ADMIN: can update any collection.
+
+      tags:
+        - Collections
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+        - $ref: '#/components/parameters/CollectionName'
+      requestBody:
+        $ref: '#/components/requestBodies/CollectionUpdate'
+      responses:
+        '200':
+          description: Operation Completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PricingCollection'
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: User or collection not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      summary: Delete a collection.
+      description: |
+        Deletes a given collection.
+
+        **Authentication**: User API Key
+
+        **Permission**:
+        - USER: can delete their own collections.
+        - ADMIN: can delete any collection.
+
+      tags:
+        - Collections
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+        - $ref: '#/components/parameters/CollectionName'
+      responses:
+        '200':
+          description: Operation Completed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Collection deleted successfully
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: User or collection not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+  /collections/{username}/{collectionName}/download:
+    get:
+      summary: Download collection.
+      description: |
+        Downloads a given collection as a zip file containing the text plain YAMLs of the pricings in the collection.
+
+        **Authentication**: User API Key
+
+        **Permission**:
+        - USER: can download their own collections or PUBLIC ones.
+        - ADMIN: can download any collection.
+
+      tags:
+        - Collections
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+        - $ref: '#/components/parameters/CollectionName'
+      responses:
+        '200':
+          description: Operation Completed
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: User or collection not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
 components:
   schemas:
 
@@ -1144,6 +1387,19 @@ components:
     # --       COLLECTIONS        --
     # ------------------------------
 
+    ParameterEvolution:
+      type: object
+      properties:
+        dates:
+          type: array
+          items:
+            type: string
+            format: date-time
+        values:
+          type: array
+          items:
+            type: number
+
     PublicPricingCollection:
       type: object
       properties:
@@ -1152,7 +1408,7 @@ components:
         name:
           type: string
         numberOfPricings:
-          type: integer
+          type: number
         owner:
           type: object
           properties:
@@ -1166,6 +1422,36 @@ components:
               type: string
               format: uri
               example: https://sphere.score.us.es/avatars/default-avatar.png
+
+    PricingCollection:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        owner:
+          type: string
+          description: Username of the owner of the collection
+          example: "john_doe"
+        private:
+          type: boolean
+          default: false
+        analytics:
+          type: object
+          properties:
+            evolutionOfPlans:
+              $ref: '#/components/schemas/ParameterEvolution'
+            evolutionOfFeatures:
+              $ref: '#/components/schemas/ParameterEvolution'
+            evolutionOfAddOns:
+              $ref: '#/components/schemas/ParameterEvolution'
+            evolutionOfConfigurationSpaceSize:
+              $ref: '#/components/schemas/ParameterEvolution'
+
     
     # ------------------------------
     # --          ERRORS          --
@@ -1342,6 +1628,117 @@ components:
                     type: number
             example:
               name: "Zoom"
+
+    CollectionCreate:
+      description: Collection creation object
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+                description: Name of the collection to be created
+                example: "MyCollection"
+              description:
+                type: string
+                description: Description of the collection to be created
+                example: "This is my collection of pricings for video conferencing tools."
+              private:
+                type: boolean
+                description: Whether the collection to be created should be private or not
+                default: false
+              pricings:
+                type: array
+                description: List of pricing names to be added to the collection upon creation
+                items:
+                  type: string
+                example: ["Zoom", "Google Meet"]
+
+    CollectionBulkCreate:
+      description: Collection bulk creation object
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - name
+              - zip
+            properties:
+              name:
+                type: string
+                description: Name of the collection to be created
+                example: "MyCollection"
+              description:
+                type: string
+                description: Description of the collection to be created
+                example: "This is my collection of pricings for video conferencing tools."
+              private:
+                type: boolean
+                description: Whether the collection to be created should be private or not
+                default: false
+              zip:
+                type: string
+                format: binary
+                description: |
+                  **Zip archive containing the pricing definitions to be added to the collection upon creation.**
+
+                  The archive must follow the directory structure defined below:
+
+                  {saasName}/
+                  ├── {version}.yaml
+                  └── {version}.yml
+
+                  - Each top-level directory (`{saasName}`) represents a distinct pricing entity (e.g., a Software as a Service offering).
+                  - Inside each directory, each file represents a specific version of that pricing.
+                  - File names must correspond to the version identifier (e.g., `1.0.0.yaml`).
+                  - Each file must contain a valid pricing definition encoded in YAML format.
+
+                  **Constraints:**
+                  - Only `.yaml` or `.yml` files are supported.
+                  - The version identifier must be unique within each `{saasName}` directory.
+                  - The YAML content must conform to the expected pricing schema.
+  
+    CollectionUpdate:
+      description: Collection metadata update object. (All fields are optional, but at least one must be provided)
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name of the collection
+                example: "MyCollection"
+              description:
+                type: string
+                description: Description of the collection
+                example: "This is my collection of pricings for video conferencing tools."
+              owner:
+                type: string
+                description: New owner's username for the collection
+                example: "john_doe"
+              private:
+                type: boolean
+                description: Whether the collection should be private or not
+                default: false
+              analytics:
+                type: object
+                properties:
+                  evolutionOfPlans:
+                    $ref: '#/components/schemas/ParameterEvolution'
+                  evolutionOfFeatures:
+                    $ref: '#/components/schemas/ParameterEvolution'
+                  evolutionOfAddOns:
+                    $ref: '#/components/schemas/ParameterEvolution'
+                  evolutionOfConfigurationSpaceSize:
+                    $ref: '#/components/schemas/ParameterEvolution'
+
   responses:
     PricingList:
       description: A list of pricings matching the provided filter
@@ -1586,6 +1983,13 @@ components:
       required: false
       schema:
         $ref: '#/components/schemas/Offset'
+
+    CollectionName:
+      name: collectionName
+      in: path
+      required: true
+      schema:
+        type: string
 
   securitySchemes:
     ApiKeyAuth:

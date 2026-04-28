@@ -18,7 +18,7 @@ class PricingController {
     this.addPricingToCollection = this.addPricingToCollection.bind(this);
     this.update = this.update.bind(this);
     this.updateVersion = this.updateVersion.bind(this);
-    this.removePricingFromCollection = this.removePricingFromCollection.bind(this);
+    // this.removePricingFromCollection = this.removePricingFromCollection.bind(this);
     this.destroyByNameAndOwner = this.destroyByNameAndOwner.bind(this);
     this.destroyVersionByNameAndOwner = this.destroyVersionByNameAndOwner.bind(this);
   }
@@ -158,18 +158,18 @@ class PricingController {
     }
   }
 
-  async removePricingFromCollection(req: any, res: any) {
-    try {
-      const result = await this.pricingService.removePricingFromCollection(
-        req.params.pricingName,
-        req.user.username
-      );
-      res.json(result);
-    } catch (err: any) {
-      const {status, message} = handleError(err);
-      res.status(status).send({ error: message });
-    }
-  }
+  // async removePricingFromCollection(req: any, res: any) {
+  //   try {
+  //     const result = await this.pricingService.removePricingFromCollection(
+  //       req.params.pricingName,
+  //       req.user.username
+  //     );
+  //     res.json(result);
+  //   } catch (err: any) {
+  //     const {status, message} = handleError(err);
+  //     res.status(status).send({ error: message });
+  //   }
+  // }
 
   async destroyByNameAndOwner(req: any, res: any) {
     try {
