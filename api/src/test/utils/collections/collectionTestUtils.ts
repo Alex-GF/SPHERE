@@ -1,15 +1,38 @@
 import { TestCollection } from '../../types/Collections';
 import PricingCollectionMongoose from '../../../main/repositories/mongoose/models/PricingCollectionMongoose';
 import testContainer from '../config/testContainer';
-import { BASE_PATH } from '../config/variables';
+import { createTestUser } from '../users/userTestUtils';
 import request from 'supertest';
+import { BASE_PATH } from '../config/variables';
 
-export const createTestCollection = (owner: string, overwrite: Partial<TestCollection> = {}): Promise<TestCollection> => {
-  let collectionData: Omit<TestCollection, 'id'> = {
-    name: 'Test_Collection_' + Math.random().toString(36).substring(2, 15),
-    description: 'This is a test collection',
-    _ownerName: owner,
-    private: false,
+export type TestCollectionData = Partial<TestCollection>;
+
+export const createTestCollectionWithPricings = async (params: TestCollectionData, pricings: string[]): Promise<TestCollection> => {
+  const collectionData: Partial<TestCollection> = {
+    name: params.name || 'Test_Collection_' + Math.random().toString(36).substring(2, 15),
+    description: params.description || 'This is a test collection',
+    private: params.private || false,
+  };
+
+  const payload = {
+    ...collectionData,
+    pricings,
+  };
+
+  const response = await request(testContainer.resolve('app'))
+    .post(`${BASE_PATH}/collections/` + (params._ownerName || (await createTestUser("USER")).username))
+    .set('Authorization', `Bearer ${testContainer.resolve('adminUser').token}`)
+    .send(payload);
+  
+  return response.body;
+};
+
+export const createTestCollection = async (params: TestCollectionData): Promise<TestCollection> => {
+  const collectionData: Omit<TestCollection, 'id'> = {
+    name: params.name || 'Test_Collection_' + Math.random().toString(36).substring(2, 15),
+    description: params.description || 'This is a test collection',
+    _ownerName: params._ownerName || (await createTestUser("USER")).username,
+    private: params.private || false,
     analytics: {
       evolutionOfPlans: { dates: [], values: [] },
       evolutionOfAddOns: { dates: [], values: [] },
@@ -17,8 +40,6 @@ export const createTestCollection = (owner: string, overwrite: Partial<TestColle
       evolutionOfConfigurationSpaceSize: { dates: [], values: [] },
     },
   };
-
-  collectionData = { ...collectionData, ...overwrite };
 
   const collection = new PricingCollectionMongoose(collectionData);
   return collection.save().then(savedCollection => {
@@ -32,7 +53,7 @@ export const createTestCollection = (owner: string, overwrite: Partial<TestColle
 };
 
 export const createCollectionForUser = async (owner: string) => {
-  const collection = await createTestCollection(owner);
+  const collection = await createTestCollection({ _ownerName: owner });
 
   testContainer.resolve('collectionIdsToDelete').add(collection.id);
   return collection;

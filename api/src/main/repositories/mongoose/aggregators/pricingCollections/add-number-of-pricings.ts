@@ -5,19 +5,7 @@ export function addNumberOfPricingsAggregator() {
     ...getAllPricingsFromCollection(),
     {
       $addFields: {
-        pricings: {
-          $arrayElemAt: ['$pricings', 0],
-        },
-      },
-    },
-    {
-      $unwind: {
-        path: '$pricings',
-      },
-    },
-    {
-      $addFields: {
-        numberOfPricings: { $size: '$pricings.pricings' },
+        numberOfPricings: { $size: '$data.pricings' },
       },
     },
   ];
