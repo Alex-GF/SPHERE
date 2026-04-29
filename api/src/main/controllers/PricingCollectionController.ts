@@ -165,15 +165,15 @@ class PricingCollectionController {
   async update(req: any, res: any) {
     try {
       const collection = await this.pricingCollectionService.update(
+        req.params.username,
         req.params.collectionName,
-        req.user.id,
-        req.body
+        req.body,
+        req.user
       );
       await this.pricingService.updatePricingsCollectionName(
         req.params.collectionName,
         collection.name,
-        collection.id.toString(),
-        req.user.id
+        collection.id
       );
       res.json(collection);
     } catch (err: any) {

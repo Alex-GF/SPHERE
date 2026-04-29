@@ -102,7 +102,10 @@ class PricingCollectionService {
         await this.updateCollectionAnalytics(collection.id);
       }
 
-      collection = await this.pricingCollectionRepository.findByOwnerAndName(owner, newCollection.name);
+      collection = await this.pricingCollectionRepository.findByOwnerAndName(
+        owner,
+        newCollection.name
+      );
 
       return collection;
     } catch (err) {
@@ -205,7 +208,11 @@ class PricingCollectionService {
     }
   }
 
-  async update(collectionName: string, owner: string, data: any) {
+  async update(owner: string, collectionName: string, data: any, reqUser: LeanUser) {
+    if (owner !== reqUser.username && reqUser.role !== 'ADMIN') {
+      throw new Error('PERMISSION ERROR: You can only update collections for yourself');
+    }
+
     const collection = await this.pricingCollectionRepository.findByOwnerAndName(
       owner,
       collectionName
@@ -214,21 +221,42 @@ class PricingCollectionService {
       throw new Error('NOT FOUND: Either the collection does not exist or you are not its owner');
     }
 
-    await this.pricingCollectionRepository.update(collection._id.toString(), data);
+    if (data.name && data.name !== collectionName) {
+      const existingCollection = await this.pricingCollectionRepository.findByOwnerAndName(
+        owner,
+        data.name
+      );
 
-    const updatedCollection = await this.pricingCollectionRepository.findById(
-      collection._id.toString()
-    );
+      if (existingCollection) {
+        throw new Error('CONFLICT: You already have a collection with that name.');
+      }
+    }
+
+    await this.pricingCollectionRepository.update(collection.id, data);
+
+    const updatedCollection = await this.pricingCollectionRepository.findById(collection.id);
 
     if (!updatedCollection) {
       throw new Error('NOT FOUND: Collection not found after update');
     }
 
     if (updatedCollection.name !== collectionName) {
-      fs.renameSync(
-        this._getExtractPath(owner, collectionName),
-        this._getExtractPath(owner, updatedCollection.name)
-      );
+      try {
+        const sourcePath = this._getExtractPath(owner, collectionName);
+
+        if (fs.existsSync(sourcePath)) {
+          const destPath = this._getExtractPath(owner, updatedCollection.name);
+
+          fs.mkdirSync(destPath, { recursive: true });
+          fs.renameSync(sourcePath, destPath);
+        }
+      } catch (err) {
+        // Attempt to rollback collection name change if folder rename fails
+        await this.pricingCollectionRepository.update(collection.id, { name: collectionName });
+        throw new Error(
+          'Error renaming collection folder. Collection name change has been rolled back. Please try again.'
+        );
+      }
     }
 
     return updatedCollection;

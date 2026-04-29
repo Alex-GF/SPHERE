@@ -347,7 +347,7 @@ class PricingRepository extends RepositoryBase {
     return pricing.toJSON();
   }
 
-  async updatePricingsCollectionName(pricingsToUpdate: any, ...args: any) {
+  async updatePricingsCollectionName(pricingsToUpdate: any) {
     const bulkOps = pricingsToUpdate.map((pricing: any) => ({
       updateOne: {
         filter: { _id: pricing._id },

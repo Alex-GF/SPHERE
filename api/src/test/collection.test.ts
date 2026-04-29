@@ -295,11 +295,10 @@ describe('Pricing Collections API integration', () => {
   });
 
   describe('PUT /api/v1/collections/:username/:collectionName', () => {
-    it('allows owner to update collection metadata', async () => {
+    it('Return 200 and allows owner to update collection metadata', async () => {
       const owner = await createAndLoginUser('USER');
 
       const collection = await createTestCollection({ _ownerName: owner.username });
-      collectionIdsToDelete.add(collection.id);
 
       const res = await request(app)
         .put(`${BASE_PATH}/collections/${owner.username}/${encodeURIComponent(collection.name)}`)
@@ -308,6 +307,60 @@ describe('Pricing Collections API integration', () => {
 
       expect(res.status).toBe(200);
       expect(res.body.name).toBe(collection.name);
+    });
+    
+    it('Return 200 and allows owner to update collection name', async () => {
+      const owner = await createAndLoginUser('USER');
+
+      const collection = await createTestCollection({ _ownerName: owner.username });
+
+      const res = await request(app)
+        .put(`${BASE_PATH}/collections/${owner.username}/${encodeURIComponent(collection.name)}`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({ name: 'Updated Collection Name' });
+
+      expect(res.status).toBe(200);
+      expect(res.body.name).toBe('Updated Collection Name');
+    });
+    
+    it('Return 200 and allows owner to update name of bulk created collection', async () => {
+      const owner = await createAndLoginUser('USER');
+
+      const { zipPath, tempPaths } = await createBulkZipFixture();
+      generatedFilesToDelete.add(zipPath);
+
+      const resCreate = await request(app)
+        .post(`${BASE_PATH}/collections/${owner.username}/bulk`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .field('name', `BulkCollection_${randomSuffix()}`)
+        .field('description', 'Collection created from bulk upload')
+        .field('private', 'false')
+        .attach('zip', zipPath);
+
+      const res = await request(app)
+        .put(`${BASE_PATH}/collections/${owner.username}/${encodeURIComponent(resCreate.body.collection.name)}`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({ name: 'Updated Collection Name' });
+
+      expect(res.status).toBe(200);
+      expect(res.body.name).toBe('Updated Collection Name');
+
+      if (resCreate.body._id) collectionIdsToDelete.add(resCreate.body._id);
+      await removeTempPaths(tempPaths);
+    });
+    
+    it('Return 200 and allows ADMIN to update other user collection metadata', async () => {
+      const owner = await createAndLoginUser('USER');
+
+      const collection = await createTestCollection({ _ownerName: owner.username });
+
+      const res = await request(app)
+        .put(`${BASE_PATH}/collections/${owner.username}/${encodeURIComponent(collection.name)}`)
+        .set('Authorization', `Bearer ${adminUser.token}`)
+        .send({ private: true });
+
+      expect(res.status).toBe(200);
+      expect(res.body.private).toBe(true);
     });
 
     it('returns 403 when USER tries to update another user collection', async () => {

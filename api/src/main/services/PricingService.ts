@@ -236,8 +236,7 @@ class PricingService {
   async updatePricingsCollectionName(
     oldCollectionName: string,
     newCollectionName: string,
-    collectionId: string,
-    ownerId: string
+    collectionId: string
   ) {
     if (oldCollectionName === newCollectionName) {
       return true;
@@ -253,9 +252,7 @@ class PricingService {
     }
 
     await this.pricingRepository.updatePricingsCollectionName(
-      pricingsToUpdate,
-      ownerId,
-      newCollectionName
+      pricingsToUpdate
     );
     return true;
   }
