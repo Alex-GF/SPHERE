@@ -22,6 +22,12 @@ const initializeApp = async () => {
   await initializeDatabase();
   const redisClient = await initRedis();
   container.resolve("cacheService").setRedisClient(redisClient);
+
+  if (['development', 'testing'].includes(process.env.ENVIRONMENT ?? '')) {
+    await redisClient.sendCommand(['FLUSHALL']);
+    console.log(`${green}➜${reset}  ${bold}Redis cache cleared.${reset}`);
+  }
+
   // await postInitializeDatabase(app)
   return app;
 };
@@ -45,6 +51,15 @@ const initializeServer = async (): Promise<{
   console.log(
     `  ${green}➜${reset}  ${bold}API:${reset}     ${blue}http://localhost:${bold}${addressInfo.port}/${reset}`
   );
+
+  if (['development', 'testing'].includes(process.env.ENVIRONMENT ?? '')) {
+    console.log(`${green}➜${reset}  ${bold}Loaded Routes:${reset}`);
+    app._router.stack
+      .filter((layer: any) => layer.route)
+      .forEach((layer: any) => {
+        console.log(`  ${blue}${layer.route.path}${reset}`);
+      });
+  }
 
   return { server, app };
 };
