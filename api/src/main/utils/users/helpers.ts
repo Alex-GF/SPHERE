@@ -27,6 +27,8 @@ function handleError(err: any): {status: number, message: string} {
     return { status: 404, message: err.message };
   } else if (err.message.toLowerCase().includes('conflict')) {
     return { status: 409, message: err.message };
+  } else if (err.message.toLowerCase().includes('authentication timeout')) {
+    return { status: 419, message: err.message };
   } else if (err.message.toLowerCase().includes('invalid data')) {
     return { status: 422, message: err.message };
   } else {

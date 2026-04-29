@@ -5,6 +5,7 @@ import { HttpMethod } from '../types/permissions';
 import { extractApiPath, matchPath } from '../utils/routeMatcher';
 import { DEFAULT_PERMISSION_DENIED_MESSAGE, ROUTE_PERMISSIONS } from '../config/permissions';
 import UserRepository from '../repositories/mongoose/UserRepository';
+import { handleError } from '../utils/users/helpers';
 
 /**
  * Middleware to authenticate API Keys (both User and Organization types)
@@ -30,9 +31,8 @@ const authenticateTokenMiddleware = async (req: Request, res: Response, next: Ne
     return checkPermissions(req, res, next);
   } catch (err: any) {
     if (!res.headersSent) {
-      return res.status(401).json({
-        error: err.message || 'Invalid API Key',
-      });
+      const {status, message} = handleError(err);
+      return res.status(status).json({ error: message });
     }
   }
 };
@@ -47,6 +47,10 @@ async function authenticateToken(req: Request, token: string): Promise<void> {
 
   if (!user) {
     throw new Error('Invalid User Token');
+  }
+
+  if (user.tokenExpiration && new Date() > new Date(user.tokenExpiration)) {
+    throw new Error('AUTHENTICATION TIMEOUT: User Token has expired');
   }
 
   (req as any).user = user;
