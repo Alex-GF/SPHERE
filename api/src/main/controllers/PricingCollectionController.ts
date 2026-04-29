@@ -70,11 +70,11 @@ class PricingCollectionController {
         collectionName,
         req.user
       );
-      const pricings = await this.pricingService.indexByCollection(collection._id.toString());
+      const pricings = await this.pricingService.indexByCollection(collection.id);
       const pricingsToDownload = pricings.map(pricing => pricing.yaml);
 
       if (pricingsToDownload.length === 0) {
-        res.status(404).send({ error: 'No pricings to download.' });
+        res.status(400).send({ error: 'No pricings to download.' });
         return;
       }
 
@@ -112,7 +112,8 @@ class PricingCollectionController {
       archive.finalize();
 
     } catch (err: any) {
-      res.status(500).send({ error: err.message });
+      const {status, message} = handleError(err);
+      res.status(status).send({ error: message });
     }
   }
 
@@ -188,12 +189,14 @@ class PricingCollectionController {
       const deleteCascade = String(cascade).toLowerCase() === 'true';
 
       const result = await this.pricingCollectionService.destroy(
+        req.params.username,
         req.params.collectionName,
-        req.user.id,
-        deleteCascade
+        deleteCascade,
+        false,
+        req.user
       );
       const message = result ? 'Successfully deleted.' : 'Could not delete collection.';
-      res.json({ message: message });
+      res.status(204).json({ message: message });
     } catch (err: any) {
       const {status, message} = handleError(err);
       res.status(status).send({ error: message });

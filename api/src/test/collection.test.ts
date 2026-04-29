@@ -275,7 +275,6 @@ describe('Pricing Collections API integration', () => {
       const owner = await createAndLoginUser('USER');
 
       const collection = await createTestCollection({ _ownerName: owner.username });
-      collectionIdsToDelete.add(collection.id);
 
       const res = await request(app)
         .get(`${BASE_PATH}/collections/${owner.username}/${encodeURIComponent(collection.name)}`)
@@ -368,7 +367,6 @@ describe('Pricing Collections API integration', () => {
       const requester = await createAndLoginUser('USER');
 
       const collection = await createTestCollection({ _ownerName: owner.username });
-      collectionIdsToDelete.add(collection.id);
 
       const res = await request(app)
         .put(`${BASE_PATH}/collections/${owner.username}/${encodeURIComponent(collection.name)}`)
@@ -380,17 +378,52 @@ describe('Pricing Collections API integration', () => {
   });
 
   describe('DELETE /api/v1/collections/:username/:collectionName', () => {
-    it('allows owner to delete own collection', async () => {
+    it('Return 204 and allows owner to delete own collection', async () => {
       const owner = await createAndLoginUser('USER');
 
       const collection = await createTestCollection({ _ownerName: owner.username });
-      // do not add to delete set so it's removed by API
 
       const res = await request(app)
         .delete(`${BASE_PATH}/collections/${owner.username}/${encodeURIComponent(collection.name)}`)
         .set('Authorization', `Bearer ${owner.token}`);
 
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(204);
+    });
+    
+    it('Return 204 and allows ADMIN to delete any collection', async () => {
+      const owner = await createAndLoginUser('USER');
+
+      const collection = await createTestCollection({ _ownerName: owner.username });
+
+      const res = await request(app)
+        .delete(`${BASE_PATH}/collections/${owner.username}/${encodeURIComponent(collection.name)}`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
+
+      expect(res.status).toBe(204);
+    });
+    
+    it('Return 204 and also remove all pricings when deleting a collection', async () => {
+      const owner = await createAndLoginUser('USER');
+
+      const testPricing1 = await createPricingForUser({ username: owner.username, token: owner.token! });
+      const testPricing2 = await createPricingForUser({ username: owner.username, token: owner.token! });
+
+      const collection = await createTestCollectionWithPricings({ _ownerName: owner.username }, [testPricing1.serviceName, testPricing2.serviceName]);
+
+      const res = await request(app)
+        .delete(`${BASE_PATH}/collections/${owner.username}/${encodeURIComponent(collection.name)}?cascade=true`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
+
+      expect(res.status).toBe(204);
+      // the pricings that belonged to the collection should also be deleted
+      const resGet1 = await request(app)
+        .get(`${BASE_PATH}/pricings/${owner.username}/${testPricing1.serviceName}`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
+      expect(resGet1.status).toBe(404);
+      const resGet2 = await request(app)
+        .get(`${BASE_PATH}/pricings/${owner.username}/${testPricing2.serviceName}`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
+      expect(resGet2.status).toBe(404);
     });
 
     it('returns 403 when USER tries to delete another user collection', async () => {
@@ -409,11 +442,13 @@ describe('Pricing Collections API integration', () => {
   });
 
   describe('GET /api/v1/collections/:username/:collectionName/download', () => {
-    it('returns 200 and zip content for existing collection (even if empty)', async () => {
+    it('Returns 200 and zip content for existing collection', async () => {
       const owner = await createAndLoginUser('USER');
 
-      const collection = await createTestCollection({ _ownerName: owner.username });
-      collectionIdsToDelete.add(collection.id);
+      const testPricing1 = await createPricingForUser({ username: owner.username, token: owner.token! });
+      const testPricing2 = await createPricingForUser({ username: owner.username, token: owner.token! });
+
+      const collection = await createTestCollectionWithPricings({ _ownerName: owner.username }, [testPricing1.serviceName, testPricing2.serviceName]);
 
       const res = await request(app)
         .get(
@@ -423,6 +458,34 @@ describe('Pricing Collections API integration', () => {
 
       expect(res.status).toBe(200);
       expect(res.header['content-type']).toMatch(/zip|application\/zip/);
+    });
+    
+    it('Returns 400 if existing is empty', async () => {
+      const owner = await createAndLoginUser('USER');
+
+      const collection = await createTestCollection({ _ownerName: owner.username });
+
+      const res = await request(app)
+        .get(
+          `${BASE_PATH}/collections/${owner.username}/${encodeURIComponent(collection.name)}/download`
+        )
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      expect(res.status).toBe(400);
+      expect(res.body.error).toBeDefined();
+    });
+    
+    it('Returns 404 if collection does not exist', async () => {
+      const owner = await createAndLoginUser('USER');
+
+      const res = await request(app)
+        .get(
+          `${BASE_PATH}/collections/${owner.username}/non-existent/download`
+        )
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      expect(res.status).toBe(404);
+      expect(res.body.error).toBeDefined();
     });
   });
 });

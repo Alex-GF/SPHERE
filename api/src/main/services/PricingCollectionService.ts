@@ -275,11 +275,21 @@ class PricingCollectionService {
   }
 
   async destroy(
-    collectionName: string,
     owner: string,
+    collectionName: string,
     deleteCascade: boolean,
-    ignoreResult: boolean = false
+    ignoreResult: boolean = false,
+    reqUser?: LeanUser
   ) {
+
+    if (!reqUser && !ignoreResult){
+      throw new Error('INTERNAL ERROR: You have not provided "reqUser". Either set "ignoreResult" to true or provide the user performing the action as "reqUser".');
+    }
+
+    if (reqUser && owner !== reqUser.username && reqUser.role !== 'ADMIN' && !ignoreResult) {
+      throw new Error('PERMISSION ERROR: You can only delete collections for yourself');
+    }
+    
     const collection = await this.pricingCollectionRepository.findByOwnerAndName(
       owner,
       collectionName
@@ -292,13 +302,16 @@ class PricingCollectionService {
 
     if (deleteCascade) {
       result = await this.pricingCollectionRepository.destroyWithPricings(
-        collection._id.toString()
+        collection.id
       );
 
-      fs.rmdirSync(this._getExtractPath(owner, collectionName), { recursive: true });
+      const collectionPath = this._getExtractPath(owner, collectionName);
+      if (fs.existsSync(collectionPath)) {
+        fs.rmdirSync(collectionPath, { recursive: true });
+      }
     } else {
-      await this.pricingRepository.removePricingsFromCollection(collection._id.toString());
-      result = await this.pricingCollectionRepository.destroy(collection._id.toString());
+      await this.pricingRepository.removePricingsFromCollection(collection.id);
+      result = await this.pricingCollectionRepository.destroy(collection.id);
     }
 
     if (!result && !ignoreResult) {
@@ -373,7 +386,7 @@ class PricingCollectionService {
     // If a collection was created before the error, remove it (cleanup of partial state)
     try {
       if (collection?._id) {
-        await this.destroy(newCollectionData.name, owner, true, true);
+        await this.destroy(owner, newCollectionData.name, true, true);
       }
     } catch (cleanupErr) {
       // If cleanup fails, log it but continue to throw the original error

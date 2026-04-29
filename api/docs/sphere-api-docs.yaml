@@ -997,6 +997,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/Username'
         - $ref: '#/components/parameters/CollectionName'
+        - $ref: '#/components/parameters/CollectionCascade'
       responses:
         '200':
           description: Operation Completed
@@ -2117,6 +2118,14 @@ components:
       required: true
       schema:
         type: string
+
+    CollectionCascade:
+      name: cascade
+      description: Whether to delete all pricings contained in the collection as well (if not provided, the collection will only be deleted if it does not contain any pricings, otherwise an error will be returned)
+      in: query
+      required: false
+      schema:
+        type: boolean
 
   securitySchemes:
     ApiKeyAuth:
