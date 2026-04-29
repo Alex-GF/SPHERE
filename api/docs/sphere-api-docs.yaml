@@ -796,7 +796,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PricingCollection'
+                $ref: '#/components/schemas/PricingCollectionWithPricings'
         '403':
           description: Insufficient permissions
         '404':
@@ -1400,6 +1400,18 @@ components:
           items:
             type: number
 
+    CollectionDataStat:
+      type: object
+      properties:
+        min:
+          type: number
+        max:
+          type: number
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParameterEvolution'
+
     PublicPricingCollection:
       type: object
       properties:
@@ -1426,7 +1438,7 @@ components:
     PricingCollection:
       type: object
       properties:
-        _id:
+        id:
           type: string
         name:
           type: string
@@ -1451,6 +1463,48 @@ components:
               $ref: '#/components/schemas/ParameterEvolution'
             evolutionOfConfigurationSpaceSize:
               $ref: '#/components/schemas/ParameterEvolution'
+    
+    PricingCollectionWithPricings:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        owner:
+          type: string
+          description: Username of the owner of the collection
+          example: "john_doe"
+        private:
+          type: boolean
+          default: false
+        analytics:
+          type: object
+          properties:
+            evolutionOfPlans:
+              $ref: '#/components/schemas/ParameterEvolution'
+            evolutionOfFeatures:
+              $ref: '#/components/schemas/ParameterEvolution'
+            evolutionOfAddOns:
+              $ref: '#/components/schemas/ParameterEvolution'
+            evolutionOfConfigurationSpaceSize:
+              $ref: '#/components/schemas/ParameterEvolution'
+        data:
+          type: object
+          properties:
+            minPrice:
+              $ref: '#/components/schemas/CollectionDataStat'
+            maxPrice:
+              $ref: '#/components/schemas/CollectionDataStat'
+            configurationSpaceSize:
+              $ref: '#/components/schemas/CollectionDataStat'
+            pricings:
+              type: array
+              items:
+                $ref: '#/components/schemas/Pricing'
 
     
     # ------------------------------

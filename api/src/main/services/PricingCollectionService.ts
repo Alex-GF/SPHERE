@@ -102,6 +102,8 @@ class PricingCollectionService {
         await this.updateCollectionAnalytics(collection.id);
       }
 
+      collection = await this.pricingCollectionRepository.findByOwnerAndName(owner, newCollection.name);
+
       return collection;
     } catch (err) {
       await this._handleCollectionCreationError(err as Error, collection, newCollection, owner);

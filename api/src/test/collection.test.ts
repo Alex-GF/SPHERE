@@ -192,8 +192,8 @@ describe('Pricing Collections API integration', () => {
 
       expect(res.status).toBe(201);
       // response should include the linked pricings
-      expect(Array.isArray(res.body.pricings)).toBe(true);
-      const linkedNames = res.body.pricings.map((p: any) => p.name ?? p);
+      expect(Array.isArray(res.body.data.pricings)).toBe(true);
+      const linkedNames = res.body.data.pricings.map((p: any) => p.name ?? p);
       expect(linkedNames).toEqual(expect.arrayContaining([p1.serviceName, p2.serviceName]));
     });
 

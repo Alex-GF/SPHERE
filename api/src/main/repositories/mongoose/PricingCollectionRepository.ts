@@ -219,7 +219,7 @@ class PricingCollectionRepository extends RepositoryBase {
               $regex: name,
               $options: 'i',
             },
-            owner: owner,
+            _ownerName: owner,
           },
         },
         ...getAllPricingsFromCollection(),
@@ -232,6 +232,7 @@ class PricingCollectionRepository extends RepositoryBase {
         },
         {
           $project: {
+            _id: 0,
             id: 1,
             owner: {
               username: 1,
@@ -241,7 +242,7 @@ class PricingCollectionRepository extends RepositoryBase {
             description: 1,
             private: 1,
             analytics: 1,
-            pricings: 1,
+            data: 1,
             lastUpdate: 1,
           },
         },
@@ -263,7 +264,7 @@ class PricingCollectionRepository extends RepositoryBase {
               $regex: name,
               $options: 'i',
             },
-            owner: username,
+            _ownerName: username,
           },
         },
         {

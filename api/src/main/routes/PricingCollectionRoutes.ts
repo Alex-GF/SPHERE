@@ -24,7 +24,7 @@ const loadFileRoutes = function (app: express.Application) {
   app
     .route(baseUrl + '/collections/:username')
     .get(pricingCollectionController.indexByUsername)
-    .post(pricingCollectionController.create);
+    .post(PricingCollectionValidator.create, handleValidation,pricingCollectionController.create);
     
   app
     .route(baseUrl + '/collections/:username/bulk')

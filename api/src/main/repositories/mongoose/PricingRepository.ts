@@ -378,7 +378,7 @@ class PricingRepository extends RepositoryBase {
     pricings: string[]
   ) {
     const result = await PricingMongoose.updateMany(
-      { name: { $in: pricings }, _ownerName: owner },
+      { name: { $in: pricings }, owner: owner },
       { $set: { _collectionId: collectionId } }
     );
 
