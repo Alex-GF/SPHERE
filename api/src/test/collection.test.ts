@@ -259,9 +259,12 @@ describe('Pricing Collections API integration', () => {
       const res = await request(app)
         .post(`${BASE_PATH}/collections/${owner.username}/bulk`)
         .set('Authorization', `Bearer ${owner.token}`)
+        .field('name', `BulkCollection_${randomSuffix()}`)
+        .field('description', 'Collection created from bulk upload')
+        .field('private', 'false')
         .attach('zip', zipPath);
 
-      expect([200, 201]).toContain(res.status);
+      expect(res.status).toBe(201);
       if (res.body._id) collectionIdsToDelete.add(res.body._id);
       await removeTempPaths(tempPaths);
     });

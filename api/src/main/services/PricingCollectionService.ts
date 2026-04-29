@@ -170,7 +170,7 @@ class PricingCollectionService {
 
       await this.pricingRepository.create(pricingDatas);
 
-      await this.updateCollectionAnalytics(collection._id.toString());
+      await this.updateCollectionAnalytics(collection.id);
 
       return [collection, pricingsWithErrors];
     } catch (err) {
