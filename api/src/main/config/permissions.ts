@@ -78,6 +78,15 @@ export const ROUTE_PERMISSIONS: RoutePermission[] = [
     methods: ['GET'],
     isPublic: true, // No authentication required
   },
+
+  // ============================================
+  // Cache Management Routes (Protected)
+  // ============================================
+  {
+    path: '/cache/**',
+    methods: ['GET', 'POST'],
+    allowedUserRoles: ['ADMIN'], // Only ADMIN users can access cache endpoints
+  },
 ];
 
 /**

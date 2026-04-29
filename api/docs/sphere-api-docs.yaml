@@ -67,6 +67,8 @@ tags:
     description: Pricing Version Control System (PVCS)
   - name: Collections
     description: Collection management for grouping pricings
+  - name: Cache
+    description: Redis cache operations for temporary data storage
 
 paths:
   /healthcheck:
@@ -1057,7 +1059,109 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  
+
+  /cache/get:
+    get:
+      summary: Retrieve a value from cache
+      description: |
+        Retrieves a cached value by key from the Redis cache.
+        The value is returned as-is from the cache. If the key does not exist,
+        returns null.
+
+        **Authentication**: User token
+
+      tags:
+        - Cache
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: key
+          in: query
+          required: true
+          description: The cache key to retrieve
+          schema:
+            type: string
+            example: "user_preferences_123"
+      responses:
+        '200':
+          description: Successfully retrieved the cached value
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/CacheGetResponse'
+        '400':
+          description: Missing or invalid cache key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "Cache key is required"
+        '500':
+          description: Redis client not initialized or internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "ERROR: Redis client not initialized"
+
+  /cache/set:
+    post:
+      summary: Store a value in cache
+      description: |
+        Stores a value in the Redis cache with an optional expiration time.
+        By default, cached values expire after 300 seconds (5 minutes) if no 
+        expiration time is specified.
+
+        **Important**: This endpoint enforces a conflict prevention mechanism.
+        If a key already exists in the cache with a different value, the operation
+        will fail with a CONFLICT error. Use a different key to store a new value.
+
+        **Authentication**: User token
+
+      tags:
+        - Cache
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/CacheSetRequest'
+      responses:
+        '200':
+          description: Value successfully stored in cache
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/CacheSetResponse'
+        '400':
+          description: Missing or invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "Cache key and value are required"
+        '409':
+          description: Conflict - value already exists for this key with a different value
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "CONFLICT: Value already exists in cache, please use a different key."
+        '500':
+          description: Redis client not initialized or internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "ERROR: Redis client not initialized"
+
 components:
   schemas:
 
@@ -1836,6 +1940,32 @@ components:
                   evolutionOfConfigurationSpaceSize:
                     $ref: '#/components/schemas/ParameterEvolution'
 
+
+
+    CacheSetRequest:
+      description: Request object for setting a value in the cache
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - key
+              - value
+            properties:
+              key:
+                type: string
+                description: The cache key under which to store the value
+                example: "user_preferences_123"
+              value:
+                type: object
+                description: The value to store. Can be any JSON-serializable object
+                example: { "theme": "dark", "language": "es", "notifications": true }
+              expirationInSeconds:
+                type: integer
+                description: Optional expiration time in seconds. If not provided, defaults to 300 seconds (5 minutes)
+                minimum: 1
+                example: 3600
   responses:
     PricingList:
       description: A list of pricings matching the provided filter
@@ -1969,6 +2099,30 @@ components:
                 items:
                   $ref: '#/components/schemas/FieldValidationError'
 
+    CacheGetResponse:
+      description: Response object for getting a value from the cache
+      content:
+        application/json:
+          schema:
+            type: object
+            description: Response from cache GET operation
+            properties:
+              data:
+                type: object
+                nullable: true
+                description: The cached value, or null if key does not exist
+                example: { "userId": "123", "preferences": { "theme": "dark" } }
+
+    CacheSetResponse:
+      description: Response object for setting a value in the cache
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Cache set successfully"
   parameters:
     Username:
       name: username

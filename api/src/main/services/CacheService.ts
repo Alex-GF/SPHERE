@@ -13,7 +13,7 @@ class CacheService {
 
   async get(key: string) {
     if (!this.redisClient) {
-      throw new Error('Redis client not initialized');
+      throw new Error('ERROR: Redis client not initialized');
     }
 
     const value = await this.redisClient?.get(key);
@@ -23,12 +23,12 @@ class CacheService {
 
   async set(key: string, value: any, expirationInSeconds?: number) {
     if (!this.redisClient) {
-      throw new Error('Redis client not initialized');
+      throw new Error('ERROR: Redis client not initialized');
     }
 
     const previousValue = await this.redisClient?.get(key);
     if (previousValue && previousValue !== JSON.stringify(value)) {
-      throw new Error('Value already exists in cache, please use a different key.');
+      throw new Error('CONFLICT: Value already exists in cache, please use a different key.');
     }
 
     await this.redisClient?.set(key, JSON.stringify(value), {

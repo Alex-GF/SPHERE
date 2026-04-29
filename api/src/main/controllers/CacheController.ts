@@ -1,5 +1,6 @@
 import container from '../config/container';
 import CacheService from '../services/CacheService';
+import { handleError } from '../utils/users/helpers';
 
 class CacheController {
   private cacheService: CacheService;
@@ -14,9 +15,10 @@ class CacheController {
     try {
       const { key } = req.query;
       const data = await this.cacheService.get(key);
-      res.json(data);
+      res.status(200).json(data);
     } catch (err: any) {
-      res.status(500).send({ error: err.message });
+      const {status, message} = handleError(err);
+      res.status(status).send({ error: message });
     }
   }
 
@@ -30,7 +32,8 @@ class CacheController {
       }
       res.status(200).send({ message: 'Cache set successfully' });
     } catch (err: any) {
-      res.status(500).send({ error: err.message });
+      const {status, message} = handleError(err);
+      res.status(status).send({ error: message });
     }
   }
 }
