@@ -19,7 +19,7 @@ const getApp = async (): Promise<TestApp> => {
 
 const shutdownApp = async () => {
   if (testServer) {
-    await testServer.close();
+    testServer.close();
     await disconnectDatabase();
     testApp = null;
     testServer = null;

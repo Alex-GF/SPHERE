@@ -58,22 +58,22 @@ const initializeDatabase = async () => {
         if (process.env.ENVIRONMENT === "development") {
           await seedDatabase();
         }
-        break
+        break;
       default:
-        throw new Error("Unsupported database technology")
+        throw new Error("Unsupported database technology");
     }
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-  return connection
-}
+  return connection;
+};
 
 const disconnectDatabase = async () => {
   try {
     switch (process.env.DATABASE_TECHNOLOGY) {
       case "mongoDB":
-        await disconnectMongoose()
-        break
+        await disconnectMongoose();
+        break;
       default:
         throw new Error("Unsupported database technology");
     }
