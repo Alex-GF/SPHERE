@@ -15,3 +15,9 @@ export interface LeanUser {
   token?: string;
   tokenExpiration?: Date;
 }
+
+export type UserFilters = {
+  username?: string;
+  email?: string;
+  role?: UserRole;
+}

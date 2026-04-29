@@ -6,7 +6,10 @@ import request from 'supertest';
 import testContainer from '../config/testContainer';
 
 // Create a test user directly in the database
-export const createTestUser = async (role: UserRole = USER_ROLES[USER_ROLES.length - 1], username: string = `test_user_${Date.now()}`): Promise<any> => {
+export const createTestUser = async (
+  role: UserRole = USER_ROLES[USER_ROLES.length - 1],
+  username: string = `test_user_${Date.now()}`
+): Promise<any> => {
   const userData = {
     username: username,
     password: TEST_PASSWORD,
@@ -20,10 +23,8 @@ export const createTestUser = async (role: UserRole = USER_ROLES[USER_ROLES.leng
   const user = new UserMongoose(userData);
   await user.save();
 
-  if (username !== 'testAdmin' && username !== 'testUser') {
-    testContainer.resolve('usersToDelete').add(username);
-  }
-  
+  testContainer.resolve('usersToDelete').add(username);
+
   return user.toObject();
 };
 
@@ -32,13 +33,18 @@ export const deleteTestUser = async (username: string): Promise<void> => {
   await UserMongoose.deleteOne({ username: username });
 };
 
-export const createAndLoginUser = async (role: UserRole = USER_ROLES[USER_ROLES.length - 1], username: string = `test_user_${Date.now()}`): Promise<LeanUser> => {
+export const createAndLoginUser = async (
+  role: UserRole = USER_ROLES[USER_ROLES.length - 1],
+  username: string = `test_user_${Date.now()}`
+): Promise<LeanUser> => {
   const user = await createTestUser(role, username);
 
-  const userLogin = await request(testContainer.resolve('app')).post(`${BASE_PATH}/users/login`).send({
-    loginField: user.username,
-    password: TEST_PASSWORD,
-  });
+  const userLogin = await request(testContainer.resolve('app'))
+    .post(`${BASE_PATH}/users/login`)
+    .send({
+      loginField: user.username,
+      password: TEST_PASSWORD,
+    });
 
   return { ...user, token: userLogin.body.token, tokenExpiration: userLogin.body.tokenExpiration };
 };

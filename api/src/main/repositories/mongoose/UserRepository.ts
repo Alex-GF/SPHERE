@@ -1,11 +1,38 @@
-import { LeanUser } from '../../types/models/User';
+import { LeanUser, UserFilters } from '../../types/models/User';
 import RepositoryBase from '../RepositoryBase';
 import UserMongoose from './models/UserMongoose';
 
 class UserRepository extends RepositoryBase {
-  async find(filter: any, offset: number = 0, limit: number = 10): Promise<LeanUser[]> {
+  async find(
+    filter: UserFilters,
+    offset: number = 0,
+    limit: number = 10,
+    sortBy: string = 'username',
+    sortOrder: 'asc' | 'desc' = 'asc'
+  ): Promise<LeanUser[]> {
     try {
-      const users = await UserMongoose.find(filter, { password: 0 })
+      const mongoFilter: any = { ...filter };
+
+      // Username transformation to allow partial and case-insensitive matches
+      if (filter.username) {
+        mongoFilter.username = {
+          $regex: filter.username,
+
+          $options: 'i', // case-insensitive
+        };
+      }
+
+      // Email transformation to allow partial and case-insensitive matches
+      if (filter.email) {
+        mongoFilter.email = {
+          $regex: filter.email,
+
+          $options: 'i',
+        };
+      }
+
+      const users = await UserMongoose.find(mongoFilter, { password: 0 })
+        .sort({ [sortBy]: sortOrder })
         .skip(offset)
         .limit(limit)
         .exec();
@@ -32,7 +59,7 @@ class UserRepository extends RepositoryBase {
     return await UserMongoose.findOne({ token });
   }
 
-  async findByEmail(email: string, selector: string = ""): Promise<LeanUser | null> {
+  async findByEmail(email: string, selector: string = ''): Promise<LeanUser | null> {
     try {
       const user = await UserMongoose.findOne({ email }).select(selector).exec();
       return user ? user.toObject() : null;
@@ -41,7 +68,7 @@ class UserRepository extends RepositoryBase {
     }
   }
 
-  async findByUsername(username: string, selector: string = ""): Promise<LeanUser | null> {
+  async findByUsername(username: string, selector: string = ''): Promise<LeanUser | null> {
     try {
       const user = await UserMongoose.findOne({ username }).select(selector).exec();
       const userObj = user ? user.toObject() : null;

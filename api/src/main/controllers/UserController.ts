@@ -1,6 +1,6 @@
 import container from '../config/container';
 import UserService from '../services/UserService';
-import { LeanUser } from '../types/models/User';
+import { LeanUser, UserFilters } from '../types/models/User';
 import { handleError } from '../utils/users/helpers';
 
 class UserController {
@@ -8,12 +8,27 @@ class UserController {
 
   constructor() {
     this.userService = container.resolve('userService');
+    this.index = this.index.bind(this);
     this.login = this.login.bind(this);
     this.register = this.register.bind(this);
     this.show = this.show.bind(this);
     this.destroy = this.destroy.bind(this);
     this.update = this.update.bind(this);
     this.updateToken = this.updateToken.bind(this);
+  }
+
+  async index(req: any, res: any) {
+    try {
+      const queryParamas = req.query;
+      if (req.user.role !== 'ADMIN') {
+        throw new Error('PERMISSION ERROR: Only ADMIN users can access the full list of users.');
+      }
+      const users = await this.userService.index(queryParamas);
+      res.json(users);
+    } catch (err: any) {
+      const { status, message } = handleError(err);
+      res.status(status).send({ error: message });
+    }
   }
 
   async show(req: any, res: any) {

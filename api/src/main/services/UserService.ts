@@ -1,7 +1,7 @@
 import container from '../config/container';
 import UserRepository from '../repositories/mongoose/UserRepository';
 import { USER_ROLES } from '../types/config/permissions';
-import { LeanUser } from '../types/models/User';
+import { LeanUser, UserFilters } from '../types/models/User';
 import { processFileUris } from './FileService';
 import bcrypt from 'bcryptjs';
 import { generateUserTokenDTO, hashPassword } from '../utils/users/helpers';
@@ -11,6 +11,22 @@ class UserService {
 
   constructor() {
     this.userRepository = container.resolve('userRepository');
+  }
+
+  async index(queryParams: any): Promise<LeanUser[]> {
+    const filter: UserFilters = {};
+
+    if (queryParams.username) filter.username = String(queryParams.username);
+    if (queryParams.email) filter.email = String(queryParams.email);
+    if (queryParams.role) filter.role = String(queryParams.role) as any;
+
+    const limit = queryParams.limit || 20;
+    const offset = queryParams.offset || 0;
+    const sortBy = queryParams.sortBy === 'email' ? 'email' : 'username';
+    const sortOrder = queryParams.sortOrder === 'desc' ? 'desc' : 'asc';
+
+    const users = await this.userRepository.find(filter, offset, limit, sortBy, sortOrder);
+    return users;
   }
 
   async show(username: string): Promise<LeanUser> {

@@ -13,6 +13,10 @@ const loadFileRoutes = function (app: express.Application) {
   const baseUrl = (process.env.BASE_URL_PATH ?? "") + '/api/v1';
 
   app
+      .route(baseUrl + '/users')
+      .get(userController.index);
+
+  app
     .route(baseUrl + '/users/register')
     .post(
       upload,

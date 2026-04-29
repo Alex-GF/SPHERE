@@ -139,6 +139,48 @@ paths:
               example:
                 error: Invalid credentials
 
+  /users:
+    get:
+      summary: Get all users
+      description: |
+        Retrieves a paginated list of all users in the system.
+
+        **Authentication**: User token with ADMIN role
+
+        **Permission**: Only ADMIN users can access this endpoint.
+      
+      tags:
+        - Users
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/UsernameQuery'
+        - $ref: '#/components/parameters/Email'
+        - $ref: '#/components/parameters/Role'
+        - $ref: '#/components/parameters/SortByUsers'
+        - $ref: '#/components/parameters/Sort'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          description: Operation Completed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '401':
+          description: Authentication required
+        '403':
+          description: Insufficient permissions
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /users/{username}:
     get:
       summary: Get user details by username
@@ -1947,6 +1989,37 @@ components:
       required: true
       schema:
         type: string
+
+    UsernameQuery:
+      name: username
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/Username'
+
+    Email:
+      name: email
+      in: query
+      required: false
+      schema:
+        type: string
+        format: email
+    
+    Role:
+      name: role
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/Role'
+
+    SortByUsers:
+      name: sortBy
+      in: query
+      required: false
+      schema:
+        type: string
+        enum: [username, email]
+        example: username
 
     Name:
       name: name
