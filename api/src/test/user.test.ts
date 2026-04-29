@@ -510,13 +510,13 @@ describe('Users API integration', () => {
     });
   });
 
-  describe('PUT /api/users/:username/updateToken', () => {
+  describe('PUT /api/users/:username/refresh-token', () => {
     it('Return 200 and token object with valid Bearer Authorization header.', async () => {
       const user = await createTestUser('USER');
       usersToDelete.add(user.username);
 
       const response = await request(app)
-        .put(`${BASE_PATH}/users/${user.username}/updateToken`)
+        .put(`${BASE_PATH}/users/${user.username}/refresh-token`)
         .set('Authorization', `Bearer ${adminUser.token}`);
 
       expect(response.status).toBe(200);
@@ -529,7 +529,7 @@ describe('Users API integration', () => {
       const user = await createTestUser('USER');
       usersToDelete.add(user.username);
 
-      const response = await request(app).put(`${BASE_PATH}/users/${user.username}/updateToken`);
+      const response = await request(app).put(`${BASE_PATH}/users/${user.username}/refresh-token`);
 
       expect(response.status).toBe(401);
       expect(response.body.error).toBeDefined();
@@ -540,7 +540,7 @@ describe('Users API integration', () => {
       usersToDelete.add(user.username);
 
       const response = await request(app)
-        .put(`${BASE_PATH}/users/${user.username}/updateToken`)
+        .put(`${BASE_PATH}/users/${user.username}/refresh-token`)
         .set('Authorization', 'Token abc123');
 
       expect(response.status).toBe(401);
@@ -552,7 +552,7 @@ describe('Users API integration', () => {
       usersToDelete.add(user.username);
 
       const response = await request(app)
-        .put(`${BASE_PATH}/users/${user.username}/updateToken`)
+        .put(`${BASE_PATH}/users/${user.username}/refresh-token`)
         .set('Authorization', 'Bearer invalid-token');
 
       expect(response.status).toBe(401);
@@ -564,7 +564,7 @@ describe('Users API integration', () => {
       usersToDelete.add(user.username);
 
       const response = await request(app)
-        .put(`${BASE_PATH}/users/${user.username}/updateToken`)
+        .put(`${BASE_PATH}/users/${user.username}/refresh-token`)
         .set('Authorization', `Bearer ${testUser.token}`);
 
       expect(response.status).toBe(403);
@@ -575,17 +575,17 @@ describe('Users API integration', () => {
       const testAdminUser = await createTestUser('ADMIN');
 
       const refreshResponse = await request(app)
-        .put(`${BASE_PATH}/users/${testAdminUser.username}/updateToken`)
+        .put(`${BASE_PATH}/users/${testAdminUser.username}/refresh-token`)
         .set('Authorization', `Bearer ${testAdminUser.token}`);
       expect(refreshResponse.status).toBe(200);
 
       const oldTokenResponse = await request(app)
-        .put(`${BASE_PATH}/users/${testAdminUser.username}/updateToken`)
+        .put(`${BASE_PATH}/users/${testAdminUser.username}/refresh-token`)
         .set('Authorization', `Bearer ${testAdminUser.token}`);
       expect(oldTokenResponse.status).toBe(401);
 
       const newTokenResponse = await request(app)
-        .put(`${BASE_PATH}/users/${testAdminUser.username}/updateToken`)
+        .put(`${BASE_PATH}/users/${testAdminUser.username}/refresh-token`)
         .set('Authorization', `Bearer ${refreshResponse.body.token}`);
       expect(newTokenResponse.status).toBe(200);
       expect(newTokenResponse.body.token).toBeDefined();
