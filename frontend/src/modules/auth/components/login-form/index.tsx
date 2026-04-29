@@ -33,25 +33,12 @@ const LoginForm: React.FC = () => {
       setErrors(errors);
     }else{
       loginUser(formValues)
-        .then((response: any) => {
-
-          if (response.error) {
-            setErrors([response.error]);
-            return;
-          }
-
-          const loggedUser = {
-            id: response.id,
-            firstName: response.firstName,
-            lastName: response.lastName,
-            username: response.username,
-            email: response.email,
-            avatar: response.avatar,
-          }
-
-          login(loggedUser, response.token, response.tokenExpiration);
-
+        .then(async (response: any) => {
+          await login(response.token);
           router.push('/');
+        })
+        .catch((error: Error) => {
+          setErrors([error.message]);
         })
     }
   }

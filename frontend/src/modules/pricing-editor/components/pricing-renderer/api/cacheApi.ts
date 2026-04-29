@@ -1,9 +1,13 @@
+import { useAuth } from '../../../../auth/hooks/useAuth';
+
 export const CACHE_BASE_PATH = import.meta.env.VITE_API_URL + '/cache';
 
 export function useCacheApi() {
+  const { authUser } = useAuth();
 
   const basicHeaders = {
     'Content-Type': 'application/json',
+    Authorization: `Bearer ${authUser?.token}`,
   };
 
   const getFromCache = async (key: string) => {

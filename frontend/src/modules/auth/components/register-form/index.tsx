@@ -42,20 +42,12 @@ const RegisterForm: React.FC = () => {
     if (errors.length > 0) {
       setErrors(errors);
     } else {
-      registerUser(formValues, setErrors).then(response => {
-        
-        const loggedUser = {
-          id: response.id,
-          firstName: response.firstName,
-          lastName: response.lastName,
-          username: response.username,
-          email: response.email,
-          avatar: response.avatar,
-        };
-        
-        login(loggedUser, response.token, response.tokenExpiration);
-        router.push('/');
-      });
+      registerUser(formValues, setErrors)
+        .then(async response => {
+          await login(response.token);
+          router.push('/');
+        })
+        .catch(() => {});
     }
   }
 
