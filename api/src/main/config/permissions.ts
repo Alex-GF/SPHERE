@@ -35,7 +35,7 @@ export const ROUTE_PERMISSIONS: RoutePermission[] = [
     isPublic: true,
   },
   {
-    path: '/users/*/updateToken',
+    path: '/users/*/refresh-token',
     methods: ['PUT'],
     allowedUserRoles: ['ADMIN'],
   },

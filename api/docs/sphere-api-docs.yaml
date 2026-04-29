@@ -141,6 +141,42 @@ paths:
               example:
                 error: Invalid credentials
 
+  /users/register:
+    post:
+      summary: Register a new user
+      description: |
+        Registers a new user account with the provided username, email and password.
+
+        **Authentication**: Public
+
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/UserRegister'
+      responses:
+        '201':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User registered successfully
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /users:
     get:
       summary: Get all users
@@ -176,6 +212,34 @@ paths:
           description: Authentication required
         '403':
           description: Insufficient permissions
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /users/me:
+    get:
+      summary: Get current user details
+      description: |
+        Retrieves detailed information about the currently authenticated user.
+
+        **Authentication**: User token
+
+      tags:
+        - Users
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Operation Completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Authentication required
         default:
           description: Unexpected error
           content:
@@ -1682,6 +1746,55 @@ components:
         - location
 
   requestBodies:
+    UserRegister:
+      description: User registration object
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - username
+              - password
+              - firstName
+              - lastName
+              - email
+              - phone
+            properties:
+              username:
+                type: string
+                minLength: 3
+                maxLength: 30
+                pattern: '^[a-zA-Z0-9_]+$'
+                description: Unique username for the user (alphanumeric characters and underscores only)
+                example: egegeg
+              password:
+                type: string
+                minLength: 5
+                description: Password for the user account (minimum length of 5 characters)
+                example: egegeg
+              firstName:
+                type: string
+                description: User's first name
+                example: egeg
+              lastName:
+                type: string
+                description: User's last name
+                example: egegeg
+              email:
+                type: string
+                format: email
+                description: User's email address (must be a valid email format)
+                example: egeg@egeg.eg
+              phone:
+                type: string
+                description: User phone number in international format
+                example: "+34 666666666"
+              address:
+                type: string
+                description: User address
+                example: ""
+    
     UserUpdate:
       description: User information update object
       required: true

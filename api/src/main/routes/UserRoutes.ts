@@ -29,6 +29,10 @@ const loadFileRoutes = function (app: express.Application) {
   app
     .route(baseUrl + '/users/login')
     .post(UserValidation.login, handleValidation, userController.login);
+  
+  app
+    .route(baseUrl + '/users/me')
+    .get(userController.getCurrentUser);
 
   app
     .route(baseUrl + '/users/:username')
@@ -43,7 +47,7 @@ const loadFileRoutes = function (app: express.Application) {
     )
     .delete(checkEntityExists(userService, 'username'), userController.destroy);
 
-  app.route(baseUrl + '/users/:username/updateToken').put(userController.updateToken);
+  app.route(baseUrl + '/users/:username/refresh-token').put(userController.updateToken);
 };
 
 export default loadFileRoutes;

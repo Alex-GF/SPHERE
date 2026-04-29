@@ -9,9 +9,10 @@ class UserController {
   constructor() {
     this.userService = container.resolve('userService');
     this.index = this.index.bind(this);
+    this.show = this.show.bind(this);
+    this.getCurrentUser = this.getCurrentUser.bind(this);
     this.login = this.login.bind(this);
     this.register = this.register.bind(this);
-    this.show = this.show.bind(this);
     this.destroy = this.destroy.bind(this);
     this.update = this.update.bind(this);
     this.updateToken = this.updateToken.bind(this);
@@ -60,6 +61,20 @@ class UserController {
 
         res.json(userObject);
       }
+    } catch (err: any) {
+      const { status, message } = handleError(err);
+      res.status(status).send({ error: message });
+    }
+  }
+
+  async getCurrentUser(req: any, res: any) {
+    try {
+      const userSession = req.user;
+      if (!userSession) {
+        throw new Error('UNAUTHORIZED: No user session found');
+      }
+
+      res.json(userSession);
     } catch (err: any) {
       const { status, message } = handleError(err);
       res.status(status).send({ error: message });

@@ -46,7 +46,7 @@ describe('Users API integration', () => {
       expect(usernames).toContain(newUser1.username);
       expect(usernames).toContain(newUser2.username);
     });
-    
+
     it('Return 200 and array of users with ADMIN role and username filter.', async () => {
       const newUser1 = await createTestUser('USER');
       await createTestUser('USER');
@@ -59,7 +59,7 @@ describe('Users API integration', () => {
       expect(Array.isArray(response.body)).toBe(true);
       expect(response.body.length).toBeLessThan(3);
     });
-    
+
     it('Return 200 and array of users with ADMIN role and email filter.', async () => {
       const newUser1 = await createTestUser('USER');
       await createTestUser('USER');
@@ -71,6 +71,32 @@ describe('Users API integration', () => {
       expect(response.status).toBe(200);
       expect(Array.isArray(response.body)).toBe(true);
       expect(response.body.length).toBeLessThan(3);
+    });
+  });
+
+  describe('GET /api/users/me', () => {
+    it('Return 200 and user object with valid Bearer Authorization header.', async () => {
+      const user = await createTestUser('USER');
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/users/me`)
+        .set('Authorization', `Bearer ${user.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.username).toBe(user.username);
+      expect(response.body.email).toBe(user.email);
+      expect(response.body.role).toBe(user.role);
+    });
+    
+    it('Return 401 with structurally valid token not linked to user', async () => {
+      const user = await createTestUser('USER');
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/users/me`)
+        .set('Authorization', `Bearer ${user.token}invalid`);
+
+      expect(response.status).toBe(401);
+      expect(response.body.error).toBeDefined();
     });
   });
 

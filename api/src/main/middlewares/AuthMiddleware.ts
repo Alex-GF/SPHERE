@@ -46,11 +46,11 @@ async function authenticateToken(req: Request, token: string): Promise<void> {
   const user = await userRepository.findOne({ token: token });
 
   if (!user) {
-    throw new Error('Invalid User Token');
+    throw new Error('UNAUTHORIZED: Invalid User Token');
   }
 
   if (user.tokenExpiration && new Date() > new Date(user.tokenExpiration)) {
-    throw new Error('AUTHENTICATION TIMEOUT: User Token has expired');
+    throw new Error('UNAUTHORIZED: User Token has expired');
   }
 
   (req as any).user = user;

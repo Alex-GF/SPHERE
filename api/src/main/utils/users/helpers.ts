@@ -21,7 +21,9 @@ async function hashPassword(password: string): Promise<string> {
 }
 
 function handleError(err: any): {status: number, message: string} {
-  if (err.message.toLowerCase().includes('permission error')) {
+  if (err.message.toLowerCase().includes('unauthorized')) {
+    return { status: 401, message: err.message };
+  } else if (err.message.toLowerCase().includes('permission error')) {
     return { status: 403, message: err.message };
   } else if (err.message.toLowerCase().includes('not found')) {
     return { status: 404, message: err.message };
