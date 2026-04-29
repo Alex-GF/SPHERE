@@ -17,6 +17,7 @@ dotenv.config();
 function initContainer(databaseType: string): AwilixContainer {
   const container: AwilixContainer = createContainer();
   let userRepository, pricingRepository, pricingCollectionRepository;
+
   switch (databaseType) {
     case "mongoDB":
       userRepository = new MongooseUserRepository();
@@ -39,6 +40,6 @@ function initContainer(databaseType: string): AwilixContainer {
 }
 
 let container: AwilixContainer | null = null;
-if (!container) { container = initContainer(process.env.DATABASE_TECHNOLOGY ?? "") }
+if (!container) { container = initContainer(process.env.DATABASE_TECHNOLOGY ?? ""); }
 
 export default container as AwilixContainer;
