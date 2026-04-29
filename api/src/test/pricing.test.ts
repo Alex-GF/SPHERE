@@ -16,31 +16,14 @@ dotenv.config();
 
 describe('Pricings API integration', () => {
   let app: TestApp;
-  let adminUser: LeanUser;
-  let testUser: LeanUser;
-  let adminApiToken: string;
-  let userApiToken: string;
+  const adminUser: LeanUser = testContainer.resolve('adminUser');
+  const testUser: LeanUser = testContainer.resolve('testUser');
   const usersToDelete: Set<string> = testContainer.resolve('usersToDelete');
   const generatedFilesToDelete: Set<string> = testContainer.resolve('generatedFilesToDelete');
   const collectionIdsToDelete: Set<string> = testContainer.resolve('collectionIdsToDelete');
 
   beforeAll(async () => {
     app = testContainer.resolve('app');
-    adminUser = await createTestUser('ADMIN', 'testAdmin');
-    testUser = await createTestUser('USER', 'testUser');
-    
-    const responseAdminLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
-      loginField: adminUser.username,
-      password: TEST_PASSWORD,
-    });
-
-    const responseUserLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
-      loginField: testUser.username,
-      password: TEST_PASSWORD,
-    });
-
-    adminApiToken = responseAdminLogin.body.token;
-    userApiToken = responseUserLogin.body.token;
   });
 
   afterEach(async () => {
@@ -68,7 +51,7 @@ describe('Pricings API integration', () => {
     it('Return 200 and paginated pricing list with valid Bearer Authorization header.', async () => {
       const response = await request(app)
         .get(`${BASE_PATH}/pricings?limit=10&offset=0`)
-        .set('Authorization', `Bearer ${userApiToken}`);
+        .set('Authorization', `Bearer ${testUser.token}`);
 
       expect(response.status).toBe(200);
       expect(response.body).toBeDefined();
@@ -83,7 +66,7 @@ describe('Pricings API integration', () => {
         .get(
           `${BASE_PATH}/pricings?name=zoom&sortBy=name&sort=asc&min-subscription=0&max-subscription=9999&selectedOwners=${testUser.username}&limit=5&offset=0`
         )
-        .set('Authorization', `Bearer ${userApiToken}`);
+        .set('Authorization', `Bearer ${testUser.token}`);
 
       expect(response.status).toBe(200);
       expect(Array.isArray(response.body.pricings)).toBe(true);
@@ -125,7 +108,7 @@ describe('Pricings API integration', () => {
 
       const response = await request(app)
         .put(`${BASE_PATH}/pricings`)
-        .set('Authorization', `Bearer ${userApiToken}`)
+        .set('Authorization', `Bearer ${testUser.token}`)
         .send({ pricing: pricingYaml });
 
       expect(response.status).toBe(200);
@@ -147,7 +130,7 @@ describe('Pricings API integration', () => {
     it('Return 422 with malformed pricing text (must not return 500).', async () => {
       const response = await request(app)
         .put(`${BASE_PATH}/pricings`)
-        .set('Authorization', `Bearer ${userApiToken}`)
+        .set('Authorization', `Bearer ${testUser.token}`)
         .send({ pricing: '::::invalid-yaml::::' });
 
       expect(response.status).toBe(422);
@@ -391,7 +374,7 @@ describe('Pricings API integration', () => {
 
       const response = await request(app)
         .get(`${BASE_PATH}/pricings/${owner.username}/${serviceName}`)
-        .set('Authorization', `Bearer ${adminApiToken}`);
+        .set('Authorization', `Bearer ${adminUser.token}`);
 
       expect(response.status).toBe(200);
       expect(response.body.name).toBe(serviceName);
@@ -440,7 +423,7 @@ describe('Pricings API integration', () => {
     it('Return 404 and error object with non-existing pricing name.', async () => {
       const response = await request(app)
         .get(`${BASE_PATH}/pricings/${testUser.username}/nonexistent_pricing`)
-        .set('Authorization', `Bearer ${userApiToken}`);
+        .set('Authorization', `Bearer ${testUser.token}`);
 
       expect(response.status).toBe(404);
       expect(response.body.error).toBeDefined();
@@ -488,7 +471,7 @@ describe('Pricings API integration', () => {
 
       const response = await request(app)
         .put(`${BASE_PATH}/pricings/${owner.username}/${serviceName}`)
-        .set('Authorization', `Bearer ${adminApiToken}`)
+        .set('Authorization', `Bearer ${adminUser.token}`)
         .send({ url: 'https://example.com/admin-update' });
 
       expect(response.status).toBe(200);
@@ -552,7 +535,7 @@ describe('Pricings API integration', () => {
     it('Return 404 and error object with non-existing pricing.', async () => {
       const response = await request(app)
         .put(`${BASE_PATH}/pricings/${testUser.username}/nonexistent_pricing`)
-        .set('Authorization', `Bearer ${userApiToken}`)
+        .set('Authorization', `Bearer ${testUser.token}`)
         .send({ private: true });
 
       expect(response.status).toBe(404);
@@ -599,7 +582,7 @@ describe('Pricings API integration', () => {
 
       const response = await request(app)
         .delete(`${BASE_PATH}/pricings/${owner.username}/${serviceName}`)
-        .set('Authorization', `Bearer ${adminApiToken}`);
+        .set('Authorization', `Bearer ${adminUser.token}`);
 
       expect(response.status).toBe(200);
       expect(response.body.message).toBeDefined();
@@ -637,7 +620,7 @@ describe('Pricings API integration', () => {
     it('Return 404 with non-existing pricing (must not return 500).', async () => {
       const response = await request(app)
         .delete(`${BASE_PATH}/pricings/${testUser.username}/nonexistent_pricing`)
-        .set('Authorization', `Bearer ${userApiToken}`);
+        .set('Authorization', `Bearer ${testUser.token}`);
 
       expect(response.status).toBe(404);
       expect(response.body.error).toBeDefined();
@@ -691,7 +674,7 @@ describe('Pricings API integration', () => {
 
       const response = await request(app)
         .delete(`${BASE_PATH}/pricings/${owner.username}/${serviceName}/${version}`)
-        .set('Authorization', `Bearer ${adminApiToken}`);
+        .set('Authorization', `Bearer ${adminUser.token}`);
 
       expect(response.status).toBe(200);
       expect(response.body.message).toBeDefined();
@@ -733,7 +716,7 @@ describe('Pricings API integration', () => {
     it('Return 404 with non-existing pricing version (must not return 500).', async () => {
       const response = await request(app)
         .delete(`${BASE_PATH}/pricings/${testUser.username}/nonexistent_pricing/9.9.9`)
-        .set('Authorization', `Bearer ${userApiToken}`);
+        .set('Authorization', `Bearer ${testUser.token}`);
 
       expect(response.status).toBe(404);
       expect(response.body.error).toBeDefined();
