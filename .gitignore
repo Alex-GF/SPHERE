@@ -36,3 +36,4 @@ api/public/static/collections
 nginx/production/ssl/
 
 coverage/
+.secrets
