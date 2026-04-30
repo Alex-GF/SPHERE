@@ -407,9 +407,14 @@ paths:
     get:
       summary: Get and filter pricings
       description: |
-        Retrieves a paginated list of PUBLIC pricings that match the provided filter.
+        Retrieves a paginated list of pricings that match the provided filter.
 
-        **Authentication**: User token
+        **Authentication**: Public
+
+        **Permission**:
+        - UNAUTHENTICATED: can only see PUBLIC pricings.
+        - USER: can only see PUBLIC pricings.
+        - ADMIN: can see any pricing (PUBLIC or PRIVATE).
 
       tags:
         - Pricings
@@ -500,6 +505,12 @@ paths:
                   total:
                     type: integer
                     description: The total number of pricings matching the query
+                  configurationSpaceSize:
+                    $ref: '#/components/schemas/MetricHistogram'
+                  minPrice:
+                    $ref: '#/components/schemas/MetricHistogram'
+                  maxPrice:
+                    $ref: '#/components/schemas/MetricHistogram'
                   pricings:
                     type: array
                     items:
@@ -517,9 +528,10 @@ paths:
       description: |
         Retrieves a paginated list of a user's pricings.
 
-        **Authentication**: User token
+        **Authentication**: Public
 
         **Permission**: 
+        - UNAUTHENTICATED: can only list PUBLIC pricings of any user.
         - USER: can list all their pricings (PUBLIC, PRIVATE) and PUBLIC pricings of other users.
         - ADMIN: can access any user's pricings.
 
@@ -551,6 +563,12 @@ paths:
                   total:
                     type: integer
                     description: The total number of pricings matching the query
+                  configurationSpaceSize:
+                    $ref: '#/components/schemas/MetricHistogram'
+                  minPrice:
+                    $ref: '#/components/schemas/MetricHistogram'
+                  maxPrice:
+                    $ref: '#/components/schemas/MetricHistogram'
                   pricings:
                     type: array
                     items:
@@ -1442,6 +1460,27 @@ components:
     # ------------------------------
     # --         PRICINGS         --
     # ------------------------------
+
+    MetricHistogram:
+      type: object
+      properties:
+        min:
+          type: number
+        max:
+          type: number
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              value:
+                type: string
+                description: Histogram range value
+                example: "0-10"
+              count: 
+                type: integer
+                description: Number of pricings that fall into this range
+                example: 15
 
     Pricing:
       type: object

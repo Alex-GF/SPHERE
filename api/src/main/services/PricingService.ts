@@ -27,8 +27,10 @@ class PricingService {
     this.userService = container.resolve('userService');
   }
 
-  async index(queryParams: PricingIndexQueryParams) {
-    const pricings = await this.pricingRepository.findAll(queryParams);
+  async index(queryParams: PricingIndexQueryParams, reqUser?: LeanUser) {
+    const includePrivate = reqUser !== undefined && reqUser.role === 'ADMIN';
+    
+    const pricings = await this.pricingRepository.findAll(queryParams, includePrivate);
     return pricings;
   }
 

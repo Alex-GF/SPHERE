@@ -8,7 +8,7 @@ import { getPricingByNameAndOwnerAggregator } from './aggregators/get-pricing-by
 import { LeanPricing } from '../../types/models/Pricing';
 
 class PricingRepository extends RepositoryBase {
-  async findAll(queryParams: PricingIndexQueryParams) {
+  async findAll(queryParams: PricingIndexQueryParams, includePrivate: boolean = false) {
     const filteringAggregators = [];
     const sortAggregator = [];
 
@@ -132,7 +132,7 @@ class PricingRepository extends RepositoryBase {
 
       // Build base pipeline and optionally add pagination stages that operate inside aggregation
       const basePipeline: any[] = [
-        ...(queryParams?.includePrivate
+        ...(includePrivate
           ? [] // no añadir nada
           : [{ $match: { private: false } }]), // añadir etapa
         ...aggregator,

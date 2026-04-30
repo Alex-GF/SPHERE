@@ -87,6 +87,89 @@ describe('Pricings API integration', () => {
       expect(Array.isArray(response.body.pricings)).toBe(true);
       expect(typeof response.body.total).toBe('number');
     });
+    
+    it('Return 200 and only PUBLIC pricings if unauthenticated user make the request.', async () => {
+      
+      const user = await createTestUser('USER');
+
+      const publicPricing =  await createPricingForUser({
+          username: user.username,
+          isPrivate: false,
+        });
+        
+      await createPricingForUser({
+          username: user.username,
+          isPrivate: true,
+        });
+      
+      const response = await request(app)
+        .get(
+          `${BASE_PATH}/pricings`
+        );
+
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body.pricings)).toBe(true);
+      expect(typeof response.body.total).toBe('number');
+      expect(response.body.pricings.length).toBe(1);
+      expect(response.body.pricings[0].name).toBe(publicPricing.serviceName);
+    });
+    
+    it('Return 200 and only PUBLIC pricings if USER make the request.', async () => {
+      
+      const owner = await createTestUser('USER');
+
+
+      const publicPricing =  await createPricingForUser({
+          username: owner.username,
+          isPrivate: false,
+        });
+        
+      await createPricingForUser({
+          username: owner.username,
+          isPrivate: true,
+        });
+      
+      const response = await request(app)
+        .get(
+          `${BASE_PATH}/pricings`
+        )
+        .set('Authorization', `Bearer ${testUser.token}`);
+
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body.pricings)).toBe(true);
+      expect(typeof response.body.total).toBe('number');
+      expect(response.body.pricings.length).toBe(1);
+      expect(response.body.pricings[0].name).toBe(publicPricing.serviceName);
+    });
+    
+    it('Return 200 and all pricings if ADMIN make the request.', async () => {
+      
+      const owner = await createTestUser('USER');
+
+      const publicPricing =  await createPricingForUser({
+          username: owner.username,
+          isPrivate: false,
+        });
+        
+      const privatePricing = await createPricingForUser({
+          username: owner.username,
+          isPrivate: true,
+        });
+      
+      const response = await request(app)
+        .get(
+          `${BASE_PATH}/pricings`
+        )
+        .set('Authorization', `Bearer ${adminUser.token}`);
+
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body.pricings)).toBe(true);
+      expect(typeof response.body.total).toBe('number');
+      expect(response.body.pricings.length).toBe(2);
+      const pricingNames = response.body.pricings.map((p: any) => p.name);
+      expect(pricingNames).toContain(publicPricing.serviceName);
+      expect(pricingNames).toContain(privatePricing.serviceName);
+    });
   });
 
   describe('PUT /api/v1/pricings', () => {

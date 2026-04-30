@@ -27,8 +27,8 @@ class PricingController {
     try {
       const queryParams: PricingIndexQueryParams = this._transformIndexQueryParams(req.query);
 
-      const pricings = await this.pricingService.index(queryParams);
-      res.json({total: pricings.total, pricings: pricings.pricings});
+      const pricings = await this.pricingService.index(queryParams, req.user);
+      res.json(pricings);
     } catch (err: any) {
       const {status, message} = handleError(err);
       res.status(status).send({ error: message });
@@ -47,8 +47,8 @@ class PricingController {
         queryParams.includePrivate = true;
       }
 
-      const pricings = await this.pricingService.index(queryParams);
-      res.json({total: pricings.total, pricings: pricings.pricings});
+      const pricings = await this.pricingService.index(queryParams, req.user);
+      res.json(pricings);
     } catch (err: any) {
       const {status, message} = handleError(err);
       res.status(status).send({ error: message });
@@ -96,7 +96,7 @@ class PricingController {
         req.user,
         collectionId
       );
-      res.json(pricing);
+      res.json(pricing[0]);
     } catch (err: any) {
       try {
         const file = req.file;
