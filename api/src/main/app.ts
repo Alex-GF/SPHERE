@@ -70,9 +70,6 @@ const initializeDatabase = async () => {
     switch (process.env.DATABASE_TECHNOLOGY) {
       case "mongoDB":
         connection = await initMongoose();
-        if (process.env.ENVIRONMENT === "development") {
-          await seedDatabase();
-        }
         break;
       default:
         throw new Error("Unsupported database technology");

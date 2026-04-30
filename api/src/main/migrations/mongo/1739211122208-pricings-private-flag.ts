@@ -2,14 +2,16 @@
 import type { Connection } from 'mongoose';
 import PricingMongoose from '../../repositories/mongoose/models/PricingMongoose';
 
-export async function up (connection: Connection): Promise<void> {
-  const Pricing = connection.models.Pricing || connection.model('Pricing', PricingMongoose.schema, 'pricings');
-  
-  await Pricing.updateMany({}, { private: false });
+export async function up(connection: Connection): Promise<void> {
+  const Pricing =
+    connection.models.Pricing || connection.model('Pricing', PricingMongoose.schema, 'pricings');
+
+  const result = await Pricing.updateMany({ }, { $set: { private: false } });
 }
 
-export async function down (connection: Connection): Promise<void> {
-  const Pricing = connection.models.Pricing || connection.model('Pricing', PricingMongoose.schema, 'pricings');
+export async function down(connection: Connection): Promise<void> {
+  const Pricing =
+    connection.models.Pricing || connection.model('Pricing', PricingMongoose.schema, 'pricings');
 
-  await Pricing.updateMany({}, { $unset: { private: "" } });
+  await Pricing.updateMany({}, { $unset: { private: '' } });
 }

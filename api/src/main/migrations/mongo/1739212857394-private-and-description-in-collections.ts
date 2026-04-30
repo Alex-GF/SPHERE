@@ -11,7 +11,7 @@ export async function up (connection: Connection): Promise<void> {
   );
 
   await PricingCollection.updateMany(
-    { pricing: { $exists: false } },
+    { private: { $exists: false } },
     { $set: { private: false } }
   );
 }
