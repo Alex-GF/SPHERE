@@ -43,6 +43,7 @@ export default function PresentationLayout({children}: {children?: React.ReactNo
                     formData.append("saasName", uploadedPricing.saasName);
                     formData.append("version", uploadedPricing.version);
                     formData.append("yaml", file);
+                    formData.append("private", "false");
                     createPricing(formData, setErrors)
                       .then(() => {
                         setUploadModalOpen(false);

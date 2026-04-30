@@ -91,7 +91,7 @@ export function usePricingsApi() {
   }, [basicHeaders]);
 
   const getLoggedUserPricings = useCallback(async () => {
-    return fetchWithInterceptor(`${import.meta.env.VITE_API_URL}/me/pricings`, {
+    return fetchWithInterceptor(`${PRICINGS_BASE_PATH}/${authUser.user?.username}`, {
       method: 'GET',
       headers: basicHeaders,
     })
@@ -139,7 +139,7 @@ export function usePricingsApi() {
   }, [fetchWithInterceptor, basicHeaders]);
 
   const createPricing = useCallback(async (formData: FormData, setErrors: (errors: string[]) => void = () => {}) => {
-    return fetchWithInterceptor(PRICINGS_BASE_PATH, {
+    return fetchWithInterceptor(`${PRICINGS_BASE_PATH}/${authUser.user?.username}`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
