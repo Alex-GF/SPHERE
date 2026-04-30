@@ -20,6 +20,7 @@ export default function PricingSettings({
   updatePricingInformation,
 }: {
   pricingName: string;
+  collectionName: string;
   pricingData: AnalyticsDataEntry[];
   updatePricingInformation: (pricing: any) => void;
 }) {
@@ -35,7 +36,7 @@ export default function PricingSettings({
           private: !(visibility === 'Private'),
         };
 
-        updatePricing(pricingName, pricingUpdateBody)
+        updatePricing(pricingName, pricingData[0].collectionName, pricingUpdateBody)
           .then((pricing: any) => {
             updatePricingInformation(pricing);
             setVisibility(visibility === 'Private' ? 'Public' : 'Private');
@@ -60,7 +61,7 @@ export default function PricingSettings({
               .catch(() => {
                 router.push('/me/pricings');
               });
-          }).catch((error) => {
+          }).catch(() => {
             customAlert(`An error has occurred while removing the pricing. Please, try again later.`);
           });
       })
@@ -68,7 +69,7 @@ export default function PricingSettings({
 
   useEffect(() => {
     setVisibility(pricingData[0].private ? 'Private' : 'Public');
-  }, []);
+  }, [pricingData]);
 
   return (
     <SettingsPage>

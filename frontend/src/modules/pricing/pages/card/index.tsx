@@ -45,7 +45,7 @@ export default function CardPage() {
   const { getPricingByName, updateClientPricingVersion } = usePricingsApi();
   const { authUser } = useAuth();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   function updatePricingInformation(pricing: any) {
     if (pricing.versions && pricing.versions.length > 0) {
       const currentPricing = pricing.versions[0];
@@ -67,7 +67,7 @@ export default function CardPage() {
     getPricingByName(name, owner, collectionName).then(pricing => {
       try {
         updatePricingInformation(pricing);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+       
       } catch (err: any) {
         customAlert(err.msg);
       }
@@ -290,7 +290,13 @@ export default function CardPage() {
             />
           )}
           {tabValue === 2 && pricingData && <FileExplorer pricingData={pricingData} />}
-          {tabValue === 1 && currentPricing && <ConfigurationSpaceView pricingId={currentPricing.id} />}
+          {tabValue === 1 && pricing && currentPricing && (
+            <ConfigurationSpaceView
+              owner={currentPricing.owner.username}
+              pricingName={pricing.saasName}
+              pricingVersion={currentPricing.version}
+            />
+          )}
           {tabValue === 0 && (
             <>
               <div className="max-w-[66.7%] flex-1">

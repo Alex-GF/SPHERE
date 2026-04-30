@@ -1,6 +1,6 @@
 import { useRouter } from '../../../core/hooks/useRouter';
 import { PricingEntry } from '../../pages/list';
-import { formatDistanceToNow, parseISO, set } from 'date-fns';
+import { formatDistanceToNow, parseISO } from 'date-fns';
 import { getCurrency } from '../stats';
 import { IoMdPricetags } from 'react-icons/io';
 import { FaFileInvoiceDollar } from 'react-icons/fa6';
