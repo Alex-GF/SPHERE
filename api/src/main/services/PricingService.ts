@@ -66,6 +66,7 @@ class PricingService {
     owner: string,
     pricingName: string,
     pricingVersion: string,
+    reqUser?: LeanUser,
     queryParams?: { collectionName?: string, limit?: string; offset?: string }
   ) {
     // Validations
@@ -85,7 +86,7 @@ class PricingService {
     const retrievedPricing = await this.pricingRepository.findOne(
       pricingName,
       owner,
-      { ...queryParams, version: pricingVersion, includePrivate: true }
+      { ...queryParams, version: pricingVersion, includePrivate: reqUser && (owner === reqUser.username || reqUser.role === 'ADMIN') }
     );
     if (!retrievedPricing) {
       throw new Error('NOT FOUND: Pricing not found');
@@ -104,7 +105,7 @@ class PricingService {
     } else {
       // Configuariton space calculation
       const pricingInfo: Pricing = retrievePricingFromPath(
-        process.env.SERVER_STATICS_FOLDER + retrievedPricing.yaml
+        process.env.SERVER_STATICS_FOLDER + retrievedPricing.versions[0].yaml
       );
       const pricingAnalytics = new PricingAnalytics(pricingInfo);
       configurationSpace = await pricingAnalytics.getConfigurationSpace();

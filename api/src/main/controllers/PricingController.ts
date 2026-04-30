@@ -67,7 +67,7 @@ class PricingController {
   async getConfigurationSpace(req: any, res: any) {
     try {
       const [configurationSpace, configurationSpaceSize] =
-        await this.pricingService.getConfigurationSpace(req.params.username, req.params.pricingName, req.params.pricingVersion, req.query);
+        await this.pricingService.getConfigurationSpace(req.params.username, req.params.pricingName, req.params.pricingVersion, req.user, req.query);
       res.json({
         configurationSpace: configurationSpace,
         configurationSpaceSize: configurationSpaceSize,

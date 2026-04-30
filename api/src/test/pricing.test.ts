@@ -412,6 +412,100 @@ describe('Pricings API integration', () => {
       expect(response.body.error).toBeDefined();
     });
   });
+  
+  describe('GET /api/v1/pricings/:username/:pricingName/:pricingVersion', () => {
+    it('Return 200 and configuration space with non authenticated request over public pricing.', async () => {
+      const owner = await createAndLoginUser('USER');
+
+      const { serviceName, version } = await createPricingForUser({
+        username: owner.username,
+        isPrivate: false,
+      });
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/pricings/${owner.username}/${serviceName}/${version}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.configurationSpace).toBeDefined();
+      expect(response.body.configurationSpaceSize).toBeGreaterThan(0);
+    });
+    
+    it('Return 200 and configuration space with USER request over public pricing.', async () => {
+      const owner = await createAndLoginUser('USER');
+
+      const { serviceName, version } = await createPricingForUser({
+        username: owner.username,
+        isPrivate: false,
+      });
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/pricings/${owner.username}/${serviceName}/${version}`)
+        .set('Authorization', `Bearer ${testUser.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.configurationSpace).toBeDefined();
+      expect(response.body.configurationSpaceSize).toBeGreaterThan(0);
+    });
+    
+    it('Return 200 and configuration space with ADMIN request over private pricing.', async () => {
+      const owner = await createAndLoginUser('USER');
+
+      const { serviceName, version } = await createPricingForUser({
+        username: owner.username,
+        isPrivate: true,
+      });
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/pricings/${owner.username}/${serviceName}/${version}`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.configurationSpace).toBeDefined();
+      expect(response.body.configurationSpaceSize).toBeGreaterThan(0);
+    });
+    
+    it('Return 200 and configuration space with owner request over private pricing.', async () => {
+      const owner = await createAndLoginUser('USER');
+
+      const { serviceName, version } = await createPricingForUser({
+        username: owner.username,
+        isPrivate: true,
+      });
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/pricings/${owner.username}/${serviceName}/${version}`)
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.configurationSpace).toBeDefined();
+      expect(response.body.configurationSpaceSize).toBeGreaterThan(0);
+    });
+    
+    it('Return 404 and configuration space with USER request over private pricing.', async () => {
+      const owner = await createAndLoginUser('USER');
+
+      const { serviceName, version } = await createPricingForUser({
+        username: owner.username,
+        isPrivate: true,
+      });
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/pricings/${owner.username}/${serviceName}/${version}`)
+        .set('Authorization', `Bearer ${testUser.token}`);
+
+      expect(response.status).toBe(404);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('Return 404 and error object with non-existing pricing name.', async () => {
+      const response = await request(app)
+        .get(`${BASE_PATH}/pricings/${testUser.username}/nonexistent_pricing`)
+        .set('Authorization', `Bearer ${testUser.token}`);
+
+      expect(response.status).toBe(404);
+      expect(response.body.error).toBeDefined();
+    });
+  });
 
   describe('PUT /api/v1/pricings/:username/:pricingName', () => {
     it('Return 200 and updated pricing details when owner updates metadata.', async () => {
