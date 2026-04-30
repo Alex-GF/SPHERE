@@ -495,7 +495,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pricing'
+                type: object
+                properties:
+                  total:
+                    type: integer
+                    description: The total number of pricings matching the query
+                  pricings:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Pricing'
         default:
           description: Unexpected error
           content:
@@ -538,9 +546,15 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/responses/PricingList'
+                type: object
+                properties:
+                  total:
+                    type: integer
+                    description: The total number of pricings matching the query
+                  pricings:
+                    type: array
+                    items:
+                      $ref: '#/components/responses/PricingList'
         '403':
           description: Insufficient permissions
         '404':

@@ -28,7 +28,7 @@ class PricingController {
       const queryParams: PricingIndexQueryParams = this._transformIndexQueryParams(req.query);
 
       const pricings = await this.pricingService.index(queryParams);
-      res.json(pricings);
+      res.json({total: pricings.total, pricings: pricings.pricings});
     } catch (err: any) {
       const {status, message} = handleError(err);
       res.status(status).send({ error: message });
@@ -48,7 +48,7 @@ class PricingController {
       }
 
       const pricings = await this.pricingService.index(queryParams);
-      res.json(pricings);
+      res.json({total: pricings.total, pricings: pricings.pricings});
     } catch (err: any) {
       const {status, message} = handleError(err);
       res.status(status).send({ error: message });
@@ -102,7 +102,7 @@ class PricingController {
         const file = req.file;
         const directory = path.dirname(file.path);
         if (fs.readdirSync(directory).length === 1) {
-          fs.rmdirSync(directory, { recursive: true });
+          fs.rmSync(directory, { recursive: true });
         } else {
           fs.rmSync(file.path);
         }
@@ -211,7 +211,7 @@ class PricingController {
   }
 
   _transformIndexQueryParams(
-    indexQueryParams: Record<string, string | number>
+    indexQueryParams: Record<string, string>
   ): PricingIndexQueryParams {
     const transformedData: PricingIndexQueryParams = {
       name: indexQueryParams.name as string,
@@ -232,18 +232,9 @@ class PricingController {
       selectedOwners: indexQueryParams.selectedOwners
         ? (indexQueryParams.selectedOwners as string).split(',')
         : undefined,
-      limit: indexQueryParams.limit || 10,
-      offset: indexQueryParams.offset || 0,
+      limit: parseInt(indexQueryParams.limit) || 10,
+      offset: parseInt(indexQueryParams.offset) || 0,
     };
-
-    // pass through pagination (as strings) if present
-    if (indexQueryParams['limit'] !== undefined) {
-      (transformedData as any).limit = indexQueryParams['limit'] as string;
-    }
-
-    if (indexQueryParams['offset'] !== undefined) {
-      (transformedData as any).offset = indexQueryParams['offset'] as string;
-    }
 
     const optionalFields = [
       'name',

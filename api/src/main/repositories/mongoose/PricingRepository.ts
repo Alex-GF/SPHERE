@@ -8,9 +8,7 @@ import { getPricingByNameAndOwnerAggregator } from './aggregators/get-pricing-by
 import { LeanPricing } from '../../types/models/Pricing';
 
 class PricingRepository extends RepositoryBase {
-  async findAll(...args: any) {
-    const queryParams: PricingIndexQueryParams = args[0];
-
+  async findAll(queryParams: PricingIndexQueryParams) {
     const filteringAggregators = [];
     const sortAggregator = [];
 
@@ -145,10 +143,6 @@ class PricingRepository extends RepositoryBase {
 
       // If pagination params present, compute total and slice pricings inside the aggregation for efficiency
       if (typeof offset !== 'undefined' || typeof limit !== 'undefined') {
-        const start = offset || 0;
-        // if limit is undefined, slice from start to end -> handle by not limiting (use large number)
-        const take = typeof limit !== 'undefined' ? limit : Number.MAX_SAFE_INTEGER;
-
         const paginationStages = [
           {
             $addFields: {
@@ -158,11 +152,7 @@ class PricingRepository extends RepositoryBase {
           {
             $project: {
               pricings: {
-                $cond: [
-                  { $gt: [{ $size: '$pricings' }, 0] },
-                  { $slice: ['$pricings', start, take] },
-                  [],
-                ],
+                $slice: ['$pricings', offset, limit] 
               },
               minPrice: 1,
               maxPrice: 1,

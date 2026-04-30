@@ -7,7 +7,7 @@ export function getAllPricingsAggregator(filteringAggregators: any, sortAggregat
     ...filteringAggregators,
     computeFiltersDataAggregator,
     refactorOutputAggregator,
-    ...sortAggregator
+    ...sortAggregator,
   ];
 }
 
@@ -21,7 +21,7 @@ const latestPricingsByNameAggregator = {
     latestPricing: {
       $first: '$$ROOT',
     },
-    latestExtractionDate: {
+    latestCreatedAt: {
       $max: '$createdAt',
     },
   },
@@ -37,8 +37,28 @@ const parseCollectionNameAggregator = [
   {
     $lookup: {
       from: 'pricingCollections',
-      localField: '_collectionId',
-      foreignField: '_id',
+      let: {
+        localCollectionId: {
+          $convert: {
+            input: '$_collectionId',
+
+            to: 'objectId',
+
+            onError: null,
+
+            onNull: null,
+          },
+        },
+      },
+      pipeline: [
+        {
+          $match: {
+            $expr: {
+              $eq: ['$_id', '$$localCollectionId'],
+            },
+          },
+        },
+      ],
       as: 'collection',
     },
   },

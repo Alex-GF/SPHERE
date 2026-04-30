@@ -1,12 +1,6 @@
 import { writeFile, mkdir } from 'fs/promises';
 import { faker } from '@faker-js/faker';
-import {
-  TestFeature,
-  TestUsageLimit,
-  TestPlan,
-  TestAddOn,
-  TestPricing,
-} from '../../types/Pricing';
+import { TestFeature, TestUsageLimit, TestPlan, TestAddOn, TestPricing } from '../../types/Pricing';
 import yaml from 'js-yaml';
 import { v4 as uuidv4 } from 'uuid';
 import path from 'path';
@@ -19,69 +13,68 @@ import os from 'os';
 import { randomSuffix } from '../helpers';
 
 export const createValidPricingYaml = async (requestedName?: string, explicitVersion?: string) => {
-    const templatePath = path.resolve(
-      process.cwd(),
-      'public',
-      'static',
-      'pricings',
-      'templates',
-      'petclinic.yml'
-    );
+  const templatePath = path.resolve(
+    process.cwd(),
+    'public',
+    'static',
+    'pricings',
+    'templates',
+    'petclinic.yml'
+  );
 
-    const rawTemplate = await fs.readFile(templatePath, 'utf8');
-    const saasName = requestedName ?? `IntegrationPricing_${randomSuffix()}`;
-    const version = explicitVersion ?? `${Date.now()}.0.0`;
-    const today = new Date().toISOString().slice(0, 10);
+  const rawTemplate = await fs.readFile(templatePath, 'utf8');
+  const saasName = requestedName ?? `IntegrationPricing_${randomSuffix()}`;
+  const version = explicitVersion ?? `${Date.now()}.0.0`;
+  const today = new Date().toISOString().slice(0, 10);
 
-    const content = rawTemplate
-      .replace(/^saasName:\s*.*$/m, `saasName: ${saasName}`)
-      .replace(/^version:\s*.*$/m, `version: "${version}"`)
-      .replace(/^createdAt:\s*.*$/m, `createdAt: "${today}"`);
+  const content = rawTemplate
+    .replace(/^saasName:\s*.*$/m, `saasName: ${saasName}`)
+    .replace(/^version:\s*.*$/m, `version: "${version}"`)
+    .replace(/^createdAt:\s*.*$/m, `createdAt: "${today}"`);
 
-    const filePath = path.join(os.tmpdir(), `pricing_${randomSuffix()}.yml`);
-    await fs.writeFile(filePath, content, 'utf8');
-    testContainer.resolve('generatedFilesToDelete').add(filePath);
+  const filePath = path.join(os.tmpdir(), `pricing_${randomSuffix()}.yml`);
+  await fs.writeFile(filePath, content, 'utf8');
+  testContainer.resolve('generatedFilesToDelete').add(filePath);
 
-    return { filePath, saasName, version };
-  };
+  return { filePath, saasName, version };
+};
 
-  export const createAndTrackPricingYaml = async (serviceName?: string, version?: string) => {
-    const filePath = await generatePricingFile(serviceName, version);
-    testContainer.resolve('generatedFilesToDelete').add(filePath);
-    return filePath;
-  };
+export const createAndTrackPricingYaml = async (serviceName?: string, version?: string) => {
+  const filePath = await generatePricingFile(serviceName, version);
+  testContainer.resolve('generatedFilesToDelete').add(filePath);
+  return filePath;
+};
 
-  export const createPricingForUser = async (params: {
-    token: string;
-    username: string;
-    serviceName?: string;
-    version?: string;
-    isPrivate?: boolean;
-  }): Promise<{ response: any; serviceName: string; version: string }> => {
-    const requestedName = params.serviceName ?? `pricing_${randomSuffix()}`;
-    const requestedVersion = params.version;
-    const fixture = await createValidPricingYaml(requestedName, requestedVersion);
-    const serviceName = fixture.saasName;
-    const version = fixture.version;
+export const createPricingForUser = async (params: {
+  username: string;
+  serviceName?: string;
+  version?: string;
+  isPrivate?: boolean;
+}): Promise<{ response: any; serviceName: string; version: string }> => {
+  const requestedName = params.serviceName ?? `pricing_${randomSuffix()}`;
+  const requestedVersion = params.version;
+  const fixture = await createValidPricingYaml(requestedName, requestedVersion);
+  const serviceName = fixture.saasName;
+  const version = fixture.version;
 
-    const response = await request(testContainer.resolve('app'))
-      .post(`${BASE_PATH}/pricings/${params.username}`)
-      .set('Authorization', `Bearer ${params.token}`)
-      .field('private', String(params.isPrivate ?? false))
-      .field('saasName', serviceName)
-      .field('version', version)
-      .attach('yaml', fixture.filePath);
+  const response = await request(testContainer.resolve('app'))
+    .post(`${BASE_PATH}/pricings/${params.username}`)
+    .set('Authorization', `Bearer ${testContainer.resolve('adminUser').token}`)
+    .field('private', String(params.isPrivate ?? false))
+    .field('saasName', serviceName)
+    .field('version', version)
+    .attach('yaml', fixture.filePath);
 
-    return { response, serviceName, version };
-  };
+  testContainer.resolve('pricingsToDelete').add(response.body.id);
 
+  return { response, serviceName, version };
+};
 
 export async function generatePricingFile(serviceName?: string, version?: string): Promise<string> {
-  
-  if (!version){
+  if (!version) {
     version = uuidv4();
   }
-  
+
   let pricing: TestPricing & { saasName?: string; syntaxVersion?: string } =
     generatePricing(version);
   if (serviceName) {
@@ -152,7 +145,7 @@ function generatePricing(version?: string): TestPricing {
   for (let i = 0; i < addOnCount; i++) {
     const addOnName = faker.word.noun({ length: { min: 4, max: 20 } }).toLowerCase();
     let randomAddType = faker.number.int({ min: 0, max: 2 });
-    
+
     if (usageLimitKeys.length === 0) {
       randomAddType = 0;
     }
@@ -224,7 +217,7 @@ function generatePricing(version?: string): TestPricing {
 
 function generateFeature(name?: string): TestFeature {
   const featureName = name ?? faker.word.words(1);
-  const featureValueType = faker.datatype.boolean({probability: 0.8}) ? 'BOOLEAN' : 'TEXT';
+  const featureValueType = faker.datatype.boolean({ probability: 0.8 }) ? 'BOOLEAN' : 'TEXT';
   const featureType = faker.helpers.arrayElement([
     'INFORMATION',
     'INTEGRATION',
@@ -275,7 +268,8 @@ function generateFeature(name?: string): TestFeature {
         ? faker.helpers.arrayElement(['BOT', 'FILTERING', 'TRACKING', 'TASK_AUTOMATION'])
         : undefined,
     docUrl: undefined,
-    expression: featureValueType === 'BOOLEAN' ? `pricingContext['features']['${featureName}']` : undefined,
+    expression:
+      featureValueType === 'BOOLEAN' ? `pricingContext['features']['${featureName}']` : undefined,
     serverExpression: undefined,
     render: faker.helpers.arrayElement(['auto', 'enabled', 'disabled']),
     tag: undefined,
@@ -359,8 +353,8 @@ function generateAddOn(
   plans: string[],
   preCreatedAddons: string[]
 ): TestAddOn {
-
-  const isScalableAddon = (features.length === 0 && usageLimits.length === 0 && usageLimitsExtensions.length > 0);
+  const isScalableAddon =
+    features.length === 0 && usageLimits.length === 0 && usageLimitsExtensions.length > 0;
 
   const minQuantity: number | undefined = isScalableAddon
     ? faker.number.int({ min: 1, max: 10 })
@@ -377,16 +371,10 @@ function generateAddOn(
       ? faker.helpers.arrayElements(plans, faker.number.int({ min: 1, max: plans.length }))
       : plans,
     dependsOn: faker.datatype.boolean({ probability: 0.2 })
-      ? faker.helpers.arrayElements(
-          preCreatedAddons,
-          biasedRandomInt(1, 3)
-        )
+      ? faker.helpers.arrayElements(preCreatedAddons, biasedRandomInt(1, 3))
       : [],
     excludes: faker.datatype.boolean({ probability: 0.2 })
-      ? faker.helpers.arrayElements(
-          preCreatedAddons,
-          biasedRandomInt(1, 3)
-        )
+      ? faker.helpers.arrayElements(preCreatedAddons, biasedRandomInt(1, 3))
       : [],
     features:
       features.length > 0
@@ -453,21 +441,27 @@ function _generateExpressionsForFeatures(
 
     if (feature.valueType === 'BOOLEAN') {
       const linkedUsageLimitKeys = Object.entries(usageLimits)
-        .filter(([_, usageLimit]) => usageLimit.linkedFeatures?.includes(key) && usageLimit.valueType === 'NUMERIC')
+        .filter(
+          ([_, usageLimit]) =>
+            usageLimit.linkedFeatures?.includes(key) && usageLimit.valueType === 'NUMERIC'
+        )
         .map(([limitKey]) => limitKey);
 
       if (linkedUsageLimitKeys.length === 0) {
         feature.expression = `pricingContext['features']['${key}']`;
         feature.serverExpression = undefined;
       } else {
-        const createExpression = (operator: "<" | "<=") => {
-          const conditions = linkedUsageLimitKeys.map(limitKey => 
-            `subscriptionContext['${limitKey}'] ${operator} pricingContext['usageLimits']['${limitKey}']`
-          ).join(' && ');
-          
+        const createExpression = (operator: '<' | '<=') => {
+          const conditions = linkedUsageLimitKeys
+            .map(
+              limitKey =>
+                `subscriptionContext['${limitKey}'] ${operator} pricingContext['usageLimits']['${limitKey}']`
+            )
+            .join(' && ');
+
           return `pricingContext['features']['${key}'] && (${conditions})`;
         };
-        
+
         feature.expression = createExpression('<');
         feature.serverExpression = createExpression('<=');
       }

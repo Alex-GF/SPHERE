@@ -16,8 +16,8 @@ export type PricingIndexQueryParams = {
     max: number;
   };
   selectedOwners?: string[];
-  limit: string | number;
-  offset: string | number;
+  limit: number;
+  offset: number;
 }
 
 export type SortByType = 'name' | 'configurationSpaceSize' | 'featuresCount' | 'usageLimitsCount' | 'plansCount' | 'addonsCount' | 'minPrice' | 'maxPrice' | ''

@@ -3,7 +3,7 @@ import { promises as fs } from 'fs';
 import request from 'supertest';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { shutdownApp, TestApp } from './utils/testApp';
-import { createTestUser, deleteTestUser } from './utils/users/userTestUtils';
+import { createAndLoginUser, createTestUser, deleteTestUser } from './utils/users/userTestUtils';
 import { LeanUser } from '../main/types/models/User';
 import { BASE_PATH, TEST_PASSWORD } from './utils/config/variables';
 import PricingCollectionMongoose from '../main/repositories/mongoose/models/PricingCollectionMongoose';
@@ -11,6 +11,7 @@ import testContainer from './utils/config/testContainer';
 import { createAndTrackPricingYaml, createPricingForUser, createValidPricingYaml } from './utils/pricings/pricingTestUtils';
 import { createCollectionForUser } from './utils/collections/collectionTestUtils';
 import { randomSuffix } from './utils/helpers';
+import PricingMongoose from '../main/repositories/mongoose/models/PricingMongoose';
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ describe('Pricings API integration', () => {
   const adminUser: LeanUser = testContainer.resolve('adminUser');
   const testUser: LeanUser = testContainer.resolve('testUser');
   const usersToDelete: Set<string> = testContainer.resolve('usersToDelete');
+  const pricingsToDelete: Set<string> = testContainer.resolve('pricingsToDelete');
   const generatedFilesToDelete: Set<string> = testContainer.resolve('generatedFilesToDelete');
   const collectionIdsToDelete: Set<string> = testContainer.resolve('collectionIdsToDelete');
 
@@ -31,6 +33,11 @@ describe('Pricings API integration', () => {
       await deleteTestUser(username);
     }
     usersToDelete.clear();
+
+    for (const pricingId of pricingsToDelete) {
+      await PricingMongoose.deleteOne({ _id: pricingId });
+    }
+    pricingsToDelete.clear();
 
     for (const filePath of generatedFilesToDelete) {
       await fs.rm(filePath, { force: true });
@@ -49,8 +56,17 @@ describe('Pricings API integration', () => {
 
   describe('GET /api/v1/pricings', () => {
     it('Return 200 and paginated pricing list with valid Bearer Authorization header.', async () => {
+      const user = await createAndLoginUser('USER');
+      
+      for (let i = 0; i < 15; i++) {
+        await createPricingForUser({
+          username: user.username,
+          isPrivate: false,
+        });
+      }
+      
       const response = await request(app)
-        .get(`${BASE_PATH}/pricings?limit=10&offset=0`)
+        .get(`${BASE_PATH}/pricings?limit=12&offset=0`)
         .set('Authorization', `Bearer ${testUser.token}`);
 
       expect(response.status).toBe(200);
@@ -59,6 +75,7 @@ describe('Pricings API integration', () => {
       if (response.body.total !== undefined) {
         expect(typeof response.body.total).toBe('number');
       }
+      expect(response.body.pricings.length).toBe(12);
     });
 
     it('Return 200 and filtered/sorted pricing list when query parameters are provided.', async () => {
@@ -149,7 +166,6 @@ describe('Pricings API integration', () => {
       });
 
       await createPricingForUser({
-        token: ownerLogin.body.token,
         username: owner.username,
         isPrivate: false,
       });
@@ -165,35 +181,23 @@ describe('Pricings API integration', () => {
 
     it('Return 200 and public pricing list with regular user requesting another username.', async () => {
       const owner = await createTestUser('USER');
-      const requester = await createTestUser('USER');
+      const requester = await createAndLoginUser('USER');
       usersToDelete.add(owner.username);
       usersToDelete.add(requester.username);
 
-      const ownerLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
-        loginField: owner.username,
-        password: TEST_PASSWORD,
-      });
-
-      const requesterLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
-        loginField: requester.username,
-        password: TEST_PASSWORD,
-      });
-
       await createPricingForUser({
-        token: ownerLogin.body.token,
         username: owner.username,
         isPrivate: false,
       });
       
       await createPricingForUser({
-        token: ownerLogin.body.token,
         username: owner.username,
         isPrivate: true,
       });
 
       const response = await request(app)
         .get(`${BASE_PATH}/pricings/${owner.username}`)
-        .set('Authorization', `Bearer ${requesterLogin.body.token}`);
+        .set('Authorization', `Bearer ${requester.token}`);
 
       expect(response.status).toBe(200);
       expect(response.body).toBeDefined();
@@ -203,35 +207,21 @@ describe('Pricings API integration', () => {
     
     it('Return 200 and public/private pricing list with ADMIN user requesting another username.', async () => {
       const owner = await createTestUser('USER');
-      const requester = await createTestUser('ADMIN');
-      usersToDelete.add(owner.username);
-      usersToDelete.add(requester.username);
-
-      const ownerLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
-        loginField: owner.username,
-        password: TEST_PASSWORD,
-      });
-
-      const requesterLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
-        loginField: requester.username,
-        password: TEST_PASSWORD,
-      });
+      const requester = await createAndLoginUser('ADMIN');
 
       await createPricingForUser({
-        token: ownerLogin.body.token,
         username: owner.username,
         isPrivate: false,
       });
       
       await createPricingForUser({
-        token: ownerLogin.body.token,
         username: owner.username,
         isPrivate: true,
       });
 
       const response = await request(app)
         .get(`${BASE_PATH}/pricings/${owner.username}`)
-        .set('Authorization', `Bearer ${requesterLogin.body.token}`);
+        .set('Authorization', `Bearer ${requester.token}`);
 
       expect(response.status).toBe(200);
       expect(response.body).toBeDefined();
@@ -258,19 +248,13 @@ describe('Pricings API integration', () => {
 
   describe('POST /api/v1/pricings/:username', () => {
     it('Return 200 and pricing object when owner uploads valid pricing YAML.', async () => {
-      const owner = await createTestUser('USER');
-      usersToDelete.add(owner.username);
-
-      const ownerLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
-        loginField: owner.username,
-        password: TEST_PASSWORD,
-      });
+      const owner = await createAndLoginUser('USER');
 
       const fixture = await createValidPricingYaml(`pricing_${randomSuffix()}`);
 
       const response = await request(app)
         .post(`${BASE_PATH}/pricings/${owner.username}`)
-        .set('Authorization', `Bearer ${ownerLogin.body.token}`)
+        .set('Authorization', `Bearer ${owner.token}`)
         .field('private', 'false')
         .field('saasName', fixture.saasName)
         .field('version', fixture.version)
@@ -282,21 +266,14 @@ describe('Pricings API integration', () => {
     });
 
     it('Return 403 with USER role trying to create pricing for another user.', async () => {
-      const owner = await createTestUser('USER');
+      const owner = await createAndLoginUser('USER');
       const other = await createTestUser('USER');
-      usersToDelete.add(owner.username);
-      usersToDelete.add(other.username);
-
-      const ownerLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
-        loginField: owner.username,
-        password: TEST_PASSWORD,
-      });
 
       const filePath = await createAndTrackPricingYaml(`pricing_${randomSuffix()}`);
 
       const response = await request(app)
         .post(`${BASE_PATH}/pricings/${other.username}`)
-        .set('Authorization', `Bearer ${ownerLogin.body.token}`)
+        .set('Authorization', `Bearer ${owner.token}`)
         .field('private', 'false')
         .attach('yaml', filePath);
 
@@ -305,17 +282,11 @@ describe('Pricings API integration', () => {
     });
 
     it('Return 422 and validation errors object with missing private field.', async () => {
-      const owner = await createTestUser('USER');
-      usersToDelete.add(owner.username);
-
-      const ownerLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
-        loginField: owner.username,
-        password: TEST_PASSWORD,
-      });
+      const owner = await createAndLoginUser('USER');
 
       const response = await request(app)
         .post(`${BASE_PATH}/pricings/${owner.username}`)
-        .set('Authorization', `Bearer ${ownerLogin.body.token}`)
+        .set('Authorization', `Bearer ${owner.token}`)
         .field('saasName', `pricing_${randomSuffix()}`);
 
       expect(response.status).toBe(422);
@@ -334,23 +305,16 @@ describe('Pricings API integration', () => {
 
   describe('GET /api/v1/pricings/:username/:pricingName', () => {
     it('Return 200 and pricing details with owner requesting own pricing.', async () => {
-      const owner = await createTestUser('USER');
-      usersToDelete.add(owner.username);
-
-      const ownerLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
-        loginField: owner.username,
-        password: TEST_PASSWORD,
-      });
+      const owner = await createAndLoginUser('USER');
 
       const { serviceName } = await createPricingForUser({
-        token: ownerLogin.body.token,
         username: owner.username,
         isPrivate: false,
       });
 
       const response = await request(app)
         .get(`${BASE_PATH}/pricings/${owner.username}/${serviceName}`)
-        .set('Authorization', `Bearer ${ownerLogin.body.token}`);
+        .set('Authorization', `Bearer ${owner.token}`);
 
       expect(response.status).toBe(200);
       expect(response.body.name).toBe(serviceName);
@@ -359,15 +323,8 @@ describe('Pricings API integration', () => {
 
     it('Return 200 and pricing details with admin requesting another user pricing.', async () => {
       const owner = await createTestUser('USER');
-      usersToDelete.add(owner.username);
-
-      const ownerLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
-        loginField: owner.username,
-        password: TEST_PASSWORD,
-      });
 
       const { serviceName } = await createPricingForUser({
-        token: ownerLogin.body.token,
         username: owner.username,
         isPrivate: false,
       });
@@ -383,29 +340,16 @@ describe('Pricings API integration', () => {
 
     it('Return 404 with regular user requesting private pricing from another user.', async () => {
       const owner = await createTestUser('USER');
-      const requester = await createTestUser('USER');
-      usersToDelete.add(owner.username);
-      usersToDelete.add(requester.username);
-
-      const ownerLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
-        loginField: owner.username,
-        password: TEST_PASSWORD,
-      });
-
-      const requesterLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
-        loginField: requester.username,
-        password: TEST_PASSWORD,
-      });
+      const requester = await createAndLoginUser('USER');
 
       const { serviceName } = await createPricingForUser({
-        token: ownerLogin.body.token,
         username: owner.username,
         isPrivate: true,
       });
 
       const response = await request(app)
         .get(`${BASE_PATH}/pricings/${owner.username}/${serviceName}`)
-        .set('Authorization', `Bearer ${requesterLogin.body.token}`);
+        .set('Authorization', `Bearer ${requester.token}`);
 
       expect(response.status).toBe(404);
       expect(response.body.error).toBeDefined();
@@ -432,22 +376,15 @@ describe('Pricings API integration', () => {
 
   describe('PUT /api/v1/pricings/:username/:pricingName', () => {
     it('Return 200 and updated pricing details when owner updates metadata.', async () => {
-      const owner = await createTestUser('USER');
-      usersToDelete.add(owner.username);
-
-      const ownerLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
-        loginField: owner.username,
-        password: TEST_PASSWORD,
-      });
+      const owner = await createAndLoginUser('USER');
 
       const { serviceName } = await createPricingForUser({
-        token: ownerLogin.body.token,
         username: owner.username,
       });
 
       const response = await request(app)
         .put(`${BASE_PATH}/pricings/${owner.username}/${serviceName}`)
-        .set('Authorization', `Bearer ${ownerLogin.body.token}`)
+        .set('Authorization', `Bearer ${owner.token}`)
         .send({ url: 'https://example.com/pricing' });
 
       expect(response.status).toBe(200);
@@ -457,15 +394,8 @@ describe('Pricings API integration', () => {
 
     it('Return 200 and updated pricing details when ADMIN updates another user pricing.', async () => {
       const owner = await createTestUser('USER');
-      usersToDelete.add(owner.username);
-
-      const ownerLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
-        loginField: owner.username,
-        password: TEST_PASSWORD,
-      });
 
       const { serviceName } = await createPricingForUser({
-        token: ownerLogin.body.token,
         username: owner.username,
       });
 
@@ -481,28 +411,15 @@ describe('Pricings API integration', () => {
 
     it('Return 403 with USER role trying to update another user pricing.', async () => {
       const owner = await createTestUser('USER');
-      const requester = await createTestUser('USER');
-      usersToDelete.add(owner.username);
-      usersToDelete.add(requester.username);
-
-      const ownerLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
-        loginField: owner.username,
-        password: TEST_PASSWORD,
-      });
-
-      const requesterLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
-        loginField: requester.username,
-        password: TEST_PASSWORD,
-      });
+      const requester = await createAndLoginUser('USER');
 
       const { serviceName } = await createPricingForUser({
-        token: ownerLogin.body.token,
         username: owner.username,
       });
 
       const response = await request(app)
         .put(`${BASE_PATH}/pricings/${owner.username}/${serviceName}`)
-        .set('Authorization', `Bearer ${requesterLogin.body.token}`)
+        .set('Authorization', `Bearer ${requester.token}`)
         .send({ private: true });
 
       expect(response.status).toBe(403);
@@ -510,22 +427,15 @@ describe('Pricings API integration', () => {
     });
 
     it('Return 422 and validation errors object with invalid url field.', async () => {
-      const owner = await createTestUser('USER');
-      usersToDelete.add(owner.username);
-
-      const ownerLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
-        loginField: owner.username,
-        password: TEST_PASSWORD,
-      });
+      const owner = await createAndLoginUser('USER');
 
       const { serviceName } = await createPricingForUser({
-        token: ownerLogin.body.token,
         username: owner.username,
       });
 
       const response = await request(app)
         .put(`${BASE_PATH}/pricings/${owner.username}/${serviceName}`)
-        .set('Authorization', `Bearer ${ownerLogin.body.token}`)
+        .set('Authorization', `Bearer ${owner.token}`)
         .send({ url: 'not-a-url' });
 
       expect(response.status).toBe(422);
@@ -545,22 +455,15 @@ describe('Pricings API integration', () => {
 
   describe('DELETE /api/v1/pricings/:username/:pricingName', () => {
     it('Return 200 and success message when owner deletes own pricing.', async () => {
-      const owner = await createTestUser('USER');
-      usersToDelete.add(owner.username);
-
-      const ownerLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
-        loginField: owner.username,
-        password: TEST_PASSWORD,
-      });
+      const owner = await createAndLoginUser('USER');
 
       const { serviceName } = await createPricingForUser({
-        token: ownerLogin.body.token,
         username: owner.username,
       });
 
       const response = await request(app)
         .delete(`${BASE_PATH}/pricings/${owner.username}/${serviceName}`)
-        .set('Authorization', `Bearer ${ownerLogin.body.token}`);
+        .set('Authorization', `Bearer ${owner.token}`);
 
       expect(response.status).toBe(200);
       expect(response.body.message).toBeDefined();
@@ -568,15 +471,8 @@ describe('Pricings API integration', () => {
 
     it('Return 200 and success message when ADMIN deletes another user pricing.', async () => {
       const owner = await createTestUser('USER');
-      usersToDelete.add(owner.username);
-
-      const ownerLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
-        loginField: owner.username,
-        password: TEST_PASSWORD,
-      });
 
       const { serviceName } = await createPricingForUser({
-        token: ownerLogin.body.token,
         username: owner.username,
       });
 
@@ -590,28 +486,15 @@ describe('Pricings API integration', () => {
 
     it('Return 403 with USER role trying to delete another user pricing.', async () => {
       const owner = await createTestUser('USER');
-      const requester = await createTestUser('USER');
-      usersToDelete.add(owner.username);
-      usersToDelete.add(requester.username);
-
-      const ownerLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
-        loginField: owner.username,
-        password: TEST_PASSWORD,
-      });
-
-      const requesterLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
-        loginField: requester.username,
-        password: TEST_PASSWORD,
-      });
+      const requester = await createAndLoginUser('USER');
 
       const { serviceName } = await createPricingForUser({
-        token: ownerLogin.body.token,
         username: owner.username,
       });
 
       const response = await request(app)
         .delete(`${BASE_PATH}/pricings/${owner.username}/${serviceName}`)
-        .set('Authorization', `Bearer ${requesterLogin.body.token}`);
+        .set('Authorization', `Bearer ${requester.token}`);
 
       expect(response.status).toBe(403);
       expect(response.body.error).toBeDefined();
@@ -629,18 +512,11 @@ describe('Pricings API integration', () => {
 
   describe('DELETE /api/v1/pricings/:username/:pricingName/:pricingVersion', () => {
     it('Return 200 and success message when owner deletes a specific pricing version.', async () => {
-      const owner = await createTestUser('USER');
-      usersToDelete.add(owner.username); 
-
-      const ownerLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
-        loginField: owner.username,
-        password: TEST_PASSWORD,
-      });
+      const owner = await createAndLoginUser('USER');
 
       const serviceName = `pricing_${randomSuffix()}`;
       const version = `2.0.${Math.floor(Math.random() * 1000)}`;
       await createPricingForUser({
-        token: ownerLogin.body.token,
         username: owner.username,
         serviceName,
         version,
@@ -648,7 +524,7 @@ describe('Pricings API integration', () => {
 
       const response = await request(app)
         .delete(`${BASE_PATH}/pricings/${owner.username}/${serviceName}/${version}`)
-        .set('Authorization', `Bearer ${ownerLogin.body.token}`);
+        .set('Authorization', `Bearer ${owner.token}`);
 
       expect(response.status).toBe(200);
       expect(response.body.message).toBeDefined();
@@ -656,17 +532,10 @@ describe('Pricings API integration', () => {
 
     it('Return 200 and success message when ADMIN deletes another user pricing version.', async () => {
       const owner = await createTestUser('USER');
-      usersToDelete.add(owner.username);
-
-      const ownerLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
-        loginField: owner.username,
-        password: TEST_PASSWORD,
-      });
 
       const serviceName = `pricing_${randomSuffix()}`;
       const version = `2.1.${Math.floor(Math.random() * 1000)}`;
       await createPricingForUser({
-        token: ownerLogin.body.token,
         username: owner.username,
         serviceName,
         version,
@@ -682,24 +551,11 @@ describe('Pricings API integration', () => {
 
     it('Return 403 with USER role trying to delete another user pricing version.', async () => {
       const owner = await createTestUser('USER');
-      const requester = await createTestUser('USER');
-      usersToDelete.add(owner.username);
-      usersToDelete.add(requester.username);
-
-      const ownerLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
-        loginField: owner.username,
-        password: TEST_PASSWORD,
-      });
-
-      const requesterLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
-        loginField: requester.username,
-        password: TEST_PASSWORD,
-      });
+      const requester = await createAndLoginUser('USER');
 
       const serviceName = `pricing_${randomSuffix()}`;
       const version = `2.2.${Math.floor(Math.random() * 1000)}`;
       await createPricingForUser({
-        token: ownerLogin.body.token,
         username: owner.username,
         serviceName,
         version,
@@ -707,7 +563,7 @@ describe('Pricings API integration', () => {
 
       const response = await request(app)
         .delete(`${BASE_PATH}/pricings/${owner.username}/${serviceName}/${version}`)
-        .set('Authorization', `Bearer ${requesterLogin.body.token}`);
+        .set('Authorization', `Bearer ${requester.token}`);
 
       expect(response.status).toBe(403);
       expect(response.body.error).toBeDefined();
@@ -725,24 +581,17 @@ describe('Pricings API integration', () => {
 
   describe('PUT /api/v1/me/pricings', () => {
     it('Return 200 and success message when adding own pricing to a valid collection.', async () => {
-      const owner = await createTestUser('USER');
-      usersToDelete.add(owner.username);
-
-      const ownerLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
-        loginField: owner.username,
-        password: TEST_PASSWORD,
-      });
+      const owner = await createAndLoginUser('USER');
 
       const collection = await createCollectionForUser(owner.username);
 
       const { serviceName } = await createPricingForUser({
-        token: ownerLogin.body.token,
         username: owner.username,
       });
 
       const response = await request(app)
         .put(`${BASE_PATH}/me/pricings`)
-        .set('Authorization', `Bearer ${ownerLogin.body.token}`)
+        .set('Authorization', `Bearer ${owner.token}`)
         .send({ pricingName: serviceName, collectionId: collection.id });
 
       expect(response.status).toBe(200);
@@ -750,19 +599,13 @@ describe('Pricings API integration', () => {
     });
 
     it('Return 404 and error object when pricing does not exist for authenticated user.', async () => {
-      const owner = await createTestUser('USER');
-      usersToDelete.add(owner.username);
-
-      const ownerLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
-        loginField: owner.username,
-        password: TEST_PASSWORD,
-      });
+      const owner = await createAndLoginUser('USER');
 
       const collection = await createCollectionForUser(owner.username);
 
       const response = await request(app)
         .put(`${BASE_PATH}/me/pricings`)
-        .set('Authorization', `Bearer ${ownerLogin.body.token}`)
+        .set('Authorization', `Bearer ${owner.token}`)
         .send({ pricingName: `nonexistent_${randomSuffix()}`, collectionId: collection.id });
 
       expect(response.status).toBe(404);
