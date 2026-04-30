@@ -1,12 +1,11 @@
-import mongoose from 'mongoose';
-import { getMongoDBConnectionURI } from '../../config/mongoose';
+import { Connection } from 'mongoose';
 import PricingCollectionMongoose from '../../repositories/mongoose/models/PricingCollectionMongoose';
 import { Pricing } from '../../types/database/Pricing';
 
-export async function up(): Promise<void> {
-  mongoose.connect(getMongoDBConnectionURI());
+export async function up(connection: Connection): Promise<void> {
+  const PricingCollection = connection.models.PricingCollection || connection.model('PricingCollection', PricingCollectionMongoose.schema, 'pricingCollections');
 
-  const collections = await PricingCollectionMongoose.aggregate([
+  const collections = await PricingCollection.aggregate([
     {
       $lookup: {
         from: 'pricings',
@@ -20,7 +19,7 @@ export async function up(): Promise<void> {
   for (const collection of collections) {
     const newAnalytics = calculateAnalyticsForPricings(collection);
 
-    await PricingCollectionMongoose.updateOne({
+    await PricingCollection.updateOne({
       _id: collection._id,
     }, {
       analytics: newAnalytics,
@@ -28,10 +27,10 @@ export async function up(): Promise<void> {
   }
 }
 
-export async function down(): Promise<void> {
-  mongoose.connect(getMongoDBConnectionURI());
+export async function down(connection: Connection): Promise<void> {
+  const PricingCollection = connection.models.PricingCollection || connection.model('PricingCollection', PricingCollectionMongoose.schema, 'pricingCollections');
 
-  await PricingCollectionMongoose.updateMany(
+  await PricingCollection.updateMany(
     {},
     {
       $set: {

@@ -1,35 +1,35 @@
-import type { Connection } from 'mongoose'
-import { Seeder } from 'mongo-seeding'
-import { getMongoDBConnectionURI } from '../../config/mongoose'
-import path from 'path'
+import type { Connection } from 'mongoose';
+import { Seeder } from 'mongo-seeding';
+import { getMongoDBConnectionURI } from '../../config/mongoose';
+import path from 'path';
 
 async function dropDatabaseButNoMigrations(connection: Connection){
-  const collections = await connection.db!.listCollections().toArray()
+  const collections = await connection.db!.listCollections().toArray();
   
   for (const collection of collections) {
     if (collection.name !== 'migrations') {
-      await connection.db!.dropCollection(collection.name)
+      await connection.db!.dropCollection(collection.name);
     }
   }
 }
 
 export async function up (connection: Connection): Promise<void> {
   
-  await dropDatabaseButNoMigrations(connection)
+  await dropDatabaseButNoMigrations(connection);
 
   const config = {
     database: getMongoDBConnectionURI(),
-  }
+  };
   
-  const seeder = new Seeder(config)
+  const seeder = new Seeder(config);
   
-  const collections = seeder.readCollectionsFromPath(path.resolve("./src/main/database/seeders/mongo/"))
+  const collections = seeder.readCollectionsFromPath(path.resolve("./src/main/database/seeders/mongo/"));
   
     try {
-      await seeder.import(collections)
-      console.log('==== Mongo seeding successfull ====')
+      await seeder.import(collections);
+      console.log('==== Mongo seeding successfull ====');
     } catch (err) {
-      console.error(`Seeding error: ${err}`)
+      console.error(`Seeding error: ${err}`);
     }
   
 }

@@ -1,25 +1,23 @@
 // Import your schemas here
-import type { Connection } from 'mongoose'
-import mongoose from 'mongoose';
-import { getMongoDBConnectionURI } from '../../config/mongoose';
+import type { Connection } from 'mongoose';
 import PricingCollectionMongoose from '../../repositories/mongoose/models/PricingCollectionMongoose';
 
 export async function up (connection: Connection): Promise<void> {
-  mongoose.connect(getMongoDBConnectionURI());
-  
-  await PricingCollectionMongoose.updateMany(
+  const PricingCollection = connection.models.PricingCollection || connection.model('PricingCollection', PricingCollectionMongoose.schema, 'pricingCollections');
+
+  await PricingCollection.updateMany(
     { description: { $exists: false } }, 
     { $set: { description: "This collection does not have a description" } }
   );
 
-  await PricingCollectionMongoose.updateMany(
+  await PricingCollection.updateMany(
     { pricing: { $exists: false } },
     { $set: { private: false } }
   );
 }
 
 export async function down (connection: Connection): Promise<void> {
-  mongoose.connect(getMongoDBConnectionURI());
+  const PricingCollection = connection.models.PricingCollection || connection.model('PricingCollection', PricingCollectionMongoose.schema, 'pricingCollections');
   
-  await PricingCollectionMongoose.updateMany({}, { $unset: { description: "This collection does not have a description", private: "" } });
+  await PricingCollection.updateMany({}, { $unset: { description: "This collection does not have a description", private: "" } });
 }
