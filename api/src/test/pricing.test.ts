@@ -66,8 +66,7 @@ describe('Pricings API integration', () => {
       }
       
       const response = await request(app)
-        .get(`${BASE_PATH}/pricings?limit=12&offset=0`)
-        .set('Authorization', `Bearer ${testUser.token}`);
+        .get(`${BASE_PATH}/pricings?limit=12&offset=0`);
 
       expect(response.status).toBe(200);
       expect(response.body).toBeDefined();
@@ -82,37 +81,11 @@ describe('Pricings API integration', () => {
       const response = await request(app)
         .get(
           `${BASE_PATH}/pricings?name=zoom&sortBy=name&sort=asc&min-subscription=0&max-subscription=9999&selectedOwners=${testUser.username}&limit=5&offset=0`
-        )
-        .set('Authorization', `Bearer ${testUser.token}`);
+        );
 
       expect(response.status).toBe(200);
       expect(Array.isArray(response.body.pricings)).toBe(true);
       expect(typeof response.body.total).toBe('number');
-    });
-
-    it('Return 401 and error object with missing Authorization header.', async () => {
-      const response = await request(app).get(`${BASE_PATH}/pricings`);
-
-      expect(response.status).toBe(401);
-      expect(response.body.error).toBeDefined();
-    });
-
-    it('Return 401 and error object with malformed Authorization header.', async () => {
-      const response = await request(app)
-        .get(`${BASE_PATH}/pricings`)
-        .set('Authorization', 'Token malformed');
-
-      expect(response.status).toBe(401);
-      expect(response.body.error).toBeDefined();
-    });
-
-    it('Return 401 and error object with invalid Bearer token.', async () => {
-      const response = await request(app)
-        .get(`${BASE_PATH}/pricings`)
-        .set('Authorization', 'Bearer invalid-token');
-
-      expect(response.status).toBe(401);
-      expect(response.body.error).toBeDefined();
     });
   });
 
