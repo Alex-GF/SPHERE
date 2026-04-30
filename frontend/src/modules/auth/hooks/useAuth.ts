@@ -24,7 +24,7 @@ export interface AuthUser {
   avatar: string;
 }
 
-const normalizeUser = (user: any): AuthUser => ({
+const normalizeUser = (user): AuthUser => ({
   id: user.id,
   firstName: user.firstName,
   lastName: user.lastName,
