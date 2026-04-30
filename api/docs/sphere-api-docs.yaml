@@ -526,7 +526,7 @@ paths:
     get:
       summary: Get all pricings from a user.
       description: |
-        Retrieves a paginated list of a user's pricings.
+        Retrieves a paginated list of a user's pricings that ARE NOT in a collection. If you want to retrieve pricings from a usar of a specific collection, use the `collectionName` query parameter in the `GET /pricings` endpoint.
 
         **Authentication**: Public
 
@@ -550,6 +550,8 @@ paths:
         - $ref: '#/components/parameters/MaxMinPrice'
         - $ref: '#/components/parameters/MinMaxPrice'
         - $ref: '#/components/parameters/MaxMaxPrice'
+        - $ref: '#/components/parameters/CollectionName'
+        - $ref: '#/components/parameters/IncludePricingsInCollection'
         - $ref: '#/components/parameters/Limit'
         - $ref: '#/components/parameters/Offset'
       responses:
@@ -2517,6 +2519,14 @@ components:
       required: true
       schema:
         type: string
+
+    IncludePricingsInCollection:
+      name: includePricingsInCollection
+      description: Whether to include pricings that are in a collection in the results (only applicable when `collectionName` is NOT PROVIDED)
+      in: query
+      required: false
+      schema:
+        type: boolean
 
     CollectionCascade:
       name: cascade

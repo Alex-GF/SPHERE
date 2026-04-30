@@ -130,8 +130,8 @@ describe('Pricing Collections API integration', () => {
       const owner = await createAndLoginUser('USER');
       const requester = await createAndLoginUser('USER');
 
-      const testPricing1 = await createPricingForUser({ username: owner.username, token: owner.token! });
-      const testPricing2 = await createPricingForUser({ username: owner.username, token: owner.token! });
+      const testPricing1 = await createPricingForUser({ username: owner.username });
+      const testPricing2 = await createPricingForUser({ username: owner.username });
 
       // create one public and one private collection
       const publicCollection = await createTestCollectionWithPricings({ _ownerName: owner.username }, [testPricing1.serviceName, testPricing2.serviceName]);
@@ -181,8 +181,8 @@ describe('Pricing Collections API integration', () => {
     it('Return 201 when providing pricings list', async () => {
       const owner = await createAndLoginUser('USER');
 
-      const p1 = await createPricingForUser({ token: owner.token!, username: owner.username });
-      const p2 = await createPricingForUser({ token: owner.token!, username: owner.username });
+      const p1 = await createPricingForUser({ username: owner.username });
+      const p2 = await createPricingForUser({ username: owner.username });
 
       const payload = {
         name: `CollectionWithPricings_${randomSuffix()}`,
@@ -405,8 +405,8 @@ describe('Pricing Collections API integration', () => {
     it('Return 204 and also remove all pricings when deleting a collection', async () => {
       const owner = await createAndLoginUser('USER');
 
-      const testPricing1 = await createPricingForUser({ username: owner.username, token: owner.token! });
-      const testPricing2 = await createPricingForUser({ username: owner.username, token: owner.token! });
+      const testPricing1 = await createPricingForUser({ username: owner.username });
+      const testPricing2 = await createPricingForUser({ username: owner.username });
 
       const collection = await createTestCollectionWithPricings({ _ownerName: owner.username }, [testPricing1.serviceName, testPricing2.serviceName]);
 
@@ -445,8 +445,8 @@ describe('Pricing Collections API integration', () => {
     it('Returns 200 and zip content for existing collection', async () => {
       const owner = await createAndLoginUser('USER');
 
-      const testPricing1 = await createPricingForUser({ username: owner.username, token: owner.token! });
-      const testPricing2 = await createPricingForUser({ username: owner.username, token: owner.token! });
+      const testPricing1 = await createPricingForUser({ username: owner.username });
+      const testPricing2 = await createPricingForUser({ username: owner.username });
 
       const collection = await createTestCollectionWithPricings({ _ownerName: owner.username }, [testPricing1.serviceName, testPricing2.serviceName]);
 

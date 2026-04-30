@@ -14,7 +14,7 @@ class PricingRepository extends RepositoryBase {
     const sortAggregator = [];
 
     if (Object.keys(queryParams).length > 0) {
-      const { name, subscriptions, minPrice, maxPrice, selectedOwners, sortBy, sort } = queryParams;
+      const { name, subscriptions, minPrice, maxPrice, selectedOwners, includePricingsInCollection, sortBy, sort } = queryParams;
 
       if (name) {
         filteringAggregators.push({
@@ -83,6 +83,15 @@ class PricingRepository extends RepositoryBase {
           },
         });
       }
+
+      if (!includePricingsInCollection) {
+        filteringAggregators.push({
+          $match: {
+            _collectionId: { $exists: false },
+          },
+        });
+      }
+
       if (sortBy && sort) {
         let sortParameter = '';
         const sortOrder = sort === 'asc' ? 1 : -1;
@@ -137,6 +146,15 @@ class PricingRepository extends RepositoryBase {
           ? [] // no añadir nada
           : [{ $match: { private: false } }]), // añadir etapa
         ...aggregator,
+        ...(queryParams.collectionName ?
+          [
+            {
+              $match: {
+                collectionName: queryParams.collectionName,
+              },
+            },
+          ] : []
+         ),
       ];
 
       const offset = queryParams.offset;

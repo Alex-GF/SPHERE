@@ -9,7 +9,7 @@ import { BASE_PATH, TEST_PASSWORD } from './utils/config/variables';
 import PricingCollectionMongoose from '../main/repositories/mongoose/models/PricingCollectionMongoose';
 import testContainer from './utils/config/testContainer';
 import { createAndTrackPricingYaml, createPricingForUser, createValidPricingYaml } from './utils/pricings/pricingTestUtils';
-import { createCollectionForUser } from './utils/collections/collectionTestUtils';
+import { createCollectionForUser, createTestCollectionWithPricings } from './utils/collections/collectionTestUtils';
 import { randomSuffix } from './utils/helpers';
 import PricingMongoose from '../main/repositories/mongoose/models/PricingMongoose';
 
@@ -285,6 +285,56 @@ describe('Pricings API integration', () => {
 
       const response = await request(app)
         .get(`${BASE_PATH}/pricings/${owner.username}`)
+        .set('Authorization', `Bearer ${requester.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body).toBeDefined();
+      expect(Array.isArray(response.body.pricings)).toBe(true);
+      expect(response.body.pricings.length).toBe(2);
+    });
+    
+    it('Return 200 but not pricings in collection.', async () => {
+      const owner = await createTestUser('USER');
+      const requester = await createAndLoginUser('ADMIN');
+
+      const pricingInCollection = await createPricingForUser({
+        username: owner.username,
+      });
+      
+      await createPricingForUser({
+        username: owner.username,
+      });
+
+      await createTestCollectionWithPricings({ _ownerName: owner.username }, [pricingInCollection.serviceName]);
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/pricings/${owner.username}`)
+        .set('Authorization', `Bearer ${requester.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body).toBeDefined();
+      expect(Array.isArray(response.body.pricings)).toBe(true);
+      expect(response.body.pricings.length).toBe(1);
+    });
+    
+    it('Return 200 with pricings in collections.', async () => {
+      const owner = await createTestUser('USER');
+      const requester = await createAndLoginUser('ADMIN');
+
+      const pricingInCollection = await createPricingForUser({
+        username: owner.username,
+        isPrivate: false,
+      });
+      
+      await createPricingForUser({
+        username: owner.username,
+        isPrivate: false,
+      });
+
+      await createTestCollectionWithPricings(owner.username, [pricingInCollection.serviceName]);
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/pricings/${owner.username}?includePricingsInCollection=true`)
         .set('Authorization', `Bearer ${requester.token}`);
 
       expect(response.status).toBe(200);

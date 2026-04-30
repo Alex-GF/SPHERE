@@ -213,6 +213,11 @@ class PricingController {
   _transformIndexQueryParams(
     indexQueryParams: Record<string, string>
   ): PricingIndexQueryParams {
+
+    if (indexQueryParams['collectionName'] && indexQueryParams['excludePricingsInCollection'] === 'true') {
+      throw new Error('INVALID DATA: `collectionName` and `excludePricingsInCollection` cannot be used together');
+    }
+
     const transformedData: PricingIndexQueryParams = {
       name: indexQueryParams.name as string,
       sortBy: indexQueryParams.sortBy as SortByType,
@@ -232,6 +237,8 @@ class PricingController {
       selectedOwners: indexQueryParams.selectedOwners
         ? (indexQueryParams.selectedOwners as string).split(',')
         : undefined,
+      collectionName: indexQueryParams.collectionName as string,
+      includePricingsInCollection: indexQueryParams.includePricingsInCollection === 'true',
       limit: parseInt(indexQueryParams.limit) || 10,
       offset: parseInt(indexQueryParams.offset) || 0,
     };
@@ -242,12 +249,13 @@ class PricingController {
       'minPrice',
       'maxPrice',
       'selectedOwners',
+      'collectionName',
       'sortBy',
       'sort',
     ] as const;
 
     optionalFields.forEach(field => {
-      if (['name', 'selectedOwners', 'sortBy', 'sort'].includes(field)) {
+      if (['name', 'selectedOwners', 'sortBy', 'sort', 'collectionName'].includes(field)) {
         if (!transformedData[field]) {
           delete transformedData[field];
         }

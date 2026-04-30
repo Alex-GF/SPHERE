@@ -16,6 +16,8 @@ export type PricingIndexQueryParams = {
     max: number;
   };
   selectedOwners?: string[];
+  collectionName?: string;
+  includePricingsInCollection: boolean;
   limit: number;
   offset: number;
 }
