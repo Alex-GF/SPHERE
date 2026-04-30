@@ -22,7 +22,7 @@ const authenticateTokenMiddleware = async (req: Request, res: Response, next: Ne
 
   try {
     const token = authHeader.startsWith('Bearer ') ? authHeader.split(' ')[1] : '';
-    if (!token) {
+    if (!token || token === "null") {
       return checkPermissions(req, res, next);
     } else {
       await authenticateToken(req, token);

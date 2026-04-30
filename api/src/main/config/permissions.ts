@@ -56,7 +56,12 @@ export const ROUTE_PERMISSIONS: RoutePermission[] = [
   },
   {
     path: '/pricings/**',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    methods: ['GET'],
+    isPublic: true,
+  },
+  {
+    path: '/pricings/**',
+    methods: ['POST', 'PUT', 'DELETE', 'PATCH'],
     allowedUserRoles: ['ADMIN', 'USER'],
   },
   {

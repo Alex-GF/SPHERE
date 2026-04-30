@@ -1,9 +1,29 @@
-export function getPricingByNameAndOwnerAggregator(pricingName: string, owner: string) {
+export function getPricingByNameOwnerAndVersionAggregator(
+  pricingName: string,
+  owner: string,
+  version?: string
+) {
   return [
     {
       $match: {
-        name: { $regex: `^${pricingName}$`, $options: 'i' },
-        owner: { $regex: `^${owner}$`, $options: 'i' },
+        $expr: {
+          $and: [
+            { $regexMatch: { input: '$name', regex: pricingName, options: 'i' } },
+            { $regexMatch: { input: '$owner', regex: owner, options: 'i' } },
+            {
+              $or: [
+                { $eq: [version, null] }, // no filtrar si version es null/undefined
+                {
+                  $regexMatch: {
+                    input: '$version',
+                    regex: version,
+                    options: 'i',
+                  },
+                },
+              ],
+            },
+          ],
+        },
       },
     },
     {
@@ -29,7 +49,7 @@ export function getPricingByNameAndOwnerAggregator(pricingName: string, owner: s
           },
           {
             $project: {
-              name: 1
+              name: 1,
             },
           },
         ],

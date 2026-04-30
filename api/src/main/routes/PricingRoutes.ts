@@ -32,11 +32,8 @@ const loadFileRoutes = function (app: express.Application) {
 
   app
     .route(baseUrl + '/pricings/:username/:pricingName/:pricingVersion')
+    .get(pricingController.getConfigurationSpace)
     .delete(pricingController.destroyVersionByNameAndOwner);
-
-  app
-    .route(baseUrl + '/pricings/:username/:pricingName/:pricingVersion/configuration-space')
-    .get(pricingController.getConfigurationSpace);
 
   app
     .route(baseUrl + '/me/pricings')

@@ -40,13 +40,6 @@ class PricingController {
       const queryParams: PricingIndexQueryParams = this._transformIndexQueryParams(req.query);
       queryParams.selectedOwners = [req.params.username]; // Set selectedOwners filter for indexByOwner route
 
-      if (
-        (req.user.username !== req.params.username && req.user.role === 'ADMIN') ||
-        req.user.username === req.params.username
-      ) {
-        queryParams.includePrivate = true;
-      }
-
       const pricings = await this.pricingService.index(queryParams, req.user);
       res.json(pricings);
     } catch (err: any) {
@@ -116,10 +109,14 @@ class PricingController {
 
   async addPricingToCollection(req: any, res: any) {
     try {
+
+      const queryParams = req.query;
+
       const result = await this.pricingService.addPricingToCollection(
         req.body.pricingName,
         req.user.username,
-        req.body.collectionId
+        req.body.collectionId,
+        queryParams
       );
 
       if (!result) {
@@ -135,11 +132,14 @@ class PricingController {
 
   async update(req: any, res: any) {
     try {
+      const queryParams = req.query; 
+
       const pricing = await this.pricingService.update(
         req.params.pricingName,
         req.params.username,
         req.user,
-        req.body
+        req.body,
+        queryParams
       );
       res.json(pricing);
     } catch (err: any) {
@@ -181,7 +181,7 @@ class PricingController {
         queryParams
       );
       if (!result) {
-        res.status(404).send({ error: 'Pricing not found' });
+        res.status(404).send({ error: 'NOT FOUND: Pricing not found' });
       } else {
         res.status(200).send({ message: 'Pricing deleted successfully' });
       }
@@ -200,7 +200,7 @@ class PricingController {
         req.user
       );
       if (!result) {
-        res.status(404).send({ error: 'Pricing version not found' });
+        res.status(404).send({ error: 'NOT FOUND: Pricing version not found' });
       } else {
         res.status(200).send({ message: 'Pricing version deleted successfully' });
       }

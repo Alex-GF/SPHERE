@@ -6,6 +6,7 @@ import { PricingIndexQueryParams } from '../../types/services/PricingService';
 import mongoose from 'mongoose';
 import { getPricingByNameAndOwnerAggregator } from './aggregators/get-pricing-by-name-and-owner';
 import { LeanPricing } from '../../types/models/Pricing';
+import { getPricingByNameOwnerAndVersionAggregator } from './aggregators/get-pricing-by-name-owner-and-version';
 
 class PricingRepository extends RepositoryBase {
   async findAll(queryParams: PricingIndexQueryParams, includePrivate: boolean = false) {
@@ -193,13 +194,13 @@ class PricingRepository extends RepositoryBase {
     }
   }
 
-  async findByNameAndOwner(
+  async findOne(
     name: string,
     owner: string,
-    queryParams?: { collectionName?: string; includePrivate?: boolean }
+    queryParams: { collectionId?: string, collectionName?: string; version?: string, includePrivate?: boolean } = {includePrivate: false}
   ) {
     // Filtro de visibilidad
-    const visibilityMatch = queryParams?.includePrivate
+    const visibilityMatch = queryParams.includePrivate
       ? {} // include all (public + private)
       : { private: false }; // only include public
 
@@ -210,22 +211,32 @@ class PricingRepository extends RepositoryBase {
           {
             $match: visibilityMatch,
           },
-          ...getPricingByNameAndOwnerAggregator(name, owner),
+          ...getPricingByNameOwnerAndVersionAggregator(name, owner, queryParams.version),
           {
             $match: {
               collectionName: queryParams.collectionName,
             },
           },
         ]);
+      } else if (queryParams?.collectionId) {
+        pricing = await PricingMongoose.aggregate([
+          {
+            $match: {
+              ...visibilityMatch,
+              _collectionId: queryParams.collectionId,
+            },
+          },
+          ...getPricingByNameOwnerAndVersionAggregator(name, owner, queryParams.version),
+        ]);
+      
       } else {
         pricing = await PricingMongoose.aggregate([
           {
             $match: {
-              _collectionId: { $exists: false },
               ...visibilityMatch,
             },
           },
-          ...getPricingByNameAndOwnerAggregator(name, owner),
+          ...getPricingByNameOwnerAndVersionAggregator(name, owner, queryParams.version),
         ]);
       }
 
@@ -266,28 +277,6 @@ class PricingRepository extends RepositoryBase {
 
   async findById(id: string): Promise<LeanPricing | null> {
     const pricing = await PricingMongoose.findOne({ _id: new mongoose.Types.ObjectId(id) });
-    if (!pricing) {
-      return null;
-    }
-
-    return pricing.toObject<LeanPricing>();
-  }
-
-  async findVersionByNameAndOwner(
-    name: string,
-    version: string,
-    owner: string
-  ): Promise<LeanPricing | null> {
-    const pricing = await PricingMongoose.findOne({
-      $expr: {
-        $and: [
-          { $eq: [{ $toLower: '$name' }, name.toLowerCase()] },
-          { $eq: ['$owner', owner] },
-          { $eq: ['$version', version] },
-        ],
-      },
-    });
-
     if (!pricing) {
       return null;
     }

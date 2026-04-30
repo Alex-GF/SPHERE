@@ -642,9 +642,10 @@ paths:
       description: |
         Retrieves a pricing by name for a given user. If the user requesting is the owner of the pricing, they can then access private pricings. Otherwise, only public ones.
 
-        **Authentication**: User token
+        **Authentication**: Public
 
         **Permission**: 
+        - UNAUTHENTICATED: can only access PUBLIC pricings.
         - USER: can access their own pricings (PUBLIC, PRIVATE) and PUBLIC pricings of other users.
         - ADMIN: can access any user's pricings.
 
@@ -676,7 +677,7 @@ paths:
     put:
       summary: Update metadata of a pricing.
       description: |
-        Updates the metadata of all pricing versions of a given pricing.
+        Updates the metadata of all pricing versions of a given pricing. If a pricing is inside a collection, **you have to provide the `collectionName` query parameter**
 
         **Authentication**: User API Key
 
@@ -690,6 +691,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/Username'
         - $ref: '#/components/parameters/PricingName'
+        - $ref: '#/components/parameters/CollectionName'
       requestBody:
         $ref: '#/components/requestBodies/PricingUpdate'
       responses:
@@ -713,7 +715,7 @@ paths:
     delete:
       summary: Delete a pricing.
       description: |
-        Deletes all versions of a given pricing.
+        Deletes all versions of a given pricing. If a pricing is inside a collection, **you have to provide the `collectionName` query parameter**
 
         **Authentication**: User API Key
 
@@ -728,6 +730,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/Username'
         - $ref: '#/components/parameters/PricingName'
+        - $ref: '#/components/parameters/CollectionName'
       responses:
         '200':
           description: Operation Completed
@@ -751,6 +754,44 @@ paths:
                 $ref: '#/components/schemas/Error'
   
   /pricings/{username}/{pricingName}/{pricingVersion}:
+    get:
+      summary: Get the configurations of a pricing version.
+      description: |
+        Retrieves the configuration space of a specific version of a given pricing.
+
+        **Authentication**: Public
+
+        **Permission**: 
+        - UNAUTHENTICATED: can only access PUBLIC pricings.
+        - USER: can access their own pricings (PUBLIC, PRIVATE) and PUBLIC pricings of other users.
+        - ADMIN: can access any user's pricings.
+
+      tags:
+        - Pricings
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+        - $ref: '#/components/parameters/PricingName'
+        - $ref: '#/components/parameters/PricingVersion'
+        - $ref: '#/components/parameters/CollectionName'
+      responses:
+        '200':
+          description: Operation Completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PricingConfigurationSpace'
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: User, pricing or pricing version not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     delete:
       summary: Delete a specific version of a pricing.
       description: |
@@ -1646,6 +1687,44 @@ components:
               type: number
             maxSubscriptionPrice:
               type: number
+    
+    PricingConfigurationSpace:
+      type: object
+      properties:
+        configurationSpace:
+          type: array
+          items:
+            $ref: '#/components/schemas/PricingConfiguration'
+        configurationSpaceSize:
+          type: number
+          description: Total number of possible configurations in the configuration space
+          example: 120
+    
+    PricingConfiguration:
+      type: object
+      properties:
+        selectedPlan:
+          type: string
+          description: Name of the selected plan in the configuration
+          example: "GOLD"
+        selectedAddOns:
+          type: array
+          items:
+            type: string
+          description: List of names of the selected add-ons in the configuration
+          example: ["Extra Storage", "Premium Support"]
+        subscriptionFeatures:
+          type: array
+          items:
+            type: string
+          description: List of names of the selected features in the configuration
+          example: ["Feature A", "Feature B", "Feature C"]
+        subscriptionUsageLimits:
+          type: array
+          items:
+            type: string
+          description: List of names of the selected usage limits in the configuration
+          example: ["Usage Limit A", "Usage Limit B"]
 
     # ------------------------------
     # --       COLLECTIONS        --

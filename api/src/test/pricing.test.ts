@@ -78,14 +78,22 @@ describe('Pricings API integration', () => {
     });
 
     it('Return 200 and filtered/sorted pricing list when query parameters are provided.', async () => {
+      const user = await createAndLoginUser('USER');
+
+      const testPricing = await createPricingForUser({
+        username: user.username,
+        isPrivate: false,
+      });
+      
       const response = await request(app)
         .get(
-          `${BASE_PATH}/pricings?name=zoom&sortBy=name&sort=asc&min-subscription=0&max-subscription=9999&selectedOwners=${testUser.username}&limit=5&offset=0`
+          `${BASE_PATH}/pricings?name=${testPricing.serviceName}&limit=5&offset=0`
         );
 
       expect(response.status).toBe(200);
       expect(Array.isArray(response.body.pricings)).toBe(true);
       expect(typeof response.body.total).toBe('number');
+      expect(response.body.pricings.length).toBe(1);
     });
     
     it('Return 200 and only PUBLIC pricings if unauthenticated user make the request.', async () => {
@@ -284,22 +292,6 @@ describe('Pricings API integration', () => {
       expect(Array.isArray(response.body.pricings)).toBe(true);
       expect(response.body.pricings.length).toBe(2);
     });
-
-    it('Return 401 and error object with missing Authorization header.', async () => {
-      const response = await request(app).get(`${BASE_PATH}/pricings/${testUser.username}`);
-
-      expect(response.status).toBe(401);
-      expect(response.body.error).toBeDefined();
-    });
-
-    it('Return 401 and error object with malformed Authorization header.', async () => {
-      const response = await request(app)
-        .get(`${BASE_PATH}/pricings/${testUser.username}`)
-        .set('Authorization', 'Token malformed');
-
-      expect(response.status).toBe(401);
-      expect(response.body.error).toBeDefined();
-    });
   });
 
   describe('POST /api/v1/pricings/:username', () => {
@@ -408,15 +400,6 @@ describe('Pricings API integration', () => {
         .set('Authorization', `Bearer ${requester.token}`);
 
       expect(response.status).toBe(404);
-      expect(response.body.error).toBeDefined();
-    });
-
-    it('Return 401 and error object with missing Authorization header.', async () => {
-      const response = await request(app).get(
-        `${BASE_PATH}/pricings/${testUser.username}/nonexistent_pricing`
-      );
-
-      expect(response.status).toBe(401);
       expect(response.body.error).toBeDefined();
     });
 
