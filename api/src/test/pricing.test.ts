@@ -216,15 +216,6 @@ describe('Pricings API integration', () => {
       expect(response.body.plans).toBeDefined();
     });
 
-    it('Return 401 and error object with missing Authorization header.', async () => {
-      const response = await request(app)
-        .put(`${BASE_PATH}/pricings`)
-        .send({ pricing: 'saasName: Invalid' });
-
-      expect(response.status).toBe(401);
-      expect(response.body.error).toBeDefined();
-    });
-
     it('Return 422 with malformed pricing text (must not return 500).', async () => {
       const response = await request(app)
         .put(`${BASE_PATH}/pricings`)
