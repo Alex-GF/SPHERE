@@ -14,7 +14,7 @@ class CacheController {
 
   async get(req: any, res: any) {
     try {
-      const originHeader = req.headers.origin;
+      const originHeader = req.headers['x-origin'] || req.headers.origin;
       let hostname: string | null = null;
 
       if (originHeader) {
@@ -29,7 +29,7 @@ class CacheController {
       const isAdmin = req.user?.role === 'ADMIN';
 
       if (!isAllowedOrigin && !isAdmin) {
-        return res.status(403).send({ error: 'Forbidden' });
+        return res.status(403).send({ error: 'PERMISSION ERROR: You are not allowed to access this resource. Either call this endpoint from a local environment, sphere.score.us.es, or login as ADMIN' });
       }
 
       const { key } = req.query;
@@ -44,7 +44,7 @@ class CacheController {
 
   async set(req: any, res: any) {
     try {
-      const originHeader = req.headers.origin;
+      const originHeader = req.headers['x-origin'] || req.headers.origin;
       let hostname: string | null = null;
 
       if (originHeader) {
@@ -60,7 +60,7 @@ class CacheController {
       const isAdmin = req.user?.role === 'ADMIN';
 
       if (!isAllowedOrigin && !isAdmin) {
-        return res.status(403).send({ error: 'Forbidden' });
+        return res.status(403).send({ error: 'PERMISSION ERROR: You are not allowed to access this resource. Either call this endpoint from a local environment, sphere.score.us.es, or login as ADMIN' });
       }
 
       const { key, value, expirationInSeconds } = req.body;

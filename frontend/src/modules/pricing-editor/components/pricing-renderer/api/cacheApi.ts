@@ -5,19 +5,30 @@ export const CACHE_BASE_PATH = import.meta.env.VITE_API_URL + '/cache';
 export function useCacheApi() {
   const { authUser } = useAuth();
 
-  const basicHeaders = {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${authUser?.token}`,
+  const requestOrigin = globalThis.location?.origin ?? import.meta.env.VITE_APP_ORIGIN ?? '';
+
+  const buildHeaders = () => {
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+    };
+
+    if (requestOrigin) {
+      headers.Origin = requestOrigin;
+      headers['x-origin'] = requestOrigin;
+    }
+
+    if (authUser?.token) {
+      headers.Authorization = `Bearer ${authUser.token}`;
+    }
+
+    return headers;
   };
 
   const getFromCache = async (key: string) => {
-    return fetch(
-      `${CACHE_BASE_PATH}?key=${key}`,
-      {
-        method: 'GET',
-        headers: basicHeaders,
-      }
-    )
+    return fetch(`${CACHE_BASE_PATH}?key=${encodeURIComponent(key)}`, {
+      method: 'GET',
+      headers: buildHeaders(),
+    })
       .then(response => response.json())
       .then(data => {
         if (data.error){
@@ -33,18 +44,15 @@ export function useCacheApi() {
   };
 
   const setInCache = async (key: string, value: string, expirationInSeconds?: number) => {
-    return fetch(
-      `${CACHE_BASE_PATH}`,
-      {
-        method: 'POST',
-        headers: basicHeaders,
-        body: JSON.stringify({
-          key,
-          value,
-          expirationInSeconds
-        }),
-      }
-    )
+    return fetch(`${CACHE_BASE_PATH}`, {
+      method: 'POST',
+      headers: buildHeaders(),
+      body: JSON.stringify({
+        key,
+        value,
+        expirationInSeconds,
+      }),
+    })
       .then(response => response.json())
       .then(data => {
         if (data.error){
