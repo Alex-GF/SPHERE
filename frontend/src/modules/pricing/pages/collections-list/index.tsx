@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import SearchBar from '../../components/search-bar';
 import { usePricingCollectionsApi } from '../../../profile/api/pricingCollectionsApi';
 import CollectionListCard from '../../components/collection-list-card';
@@ -7,7 +7,6 @@ import { CollectionEntry } from '../../../profile/types/profile-types';
 import CollectionFilters from '../../components/collection-filters';
 import PricingsPagination from '../../components/pricings-pagination';
 import PricingsListContainer from '../../components/pricings-list-container';
-import { v4 as uuidv4 } from 'uuid';
 
 export type PricingEntry = {
   name: string;
@@ -38,52 +37,66 @@ export type FilterLimits = {
 export default function CollectionsListPage() {
   const [collectionsList, setCollectionsList] = useState<CollectionEntry[]>([]);
   const [filterLimits, setFilterLimits] = useState<FilterLimits | null>(null);
-  const [filterValues, setFilterValues] = useState({});
+  const [filterValues, setFilterValues] = useState<Record<string, string | number>>({});
   const [textFilterValue, setTextFilterValue] = useState('');
   const [limit, setLimit] = useState<number>(12);
   const [offset, setOffset] = useState<number>(0);
   const [totalCount, setTotalCount] = useState<number>(0);
 
   const { getCollections } = usePricingCollectionsApi();
+  const getCollectionsRef = useRef(getCollections);
 
   useEffect(() => {
-    getCollections({ limit, offset })
-      .then(data => {
-        setCollectionsList(data.collections);
-        setTotalCount(data.total || 0);
+    getCollectionsRef.current = getCollections;
+  }, [getCollections]);
 
-        setFilterLimits({
-          owners: data.collections.map((collection: CollectionEntry) => collection.owner),
-        });
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-  }, [limit, offset, getCollections]);
-
-  useEffect(() => {
-    const filters = {
+  const filters = useMemo(
+    () => ({
       name: textFilterValue,
       ...filterValues,
       limit,
       offset,
-    };
+    }),
+    [textFilterValue, filterValues, limit, offset]
+  );
 
-    getCollections(filters)
+  const receivedOwners = useMemo(
+    () =>
+      collectionsList.reduce((acc, collection) => {
+        acc[collection.owner.username] = (acc[collection.owner.username] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+    [collectionsList]
+  );
+
+  useEffect(() => {
+    let isActive = true;
+
+    getCollectionsRef.current(filters)
       .then(data => {
+        if (!isActive) {
+          return;
+        }
+
         setCollectionsList(data.collections);
         setTotalCount(data.total || 0);
 
-        if (data.collections.length > 0) {
-          setFilterLimits({
-            owners: data.collections.map((collection: CollectionEntry) => collection.owner),
-          });
-        }
+        setFilterLimits(
+          data.collections.length > 0
+            ? {
+                owners: data.collections.map((collection: CollectionEntry) => collection.owner),
+              }
+            : null
+        );
       })
       .catch(error => {
         console.error('Error:', error);
       });
-  }, [textFilterValue, filterValues, limit, offset, getCollections]);
+
+    return () => {
+      isActive = false;
+    };
+  }, [filters]);
 
   return (
     <>
@@ -95,10 +108,7 @@ export default function CollectionsListPage() {
           <div className="w-[20vw]" />
           {filterLimits && collectionsList.length > 0 && (
             <CollectionFilters
-              receivedOwners={collectionsList.reduce((acc, collection) => {
-                acc[collection.owner.username] = (acc[collection.owner.username] || 0) + 1;
-                return acc;
-              }, {} as Record<string, number>)}
+              receivedOwners={receivedOwners}
               textFilterValue={textFilterValue}
               setFilterValues={setFilterValues}
             />
@@ -109,8 +119,8 @@ export default function CollectionsListPage() {
           <PricingsListContainer>
             <div className="mt-[50px] mb-[50px] flex w-full flex-wrap justify-evenly gap-12 px-2.5">
               {collectionsList.length > 0 ? (
-                Object.values(collectionsList).map(collection => (
-                  <CollectionListCard key={uuidv4()} collection={collection} />
+                collectionsList.map(collection => (
+                  <CollectionListCard key={collection.id} collection={collection} />
                 ))
               ) : (
                 <div>No collections found</div>

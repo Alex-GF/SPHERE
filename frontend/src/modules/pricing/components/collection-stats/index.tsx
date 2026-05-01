@@ -12,6 +12,8 @@ export const getCurrency = (currency: string) => {
 };
 
 export default function CollectionStats({ collection }: StatsProps) {
+  const collectionPricings = collection?.data?.pricings ?? collection?.pricings?.[0]?.pricings ?? [];
+
   return (
     <>
       <div className="flex items-center justify-between">
@@ -21,9 +23,9 @@ export default function CollectionStats({ collection }: StatsProps) {
       </div>
       <div className="mt-2 flex items-center justify-evenly gap-4">
         <div className="flex flex-col items-center justify-center text-center">
-          {collection?.pricings[0].pricings && collection?.pricings[0].pricings.length > 0 ? (
+          {collectionPricings.length > 0 ? (
             <>
-              {formatDistanceToNow(parseISO(collection.lastUpdate))} ago
+              {collection && collection.lastUpdate ? formatDistanceToNow(parseISO(collection.lastUpdate)) + ' ago' : NaN}
               <p className="text-sm text-slate-500">
                 last updated
               </p>
@@ -37,12 +39,10 @@ export default function CollectionStats({ collection }: StatsProps) {
           )}
         </div>
         <div className="flex flex-col items-center justify-center text-center">
-          {collection?.pricings[0].pricings && collection?.pricings[0].pricings.length > 0 ? (
+          {collectionPricings.length > 0 ? (
             <>
               <p>
-                {collection &&
-                  collection.pricings.length > 0 &&
-                  collection.pricings[0].pricings.length}
+                {collectionPricings.length}
               </p>
               <p className="text-sm text-slate-500">
                 pricings

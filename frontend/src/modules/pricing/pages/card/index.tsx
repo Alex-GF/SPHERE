@@ -140,13 +140,13 @@ export default function CardPage() {
         return;
       } catch {
         // fallback: update variables in-place on the object so at least variables reflect new values
-        setPricing((prev) => (prev ? { ...prev, variables } : prev));
+        setPricing((prev) => (prev ? { ...prev, variables: variables as Record<string, string | number | boolean> } : prev));
         return;
       }
     }
 
     // if we don't have YAML text, fallback to in-memory update
-    setPricing((prev) => (prev ? { ...prev, variables } : prev));
+    setPricing((prev) => (prev ? { ...prev, variables: variables as Record<string, string | number | boolean> } : prev));
   };
 
   const toggleModal = () => {
@@ -223,7 +223,7 @@ export default function CardPage() {
                 Collection:{' '}
                 <Link
                   className='text-blue-500 hover:text-blue-700'
-                  to={`/pricings/collections/${currentPricing.owner.id}/${currentPricing.collectionName}`}
+                  to={`/pricings/collections/${currentPricing.owner.username}/${currentPricing.collectionName}`}
                 >
                   {currentPricing.collectionName}
                 </Link>
@@ -272,8 +272,8 @@ export default function CardPage() {
               {pricingData?.map((entry, index) => (
                 <option key={index} value={entry.yaml}>
                   {entry.yaml
-                    .split('/')
-                    [entry.yaml.split('/').length - 1].replace('.yaml', '')
+                    .split('/')[entry.yaml.split('/').length - 1]
+                    .replace('.yaml', '')
                     .replace('.yml', ' ')}
                 </option>
               ))}

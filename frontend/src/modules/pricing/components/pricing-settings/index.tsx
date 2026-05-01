@@ -20,7 +20,6 @@ export default function PricingSettings({
   updatePricingInformation,
 }: {
   pricingName: string;
-  collectionName: string;
   pricingData: AnalyticsDataEntry[];
   updatePricingInformation: (pricing: any) => void;
 }) {

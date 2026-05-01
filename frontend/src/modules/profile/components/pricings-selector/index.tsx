@@ -30,7 +30,7 @@ export default function PricingSelector({ value, onChange }: MultiSelectCardsPro
         if (data.error) {
           throw new Error(data.error);
         } else if (data.pricings) {
-          setPricings(data.pricings.pricings.map((pricing: any) => pricing.name));
+          setPricings(data.pricings.map((pricing: any) => pricing.name));
         }
       })
       .catch(error => {
