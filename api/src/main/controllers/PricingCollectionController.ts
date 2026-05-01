@@ -103,7 +103,13 @@ class PricingCollectionController {
 
       pricingsToDownload.forEach(pricingPath => {
         const relativePath = path.join(baseDir, pricingPath);
-        archive.file(relativePath, { name: pricingPath.split('/').slice(4).join('/') });
+        const pathParts = pricingPath.split('/');
+        const pricingName = pathParts[3];
+        const pricingFileName = pathParts[pathParts.length - 1];
+
+        archive.file(relativePath, {
+          name: path.posix.join(pricingName, pricingFileName),
+        });
       });
 
       archive.on('error', (err: any) => {

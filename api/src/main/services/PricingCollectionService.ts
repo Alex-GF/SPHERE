@@ -28,14 +28,15 @@ class PricingCollectionService {
     return result;
   }
 
-  async indexByUsername(username: string, reqUser: LeanUser) {
+  async indexByUsername(username: string, reqUser?: LeanUser) {
     const user = await this.userService.exists(username);
 
     if (!user) {
       throw new Error('NOT FOUND: User not found');
     }
 
-    const includePrivate = username === reqUser.username || reqUser.role === 'ADMIN';
+    const includePrivate =
+      reqUser && (reqUser.username === reqUser.username || reqUser.role === 'ADMIN');
 
     const collections = await this.pricingCollectionRepository.findByUsername(
       username,
@@ -45,7 +46,7 @@ class PricingCollectionService {
     return collections;
   }
 
-  async show(owner: string, collectionName: string, reqUser: LeanUser) {
+  async show(owner: string, collectionName: string, reqUser?: LeanUser) {
     const collection = await this.pricingCollectionRepository.findByOwnerAndName(
       owner,
       collectionName
@@ -54,7 +55,10 @@ class PricingCollectionService {
       throw new Error('NOT FOUND: Pricing collection not found');
     }
 
-    if (collection.private && owner !== reqUser.username && reqUser.role !== 'ADMIN') {
+    if (
+      collection.private &&
+      (!reqUser || (owner !== reqUser.username && reqUser.role !== 'ADMIN'))
+    ) {
       throw new Error('PERMISSION ERROR: You are not the owner of this private collection');
     }
 
@@ -281,15 +285,16 @@ class PricingCollectionService {
     ignoreResult: boolean = false,
     reqUser?: LeanUser
   ) {
-
-    if (!reqUser && !ignoreResult){
-      throw new Error('INTERNAL ERROR: You have not provided "reqUser". Either set "ignoreResult" to true or provide the user performing the action as "reqUser".');
+    if (!reqUser && !ignoreResult) {
+      throw new Error(
+        'INTERNAL ERROR: You have not provided "reqUser". Either set "ignoreResult" to true or provide the user performing the action as "reqUser".'
+      );
     }
 
     if (reqUser && owner !== reqUser.username && reqUser.role !== 'ADMIN' && !ignoreResult) {
       throw new Error('PERMISSION ERROR: You can only delete collections for yourself');
     }
-    
+
     const collection = await this.pricingCollectionRepository.findByOwnerAndName(
       owner,
       collectionName
@@ -301,13 +306,11 @@ class PricingCollectionService {
     let result;
 
     if (deleteCascade) {
-      result = await this.pricingCollectionRepository.destroyWithPricings(
-        collection.id
-      );
+      result = await this.pricingCollectionRepository.destroyWithPricings(collection.id);
 
       const collectionPath = this._getExtractPath(owner, collectionName);
       if (fs.existsSync(collectionPath)) {
-        fs.rmdirSync(collectionPath, { recursive: true });
+        fs.rmSync(collectionPath, { recursive: true });
       }
     } else {
       await this.pricingRepository.removePricingsFromCollection(collection.id);

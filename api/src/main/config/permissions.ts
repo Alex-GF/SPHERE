@@ -51,7 +51,7 @@ export const ROUTE_PERMISSIONS: RoutePermission[] = [
 
   {
     path: '/pricings',
-    methods: ['GET'],
+    methods: ['GET', 'PUT'], // Also allow updating pricings through /pricings endpoint for simplicity
     isPublic: true, // Allow public access to list pricings
   },
   {
@@ -76,7 +76,12 @@ export const ROUTE_PERMISSIONS: RoutePermission[] = [
 
   {
     path: '/collections/**',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    methods: ['GET'],
+    isPublic: true, // Allow public access to view collections
+  },
+  {
+    path: '/collections/**',
+    methods: ['POST', 'PUT', 'DELETE', 'PATCH'],
     allowedUserRoles: ['ADMIN', 'USER'],
   },
 

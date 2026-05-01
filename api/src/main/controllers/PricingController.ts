@@ -26,6 +26,7 @@ class PricingController {
   async index(req: any, res: any) {
     try {
       const queryParams: PricingIndexQueryParams = this._transformIndexQueryParams(req.query);
+      queryParams.includePricingsInCollection = true;
 
       const pricings = await this.pricingService.index(queryParams, req.user);
       res.json(pricings);

@@ -216,7 +216,7 @@ class PricingCollectionRepository extends RepositoryBase {
         {
           $match: {
             name: {
-              $regex: name,
+              $regex: `^${name}$`,
               $options: 'i',
             },
             _ownerName: owner,
@@ -261,7 +261,7 @@ class PricingCollectionRepository extends RepositoryBase {
         {
           $match: {
             name: {
-              $regex: name,
+              $regex: `^${name}$`,
               $options: 'i',
             },
             _ownerName: username,

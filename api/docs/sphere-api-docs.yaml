@@ -454,7 +454,7 @@ paths:
       description: |
         Receives a plain text YAML file containing an iPricing in Pricing2Yaml and updates its syntaxVersion to the latest Pricign2Yaml syntax version. 
         
-        **Authentication**: User API Key
+        **Authentication**: Public
 
       tags:
         - Pricings
@@ -887,7 +887,12 @@ paths:
       description: |
         Retrieves a paginated list of all public collections.
 
-        **Authentication**: User token
+        **Authentication**: Public
+
+        **Permission**:
+        - UNAUTHENTICATED: can only see PUBLIC collections.
+        - USER: can see PUBLIC collections.
+        - ADMIN: can see any collection (PUBLIC or PRIVATE).
 
       tags:
         - Collections
@@ -922,9 +927,10 @@ paths:
       description: |
         Retrieves a paginated list of a user's collections.
 
-        **Authentication**: User token
+        **Authentication**: Public
 
         **Permission**: 
+        - UNAUTHENTICATED: can only list PUBLIC collections of any user.
         - USER: can list all their collections (PUBLIC, PRIVATE) and PUBLIC collections of other users.
         - ADMIN: can access any user's collections.
 
@@ -1051,9 +1057,10 @@ paths:
       description: |
         Retrieves a collection by name for a given user. If the user requesting is the owner of the collection, they can then access private collections. Otherwise, only public ones.
 
-        **Authentication**: User token
+        **Authentication**: Public
 
         **Permission**: 
+        - UNAUTHENTICATED: can only access PUBLIC collections.
         - USER: can access their own collections (PUBLIC, PRIVATE) and PUBLIC collections of other users.
         - ADMIN: can access any user's collections.
 
@@ -1167,9 +1174,10 @@ paths:
       description: |
         Downloads a given collection as a zip file containing the text plain YAMLs of the pricings in the collection.
 
-        **Authentication**: User API Key
+        **Authentication**: Public
 
         **Permission**:
+        - UNAUTHENTICATED: can only download PUBLIC collections. 
         - USER: can download their own collections or PUBLIC ones.
         - ADMIN: can download any collection.
 
