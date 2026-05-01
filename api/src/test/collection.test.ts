@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import request from 'supertest';
 import fs from 'fs/promises';
+import unzipper from 'unzipper';
 import { afterAll, beforeAll, afterEach, describe, expect, it } from 'vitest';
 import { shutdownApp, TestApp } from './utils/testApp';
 import { createAndLoginUser, createTestUser, deleteTestUser } from './utils/users/userTestUtils';
@@ -271,6 +272,18 @@ describe('Pricing Collections API integration', () => {
   });
 
   describe('GET /api/v1/collections/:username/:collectionName', () => {
+    it('returns 200 and collection details without authentication', async () => {
+      const owner = await createAndLoginUser('USER');
+
+      const collection = await createTestCollection({ _ownerName: owner.username });
+
+      const res = await request(app)
+        .get(`${BASE_PATH}/collections/${owner.username}/${encodeURIComponent(collection.name)}`);
+
+      expect(res.status).toBe(200);
+      expect(res.body.name).toBe(collection.name);
+    });
+    
     it('returns 200 and collection details for owner', async () => {
       const owner = await createAndLoginUser('USER');
 
@@ -282,6 +295,36 @@ describe('Pricing Collections API integration', () => {
 
       expect(res.status).toBe(200);
       expect(res.body.name).toBe(collection.name);
+    });
+    
+    it('returns 200 and collection details with lastUpdate for owner', async () => {
+      const owner = await createAndLoginUser('USER');
+
+      const testPricing = await createPricingForUser({ username: owner.username });
+
+      const collection = await createTestCollectionWithPricings({ _ownerName: owner.username }, [testPricing.serviceName]);
+
+      const res = await request(app)
+        .get(`${BASE_PATH}/collections/${owner.username}/${encodeURIComponent(collection.name)}`)
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      expect(res.status).toBe(200);
+      expect(res.body.name).toBe(collection.name);
+      expect(res.body.lastUpdate).toBeDefined();
+    });
+    
+    it('returns 200 and collection with exact name', async () => {
+      const owner = await createAndLoginUser('USER');
+
+      const collection1 = await createTestCollection({ _ownerName: owner.username, name: `Test Collection` });
+      await createTestCollection({ _ownerName: owner.username, name: `Test Collection 2` });
+
+      const res = await request(app)
+        .get(`${BASE_PATH}/collections/${owner.username}/${encodeURIComponent(collection1.name)}`)
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      expect(res.status).toBe(200);
+      expect(res.body.name).toBe(collection1.name);
     });
 
     it('returns 404 for non-existing collection', async () => {
@@ -454,10 +497,27 @@ describe('Pricing Collections API integration', () => {
         .get(
           `${BASE_PATH}/collections/${owner.username}/${encodeURIComponent(collection.name)}/download`
         )
-        .set('Authorization', `Bearer ${owner.token}`);
+        .set('Authorization', `Bearer ${owner.token}`)
+        .buffer(true)
+        .parse((resStream, cb) => {
+          const chunks: Buffer[] = [];
+          resStream.on('data', (chunk: Buffer) => chunks.push(Buffer.from(chunk)));
+          resStream.on('end', () => cb(null, Buffer.concat(chunks)));
+        });
 
       expect(res.status).toBe(200);
       expect(res.header['content-type']).toMatch(/zip|application\/zip/);
+
+      const zipBuffer: Buffer = res.body instanceof Buffer ? res.body : Buffer.from(res.body);
+      const directory = await unzipper.Open.buffer(zipBuffer);
+      const fileNames = directory.files.map(f => f.path);
+
+      expect(fileNames).toEqual(
+        expect.arrayContaining([
+          `${testPricing1.serviceName}/${testPricing1.version}.yml`,
+          `${testPricing2.serviceName}/${testPricing2.version}.yml`,
+        ])
+      );
     });
     
     it('Returns 400 if existing is empty', async () => {
@@ -472,6 +532,21 @@ describe('Pricing Collections API integration', () => {
         .set('Authorization', `Bearer ${owner.token}`);
 
       expect(res.status).toBe(400);
+      expect(res.body.error).toBeDefined();
+    });
+    
+    it('Returns 403 if colleciton is private', async () => {
+      const owner = await createAndLoginUser('USER');
+
+      const collection = await createTestCollection({ _ownerName: owner.username, private: true });
+
+      const res = await request(app)
+        .get(
+          `${BASE_PATH}/collections/${owner.username}/${encodeURIComponent(collection.name)}/download`
+        )
+        .set('Authorization', `Bearer ${testUser.token}`);
+
+      expect(res.status).toBe(403);
       expect(res.body.error).toBeDefined();
     });
     

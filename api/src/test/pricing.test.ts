@@ -198,6 +198,23 @@ describe('Pricings API integration', () => {
       expect(response.body.usageLimits).toBeDefined();
       expect(response.body.plans).toBeDefined();
     });
+    
+    it('Return 200 and updated pricing object with unauthenticated user.', async () => {
+      const serviceName = `updated_pricing_${randomSuffix()}`;
+      const version = `3.1.${Math.floor(Math.random() * 1000)}`;
+      const filePath = await createAndTrackPricingYaml(serviceName, version);
+      const pricingYaml = await fs.readFile(filePath, 'utf8');
+
+      const response = await request(app)
+        .put(`${BASE_PATH}/pricings`)
+        .send({ pricing: pricingYaml });
+
+      expect(response.status).toBe(200);
+      expect(response.body.version).toBeDefined();
+      expect(response.body.features).toBeDefined();
+      expect(response.body.usageLimits).toBeDefined();
+      expect(response.body.plans).toBeDefined();
+    });
 
     it('Return 401 and error object with missing Authorization header.', async () => {
       const response = await request(app)
