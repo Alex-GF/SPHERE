@@ -36,7 +36,7 @@ class PricingCollectionService {
     }
 
     const includePrivate =
-      reqUser && (reqUser.username === reqUser.username || reqUser.role === 'ADMIN');
+      reqUser && (username === reqUser.username || reqUser.role === 'ADMIN');
 
     const collections = await this.pricingCollectionRepository.findByUsername(
       username,
