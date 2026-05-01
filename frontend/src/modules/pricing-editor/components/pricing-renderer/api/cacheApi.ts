@@ -12,7 +12,7 @@ export function useCacheApi() {
 
   const getFromCache = async (key: string) => {
     return fetch(
-      `${CACHE_BASE_PATH}/get?key=${key}`,
+      `${CACHE_BASE_PATH}?key=${key}`,
       {
         method: 'GET',
         headers: basicHeaders,
@@ -26,14 +26,15 @@ export function useCacheApi() {
           return data;
         }
       })
-      .catch(error => {
-        return Promise.reject(error as Error);
+      .catch(async error => {
+        const body = await (error as Response).json().catch(() => ({}));
+        return Promise.reject(body as Error);
       });
   };
 
   const setInCache = async (key: string, value: string, expirationInSeconds?: number) => {
     return fetch(
-      `${CACHE_BASE_PATH}/set`,
+      `${CACHE_BASE_PATH}`,
       {
         method: 'POST',
         headers: basicHeaders,
@@ -52,8 +53,9 @@ export function useCacheApi() {
           return data;
         }
       })
-      .catch(error => {
-        return Promise.reject(error as Error);
+      .catch(async error => {
+        const body = await (error as Response).json().catch(() => ({}));
+        return Promise.reject(body as Error);
       });
   };
 
