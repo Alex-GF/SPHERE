@@ -10,10 +10,8 @@ const loadFileRoutes = function (app: express.Application) {
   const baseUrl = (process.env.BASE_URL_PATH ?? "") + '/api/v1';
 
   app
-    .route(baseUrl + '/cache/get')
-    .get(cacheController.get);
-
-  app.route(baseUrl + '/cache/set')
+    .route(baseUrl + '/cache')
+    .get(cacheController.get)
     .post(CacheValidator.set, handleValidation, cacheController.set);
 };
 

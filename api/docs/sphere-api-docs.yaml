@@ -1207,7 +1207,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
-  /cache/get:
+  /cache:
     get:
       summary: Retrieve a value from cache
       description: |
@@ -1215,7 +1215,7 @@ paths:
         The value is returned as-is from the cache. If the key does not exist,
         returns null.
 
-        **Authentication**: User token
+        **Authentication**: (only if client is sphere frontend, otherwise requires ADMIN role)
 
       tags:
         - Cache
@@ -1252,8 +1252,7 @@ paths:
                 $ref: '#/components/schemas/Error'
               example:
                 error: "ERROR: Redis client not initialized"
-
-  /cache/set:
+                
     post:
       summary: Store a value in cache
       description: |
@@ -1265,7 +1264,7 @@ paths:
         If a key already exists in the cache with a different value, the operation
         will fail with a CONFLICT error. Use a different key to store a new value.
 
-        **Authentication**: User token
+        **Authentication**: Public (only if client is sphere frontend, otherwise requires ADMIN role)
 
       tags:
         - Cache
