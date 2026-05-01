@@ -23,7 +23,6 @@ describe('Cache API integration', () => {
 
       const setResponse = await request(app)
         .post(`${BASE_PATH}/cache/set`)
-        .set('Authorization', `Bearer ${adminUser.token}`)
         .send({
           key,
           value,
@@ -43,8 +42,7 @@ describe('Cache API integration', () => {
 
     it('returns null when key does not exist', async () => {
       const response = await request(app)
-        .get(`${BASE_PATH}/cache/get?key=non-existing-key`)
-        .set('Authorization', `Bearer ${adminUser.token}`);
+        .get(`${BASE_PATH}/cache/get?key=non-existing-key`);
 
       expect(response.status).toBe(200);
       expect(response.body).toBeNull();
@@ -55,7 +53,6 @@ describe('Cache API integration', () => {
 
       await request(app)
         .post(`${BASE_PATH}/cache/set`)
-        .set('Authorization', `Bearer ${adminUser.token}`)
         .send({ key, value: { v: 1 }, expirationInSeconds: 120 });
 
       const response = await request(app)
@@ -72,7 +69,6 @@ describe('Cache API integration', () => {
 
       const setResponse = await request(app)
         .post(`${BASE_PATH}/cache/set`)
-        .set('Authorization', `Bearer ${adminUser.token}`)
         .send({
           key,
           value: { defaultExpiration: true },
@@ -87,14 +83,22 @@ describe('Cache API integration', () => {
       expect(getResponse.body).toEqual({ defaultExpiration: true });
     });
 
-    it('returns 500 when key is missing in set endpoint', async () => {
+    it('returns 422 when key is missing in set endpoint', async () => {
       const response = await request(app)
         .post(`${BASE_PATH}/cache/set`)
-        .set('Authorization', `Bearer ${adminUser.token}`)
         .send({ value: { a: 1 } });
 
-      expect(response.status).toBe(500);
-      expect(response.body.error).toBeDefined();
+      expect(response.status).toBe(422);
+      expect(response.body.errors).toBeDefined();
+    });
+    
+    it('returns 422 when value is missing in set endpoint', async () => {
+      const response = await request(app)
+        .post(`${BASE_PATH}/cache/set`)
+        .send({ key: 'integration-cache-missing-value' });
+
+      expect(response.status).toBe(422);
+      expect(response.body.errors).toBeDefined();
     });
   });
 

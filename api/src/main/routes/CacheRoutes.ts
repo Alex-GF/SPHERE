@@ -1,5 +1,7 @@
 import express from 'express';
 import CacheController from '../controllers/CacheController';
+import { handleValidation } from '../middlewares/ValidationHandlingMiddleware';
+import * as CacheValidator from '../controllers/validation/CacheValidation';
 
 
 const loadFileRoutes = function (app: express.Application) {
@@ -12,7 +14,7 @@ const loadFileRoutes = function (app: express.Application) {
     .get(cacheController.get);
 
   app.route(baseUrl + '/cache/set')
-    .post(cacheController.set);
+    .post(CacheValidator.set, handleValidation, cacheController.set);
 };
 
 export default loadFileRoutes;
