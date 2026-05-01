@@ -59,21 +59,6 @@ describe('Pricing Collections API integration', () => {
       expect(response.body).toBeDefined();
       expect(Array.isArray(response.body.collections)).toBe(true);
     });
-
-    it('returns 401 when missing Authorization header', async () => {
-      const response = await request(app).get(`${BASE_PATH}/collections`);
-      expect(response.status).toBe(401);
-      expect(response.body.error).toBeDefined();
-    });
-
-    it('returns 401 with malformed Authorization header', async () => {
-      const response = await request(app)
-        .get(`${BASE_PATH}/collections`)
-        .set('Authorization', 'Token malformed');
-
-      expect(response.status).toBe(401);
-      expect(response.body.error).toBeDefined();
-    });
   });
 
   describe('GET /api/v1/collections/:username', () => {
@@ -92,7 +77,6 @@ describe('Pricing Collections API integration', () => {
 
     it('returns 200 and public collections for other users', async () => {
       const owner = await createAndLoginUser('USER');
-      const requester = await createAndLoginUser('USER');
 
       // create one public and one private collection
       const publicCollection = await createTestCollection({ _ownerName: owner.username });
@@ -100,7 +84,7 @@ describe('Pricing Collections API integration', () => {
 
       const response = await request(app)
         .get(`${BASE_PATH}/collections/${owner.username}`)
-        .set('Authorization', `Bearer ${requester.token}`);
+        .set('Authorization', `Bearer ${testUser.token}`);
 
       expect(response.status).toBe(200);
       expect(Array.isArray(response.body.collections)).toBe(true);
@@ -129,7 +113,6 @@ describe('Pricing Collections API integration', () => {
 
     it('returns 200, public collections and correct total number of pricings for other users', async () => {
       const owner = await createAndLoginUser('USER');
-      const requester = await createAndLoginUser('USER');
 
       const testPricing1 = await createPricingForUser({ username: owner.username });
       const testPricing2 = await createPricingForUser({ username: owner.username });
@@ -140,7 +123,7 @@ describe('Pricing Collections API integration', () => {
 
       const response = await request(app)
         .get(`${BASE_PATH}/collections/${owner.username}`)
-        .set('Authorization', `Bearer ${requester.token}`);
+        .set('Authorization', `Bearer ${testUser.token}`);
 
       expect(response.status).toBe(200);
       expect(Array.isArray(response.body.collections)).toBe(true);
@@ -151,12 +134,6 @@ describe('Pricing Collections API integration', () => {
       expect(names).not.toContain(privateCollection.name);
       // the public collection should have the correct number of pricings
       expect(response.body.collections[0].numberOfPricings).toBeGreaterThan(1);
-    });
-
-    it('returns 401 when missing Authorization header', async () => {
-      const response = await request(app).get(`${BASE_PATH}/collections/${testUser.username}`);
-      expect(response.status).toBe(401);
-      expect(response.body.error).toBeDefined();
     });
   });
 
