@@ -268,7 +268,7 @@ class PricingRepository extends RepositoryBase {
     }
   }
 
-  async findAnyByNameAndOwner(name: string, owner: string, ...args: any) {
+  async findAnyByNameAndOwner(name: string, owner: string) {
     try {
       const pricing = await PricingMongoose.aggregate(
         getPricingByNameAndOwnerAggregator(name, owner)
@@ -394,7 +394,7 @@ class PricingRepository extends RepositoryBase {
     return pricing.toJSON();
   }
 
-  async removePricingFromCollection(pricingName: string, owner: string, ...args: any) {
+  async removePricingFromCollection(pricingName: string, owner: string) {
     return await PricingMongoose.updateMany(
       {
         name: pricingName,

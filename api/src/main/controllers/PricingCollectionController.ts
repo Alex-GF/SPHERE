@@ -22,6 +22,7 @@ class PricingCollectionController {
     // this.generateAnalytics = this.generateAnalytics.bind(this);
     this.update = this.update.bind(this);
     this.destroy = this.destroy.bind(this);
+    this.removePricingFromCollection = this.removePricingFromCollection.bind(this);
   }
 
   async index(req: any, res: any) {
@@ -203,6 +204,19 @@ class PricingCollectionController {
       );
       const message = result ? 'Successfully deleted.' : 'Could not delete collection.';
       res.status(204).json({ message: message });
+    } catch (err: any) {
+      const {status, message} = handleError(err);
+      res.status(status).send({ error: message });
+    }
+  }
+
+  async removePricingFromCollection(req: any, res: any) {
+    try {
+      const result = await this.pricingCollectionService.removePricingFromCollection(
+        req.params.pricingName,
+        req.user.username
+      );
+      res.json(result);
     } catch (err: any) {
       const {status, message} = handleError(err);
       res.status(status).send({ error: message });

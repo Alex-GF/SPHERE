@@ -276,30 +276,6 @@ class PricingService {
     return true;
   }
 
-  // TODO: this method may failwhen there are two pricings with the same name in different collections, we should consider the collection in the search or force unique pricing names.
-  async removePricingFromCollection(pricingName: string, owner: string) {
-    try {
-      const pricing = await this.pricingRepository.findAnyByNameAndOwner(pricingName, owner);
-
-      if (!pricing) {
-        throw new Error('NOT FOUND: Either the pricing does not exist or you are not its owner');
-      }
-
-      await this.pricingRepository.removePricingFromCollection(pricingName, owner);
-      if (pricing.versions[0]._collectionId) {
-        await this.pricingCollectionService.updateCollectionAnalytics(
-          pricing.versions[0]._collectionId
-        );
-      } else {
-        throw new Error('NOT FOUND: Pricing is not in a collection');
-      }
-
-      return true;
-    } catch (err) {
-      throw new Error((err as Error).message);
-    }
-  }
-
   async destroy(
     pricingName: string,
     owner: string,

@@ -45,9 +45,9 @@ const loadFileRoutes = function (app: express.Application) {
     .route(baseUrl + '/collections/:username/:collectionName/download')
     .get(pricingCollectionController.downloadCollection);
 
-  // app
-  //   .route(baseUrl + '/me/collections/pricings/:pricingName')
-  //   .delete(pricingController.removePricingFromCollection);
+  app
+    .route(baseUrl + '/collections/:username/:collectionName/pricings/:pricingName')
+    .delete(pricingCollectionController.removePricingFromCollection);
 };
 
 export default loadFileRoutes;
