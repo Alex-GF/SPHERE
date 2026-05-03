@@ -89,12 +89,27 @@ jobs:
             });
           '
 
-      - name: Install minizinc
+      - name: Install MiniZinc (Official Bundle)
         run: |
-          sudo apt-get update
-          sudo apt-get install -y minizinc
-          sudo apt-get clean
+          # 1. Descargar la versión específica (puedes subir a la 2.8.3 si quieres)
+          wget https://github.com/MiniZinc/libminizinc/releases/download/2.8.0/MiniZincIDE-2.8.0-bundle-linux-x86_64.tgz
+          
+          # 2. Extraerlo
+          tar -zxf MiniZincIDE-2.8.0-bundle-linux-x86_64.tgz
+          
+          # 3. Moverlo a una ruta fija
+          sudo mv MiniZincIDE-2.8.0-bundle-linux-x86_64 /opt/minizinc
+          
+          # 4. Crear un enlace simbólico al binario principal
+          sudo ln -s /opt/minizinc/bin/minizinc /usr/local/bin/minizinc
+          
+          # 5. IMPORTANTE: Añadir el directorio de binarios al PATH de GitHub Actions
+          echo "/opt/minizinc/bin" >> $GITHUB_PATH
+          
+      - name: Verify MiniZinc and Solvers
+        run: |
           minizinc --version
+          minizinc --solvers # Esto es clave: si no sale 'gecode', por eso te da el 500
 
       - name: Install pnpm
         run: npm install -g pnpm
