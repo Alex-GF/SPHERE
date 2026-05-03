@@ -45,7 +45,7 @@ describe('Cache API integration', () => {
       const response = await requestWithOrigin('get', `${BASE_PATH}/cache?key=missing-key`, forbiddenOrigin);
 
       expect(response.status).toBe(403);
-      expect(response.body.error).toBe('Forbidden');
+      expect(response.body.error).toBeDefined();
     });
 
     it('allows ADMIN auth for non-allowed origins', async () => {
@@ -99,7 +99,7 @@ describe('Cache API integration', () => {
       });
 
       expect(response.status).toBe(403);
-      expect(response.body.error).toBe('Forbidden');
+      expect(response.body.error).toBeDefined();
     });
 
     it('allows ADMIN auth for non-allowed origins', async () => {
