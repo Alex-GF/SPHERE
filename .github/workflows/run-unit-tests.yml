@@ -93,7 +93,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y snapd
-          sudo snap install minizinc
+          sudo snap install minizinc --classic
           
       - name: Verify MiniZinc and Solvers
         run: |
