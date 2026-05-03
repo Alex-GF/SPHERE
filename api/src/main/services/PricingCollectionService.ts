@@ -323,8 +323,13 @@ class PricingCollectionService {
     return true;
   }
 
-  async removePricingFromCollection(pricingName: string, owner: string, collectionName?: string) {
+  async removePricingFromCollection(pricingName: string, owner: string, collectionName: string, reqUser?: LeanUser) {
     try {
+
+      if (reqUser && owner !== reqUser.username && reqUser.role !== 'ADMIN') {
+        throw new Error('PERMISSION ERROR: You can only remove pricings from collections for yourself');
+      }
+
       const pricing = await this.pricingRepository.findOne(pricingName, owner, { collectionName });
 
       if (!pricing) {

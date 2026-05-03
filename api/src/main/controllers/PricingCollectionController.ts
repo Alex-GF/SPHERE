@@ -212,11 +212,13 @@ class PricingCollectionController {
 
   async removePricingFromCollection(req: any, res: any) {
     try {
-      const result = await this.pricingCollectionService.removePricingFromCollection(
+      await this.pricingCollectionService.removePricingFromCollection(
         req.params.pricingName,
-        req.user.username
+        req.params.username,
+        req.params.collectionName,
+        req.user
       );
-      res.json(result);
+      res.json({message: 'Pricing removed from collection successfully.'});
     } catch (err: any) {
       const {status, message} = handleError(err);
       res.status(status).send({ error: message });

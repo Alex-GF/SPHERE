@@ -461,6 +461,88 @@ describe('Pricing Collections API integration', () => {
     });
   });
 
+  describe('DELETE /api/v1/collections/:username/:collectionName/pricings/:pricingName', () => {
+    it('returns 200 and removes a pricing from the collection for its owner', async () => {
+      const owner = await createAndLoginUser('USER');
+
+      const pricingToRemove = await createPricingForUser({ username: owner.username });
+      const pricingToKeep = await createPricingForUser({ username: owner.username });
+
+      const createdCollection = await createTestCollectionWithPricings(
+        { _ownerName: owner.username },
+        [pricingToRemove.serviceName, pricingToKeep.serviceName]
+      );
+
+      const res = await request(app)
+        .delete(
+          `${BASE_PATH}/collections/${owner.username}/${encodeURIComponent(createdCollection.name)}/pricings/${encodeURIComponent(pricingToRemove.serviceName)}`
+        )
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      expect(res.status).toBe(200);
+      expect(res.body).toEqual({ message: 'Pricing removed from collection successfully.' });
+
+      const refreshedCollection = await request(app)
+        .get(
+          `${BASE_PATH}/collections/${owner.username}/${encodeURIComponent(createdCollection.name)}`
+        )
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      expect(refreshedCollection.status).toBe(200);
+      expect(Array.isArray(refreshedCollection.body.data.pricings)).toBe(true);
+
+      const remainingNames = refreshedCollection.body.data.pricings.map((pricing: any) => pricing.name);
+      expect(remainingNames).toContain(pricingToKeep.serviceName);
+      expect(remainingNames).not.toContain(pricingToRemove.serviceName);
+    });
+
+    it('returns 404 when the pricing does not belong to the specified collection', async () => {
+      const owner = await createAndLoginUser('USER');
+
+      const pricingToRemove = await createPricingForUser({ username: owner.username });
+      const sourceCollection = await createTestCollectionWithPricings(
+        { _ownerName: owner.username },
+        [pricingToRemove.serviceName]
+      );
+      const targetCollection = await createTestCollection({ _ownerName: owner.username });
+
+      if ((sourceCollection as any)?._id) {
+        collectionIdsToDelete.add((sourceCollection as any)._id);
+      }
+
+      const res = await request(app)
+        .delete(
+          `${BASE_PATH}/collections/${owner.username}/${encodeURIComponent(targetCollection.name)}/pricings/${encodeURIComponent(pricingToRemove.serviceName)}`
+        )
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      expect(res.status).toBe(404);
+    });
+
+    it('returns 403 when another authenticated user tries to remove the pricing', async () => {
+      const owner = await createAndLoginUser('USER');
+      const requester = await createAndLoginUser('USER');
+
+      const pricingToRemove = await createPricingForUser({ username: owner.username });
+      const createdCollection = await createTestCollectionWithPricings(
+        { _ownerName: owner.username },
+        [pricingToRemove.serviceName]
+      );
+
+      if ((createdCollection as any)?._id) {
+        collectionIdsToDelete.add((createdCollection as any)._id);
+      }
+
+      const res = await request(app)
+        .delete(
+          `${BASE_PATH}/collections/${owner.username}/${encodeURIComponent(createdCollection.name)}/pricings/${encodeURIComponent(pricingToRemove.serviceName)}`
+        )
+        .set('Authorization', `Bearer ${requester.token}`);
+
+      expect(res.status).toBe(403);
+    });
+  });
+
   describe('GET /api/v1/collections/:username/:collectionName/download', () => {
     it('Returns 200 and zip content for existing collection', async () => {
       const owner = await createAndLoginUser('USER');
