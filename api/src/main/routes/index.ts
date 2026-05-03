@@ -13,7 +13,7 @@ const loadRoutes = async function (app: express.Application) {
     fs
       .readdirSync(__dirname)
       .filter(file => {
-        return file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.ts';
+        return file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === (["development"].includes(process.env.ENVIRONMENT ?? "") ? '.ts' : '.js');
       })
       .map(async file => {
         const fileURL = pathToFileURL(path.join(__dirname, file)).href;

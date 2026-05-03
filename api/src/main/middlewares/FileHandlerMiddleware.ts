@@ -1,6 +1,6 @@
 import fs from 'fs';
 import multer from 'multer';
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction, RequestHandler } from 'express';
 import {v4 as uuidv4} from 'uuid';
 import { sanitizePathSegment } from '../utils/path-utils';
 import path from 'path';
@@ -16,7 +16,7 @@ const addFilenameToBody = (...fieldNames: string[]) => (req: any, res: any, next
   return next();
 };
 
-const handleFileUpload = (imageFieldNames: string[], folder: string) => {
+const handleFileUpload = (imageFieldNames: string[], folder: string): RequestHandler => {
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
       fs.mkdirSync(folder, { recursive: true });
@@ -35,7 +35,7 @@ const handleFileUpload = (imageFieldNames: string[], folder: string) => {
   }
 };
 
-const handlePricingUpload = (pricingFieldNames: string[], baseFolder: string) => {
+const handlePricingUpload = (pricingFieldNames: string[], baseFolder: string): RequestHandler => {
   const storage = multer.diskStorage({
     destination: (req, _file, cb) => {
       try {
@@ -81,7 +81,7 @@ const handlePricingUpload = (pricingFieldNames: string[], baseFolder: string) =>
 const handleCollectionUpload = (
   collectionFieldNames: string[],
   baseFolder: string
-) => {
+): RequestHandler => {
   const storage = multer.diskStorage({
     destination: (_req, _file, cb) => {
       try {

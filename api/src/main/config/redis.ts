@@ -1,6 +1,6 @@
 import redis from "redis";
 
-const initRedis = async () => {
+const initRedis: any = async () => {
   const redisClient = redis.createClient({
     url: process.env.REDIS_URL,
   });
@@ -10,6 +10,6 @@ const initRedis = async () => {
   await redisClient.connect();
 
   return redisClient;
-}
+};
 
 export { initRedis };
