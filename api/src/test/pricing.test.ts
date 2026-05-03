@@ -58,7 +58,7 @@ describe('Pricings API integration', () => {
     it('Return 200 and paginated pricing list with valid Bearer Authorization header.', async () => {
       const user = await createAndLoginUser('USER');
       
-      for (let i = 0; i < 15; i++) {
+      for (let i = 0; i < 5; i++) {
         await createPricingForUser({
           username: user.username,
           isPrivate: false,
@@ -66,7 +66,7 @@ describe('Pricings API integration', () => {
       }
       
       const response = await request(app)
-        .get(`${BASE_PATH}/pricings?limit=12&offset=0`);
+        .get(`${BASE_PATH}/pricings?limit=3&offset=0`);
 
       expect(response.status).toBe(200);
       expect(response.body).toBeDefined();
@@ -74,7 +74,7 @@ describe('Pricings API integration', () => {
       if (response.body.total !== undefined) {
         expect(typeof response.body.total).toBe('number');
       }
-      expect(response.body.pricings.length).toBe(12);
+      expect(response.body.pricings.length).toBe(3);
     });
 
     it('Return 200 and filtered/sorted pricing list when query parameters are provided.', async () => {
@@ -483,7 +483,6 @@ describe('Pricings API integration', () => {
       const response = await request(app)
         .get(`${BASE_PATH}/pricings/${owner.username}/${serviceName}/${version}`);
 
-      console.log(response);
       expect(response.status).toBe(200);
       expect(response.body.configurationSpace).toBeDefined();
       expect(response.body.configurationSpaceSize).toBeGreaterThan(0);
@@ -500,7 +499,7 @@ describe('Pricings API integration', () => {
       const response = await request(app)
         .get(`${BASE_PATH}/pricings/${owner.username}/${serviceName}/${version}`)
         .set('Authorization', `Bearer ${testUser.token}`);
-      console.log(response);
+
       expect(response.status).toBe(200);
       expect(response.body.configurationSpace).toBeDefined();
       expect(response.body.configurationSpaceSize).toBeGreaterThan(0);
@@ -517,7 +516,7 @@ describe('Pricings API integration', () => {
       const response = await request(app)
         .get(`${BASE_PATH}/pricings/${owner.username}/${serviceName}/${version}`)
         .set('Authorization', `Bearer ${adminUser.token}`);
-      console.log(response);
+
       expect(response.status).toBe(200);
       expect(response.body.configurationSpace).toBeDefined();
       expect(response.body.configurationSpaceSize).toBeGreaterThan(0);
