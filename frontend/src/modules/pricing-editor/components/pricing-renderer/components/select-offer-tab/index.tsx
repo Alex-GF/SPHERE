@@ -1,12 +1,10 @@
 import { BilledType, RenderingStyles } from '../../types';
-import DEFAULT_RENDERING_STYLES from '../../shared/constants';
 import { motion } from 'framer-motion';
 import { cardVariants } from '../../shared/motion-variants';
 
 export default function SelectOfferTab({
   selectedBilledType,
   handleSwitchTab,
-  style,
 }: Readonly<{
   selectedBilledType: BilledType;
   handleSwitchTab: (tab: BilledType) => void;

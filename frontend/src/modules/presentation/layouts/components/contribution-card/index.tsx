@@ -1,7 +1,5 @@
 import { Contribution } from '../../../pages/contributions/data/contributions-data';
 
-const CARD_HEIGHT = 400;
-
 export default function ContributionCard({
   contribution,
   onClick,

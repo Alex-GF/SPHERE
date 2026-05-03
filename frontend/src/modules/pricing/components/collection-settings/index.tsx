@@ -88,7 +88,7 @@ export default function CollectionSettings({
         .then(() => {
           router.push('/me/pricings');
         })
-        .catch(error => {
+        .catch(() => {
           customAlert(
             `An error has occurred while removing the collection. Please, try again later.`
           );
@@ -106,7 +106,7 @@ export default function CollectionSettings({
         <h2 className="text-2xl font-bold">
           Global Settings
         </h2>
-        <div className="mt-3 flex max-w-[800px] items-center gap-3 pl-5">
+        <div className="mt-3 flex max-w-200 items-center gap-3 pl-5">
           <input
             defaultValue={collection.name}
             id="collectionNameInput"
@@ -116,7 +116,7 @@ export default function CollectionSettings({
             Rename
           </button>
         </div>
-        <div className="mt-3 flex max-w-[800px] items-center gap-3 pl-5">
+        <div className="mt-3 flex max-w-200 items-center gap-3 pl-5">
           <textarea
             id="collectionDescriptionInput"
             placeholder="Description of this collection"
