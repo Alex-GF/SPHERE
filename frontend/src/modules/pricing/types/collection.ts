@@ -9,11 +9,17 @@ export interface Collection {
     avatar: string;
   };
   private: boolean;
-  pricings: {
+  data: {
     pricings: AnalyticsDataEntry[],
     minPrice: CollectionPricingStat,
     maxPrice: CollectionPricingStat,
     configurationSpaceSize: CollectionPricingStat,
+  };
+  pricings?: {
+    pricings: AnalyticsDataEntry[];
+    minPrice: CollectionPricingStat;
+    maxPrice: CollectionPricingStat;
+    configurationSpaceSize: CollectionPricingStat;
   }[];
   analytics: CollectionAnalytics;
   lastUpdate: string;

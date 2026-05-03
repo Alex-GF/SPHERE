@@ -1,3 +1,3 @@
-import {seedDatabase} from '../src/database/seeders/mongo/seeder';
+import {seedDatabase} from '../src/main/database/seeders/mongo/seeder';
 
 seedDatabase();

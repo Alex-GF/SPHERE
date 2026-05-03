@@ -19,7 +19,6 @@ export default function PricingNameInput({ value, onChange }: PricingNameInputPr
         <select
           value={authUser.user?.username || ''}
           className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm"
-          readOnly
         >
           <option value={`${authUser.user?.username}`}>{authUser.user?.username}</option>
         </select>

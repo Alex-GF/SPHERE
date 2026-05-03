@@ -7,7 +7,7 @@ export interface PricingSearchResultItem {
   name: string;
   owner: string;
   version: string;
-  extractionDate: string;
+  createdAt: string;
   currency: string;
   analytycs: {
     numberOfFeatures: number;
@@ -43,7 +43,7 @@ export interface PricingVersion {
   version: string;
   private: boolean;
   collectionName: string | null;
-  extractionDate: string;
+  createdAt: string;
   url: string;
   yaml: string;
   analytics: object;

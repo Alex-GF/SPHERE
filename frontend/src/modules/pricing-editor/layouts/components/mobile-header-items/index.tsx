@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { useMode } from '../../../../core/hooks/useTheme';
-import { grey, primary } from '../../../../core/theme/palette';
+import { primary } from '../../../../core/theme/palette';
 import { MenuItems } from '../../header';
 import { RiArrowDropDownFill } from 'react-icons/ri';
 

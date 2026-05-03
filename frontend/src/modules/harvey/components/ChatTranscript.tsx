@@ -1,6 +1,5 @@
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { grey, primary } from '../../core/theme/palette';
 
 import type { ChatMessage, PromptPreset } from '../types/types';
 import usePlayground from '../hooks/usePlayground';

@@ -9,6 +9,11 @@ import FileUpload from '../../../core/components/file-upload-input';
 import customAlert from '../../../core/utils/custom-alert';
 import customConfirm from '../../../core/utils/custom-confirm';
 
+export type CreateCollectionFormFieldProps = {
+  value: string;
+  onChange: (value: string) => void;
+}
+
 export type CreateCollectionFormProps = {
   readonly setShowLoading: (show: boolean) => void;
 }

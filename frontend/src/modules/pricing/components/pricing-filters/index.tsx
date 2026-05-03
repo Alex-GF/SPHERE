@@ -11,7 +11,7 @@ export default function PricingFilters({
   filterLimits: FilterLimits;
   receivedOwners: Record<string, number>;
   textFilterValue: string;
-  setFilterValues: Function;
+  setFilterValues: (value: Record<string, any>) => void;
 }) {
   const [sort, setSort] = useState<string>('asc');
   const [sortBy, setSortBy] = useState<string>('');

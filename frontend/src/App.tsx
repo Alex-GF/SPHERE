@@ -11,7 +11,7 @@ export default function App() {
   const [authUser, setAuthUser] = useState<AuthUserContext>({
     isAuthenticated: false,
     user: null,
-    token: '',
+    token: null,
     tokenExpiration: null,
     isLoading: true,
   });

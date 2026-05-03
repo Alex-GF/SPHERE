@@ -9,7 +9,7 @@ interface StatsProps {
 
 export default function Analytics({ pricingData, toggleModal } : StatsProps) {
     const chartData = pricingData?.slice().reverse().map((entry) => ({
-      date: new Date(entry.extractionDate).toLocaleDateString(),
+      date: new Date(entry.createdAt).toLocaleDateString(),
       configurationSpaceSize: entry.analytics.configurationSpaceSize,
       minPrice: entry.analytics.minSubscriptionPrice,
       maxPrice: entry.analytics.maxSubscriptionPrice,

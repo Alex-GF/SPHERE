@@ -45,7 +45,7 @@ export default function CardPage() {
   const { getPricingByName, updateClientPricingVersion } = usePricingsApi();
   const { authUser } = useAuth();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   function updatePricingInformation(pricing: any) {
     if (pricing.versions && pricing.versions.length > 0) {
       const currentPricing = pricing.versions[0];
@@ -53,7 +53,7 @@ export default function CardPage() {
       setFullPricingData(pricing.versions);
       setPricingData(pricing.versions);
       setCurrentPricing(currentPricing);
-      setOldestPricingDate(oldestPricing.extractionDate);
+      setOldestPricingDate(oldestPricing.createdAt);
     } else {
       throw new Error('No pricing versions found');
     }
@@ -67,7 +67,7 @@ export default function CardPage() {
     getPricingByName(name, owner, collectionName).then(pricing => {
       try {
         updatePricingInformation(pricing);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+       
       } catch (err: any) {
         customAlert(err.msg);
       }
@@ -140,13 +140,13 @@ export default function CardPage() {
         return;
       } catch {
         // fallback: update variables in-place on the object so at least variables reflect new values
-        setPricing((prev) => (prev ? { ...prev, variables } : prev));
+        setPricing((prev) => (prev ? { ...prev, variables: variables as Record<string, string | number | boolean> } : prev));
         return;
       }
     }
 
     // if we don't have YAML text, fallback to in-memory update
-    setPricing((prev) => (prev ? { ...prev, variables } : prev));
+    setPricing((prev) => (prev ? { ...prev, variables: variables as Record<string, string | number | boolean> } : prev));
   };
 
   const toggleModal = () => {
@@ -155,7 +155,7 @@ export default function CardPage() {
 
   const handleInputDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newPricingData = fullPricingData?.filter(
-      entry => new Date(entry.extractionDate) >= new Date(e.target.value)
+      entry => new Date(entry.createdAt) >= new Date(e.target.value)
     );
     if (newPricingData) {
       setPricingData(newPricingData);
@@ -166,7 +166,7 @@ export default function CardPage() {
 
   const handleOutputDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newPricingData = fullPricingData?.filter(
-      entry => new Date(entry.extractionDate) <= new Date(e.target.value)
+      entry => new Date(entry.createdAt) <= new Date(e.target.value)
     );
     if (newPricingData) {
       setPricingData(newPricingData);
@@ -223,7 +223,7 @@ export default function CardPage() {
                 Collection:{' '}
                 <Link
                   className='text-blue-500 hover:text-blue-700'
-                  to={`/pricings/collections/${currentPricing.owner.id}/${currentPricing.collectionName}`}
+                  to={`/pricings/collections/${currentPricing.owner.username}/${currentPricing.collectionName}`}
                 >
                   {currentPricing.collectionName}
                 </Link>
@@ -272,8 +272,8 @@ export default function CardPage() {
               {pricingData?.map((entry, index) => (
                 <option key={index} value={entry.yaml}>
                   {entry.yaml
-                    .split('/')
-                    [entry.yaml.split('/').length - 1].replace('.yaml', '')
+                    .split('/')[entry.yaml.split('/').length - 1]
+                    .replace('.yaml', '')
                     .replace('.yml', ' ')}
                 </option>
               ))}
@@ -290,7 +290,13 @@ export default function CardPage() {
             />
           )}
           {tabValue === 2 && pricingData && <FileExplorer pricingData={pricingData} />}
-          {tabValue === 1 && currentPricing && <ConfigurationSpaceView pricingId={currentPricing.id} />}
+          {tabValue === 1 && pricing && currentPricing && (
+            <ConfigurationSpaceView
+              owner={currentPricing.owner.username}
+              pricingName={pricing.saasName}
+              pricingVersion={currentPricing.version}
+            />
+          )}
           {tabValue === 0 && (
             <>
               <div className="max-w-[66.7%] flex-1">
@@ -300,8 +306,8 @@ export default function CardPage() {
                 <p className="mb-4">
                   This is the pricing information for {pricing?.saasName}. The pricing version that
                   is currently displayed is from{' '}
-                  {currentPricing?.extractionDate
-                    ? new Date(currentPricing.extractionDate).toLocaleDateString()
+                  {currentPricing?.createdAt
+                    ? new Date(currentPricing.createdAt).toLocaleDateString()
                     : 'Unknown date'}
                   . The prices are displayed with {pricing?.currency} currency. In future versions,
                   more data will be provided in this card.

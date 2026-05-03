@@ -1,6 +1,4 @@
 import { Plan } from 'pricing4ts';
-import { RenderingStyles } from '../../types';
-import DEFAULT_RENDERING_STYLES from '../../shared/constants';
 import { motion } from 'framer-motion';
 import { listItemVariants } from '../../shared/motion-variants';
 
@@ -25,13 +23,11 @@ const TEXT_CLASSES = [
 export default function PlanHeader({
   plan,
   currency,
-  style,
   // support optional index to pick color
   index,
 }: Readonly<{
   plan: Plan;
   currency: string;
-  style: RenderingStyles;
   index?: number;
 }>): JSX.Element {
   const gradientClass = typeof index === 'number' ? HEADER_CLASSES[index % HEADER_CLASSES.length] : HEADER_CLASSES[0];
@@ -42,7 +38,7 @@ export default function PlanHeader({
       variants={listItemVariants}
       custom={index ?? 0}
       scope="col"
-      className={`px-1 text-center align-top text-white bg-gradient-to-br ${gradientClass}`}
+      className={`px-1 text-center align-top text-white bg-linear-to-br ${gradientClass}`}
     >
       <div className="space-y-1 py-4">
         <div className={`text-lg font-semibold ${textClass} text-white`}>

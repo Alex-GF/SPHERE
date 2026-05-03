@@ -33,7 +33,7 @@ export default function PricingSection({
         if (data.error) {
           throw new Error(data.error);
         } else if (data.pricings) {
-          setPricings(data.pricings.pricings);
+          setPricings(data.pricings);
         }
       })
       .catch((error) => {

@@ -31,8 +31,6 @@ import {
 } from '../../sse';
 import { UseCases } from '../../use-cases';
 
-const HARVEY_API_BASE_URL = import.meta.env.VITE_HARVEY_URL ?? 'http://localhost:8086';
-
 interface Props {
   playground?: boolean;
 }

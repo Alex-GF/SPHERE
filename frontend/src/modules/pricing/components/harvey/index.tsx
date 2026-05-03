@@ -1,4 +1,5 @@
-import { Code, Send } from 'react-icons/io5';
+import { FaCode } from "react-icons/fa";
+import { IoIosSend } from "react-icons/io";
 import { LuExpand } from 'react-icons/lu';
 import { useState } from "react";
 
@@ -25,7 +26,7 @@ export default function Harvey() {
                 />
                 <div className="mt-2 flex items-center justify-between">
                   <button type="button" className="inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium hover:bg-slate-100">
-                    <Code />
+                    <FaCode />
                     View Code
                   </button>
                   <button
@@ -33,7 +34,7 @@ export default function Harvey() {
                     className="inline-flex items-center gap-2 rounded-md bg-sphere-primary-500 px-4 py-2 text-sm font-medium text-white hover:bg-sphere-primary-700"
                     onClick={() => setMessage('')}
                   >
-                    <Send />
+                    <IoIosSend />
                     Send
                   </button>
                 </div>

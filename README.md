@@ -78,9 +78,8 @@ Finally, one of the dependencies of the project requires the **minizinc** CLI to
    DATABASE_PASSWORD=testUser       # Password of the user created for sphere_db
    SERVER_PORT=8080                 # Used for serving the API
    SERVER_HOST=http://localhost:8080       # Used for serving static files
-   APP_HOST=5432                    # Port where the frontend will be server
    AVATARS_FOLDER=public/avatars    # Folder where the avatars will be stored
-   BASE_URL_PATH=/api               # Base path for the API
+   BASE_URL_PATH=                   # Base path for the API (/api/v1 will be added to this path, so if you want to serve the API in the root path, leave this variable empty)
    ```
 
    :::info
