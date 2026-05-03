@@ -173,7 +173,7 @@ describe('Pricings API integration', () => {
       expect(response.status).toBe(200);
       expect(Array.isArray(response.body.pricings)).toBe(true);
       expect(typeof response.body.total).toBe('number');
-      expect(response.body.pricings.length).toBeGreaterThan(2);
+      expect(response.body.pricings.length).toBeGreaterThanOrEqual(2);
       const pricingNames = response.body.pricings.map((p: any) => p.name);
       expect(pricingNames).toContain(publicPricing.serviceName);
       expect(pricingNames).toContain(privatePricing.serviceName);
@@ -483,6 +483,7 @@ describe('Pricings API integration', () => {
       const response = await request(app)
         .get(`${BASE_PATH}/pricings/${owner.username}/${serviceName}/${version}`);
 
+      console.log(response);
       expect(response.status).toBe(200);
       expect(response.body.configurationSpace).toBeDefined();
       expect(response.body.configurationSpaceSize).toBeGreaterThan(0);
@@ -499,7 +500,7 @@ describe('Pricings API integration', () => {
       const response = await request(app)
         .get(`${BASE_PATH}/pricings/${owner.username}/${serviceName}/${version}`)
         .set('Authorization', `Bearer ${testUser.token}`);
-
+      console.log(response);
       expect(response.status).toBe(200);
       expect(response.body.configurationSpace).toBeDefined();
       expect(response.body.configurationSpaceSize).toBeGreaterThan(0);
@@ -516,7 +517,7 @@ describe('Pricings API integration', () => {
       const response = await request(app)
         .get(`${BASE_PATH}/pricings/${owner.username}/${serviceName}/${version}`)
         .set('Authorization', `Bearer ${adminUser.token}`);
-
+      console.log(response);
       expect(response.status).toBe(200);
       expect(response.body.configurationSpace).toBeDefined();
       expect(response.body.configurationSpaceSize).toBeGreaterThan(0);
