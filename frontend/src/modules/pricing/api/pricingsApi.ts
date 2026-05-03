@@ -239,9 +239,9 @@ export function usePricingsApi() {
       });
   }, [fetchWithInterceptor, basicHeaders, username]);
 
-  const removePricingFromCollection = useCallback(async (pricingName: string) => {
+  const removePricingFromCollection = useCallback(async (pricingName: string, owner: string, collectionName: string) => {
     return fetchWithInterceptor(
-      `${import.meta.env.VITE_API_URL}/me/collections/pricings/${pricingName}`,
+      `${import.meta.env.VITE_API_URL}/collections/${owner}/${collectionName}/pricings/${pricingName}`,
       {
         method: 'DELETE',
         headers: basicHeaders,

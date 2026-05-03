@@ -10,6 +10,7 @@ import { useEffect, useRef, useState } from 'react';
 import { usePricingsApi } from '../../api/pricingsApi';
 import customAlert from '../../../core/utils/custom-alert';
 import customConfirm from '../../../core/utils/custom-confirm';
+import { useAuth } from '../../../auth/hooks/useAuth';
 
 export default function PricingListCard({
   name,
@@ -30,26 +31,32 @@ export default function PricingListCard({
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   const { removePricingFromCollection, removePricingByName } = usePricingsApi();
+  const { authUser } = useAuth();
 
   const handleAddToCollection = () => {
-    if (setAddToCollectionModalOpen){
+    if (setAddToCollectionModalOpen) {
       setAddToCollectionModalOpen(true);
     }
-    
+
     setPricingToAdd(name);
   };
 
   const handleRemoveFromCollection = () => {
     customConfirm('Are you sure you want to remove this pricing from the collection?').then(() => {
-      removePricingFromCollection(name)
-        .then(() => {
-          customAlert('Pricing removed from collection');
-          window.location.reload();
-        })
-        .catch(error => {
-          console.error(error);
-          customAlert('An error occurred while removing the pricing from the collection');
-        });
+      if (!authUser.user) {
+        customAlert('You need to be logged in to perform this action');
+        return;
+      } else {
+        removePricingFromCollection(name, authUser.user.username, dataEntry.collectionName)
+          .then(() => {
+            customAlert('Pricing removed from collection');
+            window.location.reload();
+          })
+          .catch(error => {
+            console.error(error);
+            customAlert('An error occurred while removing the pricing from the collection');
+          });
+      }
     });
   };
 
@@ -98,7 +105,10 @@ export default function PricingListCard({
             <MdMoreVert size={30} />
           </button>
           {anchorEl && (
-            <div ref={menuRef} className="absolute right-2.5 top-12 z-10 w-48 rounded-md border border-slate-200 bg-white py-1 shadow-lg">
+            <div
+              ref={menuRef}
+              className="absolute right-2.5 top-12 z-10 w-48 rounded-md border border-slate-200 bg-white py-1 shadow-lg"
+            >
               {setAddToCollectionModalOpen ? (
                 <button
                   type="button"
@@ -131,7 +141,7 @@ export default function PricingListCard({
         <button
           type="button"
           className="flex h-[45px] w-full items-center px-[10px] text-left transition-colors hover:text-sphere-primary-600"
-          onClick={() => 
+          onClick={() =>
             router.push(`/pricings/${owner}/${name}?collectionName=${dataEntry.collectionName}`)
           }
         >
@@ -146,11 +156,7 @@ export default function PricingListCard({
           </div>
           <div className="h-1.5 w-1.5 rounded-full bg-black mx-2" />
           <div className="flex items-center justify-center">
-            <FaFileInvoiceDollar
-              fill={grey[700]}
-              size={18}
-              className="mr-2"
-            />
+            <FaFileInvoiceDollar fill={grey[700]} size={18} className="mr-2" />
             <p>
               {dataEntry.analytics ? (
                 <>{dataEntry.analytics.configurationSpaceSize} subscriptions</>
