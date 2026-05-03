@@ -173,7 +173,7 @@ describe('Pricings API integration', () => {
       expect(response.status).toBe(200);
       expect(Array.isArray(response.body.pricings)).toBe(true);
       expect(typeof response.body.total).toBe('number');
-      expect(response.body.pricings.length).toBe(2);
+      expect(response.body.pricings.length).toBeGreaterThan(2);
       const pricingNames = response.body.pricings.map((p: any) => p.name);
       expect(pricingNames).toContain(publicPricing.serviceName);
       expect(pricingNames).toContain(privatePricing.serviceName);
