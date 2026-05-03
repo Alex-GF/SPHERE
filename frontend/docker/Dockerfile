@@ -22,6 +22,7 @@ COPY ./public ./public
 COPY ./tsconfig.json .
 COPY ./vite.config.ts .
 COPY ./index.html .
+COPY ./.env.testing .env
 
 # Build your application
 RUN pnpm run build

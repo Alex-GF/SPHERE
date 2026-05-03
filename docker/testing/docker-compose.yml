@@ -49,7 +49,7 @@ services:
     ports:
       - 5173:5173
     env_file:
-      - ../../frontend/.env.production
+      - ../../frontend/.env.testing
     networks:
       - testing-network
   nginx:

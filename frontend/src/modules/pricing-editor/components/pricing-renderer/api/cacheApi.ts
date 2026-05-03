@@ -5,7 +5,7 @@ export const CACHE_BASE_PATH = import.meta.env.VITE_API_URL + '/cache';
 export function useCacheApi() {
   const { authUser } = useAuth();
 
-  const requestOrigin = globalThis.location?.origin ?? import.meta.env.VITE_APP_ORIGIN ?? '';
+  const requestOrigin = globalThis.location?.origin ?? 'https://sphere.score.us.es';
 
   const buildHeaders = () => {
     const headers: Record<string, string> = {
