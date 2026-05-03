@@ -43,10 +43,10 @@ jobs:
       - name: Make envfile
         uses: SpicyPizza/create-envfile@v2.0
         with:
-          envkey_ENVIRONMENT: "production"
+          envkey_ENVIRONMENT: "development"
           envkey_DATABASE_TECHNOLOGY: mongoDB
           envkey_MONGO_PROTOCOL: mongodb
-          envkey_MONGO_HOST: localhost
+          envkey_MONGO_HOST: ${{vars.CI_MONGO_HOST}}
           envkey_MONGO_PORT: 27017
           envkey_MONGO_INITDB_DATABASE: ${{vars.CI_MONGO_INITDB_DATABASE}}
           envkey_MONGO_INITDB_ROOT_USERNAME: root
@@ -55,9 +55,9 @@ jobs:
           envkey_DATABASE_USERNAME: ${{vars.CI_DATABASE_USERNAME}}
           envkey_DATABASE_PASSWORD: ${{vars.CI_DATABASE_PASSWORD}}
           envkey_SERVER_PORT: ${{vars.CI_SERVER_PORT}}
-          envkey_AVATARS_FOLDER: public/avatars
-          envkey_COLLECTIONS_FOLDER: public/static/collections
-          envkey_REDIS_URL: redis://localhost:6379
+          envkey_AVATARS_FOLDER: ${{vars.CI_AVATARS_FOLDER}}
+          envkey_COLLECTIONS_FOLDER: ${{vars.CI_COLLECTIONS_FOLDER}}
+          envkey_REDIS_URL: ${{vars.CI_REDIS_URL}}
           directory: ./api
           file_name: .env
           fail_on_empty: false
