@@ -91,7 +91,6 @@ jobs:
 
       - name: Install MiniZinc (Official Bundle)
         run: |
-          sudo mv /etc/apt/preferences.d/nosnap.pref /etc/apt/preferences.d/nosnap.bak
           sudo apt-get update
           sudo apt-get install -y snapd
           sudo snap install minizinc
