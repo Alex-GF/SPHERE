@@ -28,7 +28,7 @@ COPY ./package.json .
 COPY ./pnpm-lock.yaml .
 
 # Install Node.js dependencies
-RUN pnpm install --no-audit --build-from-source=sharp
+RUN pnpm install
 
 # Copy the rest of the application source code to the container
 COPY ./src ./src
