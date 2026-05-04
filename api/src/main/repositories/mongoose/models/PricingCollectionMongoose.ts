@@ -13,6 +13,7 @@ const pricingCollectionSchema = new Schema(
     name: { type: String, required: true },
     description: { type: String, required: false },
     _ownerName: { type: String, ref: 'User', required: true },
+    _organizationId: { type: Schema.Types.ObjectId, ref: 'Organization', required: false },
     private: { type: Boolean, required: true, default: false },
     analytics: {
       evolutionOfPlans: { type: ParameterEvolutionSchema, required: false },
@@ -24,11 +25,13 @@ const pricingCollectionSchema = new Schema(
   {
     toObject: {
       virtuals: true,
-      transform: function (doc, resultObject, options) {
+      transform: function (doc, resultObject) {
         delete (resultObject as any)._id;
         delete (resultObject as any).__v;
         delete (resultObject as any)._ownerName;
         delete (resultObject as any).owner._id;
+        delete (resultObject as any)._organizationId;
+        delete (resultObject as any).organization._id;
         return resultObject;
       },
     },
@@ -43,7 +46,7 @@ pricingCollectionSchema.virtual('owner', {
 });
 
 // Adding unique index for [name, owner, version]
-pricingCollectionSchema.index({ name: 1, _ownerName: 1 }, { unique: true });
+pricingCollectionSchema.index({ name: 1, _ownerName: 1, _organizationId: 1 }, { unique: true });
 
 const pricingCollectionModel = mongoose.model(
   'PricingCollection',

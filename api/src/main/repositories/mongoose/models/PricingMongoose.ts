@@ -5,6 +5,7 @@ const pricingSchema = new Schema(
     name: { type: String, required: true },
     owner: { type: String, required: true },
     _collectionId: { type: String, ref: 'PricingCollection', required: false },
+    _organizationId: { type: Schema.Types.ObjectId, ref: 'Organization', required: false },
     version: { type: String, required: true },
     createdAt: { type: Date, required: true },
     url: { type: String, required: false },
@@ -50,7 +51,7 @@ const pricingSchema = new Schema(
   {
     toJSON: {
       virtuals: true,
-      transform: function (doc, resultObject, options) {
+      transform: function (doc, resultObject) {
         delete (resultObject as any)._id;
         delete (resultObject as any).__v;
         return resultObject;
@@ -67,7 +68,7 @@ pricingSchema.virtual('collection', {
 });
 
 // Adding unique index for [name, owner, version]
-pricingSchema.index({ name: 1, owner: 1, version: 1, _collectionId: 1 }, { unique: true });
+pricingSchema.index({ name: 1, owner: 1, version: 1, _collectionId: 1, _organizationId: 1 }, { unique: true });
 
 const pricingModel = mongoose.model('Pricing', pricingSchema, 'pricings');
 

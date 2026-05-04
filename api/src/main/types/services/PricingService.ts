@@ -17,6 +17,7 @@ export type PricingIndexQueryParams = {
   };
   selectedOwners?: string[];
   collectionName?: string;
+  organizationId?: string;
   includePricingsInCollection: boolean;
   limit: number;
   offset: number;
