@@ -5,7 +5,7 @@
   "type": "module",
   "main": "src/main/backend.ts",
   "scripts": {
-    "build": "tsc && tsc-alias --project tsconfig.json --resolve-full-paths && npx migrate up",
+    "build": "tsc && tsc-alias --project tsconfig.json --resolve-full-paths",
     "dev": "npx migrate up && npx tsx --tsconfig tsconfig.json src/main/backend.ts"
   },
   "dependencies": {

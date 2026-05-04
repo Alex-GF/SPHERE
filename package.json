@@ -19,8 +19,6 @@
     
     "lint": "eslint .",
     
-    "migrate": "cd api && npx migrate up",
-    
     "seed:mongo-local:small": "cd api && npx tsx --tsconfig tsconfig.json scripts/seedMongo.ts"
   },
   "devDependencies": {
