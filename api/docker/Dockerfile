@@ -7,22 +7,30 @@ RUN apt-get update && apt-get install -y minizinc && apt-get clean
 # Set the working directory in the container
 WORKDIR /usr/src/server
 
-# Copy the rest of the application source code to the container
-COPY . .
+# Install pnpm globally
+RUN npm install -g pnpm
+
+# Copy package.json and ./pnpm-lock.yaml to the container
+COPY ./package.json .
+COPY ./pnpm-lock.yaml .
 
 # Install Node.js dependencies
-RUN npm install
+RUN pnpm install 
 
-# RUN npm uninstall bcrypt
+# Copy the rest of the application source code to the container
+COPY ./src/main ./src/main
 
-# RUN npm install bcrypt
+# Copy tsconfig.json to the container
+COPY ./tsconfig.json .
 
-CMD [ "npm", "run", "dev" ]
+# Copy migration script to the container
+COPY ./scripts/migrate.sh ./scripts/migrate.sh
 
-# # Build your application
-# RUN npm run build
+# Build your application
+RUN pnpm run build
 
-# EXPOSE 8080
+COPY ./docker/entrypoint.sh ./entrypoint.sh
+RUN chmod +x ./entrypoint.sh
 
-# # Specify the command to start your React app
-# CMD [ "node", "dist/backend.js" ]
+# Specify the command to start the server
+CMD [ "/usr/src/server/entrypoint.sh" ]

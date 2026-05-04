@@ -4,24 +4,29 @@ FROM node:21.1-slim
 # Set the working directory in the container
 WORKDIR /usr/src/client
 
-# Copy the rest of the application source code to the container
-COPY . .
+# Install pnpm globally
+RUN npm install -g pnpm
+
+# Copy package.json and ./pnpm-lock.yaml to the container
+COPY ./package.json .
+COPY ./pnpm-lock.yaml .
 
 # Install Node.js dependencies
-RUN npm install
+RUN pnpm install 
 
-# RUN npm uninstall bcrypt
+# Copy the rest of the application source code to the container
+COPY ./src ./src
+COPY ./public ./public
 
-# RUN npm install bcrypt
+# Copy config files to the container
+COPY ./tsconfig.json .
+COPY ./vite.config.ts .
+COPY ./index.html .
+COPY ./.env.testing .env
 
 # Build your application
-RUN npm run build
+RUN pnpm run build
+RUN pnpm add -D serve
 
-# Install serve
-
-RUN npm install -g serve
-
-EXPOSE 5173
-
-# Specify the command to start your React app
-CMD [ "serve", "-s", "dist", "-l", "5173" ]
+# Specify the command to start the server
+CMD ["pnpm", "exec", "serve", "-s", "./dist", "-l", "5173"]

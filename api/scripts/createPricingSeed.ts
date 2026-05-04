@@ -9,7 +9,7 @@ interface Analytics {
 interface OutputData {
   _id: ObjectId;
   name: string;
-  extractionDate: string;
+  createdAt: string;
   url: string;
   yaml: string;
   analytics: Analytics;
@@ -41,7 +41,7 @@ const transformData = (data: AnalyticsData): OutputData[] => {
       name,
       owner: "sphere",
       version: pricing.date.split('-')[0],
-      extractionDate: new Date(pricing.date),
+      createdAt: new Date(pricing.date),
       currency: pricingData.currency,
       url: null,
       yaml: `${publicYamlPath}/${pricing.yaml_path.split('/').slice(2).join('/')}`,

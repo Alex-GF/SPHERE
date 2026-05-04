@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useAuth } from '../../../../auth/hooks/useAuth';
 import type { NavItem } from '../data';
-import IslandButton from './island-button';
 
 type Props = {
   navItems: NavItem[];

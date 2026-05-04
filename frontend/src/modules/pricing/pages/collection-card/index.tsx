@@ -75,11 +75,13 @@ export default function CollectionCardPage() {
   };
 
   const sortedPricings = useMemo<PricingEntry[]>(() => {
-    if (!collection || !collection.pricings || collection.pricings.length === 0) {
+    const collectionPricings = collection?.data?.pricings ?? collection?.pricings?.[0]?.pricings ?? [];
+
+    if (collectionPricings.length === 0) {
       return [];
     }
-    // Convertir el objeto a un array
-    const pricingArray: PricingEntry[] = (collection.pricings[0].pricings as AnalyticsDataEntry[]).map(pricing => ({
+
+    const pricingArray: PricingEntry[] = (collectionPricings as AnalyticsDataEntry[]).map(pricing => ({
       ...pricing,
       owner: pricing.owner.username,
     })) as PricingEntry[];
@@ -205,7 +207,7 @@ export default function CollectionCardPage() {
                         className="h-10 w-[150px] rounded-md border border-sphere-primary-400 text-base font-bold text-sphere-primary-400 hover:bg-sphere-primary-400 hover:text-white"
                         onClick={() =>
                           downloadCollection(
-                            collection?.owner.id as string,
+                            collection?.owner.username as string,
                             collection?.name as string
                           )
                         }

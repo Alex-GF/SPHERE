@@ -46,8 +46,8 @@ function _validateUsername(username: string, errors: string[]){
     if (username === undefined || username === "") {
         errors.push("Username is required");
         return;
-    }else if (username.length < 3 || username.length > 15) {
-        errors.push("Username must be between 3 and 15 characters long");
+    }else if (username.length < 3 || username.length > 30) {
+        errors.push("Username must be between 3 and 30 characters long");
         return;
     }
 }

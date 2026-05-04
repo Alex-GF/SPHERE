@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
-import { grey, primary } from '../../../core/theme/palette';
+import { grey } from '../../../core/theme/palette';
 
 export default function SliderFilter({
   label,
@@ -13,7 +13,7 @@ export default function SliderFilter({
   min: number;
   max: number;
   data: { value: string; count: number }[];
-  onChange: Function;
+  onChange: (range: number[]) => void;
 }) {
   const [marks, setMarks] = useState(data.map(d => d.value));
   const [range, setRange] = useState<number[]>([0, max]);

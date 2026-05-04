@@ -48,7 +48,6 @@ export function TagFeatureCard({
   features,
   plans,
   currency,
-  style,
   pricingData,
 }: Readonly<TagFeatureCardProps>): JSX.Element {
   const featureNames = features.map((feature) => feature.name);

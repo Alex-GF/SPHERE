@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable react-refresh/only-export-components */
+import React from 'react';
 import { createRoot } from 'react-dom/client';
 
 interface ConfirmDialogProps {
@@ -8,17 +9,11 @@ interface ConfirmDialogProps {
 }
 
 const ConfirmDialog: React.FC<ConfirmDialogProps> = ({ message, onConfirm, onCancel }) => {
-  const [open, setOpen] = useState(true);
-
-  const handleClose = () => setOpen(false);
-
   const handleConfirm = () => {
-    handleClose();
     onConfirm();
   };
 
   const handleCancel = () => {
-    handleClose();
     onCancel();
   };
 

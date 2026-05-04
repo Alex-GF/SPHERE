@@ -16,7 +16,7 @@
     "outDir": "./dist",                     // Salida en carpeta `dist`
     "rootDir": "./src",                     // Código fuente en carpeta `src`
     "noEmitOnError": true,                  // Previene emisión en caso de errores
-    "declaration": true,                    // Genera archivos de definición `.d.ts`
+    "declaration": false,                    // Genera archivos de definición `.d.ts`
 
     /* Strict Mode */
     "strict": true,                         // Activa todas las opciones de chequeo estricto
@@ -27,10 +27,9 @@
 
     /* Linting and Debugging */
     "skipLibCheck": true,                   // Evita chequeos en dependencias externas
-    "sourceMap": true,                      // Genera mapas de fuente para debugging
+    "sourceMap": false,                      // Genera mapas de fuente para debugging
 
     /* Compatibility */
-    // "allowImportingTsExtensions": true,     // Permite importar archivos TypeScript con extensiones
     "forceConsistentCasingInFileNames": true, // Asegura nombres de archivo consistentes
 
     /* Module Detection */

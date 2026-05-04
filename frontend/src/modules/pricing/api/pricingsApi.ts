@@ -50,7 +50,9 @@ export function usePricingsApi() {
 
     return fetch(requestUrl as string, {
       method: 'GET',
-      headers: basicHeaders,
+      headers: {
+        'Content-Type': 'application/json',
+      },
     })
       .then(response => {
         if (!response.ok) {
@@ -59,10 +61,11 @@ export function usePricingsApi() {
           return response.json();
         }
       })
-      .catch(error => {
-        return Promise.reject(error as Error);
+      .catch(async error => {
+        const body = await (error as Response).json().catch(() => ({}));
+        return Promise.reject({message: body.error});
       });
-  }, [basicHeaders]);
+  }, []);
 
   const getPricingByName = useCallback(async (name: string, owner: string, collectionName: string | null) => {
     return fetch(
@@ -81,13 +84,14 @@ export function usePricingsApi() {
           return response.json();
         }
       })
-      .catch(error => {
-        return Promise.reject(error as Error);
+      .catch(async error => {
+        const body = await (error as Response).json().catch(() => ({}));
+        return Promise.reject({message: body.error});
       });
   }, [basicHeaders]);
 
   const getLoggedUserPricings = useCallback(async () => {
-    return fetchWithInterceptor(`${import.meta.env.VITE_API_URL}/me/pricings`, {
+    return fetchWithInterceptor(`${PRICINGS_BASE_PATH}/${authUser.user?.username}`, {
       method: 'GET',
       headers: basicHeaders,
     })
@@ -98,12 +102,13 @@ export function usePricingsApi() {
           return response.json();
         }
       })
-      .catch(error => {
-        return Promise.reject(error as Error);
+      .catch(async error => {
+        const body = await (error as Response).json().catch(() => ({}));
+        return Promise.reject({message: body.error});
       });
   }, [fetchWithInterceptor, basicHeaders]);
 
-  const getConfigurationSpace = useCallback(async (pricingId: string, limit?: number, offset?: number) => {
+  const getConfigurationSpace = useCallback(async (owner: string, pricingName: string, pricingVersion: string, limit?: number, offset?: number) => {
     
     const params = new URLSearchParams();
 
@@ -113,7 +118,7 @@ export function usePricingsApi() {
     const queryString = params.toString(); 
     
     return fetchWithInterceptor(
-      `${PRICINGS_BASE_PATH}/${pricingId}/configuration-space${queryString ? `?${queryString}` : ''}`,
+      `${PRICINGS_BASE_PATH}/${owner}/${pricingName}/${pricingVersion}${queryString ? `?${queryString}` : ''}`,
       {
         method: 'GET',
         headers: basicHeaders,
@@ -122,18 +127,19 @@ export function usePricingsApi() {
       .then(response => response.json())
       .then(data => {
         if (data.error) {
-          return Promise.reject(data.error);
+          return Promise.reject({message: data.error});
         } else {
           return data;
         }
       })
-      .catch(error => {
-        return Promise.reject(error as Error);
+      .catch(async error => {
+        const body = await (error as Response).json().catch(() => ({}));
+        return Promise.reject({message: body.error});
       });
   }, [fetchWithInterceptor, basicHeaders]);
 
   const createPricing = useCallback(async (formData: FormData, setErrors: (errors: string[]) => void = () => {}) => {
-    return fetchWithInterceptor(PRICINGS_BASE_PATH, {
+    return fetchWithInterceptor(`${PRICINGS_BASE_PATH}/${authUser.user?.username}`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -167,14 +173,15 @@ export function usePricingsApi() {
           return response.json();
         }
       })
-      .catch(error => {
-        return Promise.reject(error as Error);
+      .catch(async error => {
+        const body = await (error as Response).json().catch(() => ({}));
+        return Promise.reject({message: body.error});
       });
   }, [fetchWithInterceptor, basicHeaders]);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const updatePricing = useCallback((pricingName: string, pricingData: any) => {
-    return fetchWithInterceptor(`${PRICINGS_BASE_PATH}/${username}/${pricingName}`, {
+   
+  const updatePricing = useCallback((pricingName: string, collectionName: string, pricingData: any) => {
+    return fetchWithInterceptor(`${PRICINGS_BASE_PATH}/${username}/${pricingName}?collectionName=${collectionName}`, {
       method: 'PUT',
       headers: basicHeaders,
       body: JSON.stringify(pricingData),
@@ -186,8 +193,9 @@ export function usePricingsApi() {
           return response.json();
         }
       })
-      .catch(error => {
-        return Promise.reject(error as Error);
+      .catch(async error => {
+        const body = await (error as Response).json().catch(() => ({}));
+        return Promise.reject({message: body.error});
       });
   }, [fetchWithInterceptor, basicHeaders, username]);
 
@@ -204,8 +212,9 @@ export function usePricingsApi() {
           return response.json();
         }
       })
-      .catch(error => {
-        return Promise.reject(error as Error);
+      .catch(async error => {
+        const body = await (error as Response).json().catch(() => ({}));
+        return Promise.reject({message: body.error});
       });
   }, [fetchWithInterceptor, basicHeaders]);
 
@@ -224,14 +233,15 @@ export function usePricingsApi() {
           return response.json();
         }
       })
-      .catch(error => {
-        return Promise.reject(error as Error);
+      .catch(async error => {
+        const body = await (error as Response).json().catch(() => ({}));
+        return Promise.reject({message: body.error});
       });
   }, [fetchWithInterceptor, basicHeaders, username]);
 
-  const removePricingFromCollection = useCallback(async (pricingName: string) => {
+  const removePricingFromCollection = useCallback(async (pricingName: string, owner: string, collectionName: string) => {
     return fetchWithInterceptor(
-      `${import.meta.env.VITE_API_URL}/me/collections/pricings/${pricingName}`,
+      `${import.meta.env.VITE_API_URL}/collections/${owner}/${collectionName}/pricings/${pricingName}`,
       {
         method: 'DELETE',
         headers: basicHeaders,
@@ -244,8 +254,9 @@ export function usePricingsApi() {
           return response.json();
         }
       })
-      .catch(error => {
-        return Promise.reject(error as Error);
+      .catch(async error => {
+        const body = await (error as Response).json().catch(() => ({}));
+        return Promise.reject({message: body.error});
       });
   }, [fetchWithInterceptor, basicHeaders]);
 
@@ -267,8 +278,9 @@ export function usePricingsApi() {
           return data;
         }
       })
-      .catch(error => {
-        return Promise.reject(error as Error);
+      .catch(async error => {
+        const body = await (error as Response).json().catch(() => ({}));
+        return Promise.reject({message: body.error});
       });
   }, [fetchWithInterceptor, basicHeaders, username]);
 

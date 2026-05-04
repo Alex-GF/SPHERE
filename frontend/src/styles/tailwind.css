@@ -1,6 +1,34 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  /* Colores Primary */
+  --color-sphere-primary-100: #caf0f8;
+  --color-sphere-primary-200: #ade8f4;
+  --color-sphere-primary-300: #90e0ef;
+  --color-sphere-primary-400: #48cae4;
+  --color-sphere-primary-500: #00b4d8;
+  --color-sphere-primary-600: #0096c7;
+  --color-sphere-primary-700: #0077b6;
+  --color-sphere-primary-800: #023e8a;
+  --color-sphere-primary-900: #03045e;
+
+  /* Colores Grey */
+  --color-sphere-grey-0: #FFFFFF;
+  --color-sphere-grey-100: #F9FAFB;
+  --color-sphere-grey-200: #F4F6F8;
+  --color-sphere-grey-300: #DFE3E8;
+  --color-sphere-grey-400: #C4CDD5;
+  --color-sphere-grey-500: #919EAB;
+  --color-sphere-grey-600: #637381;
+  --color-sphere-grey-700: #454F5B;
+  --color-sphere-grey-800: #212B36;
+  --color-sphere-grey-900: #161C24;
+  
+  /* Configuración extra */
+  --animate-alert-slide-in: alert-slide-in 0.5s ease-in-out;
+  --animate-banter-box: banter-box 1.2s ease-in-out infinite;
+  --animate-register-pulse: register-pulse 1s linear infinite;
+}
 
 :root {
   color-scheme: light;

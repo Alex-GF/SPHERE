@@ -10,7 +10,7 @@ export const AuthContext = createContext<AuthContextInterface>({
     authUser: {
         user: null,
         isAuthenticated: false,
-        token: "",
+        token: null,
         tokenExpiration: null,
         isLoading: true
     },

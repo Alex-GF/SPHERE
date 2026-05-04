@@ -2,17 +2,25 @@ import { useAuth } from '../../auth/hooks/useAuth';
 import { useCallback, useMemo } from 'react';
 import { CollectionToCreate } from '../types/profile-types';
 
-export const COLLECTIONS_BASE_PATH = import.meta.env.VITE_API_URL + '/pricings/collections';
+export const COLLECTIONS_BASE_PATH = import.meta.env.VITE_API_URL + '/collections';
 
 export function usePricingCollectionsApi() {
   const { fetchWithInterceptor, authUser } = useAuth();
 
   const token = authUser?.token;
+  const username = authUser?.user?.username;
 
-  const basicHeaders = useMemo(() => ({
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${token}`,
-  }), [token]);
+  const basicHeaders = useMemo(() => {
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+    };
+
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+
+    return headers;
+  }, [token]);
 
   const getCollections = useCallback(async (filters?: Record<string, string | number>) => {
     let requestUrl;
@@ -33,29 +41,35 @@ export function usePricingCollectionsApi() {
       requestUrl = `${COLLECTIONS_BASE_PATH}?${filterParams.toString()}`;
     }
 
-    return fetch(requestUrl, {
+    return fetchWithInterceptor(requestUrl, {
       method: 'GET',
       headers: basicHeaders,
     })
       .then(response => response.json())
-      .catch(error => {
-        return Promise.reject(error as Error);
-      });
-  }, [basicHeaders]);
-
-  const getLoggedUserCollections = useCallback(async () => {
-    return fetchWithInterceptor(`${import.meta.env.VITE_API_URL}/me/collections`, {
-      method: 'GET',
-      headers: basicHeaders,
-    })
-      .then(response => response.json())
-      .catch(error => {
-        return Promise.reject(error as Error);
+      .catch(async error => {
+        const body = await (error as Response).json().catch(() => ({}));
+        return Promise.reject(body as Error);
       });
   }, [fetchWithInterceptor, basicHeaders]);
 
+  const getLoggedUserCollections = useCallback(async () => {
+    return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${username}`, {
+      method: 'GET',
+      headers: basicHeaders,
+    })
+      .then(response => response.json())
+      .then(data => ({
+        ...data,
+        collections: data.collections ?? [],
+      }))
+      .catch(async error => {
+        const body = await (error as Response).json().catch(() => ({}));
+        return Promise.reject(body as Error);
+      });
+  }, [fetchWithInterceptor, basicHeaders, username]);
+
   const createCollection = useCallback(async (collection: CollectionToCreate) => {
-    return fetchWithInterceptor(COLLECTIONS_BASE_PATH, {
+    return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${username}`, {
       method: 'POST',
       headers: basicHeaders,
       body: JSON.stringify(collection),
@@ -75,14 +89,12 @@ export function usePricingCollectionsApi() {
       .catch(error => {
   return Promise.reject(error instanceof Error ? error : new Error(String(error)));
       });
-  }, [fetchWithInterceptor, basicHeaders]);
+  }, [fetchWithInterceptor, basicHeaders, username]);
   
   const createBulkCollection = useCallback(async (formData: FormData) => {
-    return fetchWithInterceptor(COLLECTIONS_BASE_PATH + "/bulk", {
+    return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${username}/bulk`, {
       method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
       body: formData,
     })
       .then(async response => {
@@ -105,7 +117,7 @@ export function usePricingCollectionsApi() {
       .catch(error => {
         return Promise.reject(error instanceof Error ? error : new Error(String(error)));
       });
-  }, [fetchWithInterceptor, token]);
+  }, [fetchWithInterceptor, token, username]);
 
   const getCollectionByOwnerAndName = useCallback(async (ownerId: string, collectionName: string) => {
     return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${ownerId}/${collectionName}`, {
@@ -119,13 +131,14 @@ export function usePricingCollectionsApi() {
         }
         return data;
       })
-      .catch(error => {
-        return Promise.reject(error as Error);
+      .catch(async error => {
+        const body = await (error as Response).json().catch(() => ({}));
+        return Promise.reject(body as Error);
       });
   }, [fetchWithInterceptor, basicHeaders]);
 
-  const downloadCollection = useCallback(async (ownerId: string, collectionName: string) => {
-    return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${ownerId}/${collectionName}/download`, {
+  const downloadCollection = useCallback(async (owner: string, collectionName: string) => {
+    return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${owner}/${collectionName}/download`, {
       method: 'GET',
       headers: basicHeaders,
     })
@@ -144,32 +157,35 @@ export function usePricingCollectionsApi() {
         URL.revokeObjectURL(url);
         document.body.removeChild(a);
       })
-      .catch(error => {
-        return Promise.reject(error as Error);
+      .catch(async error => {
+        const body = await (error as Response).json().catch(() => ({}));
+        return Promise.reject(body as Error);
       });
   }, [fetchWithInterceptor, basicHeaders]);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const updateCollection = useCallback(async (collectionName: string, collectionData: any) => {
-    return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${authUser.user!.id}/${collectionName}`, {
+    return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${authUser.user!.username}/${collectionName}`, {
       method: 'PUT',
       headers: basicHeaders,
       body: JSON.stringify(collectionData),
     })
       .then(async response => response.json())
-      .catch(error => {
-        return Promise.reject(error as Error);
+      .catch(async error => {
+        const body = await (error as Response).json().catch(() => ({}));
+        return Promise.reject(body as Error);
       });
   }, [fetchWithInterceptor, basicHeaders, authUser]);
 
   const deleteCollection = useCallback(async (collectionName: string, deleteCascade: boolean) => {
-    return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${authUser.user!.id}/${collectionName}?cascade=${deleteCascade}`, {
+    return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${authUser.user!.username}/${collectionName}?cascade=${deleteCascade}`, {
       method: 'DELETE',
       headers: basicHeaders
     })
       .then(async response => response.json())
-      .catch(error => {
-        return Promise.reject(error as Error);
+      .catch(async error => {
+        const body = await (error as Response).json().catch(() => ({}));
+        return Promise.reject(body as Error);
       });
   }, [fetchWithInterceptor, basicHeaders, authUser]);
 

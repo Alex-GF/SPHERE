@@ -1,5 +1,4 @@
 import type { ButtonHTMLAttributes, PropsWithChildren } from 'react';
-import { primary } from '../../../../core/theme/palette';
 
 type StyledButtonProps = PropsWithChildren<
   ButtonHTMLAttributes<HTMLButtonElement> & {

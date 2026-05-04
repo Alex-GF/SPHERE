@@ -48,7 +48,7 @@ export default function EditorPage() {
   const { editorValue, setEditorValue } = useEditorValue();
   const {getFromCache} = useCacheApi();
 
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<any>(null);
 
   function handleEditorChange(value: string | undefined) {
     if (value) {
@@ -108,8 +108,10 @@ export default function EditorPage() {
           templatePricing = parseEncodedYamlToStringYaml(pricingParam);
         }else{
           const cachedPricing = await getFromCache(pricingParam);
-          
+
           templatePricing = parseEncodedYamlToStringYaml(cachedPricing);
+
+          console.log(templatePricing);
         }
       }
 
@@ -122,7 +124,7 @@ export default function EditorPage() {
         setSelectedSyntaxVersion(normalizedVersion);
 
         if (syntaxVersion !== '3.1'){
-          const response = await fetch('/api/pricings', {
+          const response = await fetch('/api/v1/pricings', {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',

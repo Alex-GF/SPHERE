@@ -3,14 +3,34 @@ on:
   pull_request:
     branches:
       - '**'
-  push:
-    branches:
-      - 'main'
 jobs:
   build:
     name: Test
     runs-on: ubuntu-latest
     environment: testing
+    services:
+      mongodb:
+        image: mongo:7.0.16
+        ports:
+          - 27017:27017
+        env:
+          MONGO_INITDB_ROOT_USERNAME: root
+          MONGO_INITDB_ROOT_PASSWORD: 4dm1n
+          MONGO_INITDB_DATABASE: ${{ vars.CI_MONGO_INITDB_DATABASE }}
+        options: >-
+          --health-cmd "mongosh --quiet --eval 'db.runCommand({ ping: 1 }).ok'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis:7.4.2
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli --raw incr ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -23,51 +43,69 @@ jobs:
       - name: Make envfile
         uses: SpicyPizza/create-envfile@v2.0
         with:
-          envkey_ENVIRONMENT: "production"
-          envkey_DATABASE_TECHNOLOGY: ${{vars.CI_DATABASE_TECHNOLOGY}}
-          envkey_MONGO_PROTOCOL: ${{vars.CI_MONGO_PROTOCOL}}
+          envkey_ENVIRONMENT: "development"
+          envkey_DATABASE_TECHNOLOGY: mongoDB
+          envkey_MONGO_PROTOCOL: mongodb
           envkey_MONGO_HOST: ${{vars.CI_MONGO_HOST}}
-          envkey_MONGO_PORT: ${{vars.CI_MONGO_PORT}}
+          envkey_MONGO_PORT: 27017
           envkey_MONGO_INITDB_DATABASE: ${{vars.CI_MONGO_INITDB_DATABASE}}
-          envkey_MONGO_INITDB_ROOT_USERNAME: ${{vars.CI_MONGO_INITDB_ROOT_USERNAME}}
-          envkey_MONGO_INITDB_ROOT_PASSWORD: ${{vars.CI_MONGO_INITDB_ROOT_PASSWORD}}
+          envkey_MONGO_INITDB_ROOT_USERNAME: root
+          envkey_MONGO_INITDB_ROOT_PASSWORD: 4dm1n
           envkey_DATABASE_NAME: ${{vars.CI_MONGO_INITDB_DATABASE}}
-          envkey_DATABASE_USERNAME: ${{vars.CI_MONGO_INITDB_ROOT_USERNAME}}
-          envkey_DATABASE_PASSWORD: ${{vars.CI_MONGO_INITDB_ROOT_PASSWORD}}
+          envkey_DATABASE_USERNAME: ${{vars.CI_DATABASE_USERNAME}}
+          envkey_DATABASE_PASSWORD: ${{vars.CI_DATABASE_PASSWORD}}
           envkey_SERVER_PORT: ${{vars.CI_SERVER_PORT}}
-          envkey_APP_HOST: ${{vars.CI_APP_HOST}}
           envkey_AVATARS_FOLDER: ${{vars.CI_AVATARS_FOLDER}}
-          envkey_BASE_URL_PATH: ${{vars.CI_BASE_URL_PATH}}
-          envkey_ADMIN_PASSWORD: ${{secrets.ADMIN_PASSWORD}}
-          envkey_USER_PASSWORD: ${{secrets.USER_PASSWORD}}
+          envkey_COLLECTIONS_FOLDER: ${{vars.CI_COLLECTIONS_FOLDER}}
+          envkey_SERVER_STATICS_FOLDER: public/
           envkey_REDIS_URL: ${{vars.CI_REDIS_URL}}
           directory: ./api
           file_name: .env
           fail_on_empty: false
           sort_keys: false
 
-      - name: Start MongoDBs
-        uses: supercharge/mongodb-github-action@1.10.0
-        with:
-          mongodb-version: '7.0.16'
-          mongodb-username: ${{ vars.CI_MONGO_INITDB_ROOT_USERNAME }}
-          mongodb-password: ${{ vars.CI_MONGO_INITDB_ROOT_PASSWORD }}
-          mongodb-db: ${{ vars.CI_MONGO_INITDB_DATABASE }}
-          mongodb-port: ${{ vars.CI_MONGO_PORT }}
+      - name: Install mongosh
+        run: |
+          sudo apt-get install gnupg curl
+          curl -fsSL https://pgp.mongodb.com/server-8.0.asc | \
+          sudo gpg -o /usr/share/keyrings/mongodb-server-8.0.gpg \
+          --dearmor
+          echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-8.0.gpg ] https://repo.mongodb.org/apt/ubuntu noble/mongodb-org/8.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-8.0.list
+          sudo apt-get update
+          sudo apt-get install -y mongodb-mongosh
+          sudo apt-get install -y minizinc
+          sudo apt-get clean
 
-      - name: Start Redis
-        uses: shogo82148/actions-setup-redis@v1
-        with:
-          redis-version: '7.x'
+      - name: Initialize MongoDB user
+        run: |
+          mongosh "mongodb://root:4dm1n@localhost:27017/admin" --eval '
+            db = db.getSiblingDB("${{ vars.CI_MONGO_INITDB_DATABASE }}");
+            db.createUser({
+              user: "${{ vars.CI_DATABASE_USERNAME }}",
+              pwd: "${{ vars.CI_DATABASE_PASSWORD }}",
+              roles: [
+                { role: "readWrite", db: "${{ vars.CI_MONGO_INITDB_DATABASE }}" },
+                { role: "dbAdmin", db: "${{ vars.CI_MONGO_INITDB_DATABASE }}" }
+              ]
+            });
+          '
 
-      - name: Install dependencies
-        run: npm run install
+      - name: Install MiniZinc (Official Bundle)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y snapd
+          sudo snap install minizinc --classic
+          
+      - name: Verify MiniZinc and Solvers
+        run: |
+          minizinc --version
+          minizinc --solvers # Esto es clave: si no sale 'gecode', por eso te da el 500
+
+      - name: Install pnpm
+        run: npm install -g pnpm
       
-      - name: Show env
-        run: cat ./api/.env
-
-      - name: Seed DB
-        run: cd api && npx tsx --tsconfig tsconfig.json ./scripts/seedMongo.ts && cd ..
+      - name: Install dependencies
+        run: pnpm install
 
       - name: Run tests
-        run: npm run test
+        run: pnpm run test

@@ -16,7 +16,7 @@ export type PricingEntry = {
   owner: string;
   version: string;
   collectionName: string;
-  extractionDate: string;
+  createdAt: string;
   currency: string;
   analytics: {
     configurationSpaceSize: number;

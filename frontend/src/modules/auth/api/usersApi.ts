@@ -10,9 +10,15 @@ export function loginUser(formData: LoginFormProps): Promise<any> {
             "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
-    }).then((response) => response.json())
+    }).then(async (response) => {
+        const parsedResponse = await response.json().catch(() => ({}));
+        if (!response.ok) {
+            throw new Error(parsedResponse.error || "Invalid credentials");
+        }
+        return parsedResponse;
+    })
     .catch((error) => {
-        console.error("Error:", error);
+        return Promise.reject(error instanceof Error ? error : new Error(String(error)));
     });
 }
 
@@ -39,5 +45,22 @@ export function registerUser(formData: RegisterFormProps, setErrors: Function = 
         }else{
             setErrors([error.message]);
         }
+        return Promise.reject(error);
+    });
+}
+
+export function getCurrentUser(token: string): Promise<any> {
+    return fetch(`${USERS_BASE_PATH}/me`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+    }).then(async (response) => {
+        const parsedResponse = await response.json().catch(() => ({}));
+        if (!response.ok) {
+            throw new Error(parsedResponse.error || "Could not retrieve session user");
+        }
+        return parsedResponse;
     });
 }

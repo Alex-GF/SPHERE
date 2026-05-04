@@ -10,7 +10,7 @@ interface AnalyticsModalProps {
 
 export default function AnalyticsModal({ open, onClose, pricingData } : AnalyticsModalProps) {
     const chartData = pricingData?.slice().reverse().map((entry) => ({
-      date: new Date(entry.extractionDate).toLocaleDateString(),
+      date: new Date(entry.createdAt).toLocaleDateString(),
       configurationSpaceSize: entry.analytics.configurationSpaceSize,
       minPrice: entry.analytics.minSubscriptionPrice,
       maxPrice: entry.analytics.maxSubscriptionPrice,
