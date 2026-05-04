@@ -20,22 +20,28 @@ RUN apt-get update && apt-get install -y \
     g++ \
     && rm -rf /var/lib/apt/lists/*
 
-COPY . .
+# Install pnpm globally
+RUN npm install -g pnpm
 
-# Configuramos npm proxy también (aunque las ENV deberían bastar, esto refuerza)
-RUN npm config set proxy http://proxy.int.local:3128 && \
-    npm config set https-proxy http://proxy.int.local:3128
+# Copy package.json and ./pnpm-lock.yaml to the container
+COPY ./package.json .
+COPY ./pnpm-lock.yaml .
 
-# 4. Instalamos dependencias
-# --no-audit acelera la instalación detrás de proxys
-RUN npm install --no-audit --build-from-source=sharp
+# Install Node.js dependencies
+RUN pnpm install --no-audit --build-from-source=sharp
 
-# Build de la aplicación
-RUN npm run build
+# Copy the rest of the application source code to the container
+COPY ./src ./src
+COPY ./public ./public
 
-# Instalar serve globalmente
-RUN npm install -g serve
+# Copy config files to the container
+COPY ./tsconfig.json .
+COPY ./vite.config.ts .
+COPY ./index.html .
+COPY ./.env.testing .env
 
-EXPOSE 5173
+# Build your application
+RUN pnpm run build
+RUN pnpm add -D serve
 
 CMD [ "serve", "-s", "dist", "-l", "5173" ]
