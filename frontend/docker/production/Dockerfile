@@ -44,4 +44,4 @@ COPY ./.env.testing .env
 RUN pnpm run build
 RUN pnpm add -D serve
 
-CMD [ "serve", "-s", "dist", "-l", "5173" ]
+CMD ["pnpm", "exec", "serve", "-s", "./dist", "-l", "5173"]
