@@ -14,12 +14,10 @@
     "test:api": "cd api && npx vitest --run && cd .. && pnpm run seed:mongo-local:small",
     
     "build": "pnpm run build:frontend && pnpm run build:api",
-    "build:api": "cd api && tsc -b",
+    "build:api": "cd api && pnpm run build",
     "build:frontend": "cd frontend && vite build",
     
     "lint": "eslint .",
-    
-    "migrate": "cd api && npx migrate up",
     
     "seed:mongo-local:small": "cd api && npx tsx --tsconfig tsconfig.json scripts/seedMongo.ts"
   },

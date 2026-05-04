@@ -23,8 +23,14 @@ COPY ./src/main ./src/main
 # Copy tsconfig.json to the container
 COPY ./tsconfig.json .
 
+# Copy migration script to the container
+COPY ./scripts/migrate.sh ./scripts/migrate.sh
+
 # Build your application
 RUN pnpm run build
 
+COPY ./docker/entrypoint.sh ./entrypoint.sh
+RUN chmod +x ./entrypoint.sh
+
 # Specify the command to start the server
-CMD [ "node", "dist/main/backend.js"]
+CMD [ "/usr/src/server/entrypoint.sh" ]
