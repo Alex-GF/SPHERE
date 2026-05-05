@@ -3,29 +3,25 @@ import { USER_ROLES, UserRole } from '../../../types/config/permissions';
 import { processFileUris } from '../../../services/FileService';
 import { generateUserTokenDTO, hashPassword } from '../../../utils/users/helpers';
 
-/**
- * Subdocument: Permission
- */
-const PermissionSchema = new Schema(
-  {
-    _organizationId: { type: mongoose.Types.ObjectId, required: false, ref: 'Organization' },
-    _groupId: { type: mongoose.Types.ObjectId, required: false, ref: 'Group' },
-    role: {
-      type: String,
-      enum: ['owner', 'admin', 'member'],
-      required: true,
-    },
-  },
-  { _id: false }
-);
-
-/**
- * Subdocument: ApiKeySchema
- */
 const ApiKeySchema = new Schema(
   {
-    key: { type: String, required: true },
-    permissions: { type: [PermissionSchema], default: [] },
+    key: { type: String, required: true }, // hash, nunca plaintext
+    name: { type: String, required: true },
+
+    scopes: [
+      {
+        organizationId: { type: Schema.Types.ObjectId, ref: 'Organization', required: true },
+
+        scope: {
+          type: String,
+          enum: ['ALL', 'MANAGEMENT', 'VIEWER'],
+          required: true
+        }
+      }
+    ],
+
+    expiresAt: { type: Date, default: null },
+    revoked: { type: Boolean, default: false }
   },
   { _id: false }
 );
@@ -126,11 +122,13 @@ export interface UserDocument extends Document {
   tokenExpiration?: Date;
   apiKeys: {
     key: string;
-    permissions: {
-      _organizationId?: string;
-      _groupId?: string;
-      role: 'owner' | 'admin' | 'member';
+    name: string;
+    scopes: {
+      organizationId: string;
+      scope: 'ALL' | 'MANAGEMENT' | 'VIEWER';
     }[];
+    expiresAt?: Date;
+    revoked: boolean;
   }[];
 }
 

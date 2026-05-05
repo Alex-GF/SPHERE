@@ -13,11 +13,13 @@ export interface LeanUser {
   tokenExpiration?: Date;
   apiKeys: {
     key: string;
-    permissions: {
-      _organizationId?: string;
-      _groupId?: string;
-      role: 'owner' | 'admin' | 'member';
+    name: string;
+    scopes: {
+      organizationId: string;
+      scope: 'ALL' | 'MANAGEMENT' | 'VIEWER';
     }[];
+    expiresAt?: Date;
+    revoked: boolean;
   }[];
 }
 
