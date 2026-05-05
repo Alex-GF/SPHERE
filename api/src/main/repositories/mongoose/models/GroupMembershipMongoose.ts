@@ -4,7 +4,7 @@ const groupMembershipSchema = new Schema(
   {
     _userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     _groupId: { type: Schema.Types.ObjectId, ref: 'Group', required: true },
-    role: { type: String, required: true, enum: ['admin', 'editor', 'viewer'] },
+    role: { type: String, required: true, enum: ['admin', 'member'] },
     joinedAt: { type: Date, required: true, default: Date.now },
   },
   {

@@ -9,11 +9,16 @@ export interface LeanUser {
   lastName: string;
   email: string;
   avatar?: string;
-  phone?: string;
-  address?: string;
-  postalCode?: string;
   token?: string;
   tokenExpiration?: Date;
+  apiKeys: {
+    key: string;
+    permissions: {
+      _organizationId?: string;
+      _groupId?: string;
+      role: 'owner' | 'admin' | 'member';
+    }[];
+  }[];
 }
 
 export type UserFilters = {
