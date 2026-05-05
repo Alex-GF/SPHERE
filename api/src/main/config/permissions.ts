@@ -86,6 +86,61 @@ export const ROUTE_PERMISSIONS: RoutePermission[] = [
   },
 
   // ============================================
+  // Organizations and Groups Routes
+  // ============================================
+  {
+    path: '/orgs/invitations/preview/*',
+    methods: ['GET'],
+    allowedUserRoles: ['ADMIN', 'USER'],
+  },
+  {
+    path: '/orgs/join/*',
+    methods: ['POST'],
+    allowedUserRoles: ['ADMIN', 'USER'],
+  },
+  // Org creation/listing: no org-context required.
+  {
+    path: '/orgs',
+    methods: ['GET', 'POST'],
+    allowedUserRoles: ['ADMIN', 'USER'],
+  },
+  // Everything under /orgs/:organizationId/** requires membership context.
+  // Global ADMIN bypasses membership checks.
+  {
+    path: '/orgs/**',
+    methods: ['GET'],
+    allowedUserRoles: ['ADMIN', 'USER'],
+    allowedOrganizationRoles: ['OWNER', 'ADMIN', 'MEMBER'],
+  },
+  {
+    path: '/orgs/**',
+    methods: ['POST', 'PUT', 'DELETE', 'PATCH'],
+    allowedUserRoles: ['ADMIN', 'USER'],
+    allowedOrganizationRoles: ['OWNER', 'ADMIN'],
+  },
+  // Allow members to view org members.
+  {
+    path: '/orgs/*/members',
+    methods: ['GET'],
+    allowedUserRoles: ['ADMIN', 'USER'],
+    allowedOrganizationRoles: ['OWNER', 'ADMIN', 'MEMBER'],
+  },
+  // Only OWNER/ADMIN can manage org members.
+  {
+    path: '/orgs/*/members/**',
+    methods: ['POST', 'PUT', 'DELETE', 'PATCH'],
+    allowedUserRoles: ['ADMIN', 'USER'],
+    allowedOrganizationRoles: ['OWNER', 'ADMIN'],
+  },
+  // Invitations management is OWNER/ADMIN.
+  {
+    path: '/orgs/*/invitations/**',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    allowedUserRoles: ['ADMIN', 'USER'],
+    allowedOrganizationRoles: ['OWNER', 'ADMIN'],
+  },
+
+  // ============================================
   // Health Check (Public)
   // ============================================
   {
