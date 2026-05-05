@@ -145,14 +145,19 @@ describe('Auth Middleware - Real Execution Tests', () => {
     });
 
     it('should extract Bearer token correctly from header', async () => {
-      const token = 'test_token_abc123';
+      // Este test era redundante (comprobación de split de string).
+      // Para mantener la suite enfocada probamos que, en ausencia de token,
+      // la respuesta en endpoints protegidos sea 401.
+      mockUserRepository.findOne.mockResolvedValue(null);
       mockReq = createMockRequest({
-        headers: buildBearerTokenHeader(token),
+        method: 'GET',
+        path: '/api/v1/users',
+        headers: {},
       });
 
-      const authHeader = mockReq.headers.authorization as string;
-      const extractedToken = authHeader.split(' ')[1];
-      expect(extractedToken).toBe(token);
+      await authenticateTokenMiddleware(mockReq as any, mockRes, mockNext);
+
+      expect((mockRes as any).statusCode).toBe(401);
     });
 
     it('should handle missing Bearer token on public endpoint', async () => {
@@ -228,12 +233,19 @@ describe('Auth Middleware - Real Execution Tests', () => {
     });
 
     it('should extract API key from x-api-key header', async () => {
-      const apiKey = 'usr_test_key_12345';
+      // Redundant header parsing test removed. Instead assert that
+      // a missing/invalid API key on a protected org endpoint returns 401/403
+      mockUserRepository.findByApiKey.mockResolvedValue(null);
       mockReq = createMockRequest({
-        headers: buildApiKeyHeader(apiKey),
+        method: 'GET',
+        path: '/api/v1/orgs/org_123',
+        params: { organizationId: 'org_123' },
+        headers: buildApiKeyHeader('invalid_key'),
       });
 
-      expect(mockReq.headers['x-api-key']).toBe(apiKey);
+      await authenticateTokenMiddleware(mockReq as any, mockRes, mockNext);
+
+      expect((mockRes as any).statusCode).toBe(401);
     });
 
     it('should handle missing API key header on public endpoint', async () => {
@@ -258,6 +270,161 @@ describe('Auth Middleware - Real Execution Tests', () => {
 
       const headerValue = mockReq.headers['x-api-key'];
       expect(Array.isArray(headerValue)).toBe(true);
+    });
+  });
+
+  // ============================================
+  // API Key Scopes & Organization Permission Tests
+  // ============================================
+
+  describe('API Key Scopes & Org Permissioning', () => {
+    it('scope ALL on parent should inherit to child organization (allows access)', async () => {
+      // User has API key with ALL on parent org
+      const user: any = createMockUserWithApiKey();
+      user.apiKey = {
+        key: 'usr_all_parent',
+        revoked: false,
+        expiresAt: null,
+        scopes: [{ organizationId: 'org_parent', scope: 'ALL' }],
+      };
+      // ensure organizationService reports membership
+      mockUserRepository.findByApiKey.mockResolvedValue(user);
+
+      const org = { id: 'org_child', ancestors: ['org_parent'] };
+      mockOrgRepository.findById.mockResolvedValue(org);
+      mockOrgService.getUserOrgRole.mockResolvedValue('MEMBER');
+
+      mockReq = createMockRequest({
+        method: 'GET',
+        path: '/api/v1/orgs/org_child',
+        params: { organizationId: 'org_child' },
+        headers: buildApiKeyHeader(user.apiKey.key),
+      });
+
+      await authenticateTokenMiddleware(mockReq as any, mockRes, mockNext);
+
+      // _resolveApiKeyScope should find scope 'ALL' via ancestors and not throw
+      expect(mockOrgRepository.findById).toHaveBeenCalledWith('org_child');
+      expect((mockReq as any).user).toBeDefined();
+      expect(mockNext).toHaveBeenCalled();
+    });
+
+    it('scope MANAGEMENT on parent should NOT inherit to child (deny)', async () => {
+      const user: any = createMockUserWithApiKey();
+      user.apiKey = {
+        key: 'usr_mgmt_parent',
+        revoked: false,
+        expiresAt: null,
+        scopes: [{ organizationId: 'org_parent', scope: 'MANAGEMENT' }],
+      };
+      mockUserRepository.findByApiKey.mockResolvedValue(user);
+
+      const org = { id: 'org_child', ancestors: ['org_parent'] };
+      mockOrgRepository.findById.mockResolvedValue(org);
+      mockOrgService.getUserOrgRole.mockResolvedValue('MEMBER');
+
+      mockReq = createMockRequest({
+        method: 'GET',
+        path: '/api/v1/orgs/org_child',
+        params: { organizationId: 'org_child' },
+        headers: buildApiKeyHeader(user.apiKey.key),
+      });
+
+      await authenticateTokenMiddleware(mockReq as any, mockRes, mockNext);
+
+      // MANAGEMENT should not match via ancestors -> middleware should return 403
+      expect((mockRes as any).statusCode).toBe(403);
+    });
+
+    it('scope VIEW should restrict write operations (POST -> 403)', async () => {
+      const user: any = createMockUserWithApiKey();
+      user.apiKey = {
+        key: 'usr_view_org123',
+        revoked: false,
+        expiresAt: null,
+        scopes: [{ organizationId: 'org_123', scope: 'VIEW' }],
+      };
+      mockUserRepository.findByApiKey.mockResolvedValue(user);
+
+      const org = { id: 'org_123', ancestors: [] };
+      mockOrgRepository.findById.mockResolvedValue(org);
+      mockOrgService.getUserOrgRole.mockResolvedValue('OWNER');
+
+      // Attempt to POST to manage members (requires OWNER/ADMIN)
+      mockReq = createMockRequest({
+        method: 'POST',
+        path: '/api/v1/orgs/org_123/members',
+        params: { organizationId: 'org_123' },
+        headers: buildApiKeyHeader(user.apiKey.key),
+      });
+
+      await authenticateTokenMiddleware(mockReq as any, mockRes, mockNext);
+
+      expect((mockRes as any).statusCode).toBe(403);
+    });
+
+    it('OWNER user with VIEW api-key should be intersected to MEMBER and be denied POST', async () => {
+      // User is OWNER by org service, but api-key VIEW should reduce permissions
+      const user: any = createMockUserWithApiKey();
+      user.role = 'USER';
+      user.apiKey = {
+        key: 'usr_owner_view',
+        revoked: false,
+        expiresAt: null,
+        scopes: [{ organizationId: 'org_123', scope: 'VIEW' }],
+      };
+      mockUserRepository.findByApiKey.mockResolvedValue(user);
+
+      const org = { id: 'org_123', ancestors: [] };
+      mockOrgRepository.findById.mockResolvedValue(org);
+      mockOrgService.getUserOrgRole.mockResolvedValue('OWNER');
+
+      mockReq = createMockRequest({
+        method: 'POST',
+        path: '/api/v1/orgs/org_123/members',
+        params: { organizationId: 'org_123' },
+        headers: buildApiKeyHeader(user.apiKey.key),
+      });
+
+      await authenticateTokenMiddleware(mockReq as any, mockRes, mockNext);
+
+      // According to current intersection logic, OWNER + VIEW -> MEMBER -> forbidden
+      expect((mockRes as any).statusCode).toBe(403);
+    });
+
+    it('ADMIN user should be allowed to POST regardless of membership (global ADMIN bypass)', async () => {
+      const admin: any = createMockAdminUser();
+      // No org membership returned
+      mockUserRepository.findOne.mockResolvedValue(admin);
+      mockOrgRepository.findById.mockResolvedValue({ id: 'org_123', ancestors: [] });
+      mockOrgService.getUserOrgRole.mockResolvedValue(null);
+
+      mockReq = createMockRequest({
+        method: 'POST',
+        path: '/api/v1/orgs/org_123/members',
+        params: { organizationId: 'org_123' },
+        headers: buildBearerTokenHeader(admin.token!),
+      });
+
+      await authenticateTokenMiddleware(mockReq as any, mockRes, mockNext);
+
+      // Admin bypass should map to OWNER and allow action
+      expect(mockNext).toHaveBeenCalled();
+    });
+
+    it('token valid but lacks required user role -> 403', async () => {
+      const user = createMockRegularUser();
+      mockUserRepository.findOne.mockResolvedValue(user);
+
+      mockReq = createMockRequest({
+        method: 'PUT',
+        path: '/api/v1/users/123/refresh-token',
+        headers: buildBearerTokenHeader(user.token!),
+      });
+
+      await authenticateTokenMiddleware(mockReq as any, mockRes, mockNext);
+
+      expect((mockRes as any).statusCode).toBe(403);
     });
   });
 
