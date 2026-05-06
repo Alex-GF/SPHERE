@@ -2680,7 +2680,7 @@ components:
             avatar:
               type: string
               format: uri
-              example: https://sphere.score.us.es/avatars/default-avatar.png
+              example: https://sphere.score.us.es/static/avatars/users/default-avatar.png
 
     PricingCollection:
       type: object
@@ -2799,7 +2799,7 @@ components:
           type: string
           nullable: true
           description: URL to the organization's avatar image
-          example: "https://sphere.score.us.es/avatars/org-avatar.png"
+          example: "https://sphere.score.us.es/static/avatars/orgs/org-avatar.png"
         isPersonal:
           type: boolean
           description: |
@@ -2860,7 +2860,7 @@ components:
               type: string
               nullable: true
               description: URL to the user's avatar image
-              example: "https://sphere.score.us.es/avatars/default-avatar.png"
+              example: "https://sphere.score.us.es/static/avatars/users/default-avatar.png"
 
     OrganizationInvitation:
       type: object
@@ -2941,6 +2941,7 @@ components:
               type: string
               nullable: true
               description: URL to the organization's avatar image
+              example: "https://sphere.score.us.es/static/avatars/orgs/org-avatar.png"
             isPersonal:
               type: boolean
               description: Whether this is a personal organization
@@ -3343,7 +3344,7 @@ components:
                 nullable: true
                 format: uri
                 description: Optional URL to the organization's avatar image (must be a valid URL)
-                example: "https://sphere.score.us.es/avatars/org-avatar.png"
+                example: "https://sphere.score.us.es/static/avatars/orgs/org-avatar.png"
               isPersonal:
                 type: boolean
                 description: |
@@ -3378,7 +3379,7 @@ components:
                 nullable: true
                 format: uri
                 description: Updated avatar URL (must be a valid URL, set to `null` to clear)
-                example: "https://sphere.score.us.es/avatars/new-avatar.png"
+                example: "https://sphere.score.us.es/static/avatars/orgs/new-avatar.png"
 
     AddMember:
       description: |
