@@ -161,6 +161,13 @@ class OrganizationMembershipRepository extends RepositoryBase {
     });
     return true;
   }
+
+  async destroyByUserId(userId: string) {
+    await OrganizationMembershipMongoose.deleteMany({
+      _userId: new mongoose.Types.ObjectId(userId),
+    });
+    return true;
+  }
 }
 
 export default OrganizationMembershipRepository;

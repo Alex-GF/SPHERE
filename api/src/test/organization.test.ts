@@ -5,10 +5,9 @@ import { shutdownApp, TestApp } from './utils/testApp';
 import { BASE_PATH } from './utils/config/variables';
 import testContainer from './utils/config/testContainer';
 import { createAndLoginUser, createTestUser, deleteTestUser } from './utils/users/userTestUtils';
-import { createTestOrganization, createMembership, cleanupOrganization } from './utils/organizations/organizationTestUtils';
+import { createTestOrganization, createMembership, createTestInvitation, cleanupOrganization } from './utils/organizations/organizationTestUtils';
 import { randomSuffix } from './utils/helpers';
 import { LeanUser } from '../main/types/models/User';
-import OrganizationMongoose from '../main/repositories/mongoose/models/OrganizationMongoose';
 import OrganizationMembershipMongoose from '../main/repositories/mongoose/models/OrganizationMembershipMongoose';
 import OrganizationInvitationMongoose from '../main/repositories/mongoose/models/OrganizationInvitationMongoose';
 
@@ -1380,6 +1379,679 @@ describe('Organizations API integration', () => {
 
       const response = await request(app)
         .delete(`${BASE_PATH}/orgs/${org.id}/members/${member.id}`);
+
+      expect(response.status).toBe(401);
+      expect(response.body.error).toBeDefined();
+    });
+  });
+
+  // =========================================================================
+  // GET /orgs/:organizationId/invitations
+  // =========================================================================
+  describe('GET /orgs/:organizationId/invitations', () => {
+    it('returns 200 and list of invitations when OWNER requests', async () => {
+      const owner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      const invitation = await createTestInvitation(org.id, owner.id);
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/orgs/${org.id}/invitations`)
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBe(1);
+      expect(response.body[0].code).toBe(invitation.code);
+    });
+
+    it('returns invitations with expected fields', async () => {
+      const owner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createTestInvitation(org.id, owner.id, { expiresInDays: 14, maxUses: 5 });
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/orgs/${org.id}/invitations`)
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      expect(response.status).toBe(200);
+      const inv = response.body[0];
+      expect(inv.id).toBeDefined();
+      expect(inv.code).toBeDefined();
+      expect(inv.expiresAt).toBeDefined();
+      expect(inv.maxUses).toBe(5);
+      expect(inv.useCount).toBe(0);
+      expect(inv.createdAt).toBeDefined();
+    });
+
+    it('returns 200 when org ADMIN requests', async () => {
+      const owner = await createAndLoginUser('USER');
+      const orgAdmin = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(orgAdmin.id, org.id, 'ADMIN');
+      await createTestInvitation(org.id, owner.id);
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/orgs/${org.id}/invitations`)
+        .set('Authorization', `Bearer ${orgAdmin.token}`);
+
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBe(1);
+    });
+
+    it('returns 200 when global ADMIN requests', async () => {
+      const owner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createTestInvitation(org.id, owner.id);
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/orgs/${org.id}/invitations`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
+
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBe(true);
+    });
+
+    it('returns 200 and empty array when no invitations exist', async () => {
+      const owner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/orgs/${org.id}/invitations`)
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBe(0);
+    });
+
+    it('returns 200 when org MEMBER lists invitations (general org GET rule applies)', async () => {
+      const owner = await createAndLoginUser('USER');
+      const member = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(member.id, org.id, 'MEMBER');
+      await createTestInvitation(org.id, owner.id);
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/orgs/${org.id}/invitations`)
+        .set('Authorization', `Bearer ${member.token}`);
+
+      // MEMBER can list because the general /orgs/** GET rule allows all org members
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBe(true);
+    });
+
+    it('returns 403 when non-member USER tries to list invitations', async () => {
+      const owner = await createAndLoginUser('USER');
+      const outsider = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/orgs/${org.id}/invitations`)
+        .set('Authorization', `Bearer ${outsider.token}`);
+
+      expect(response.status).toBe(403);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('returns 404 when organization does not exist', async () => {
+      const fakeId = '68050bd09890322c57842f6f';
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/orgs/${fakeId}/invitations`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
+
+      expect(response.status).toBe(404);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('returns 401 without Authorization header', async () => {
+      const owner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/orgs/${org.id}/invitations`);
+
+      expect(response.status).toBe(401);
+      expect(response.body.error).toBeDefined();
+    });
+  });
+
+  // =========================================================================
+  // POST /orgs/:organizationId/invitations
+  // =========================================================================
+  describe('POST /orgs/:organizationId/invitations', () => {
+    it('returns 201 and creates invitation with default options', async () => {
+      const owner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/orgs/${org.id}/invitations`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({});
+
+      expect(response.status).toBe(201);
+      expect(response.body.code).toBeDefined();
+      expect(response.body.code.length).toBe(10);
+      expect(response.body.expiresAt).toBeDefined();
+      expect(response.body.maxUses).toBeNull();
+      expect(response.body.useCount).toBe(0);
+    });
+
+    it('returns 201 with custom expiresInDays', async () => {
+      const owner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/orgs/${org.id}/invitations`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({ expiresInDays: 30 });
+
+      expect(response.status).toBe(201);
+      expect(response.body.expiresAt).toBeDefined();
+      const expiresAt = new Date(response.body.expiresAt);
+      const now = new Date();
+      const diffDays = Math.round((expiresAt.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+      expect(diffDays).toBeGreaterThanOrEqual(29);
+      expect(diffDays).toBeLessThanOrEqual(30);
+    });
+
+    it('returns 201 with custom maxUses', async () => {
+      const owner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/orgs/${org.id}/invitations`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({ maxUses: 5 });
+
+      expect(response.status).toBe(201);
+      expect(response.body.maxUses).toBe(5);
+    });
+
+    it('returns 201 when org ADMIN creates invitation', async () => {
+      const owner = await createAndLoginUser('USER');
+      const orgAdmin = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(orgAdmin.id, org.id, 'ADMIN');
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/orgs/${org.id}/invitations`)
+        .set('Authorization', `Bearer ${orgAdmin.token}`)
+        .send({});
+
+      expect(response.status).toBe(201);
+      expect(response.body.code).toBeDefined();
+    });
+
+    it('returns 201 when global ADMIN creates invitation', async () => {
+      const owner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/orgs/${org.id}/invitations`)
+        .set('Authorization', `Bearer ${adminUser.token}`)
+        .send({});
+
+      expect(response.status).toBe(201);
+      expect(response.body.code).toBeDefined();
+    });
+
+    it('returns 201 and each invitation has a unique code', async () => {
+      const owner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+
+      const res1 = await request(app)
+        .post(`${BASE_PATH}/orgs/${org.id}/invitations`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({});
+      const res2 = await request(app)
+        .post(`${BASE_PATH}/orgs/${org.id}/invitations`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({});
+
+      expect(res1.status).toBe(201);
+      expect(res2.status).toBe(201);
+      expect(res1.body.code).not.toBe(res2.body.code);
+    });
+
+    it('returns 403 when org MEMBER tries to create invitation', async () => {
+      const owner = await createAndLoginUser('USER');
+      const member = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(member.id, org.id, 'MEMBER');
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/orgs/${org.id}/invitations`)
+        .set('Authorization', `Bearer ${member.token}`)
+        .send({});
+
+      expect(response.status).toBe(403);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('returns 403 when non-member USER tries to create invitation', async () => {
+      const owner = await createAndLoginUser('USER');
+      const outsider = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/orgs/${org.id}/invitations`)
+        .set('Authorization', `Bearer ${outsider.token}`)
+        .send({});
+
+      expect(response.status).toBe(403);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('returns 404 when organization does not exist', async () => {
+      const fakeId = '68050bd09890322c57842f6f';
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/orgs/${fakeId}/invitations`)
+        .set('Authorization', `Bearer ${adminUser.token}`)
+        .send({});
+
+      expect(response.status).toBe(404);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('returns 401 without Authorization header', async () => {
+      const owner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/orgs/${org.id}/invitations`)
+        .send({});
+
+      expect(response.status).toBe(401);
+      expect(response.body.error).toBeDefined();
+    });
+  });
+
+  // =========================================================================
+  // DELETE /orgs/:organizationId/invitations/:invitationId
+  // =========================================================================
+  describe('DELETE /orgs/:organizationId/invitations/:invitationId', () => {
+    it('returns 200 when OWNER revokes invitation', async () => {
+      const owner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      const invitation = await createTestInvitation(org.id, owner.id);
+
+      const response = await request(app)
+        .delete(`${BASE_PATH}/orgs/${org.id}/invitations/${invitation.id}`)
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.message).toBe('Invitation revoked.');
+
+      const dbInvitation = await OrganizationInvitationMongoose.findById(invitation.id);
+      expect(dbInvitation).toBeNull();
+    });
+
+    it('returns 200 when org ADMIN revokes invitation', async () => {
+      const owner = await createAndLoginUser('USER');
+      const orgAdmin = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(orgAdmin.id, org.id, 'ADMIN');
+      const invitation = await createTestInvitation(org.id, owner.id);
+
+      const response = await request(app)
+        .delete(`${BASE_PATH}/orgs/${org.id}/invitations/${invitation.id}`)
+        .set('Authorization', `Bearer ${orgAdmin.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.message).toBe('Invitation revoked.');
+    });
+
+    it('returns 200 when global ADMIN revokes invitation', async () => {
+      const owner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      const invitation = await createTestInvitation(org.id, owner.id);
+
+      const response = await request(app)
+        .delete(`${BASE_PATH}/orgs/${org.id}/invitations/${invitation.id}`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.message).toBe('Invitation revoked.');
+    });
+
+    it('returns 200 and revocation does not affect users who already joined', async () => {
+      const owner = await createAndLoginUser('USER');
+      const joiner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      const invitation = await createTestInvitation(org.id, owner.id);
+
+      // Join via invitation first
+      const joinRes = await request(app)
+        .post(`${BASE_PATH}/orgs/join/${invitation.code}`)
+        .set('Authorization', `Bearer ${joiner.token}`);
+      expect(joinRes.status).toBe(200);
+
+      // Revoke the invitation
+      const revokeRes = await request(app)
+        .delete(`${BASE_PATH}/orgs/${org.id}/invitations/${invitation.id}`)
+        .set('Authorization', `Bearer ${owner.token}`);
+      expect(revokeRes.status).toBe(200);
+
+      // Verify the joiner is still a member
+      const membersRes = await request(app)
+        .get(`${BASE_PATH}/orgs/${org.id}/members`)
+        .set('Authorization', `Bearer ${owner.token}`);
+      const joinerMember = membersRes.body.find((m: any) => m.user?.id === joiner.id);
+      expect(joinerMember).toBeDefined();
+    });
+
+    it('returns 403 when org MEMBER tries to revoke invitation', async () => {
+      const owner = await createAndLoginUser('USER');
+      const member = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(member.id, org.id, 'MEMBER');
+      const invitation = await createTestInvitation(org.id, owner.id);
+
+      const response = await request(app)
+        .delete(`${BASE_PATH}/orgs/${org.id}/invitations/${invitation.id}`)
+        .set('Authorization', `Bearer ${member.token}`);
+
+      expect(response.status).toBe(403);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('returns 403 when non-member USER tries to revoke invitation', async () => {
+      const owner = await createAndLoginUser('USER');
+      const outsider = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      const invitation = await createTestInvitation(org.id, owner.id);
+
+      const response = await request(app)
+        .delete(`${BASE_PATH}/orgs/${org.id}/invitations/${invitation.id}`)
+        .set('Authorization', `Bearer ${outsider.token}`);
+
+      expect(response.status).toBe(403);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('returns 404 when invitation does not exist', async () => {
+      const owner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      const fakeInvitationId = '68050bd09890322c57842f72';
+
+      const response = await request(app)
+        .delete(`${BASE_PATH}/orgs/${org.id}/invitations/${fakeInvitationId}`)
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      expect(response.status).toBe(404);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('returns 404 when organization does not exist', async () => {
+      const fakeOrgId = '68050bd09890322c57842f6f';
+      const fakeInvitationId = '68050bd09890322c57842f72';
+
+      const response = await request(app)
+        .delete(`${BASE_PATH}/orgs/${fakeOrgId}/invitations/${fakeInvitationId}`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
+
+      expect(response.status).toBe(404);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('returns 401 without Authorization header', async () => {
+      const owner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      const invitation = await createTestInvitation(org.id, owner.id);
+
+      const response = await request(app)
+        .delete(`${BASE_PATH}/orgs/${org.id}/invitations/${invitation.id}`);
+
+      expect(response.status).toBe(401);
+      expect(response.body.error).toBeDefined();
+    });
+  });
+
+  // =========================================================================
+  // GET /orgs/invitations/preview/:code
+  // =========================================================================
+  describe('GET /orgs/invitations/preview/:code', () => {
+    it('returns 200 and invitation preview data with valid code', async () => {
+      const owner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      const invitation = await createTestInvitation(org.id, owner.id);
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/orgs/invitations/preview/${invitation.code}`)
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.invitation).toBeDefined();
+      expect(response.body.organization).toBeDefined();
+      expect(response.body.invitation.code).toBe(invitation.code);
+      expect(response.body.organization.id).toBe(org.id);
+    });
+
+    it('returns organization info in preview (id, name, displayName, isPersonal)', async () => {
+      const owner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token, { displayName: 'Preview Org' });
+      const invitation = await createTestInvitation(org.id, owner.id);
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/orgs/invitations/preview/${invitation.code}`)
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.organization.id).toBe(org.id);
+      expect(response.body.organization.name).toBe(org.name);
+      expect(response.body.organization.displayName).toBe('Preview Org');
+      expect(response.body.organization.isPersonal).toBeDefined();
+    });
+
+    it('returns 200 when any authenticated user previews', async () => {
+      const owner = await createAndLoginUser('USER');
+      const otherUser = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      const invitation = await createTestInvitation(org.id, owner.id);
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/orgs/invitations/preview/${invitation.code}`)
+        .set('Authorization', `Bearer ${otherUser.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.invitation.code).toBe(invitation.code);
+    });
+
+    it('returns 404 when invitation code does not exist', async () => {
+      const owner = await createAndLoginUser('USER');
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/orgs/invitations/preview/nonexistentcode`)
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      expect(response.status).toBe(404);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('returns 404 when invitation is expired', async () => {
+      const owner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      // Create an invitation that already expired
+      const invitation = await createTestInvitation(org.id, owner.id, { expiresInDays: -1 });
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/orgs/invitations/preview/${invitation.code}`)
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      expect(response.status).toBe(404);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('returns 404 when invitation has reached max uses', async () => {
+      const owner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      // Create invitation with maxUses: 1, then use it once
+      const invitation = await createTestInvitation(org.id, owner.id, { maxUses: 1 });
+      const joiner = await createAndLoginUser('USER');
+      await request(app)
+        .post(`${BASE_PATH}/orgs/join/${invitation.code}`)
+        .set('Authorization', `Bearer ${joiner.token}`);
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/orgs/invitations/preview/${invitation.code}`)
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      expect(response.status).toBe(404);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('returns 401 without Authorization header', async () => {
+      const owner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      const invitation = await createTestInvitation(org.id, owner.id);
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/orgs/invitations/preview/${invitation.code}`);
+
+      expect(response.status).toBe(401);
+      expect(response.body.error).toBeDefined();
+    });
+  });
+
+  // =========================================================================
+  // POST /orgs/join/:code
+  // =========================================================================
+  describe('POST /orgs/join/:code', () => {
+    it('returns 200 and joins organization with valid invitation code', async () => {
+      const owner = await createAndLoginUser('USER');
+      const joiner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      const invitation = await createTestInvitation(org.id, owner.id);
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/orgs/join/${invitation.code}`)
+        .set('Authorization', `Bearer ${joiner.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.id).toBe(org.id);
+    });
+
+    it('returns 200 and user is added as MEMBER role', async () => {
+      const owner = await createAndLoginUser('USER');
+      const joiner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      const invitation = await createTestInvitation(org.id, owner.id);
+
+      await request(app)
+        .post(`${BASE_PATH}/orgs/join/${invitation.code}`)
+        .set('Authorization', `Bearer ${joiner.token}`);
+
+      const membersRes = await request(app)
+        .get(`${BASE_PATH}/orgs/${org.id}/members`)
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      const joinerMember = membersRes.body.find((m: any) => m.user?.id === joiner.id);
+      expect(joinerMember).toBeDefined();
+      expect(joinerMember.role).toBe('MEMBER');
+    });
+
+    it('returns 200 and increments invitation useCount', async () => {
+      const owner = await createAndLoginUser('USER');
+      const joiner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      const invitation = await createTestInvitation(org.id, owner.id);
+
+      await request(app)
+        .post(`${BASE_PATH}/orgs/join/${invitation.code}`)
+        .set('Authorization', `Bearer ${joiner.token}`);
+
+      const previewRes = await request(app)
+        .get(`${BASE_PATH}/orgs/invitations/preview/${invitation.code}`)
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      expect(previewRes.status).toBe(200);
+      expect(previewRes.body.invitation.useCount).toBe(1);
+    });
+
+    it('returns 200 when ADMIN (global) joins via invitation', async () => {
+      const owner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      const invitation = await createTestInvitation(org.id, owner.id);
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/orgs/join/${invitation.code}`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.id).toBe(org.id);
+    });
+
+    it('returns 422 when user is already a member', async () => {
+      const owner = await createAndLoginUser('USER');
+      const member = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(member.id, org.id, 'MEMBER');
+      const invitation = await createTestInvitation(org.id, owner.id);
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/orgs/join/${invitation.code}`)
+        .set('Authorization', `Bearer ${member.token}`);
+
+      expect(response.status).toBe(422);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('returns 404 when invitation code does not exist', async () => {
+      const joiner = await createAndLoginUser('USER');
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/orgs/join/nonexistentcode`)
+        .set('Authorization', `Bearer ${joiner.token}`);
+
+      expect(response.status).toBe(404);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('returns 404 when invitation is expired', async () => {
+      const owner = await createAndLoginUser('USER');
+      const joiner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      const invitation = await createTestInvitation(org.id, owner.id, { expiresInDays: -1 });
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/orgs/join/${invitation.code}`)
+        .set('Authorization', `Bearer ${joiner.token}`);
+
+      expect(response.status).toBe(404);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('returns 404 when invitation has reached max uses', async () => {
+      const owner = await createAndLoginUser('USER');
+      const joiner1 = await createAndLoginUser('USER');
+      const joiner2 = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      const invitation = await createTestInvitation(org.id, owner.id, { maxUses: 1 });
+
+      // First join succeeds
+      const res1 = await request(app)
+        .post(`${BASE_PATH}/orgs/join/${invitation.code}`)
+        .set('Authorization', `Bearer ${joiner1.token}`);
+      expect(res1.status).toBe(200);
+
+      // Second join fails — max uses reached
+      const res2 = await request(app)
+        .post(`${BASE_PATH}/orgs/join/${invitation.code}`)
+        .set('Authorization', `Bearer ${joiner2.token}`);
+      expect(res2.status).toBe(404);
+      expect(res2.body.error).toBeDefined();
+    });
+
+    it('returns 401 without Authorization header', async () => {
+      const owner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      const invitation = await createTestInvitation(org.id, owner.id);
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/orgs/join/${invitation.code}`);
 
       expect(response.status).toBe(401);
       expect(response.body.error).toBeDefined();
