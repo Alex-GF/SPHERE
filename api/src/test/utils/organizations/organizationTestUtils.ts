@@ -1,4 +1,5 @@
 import request from 'supertest';
+import mongoose from 'mongoose';
 import testContainer from '../config/testContainer';
 import { BASE_PATH } from '../config/variables';
 import OrganizationMongoose from '../../../main/repositories/mongoose/models/OrganizationMongoose';
@@ -137,8 +138,8 @@ export const createMembership = async (
   const joinedAt = new Date();
 
   const membership = new OrganizationMembershipMongoose({
-    _userId: userId,
-    _organizationId: organizationId,
+    _userId: new mongoose.Types.ObjectId(userId),
+    _organizationId: new mongoose.Types.ObjectId(organizationId),
     role,
     joinedAt: joinedAt,
   });
@@ -153,8 +154,8 @@ export const createMembership = async (
 
   return {
     id: saved._id.toString(),
-    _userId: userId,
-    _organizationId: organizationId,
+    _userId: saved._userId!.toString(),
+    _organizationId: saved._organizationId!.toString(),
     role: saved.role as 'OWNER' | 'ADMIN' | 'MEMBER',
     joinedAt: joinedAt,
   };

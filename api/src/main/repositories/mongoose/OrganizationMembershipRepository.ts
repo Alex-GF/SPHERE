@@ -56,7 +56,13 @@ class OrganizationMembershipRepository extends RepositoryBase {
         {
           $addFields: {
             id: { $toString: '$_id' },
-            'user.id': { $toString: '$user._id' },
+            _userId: { $toString: '$_userId' },
+            _organizationId: {
+              $toString: '$_organizationId',
+            },
+            'user.id': {
+              $toString: '$user._id',
+            },
           },
         },
         {
@@ -76,7 +82,10 @@ class OrganizationMembershipRepository extends RepositoryBase {
     }
   }
 
-  async findUserRoleInOrganization(userId: string, organizationId: string): Promise<OrgRole | null> {
+  async findUserRoleInOrganization(
+    userId: string,
+    organizationId: string
+  ): Promise<OrgRole | null> {
     try {
       const membership = await OrganizationMembershipMongoose.aggregate([
         {
@@ -98,7 +107,10 @@ class OrganizationMembershipRepository extends RepositoryBase {
               $in: [
                 '$_organizationId',
                 {
-                  $concatArrays: [[new mongoose.Types.ObjectId(organizationId)], '$targetOrg.ancestors'],
+                  $concatArrays: [
+                    [new mongoose.Types.ObjectId(organizationId)],
+                    '$targetOrg.ancestors',
+                  ],
                 },
               ],
             },

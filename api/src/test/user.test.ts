@@ -3,9 +3,15 @@ import request from 'supertest';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { shutdownApp, TestApp } from './utils/testApp';
 import { createTestUser, deleteTestUser } from './utils/users/userTestUtils';
+import {
+  createTestOrganizationDirect,
+  createMembership,
+} from './utils/organizations/organizationTestUtils';
 import { LeanUser } from '../main/types/models/User';
 import { BASE_PATH, TEST_PASSWORD } from './utils/config/variables';
 import testContainer from './utils/config/testContainer';
+import OrganizationMongoose from '../main/repositories/mongoose/models/OrganizationMongoose';
+import OrganizationMembershipMongoose from '../main/repositories/mongoose/models/OrganizationMembershipMongoose';
 
 dotenv.config();
 
@@ -87,7 +93,7 @@ describe('Users API integration', () => {
       expect(response.body.email).toBe(user.email);
       expect(response.body.role).toBe(user.role);
     });
-    
+
     it('Return 401 with structurally valid token not linked to user', async () => {
       const user = await createTestUser('USER');
 
@@ -377,7 +383,7 @@ describe('Users API integration', () => {
       const payload = {
         firstName: 'UpdatedName',
         lastName: 'UpdatedLastName',
-        email: 'updated@example.com'
+        email: 'updated@example.com',
       };
 
       const response = await request(app)
@@ -669,6 +675,162 @@ describe('Users API integration', () => {
 
       expect(response.status).toBe(403);
       expect(response.body.error.toLowerCase()).toContain('at least one');
+    });
+
+    it('Removes user membership from non-personal org without deleting it when other members exist', async () => {
+      const userToDelete = await createTestUser('USER');
+      const otherMember = await createTestUser('USER');
+      usersToDelete.add(userToDelete.username);
+      usersToDelete.add(otherMember.username);
+
+      const org = await createTestOrganizationDirect({
+        name: `test_org_${Date.now()}`,
+        displayName: 'Test Org',
+        isPersonal: false,
+      });
+      testContainer.resolve('orgsToDelete').add(org.id);
+
+      await createMembership(userToDelete.id, org.id, 'MEMBER');
+      await createMembership(otherMember.id, org.id, 'MEMBER');
+
+      const response = await request(app)
+        .delete(`${BASE_PATH}/users/${userToDelete.username}`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
+
+      expect(response.status).toBe(200);
+
+      const orgAfter = await OrganizationMongoose.findById(org.id);
+      expect(orgAfter).not.toBeNull();
+
+      const membershipAfter = await OrganizationMembershipMongoose.findOne({
+        _userId: userToDelete.id,
+        _organizationId: org.id,
+      });
+      expect(membershipAfter).toBeNull();
+    });
+
+    it('Transfers OWNER role to ADMIN when deleting owner from org with ADMIN member', async () => {
+      const userToDelete = await createTestUser('USER');
+      const adminMember = await createTestUser('USER');
+      usersToDelete.add(userToDelete.username);
+      usersToDelete.add(adminMember.username);
+
+      const org = await createTestOrganizationDirect({
+        name: `test_org_${Date.now()}`,
+        displayName: 'Test Org',
+        isPersonal: false,
+      });
+      testContainer.resolve('orgsToDelete').add(org.id);
+
+      await createMembership(userToDelete.id, org.id, 'OWNER');
+      await createMembership(adminMember.id, org.id, 'ADMIN');
+
+      const response = await request(app)
+        .delete(`${BASE_PATH}/users/${userToDelete.username}`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
+
+      expect(response.status).toBe(200);
+
+      const remainingMembership = await OrganizationMembershipMongoose.findOne({
+        _userId: adminMember.id,
+        _organizationId: org.id,
+      });
+      expect(remainingMembership).not.toBeNull();
+      expect(remainingMembership?.role).toBe('OWNER');
+    });
+
+    it('Transfers OWNER role to MEMBER when deleting owner from org with no ADMIN', async () => {
+      const userToDelete = await createTestUser('USER');
+      const memberUser = await createTestUser('USER');
+      usersToDelete.add(userToDelete.username);
+      usersToDelete.add(memberUser.username);
+
+      const org = await createTestOrganizationDirect({
+        name: `test_org_${Date.now()}`,
+        displayName: 'Test Org',
+        isPersonal: false,
+      });
+      testContainer.resolve('orgsToDelete').add(org.id);
+
+      await createMembership(userToDelete.id, org.id, 'OWNER');
+      await createMembership(memberUser.id, org.id, 'MEMBER');
+
+      const response = await request(app)
+        .delete(`${BASE_PATH}/users/${userToDelete.username}`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
+
+      expect(response.status).toBe(200);
+
+      const remainingMembership = await OrganizationMembershipMongoose.findOne({
+        _userId: memberUser.id,
+        _organizationId: org.id,
+      });
+      expect(remainingMembership).not.toBeNull();
+      expect(remainingMembership?.role).toBe('OWNER');
+    });
+
+it('Deletes organization when it becomes empty after user deletion (non-personal)', async () => {
+      const userToDelete = await createTestUser('USER');
+      usersToDelete.add(userToDelete.username);
+
+      const org = await createTestOrganizationDirect({
+        name: `test_org_${Date.now()}`,
+        displayName: 'Test Org',
+        isPersonal: false,
+      });
+
+      await createMembership(userToDelete.id, org.id, 'MEMBER');
+
+      const response = await request(app)
+        .delete(`${BASE_PATH}/users/${userToDelete.username}`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
+
+      expect(response.status).toBe(200);
+
+      const orgAfter = await OrganizationMongoose.findById(org.id);
+      expect(orgAfter).toBeNull();
+    });
+
+    it('Deletes personal organization even when it has other members (edge case)', async () => {
+      const registerPayload = {
+        firstName: 'John',
+        lastName: 'Doe',
+        email: `john_edge_${Date.now()}@example.com`,
+        username: `john_edge_${Date.now()}`,
+        password: TEST_PASSWORD,
+        phone: '+34-600-0002',
+        role: 'USER',
+      };
+
+      const registerResponse = await request(app)
+        .post(`${BASE_PATH}/users/register`)
+        .send(registerPayload);
+      expect(registerResponse.status).toBe(201);
+      usersToDelete.add(registerResponse.body.username);
+
+      const loginResponse = await request(app)
+        .post(`${BASE_PATH}/users/login`)
+        .send({
+          loginField: registerPayload.username,
+          password: TEST_PASSWORD,
+        });
+      expect(loginResponse.status).toBe(200);
+
+      const personalOrg = await OrganizationMongoose.findOne({ name: registerPayload.username.toLowerCase(), isPersonal: true });
+      expect(personalOrg).not.toBeNull();
+
+      const otherMember = await createTestUser('USER');
+      usersToDelete.add(otherMember.username);
+      await createMembership(otherMember.id, personalOrg!.id, 'MEMBER');
+
+      const response = await request(app)
+        .delete(`${BASE_PATH}/users/${registerPayload.username}`)
+        .set('Authorization', `Bearer ${loginResponse.body.token}`);
+
+      expect(response.status).toBe(200);
+
+      const deletedOrg = await OrganizationMongoose.findById(personalOrg!._id);
+      expect(deletedOrg).toBeNull();
     });
   });
 });

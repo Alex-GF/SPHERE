@@ -15,13 +15,13 @@ const ApiKeySchema = new Schema(
         scope: {
           type: String,
           enum: ['ALL', 'MANAGEMENT', 'VIEW'],
-          required: true
-        }
-      }
+          required: true,
+        },
+      },
     ],
 
     expiresAt: { type: Date, default: null },
-    revoked: { type: Boolean, default: false }
+    revoked: { type: Boolean, default: false },
   },
   { _id: false }
 );
@@ -78,6 +78,7 @@ const userSchema = new Schema(
     timestamps: true,
     toObject: {
       getters: true,
+      virtuals: true,
       versionKey: false,
       transform: function (_, resultObject) {
         delete (resultObject as any)._id;
@@ -136,7 +137,7 @@ export interface UserDocument extends Document {
 userSchema.index({ _id: 1 });
 userSchema.index({ username: 1 });
 userSchema.index({ email: 1 });
-userSchema.index({ "apiKeys.key": 1 });
+userSchema.index({ 'apiKeys.key': 1 });
 
 const userModel = mongoose.model<UserDocument>('User', userSchema, 'users');
 

@@ -51,7 +51,6 @@ class OrganizationService {
   }
 
   async ensurePersonalOrganizationForUser(user: { id: string; username: string }) {
-    // Personal organization is identified by isPersonal + name == username.
     const existing = await this.organizationRepository.findOne({ name: user.username, isPersonal: true });
     if (existing) {
       throw new Error(
@@ -85,13 +84,13 @@ class OrganizationService {
     return organization;
   }
 
-  async destroy(id: string) {
+  async destroy(id: string, skipPersonalCheck = false) {
     const organization = await this.organizationRepository.findById(id);
     if (!organization) {
       throw new Error('NOT FOUND: Organization not found');
     }
 
-    if ((organization as any).isPersonal) {
+    if ((organization as any).isPersonal && !skipPersonalCheck) {
       throw new Error('PERMISSION ERROR: Personal organizations cannot be deleted');
     }
 
@@ -104,8 +103,14 @@ class OrganizationService {
     return true;
   }
 
-  async listMembers(organizationId: string) {
-    return this.organizationMembershipRepository.findByOrganizationId(organizationId);
+  async listMembers(organizationId: string, excludeUserId?: string) {
+    const members = await this.organizationMembershipRepository.findByOrganizationId(organizationId);
+
+    if (excludeUserId) {
+      return members.filter((m: any) => m._userId !== excludeUserId);
+    }
+
+    return members;
   }
 
   async addMember(userId: string, organizationId: string, role: OrgRole) {
