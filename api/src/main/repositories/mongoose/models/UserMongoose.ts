@@ -105,7 +105,7 @@ userSchema.pre('save', async function (callback) {
   }
 
   if (!user.avatar) {
-    user.avatar = 'avatars/default-avatar.png';
+    user.avatar = 'static/avatars/users/default-avatar.png';
   }
 
   callback();

@@ -1,11 +1,13 @@
 import express from 'express';
 import OrganizationController from '../controllers/OrganizationController';
+import { addFilenameToBody, handleFileUpload } from '../middlewares/FileHandlerMiddleware';
 import { handleValidation } from '../middlewares/ValidationHandlingMiddleware';
 import * as OrganizationValidation from '../controllers/validation/OrganizationValidation';
 
 const loadFileRoutes = function (app: express.Application) {
   const organizationController = new OrganizationController();
   const baseUrl = (process.env.BASE_URL_PATH ?? '') + '/api/v1';
+  const orgAvatarUpload = handleFileUpload(['avatar'], process.env.ORG_AVATARS_FOLDER!);
 
   app.route(baseUrl + '/orgs')
     .get(organizationController.index)
@@ -20,7 +22,7 @@ const loadFileRoutes = function (app: express.Application) {
   app
     .route(baseUrl + '/orgs/:organizationId')
     .get(organizationController.show)
-    .put(OrganizationValidation.update, handleValidation, organizationController.update)
+    .put(orgAvatarUpload, addFilenameToBody('avatar'), OrganizationValidation.update, handleValidation, organizationController.update)
     .delete(organizationController.destroy);
 
   app

@@ -104,7 +104,7 @@ export const createTestOrganizationDirect = async (
     name,
     displayName,
     description: orgData.description ?? null,
-    avatar: orgData.avatar ?? 'avatars/default-org.webp',
+    avatar: orgData.avatar ?? `${process.env.ORG_AVATARS_FOLDER}/default-org.webp`,
     isPersonal: orgData.isPersonal ?? false,
     ancestors: orgData.ancestors ?? [],
     _parentId: orgData._parentId ?? null,

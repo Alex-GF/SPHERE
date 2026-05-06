@@ -14,7 +14,7 @@ export const createGlobalAdminUser = async () => {
     email: `admin_${randomSuffix()}@test.com`,
     token: 'c5b77bc3ea8a2903fd38be45227903da58c72bbf',
     tokenExpiration: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours from now
-    avatar: 'avatars/default-avatar.png',
+    avatar: `${process.env.AVATARS_FOLDER}/default-avatar.png`,
   };
 
   const createdAdmin = new UserMongoose(adminUserData);
@@ -35,7 +35,7 @@ export const createGlobalTestUser = async () => {
     email: `test_user_${randomSuffix()}@test.com`,
     token: '8f83882593eae31d5b8d449aaecffb9707367292',
     tokenExpiration: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours from now
-    avatar: 'avatars/default-avatar.png',
+    avatar: `${process.env.AVATARS_FOLDER}/default-avatar.png`,
   };
 
   const createdTestUser = new UserMongoose(testUserData);

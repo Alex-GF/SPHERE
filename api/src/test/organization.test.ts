@@ -1,4 +1,7 @@
 import dotenv from 'dotenv';
+import fs from 'fs';
+import path from 'path';
+import os from 'os';
 import request from 'supertest';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { shutdownApp, TestApp } from './utils/testApp';
@@ -487,6 +490,42 @@ describe('Organizations API integration', () => {
         .send({ avatarUrl: 'https://example.com/new-avatar.png' });
 
       expect(response.status).toBe(200);
+    });
+
+    it('returns 200 when OWNER uploads avatar PNG file and URL is properly formatted', async () => {
+      const owner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+
+      const sourcePng = path.resolve('public', 'static', 'avatars', 'users', 'default-avatar.png');
+      const tmpPng = path.join(os.tmpdir(), `test-avatar-${Date.now()}.png`);
+      fs.copyFileSync(sourcePng, tmpPng);
+
+      const response = await request(app)
+        .put(`${BASE_PATH}/orgs/${org.id}`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .attach('avatar', tmpPng);
+
+      expect(response.status).toBe(200);
+      expect(response.body.avatar).toBeDefined();
+      expect(response.body.avatar).toContain('/avatars/orgs/');
+      expect(response.body.avatar).toMatch(/\.(png|jpeg|jpg)$/);
+      expect(response.body.avatar).toMatch(/^https?:\/\/.+\/avatars\/orgs\//);
+
+      const avatarRelativePath = response.body.avatar.replace(/^https?:\/\/[^/]+/, '');
+      const avatarDiskPath = path.join('public', avatarRelativePath);
+      expect(fs.existsSync(avatarDiskPath)).toBe(true);
+
+      const getResponse = await request(app)
+        .get(`${BASE_PATH}/orgs/${org.id}`)
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      expect(getResponse.status).toBe(200);
+      expect(getResponse.body.avatar).toBeDefined();
+      expect(getResponse.body.avatar).toContain('/avatars/orgs/');
+      expect(getResponse.body.avatar).toMatch(/^https?:\/\/.+\/avatars\/orgs\//);
+
+      fs.unlinkSync(avatarDiskPath);
+      fs.unlinkSync(tmpPng);
     });
 
     it('returns 200 when ADMIN (org role) updates', async () => {

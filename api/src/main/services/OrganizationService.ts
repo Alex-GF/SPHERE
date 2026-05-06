@@ -5,6 +5,7 @@ import OrganizationMembershipRepository from '../repositories/mongoose/Organizat
 import OrganizationInvitationRepository from '../repositories/mongoose/OrganizationInvitationRepository';
 import { OrgRole } from '../types/models/Organization';
 import { LeanUser } from '../types/models/User';
+import { processFileUris } from './FileService';
 
 class OrganizationService {
   private organizationRepository: OrganizationRepository;
@@ -18,12 +19,16 @@ class OrganizationService {
   }
 
   async index() {
-    return this.organizationRepository.findAll({});
+    const organizations = await this.organizationRepository.findAll({});
+    organizations.forEach((org: any) => processFileUris(org, ['avatar']));
+    return organizations;
   }
 
   async indexByUser(userId: string) {
     const memberships = await this.organizationMembershipRepository.findByUserId(userId);
-    return memberships.map((m: any) => m.organization);
+    const organizations = memberships.map((m: any) => m.organization);
+    organizations.forEach((org: any) => processFileUris(org, ['avatar']));
+    return organizations;
   }
   
   async getUserOrgRole(userId: string, organizationId: string): Promise<OrgRole | null> {
@@ -36,6 +41,7 @@ class OrganizationService {
     if (!organization) {
       throw new Error('NOT FOUND: Organization not found');
     }
+    processFileUris(organization, ['avatar']);
     return organization;
   }
 
@@ -81,6 +87,7 @@ class OrganizationService {
     if (!organization) {
       throw new Error('NOT FOUND: Organization not found');
     }
+    processFileUris(organization, ['avatar']);
     return organization;
   }
 

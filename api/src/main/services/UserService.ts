@@ -65,7 +65,7 @@ class UserService {
       );
     }
 
-    newUser.avatar = newUser.avatar || 'avatars/default-avatar.png';
+    newUser.avatar = newUser.avatar || `${process.env.AVATARS_FOLDER}/default-avatar.png`;
     newUser = { ...newUser, ...generateUserTokenDTO() };
 
     const registeredUser = await this.userRepository.create(newUser);
