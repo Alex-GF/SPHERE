@@ -8,7 +8,6 @@ import { handleError } from '../utils/users/helpers';
 import { ApiKey } from '../types/models/User';
 import { ROLE_WEIGHT } from '../types/models/Organization';
 
-
 /**
  * Middleware to authenticate API Keys (both User and Organization types)
  *
@@ -33,10 +32,6 @@ const authenticateTokenMiddleware = async (req: Request, res: Response, next: Ne
       await authenticateToken(req, token);
     } else if (apiKey) {
       await authenticateApiKey(req, apiKey);
-    }
-
-    if ((req as any).user) {
-      await populateOrganizationContext(req);
     }
 
     return checkPermissions(req, res, next);
@@ -104,10 +99,7 @@ async function populateOrganizationContext(req: Request): Promise<void> {
     if (organization) {
       (req as any).org = organization;
 
-      const role = await organizationService.getUserOrgRole(
-        (req as any).user.id,
-        organizationId
-      );
+      const role = await organizationService.getUserOrgRole((req as any).user.id, organizationId);
 
       // Global ADMIN bypasses organization membership checks.
       if (!role && (req as any).user.role !== 'ADMIN') {
@@ -136,7 +128,10 @@ async function populateOrganizationContext(req: Request): Promise<void> {
 }
 
 function extractOrganizationIdFromPath(path: string): string | undefined {
-  const segments = path.replace("/api/v1" + (process.env.BASE_URL_PATH ?? ''), '').split('/').filter(Boolean);
+  const segments = path
+    .replace('/api/v1' + (process.env.BASE_URL_PATH ?? ''), '')
+    .split('/')
+    .filter(Boolean);
 
   if (segments[0] !== 'orgs' && segments[0] !== 'pricings' && segments[0] !== 'collections') {
     return undefined;
@@ -192,20 +187,15 @@ const checkPermissions = async (req: Request, res: Response, next: NextFunction)
       });
     }
 
+    await populateOrganizationContext(req);
+
     // Verify permissions based on auth type
-    if ((req as any).user) {
-      if (
-        !matchingRule.allowedUserRoles ||
-        !matchingRule.allowedUserRoles.includes((req as any).user.role)
-      ) {
-        return res.status(403).json({
-          error: `PERMISSION ERROR: Your user role (${(req as any).user.role}) does not have permission to ${method} ${apiPath}`,
-        });
-      }
-    } else {
-      // No valid authentication found
-      return res.status(401).json({
-        error: 'ERROR: Authentication required',
+    if (
+      !matchingRule.allowedUserRoles ||
+      !matchingRule.allowedUserRoles.includes((req as any).user.role)
+    ) {
+      return res.status(403).json({
+        error: `PERMISSION ERROR: Your user role (${(req as any).user.role}) does not have permission to ${method} ${apiPath}`,
       });
     }
 
@@ -235,16 +225,20 @@ const checkPermissions = async (req: Request, res: Response, next: NextFunction)
       if (!matchingRule.allowedOrganizationRoles.includes(user.orgRole)) {
         return res
           .status(403)
-          .json({ error: 'PERMISSION ERROR: Insufficient role for this action. If you\'re sure that you have the required role to perform this actions, you may be using an API key with limited permissions' });
+          .json({
+            error:
+              "PERMISSION ERROR: Insufficient role for this action. If you're sure that you have the required role to perform this actions, you may be using an API key with limited permissions",
+          });
       }
     }
 
     // Permission granted
     next();
   } catch (error) {
-    return res.status(500).json({
-      error: 'Internal error while verifying permissions',
-    });
+    const { status, message } = handleError(error);
+    if (!res.headersSent) {
+      res.status(status).json({ error: message });
+    }
   }
 };
 
@@ -264,7 +258,10 @@ function _resolveApiKeyScope(
   return resolvedScope?.scope;
 }
 
-function _intersectRoleWithScope(orgRole: "OWNER" | "ADMIN" | "MEMBER", apiKeyScope: string): "OWNER" | "ADMIN" | "MEMBER" {
+function _intersectRoleWithScope(
+  orgRole: 'OWNER' | 'ADMIN' | 'MEMBER',
+  apiKeyScope: string
+): 'OWNER' | 'ADMIN' | 'MEMBER' {
   if (apiKeyScope === 'VIEW') {
     return 'MEMBER';
   }

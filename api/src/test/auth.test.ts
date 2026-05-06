@@ -13,7 +13,7 @@ import { shutdownApp, TestApp } from './utils/testApp';
 import testContainer from './utils/config/testContainer';
 import { BASE_PATH, TEST_PASSWORD } from './utils/config/variables';
 import { createTestCollection } from './utils/collections/collectionTestUtils';
-import { createPricingForUser } from './utils/pricings/pricingTestUtils';
+import { createPricingForOrganization } from './utils/pricings/pricingTestUtils';
 import { randomSuffix } from './utils/helpers';
 import { getPublicEndpoints, getProtectedEndpoints, getOrgContextEndpoints } from './utils/auth/auth.testConfig';
 import { ROUTE_PERMISSIONS } from '../main/config/permissions';
@@ -55,11 +55,11 @@ const buildRequestPath = (pattern: string, ctx: AuthContext) => {
 		case '/pricings':
 			return `${BASE_PATH}/pricings`;
 		case '/pricings/**':
-			return `${BASE_PATH}/pricings/${ctx.ownerUser.username}`;
+			return `${BASE_PATH}/pricings/${ctx.ownerUser.organizationId}`;
 		case '/me/pricings':
 			return `${BASE_PATH}/me/pricings`;
 		case '/collections/**':
-			return `${BASE_PATH}/collections/${ctx.ownerUser.username}`;
+			return `${BASE_PATH}/collections/${ctx.ownerUser.organizationId}`;
 		case '/orgs/invitations/preview/*':
 			return `${BASE_PATH}/orgs/invitations/preview/${ctx.invitationCode}`;
 		case '/orgs/join/*':
@@ -253,13 +253,13 @@ describe('Auth Middleware - Integration Tests', () => {
 
 		await createMembership(memberUser.id, ownerOrg.id, 'MEMBER');
 
-		pricingFixture = await createPricingForUser({
-			username: ownerUser.username,
+		pricingFixture = await createPricingForOrganization({
+			organizationId: ownerUser.organizationId,
 			serviceName: `auth_pricing_${randomSuffix()}`,
 		});
 
 		collectionFixture = await createTestCollection({
-			_ownerName: ownerUser.username,
+			_organizationId: ownerUser.organizationId,
 			name: `auth_collection_${randomSuffix()}`,
 			private: false,
 		});
@@ -466,7 +466,7 @@ describe('Auth Middleware - Integration Tests', () => {
 			const responses = await Promise.all([
 				request(app).get(`${BASE_PATH}/pricings`),
 				request(app).get(`${BASE_PATH}/collections`),
-				request(app).get(`${BASE_PATH}/collections/${ownerUser.username}`),
+				request(app).get(`${BASE_PATH}/collections/${ownerUser.organizationId}`),
 			]);
 
 			responses.forEach((response) => {
@@ -477,13 +477,13 @@ describe('Auth Middleware - Integration Tests', () => {
 		it('touches protected pricing and collection routes with real owner auth', async () => {
 			const responses = await Promise.all([
 				request(app)
-					.get(`${BASE_PATH}/pricings/${ownerUser.username}`)
+					.get(`${BASE_PATH}/pricings/${ownerUser.organizationId}`)
 					.set('Authorization', `Bearer ${ownerUser.token}`),
 				request(app)
-					.get(`${BASE_PATH}/collections/${ownerUser.username}`)
+					.get(`${BASE_PATH}/collections/${ownerUser.organizationId}`)
 					.set('Authorization', `Bearer ${ownerUser.token}`),
 				request(app)
-					.post(`${BASE_PATH}/collections/${ownerUser.username}`)
+					.post(`${BASE_PATH}/collections/${ownerUser.organizationId}`)
 					.set('Authorization', `Bearer ${ownerUser.token}`)
 					.send({
 						name: `auth_extra_collection_${randomSuffix()}`,
