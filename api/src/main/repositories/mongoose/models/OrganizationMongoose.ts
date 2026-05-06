@@ -25,8 +25,8 @@ const organizationSchema = new Schema(
   },
   {
     timestamps: true,
-    getters: true,
     toObject: {
+      getters: true,
       virtuals: true,
       versionKey: false,
       transform: function (doc, resultObject) {

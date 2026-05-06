@@ -4,6 +4,7 @@ import { LeanUser } from '../../../main/types/models/User';
 import { BASE_PATH, TEST_PASSWORD } from '../config/variables';
 import request from 'supertest';
 import testContainer from '../config/testContainer';
+import { createMembership, createTestOrganizationDirect } from '../organizations';
 
 // Create a test user directly in the database
 export const createTestUser = async (
@@ -22,6 +23,15 @@ export const createTestUser = async (
   // Create user directly in the database
   const user = new UserMongoose(userData);
   await user.save();
+
+  const organization = await createTestOrganizationDirect({
+    name: `${username}`,
+    displayName: `${username} (Personal)`,
+    isPersonal: true, 
+    ancestors: [],   
+  });
+
+  createMembership(user.id, organization.id, 'OWNER');
 
   testContainer.resolve('usersToDelete').add(username);
 

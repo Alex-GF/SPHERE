@@ -172,13 +172,7 @@ describe('Organizations API integration', () => {
 
     it('returns 201 when creating personal organization with name auto-set to username', async () => {
       const user = await createTestUser('USER');
-      const loginRes = await request(app)
-        .post(`${BASE_PATH}/users/login`)
-        .send({ loginField: user.username, password: 'password123' });
-      const token = loginRes.body.token;
 
-      // Login creates a personal org via ensurePersonalOrganizationForUser.
-      // Verify it exists and has the correct properties.
       const listRes = await request(app)
         .get(`${BASE_PATH}/orgs`)
         .set('Authorization', `Bearer ${adminUser.token}`);
@@ -186,7 +180,7 @@ describe('Organizations API integration', () => {
       expect(listRes.status).toBe(200);
       const personalOrg = listRes.body.find((o: any) => o.name === user.username.toLowerCase() && o.isPersonal === true);
       expect(personalOrg).toBeDefined();
-      expect(personalOrg.displayName).toContain('personal');
+      expect(personalOrg.displayName).toContain('Personal');
     });
 
     it('returns 201 when ADMIN creates organization for themselves', async () => {
@@ -625,6 +619,21 @@ describe('Organizations API integration', () => {
       orgsToDelete.delete(org.id);
     });
 
+    it('returns 200 when org ADMIN (not global) deletes organization', async () => {
+      const owner = await createAndLoginUser('USER');
+      const orgAdmin = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(orgAdmin.id, org.id, 'ADMIN');
+
+      const response = await request(app)
+        .delete(`${BASE_PATH}/orgs/${org.id}`)
+        .set('Authorization', `Bearer ${orgAdmin.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.message).toBe('Successfully deleted.');
+      orgsToDelete.delete(org.id);
+    });
+
     it('returns 200 and cascades deletion of memberships', async () => {
       const owner = await createAndLoginUser('USER');
       const member = await createAndLoginUser('USER');
@@ -645,13 +654,26 @@ describe('Organizations API integration', () => {
       orgsToDelete.delete(org.id);
     });
 
+    it('returns 200 and cascades deletion of invitations', async () => {
+      const owner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+
+      const invitation = await createTestInvitation(org.id, owner.id);
+
+      const response = await request(app)
+        .delete(`${BASE_PATH}/orgs/${org.id}`)
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      expect(response.status).toBe(200);
+
+      const deletedInvitation = await OrganizationInvitationMongoose.findById(invitation.id);
+      expect(deletedInvitation).toBeNull();
+      orgsToDelete.delete(org.id);
+    });
+
     it('returns 403 when trying to delete a personal organization', async () => {
       // Login creates a personal org via ensurePersonalOrganizationForUser
-      const user = await createTestUser('USER');
-      const loginRes = await request(app)
-        .post(`${BASE_PATH}/users/login`)
-        .send({ loginField: user.username, password: 'password123' });
-      const token = loginRes.body.token;
+      const user = await createAndLoginUser('USER');
 
       // Find the personal org that was created during login
       const listRes = await request(app)
@@ -662,7 +684,7 @@ describe('Organizations API integration', () => {
 
       const response = await request(app)
         .delete(`${BASE_PATH}/orgs/${personalOrg.id}`)
-        .set('Authorization', `Bearer ${token}`);
+        .set('Authorization', `Bearer ${user.token}`);
 
       expect(response.status).toBe(403);
       expect(response.body.error).toContain('Personal');
