@@ -23,6 +23,7 @@ import OrganizationMembershipMongoose from '../main/repositories/mongoose/models
 import PricingCollectionMongoose from '../main/repositories/mongoose/models/PricingCollectionMongoose';
 import PricingMongoose from '../main/repositories/mongoose/models/PricingMongoose';
 import OrganizationService from '../main/services/OrganizationService';
+import mongoose from 'mongoose';
 
 dotenv.config();
 
@@ -213,8 +214,8 @@ describe('Auth Middleware - Integration Tests', () => {
 	const createMembership = async (userId: string, organizationId: string, role: 'OWNER' | 'ADMIN' | 'MEMBER') => {
 		const roleWeight = role === 'OWNER' ? 3 : role === 'ADMIN' ? 2 : 1;
 		await new OrganizationMembershipMongoose({
-			_userId: userId,
-			_organizationId: organizationId,
+			_userId: new mongoose.Types.ObjectId(userId),
+			_organizationId: new mongoose.Types.ObjectId(organizationId),
 			_roleWeight: roleWeight,
 			role,
 			joinedAt: new Date(),
