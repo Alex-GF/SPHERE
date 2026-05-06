@@ -19,8 +19,10 @@ export const createTestCollectionWithPricings = async (params: TestCollectionDat
     pricings,
   };
 
+  const organizationId = params._organizationId || (await createTestUser("USER")).organizationId;
+
   const response = await request(testContainer.resolve('app'))
-    .post(`${BASE_PATH}/collections/` + (params._ownerName || (await createTestUser("USER")).username))
+    .post(`${BASE_PATH}/collections/` + organizationId)
     .set('Authorization', `Bearer ${testContainer.resolve('adminUser').token}`)
     .send(payload);
   
@@ -28,10 +30,12 @@ export const createTestCollectionWithPricings = async (params: TestCollectionDat
 };
 
 export const createTestCollection = async (params: TestCollectionData): Promise<TestCollection> => {
+  const organizationId = params._organizationId || (await createTestUser("USER")).organizationId;
+
   const collectionData: Omit<TestCollection, 'id'> = {
     name: params.name || 'Test_Collection_' + Math.random().toString(36).substring(2, 15),
     description: params.description || 'This is a test collection',
-    _ownerName: params._ownerName || (await createTestUser("USER")).username,
+    _organizationId: organizationId,
     private: params.private || false,
     analytics: {
       evolutionOfPlans: { dates: [], values: [] },
@@ -52,8 +56,8 @@ export const createTestCollection = async (params: TestCollectionData): Promise<
   });
 };
 
-export const createCollectionForUser = async (owner: string) => {
-  const collection = await createTestCollection({ _ownerName: owner });
+export const createCollectionForOrganization = async (organizationId: string) => {
+  const collection = await createTestCollection({ _organizationId: organizationId });
 
   testContainer.resolve('collectionIdsToDelete').add(collection.id);
   return collection;

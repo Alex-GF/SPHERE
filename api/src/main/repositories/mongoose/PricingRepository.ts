@@ -4,9 +4,9 @@ import { PricingAnalytics } from '../../types/database/Pricing';
 import { getAllPricingsAggregator } from './aggregators/get-all-pricings';
 import { PricingIndexQueryParams } from '../../types/services/PricingService';
 import mongoose from 'mongoose';
-import { getPricingByNameAndOwnerAggregator } from './aggregators/get-pricing-by-name-and-owner';
+import { getPricingByNameAndOrganizationAggregator } from './aggregators/get-pricing-by-name-and-organization';
 import { LeanPricing } from '../../types/models/Pricing';
-import { getPricingByNameOwnerAndVersionAggregator } from './aggregators/get-pricing-by-name-owner-and-version';
+import { getPricingByNameOrganizationAndVersionAggregator } from './aggregators/get-pricing-by-name-organization-and-version';
 
 class PricingRepository extends RepositoryBase {
   async findAll(queryParams: PricingIndexQueryParams, includePrivate: boolean = false) {
@@ -14,7 +14,7 @@ class PricingRepository extends RepositoryBase {
     const sortAggregator = [];
 
     if (Object.keys(queryParams).length > 0) {
-      const { name, subscriptions, minPrice, maxPrice, selectedOwners, includePricingsInCollection, sortBy, sort } = queryParams;
+      const { name, subscriptions, minPrice, maxPrice, selectedOrganizations, includePricingsInCollection, sortBy, sort } = queryParams;
 
       if (name) {
         filteringAggregators.push({
@@ -72,13 +72,13 @@ class PricingRepository extends RepositoryBase {
         });
       }
 
-      if (selectedOwners) {
-        const selectedOwnersFilter = selectedOwners as string[];
+      if (selectedOrganizations) {
+        const selectedOrganizationsFilter = selectedOrganizations as string[];
 
         filteringAggregators.push({
           $match: {
-            owner: {
-              $in: selectedOwnersFilter,
+            _organizationId: {
+              $in: selectedOrganizationsFilter.map(id => new mongoose.Types.ObjectId(id)),
             },
           },
         });
@@ -145,6 +145,9 @@ class PricingRepository extends RepositoryBase {
         ...(includePrivate
           ? [] // no añadir nada
           : [{ $match: { private: false } }]), // añadir etapa
+        ...(queryParams.organizationId
+          ? [{ $match: { _organizationId: new mongoose.Types.ObjectId(queryParams.organizationId) } }]
+          : []),
         ...aggregator,
         ...(queryParams.collectionName ?
           [
@@ -214,8 +217,8 @@ class PricingRepository extends RepositoryBase {
 
   async findOne(
     name: string,
-    owner: string,
-    queryParams: { collectionId?: string, collectionName?: string; version?: string, includePrivate?: boolean } = {includePrivate: false}
+    organizationId: string,
+    queryParams: { collectionId?: string, collectionName?: string; version?: string, includePrivate?: boolean; organizationId?: string } = {includePrivate: false}
   ) {
     // Filtro de visibilidad
     const visibilityMatch = queryParams.includePrivate
@@ -224,12 +227,14 @@ class PricingRepository extends RepositoryBase {
 
     try {
       let pricing;
+      const organizationMatch = { _organizationId: new mongoose.Types.ObjectId(organizationId) };
+
       if (queryParams?.collectionName) {
         pricing = await PricingMongoose.aggregate([
           {
-            $match: visibilityMatch,
+            $match: { ...visibilityMatch, ...organizationMatch },
           },
-          ...getPricingByNameOwnerAndVersionAggregator(name, owner, queryParams.version),
+          ...getPricingByNameOrganizationAndVersionAggregator(name, organizationId, queryParams.version),
           {
             $match: {
               collectionName: queryParams.collectionName,
@@ -241,10 +246,11 @@ class PricingRepository extends RepositoryBase {
           {
             $match: {
               ...visibilityMatch,
+              ...organizationMatch,
               _collectionId: queryParams.collectionId,
             },
           },
-          ...getPricingByNameOwnerAndVersionAggregator(name, owner, queryParams.version),
+          ...getPricingByNameOrganizationAndVersionAggregator(name, organizationId, queryParams.version),
         ]);
       
       } else {
@@ -252,9 +258,10 @@ class PricingRepository extends RepositoryBase {
           {
             $match: {
               ...visibilityMatch,
+              ...organizationMatch,
             },
           },
-          ...getPricingByNameOwnerAndVersionAggregator(name, owner, queryParams.version),
+          ...getPricingByNameOrganizationAndVersionAggregator(name, organizationId, queryParams.version),
         ]);
       }
 
@@ -268,10 +275,10 @@ class PricingRepository extends RepositoryBase {
     }
   }
 
-  async findAnyByNameAndOwner(name: string, owner: string) {
+  async findAnyByNameAndOrganization(name: string, organizationId: string) {
     try {
       const pricing = await PricingMongoose.aggregate(
-        getPricingByNameAndOwnerAggregator(name, owner)
+        getPricingByNameAndOrganizationAggregator(name, organizationId)
       );
       if (!pricing || pricing.length === 0) {
         return null;
@@ -308,6 +315,10 @@ class PricingRepository extends RepositoryBase {
         item._collectionId = new mongoose.Types.ObjectId(item._collectionId);
       }
 
+      if (item._organizationId) {
+        item._organizationId = new mongoose.Types.ObjectId(item._organizationId);
+      }
+
       if (
         item.analytics &&
         item.analytics.minSubscriptionPrice &&
@@ -325,11 +336,6 @@ class PricingRepository extends RepositoryBase {
     });
 
     return await PricingMongoose.insertMany(data);
-
-    // const pricing = new PricingMongoose(data);
-    // await pricing.save();
-
-    // return pricing;
   }
 
   async updateAnalytics(pricingId: string, analytics: PricingAnalytics, ...args: any) {
@@ -357,11 +363,11 @@ class PricingRepository extends RepositoryBase {
     return result.modifiedCount === pricingsToUpdate.length;
   }
 
-  async addPricingToCollection(pricingName: string, owner: string, collectionId: string) {
+  async addPricingToCollection(pricingName: string, organizationId: string, collectionId: string) {
     return await PricingMongoose.updateMany(
       {
         name: pricingName,
-        owner: owner,
+        _organizationId: new mongoose.Types.ObjectId(organizationId),
       },
       {
         $set: { _collectionId: new mongoose.Types.ObjectId(collectionId) },
@@ -371,11 +377,11 @@ class PricingRepository extends RepositoryBase {
 
   async addPricingsToCollection(
     collectionId: string,
-    owner: string,
+    organizationId: string,
     pricings: string[]
   ) {
     const result = await PricingMongoose.updateMany(
-      { name: { $in: pricings }, owner: owner },
+      { name: { $in: pricings }, _organizationId: new mongoose.Types.ObjectId(organizationId) },
       { $set: { _collectionId: collectionId } }
     );
 
@@ -394,11 +400,11 @@ class PricingRepository extends RepositoryBase {
     return pricing.toJSON();
   }
 
-  async removePricingFromCollection(pricingName: string, owner: string) {
+  async removePricingFromCollection(pricingName: string, organizationId: string) {
     return await PricingMongoose.updateMany(
       {
         name: pricingName,
-        owner: owner,
+        _organizationId: new mongoose.Types.ObjectId(organizationId),
       },
       {
         $unset: { _collectionId: 1 },
@@ -417,30 +423,30 @@ class PricingRepository extends RepositoryBase {
     );
   }
 
-  async destroyByNameOwnerAndCollectionId(name: string, owner: string, collectionId?: string) {
+  async destroyByNameOrganizationAndCollectionId(name: string, organizationId: string, collectionId?: string) {
     if (collectionId) {
       const result = await PricingMongoose.deleteMany({
         name: name,
-        owner: owner,
+        _organizationId: new mongoose.Types.ObjectId(organizationId),
         _collectionId: new mongoose.Types.ObjectId(collectionId),
       });
       return result.deletedCount >= 1;
     } else {
       const result = await PricingMongoose.deleteMany({
         name: name,
-        owner: owner,
+        _organizationId: new mongoose.Types.ObjectId(organizationId),
         _collectionId: { $exists: false },
       });
       return result.deletedCount >= 1;
     }
   }
 
-  async destroyVersionByNameAndOwner(name: string, version: string, owner: string, ...args: any) {
+  async destroyVersionByNameAndOrganization(name: string, version: string, organizationId: string, ...args: any) {
     const result = await PricingMongoose.deleteOne({
       $expr: {
         $and: [
           { $eq: [{ $toLower: '$name' }, name.toLowerCase()] },
-          { $eq: ['$owner', owner] },
+          { $eq: ['$_organizationId', new mongoose.Types.ObjectId(organizationId)] },
           { $eq: ['$version', version] },
         ],
       },

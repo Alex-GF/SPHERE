@@ -45,8 +45,8 @@ export const createAndTrackPricingYaml = async (serviceName?: string, version?: 
   return filePath;
 };
 
-export const createPricingForUser = async (params: {
-  username: string;
+export const createPricingForOrganization = async (params: {
+  organizationId: string;
   serviceName?: string;
   version?: string;
   isPrivate?: boolean;
@@ -58,7 +58,7 @@ export const createPricingForUser = async (params: {
   const version = fixture.version;
 
   const response = await request(testContainer.resolve('app'))
-    .post(`${BASE_PATH}/pricings/${params.username}`)
+    .post(`${BASE_PATH}/pricings/${params.organizationId}`)
     .set('Authorization', `Bearer ${testContainer.resolve('adminUser').token}`)
     .field('private', String(params.isPrivate ?? false))
     .field('saasName', serviceName)

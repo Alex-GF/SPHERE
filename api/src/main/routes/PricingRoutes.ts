@@ -21,19 +21,19 @@ const loadFileRoutes = function (app: express.Application) {
 
   app
     .route(baseUrl + '/pricings/:organizationId')
-    .get(pricingController.indexByOwner)
+    .get(pricingController.indexByOrganization)
     .post(upload, PricingValidator.create, handleValidation, pricingController.create);
 
   app
     .route(baseUrl + '/pricings/:organizationId/:pricingName')
     .get(pricingController.show)
     .put(PricingValidator.update, handleValidation, pricingController.update)
-    .delete(pricingController.destroyByNameAndOwner);
+    .delete(pricingController.destroyByNameAndOrganization);
 
   app
     .route(baseUrl + '/pricings/:organizationId/:pricingName/:pricingVersion')
     .get(pricingController.getConfigurationSpace)
-    .delete(pricingController.destroyVersionByNameAndOwner);
+    .delete(pricingController.destroyVersionByNameAndOrganization);
 
   app
     .route(baseUrl + '/me/pricings')

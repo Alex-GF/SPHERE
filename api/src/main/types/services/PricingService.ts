@@ -15,7 +15,7 @@ export type PricingIndexQueryParams = {
     min: number;
     max: number;
   };
-  selectedOwners?: string[];
+  selectedOrganizations?: string[];
   collectionName?: string;
   organizationId?: string;
   includePricingsInCollection: boolean;

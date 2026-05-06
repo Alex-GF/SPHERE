@@ -15,7 +15,7 @@ const latestPricingsByNameAggregator = {
   $group: {
     _id: {
       name: '$name',
-      owner: '$owner',
+      _organizationId: '$_organizationId',
       _collectionId: '$_collectionId',
     },
     latestPricing: {
@@ -97,7 +97,7 @@ const computeFiltersDataAggregator = {
         $project: {
           _id: 0,
           name: 1,
-          owner: 1,
+          _organizationId: 1,
           collectionName: 1,
           version: 1,
           createdAt: 1,

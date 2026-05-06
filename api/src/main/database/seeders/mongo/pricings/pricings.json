@@ -4,7 +4,7 @@
       "$oid": "6787d0facaeb2b25748bc01c"
     },
     "name": "Box",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2024",
     "private": false,
@@ -53,7 +53,7 @@
       "$oid": "6787d0facaeb2b25748bc01d"
     },
     "name": "Box",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2023",
     "private": false,
@@ -102,7 +102,7 @@
       "$oid": "6787d0facaeb2b25748bc01e"
     },
     "name": "Box",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2022",
     "private": false,
@@ -151,7 +151,7 @@
       "$oid": "6787d0facaeb2b25748bc01f"
     },
     "name": "Box",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2021",
     "private": false,
@@ -200,7 +200,7 @@
       "$oid": "6787d0facaeb2b25748bc020"
     },
     "name": "Box",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2020",
     "private": false,
@@ -249,7 +249,7 @@
       "$oid": "6787d0facaeb2b25748bc021"
     },
     "name": "Box",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2019",
     "private": false,
@@ -298,7 +298,7 @@
       "$oid": "6787d0facaeb2b25748bc022"
     },
     "name": "Buffer",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2024",
     "private": false,
@@ -347,7 +347,7 @@
       "$oid": "6787d0facaeb2b25748bc023"
     },
     "name": "Buffer",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2023",
     "private": false,
@@ -396,7 +396,7 @@
       "$oid": "6787d0facaeb2b25748bc024"
     },
     "name": "Buffer",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2022",
     "private": false,
@@ -445,7 +445,7 @@
       "$oid": "6787d0facaeb2b25748bc025"
     },
     "name": "Buffer",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2021",
     "private": false,
@@ -494,7 +494,7 @@
       "$oid": "6787d0facaeb2b25748bc026"
     },
     "name": "Buffer",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2020",
     "private": false,
@@ -543,7 +543,7 @@
       "$oid": "6787d0facaeb2b25748bc027"
     },
     "name": "Buffer",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2019",
     "private": false,
@@ -592,7 +592,7 @@
       "$oid": "6787d0facaeb2b25748bc028"
     },
     "name": "Canva",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2024",
     "private": false,
@@ -641,7 +641,7 @@
       "$oid": "6787d0facaeb2b25748bc029"
     },
     "name": "Canva",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2023",
     "private": false,
@@ -690,7 +690,7 @@
       "$oid": "6787d0facaeb2b25748bc02a"
     },
     "name": "Canva",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2022",
     "private": false,
@@ -739,7 +739,7 @@
       "$oid": "6787d0facaeb2b25748bc02b"
     },
     "name": "Canva",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2021",
     "private": false,
@@ -788,7 +788,7 @@
       "$oid": "6787d0facaeb2b25748bc02c"
     },
     "name": "Canva",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2020",
     "private": false,
@@ -837,7 +837,7 @@
       "$oid": "6787d0facaeb2b25748bc02d"
     },
     "name": "Canva",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2019",
     "private": false,
@@ -886,7 +886,7 @@
       "$oid": "6787d0facaeb2b25748bc02e"
     },
     "name": "Clickup",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2024",
     "private": false,
@@ -935,7 +935,7 @@
       "$oid": "6787d0facaeb2b25748bc02f"
     },
     "name": "Clickup",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2023",
     "private": false,
@@ -984,7 +984,7 @@
       "$oid": "6787d0facaeb2b25748bc030"
     },
     "name": "Clickup",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2022",
     "private": false,
@@ -1033,7 +1033,7 @@
       "$oid": "6787d0facaeb2b25748bc031"
     },
     "name": "Clickup",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2021",
     "private": false,
@@ -1082,7 +1082,7 @@
       "$oid": "6787d0facaeb2b25748bc032"
     },
     "name": "Clickup",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2020",
     "private": false,
@@ -1131,7 +1131,7 @@
       "$oid": "6787d0facaeb2b25748bc033"
     },
     "name": "Clickup",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2019",
     "private": false,
@@ -1180,7 +1180,7 @@
       "$oid": "6787d0facaeb2b25748bc034"
     },
     "name": "Clockify",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2024",
     "private": false,
@@ -1229,7 +1229,7 @@
       "$oid": "6787d0facaeb2b25748bc035"
     },
     "name": "Clockify",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2023",
     "private": false,
@@ -1278,7 +1278,7 @@
       "$oid": "6787d0facaeb2b25748bc036"
     },
     "name": "Clockify",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2022",
     "private": false,
@@ -1327,7 +1327,7 @@
       "$oid": "6787d0facaeb2b25748bc037"
     },
     "name": "Clockify",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2021",
     "private": false,
@@ -1376,7 +1376,7 @@
       "$oid": "6787d0facaeb2b25748bc038"
     },
     "name": "Clockify",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2020",
     "private": false,
@@ -1425,7 +1425,7 @@
       "$oid": "6787d0facaeb2b25748bc039"
     },
     "name": "Clockify",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2019",
     "private": false,
@@ -1474,7 +1474,7 @@
       "$oid": "6787d0facaeb2b25748bc03a"
     },
     "name": "Crowdcast",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2024",
     "private": false,
@@ -1523,7 +1523,7 @@
       "$oid": "6787d0facaeb2b25748bc03b"
     },
     "name": "Crowdcast",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2023",
     "private": false,
@@ -1572,7 +1572,7 @@
       "$oid": "6787d0facaeb2b25748bc03c"
     },
     "name": "Crowdcast",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2022",
     "private": false,
@@ -1621,7 +1621,7 @@
       "$oid": "6787d0facaeb2b25748bc03d"
     },
     "name": "Crowdcast",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2021",
     "private": false,
@@ -1670,7 +1670,7 @@
       "$oid": "6787d0facaeb2b25748bc03e"
     },
     "name": "Crowdcast",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2020",
     "private": false,
@@ -1719,7 +1719,7 @@
       "$oid": "6787d0facaeb2b25748bc03f"
     },
     "name": "Databox",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2024",
     "private": false,
@@ -1768,7 +1768,7 @@
       "$oid": "6787d0facaeb2b25748bc040"
     },
     "name": "Databox",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2023",
     "private": false,
@@ -1817,7 +1817,7 @@
       "$oid": "6787d0facaeb2b25748bc041"
     },
     "name": "Databox",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2022",
     "private": false,
@@ -1866,7 +1866,7 @@
       "$oid": "6787d0facaeb2b25748bc042"
     },
     "name": "Databox",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2021",
     "private": false,
@@ -1915,7 +1915,7 @@
       "$oid": "6787d0facaeb2b25748bc043"
     },
     "name": "Databox",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2020",
     "private": false,
@@ -1964,7 +1964,7 @@
       "$oid": "6787d0facaeb2b25748bc044"
     },
     "name": "Databox",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2019",
     "private": false,
@@ -2013,7 +2013,7 @@
       "$oid": "6787d0facaeb2b25748bc045"
     },
     "name": "Deskera",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2024",
     "private": false,
@@ -2062,7 +2062,7 @@
       "$oid": "6787d0facaeb2b25748bc046"
     },
     "name": "Deskera",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2023",
     "private": false,
@@ -2111,7 +2111,7 @@
       "$oid": "6787d0facaeb2b25748bc047"
     },
     "name": "Deskera",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2022",
     "private": false,
@@ -2160,7 +2160,7 @@
       "$oid": "6787d0facaeb2b25748bc048"
     },
     "name": "Deskera",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2021",
     "private": false,
@@ -2209,7 +2209,7 @@
       "$oid": "6787d0facaeb2b25748bc049"
     },
     "name": "Dropbox",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2024",
     "private": false,
@@ -2258,7 +2258,7 @@
       "$oid": "6787d0facaeb2b25748bc04a"
     },
     "name": "Dropbox",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2023",
     "private": false,
@@ -2307,7 +2307,7 @@
       "$oid": "6787d0facaeb2b25748bc04b"
     },
     "name": "Dropbox",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2022",
     "private": false,
@@ -2356,7 +2356,7 @@
       "$oid": "6787d0facaeb2b25748bc04c"
     },
     "name": "Dropbox",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2021",
     "private": false,
@@ -2405,7 +2405,7 @@
       "$oid": "6787d0facaeb2b25748bc04d"
     },
     "name": "Evernote",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2024",
     "private": false,
@@ -2454,7 +2454,7 @@
       "$oid": "6787d0facaeb2b25748bc04e"
     },
     "name": "Evernote",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2023",
     "private": false,
@@ -2503,7 +2503,7 @@
       "$oid": "6787d0facaeb2b25748bc04f"
     },
     "name": "Evernote",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2022",
     "private": false,
@@ -2552,7 +2552,7 @@
       "$oid": "6787d0facaeb2b25748bc050"
     },
     "name": "Evernote",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2021",
     "private": false,
@@ -2601,7 +2601,7 @@
       "$oid": "6787d0facaeb2b25748bc051"
     },
     "name": "Evernote",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2020",
     "private": false,
@@ -2650,7 +2650,7 @@
       "$oid": "6787d0facaeb2b25748bc052"
     },
     "name": "Evernote",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2019",
     "private": false,
@@ -2699,7 +2699,7 @@
       "$oid": "6787d0facaeb2b25748bc053"
     },
     "name": "Figma",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2024",
     "private": false,
@@ -2748,7 +2748,7 @@
       "$oid": "6787d0facaeb2b25748bc054"
     },
     "name": "Figma",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2023",
     "private": false,
@@ -2797,7 +2797,7 @@
       "$oid": "6787d0facaeb2b25748bc055"
     },
     "name": "Figma",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2022",
     "private": false,
@@ -2846,7 +2846,7 @@
       "$oid": "6787d0facaeb2b25748bc056"
     },
     "name": "Figma",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2021",
     "private": false,
@@ -2895,7 +2895,7 @@
       "$oid": "6787d0facaeb2b25748bc057"
     },
     "name": "Figma",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2020",
     "private": false,
@@ -2944,7 +2944,7 @@
       "$oid": "6787d0facaeb2b25748bc058"
     },
     "name": "Figma",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2019",
     "private": false,
@@ -2993,7 +2993,7 @@
       "$oid": "6787d0facaeb2b25748bc059"
     },
     "name": "Github",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2024",
     "private": false,
@@ -3042,7 +3042,7 @@
       "$oid": "6787d0facaeb2b25748bc05a"
     },
     "name": "Github",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2023",
     "private": false,
@@ -3091,7 +3091,7 @@
       "$oid": "6787d0facaeb2b25748bc05b"
     },
     "name": "Github",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2022",
     "private": false,
@@ -3140,7 +3140,7 @@
       "$oid": "6787d0facaeb2b25748bc05c"
     },
     "name": "Github",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2021",
     "private": false,
@@ -3189,7 +3189,7 @@
       "$oid": "6787d0facaeb2b25748bc05d"
     },
     "name": "Github",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2020",
     "private": false,
@@ -3238,7 +3238,7 @@
       "$oid": "6787d0facaeb2b25748bc05e"
     },
     "name": "Github",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2019",
     "private": false,
@@ -3287,7 +3287,7 @@
       "$oid": "6787d0facaeb2b25748bc05f"
     },
     "name": "Hypercontext",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2024",
     "private": false,
@@ -3336,7 +3336,7 @@
       "$oid": "6787d0facaeb2b25748bc060"
     },
     "name": "Hypercontext",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2023",
     "private": false,
@@ -3385,7 +3385,7 @@
       "$oid": "6787d0facaeb2b25748bc061"
     },
     "name": "Hypercontext",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2022",
     "private": false,
@@ -3434,7 +3434,7 @@
       "$oid": "6787d0facaeb2b25748bc062"
     },
     "name": "Hypercontext",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2021",
     "private": false,
@@ -3483,7 +3483,7 @@
       "$oid": "6787d0facaeb2b25748bc063"
     },
     "name": "Jira",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2024",
     "private": false,
@@ -3532,7 +3532,7 @@
       "$oid": "6787d0facaeb2b25748bc064"
     },
     "name": "Jira",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2023",
     "private": false,
@@ -3581,7 +3581,7 @@
       "$oid": "6787d0facaeb2b25748bc065"
     },
     "name": "Jira",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2022",
     "private": false,
@@ -3630,7 +3630,7 @@
       "$oid": "6787d0facaeb2b25748bc066"
     },
     "name": "Jira",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2021",
     "private": false,
@@ -3679,7 +3679,7 @@
       "$oid": "6787d0facaeb2b25748bc067"
     },
     "name": "Jira",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2020",
     "private": false,
@@ -3728,7 +3728,7 @@
       "$oid": "6787d0facaeb2b25748bc068"
     },
     "name": "Jira",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2019",
     "private": false,
@@ -3777,7 +3777,7 @@
       "$oid": "6787d0facaeb2b25748bc069"
     },
     "name": "Mailchimp",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2024",
     "private": false,
@@ -3826,7 +3826,7 @@
       "$oid": "6787d0facaeb2b25748bc06a"
     },
     "name": "Mailchimp",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2023",
     "private": false,
@@ -3875,7 +3875,7 @@
       "$oid": "6787d0facaeb2b25748bc06b"
     },
     "name": "Mailchimp",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2022",
     "private": false,
@@ -3924,7 +3924,7 @@
       "$oid": "6787d0facaeb2b25748bc06c"
     },
     "name": "Mailchimp",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2021",
     "private": false,
@@ -3973,7 +3973,7 @@
       "$oid": "6787d0facaeb2b25748bc06d"
     },
     "name": "Mailchimp",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2020",
     "private": false,
@@ -4022,7 +4022,7 @@
       "$oid": "6787d0facaeb2b25748bc06e"
     },
     "name": "Mailchimp",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2019",
     "private": false,
@@ -4071,7 +4071,7 @@
       "$oid": "6787d0facaeb2b25748bc06f"
     },
     "name": "Office",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2019",
     "private": false,
@@ -4120,7 +4120,7 @@
       "$oid": "6787d0facaeb2b25748bc070"
     },
     "name": "Microsoft",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2024",
     "private": false,
@@ -4169,7 +4169,7 @@
       "$oid": "6787d0facaeb2b25748bc071"
     },
     "name": "Microsoft",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2023",
     "private": false,
@@ -4218,7 +4218,7 @@
       "$oid": "6787d0facaeb2b25748bc072"
     },
     "name": "Microsoft",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2022",
     "private": false,
@@ -4267,7 +4267,7 @@
       "$oid": "6787d0facaeb2b25748bc073"
     },
     "name": "Microsoft",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2021",
     "private": false,
@@ -4316,7 +4316,7 @@
       "$oid": "6787d0facaeb2b25748bc074"
     },
     "name": "Microsoft",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2020",
     "private": false,
@@ -4365,7 +4365,7 @@
       "$oid": "6787d0facaeb2b25748bc075"
     },
     "name": "Notion",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2024",
     "private": false,
@@ -4414,7 +4414,7 @@
       "$oid": "6787d0facaeb2b25748bc076"
     },
     "name": "Notion",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2023",
     "private": false,
@@ -4463,7 +4463,7 @@
       "$oid": "6787d0facaeb2b25748bc077"
     },
     "name": "Notion",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2022",
     "private": false,
@@ -4512,7 +4512,7 @@
       "$oid": "6787d0facaeb2b25748bc078"
     },
     "name": "Notion",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2021",
     "private": false,
@@ -4561,7 +4561,7 @@
       "$oid": "6787d0facaeb2b25748bc079"
     },
     "name": "Openphone",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2024",
     "private": false,
@@ -4610,7 +4610,7 @@
       "$oid": "6787d0facaeb2b25748bc07a"
     },
     "name": "Openphone",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2023",
     "private": false,
@@ -4659,7 +4659,7 @@
       "$oid": "6787d0facaeb2b25748bc07b"
     },
     "name": "Openphone",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2022",
     "private": false,
@@ -4708,7 +4708,7 @@
       "$oid": "6787d0facaeb2b25748bc07c"
     },
     "name": "Openphone",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2021",
     "private": false,
@@ -4757,7 +4757,7 @@
       "$oid": "6787d0facaeb2b25748bc07d"
     },
     "name": "Openphone",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2020",
     "private": false,
@@ -4806,7 +4806,7 @@
       "$oid": "6787d0facaeb2b25748bc07e"
     },
     "name": "Overleaf",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2024",
     "private": false,
@@ -4855,7 +4855,7 @@
       "$oid": "6787d0facaeb2b25748bc07f"
     },
     "name": "Overleaf",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2023",
     "private": false,
@@ -4904,7 +4904,7 @@
       "$oid": "6787d0facaeb2b25748bc080"
     },
     "name": "Overleaf",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2022",
     "private": false,
@@ -4953,7 +4953,7 @@
       "$oid": "6787d0facaeb2b25748bc081"
     },
     "name": "Overleaf",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2021",
     "private": false,
@@ -5002,7 +5002,7 @@
       "$oid": "6787d0facaeb2b25748bc082"
     },
     "name": "Overleaf",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2020",
     "private": false,
@@ -5051,7 +5051,7 @@
       "$oid": "6787d0facaeb2b25748bc083"
     },
     "name": "Overleaf",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2019",
     "private": false,
@@ -5100,7 +5100,7 @@
       "$oid": "6787d0facaeb2b25748bc084"
     },
     "name": "Planable",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2024",
     "private": false,
@@ -5149,7 +5149,7 @@
       "$oid": "6787d0facaeb2b25748bc085"
     },
     "name": "Planable",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2023",
     "private": false,
@@ -5198,7 +5198,7 @@
       "$oid": "6787d0facaeb2b25748bc086"
     },
     "name": "Planable",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2022",
     "private": false,
@@ -5247,7 +5247,7 @@
       "$oid": "6787d0facaeb2b25748bc087"
     },
     "name": "Planable",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2021",
     "private": false,
@@ -5296,7 +5296,7 @@
       "$oid": "6787d0facaeb2b25748bc088"
     },
     "name": "Planable",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2020",
     "private": false,
@@ -5345,7 +5345,7 @@
       "$oid": "6787d0facaeb2b25748bc089"
     },
     "name": "Planable",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2019",
     "private": false,
@@ -5394,7 +5394,7 @@
       "$oid": "6787d0facaeb2b25748bc08a"
     },
     "name": "Postman",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2024",
     "private": false,
@@ -5443,7 +5443,7 @@
       "$oid": "6787d0facaeb2b25748bc08b"
     },
     "name": "Postman",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2023",
     "private": false,
@@ -5492,7 +5492,7 @@
       "$oid": "6787d0facaeb2b25748bc08c"
     },
     "name": "Postman",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2022",
     "private": false,
@@ -5541,7 +5541,7 @@
       "$oid": "6787d0facaeb2b25748bc08d"
     },
     "name": "Postman",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2021",
     "private": false,
@@ -5590,7 +5590,7 @@
       "$oid": "6787d0facaeb2b25748bc08e"
     },
     "name": "Postman",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2020",
     "private": false,
@@ -5639,7 +5639,7 @@
       "$oid": "6787d0facaeb2b25748bc08f"
     },
     "name": "Pumble",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2024",
     "private": false,
@@ -5688,7 +5688,7 @@
       "$oid": "6787d0facaeb2b25748bc090"
     },
     "name": "Pumble",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2023",
     "private": false,
@@ -5737,7 +5737,7 @@
       "$oid": "6787d0facaeb2b25748bc091"
     },
     "name": "Pumble",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2022",
     "private": false,
@@ -5786,7 +5786,7 @@
       "$oid": "6787d0facaeb2b25748bc092"
     },
     "name": "Pumble",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2021",
     "private": false,
@@ -5835,7 +5835,7 @@
       "$oid": "6787d0facaeb2b25748bc093"
     },
     "name": "Quip",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2024",
     "private": false,
@@ -5884,7 +5884,7 @@
       "$oid": "6787d0facaeb2b25748bc094"
     },
     "name": "Quip",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2023",
     "private": false,
@@ -5933,7 +5933,7 @@
       "$oid": "6787d0facaeb2b25748bc095"
     },
     "name": "Quip",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2022",
     "private": false,
@@ -5982,7 +5982,7 @@
       "$oid": "6787d0facaeb2b25748bc096"
     },
     "name": "Quip",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2021",
     "private": false,
@@ -6031,7 +6031,7 @@
       "$oid": "6787d0facaeb2b25748bc097"
     },
     "name": "Quip",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2020",
     "private": false,
@@ -6080,7 +6080,7 @@
       "$oid": "6787d0facaeb2b25748bc098"
     },
     "name": "Quip",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2019",
     "private": false,
@@ -6129,7 +6129,7 @@
       "$oid": "6787d0facaeb2b25748bc099"
     },
     "name": "Salesforce",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2024",
     "private": false,
@@ -6178,7 +6178,7 @@
       "$oid": "6787d0facaeb2b25748bc09a"
     },
     "name": "Salesforce",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2023",
     "private": false,
@@ -6227,7 +6227,7 @@
       "$oid": "6787d0facaeb2b25748bc09b"
     },
     "name": "Salesforce",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2022",
     "private": false,
@@ -6276,7 +6276,7 @@
       "$oid": "6787d0facaeb2b25748bc09c"
     },
     "name": "Salesforce",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2021",
     "private": false,
@@ -6325,7 +6325,7 @@
       "$oid": "6787d0facaeb2b25748bc09d"
     },
     "name": "Salesforce",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2020",
     "private": false,
@@ -6374,7 +6374,7 @@
       "$oid": "6787d0facaeb2b25748bc09e"
     },
     "name": "Salesforce",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2019",
     "private": false,
@@ -6423,7 +6423,7 @@
       "$oid": "6787d0facaeb2b25748bc09f"
     },
     "name": "Slack",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2024",
     "private": false,
@@ -6472,7 +6472,7 @@
       "$oid": "6787d0facaeb2b25748bc0a0"
     },
     "name": "Slack",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2023",
     "private": false,
@@ -6521,7 +6521,7 @@
       "$oid": "6787d0facaeb2b25748bc0a1"
     },
     "name": "Slack",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2020",
     "private": false,
@@ -6570,7 +6570,7 @@
       "$oid": "6787d0facaeb2b25748bc0a2"
     },
     "name": "Slack",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2019",
     "private": false,
@@ -6619,7 +6619,7 @@
       "$oid": "6787d0facaeb2b25748bc0a3"
     },
     "name": "Tableau",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2024",
     "private": false,
@@ -6668,7 +6668,7 @@
       "$oid": "6787d0facaeb2b25748bc0a4"
     },
     "name": "Tableau",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2023",
     "private": false,
@@ -6717,7 +6717,7 @@
       "$oid": "6787d0facaeb2b25748bc0a5"
     },
     "name": "Tableau",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2022",
     "private": false,
@@ -6766,7 +6766,7 @@
       "$oid": "6787d0facaeb2b25748bc0a6"
     },
     "name": "Tableau",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2021",
     "private": false,
@@ -6815,7 +6815,7 @@
       "$oid": "6787d0facaeb2b25748bc0a7"
     },
     "name": "Tableau",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2020",
     "private": false,
@@ -6864,7 +6864,7 @@
       "$oid": "6787d0facaeb2b25748bc0a8"
     },
     "name": "Tableau",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2019",
     "private": false,
@@ -6913,7 +6913,7 @@
       "$oid": "6787d0facaeb2b25748bc0a9"
     },
     "name": "Trustmary",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2024",
     "private": false,
@@ -6962,7 +6962,7 @@
       "$oid": "6787d0facaeb2b25748bc0aa"
     },
     "name": "Trustmary",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2023",
     "private": false,
@@ -7011,7 +7011,7 @@
       "$oid": "6787d0facaeb2b25748bc0ab"
     },
     "name": "Trustmary",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2022",
     "private": false,
@@ -7060,7 +7060,7 @@
       "$oid": "6787d0facaeb2b25748bc0ac"
     },
     "name": "Trustmary",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2021",
     "private": false,
@@ -7109,7 +7109,7 @@
       "$oid": "6787d0facaeb2b25748bc0ad"
     },
     "name": "Userguiding",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2024",
     "private": false,
@@ -7158,7 +7158,7 @@
       "$oid": "6787d0facaeb2b25748bc0ae"
     },
     "name": "Userguiding",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2023",
     "private": false,
@@ -7207,7 +7207,7 @@
       "$oid": "6787d0facaeb2b25748bc0af"
     },
     "name": "Userguiding",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2022",
     "private": false,
@@ -7256,7 +7256,7 @@
       "$oid": "6787d0facaeb2b25748bc0b0"
     },
     "name": "Userguiding",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2021",
     "private": false,
@@ -7305,7 +7305,7 @@
       "$oid": "6787d0facaeb2b25748bc0b1"
     },
     "name": "Userguiding",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2020",
     "private": false,
@@ -7354,7 +7354,7 @@
       "$oid": "6787d0facaeb2b25748bc0b2"
     },
     "name": "Wrike",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2024",
     "private": false,
@@ -7403,7 +7403,7 @@
       "$oid": "6787d0facaeb2b25748bc0b3"
     },
     "name": "Wrike",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2023",
     "private": false,
@@ -7452,7 +7452,7 @@
       "$oid": "6787d0facaeb2b25748bc0b4"
     },
     "name": "Wrike",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2022",
     "private": false,
@@ -7501,7 +7501,7 @@
       "$oid": "6787d0facaeb2b25748bc0b5"
     },
     "name": "Wrike",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2021",
     "private": false,
@@ -7550,7 +7550,7 @@
       "$oid": "6787d0facaeb2b25748bc0b6"
     },
     "name": "Wrike",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2020",
     "private": false,
@@ -7599,7 +7599,7 @@
       "$oid": "6787d0facaeb2b25748bc0b7"
     },
     "name": "Wrike",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2019",
     "private": false,
@@ -7648,7 +7648,7 @@
       "$oid": "6787d0facaeb2b25748bc0b8"
     },
     "name": "Zapier",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2024",
     "private": false,
@@ -7697,7 +7697,7 @@
       "$oid": "6787d0facaeb2b25748bc0b9"
     },
     "name": "Zapier",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2023",
     "private": false,
@@ -7746,7 +7746,7 @@
       "$oid": "6787d0facaeb2b25748bc0ba"
     },
     "name": "Zapier",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2022",
     "private": false,
@@ -7795,7 +7795,7 @@
       "$oid": "6787d0facaeb2b25748bc0bb"
     },
     "name": "Zapier",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2020",
     "private": false,
@@ -7844,7 +7844,7 @@
       "$oid": "6787d0facaeb2b25748bc0bc"
     },
     "name": "Zapier",
-    "owner": "sphere",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "_collectionId": "6787d0facaeb2b25748bc12a",
     "version": "2019",
     "private": false,
@@ -7893,7 +7893,7 @@
       "$oid": "6787d0facaeb2b25748bc0fe"
     },
     "name": "Fleet Management",
-    "owner": "Faked",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "version": "1.0.0",
     "private": false,
     "createdAt": {
@@ -7943,7 +7943,7 @@
       "$oid": "67a8af9c0f009fd3b4310151"
     },
     "name": "Fleet Management",
-    "owner": "Faked",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "version": "0.1.0",
     "private": false,
     "createdAt": {
@@ -7994,7 +7994,7 @@
       "$oid": "67a8b01f0f009fd3b4310167"
     },
     "name": "Fleet Management",
-    "owner": "Faked",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
     "version": "0.0.1",
     "private": false,
     "createdAt": {

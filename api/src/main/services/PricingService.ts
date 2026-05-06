@@ -12,19 +12,19 @@ import PricingCollectionService from './PricingCollectionService';
 import PricingRepository from '../repositories/mongoose/PricingRepository';
 import CacheService from './CacheService';
 import { LeanUser } from '../types/models/User';
-import UserService from './UserService';
+import OrganizationMembershipRepository from '../repositories/mongoose/OrganizationMembershipRepository';
 
 class PricingService {
   private pricingRepository: PricingRepository;
-  private userService: UserService;
   private pricingCollectionService: PricingCollectionService;
   private cacheService: CacheService;
+  private organizationMembershipRepository: OrganizationMembershipRepository;
 
   constructor() {
     this.pricingRepository = container.resolve('pricingRepository');
     this.pricingCollectionService = container.resolve('pricingCollectionService');
     this.cacheService = container.resolve('cacheService');
-    this.userService = container.resolve('userService');
+    this.organizationMembershipRepository = container.resolve('organizationMembershipRepository');
   }
 
   async index(queryParams: PricingIndexQueryParams, reqUser?: LeanUser) {
@@ -41,15 +41,17 @@ class PricingService {
 
   async show(
     name: string,
-    owner: string,
+    organizationId: string,
     reqUser?: LeanUser,
     queryParams: { collectionName?: string; includePrivate: boolean } = { includePrivate: false }
   ) {
-    queryParams.includePrivate =
-      typeof reqUser === 'object' && (owner === reqUser.username || reqUser.role === 'ADMIN');
+    if (reqUser) {
+      const role = await this.organizationMembershipRepository.findUserRoleInOrganization(reqUser.id, organizationId);
+      queryParams.includePrivate = reqUser.role === 'ADMIN' || role !== null;
+    }
 
     const pricing: { name: string; versions: PricingModel[] } | null =
-      await this.pricingRepository.findOne(name, owner, queryParams);
+      await this.pricingRepository.findOne(name, organizationId, queryParams);
 
     if (!pricing) {
       throw new Error('NOT FOUND: Pricing not found');
@@ -63,7 +65,7 @@ class PricingService {
   }
 
   async getConfigurationSpace(
-    owner: string,
+    organizationId: string,
     pricingName: string,
     pricingVersion: string,
     reqUser?: LeanUser,
@@ -83,10 +85,16 @@ class PricingService {
       offset: queryParams?.offset ? parseInt(queryParams.offset) : undefined,
     };
 
+    let includePrivate = false;
+    if (reqUser) {
+      const role = await this.organizationMembershipRepository.findUserRoleInOrganization(reqUser.id, organizationId);
+      includePrivate = reqUser.role === 'ADMIN' || role !== null;
+    }
+
     const retrievedPricing = await this.pricingRepository.findOne(
       pricingName,
-      owner,
-      { ...queryParams, version: pricingVersion, includePrivate: reqUser && (owner === reqUser.username || reqUser.role === 'ADMIN') }
+      organizationId,
+      { ...queryParams, version: pricingVersion, includePrivate }
     );
     if (!retrievedPricing) {
       throw new Error('NOT FOUND: Pricing not found');
@@ -97,7 +105,7 @@ class PricingService {
     }
 
     let configurationSpace = null;
-    const key: string = `${owner}.${pricingName}.${pricingVersion}.configurationSpace`;
+    const key: string = `${organizationId}.${pricingName}.${pricingVersion}.configurationSpace`;
     const cachedConfigurationSpace = await this.cacheService.get(key);
 
     if (cachedConfigurationSpace) {
@@ -126,23 +134,17 @@ class PricingService {
 
   async create(
     pricingFile: any,
-    owner: string,
+    organizationId: string,
     isPrivate: boolean,
     reqUser: LeanUser,
     collectionId?: string
   ) {
     try {
-      if (owner !== reqUser.username && reqUser.role !== 'ADMIN') {
+      const role = await this.organizationMembershipRepository.findUserRoleInOrganization(reqUser.id, organizationId);
+      if (!role && reqUser.role !== 'ADMIN') {
         throw new Error(
-          'PERMISSION ERROR: You do not have permission to create a pricing for another user'
+          'PERMISSION ERROR: You do not have permission to create a pricing for this organization'
         );
-      }
-
-      if (owner !== reqUser.username) {
-        const user = await this.userService.exists(owner);
-        if (!user) {
-          throw new Error('NOT FOUND: User not found');
-        }
       }
 
       const uploadedPricing: Pricing = retrievePricingFromPath(
@@ -151,7 +153,7 @@ class PricingService {
 
       const previousPricing = await this.pricingRepository.findOne(
         uploadedPricing.saasName,
-        owner,
+        organizationId,
         { collectionId: collectionId, includePrivate: true }
       );
 
@@ -173,7 +175,7 @@ class PricingService {
         name: uploadedPricing.saasName,
         version: uploadedPricing.version,
         _collectionId: collectionId,
-        owner: owner,
+        _organizationId: organizationId,
         private: isPrivate,
         currency: uploadedPricing.currency,
         createdAt: new Date(uploadedPricing.createdAt),
@@ -208,14 +210,14 @@ class PricingService {
     }
   }
 
-  async addPricingToCollection(pricingName: string, owner: string, collectionId: string, queryParams: { collectionName?: string } = {}) {
+  async addPricingToCollection(pricingName: string, organizationId: string, collectionId: string, queryParams: { collectionName?: string } = {}) {
     try {
-      const pricing = await this.pricingRepository.findOne(pricingName, owner, { ...queryParams, includePrivate: true });
+      const pricing = await this.pricingRepository.findOne(pricingName, organizationId, { ...queryParams, includePrivate: true });
       if (!pricing) {
-        throw new Error('NOT FOUND: Pricing not found. Please check that: 1) the pricing is created, 2) that you\'re the owner, and 3) that the collectionName you\'ve specified is correct (the collectionName is case-sensitive).');
+        throw new Error('NOT FOUND: Pricing not found. Please check that: 1) the pricing is created, 2) that you\'re a member of the organization, and 3) that the collectionName you\'ve specified is correct (the collectionName is case-sensitive).');
       }
 
-      await this.pricingRepository.addPricingToCollection(pricingName, owner, collectionId);
+      await this.pricingRepository.addPricingToCollection(pricingName, organizationId, collectionId);
       await this.pricingCollectionService.updateCollectionAnalytics(collectionId);
 
       return true;
@@ -224,23 +226,25 @@ class PricingService {
     }
   }
 
-  async update(pricingName: string, owner: string, reqUser: LeanUser, data: any, queryParams: { collectionName?: string } = {}) {
-    if (owner !== reqUser.username && reqUser.role !== 'ADMIN') {
+  async update(pricingName: string, organizationId: string, reqUser: LeanUser, data: any, queryParams: { collectionName?: string; organizationId?: string } = {}) {
+    const effectiveOrgId = queryParams.organizationId || organizationId;
+    const role = await this.organizationMembershipRepository.findUserRoleInOrganization(reqUser.id, effectiveOrgId);
+    if (!role && reqUser.role !== 'ADMIN') {
       throw new Error(
-        'PERMISSION ERROR: You do not have permission to update a pricing for another user'
+        'PERMISSION ERROR: You do not have permission to update a pricing for this organization'
       );
     }
 
-    const pricing = await this.pricingRepository.findOne(pricingName, owner, { ...queryParams, includePrivate: true });
+    const pricing = await this.pricingRepository.findOne(pricingName, effectiveOrgId, { ...queryParams, includePrivate: true });
     if (!pricing) {
-      throw new Error('NOT FOUND: Either the pricing does not exist or you are not its owner');
+      throw new Error('NOT FOUND: Either the pricing does not exist or you are not a member of its organization');
     }
 
     for (const pricingVersion of pricing.versions) {
       await this.pricingRepository.update(pricingVersion.id, data);
     }
 
-    const updatedPricing = await this.pricingRepository.findOne(pricingName, owner, { ...queryParams, includePrivate: true });
+    const updatedPricing = await this.pricingRepository.findOne(pricingName, effectiveOrgId, { ...queryParams, includePrivate: true });
 
     return updatedPricing;
   }
@@ -278,27 +282,23 @@ class PricingService {
 
   async destroy(
     pricingName: string,
-    owner: string,
+    organizationId: string,
     reqUser: LeanUser,
-    queryParams: { collectionName?: string } = {}
+    queryParams: { collectionName?: string; organizationId?: string } = {}
   ) {
+    const effectiveOrgId = queryParams.organizationId || organizationId;
     let collectionId;
 
-    if (owner !== reqUser.username && reqUser.role !== 'ADMIN') {
+    const role = await this.organizationMembershipRepository.findUserRoleInOrganization(reqUser.id, effectiveOrgId);
+    if (!role && reqUser.role !== 'ADMIN') {
       throw new Error(
-        'PERMISSION ERROR: You do not have permission to delete a pricing for another user'
+        'PERMISSION ERROR: You do not have permission to delete a pricing for this organization'
       );
-    }
-
-    const ownerUser = await this.userService.exists(owner);
-
-    if (!ownerUser) {
-      throw new Error('NOT FOUND: User not found');
     }
 
     if (queryParams?.collectionName) {
       const collection = await this.pricingCollectionService.show(
-        owner,
+        effectiveOrgId,
         queryParams.collectionName,
         reqUser
       );
@@ -309,13 +309,13 @@ class PricingService {
       collectionId = collection.id;
     }
 
-    const result = await this.pricingRepository.destroyByNameOwnerAndCollectionId(
+    const result = await this.pricingRepository.destroyByNameOrganizationAndCollectionId(
       pricingName,
-      owner,
+      effectiveOrgId,
       collectionId
     );
     if (!result) {
-      throw new Error('NOT FOUND: Either the pricing does not exist or you are not its owner');
+      throw new Error('NOT FOUND: Either the pricing does not exist or you are not a member of its organization');
     }
     return true;
   }
@@ -323,33 +323,34 @@ class PricingService {
   async destroyVersion(
     pricingName: string,
     pricingVersion: string,
-    owner: string,
+    organizationId: string,
     reqUser: LeanUser
   ) {
-    if (owner !== reqUser.username && reqUser.role !== 'ADMIN') {
+    const role = await this.organizationMembershipRepository.findUserRoleInOrganization(reqUser.id, organizationId);
+    if (!role && reqUser.role !== 'ADMIN') {
       throw new Error(
-        'PERMISSION ERROR: You do not have permission to delete a pricing version for another user'
+        'PERMISSION ERROR: You do not have permission to delete a pricing version for this organization'
       );
     }
 
     let result;
 
-    result = await this.pricingRepository.destroyVersionByNameAndOwner(
+    result = await this.pricingRepository.destroyVersionByNameAndOrganization(
       pricingName,
       pricingVersion,
-      owner
+      organizationId
     );
 
     if (!result) {
-      result = await this.pricingRepository.destroyVersionByNameAndOwner(
+      result = await this.pricingRepository.destroyVersionByNameAndOrganization(
         pricingName,
         pricingVersion.replace('_', '.'),
-        owner
+        organizationId
       );
     }
 
     if (!result) {
-      throw new Error('NOT FOUND: Either the pricing does not exist or you are not its owner');
+      throw new Error('NOT FOUND: Either the pricing does not exist or you are not a member of its organization');
     }
 
     return true;
