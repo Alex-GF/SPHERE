@@ -11,15 +11,15 @@ class PricingController {
   constructor() {
     this.pricingService = container.resolve('pricingService');
     this.index = this.index.bind(this);
-    this.indexByOwner = this.indexByOwner.bind(this);
+    this.indexByOrganization = this.indexByOrganization.bind(this);
     this.show = this.show.bind(this);
     this.getConfigurationSpace = this.getConfigurationSpace.bind(this);
     this.create = this.create.bind(this);
     this.addPricingToCollection = this.addPricingToCollection.bind(this);
     this.update = this.update.bind(this);
     this.updateVersion = this.updateVersion.bind(this);
-    this.destroyByNameAndOwner = this.destroyByNameAndOwner.bind(this);
-    this.destroyVersionByNameAndOwner = this.destroyVersionByNameAndOwner.bind(this);
+    this.destroyByNameAndOrganization = this.destroyByNameAndOrganization.bind(this);
+    this.destroyVersionByNameAndOrganization = this.destroyVersionByNameAndOrganization.bind(this);
   }
 
   async index(req: any, res: any) {
@@ -35,10 +35,10 @@ class PricingController {
     }
   }
 
-  async indexByOwner(req: any, res: any) {
+  async indexByOrganization(req: any, res: any) {
     try {
       const queryParams: PricingIndexQueryParams = this._transformIndexQueryParams(req.query);
-      queryParams.selectedOwners = [req.params.username]; // Set selectedOwners filter for indexByOwner route
+      queryParams.selectedOrganizations = [req.params.organizationId];
 
       const pricings = await this.pricingService.index(queryParams, req.user);
       res.json(pricings);
@@ -53,7 +53,7 @@ class PricingController {
       const queryParams = req.query;
       const pricing = await this.pricingService.show(
         req.params.pricingName,
-        req.params.username,
+        req.params.organizationId,
         req.user,
         queryParams
       );
@@ -67,7 +67,7 @@ class PricingController {
   async getConfigurationSpace(req: any, res: any) {
     try {
       const [configurationSpace, configurationSpaceSize] =
-        await this.pricingService.getConfigurationSpace(req.params.username, req.params.pricingName, req.params.pricingVersion, req.user, req.query);
+        await this.pricingService.getConfigurationSpace(req.params.organizationId, req.params.pricingName, req.params.pricingVersion, req.user, req.query);
       res.json({
         configurationSpace: configurationSpace,
         configurationSpaceSize: configurationSpaceSize,
@@ -84,7 +84,7 @@ class PricingController {
       const collectionId = req.body.collectionId;
       const pricing = await this.pricingService.create(
         req.file,
-        req.params.username,
+        req.params.organizationId,
         isPrivate,
         req.user,
         collectionId
@@ -114,13 +114,13 @@ class PricingController {
 
       const result = await this.pricingService.addPricingToCollection(
         req.body.pricingName,
-        req.user.username,
+        req.user.organizationId || req.body.organizationId,
         req.body.collectionId,
         queryParams
       );
 
       if (!result) {
-        res.status(404).send({ error: 'ERROR: Pricing not found or you are not the owner' });
+        res.status(404).send({ error: 'ERROR: Pricing not found or you are not a member of the organization' });
       }
       
       res.json({ message: "Pricing added to collection successfully" });
@@ -136,7 +136,7 @@ class PricingController {
 
       const pricing = await this.pricingService.update(
         req.params.pricingName,
-        req.params.username,
+        req.params.organizationId,
         req.user,
         req.body,
         queryParams
@@ -158,12 +158,12 @@ class PricingController {
     }
   }
 
-  async destroyByNameAndOwner(req: any, res: any) {
+  async destroyByNameAndOrganization(req: any, res: any) {
     try {
       const queryParams = req.query;
       const result = await this.pricingService.destroy(
         req.params.pricingName,
-        req.params.username,
+        req.params.organizationId,
         req.user,
         queryParams
       );
@@ -178,12 +178,12 @@ class PricingController {
     }
   }
 
-  async destroyVersionByNameAndOwner(req: any, res: any) {
+  async destroyVersionByNameAndOrganization(req: any, res: any) {
     try {
       const result = await this.pricingService.destroyVersion(
         req.params.pricingName,
         req.params.pricingVersion,
-        req.params.username,
+        req.params.organizationId,
         req.user
       );
       if (!result) {
@@ -221,8 +221,8 @@ class PricingController {
         min: parseFloat(indexQueryParams['min-maxPrice'] as string),
         max: parseFloat(indexQueryParams['max-maxPrice'] as string),
       },
-      selectedOwners: indexQueryParams.selectedOwners
-        ? (indexQueryParams.selectedOwners as string).split(',')
+      selectedOrganizations: indexQueryParams.selectedOrganizations
+        ? (indexQueryParams.selectedOrganizations as string).split(',')
         : undefined,
       collectionName: indexQueryParams.collectionName as string,
       includePricingsInCollection: indexQueryParams.includePricingsInCollection === 'true',
@@ -235,14 +235,14 @@ class PricingController {
       'subscriptions',
       'minPrice',
       'maxPrice',
-      'selectedOwners',
+      'selectedOrganizations',
       'collectionName',
       'sortBy',
       'sort',
     ] as const;
 
     optionalFields.forEach(field => {
-      if (['name', 'selectedOwners', 'sortBy', 'sort', 'collectionName'].includes(field)) {
+      if (['name', 'selectedOrganizations', 'sortBy', 'sort', 'collectionName'].includes(field)) {
         if (!transformedData[field]) {
           delete transformedData[field];
         }
