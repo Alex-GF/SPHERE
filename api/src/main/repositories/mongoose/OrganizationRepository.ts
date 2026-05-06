@@ -1,3 +1,4 @@
+import { LeanOrganization } from '../../types/models/Organization';
 import RepositoryBase from '../RepositoryBase';
 import OrganizationMongoose from './models/OrganizationMongoose';
 
@@ -29,9 +30,9 @@ class OrganizationRepository extends RepositoryBase {
     }
   }
 
-  async create(data: any) {
+  async create(data: any): Promise<LeanOrganization> {
     const org = await new OrganizationMongoose(data).save();
-    return org.toObject();
+    return org.toObject<LeanOrganization>();
   }
 
   async update(id: string, data: any) {

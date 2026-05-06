@@ -19,7 +19,7 @@ pnpm run build      # Build both frontend and api
 ## Running Single Test / Package
 
 ```bash
-cd api && pnpx vitest --run --test-name-pattern "<pattern>"
+cd api && npx vitest --run --test-name-pattern "<pattern>"
 ```
 
 ## Prerequisites (required for dev and tests)

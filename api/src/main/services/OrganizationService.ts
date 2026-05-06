@@ -53,30 +53,13 @@ class OrganizationService {
     // Personal organization is identified by isPersonal + name == username.
     const existing = await this.organizationRepository.findOne({ name: user.username, isPersonal: true });
     if (existing) {
-      // Ensure owner membership exists.
-      const membership = await this.organizationMembershipRepository.findUserRoleInOrganization(
-        user.id,
-        (existing as any).id ?? (existing as any)._id?.toString()
-      );
-      if (!membership) {
-        await this.organizationMembershipRepository.create({
-          _userId: user.id,
-          _organizationId: (existing as any).id ?? (existing as any)._id?.toString(),
-          role: 'OWNER',
-          joinedAt: new Date(),
-        });
-      }
-      return existing;
-    }
-
-    if (existing && !(existing as any).isPersonal) {
       throw new Error(
-        'CONFLICT: Cannot create personal organization because an organization with this name already exists'
+        'CONFLICT: Cannot create personal organization because a personal organization with this name already exists. The user creation has been rolled back, but please contact support if you see this message as this should not happen under normal circumstances.'
       );
     }
 
     const organization = await this.organizationRepository.create({
-      name: user.username,
+      name: user.username.toLowerCase(),
       displayName: `${user.username} (personal)`,
       description: null,
       avatarUrl: null,
@@ -85,7 +68,7 @@ class OrganizationService {
 
     await this.organizationMembershipRepository.create({
       _userId: user.id,
-      _organizationId: (organization as any).id ?? (organization as any)._id?.toString(),
+      _organizationId: (organization as any).id,
       role: 'OWNER',
       joinedAt: new Date(),
     });

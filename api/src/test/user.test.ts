@@ -377,8 +377,7 @@ describe('Users API integration', () => {
       const payload = {
         firstName: 'UpdatedName',
         lastName: 'UpdatedLastName',
-        phone: '+34-611-1111',
-        address: 'Test street',
+        email: 'updated@example.com'
       };
 
       const response = await request(app)
@@ -389,8 +388,7 @@ describe('Users API integration', () => {
       expect(response.status).toBe(200);
       expect(response.body.firstName).toBe(payload.firstName);
       expect(response.body.lastName).toBe(payload.lastName);
-      expect(response.body.phone).toBe(payload.phone);
-      expect(response.body.address).toBe(payload.address);
+      expect(response.body.email).toBe(payload.email);
     });
 
     it('Return 200 and updated user object with owner changing password parameter.', async () => {

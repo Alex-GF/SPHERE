@@ -9,7 +9,7 @@ export const ROLE_WEIGHT = {
 };
 
 export interface LeanOrganization {
-  id: string;
+  id?: string;
   name: string;
   displayName: string;
   description: string | null;

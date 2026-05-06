@@ -144,7 +144,7 @@ class UserRepository extends RepositoryBase {
     return hydratedUser.toObject() as unknown as LeanUserWithApiKey;
   }
 
-  async create(businessEntity: any) {
+  async create(businessEntity: any): Promise<LeanUser> {
     const user = await new UserMongoose(businessEntity).save();
 
     return user.toObject();

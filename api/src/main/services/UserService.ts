@@ -5,12 +5,15 @@ import { LeanUser, UserFilters } from '../types/models/User';
 import { processFileUris } from './FileService';
 import bcrypt from 'bcryptjs';
 import { generateUserTokenDTO, hashPassword } from '../utils/users/helpers';
+import OrganizationService from './OrganizationService';
 
 class UserService {
   private userRepository: UserRepository;
+  private organizationService: OrganizationService;
 
   constructor() {
     this.userRepository = container.resolve('userRepository');
+    this.organizationService = container.resolve('organizationService');
   }
 
   async index(queryParams: any): Promise<LeanUser[]> {
@@ -64,6 +67,13 @@ class UserService {
 
     const registeredUser = await this.userRepository.create(newUser);
 
+    // Business rule: every user must have a personal organization they cannot delete.
+    // Create it immediately after user creation.
+    await this.organizationService.ensurePersonalOrganizationForUser({
+      id: registeredUser.id,
+      username: registeredUser.username,
+    });
+
     return registeredUser;
   }
 
@@ -106,6 +116,12 @@ class UserService {
       user.username,
       generateUserTokenDTO()
     );
+
+    // Ensure personal org exists even for legacy users.
+    await this.organizationService.ensurePersonalOrganizationForUser({
+      id: (updatedUser as any).id ?? (updatedUser as any)._id?.toString(),
+      username: (updatedUser as any).username,
+    });
 
     return updatedUser!;
   }

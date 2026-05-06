@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import RepositoryBase from '../RepositoryBase';
 import OrganizationMembershipMongoose from './models/OrganizationMembershipMongoose';
-import { OrgRole } from '../../types/models/Organization';
+import { OrgRole, ROLE_WEIGHT } from '../../types/models/Organization';
 
 class OrganizationMembershipRepository extends RepositoryBase {
   async findByUserId(userId: string) {
@@ -128,11 +128,15 @@ class OrganizationMembershipRepository extends RepositoryBase {
   }
 
   async create(data: any) {
-    const membership = await new OrganizationMembershipMongoose(data).save();
+    const membership = new OrganizationMembershipMongoose(data);
+    await membership.save();
     return membership.toObject({ getters: true, virtuals: true, versionKey: false });
   }
 
   async updateByUserAndOrganization(userId: string, organizationId: string, data: any) {
+    if (data.role) {
+      data._roleWeight = ROLE_WEIGHT[data.role as keyof typeof ROLE_WEIGHT] ?? 0;
+    }
     return OrganizationMembershipMongoose.findOneAndUpdate(
       {
         _userId: new mongoose.Types.ObjectId(userId),
