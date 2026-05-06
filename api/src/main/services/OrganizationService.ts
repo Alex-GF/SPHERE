@@ -4,6 +4,7 @@ import OrganizationRepository from '../repositories/mongoose/OrganizationReposit
 import OrganizationMembershipRepository from '../repositories/mongoose/OrganizationMembershipRepository';
 import OrganizationInvitationRepository from '../repositories/mongoose/OrganizationInvitationRepository';
 import { OrgRole } from '../types/models/Organization';
+import { LeanUser } from '../types/models/User';
 
 class OrganizationService {
   private organizationRepository: OrganizationRepository;
@@ -121,7 +122,12 @@ class OrganizationService {
     });
   }
 
-  async updateMemberRole(userId: string, organizationId: string, role: OrgRole) {
+  async updateMemberRole(userId: string, organizationId: string, role: OrgRole, reqUser: LeanUser & {orgRole: OrgRole}) {
+
+    if (reqUser.orgRole !== 'OWNER' && role === 'OWNER') {
+      throw new Error('PERMISSION ERROR: Only OWNER users can promote others to OWNER role');
+    }
+
     const membership = await this.organizationMembershipRepository.updateByUserAndOrganization(
       userId,
       organizationId,

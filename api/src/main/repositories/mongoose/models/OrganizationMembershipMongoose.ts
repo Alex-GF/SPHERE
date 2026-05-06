@@ -17,7 +17,7 @@ const organizationMembershipSchema = new Schema(
       set: (v: string | mongoose.Types.ObjectId) => new mongoose.Types.ObjectId(v),
       get: (v: mongoose.Types.ObjectId | null) => v?.toString(),
     },
-    _roleWeight: { type: Number, required: true },
+    _roleWeight: { type: Number, required: true, select: false },
     role: {
       type: String,
       required: true,

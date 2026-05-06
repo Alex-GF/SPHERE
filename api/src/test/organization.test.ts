@@ -172,25 +172,22 @@ describe('Organizations API integration', () => {
     });
 
     it('returns 201 when creating personal organization with name auto-set to username', async () => {
-      const uniqueUsername = `personal_user_${randomSuffix()}`;
-      const owner = await createAndLoginUser('USER', uniqueUsername);
+      const user = await createTestUser('USER');
+      const loginRes = await request(app)
+        .post(`${BASE_PATH}/users/login`)
+        .send({ loginField: user.username, password: 'password123' });
+      const token = loginRes.body.token;
 
-      // Ensure no leftover org with this name exists from previous test runs
-      await OrganizationMongoose.deleteMany({ name: uniqueUsername });
+      // Login creates a personal org via ensurePersonalOrganizationForUser.
+      // Verify it exists and has the correct properties.
+      const listRes = await request(app)
+        .get(`${BASE_PATH}/orgs`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
 
-      const response = await request(app)
-        .post(`${BASE_PATH}/orgs`)
-        .set('Authorization', `Bearer ${owner.token}`)
-        .send({
-          displayName: 'Personal Org',
-          isPersonal: true,
-        });
-
-      expect(response.status).toBe(201);
-      expect(response.body.name).toBe(owner.username);
-      expect(response.body.isPersonal).toBe(true);
-
-      orgsToDelete.add(response.body.id);
+      expect(listRes.status).toBe(200);
+      const personalOrg = listRes.body.find((o: any) => o.name === user.username.toLowerCase() && o.isPersonal === true);
+      expect(personalOrg).toBeDefined();
+      expect(personalOrg.displayName).toContain('personal');
     });
 
     it('returns 201 when ADMIN creates organization for themselves', async () => {
@@ -650,25 +647,26 @@ describe('Organizations API integration', () => {
     });
 
     it('returns 403 when trying to delete a personal organization', async () => {
-      const uniqueUsername = `del_personal_${randomSuffix()}`;
-      const owner = await createAndLoginUser('USER', uniqueUsername);
-      await OrganizationMongoose.deleteMany({ name: uniqueUsername });
+      // Login creates a personal org via ensurePersonalOrganizationForUser
+      const user = await createTestUser('USER');
+      const loginRes = await request(app)
+        .post(`${BASE_PATH}/users/login`)
+        .send({ loginField: user.username, password: 'password123' });
+      const token = loginRes.body.token;
 
-      const createResponse = await request(app)
-        .post(`${BASE_PATH}/orgs`)
-        .set('Authorization', `Bearer ${owner.token}`)
-        .send({ displayName: 'Personal Org', isPersonal: true });
-
-      expect(createResponse.status).toBe(201);
-      const personalOrgId = createResponse.body.id;
+      // Find the personal org that was created during login
+      const listRes = await request(app)
+        .get(`${BASE_PATH}/orgs`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
+      const personalOrg = listRes.body.find((o: any) => o.name === user.username.toLowerCase() && o.isPersonal === true);
+      expect(personalOrg).toBeDefined();
 
       const response = await request(app)
-        .delete(`${BASE_PATH}/orgs/${personalOrgId}`)
-        .set('Authorization', `Bearer ${owner.token}`);
+        .delete(`${BASE_PATH}/orgs/${personalOrg.id}`)
+        .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(403);
       expect(response.body.error).toContain('Personal');
-      orgsToDelete.add(personalOrgId);
     });
 
     it('returns 403 when MEMBER (org role) tries to delete', async () => {
@@ -715,6 +713,673 @@ describe('Organizations API integration', () => {
 
       const response = await request(app)
         .delete(`${BASE_PATH}/orgs/${org.id}`);
+
+      expect(response.status).toBe(401);
+      expect(response.body.error).toBeDefined();
+    });
+  });
+
+  // =========================================================================
+  // GET /orgs/:organizationId/members
+  // =========================================================================
+  describe('GET /orgs/:organizationId/members', () => {
+    it('returns 200 and list of members when OWNER requests', async () => {
+      const owner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/orgs/${org.id}/members`)
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBe(1);
+      expect(response.body[0].role).toBe('OWNER');
+      expect(response.body[0].user).toBeDefined();
+      expect(response.body[0].user.id).toBe(owner.id);
+    });
+
+    it('returns 200 and includes all members with their roles', async () => {
+      const owner = await createAndLoginUser('USER');
+      const orgAdmin = await createAndLoginUser('USER');
+      const member = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(orgAdmin.id, org.id, 'ADMIN');
+      await createMembership(member.id, org.id, 'MEMBER');
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/orgs/${org.id}/members`)
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.length).toBe(3);
+      const roles = response.body.map((m: any) => m.role);
+      expect(roles).toContain('OWNER');
+      expect(roles).toContain('ADMIN');
+      expect(roles).toContain('MEMBER');
+    });
+
+    it('returns members with nested user data (id, username, email, avatar)', async () => {
+      const owner = await createAndLoginUser('USER');
+      const member = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(member.id, org.id, 'MEMBER');
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/orgs/${org.id}/members`)
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      expect(response.status).toBe(200);
+      const memberEntry = response.body.find((m: any) => m.user?.id === member.id);
+      expect(memberEntry).toBeDefined();
+      expect(memberEntry.user.username).toBe(member.username);
+      expect(memberEntry.user.email).toBe(member.email);
+      expect(memberEntry.user.avatar).toBeDefined();
+    });
+
+    it('returns 200 when MEMBER (org role) requests', async () => {
+      const owner = await createAndLoginUser('USER');
+      const member = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(member.id, org.id, 'MEMBER');
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/orgs/${org.id}/members`)
+        .set('Authorization', `Bearer ${member.token}`);
+
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBe(true);
+    });
+
+    it('returns 200 when global ADMIN requests', async () => {
+      const owner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/orgs/${org.id}/members`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
+
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBe(true);
+    });
+
+    it('returns 403 when non-member USER requests', async () => {
+      const owner = await createAndLoginUser('USER');
+      const outsider = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/orgs/${org.id}/members`)
+        .set('Authorization', `Bearer ${outsider.token}`);
+
+      expect(response.status).toBe(403);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('returns 404 when organization does not exist', async () => {
+      const fakeId = '68050bd09890322c57842f6f';
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/orgs/${fakeId}/members`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
+
+      expect(response.status).toBe(404);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('returns 401 without Authorization header', async () => {
+      const owner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/orgs/${org.id}/members`);
+
+      expect(response.status).toBe(401);
+      expect(response.body.error).toBeDefined();
+    });
+  });
+
+  // =========================================================================
+  // POST /orgs/:organizationId/members
+  // =========================================================================
+  describe('POST /orgs/:organizationId/members', () => {
+    it('returns 201 when OWNER adds a MEMBER', async () => {
+      const owner = await createAndLoginUser('USER');
+      const newMember = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/orgs/${org.id}/members`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({ userId: newMember.id, role: 'MEMBER' });
+
+      expect(response.status).toBe(201);
+      expect(response.body.role).toBe('MEMBER');
+      expect(response.body._userId).toBe(newMember.id);
+      expect(response.body._organizationId).toBe(org.id);
+    });
+
+    it('returns 201 when OWNER adds an ADMIN', async () => {
+      const owner = await createAndLoginUser('USER');
+      const newAdmin = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/orgs/${org.id}/members`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({ userId: newAdmin.id, role: 'ADMIN' });
+
+      expect(response.status).toBe(201);
+      expect(response.body.role).toBe('ADMIN');
+    });
+
+    it('returns 201 when OWNER adds another OWNER', async () => {
+      const owner = await createAndLoginUser('USER');
+      const newOwner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/orgs/${org.id}/members`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({ userId: newOwner.id, role: 'OWNER' });
+
+      expect(response.status).toBe(201);
+      expect(response.body.role).toBe('OWNER');
+    });
+
+    it('returns 201 when org ADMIN adds a member', async () => {
+      const owner = await createAndLoginUser('USER');
+      const orgAdmin = await createAndLoginUser('USER');
+      const newMember = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(orgAdmin.id, org.id, 'ADMIN');
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/orgs/${org.id}/members`)
+        .set('Authorization', `Bearer ${orgAdmin.token}`)
+        .send({ userId: newMember.id, role: 'MEMBER' });
+
+      expect(response.status).toBe(201);
+      expect(response.body.role).toBe('MEMBER');
+    });
+
+    it('returns 201 when global ADMIN adds a member', async () => {
+      const owner = await createAndLoginUser('USER');
+      const newMember = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/orgs/${org.id}/members`)
+        .set('Authorization', `Bearer ${adminUser.token}`)
+        .send({ userId: newMember.id, role: 'MEMBER' });
+
+      expect(response.status).toBe(201);
+      expect(response.body.role).toBe('MEMBER');
+    });
+
+    it('returns 422 when user is already a member', async () => {
+      const owner = await createAndLoginUser('USER');
+      const member = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(member.id, org.id, 'MEMBER');
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/orgs/${org.id}/members`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({ userId: member.id, role: 'MEMBER' });
+
+      expect(response.status).toBe(422);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('returns 422 when role is invalid', async () => {
+      const owner = await createAndLoginUser('USER');
+      const newMember = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/orgs/${org.id}/members`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({ userId: newMember.id, role: 'INVALID_ROLE' });
+
+      expect(response.status).toBe(422);
+    });
+
+    it('returns 422 when userId is missing', async () => {
+      const owner = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/orgs/${org.id}/members`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({ role: 'MEMBER' });
+
+      expect(response.status).toBe(422);
+    });
+
+    it('returns 422 when role is missing', async () => {
+      const owner = await createAndLoginUser('USER');
+      const newMember = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/orgs/${org.id}/members`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({ userId: newMember.id });
+
+      expect(response.status).toBe(422);
+    });
+
+    it('returns 403 when org MEMBER tries to add a member', async () => {
+      const owner = await createAndLoginUser('USER');
+      const member = await createAndLoginUser('USER');
+      const newGuy = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(member.id, org.id, 'MEMBER');
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/orgs/${org.id}/members`)
+        .set('Authorization', `Bearer ${member.token}`)
+        .send({ userId: newGuy.id, role: 'MEMBER' });
+
+      expect(response.status).toBe(403);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('returns 403 when non-member USER tries to add a member', async () => {
+      const owner = await createAndLoginUser('USER');
+      const outsider = await createAndLoginUser('USER');
+      const newGuy = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/orgs/${org.id}/members`)
+        .set('Authorization', `Bearer ${outsider.token}`)
+        .send({ userId: newGuy.id, role: 'MEMBER' });
+
+      expect(response.status).toBe(403);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('returns 404 when organization does not exist', async () => {
+      const fakeId = '68050bd09890322c57842f6f';
+      const newMember = await createAndLoginUser('USER');
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/orgs/${fakeId}/members`)
+        .set('Authorization', `Bearer ${adminUser.token}`)
+        .send({ userId: newMember.id, role: 'MEMBER' });
+
+      expect(response.status).toBe(404);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('returns 401 without Authorization header', async () => {
+      const owner = await createAndLoginUser('USER');
+      const newMember = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/orgs/${org.id}/members`)
+        .send({ userId: newMember.id, role: 'MEMBER' });
+
+      expect(response.status).toBe(401);
+      expect(response.body.error).toBeDefined();
+    });
+  });
+
+  // =========================================================================
+  // PUT /orgs/:organizationId/members/:userId
+  // =========================================================================
+  describe('PUT /orgs/:organizationId/members/:userId', () => {
+    it('returns 200 when OWNER promotes MEMBER to ADMIN', async () => {
+      const owner = await createAndLoginUser('USER');
+      const member = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(member.id, org.id, 'MEMBER');
+
+      const response = await request(app)
+        .put(`${BASE_PATH}/orgs/${org.id}/members/${member.id}`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({ role: 'ADMIN' });
+
+      expect(response.status).toBe(200);
+      expect(response.body.role).toBe('ADMIN');
+    });
+
+    it('returns 200 when OWNER demotes ADMIN to MEMBER', async () => {
+      const owner = await createAndLoginUser('USER');
+      const orgAdmin = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(orgAdmin.id, org.id, 'ADMIN');
+
+      const response = await request(app)
+        .put(`${BASE_PATH}/orgs/${org.id}/members/${orgAdmin.id}`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({ role: 'MEMBER' });
+
+      expect(response.status).toBe(200);
+      expect(response.body.role).toBe('MEMBER');
+    });
+
+    it('returns 200 when OWNER assigns OWNER role', async () => {
+      const owner = await createAndLoginUser('USER');
+      const member = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(member.id, org.id, 'MEMBER');
+
+      const response = await request(app)
+        .put(`${BASE_PATH}/orgs/${org.id}/members/${member.id}`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({ role: 'OWNER' });
+
+      expect(response.status).toBe(200);
+      expect(response.body.role).toBe('OWNER');
+    });
+
+    it('returns 200 when org ADMIN updates member role', async () => {
+      const owner = await createAndLoginUser('USER');
+      const orgAdmin = await createAndLoginUser('USER');
+      const member = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(orgAdmin.id, org.id, 'ADMIN');
+      await createMembership(member.id, org.id, 'MEMBER');
+
+      const response = await request(app)
+        .put(`${BASE_PATH}/orgs/${org.id}/members/${member.id}`)
+        .set('Authorization', `Bearer ${orgAdmin.token}`)
+        .send({ role: 'ADMIN' });
+
+      expect(response.status).toBe(200);
+      expect(response.body.role).toBe('ADMIN');
+    });
+
+    it('returns 200 when global ADMIN updates member role', async () => {
+      const owner = await createAndLoginUser('USER');
+      const member = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(member.id, org.id, 'MEMBER');
+
+      const response = await request(app)
+        .put(`${BASE_PATH}/orgs/${org.id}/members/${member.id}`)
+        .set('Authorization', `Bearer ${adminUser.token}`)
+        .send({ role: 'ADMIN' });
+
+      expect(response.status).toBe(200);
+      expect(response.body.role).toBe('ADMIN');
+    });
+    
+    it('returns 200 when global ADMIN tries to set OWNER role', async () => {
+      const owner = await createAndLoginUser('USER');
+      const member = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(member.id, org.id, 'MEMBER');
+
+      const response = await request(app)
+        .put(`${BASE_PATH}/orgs/${org.id}/members/${member.id}`)
+        .set('Authorization', `Bearer ${adminUser.token}`)
+        .send({ role: 'OWNER' });
+
+      expect(response.status).toBe(200);
+      expect(response.body.role).toBe('OWNER');
+    });
+
+    it('returns 403 when org ADMIN updates member role to OWNER', async () => {
+      const owner = await createAndLoginUser('USER');
+      const orgAdmin = await createAndLoginUser('USER');
+      const member = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(orgAdmin.id, org.id, 'ADMIN');
+      await createMembership(member.id, org.id, 'MEMBER');
+
+      const response = await request(app)
+        .put(`${BASE_PATH}/orgs/${org.id}/members/${member.id}`)
+        .set('Authorization', `Bearer ${orgAdmin.token}`)
+        .send({ role: 'OWNER' });
+
+      expect(response.status).toBe(403);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('returns 403 when org MEMBER tries to update role', async () => {
+      const owner = await createAndLoginUser('USER');
+      const member1 = await createAndLoginUser('USER');
+      const member2 = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(member1.id, org.id, 'MEMBER');
+      await createMembership(member2.id, org.id, 'MEMBER');
+
+      const response = await request(app)
+        .put(`${BASE_PATH}/orgs/${org.id}/members/${member2.id}`)
+        .set('Authorization', `Bearer ${member1.token}`)
+        .send({ role: 'ADMIN' });
+
+      expect(response.status).toBe(403);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('returns 403 when non-member USER tries to update role', async () => {
+      const owner = await createAndLoginUser('USER');
+      const outsider = await createAndLoginUser('USER');
+      const member = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(member.id, org.id, 'MEMBER');
+
+      const response = await request(app)
+        .put(`${BASE_PATH}/orgs/${org.id}/members/${member.id}`)
+        .set('Authorization', `Bearer ${outsider.token}`)
+        .send({ role: 'ADMIN' });
+
+      expect(response.status).toBe(403);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('returns 404 when membership does not exist', async () => {
+      const owner = await createAndLoginUser('USER');
+      const nonMember = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+
+      const response = await request(app)
+        .put(`${BASE_PATH}/orgs/${org.id}/members/${nonMember.id}`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({ role: 'MEMBER' });
+
+      expect(response.status).toBe(404);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('returns 404 when organization does not exist', async () => {
+      const fakeId = '68050bd09890322c57842f6f';
+      const member = await createAndLoginUser('USER');
+
+      const response = await request(app)
+        .put(`${BASE_PATH}/orgs/${fakeId}/members/${member.id}`)
+        .set('Authorization', `Bearer ${adminUser.token}`)
+        .send({ role: 'MEMBER' });
+
+      expect(response.status).toBe(404);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('returns 422 when role is invalid', async () => {
+      const owner = await createAndLoginUser('USER');
+      const member = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(member.id, org.id, 'MEMBER');
+
+      const response = await request(app)
+        .put(`${BASE_PATH}/orgs/${org.id}/members/${member.id}`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({ role: 'SUPERUSER' });
+
+      expect(response.status).toBe(422);
+    });
+
+    it('returns 422 when role is missing', async () => {
+      const owner = await createAndLoginUser('USER');
+      const member = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(member.id, org.id, 'MEMBER');
+
+      const response = await request(app)
+        .put(`${BASE_PATH}/orgs/${org.id}/members/${member.id}`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({});
+
+      expect(response.status).toBe(422);
+    });
+
+    it('returns 401 without Authorization header', async () => {
+      const owner = await createAndLoginUser('USER');
+      const member = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(member.id, org.id, 'MEMBER');
+
+      const response = await request(app)
+        .put(`${BASE_PATH}/orgs/${org.id}/members/${member.id}`)
+        .send({ role: 'ADMIN' });
+
+      expect(response.status).toBe(401);
+      expect(response.body.error).toBeDefined();
+    });
+  });
+
+  // =========================================================================
+  // DELETE /orgs/:organizationId/members/:userId
+  // =========================================================================
+  describe('DELETE /orgs/:organizationId/members/:userId', () => {
+    it('returns 200 when OWNER removes a MEMBER', async () => {
+      const owner = await createAndLoginUser('USER');
+      const member = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(member.id, org.id, 'MEMBER');
+
+      const response = await request(app)
+        .delete(`${BASE_PATH}/orgs/${org.id}/members/${member.id}`)
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.message).toBe('Successfully removed.');
+
+      const membership = await OrganizationMembershipMongoose.findOne({
+        _userId: member.id,
+        _organizationId: org.id,
+      });
+      expect(membership).toBeNull();
+    });
+
+    it('returns 200 when org ADMIN removes a member', async () => {
+      const owner = await createAndLoginUser('USER');
+      const orgAdmin = await createAndLoginUser('USER');
+      const member = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(orgAdmin.id, org.id, 'ADMIN');
+      await createMembership(member.id, org.id, 'MEMBER');
+
+      const response = await request(app)
+        .delete(`${BASE_PATH}/orgs/${org.id}/members/${member.id}`)
+        .set('Authorization', `Bearer ${orgAdmin.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.message).toBe('Successfully removed.');
+    });
+
+    it('returns 200 when global ADMIN removes a member', async () => {
+      const owner = await createAndLoginUser('USER');
+      const member = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(member.id, org.id, 'MEMBER');
+
+      const response = await request(app)
+        .delete(`${BASE_PATH}/orgs/${org.id}/members/${member.id}`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.message).toBe('Successfully removed.');
+    });
+
+    it('returns 200 and removes the membership record from the database', async () => {
+      const owner = await createAndLoginUser('USER');
+      const member = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(member.id, org.id, 'MEMBER');
+
+      await request(app)
+        .delete(`${BASE_PATH}/orgs/${org.id}/members/${member.id}`)
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      const membersResponse = await request(app)
+        .get(`${BASE_PATH}/orgs/${org.id}/members`)
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      const userIds = membersResponse.body.map((m: any) => m.user?.id);
+      expect(userIds).not.toContain(member.id);
+    });
+
+    it('returns 403 when org MEMBER tries to remove another member', async () => {
+      const owner = await createAndLoginUser('USER');
+      const member1 = await createAndLoginUser('USER');
+      const member2 = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(member1.id, org.id, 'MEMBER');
+      await createMembership(member2.id, org.id, 'MEMBER');
+
+      const response = await request(app)
+        .delete(`${BASE_PATH}/orgs/${org.id}/members/${member2.id}`)
+        .set('Authorization', `Bearer ${member1.token}`);
+
+      expect(response.status).toBe(403);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('returns 403 when non-member USER tries to remove a member', async () => {
+      const owner = await createAndLoginUser('USER');
+      const outsider = await createAndLoginUser('USER');
+      const member = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(member.id, org.id, 'MEMBER');
+
+      const response = await request(app)
+        .delete(`${BASE_PATH}/orgs/${org.id}/members/${member.id}`)
+        .set('Authorization', `Bearer ${outsider.token}`);
+
+      expect(response.status).toBe(403);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('returns 404 when membership does not exist', async () => {
+      const owner = await createAndLoginUser('USER');
+      const nonMember = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+
+      const response = await request(app)
+        .delete(`${BASE_PATH}/orgs/${org.id}/members/${nonMember.id}`)
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      expect(response.status).toBe(404);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('returns 404 when organization does not exist', async () => {
+      const fakeId = '68050bd09890322c57842f6f';
+      const member = await createAndLoginUser('USER');
+
+      const response = await request(app)
+        .delete(`${BASE_PATH}/orgs/${fakeId}/members/${member.id}`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
+
+      expect(response.status).toBe(404);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('returns 401 without Authorization header', async () => {
+      const owner = await createAndLoginUser('USER');
+      const member = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(member.id, org.id, 'MEMBER');
+
+      const response = await request(app)
+        .delete(`${BASE_PATH}/orgs/${org.id}/members/${member.id}`);
 
       expect(response.status).toBe(401);
       expect(response.body.error).toBeDefined();

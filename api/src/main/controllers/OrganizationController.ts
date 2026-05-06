@@ -119,7 +119,7 @@ class OrganizationController {
   async updateMemberRole(req: any, res: any) {
     try {
       const { role } = req.body;
-      const membership = await this.organizationService.updateMemberRole(req.params.userId, req.params.organizationId, role);
+      const membership = await this.organizationService.updateMemberRole(req.params.userId, req.params.organizationId, role, req.user);
       res.json(membership);
     } catch (err: any) {
       const { status, message } = handleError(err);

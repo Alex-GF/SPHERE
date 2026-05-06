@@ -36,7 +36,7 @@ export const deleteTestUser = async (username: string): Promise<void> => {
 export const createAndLoginUser = async (
   role: UserRole = USER_ROLES[USER_ROLES.length - 1],
   username: string = `test_user_${Date.now()}`
-): Promise<LeanUser> => {
+): Promise<LeanUser & { token: string; tokenExpiration: Date }> => {
   const user = await createTestUser(role, username);
 
   const userLogin = await request(testContainer.resolve('app'))
