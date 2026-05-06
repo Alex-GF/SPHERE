@@ -82,8 +82,6 @@ const buildRequestPath = (pattern: string, ctx: AuthContext) => {
 	}
 };
 
-const makeAuthHeader = (user: any) => ({ Authorization: `Bearer ${user.token}` });
-
 const requestWithAuth = async (
 	app: TestApp,
 	method: string,
