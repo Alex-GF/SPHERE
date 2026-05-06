@@ -40,7 +40,9 @@ export function filterEndpoints(
   }
 ): RoutePermission[] {
   return ROUTE_PERMISSIONS.filter((endpoint) => {
-    if (criteria.isPublic !== undefined && endpoint.isPublic !== criteria.isPublic) {
+    const endpointIsPublic = endpoint.isPublic ?? false;
+
+    if (criteria.isPublic !== undefined && endpointIsPublic !== criteria.isPublic) {
       return false;
     }
     if (criteria.methods && !criteria.methods.some((m) => endpoint.methods.includes(m))) {

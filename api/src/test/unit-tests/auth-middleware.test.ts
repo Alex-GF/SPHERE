@@ -308,6 +308,26 @@ describe('Auth Middleware - Real Execution Tests', () => {
       expect((mockReq as any).user).toBeDefined();
       expect(mockNext).toHaveBeenCalled();
     });
+    it('should resolve organizationId from path when req.params is empty', async () => {
+      const user = createMockAdminUser();
+      const org = createMockOrganization({ id: 'org_123' });
+
+      mockUserRepository.findOne.mockResolvedValue(user);
+      mockOrgRepository.findById.mockResolvedValue(org);
+      mockOrgService.getUserOrgRole.mockResolvedValue('OWNER');
+
+      mockReq = createMockRequest({
+        method: 'GET',
+        path: '/api/v1/orgs/org_123/members',
+        params: {},
+        headers: buildBearerTokenHeader(user.token!),
+      });
+
+      await authenticateTokenMiddleware(mockReq as any, mockRes, mockNext);
+
+      expect((mockReq as any).params.organizationId).toBe('org_123');
+      expect(mockOrgRepository.findById).toHaveBeenCalledWith('org_123');
+    });
 
     it('scope MANAGEMENT on parent should NOT inherit to child (deny)', async () => {
       const user: any = createMockUserWithApiKey();

@@ -89,7 +89,11 @@ async function authenticateToken(req: Request, token: string): Promise<void> {
 }
 
 async function populateOrganizationContext(req: Request): Promise<void> {
-  const organizationId = req.params.organizationId;
+  const organizationId = req.params.organizationId || extractOrganizationIdFromPath(req.path);
+
+  if (organizationId && !req.params.organizationId) {
+    req.params.organizationId = organizationId;
+  }
 
   if (organizationId) {
     const organizationRepository = container.resolve('organizationRepository');
@@ -101,7 +105,7 @@ async function populateOrganizationContext(req: Request): Promise<void> {
       (req as any).org = organization;
 
       const role = await organizationService.getUserOrgRole(
-        (req as any).user,
+        (req as any).user.id,
         organizationId
       );
 
@@ -129,6 +133,21 @@ async function populateOrganizationContext(req: Request): Promise<void> {
       throw new Error('NOT FOUND: Organization not found');
     }
   }
+}
+
+function extractOrganizationIdFromPath(path: string): string | undefined {
+  const segments = path.replace("/api/v1" + (process.env.BASE_URL_PATH ?? ''), '').split('/').filter(Boolean);
+
+  if (segments[0] !== 'orgs' && segments[0] !== 'pricings' && segments[0] !== 'collections') {
+    return undefined;
+  }
+
+  const organizationId = segments[1];
+  if (!organizationId || organizationId === 'invitations' || organizationId === 'join') {
+    return undefined;
+  }
+
+  return organizationId;
 }
 
 /**
@@ -194,6 +213,11 @@ const checkPermissions = async (req: Request, res: Response, next: NextFunction)
     if (matchingRule.allowedOrganizationRoles?.length) {
       const user = (req as any).user;
       const org = (req as any).org;
+      const organizationId = req.params.organizationId || extractOrganizationIdFromPath(apiPath);
+
+      if (organizationId && !req.params.organizationId) {
+        req.params.organizationId = organizationId;
+      }
 
       if (!org) {
         return res.status(400).json({
@@ -211,7 +235,7 @@ const checkPermissions = async (req: Request, res: Response, next: NextFunction)
       if (!matchingRule.allowedOrganizationRoles.includes(user.orgRole)) {
         return res
           .status(403)
-          .json({ error: 'PERMISSION ERROR: Insufficient role for this action' });
+          .json({ error: 'PERMISSION ERROR: Insufficient role for this action. If you\'re sure that you have the required role to perform this actions, you may be using an API key with limited permissions' });
       }
     }
 

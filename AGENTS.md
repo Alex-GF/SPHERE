@@ -11,15 +11,15 @@
 ```bash
 pnpm run install    # Install dependencies for both packages
 pnpm run dev        # Run API + Vite dev servers concurrently (from root)
+pnpm run dev:setup  # Run MongoDB and Redis containers locally with Docker Compose. Also seeds MongoDB with test data. It must be run BEFORE dev commands.
 pnpm run test       # Run API tests (vitest) then reseed MongoDB
 pnpm run build      # Build both frontend and api
-pnpm run lint       # ESLint from root
 ```
 
 ## Running Single Test / Package
 
 ```bash
-cd api && npx vitest --run --test-name-pattern "<pattern>"
+cd api && pnpx vitest --run --test-name-pattern "<pattern>"
 ```
 
 ## Prerequisites (required for dev and tests)
