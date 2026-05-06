@@ -82,7 +82,7 @@ class OrganizationMembershipRepository extends RepositoryBase {
         {
           $lookup: {
             from: 'organizations',
-            let: { targetOrgId: organizationId },
+            let: { targetOrgId: new mongoose.Types.ObjectId(organizationId) },
             pipeline: [
               { $match: { $expr: { $eq: ['$_id', '$$targetOrgId'] } } },
               { $project: { ancestors: 1 } },
@@ -93,12 +93,12 @@ class OrganizationMembershipRepository extends RepositoryBase {
         { $unwind: '$targetOrg' },
         {
           $match: {
-            _userId: userId,
+            _userId: new mongoose.Types.ObjectId(userId),
             $expr: {
               $in: [
                 '$_organizationId',
                 {
-                  $concatArrays: [[organizationId], '$targetOrg.ancestors'],
+                  $concatArrays: [[new mongoose.Types.ObjectId(organizationId)], '$targetOrg.ancestors'],
                 },
               ],
             },

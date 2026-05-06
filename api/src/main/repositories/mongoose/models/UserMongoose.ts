@@ -77,10 +77,10 @@ const userSchema = new Schema(
   {
     timestamps: true,
     toObject: {
-      virtuals: true,
-      transform: function (doc, resultObject) {
+      getters: true,
+      versionKey: false,
+      transform: function (_, resultObject) {
         delete (resultObject as any)._id;
-        delete (resultObject as any).__v;
 
         processFileUris(resultObject, ['avatar']);
 

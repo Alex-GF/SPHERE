@@ -23,6 +23,8 @@ export interface LeanUser {
   }[];
 }
 
+export type LeanUserWithApiKey = (Omit<LeanUser, 'apiKeys' | 'password'> & { apiKey: ApiKey })
+
 export type UserFilters = {
   username?: string;
   email?: string;

@@ -1,4 +1,4 @@
-import { ApiKey, LeanUser, UserFilters } from '../../types/models/User';
+import { ApiKey, LeanUser, LeanUserWithApiKey, UserFilters } from '../../types/models/User';
 import RepositoryBase from '../RepositoryBase';
 import UserMongoose from './models/UserMongoose';
 
@@ -80,12 +80,7 @@ class UserRepository extends RepositoryBase {
 
   async findByApiKey(
     apiKey: string
-  ): Promise<
-    | (Omit<LeanUser, 'apiKeys' | 'password'> & {
-        apiKey: ApiKey;
-      })
-    | null
-  > {
+  ): Promise<LeanUserWithApiKey | null> {
     const user = await UserMongoose.aggregate([
       {
         $match: {
@@ -138,7 +133,15 @@ class UserRepository extends RepositoryBase {
       },
     ]);
 
-    return user[0] ?? null;
+    const rawUser = user[0] ?? null;
+
+    if (!rawUser) {
+      return null;
+    }
+
+    const hydratedUser = UserMongoose.hydrate(rawUser);
+
+    return hydratedUser.toObject() as unknown as LeanUserWithApiKey;
   }
 
   async create(businessEntity: any) {

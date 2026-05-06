@@ -1,4 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
+import { LeanOrganization } from '../../../types/models/Organization';
 
 const organizationSchema = new Schema(
   {
@@ -17,10 +18,12 @@ const organizationSchema = new Schema(
   {
     timestamps: true,
     toObject: {
-      virtuals: true,
+      getters: true,
+      versionKey: false,
       transform: function (doc, resultObject) {
         delete (resultObject as any)._id;
-        delete (resultObject as any).__v;
+        (resultObject as any).ancestors = resultObject.ancestors.map((id: mongoose.Types.ObjectId) => id.toString());
+        
         return resultObject;
       },
     },
