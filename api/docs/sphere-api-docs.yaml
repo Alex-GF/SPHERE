@@ -67,6 +67,12 @@ tags:
     description: Pricing Version Control System (PVCS)
   - name: Collections
     description: Collection management for grouping pricings
+  - name: Organizations
+    description: |
+      Organization management including creation, membership, invitations, and hierarchical structure.
+      Organizations group users together and can own pricings and collections. Each user has a personal
+      organization. Members have roles (OWNER, ADMIN, MEMBER) that control access to organization operations.
+      Invitations use shareable codes for self-service joining.
   - name: Cache
     description: Redis cache operations for temporary data storage
 
@@ -1352,6 +1358,852 @@ paths:
               example:
                 error: "ERROR: Redis client not initialized"
 
+  # ============================================
+  # Organization Management
+  # ============================================
+
+  /orgs:
+    get:
+      summary: Get all organizations
+      description: |
+        Retrieves a list of all organizations in the system, sorted by creation date (newest first).
+        This is an administrative endpoint intended for platform-wide organization management.
+
+        **Authentication**: User token
+
+        **Permission**: Only global ADMIN users can access this endpoint. Regular USER
+        roles will receive a 403 error.
+
+        **Response**: Returns an array of organization objects. Each object includes the
+        organization's `id`, `name`, `displayName`, `description`, `avatar`, `isPersonal`
+        flag, and audit timestamps. Returns an empty array if no organizations exist.
+
+      tags:
+        - Organizations
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: List of all organizations sorted by creation date (newest first)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Organization'
+        '401':
+          description: Authentication required — no valid token or API key provided
+        '403':
+          description: Insufficient permissions — only global ADMIN users can list all organizations
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      summary: Create a new organization
+      description: |
+        Creates a new organization. The authenticated user automatically becomes the
+        **OWNER** of the newly created organization (an `OrganizationMembership` with
+        role `OWNER` is created alongside the organization).
+
+        **Authentication**: User token
+
+        **Request Body**:
+        - **`name`** (required unless `isPersonal` is `true`): A URL-safe unique identifier
+          for the organization. Must be 3-50 characters, lowercase letters, digits, hyphens,
+          and underscores only (`/^[a-z0-9_-]+$/`). The name must be unique across the
+          platform — attempting to use a duplicate name will result in a 422 error.
+        - **`displayName`** (required): A human-readable name for the organization (max 255 chars).
+        - **`description`** (optional): A free-text description of the organization.
+        - **`avatarUrl`** (optional): A valid URL pointing to the organization's avatar image.
+        - **`isPersonal`** (optional, default `false`): When set to `true`, the `name` field
+          is automatically overridden with the authenticated user's username (lowercase).
+          Personal organizations are special-purpose and cannot be deleted.
+
+        **Cascading Actions**:
+        - An `OrganizationMembership` record is created linking the authenticated user
+          as the OWNER of the new organization.
+
+      tags:
+        - Organizations
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/OrganizationCreate'
+            example:
+              name: "acme-corp"
+              displayName: "Acme Corporation"
+              description: "The leading provider of SaaS solutions"
+              isPersonal: false
+      responses:
+        '201':
+          description: Organization created successfully — the authenticated user is set as OWNER
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+        '401':
+          description: Authentication required — no valid token or API key provided
+        '403':
+          description: Insufficient permissions
+        '422':
+          description: Validation failed — either request body validation errors (e.g. invalid name format, missing displayName) or a duplicate organization name
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/responses/UnprocessableEntity'
+                  - $ref: '#/components/schemas/Error'
+              examples:
+                validationError:
+                  summary: Field validation error
+                  value:
+                    errors:
+                      - type: field
+                        msg: "Name must be between 3 and 50 characters"
+                        path: name
+                        location: body
+                duplicateName:
+                  summary: Duplicate organization name
+                  value:
+                    error: "Organization with this name already exists"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /orgs/invitations/preview/{code}:
+    get:
+      summary: Preview an organization invitation
+      description: |
+        Retrieves the organization details associated with an invitation code. This allows
+        users to inspect the organization (name, display name, avatar) before deciding to
+        accept the invitation. The invitation itself is also returned with its metadata
+        (expiration, usage limits, current use count).
+
+        **Authentication**: User token
+
+        **Note**: This endpoint does **not** resolve an organization context from the URL path.
+        Any authenticated user (ADMIN or USER) can preview an invitation using a valid code.
+
+        **Invitation Validation** (checked in order):
+        1. The invitation code must exist in the database
+        2. The invitation must not have expired (`expiresAt` must be in the future or `null`)
+        3. The invitation must not have reached its maximum number of uses (`useCount < maxUses`
+           or `maxUses` is `null`)
+        4. The associated organization must still exist
+
+        If any of these checks fail, a **404** is returned with an appropriate error message
+        (e.g. "Invitation expired", "Invitation has reached the maximum number of uses").
+
+      tags:
+        - Organizations
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/InvitationCode'
+      responses:
+        '200':
+          description: Invitation preview data containing the invitation details and basic organization info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationInvitationPreview'
+        '401':
+          description: Authentication required — no valid token or API key provided
+        '404':
+          description: |
+            Invitation not found, expired, has reached max uses, or the associated
+            organization no longer exists
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /orgs/join/{code}:
+    post:
+      summary: Join an organization via invitation
+      description: |
+        Accepts an invitation code and adds the authenticated user to the corresponding
+        organization. The user always joins with the **MEMBER** role (hardcoded, not
+        configurable via this endpoint).
+
+        **Authentication**: User token
+
+        **Note**: This endpoint does **not** resolve an organization context from the URL path.
+        Any authenticated user (ADMIN or USER) can join via an invitation code.
+
+        **Process** (in order):
+        1. Validates the invitation code (existence, expiry, max uses — same as the preview endpoint)
+        2. Checks that the user is not already a member of the organization
+        3. Creates an `OrganizationMembership` with role `MEMBER` and `joinedAt` set to the current timestamp
+        4. Atomically increments the invitation's `useCount` by 1
+        5. Returns the organization object
+
+        **Constraints**:
+        - User must not already be a member of the organization (returns **422** if they are)
+        - Invitation must be valid (not expired, not at max uses, organization must exist)
+        - The role assigned is always `MEMBER` — to change the role, an OWNER or ADMIN
+          must use `PUT /orgs/{organizationId}/members/{userId}`
+
+      tags:
+        - Organizations
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/InvitationCode'
+      responses:
+        '200':
+          description: Successfully joined the organization — returns the organization object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+        '401':
+          description: Authentication required — no valid token or API key provided
+        '404':
+          description: |
+            Invitation not found, expired, has reached max uses, or the associated
+            organization no longer exists
+        '422':
+          description: User is already a member of this organization
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "User is already a member of this organization"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /orgs/{organizationId}:
+    get:
+      summary: Get organization details
+      description: |
+        Retrieves detailed information about a specific organization by its ID. The
+        organization context is automatically resolved from the `organizationId` path
+        parameter — the middleware loads the organization from the database and resolves
+        the authenticated user's role within it.
+
+        **Authentication**: User token
+
+        **Permission**:
+        - **ADMIN** (global): Can access any organization. The system assigns an effective
+          org role of `OWNER` for permission checks.
+        - **USER**: Must be a member of the organization (any role: OWNER, ADMIN, or MEMBER).
+          Non-members will receive a 403 error.
+
+        **Response**: Returns the full organization object including `id`, `name`,
+        `displayName`, `description`, `avatar`, `isPersonal`, and timestamps.
+
+      tags:
+        - Organizations
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/OrganizationId'
+      responses:
+        '200':
+          description: Organization details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+        '401':
+          description: Authentication required — no valid token or API key provided
+        '403':
+          description: |
+            Insufficient permissions — the user does not belong to this organization
+            or does not have the required role
+        '404':
+          description: Organization not found — no organization exists with the given ID
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      summary: Update organization metadata
+      description: |
+        Updates the mutable metadata of an organization. Only `displayName`, `description`,
+        and `avatarUrl` can be modified. The organization `name` field **cannot be changed**
+        after creation.
+
+        **Authentication**: User token
+
+        **Permission**:
+        - **ADMIN** (global): Can update any organization.
+        - **USER**: Must have the `OWNER` or `ADMIN` role within the organization.
+          Regular `MEMBER` roles will receive a 403 error.
+
+        **Request Body** (all optional, but at least one field should be provided):
+        - `displayName`: Updated human-readable name (max 255 chars)
+        - `description`: Updated description (can be `null` to clear)
+        - `avatarUrl`: Updated avatar URL (must be a valid URL, can be `null` to clear)
+
+      tags:
+        - Organizations
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/OrganizationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/OrganizationUpdate'
+      responses:
+        '200':
+          description: Organization updated successfully — returns the updated organization object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+        '401':
+          description: Authentication required — no valid token or API key provided
+        '403':
+          description: |
+            Insufficient permissions — the user must have OWNER or ADMIN role within
+            the organization (or be a global ADMIN)
+        '404':
+          description: Organization not found — no organization exists with the given ID
+        '422':
+          description: Validation failed — e.g. invalid `avatarUrl` format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnprocessableEntity'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      summary: Delete an organization
+      description: |
+        Permanently deletes an organization along with all associated data. This is a
+        destructive, irreversible operation.
+
+        **Authentication**: User token
+
+        **Permission**:
+        - **ADMIN** (global): Can delete any non-personal organization.
+        - **USER**: Must have the `OWNER` or `ADMIN` role within the organization.
+
+        **Constraints**:
+        - **Personal organizations cannot be deleted.** If the organization's `isPersonal`
+          flag is `true`, the request will be rejected with a 403 error.
+
+        **Cascading Actions** (executed in order):
+        1. All `OrganizationMembership` records for this organization are deleted
+           (all members are removed)
+        2. All `OrganizationInvitation` records for this organization are deleted
+           (all pending invitations are revoked)
+        3. The organization document itself is deleted
+
+        **Warning**: This action removes all members and invitations permanently.
+        Pricings and collections owned by the organization are **not** affected.
+
+      tags:
+        - Organizations
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/OrganizationId'
+      responses:
+        '200':
+          description: Organization deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Successfully deleted."
+        '401':
+          description: Authentication required — no valid token or API key provided
+        '403':
+          description: |
+            Insufficient permissions or personal organization — either the user lacks
+            OWNER/ADMIN role, or the organization is a personal organization (which
+            cannot be deleted)
+        '404':
+          description: Organization not found — no organization exists with the given ID
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /orgs/{organizationId}/members:
+    get:
+      summary: List organization members
+      description: |
+        Retrieves a list of all members in an organization, including their roles, join
+        dates, and basic user information. The response is enriched via a database
+        aggregation pipeline that joins membership records with user data.
+
+        **Authentication**: User token
+
+        **Permission**:
+        - **ADMIN** (global): Can view any organization's members.
+        - **USER**: Must be a member of the organization (any role: OWNER, ADMIN, or MEMBER).
+
+        **Response**: Each item in the array contains:
+        - `id`: The membership record ID
+        - `role`: The member's role (`OWNER`, `ADMIN`, or `MEMBER`)
+        - `joinedAt`: When the user joined the organization
+        - `user`: Nested object with `id`, `username`, `email`, and `avatar` of the member
+
+        Returns an empty array if the organization has no members (should not happen in
+        practice, as the creator is always added as OWNER).
+
+      tags:
+        - Organizations
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/OrganizationId'
+      responses:
+        '200':
+          description: List of organization members with enriched user data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrganizationMember'
+        '401':
+          description: Authentication required — no valid token or API key provided
+        '403':
+          description: |
+            Insufficient permissions — the user does not belong to this organization
+            or does not have the required role
+        '404':
+          description: Organization not found — no organization exists with the given ID
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      summary: Add a member to the organization
+      description: |
+        Adds a user to the organization with a specified role. This is the administrative
+        way to add members (as opposed to `POST /orgs/join/{code}` which is self-service
+        via invitation codes and always assigns the `MEMBER` role).
+
+        **Authentication**: User token
+
+        **Permission**:
+        - **ADMIN** (global): Can add members to any organization.
+        - **USER**: Must have the `OWNER` or `ADMIN` role within the organization.
+
+        **Request Body**:
+        - `userId` (required): The MongoDB ObjectId of the user to add as a member.
+        - `role` (required): The role to assign — one of `OWNER`, `ADMIN`, or `MEMBER`.
+
+        **Constraints**:
+        - The target user must not already be a member of the organization. If they are,
+          the request returns **422** with an error message.
+        - A unique compound index on `{ userId, organizationId }` also prevents duplicates
+          at the database level.
+
+        **Note**: Unlike `POST /orgs/join/{code}`, this endpoint allows assigning any role
+        (not just `MEMBER`), making it suitable for administrative member management.
+
+      tags:
+        - Organizations
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/OrganizationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/AddMember'
+            example:
+              userId: "68050bd09890322c57842f71"
+              role: "MEMBER"
+      responses:
+        '201':
+          description: Member added successfully — returns the created membership record
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationMember'
+        '400':
+          description: Invalid request body
+        '401':
+          description: Authentication required — no valid token or API key provided
+        '403':
+          description: |
+            Insufficient permissions — the user must have OWNER or ADMIN role within
+            the organization (or be a global ADMIN)
+        '404':
+          description: Organization not found — no organization exists with the given ID
+        '422':
+          description: |
+            Validation failed — either request body validation errors (e.g. missing
+            `userId` or `role`) or the target user is already a member of this organization
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/responses/UnprocessableEntity'
+                  - $ref: '#/components/schemas/Error'
+              examples:
+                validationError:
+                  summary: Field validation error
+                  value:
+                    errors:
+                      - type: field
+                        msg: "Role must be one of OWNER, ADMIN, MEMBER"
+                        path: role
+                        location: body
+                alreadyMember:
+                  summary: User already a member
+                  value:
+                    error: "User is already a member of this organization"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /orgs/{organizationId}/members/{userId}:
+    put:
+      summary: Update a member's role
+      description: |
+        Changes the role of an existing member within the organization. This can be used
+        to promote a MEMBER to ADMIN, demote an ADMIN to MEMBER, or transfer ownership
+        by assigning the OWNER role.
+
+        **Authentication**: User token
+
+        **Permission**:
+        - **ADMIN** (global): Can update any member's role in any organization.
+        - **USER**: Must have the `OWNER` or `ADMIN` role within the organization.
+
+        **Request Body**:
+        - `role` (required): The new role to assign — one of `OWNER`, `ADMIN`, or `MEMBER`.
+
+        **Behavior**:
+        - The system automatically recalculates an internal `_roleWeight` field
+          (`OWNER: 3`, `ADMIN: 2`, `MEMBER: 1`) used for aggregation queries.
+        - If the membership record does not exist (i.e., the user is not a member of the
+          organization), the request returns **404**.
+
+        **Constraints**:
+        - The target user must already be a member of the organization.
+
+      tags:
+        - Organizations
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/OrganizationId'
+        - $ref: '#/components/parameters/UserId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/UpdateMemberRole'
+            example:
+              role: "ADMIN"
+      responses:
+        '200':
+          description: Member role updated successfully — returns the updated membership record
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationMember'
+        '401':
+          description: Authentication required — no valid token or API key provided
+        '403':
+          description: |
+            Insufficient permissions — the user must have OWNER or ADMIN role within
+            the organization (or be a global ADMIN)
+        '404':
+          description: |
+            Organization or membership not found — either the organization does not exist
+            or the target user is not a member of it
+        '422':
+          description: Validation failed — e.g. invalid or missing `role` value
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnprocessableEntity'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      summary: Remove a member from the organization
+      description: |
+        Removes a user from the organization by deleting their membership record. After
+        removal, the user loses all access to the organization's resources.
+
+        **Authentication**: User token
+
+        **Permission**:
+        - **ADMIN** (global): Can remove any member from any organization.
+        - **USER**: Must have the `OWNER` or `ADMIN` role within the organization.
+
+        **Constraints**:
+        - The target user must be a member of the organization. If no membership record
+          is found, the request returns **404**.
+        - **Warning**: There is no built-in check to prevent removal of the last OWNER.
+          Removing the sole OWNER will leave the organization without an owner. Ensure
+          ownership is transferred before removing the current owner.
+
+        **Note**: This only removes the membership record. The user account itself is not
+        affected. Pricings and collections owned by the user within the organization are
+        not affected.
+
+      tags:
+        - Organizations
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/OrganizationId'
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: Member removed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Successfully removed."
+        '401':
+          description: Authentication required — no valid token or API key provided
+        '403':
+          description: |
+            Insufficient permissions — the user must have OWNER or ADMIN role within
+            the organization (or be a global ADMIN)
+        '404':
+          description: |
+            Organization or membership not found — either the organization does not exist
+            or the target user is not a member of it
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /orgs/{organizationId}/invitations:
+    get:
+      summary: List organization invitations
+      description: |
+        Retrieves all invitations for an organization, sorted by creation date (newest first).
+        This includes both active and expired invitations, as well as invitations that have
+        reached their maximum usage.
+
+        **Authentication**: User token
+
+        **Permission**:
+        - **ADMIN** (global): Can list invitations for any organization.
+        - **USER**: Must have the `OWNER` or `ADMIN` role within the organization.
+          Regular `MEMBER` roles will receive a 403 error.
+
+        **Response**: Returns an array of invitation objects. Each contains:
+        - `id`: The invitation's unique identifier
+        - `code`: The shareable invitation code (10-character hex string)
+        - `createdBy`: The user ID of who created the invitation
+        - `expiresAt`: Expiration timestamp (`null` if no expiration)
+        - `maxUses`: Maximum allowed uses (`null` if unlimited)
+        - `useCount`: How many times the invitation has been used
+        - `createdAt` / `updatedAt`: Audit timestamps
+
+        Returns an empty array if no invitations exist for the organization.
+
+      tags:
+        - Organizations
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/OrganizationId'
+      responses:
+        '200':
+          description: List of organization invitations sorted by creation date (newest first)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrganizationInvitation'
+        '401':
+          description: Authentication required — no valid token or API key provided
+        '403':
+          description: |
+            Insufficient permissions — the user must have OWNER or ADMIN role within
+            the organization (or be a global ADMIN)
+        '404':
+          description: Organization not found — no organization exists with the given ID
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      summary: Create an organization invitation
+      description: |
+        Creates a new invitation code for joining the organization. The generated code is a
+        random 10-character hexadecimal string that can be shared with users to allow them
+        to join the organization via `POST /orgs/join/{code}`.
+
+        **Authentication**: User token
+
+        **Permission**:
+        - **ADMIN** (global): Can create invitations for any organization.
+        - **USER**: Must have the `OWNER` or `ADMIN` role within the organization.
+
+        **Request Body** (all optional):
+        - `expiresInDays` (integer, default: `7`): Number of days until the invitation expires.
+          The expiration is calculated from the current timestamp. Must be a positive integer.
+        - `maxUses` (integer, default: `null`): Maximum number of times this invitation can
+          be accepted. `null` or omitted means unlimited uses.
+
+        **Response**: Returns the created invitation object including the generated `code`
+        field. Share this code with users who should join the organization.
+
+        **Note**: The invitation code is generated using `crypto.randomBytes(5).toString('hex')`
+        and has a unique index in the database. While collisions are extremely unlikely, the
+        system would return an error if one occurred.
+
+      tags:
+        - Organizations
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/OrganizationId'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/CreateInvitation'
+            example:
+              expiresInDays: 7
+              maxUses: 10
+      responses:
+        '201':
+          description: Invitation created successfully — returns the invitation object with the generated `code`
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationInvitation'
+        '401':
+          description: Authentication required — no valid token or API key provided
+        '403':
+          description: |
+            Insufficient permissions — the user must have OWNER or ADMIN role within
+            the organization (or be a global ADMIN)
+        '404':
+          description: Organization not found — no organization exists with the given ID
+        '422':
+          description: Validation failed — e.g. invalid `expiresInDays` or `maxUses` values
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/UnprocessableEntity'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /orgs/{organizationId}/invitations/{invitationId}:
+    delete:
+      summary: Revoke an organization invitation
+      description: |
+        Revokes (deletes) an existing invitation. Once revoked, the invitation code can no
+        longer be used to join the organization. Users who already joined via this invitation
+        are **not** affected — their membership remains intact.
+
+        **Authentication**: User token
+
+        **Permission**:
+        - **ADMIN** (global): Can revoke invitations for any organization.
+        - **USER**: Must have the `OWNER` or `ADMIN` role within the organization.
+
+        **Note**: The `organizationId` path parameter is used for organization context
+        resolution (auth and permission checks), but the actual deletion targets the
+        invitation by its own `invitationId`. The invitation is permanently removed from
+        the database.
+
+      tags:
+        - Organizations
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/OrganizationId'
+        - $ref: '#/components/parameters/InvitationId'
+      responses:
+        '200':
+          description: Invitation revoked successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Invitation revoked."
+        '401':
+          description: Authentication required — no valid token or API key provided
+        '403':
+          description: |
+            Insufficient permissions — the user must have OWNER or ADMIN role within
+            the organization (or be a global ADMIN)
+        '404':
+          description: Invitation not found — no invitation exists with the given ID
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
 components:
   schemas:
 
@@ -1902,6 +2754,197 @@ components:
               items:
                 $ref: '#/components/schemas/Pricing'
 
+        # ------------------------------
+    # --      ORGANIZATIONS       --
+    # ------------------------------
+
+    Organization:
+      type: object
+      description: |
+        Represents an organization in the SPHERE platform. Organizations group users
+        together and can own pricings and collections. Each user is automatically assigned
+        a personal organization upon registration.
+      required:
+        - id
+        - name
+        - displayName
+        - isPersonal
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          description: Unique MongoDB ObjectId identifier of the organization
+          example: "68050bd09890322c57842f6f"
+        name:
+          type: string
+          description: |
+            URL-safe unique identifier for the organization. Must be 3-50 characters,
+            lowercase letters, digits, hyphens, and underscores only. Cannot be changed
+            after creation. For personal organizations, this is set to the owner's username.
+          example: "acme-corp"
+          minLength: 3
+          maxLength: 50
+          pattern: '^[a-z0-9_-]+$'
+        displayName:
+          type: string
+          description: Human-readable name for the organization (max 255 characters)
+          example: "Acme Corporation"
+          maxLength: 255
+        description:
+          type: string
+          nullable: true
+          description: Optional free-text description of the organization
+          example: "The leading provider of SaaS solutions"
+        avatar:
+          type: string
+          nullable: true
+          description: URL to the organization's avatar image
+          example: "https://sphere.score.us.es/avatars/org-avatar.png"
+        isPersonal:
+          type: boolean
+          description: |
+            Whether this is a personal organization. Personal organizations are
+            automatically created for each user and cannot be deleted.
+          default: false
+          example: false
+        createdAt:
+          $ref: '#/components/schemas/Date'
+        updatedAt:
+          $ref: '#/components/schemas/Date'
+
+    OrganizationMember:
+      type: object
+      description: |
+        Represents a user's membership in an organization. Returned by the members listing
+        endpoint with enriched user data (via aggregation pipeline join with the users collection).
+      required:
+        - id
+        - role
+        - joinedAt
+      properties:
+        id:
+          type: string
+          description: Unique MongoDB ObjectId of the membership record (not the user or organization)
+          example: "68050bd09890322c57842f70"
+        role:
+          type: string
+          enum: [OWNER, ADMIN, MEMBER]
+          description: |
+            The member's role within the organization:
+            - **OWNER**: Full control over the organization, can manage members, invitations, and settings
+            - **ADMIN**: Can manage members and invitations, but cannot delete the organization
+            - **MEMBER**: Basic access, can view organization resources
+          example: "ADMIN"
+        joinedAt:
+          $ref: '#/components/schemas/Date'
+        user:
+          type: object
+          description: |
+            Basic user information for the member. Included when listing members via the
+            aggregation pipeline that joins membership records with the users collection.
+          properties:
+            id:
+              type: string
+              description: The user's MongoDB ObjectId
+              example: "68050bd09890322c57842f71"
+            username:
+              type: string
+              description: The user's unique username
+              example: "johndoe"
+            email:
+              type: string
+              format: email
+              description: The user's email address
+              example: "johndoe@example.com"
+            avatar:
+              type: string
+              nullable: true
+              description: URL to the user's avatar image
+              example: "https://sphere.score.us.es/avatars/default-avatar.png"
+
+    OrganizationInvitation:
+      type: object
+      description: |
+        Represents an invitation to join an organization. Invitations are created by
+        OWNER or ADMIN members and generate a unique code that can be shared with users.
+        Users join via `POST /orgs/join/{code}` and are always assigned the `MEMBER` role.
+      required:
+        - id
+        - code
+        - useCount
+        - createdAt
+      properties:
+        id:
+          type: string
+          description: Unique MongoDB ObjectId of the invitation
+          example: "68050bd09890322c57842f72"
+        code:
+          type: string
+          description: |
+            Unique invitation code (10-character hex string) generated via
+            `crypto.randomBytes(5).toString('hex')`. This is the code users provide
+            to join the organization.
+          example: "a1b2c3d4e5"
+        expiresAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: |
+            When the invitation expires. `null` means the invitation never expires.
+            Default is 7 days from creation if not specified.
+          example: "2025-12-31T23:59:59Z"
+        maxUses:
+          type: number
+          nullable: true
+          description: |
+            Maximum number of times this invitation can be accepted. `null` means
+            unlimited uses. Once `useCount` reaches `maxUses`, the invitation can
+            no longer be used.
+          example: 10
+        useCount:
+          type: number
+          description: |
+            How many times this invitation has been accepted. Incremented atomically
+            each time a user joins via this invitation.
+          example: 3
+        createdAt:
+          $ref: '#/components/schemas/Date'
+
+    OrganizationInvitationPreview:
+      type: object
+      description: |
+        Preview of an organization invitation, returned by the `GET /orgs/invitations/preview/{code}`
+        endpoint. Contains the full invitation details along with basic organization information
+        so users can see which organization they'll be joining before accepting.
+      properties:
+        invitation:
+          $ref: '#/components/schemas/OrganizationInvitation'
+        organization:
+          type: object
+          description: |
+            Basic organization information visible in the invitation preview. Includes
+            enough detail for users to identify the organization before deciding to join.
+          properties:
+            id:
+              type: string
+              description: The organization's MongoDB ObjectId
+              example: "68050bd09890322c57842f6f"
+            name:
+              type: string
+              description: The organization's unique URL-safe name
+              example: "acme-corp"
+            displayName:
+              type: string
+              description: The organization's human-readable name
+              example: "Acme Corporation"
+            avatar:
+              type: string
+              nullable: true
+              description: URL to the organization's avatar image
+            isPersonal:
+              type: boolean
+              description: Whether this is a personal organization
     
     # ------------------------------
     # --          ERRORS          --
@@ -2264,6 +3307,156 @@ components:
                 description: Optional expiration time in seconds. If not provided, defaults to 300 seconds (5 minutes)
                 minimum: 1
                 example: 3600
+
+    OrganizationCreate:
+      description: |
+        Request body for creating a new organization. The authenticated user becomes
+        the OWNER of the created organization.
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: |
+                  URL-safe unique identifier for the organization. Required unless
+                  `isPersonal` is `true` (in which case it is auto-set to the user's
+                  username). Must be 3-50 characters, lowercase letters, digits, hyphens,
+                  and underscores only. Must be unique across the platform.
+                example: "acme-corp"
+                minLength: 3
+                maxLength: 50
+                pattern: '^[a-z0-9_-]+$'
+              displayName:
+                type: string
+                description: Human-readable name for the organization (required, max 255 chars)
+                example: "Acme Corporation"
+                maxLength: 255
+              description:
+                type: string
+                nullable: true
+                description: Optional free-text description of the organization
+                example: "The leading provider of SaaS solutions"
+              avatarUrl:
+                type: string
+                nullable: true
+                format: uri
+                description: Optional URL to the organization's avatar image (must be a valid URL)
+                example: "https://sphere.score.us.es/avatars/org-avatar.png"
+              isPersonal:
+                type: boolean
+                description: |
+                  Whether this is a personal organization. When `true`, the `name` field
+                  is automatically overridden with the authenticated user's username.
+                  Personal organizations cannot be deleted.
+                default: false
+                example: false
+
+    OrganizationUpdate:
+      description: |
+        Request body for updating organization metadata. All fields are optional, but at
+        least one should be provided. The `name` field cannot be changed after creation.
+      required: false
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              displayName:
+                type: string
+                description: Updated human-readable name for the organization (max 255 chars)
+                example: "Acme Corporation Updated"
+                maxLength: 255
+              description:
+                type: string
+                nullable: true
+                description: Updated description (set to `null` to clear)
+                example: "Updated description"
+              avatarUrl:
+                type: string
+                nullable: true
+                format: uri
+                description: Updated avatar URL (must be a valid URL, set to `null` to clear)
+                example: "https://sphere.score.us.es/avatars/new-avatar.png"
+
+    AddMember:
+      description: |
+        Request body for adding a user to an organization. Unlike `POST /orgs/join/{code}`
+        (which always assigns `MEMBER` role), this endpoint allows assigning any role.
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - userId
+              - role
+            properties:
+              userId:
+                type: string
+                description: The MongoDB ObjectId of the user to add as a member
+                example: "68050bd09890322c57842f71"
+              role:
+                type: string
+                enum: [OWNER, ADMIN, MEMBER]
+                description: |
+                  The role to assign to the new member:
+                  - **OWNER**: Full control over the organization
+                  - **ADMIN**: Can manage members and invitations
+                  - **MEMBER**: Basic access to organization resources
+                example: "MEMBER"
+
+    UpdateMemberRole:
+      description: |
+        Request body for changing a member's role within the organization. The system
+        automatically recalculates an internal role weight used for sorting.
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - role
+            properties:
+              role:
+                type: string
+                enum: [OWNER, ADMIN, MEMBER]
+                description: |
+                  The new role to assign to the member:
+                  - **OWNER**: Full control over the organization
+                  - **ADMIN**: Can manage members and invitations
+                  - **MEMBER**: Basic access to organization resources
+                example: "ADMIN"
+
+    CreateInvitation:
+      description: |
+        Request body for creating an organization invitation. All fields are optional.
+        The invitation code is auto-generated as a 10-character hex string.
+      required: false
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              expiresInDays:
+                type: integer
+                description: |
+                  Number of days until the invitation expires. Default is 7 days.
+                  Must be a positive integer. The expiration is calculated from the
+                  current timestamp.
+                minimum: 1
+                example: 7
+              maxUses:
+                type: integer
+                description: |
+                  Maximum number of times this invitation can be accepted. Default is
+                  `null` (unlimited). Once the limit is reached, the invitation can no
+                  longer be used.
+                minimum: 1
+                example: 10
+
   responses:
     PricingList:
       description: A list of pricings matching the provided filter
@@ -2587,6 +3780,52 @@ components:
       schema:
         type: boolean
 
+    OrganizationId:
+      name: organizationId
+      in: path
+      required: true
+      description: |
+        The MongoDB ObjectId of the organization. The middleware automatically resolves
+        the organization context from this parameter — loading the organization and
+        determining the authenticated user's role within it.
+      schema:
+        type: string
+        example: "68050bd09890322c57842f6f"
+
+    UserId:
+      name: userId
+      in: path
+      required: true
+      description: |
+        The MongoDB ObjectId of the user. Used in member management endpoints to identify
+        which user to add, update, or remove from an organization.
+      schema:
+        type: string
+        example: "68050bd09890322c57842f71"
+
+    InvitationId:
+      name: invitationId
+      in: path
+      required: true
+      description: |
+        The MongoDB ObjectId of the invitation. Used to identify which invitation to
+        revoke when deleting from an organization.
+      schema:
+        type: string
+        example: "68050bd09890322c57842f72"
+
+    InvitationCode:
+      name: code
+      in: path
+      required: true
+      description: |
+        The unique invitation code (10-character hex string) generated when the invitation
+        was created. Used to preview or accept an invitation. This code is shareable and
+        is included in the invitation join URL.
+      schema:
+        type: string
+        example: "a1b2c3d4e5"
+
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
@@ -2594,6 +3833,10 @@ components:
       name: x-api-key
       description: |
         API Key for authentication. Two types are supported:
-        - **User API Key** (format: `usr_*`): Obtained from POST /users/authenticate endpoint
-        - **Organization API Key** (format: `org_*`): Created in organization settings
+        - **User API Key** (format: `usr_*`): Obtained from `POST /users/login` endpoint.
+          Provides access based on the user's role (ADMIN or USER).
+        - **Organization API Key** (format: `org_*`): Created in organization settings.
+          Provides access scoped to the organization's resources.
+
+        Include the token directly in the `Authorization` header **without** a `Bearer` prefix.
 
