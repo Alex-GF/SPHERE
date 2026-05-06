@@ -1418,7 +1418,6 @@ paths:
           platform — attempting to use a duplicate name will result in a 422 error.
         - **`displayName`** (required): A human-readable name for the organization (max 255 chars).
         - **`description`** (optional): A free-text description of the organization.
-        - **`avatarUrl`** (optional): A valid URL pointing to the organization's avatar image.
         - **`isPersonal`** (optional, default `false`): When set to `true`, the `name` field
           is automatically overridden with the authenticated user's username (lowercase).
           Personal organizations are special-purpose and cannot be deleted.
@@ -1643,7 +1642,7 @@ paths:
       summary: Update organization metadata
       description: |
         Updates the mutable metadata of an organization. Only `displayName`, `description`,
-        and `avatarUrl` can be modified. The organization `name` field **cannot be changed**
+        and `avatar` can be modified. The organization `name` field **cannot be changed**
         after creation.
 
         **Authentication**: User token
@@ -1656,7 +1655,7 @@ paths:
         **Request Body** (all optional, but at least one field should be provided):
         - `displayName`: Updated human-readable name (max 255 chars)
         - `description`: Updated description (can be `null` to clear)
-        - `avatarUrl`: Updated avatar URL (must be a valid URL, can be `null` to clear)
+        - `avatar`: Updated avatar (can be `null` to clear)
 
       tags:
         - Organizations

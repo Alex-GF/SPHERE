@@ -19,3 +19,11 @@ export interface LeanOrganization {
   subOrganizations?: LeanOrganization[];
   isPersonal: boolean;
 }
+
+export interface LeanMembership {
+  id?: string;
+  _userId: string;
+  _organizationId: string;
+  role: OrgRole;
+  joinedAt: Date;
+}
