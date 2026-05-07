@@ -9,20 +9,27 @@ const loadFileRoutes = function (app: express.Application) {
   const baseUrl = (process.env.BASE_URL_PATH ?? '') + '/api/v1';
   const orgAvatarUpload = handleFileUpload(['avatar'], process.env.ORG_AVATARS_FOLDER!);
 
-  app.route(baseUrl + '/orgs')
+  app
+    .route(baseUrl + '/orgs')
     .get(organizationController.index)
     .post(OrganizationValidation.create, handleValidation, organizationController.create);
 
-  app.route(baseUrl + '/orgs/invitations/preview/:code')
+  app
+    .route(baseUrl + '/orgs/invitations/preview/:code')
     .get(organizationController.previewInvitation);
-    
-  app.route(baseUrl + '/orgs/join/:code')
-    .post(organizationController.joinViaInvitation);
+
+  app.route(baseUrl + '/orgs/join/:code').post(organizationController.joinViaInvitation);
 
   app
     .route(baseUrl + '/orgs/:organizationId')
     .get(organizationController.show)
-    .put(orgAvatarUpload, addFilenameToBody('avatar'), OrganizationValidation.update, handleValidation, organizationController.update)
+    .put(
+      orgAvatarUpload,
+      addFilenameToBody('avatar'),
+      OrganizationValidation.update,
+      handleValidation,
+      organizationController.update
+    )
     .delete(organizationController.destroy);
 
   app
@@ -32,7 +39,11 @@ const loadFileRoutes = function (app: express.Application) {
 
   app
     .route(baseUrl + '/orgs/:organizationId/members/:userId')
-    .put(OrganizationValidation.updateMemberRole, handleValidation, organizationController.updateMemberRole)
+    .put(
+      OrganizationValidation.updateMemberRole,
+      handleValidation,
+      organizationController.updateMemberRole
+    )
     .delete(organizationController.removeMember);
 
   app

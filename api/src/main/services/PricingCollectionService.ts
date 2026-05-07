@@ -9,56 +9,60 @@ import { PricingService as PricingAnalytics, retrievePricingFromPath } from 'pri
 import fs from 'fs';
 import { calculateAnalyticsForPricings } from '../utils/pricing-collections-utils';
 import { LeanUser } from '../types/models/User';
-import UserService from './UserService';
+import OrganizationMembershipRepository from '../repositories/mongoose/OrganizationMembershipRepository';
 
 class PricingCollectionService {
   private readonly pricingCollectionRepository: PricingCollectionRepository;
   private readonly pricingRepository: PricingRepository;
-  private readonly userService: UserService;
+  private readonly organizationMembershipRepository: OrganizationMembershipRepository;
 
   constructor() {
     this.pricingCollectionRepository = container.resolve('pricingCollectionRepository');
     this.pricingRepository = container.resolve('pricingRepository');
-    this.userService = container.resolve('userService');
+    this.organizationMembershipRepository = container.resolve('organizationMembershipRepository');
   }
 
-  async index(queryParams: CollectionIndexQueryParams) {
-    const result = await this.pricingCollectionRepository.findAll(queryParams);
-    // result is { collections, total }
+  async index(queryParams: CollectionIndexQueryParams, reqUser?: LeanUser) {
+
+    const includePrivate = reqUser !== undefined && reqUser.role === 'ADMIN';
+
+    const result = await this.pricingCollectionRepository.findAll(queryParams, includePrivate);
+    // result contains { collections, total }
     return result;
   }
 
-  async indexByUsername(username: string, reqUser?: LeanUser) {
-    const user = await this.userService.exists(username);
-
-    if (!user) {
-      throw new Error('NOT FOUND: User not found');
+  async indexByOrganizationId(organizationId: string, reqUser?: LeanUser) {
+    let includePrivate = false;
+    if (reqUser) {
+      const role = await this.organizationMembershipRepository.findUserRoleInOrganization(reqUser.id, organizationId);
+      includePrivate = reqUser.role === 'ADMIN' || role !== null;
     }
 
-    const includePrivate = reqUser && (username === reqUser.username || reqUser.role === 'ADMIN');
-
-    const collections = await this.pricingCollectionRepository.findByUsername(
-      username,
+    const collections = await this.pricingCollectionRepository.findByOrganizationId(
+      organizationId,
       includePrivate
     );
 
     return collections;
   }
 
-  async show(owner: string, collectionName: string, reqUser?: LeanUser) {
-    const collection = await this.pricingCollectionRepository.findByOwnerAndName(
-      owner,
+  async show(organizationId: string, collectionName: string, reqUser?: LeanUser) {
+    const collection = await this.pricingCollectionRepository.findByOrganizationAndName(
+      organizationId,
       collectionName
     );
     if (!collection) {
       throw new Error('NOT FOUND: Pricing collection not found');
     }
 
-    if (
-      collection.private &&
-      (!reqUser || (owner !== reqUser.username && reqUser.role !== 'ADMIN'))
-    ) {
-      throw new Error('PERMISSION ERROR: You are not the owner of this private collection');
+    if (collection.private) {
+      if (!reqUser) {
+        throw new Error('PERMISSION ERROR: You are not a member of this organization');
+      }
+      const role = await this.organizationMembershipRepository.findUserRoleInOrganization(reqUser.id, organizationId);
+      if (!role && reqUser.role !== 'ADMIN') {
+        throw new Error('PERMISSION ERROR: You are not a member of this organization');
+      }
     }
 
     collection.analytics = this._normalizeCollectionAnalytics(collection.analytics);
@@ -66,14 +70,15 @@ class PricingCollectionService {
     return collection;
   }
 
-  async create(newCollection: any, owner: string, reqUser: LeanUser) {
-    if (owner !== reqUser.username && reqUser.role !== 'ADMIN') {
-      throw new Error('PERMISSION ERROR: You can only create collections for yourself');
+  async create(newCollection: any, organizationId: string, reqUser: LeanUser) {
+    const role = await this.organizationMembershipRepository.findUserRoleInOrganization(reqUser.id, organizationId);
+    if (!role && reqUser.role !== 'ADMIN') {
+      throw new Error('PERMISSION ERROR: You can only create collections for organizations you belong to');
     }
 
     let collection: any;
     try {
-      newCollection._ownerName = owner;
+      newCollection._organizationId = organizationId;
       newCollection.analytics = {
         evolutionOfPlans: {
           dates: [],
@@ -98,37 +103,38 @@ class PricingCollectionService {
       if (newCollection.pricings && newCollection.pricings.length > 0) {
         await this.pricingRepository.addPricingsToCollection(
           collection.id,
-          owner,
+          organizationId,
           newCollection.pricings
         );
 
         await this.updateCollectionAnalytics(collection.id);
       }
 
-      collection = await this.pricingCollectionRepository.findByOwnerAndName(
-        owner,
+      collection = await this.pricingCollectionRepository.findByOrganizationAndName(
+        organizationId,
         newCollection.name
       );
 
       return collection;
     } catch (err) {
-      await this._handleCollectionCreationError(err as Error, collection, newCollection, owner);
+      await this._handleCollectionCreationError(err as Error, collection, newCollection, organizationId);
     }
   }
 
-  async bulkCreate(file: any, newCollectionData: any, owner: string, reqUser: LeanUser) {
-    if (owner !== reqUser.username && reqUser.role !== 'ADMIN') {
-      throw new Error('PERMISSION ERROR: You can only create collections for yourself');
+  async bulkCreate(file: any, newCollectionData: any, organizationId: string, reqUser: LeanUser) {
+    const role = await this.organizationMembershipRepository.findUserRoleInOrganization(reqUser.id, organizationId);
+    if (!role && reqUser.role !== 'ADMIN') {
+      throw new Error('PERMISSION ERROR: You can only create collections for organizations you belong to');
     }
 
     let collection: any;
     try {
-      const extractPath = this._getExtractPath(owner, newCollectionData.name);
+      const extractPath = this._getExtractPath(organizationId, newCollectionData.name);
       const zipPath = file.path;
 
       const extractedFiles = await decompressZip(zipPath, extractPath);
 
-      newCollectionData._ownerName = owner;
+      newCollectionData._organizationId = organizationId;
 
       // Create collection and keep reference so we only attempt cleanup if it was created
       collection = await this.pricingCollectionRepository.create(newCollectionData);
@@ -158,7 +164,7 @@ class PricingCollectionService {
               uploadedPricing.saasName.split(' ')[0].slice(1).toLowerCase(),
             version: uploadedPricing.version,
             _collectionId: collection._id,
-            owner: owner,
+            _organizationId: organizationId,
             currency: uploadedPricing.currency,
             createdAt: new Date(uploadedPricing.createdAt),
             url: '',
@@ -184,16 +190,16 @@ class PricingCollectionService {
         err as Error,
         collection,
         newCollectionData,
-        owner
+        organizationId
       );
     }
   }
 
-  async generateCollectionAnalytics(collectionName: string, owner: string) {
+  async generateCollectionAnalytics(collectionName: string, organizationId: string) {
     try {
-      const collectionPricings = await this.pricingCollectionRepository.findCollectionPricings(
+      const collectionPricings = await this.pricingCollectionRepository.findCollectionPricingsByOrganization(
         collectionName,
-        owner
+        organizationId
       );
       if (!collectionPricings) {
         throw new Error('NOT FOUND: Collection not found');
@@ -211,22 +217,23 @@ class PricingCollectionService {
     }
   }
 
-  async update(owner: string, collectionName: string, data: any, reqUser: LeanUser) {
-    if (owner !== reqUser.username && reqUser.role !== 'ADMIN') {
-      throw new Error('PERMISSION ERROR: You can only update collections for yourself');
+  async update(organizationId: string, collectionName: string, data: any, reqUser: LeanUser) {
+    const role = await this.organizationMembershipRepository.findUserRoleInOrganization(reqUser.id, organizationId);
+    if (!role && reqUser.role !== 'ADMIN') {
+      throw new Error('PERMISSION ERROR: You can only update collections for organizations you belong to');
     }
 
-    const collection = await this.pricingCollectionRepository.findByOwnerAndName(
-      owner,
+    const collection = await this.pricingCollectionRepository.findByOrganizationAndName(
+      organizationId,
       collectionName
     );
     if (!collection) {
-      throw new Error('NOT FOUND: Either the collection does not exist or you are not its owner');
+      throw new Error('NOT FOUND: Either the collection does not exist or you are not a member of its organization');
     }
 
     if (data.name && data.name !== collectionName) {
-      const existingCollection = await this.pricingCollectionRepository.findByOwnerAndName(
-        owner,
+      const existingCollection = await this.pricingCollectionRepository.findByOrganizationAndName(
+        organizationId,
         data.name
       );
 
@@ -245,10 +252,10 @@ class PricingCollectionService {
 
     if (updatedCollection.name !== collectionName) {
       try {
-        const sourcePath = this._getExtractPath(owner, collectionName);
+        const sourcePath = this._getExtractPath(organizationId, collectionName);
 
         if (fs.existsSync(sourcePath)) {
-          const destPath = this._getExtractPath(owner, updatedCollection.name);
+          const destPath = this._getExtractPath(organizationId, updatedCollection.name);
 
           fs.mkdirSync(destPath, { recursive: true });
           fs.renameSync(sourcePath, destPath);
@@ -278,7 +285,7 @@ class PricingCollectionService {
   }
 
   async destroy(
-    owner: string,
+    organizationId: string,
     collectionName: string,
     deleteCascade: boolean,
     ignoreResult: boolean = false,
@@ -290,16 +297,19 @@ class PricingCollectionService {
       );
     }
 
-    if (reqUser && owner !== reqUser.username && reqUser.role !== 'ADMIN' && !ignoreResult) {
-      throw new Error('PERMISSION ERROR: You can only delete collections for yourself');
+    if (reqUser && !ignoreResult) {
+      const role = await this.organizationMembershipRepository.findUserRoleInOrganization(reqUser.id, organizationId);
+      if (!role && reqUser.role !== 'ADMIN') {
+        throw new Error('PERMISSION ERROR: You can only delete collections for organizations you belong to');
+      }
     }
 
-    const collection = await this.pricingCollectionRepository.findByOwnerAndName(
-      owner,
+    const collection = await this.pricingCollectionRepository.findByOrganizationAndName(
+      organizationId,
       collectionName
     );
     if (!collection) {
-      throw new Error('NOT FOUND: Either the collection does not exist or you are not its owner');
+      throw new Error('NOT FOUND: Either the collection does not exist or you are not a member of its organization');
     }
 
     let result;
@@ -307,7 +317,7 @@ class PricingCollectionService {
     if (deleteCascade) {
       result = await this.pricingCollectionRepository.destroyWithPricings(collection.id);
 
-      const collectionPath = this._getExtractPath(owner, collectionName);
+      const collectionPath = this._getExtractPath(organizationId, collectionName);
       if (fs.existsSync(collectionPath)) {
         fs.rmSync(collectionPath, { recursive: true });
       }
@@ -323,20 +333,23 @@ class PricingCollectionService {
     return true;
   }
 
-  async removePricingFromCollection(pricingName: string, owner: string, collectionName: string, reqUser?: LeanUser) {
+  async removePricingFromCollection(pricingName: string, organizationId: string, collectionName: string, reqUser?: LeanUser) {
     try {
 
-      if (reqUser && owner !== reqUser.username && reqUser.role !== 'ADMIN') {
-        throw new Error('PERMISSION ERROR: You can only remove pricings from collections for yourself');
+      if (reqUser) {
+        const role = await this.organizationMembershipRepository.findUserRoleInOrganization(reqUser.id, organizationId);
+        if (!role && reqUser.role !== 'ADMIN') {
+          throw new Error('PERMISSION ERROR: You can only remove pricings from collections for organizations you belong to');
+        }
       }
 
-      const pricing = await this.pricingRepository.findOne(pricingName, owner, { collectionName });
+      const pricing = await this.pricingRepository.findOne(pricingName, organizationId, { collectionName });
 
       if (!pricing) {
-        throw new Error('NOT FOUND: Either the pricing does not exist or you are not its owner');
+        throw new Error('NOT FOUND: Either the pricing does not exist or you are not a member of its organization');
       }
 
-      await this.pricingRepository.removePricingFromCollection(pricingName, owner);
+      await this.pricingRepository.removePricingFromCollection(pricingName, organizationId);
       if (pricing.versions[0]._collectionId) {
         await this.updateCollectionAnalytics(
           pricing.versions[0]._collectionId
@@ -395,28 +408,20 @@ class PricingCollectionService {
     return evolution;
   }
 
-  // async destroy (id: string) {
-  //   const result = await this.pricingRepository.destroy(id)
-  //   if (!result) {
-  //     throw new Error('Pricing not found')
-  //   }
-  //   return true
-  // }
-
-  _getExtractPath(userId: string, collectionName: string) {
-    return `${process.env.COLLECTIONS_FOLDER}/${userId}/${collectionName}`;
+  _getExtractPath(organizationId: string, collectionName: string) {
+    return `${process.env.COLLECTIONS_FOLDER}/${organizationId}/${collectionName}`;
   }
 
   async _handleCollectionCreationError(
     err: Error,
     collection: any,
     newCollectionData: any,
-    owner: string
+    organizationId: string
   ): Promise<Error> {
     // If a collection was created before the error, remove it (cleanup of partial state)
     try {
       if (collection?._id) {
-        await this.destroy(owner, newCollectionData.name, true, true);
+        await this.destroy(organizationId, newCollectionData.name, true, true);
       }
     } catch (cleanupErr) {
       // If cleanup fails, log it but continue to throw the original error

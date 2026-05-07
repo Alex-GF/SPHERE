@@ -27,25 +27,23 @@ const pricingCollectionSchema = new Schema(
       transform: function (doc, resultObject) {
         delete (resultObject as any)._id;
         delete (resultObject as any).__v;
-        delete (resultObject as any)._ownerName;
-        delete (resultObject as any).owner._id;
         delete (resultObject as any)._organizationId;
-        delete (resultObject as any).organization._id;
+        delete (resultObject as any).organization?._id;
         return resultObject;
       },
     },
   }
 );
 
-pricingCollectionSchema.virtual('owner', {
-  ref: 'User',
-  localField: '_ownerName',
-  foreignField: 'username',
+pricingCollectionSchema.virtual('organization', {
+  ref: 'Organization',
+  localField: '_organizationId',
+  foreignField: '_id',
   justOne: true,
 });
 
-// Adding unique index for [name, owner, version]
-pricingCollectionSchema.index({ name: 1, _ownerName: 1, _organizationId: 1 }, { unique: true });
+// Adding unique index for [name, _organizationId]
+pricingCollectionSchema.index({ name: 1, _organizationId: 1 }, { unique: true });
 
 const pricingCollectionModel = mongoose.model(
   'PricingCollection',
