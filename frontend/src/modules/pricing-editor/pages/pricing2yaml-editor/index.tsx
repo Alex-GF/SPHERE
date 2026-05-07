@@ -5,7 +5,7 @@ import { Pricing, retrievePricingFromYaml } from 'pricing4ts';
 
 import { PricingRenderer } from '../../components/pricing-renderer';
 import LoadingView from '../../../core/pages/loading';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import Alerts from '../../../core/components/alerts';
 import { useMode } from '../../../core/hooks/useTheme';
 import GithubDarkTheme from '../../../core/theme/editor-themes/GitHub-Dark.json';

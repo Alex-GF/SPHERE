@@ -129,7 +129,7 @@ class OrganizationController {
 
   async removeMember(req: any, res: any) {
     try {
-      await this.organizationService.removeMember(req.params.userId, req.params.organizationId);
+      await this.organizationService.removeMember(req.params.userId, req.params.organizationId, req.user);
       res.json({ message: 'Successfully removed.' });
     } catch (err: any) {
       const { status, message } = handleError(err);

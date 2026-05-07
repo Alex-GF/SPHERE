@@ -4,7 +4,7 @@ import OrganizationMembershipMongoose from './models/OrganizationMembershipMongo
 import { OrgRole, ROLE_WEIGHT } from '../../types/models/Organization';
 
 class OrganizationMembershipRepository extends RepositoryBase {
-  async findByUserId(userId: string) {
+  async findByUserId(userId: string, includeSubOrgs = false) {
     try {
       return await OrganizationMembershipMongoose.aggregate([
         { $match: { _userId: new mongoose.Types.ObjectId(userId) } },
@@ -23,6 +23,15 @@ class OrganizationMembershipRepository extends RepositoryBase {
             'organization.id': { $toString: '$organization._id' },
           },
         },
+        ...(!includeSubOrgs
+          ? [
+              {
+                $match: {
+                  'organization._parentId': null, // Only return memberships for top-level organizations
+                },
+              },
+            ]
+          : []),
         {
           $project: {
             _id: 0,
@@ -31,7 +40,7 @@ class OrganizationMembershipRepository extends RepositoryBase {
             _organizationId: 1,
             role: 1,
             joinedAt: 1,
-            organization: { id: 1, name: 1, displayName: 1, avatarUrl: 1, isPersonal: 1 },
+            organization: { id: 1, name: 1, displayName: 1, avatar: 1, isPersonal: 1 },
           },
         },
       ]);
@@ -87,11 +96,14 @@ class OrganizationMembershipRepository extends RepositoryBase {
     organizationId: string
   ): Promise<OrgRole | null> {
     try {
+      const targetOrgObjectId = new mongoose.Types.ObjectId(organizationId);
+      const userObjectId = new mongoose.Types.ObjectId(userId);
+
       const membership = await OrganizationMembershipMongoose.aggregate([
         {
           $lookup: {
             from: 'organizations',
-            let: { targetOrgId: new mongoose.Types.ObjectId(organizationId) },
+            let: { targetOrgId: targetOrgObjectId },
             pipeline: [
               { $match: { $expr: { $eq: ['$_id', '$$targetOrgId'] } } },
               { $project: { ancestors: 1 } },
@@ -102,14 +114,14 @@ class OrganizationMembershipRepository extends RepositoryBase {
         { $unwind: '$targetOrg' },
         {
           $match: {
-            _userId: new mongoose.Types.ObjectId(userId),
+            _userId: userObjectId,
             $expr: {
               $in: [
                 '$_organizationId',
                 {
                   $concatArrays: [
-                    [new mongoose.Types.ObjectId(organizationId)],
-                    '$targetOrg.ancestors',
+                    [targetOrgObjectId],
+                    { $ifNull: ['$targetOrg.ancestors', []] },
                   ],
                 },
               ],
@@ -118,6 +130,7 @@ class OrganizationMembershipRepository extends RepositoryBase {
         },
         {
           $addFields: {
+            isDirect: { $eq: ['$_organizationId', targetOrgObjectId] },
             roleWeight: {
               $switch: {
                 branches: [
@@ -130,11 +143,21 @@ class OrganizationMembershipRepository extends RepositoryBase {
             },
           },
         },
+        {
+          $match: {
+            $expr: {
+              $or: [
+                { $eq: ['$isDirect', true] },
+                { $in: ['$role', ['OWNER', 'ADMIN']] },
+              ],
+            },
+          },
+        },
         { $sort: { roleWeight: -1 } },
         { $limit: 1 },
       ]);
       return membership.length > 0 ? membership[0].role : null;
-    } catch {
+    } catch (err) {
       return null;
     }
   }
@@ -193,6 +216,37 @@ class OrganizationMembershipRepository extends RepositoryBase {
       _userId: new mongoose.Types.ObjectId(userId),
     });
     return true;
+  }
+
+  async findDirectMemberships(organizationId: string) {
+    return OrganizationMembershipMongoose.find({
+      _organizationId: new mongoose.Types.ObjectId(organizationId),
+    }).lean();
+  }
+
+  async findExistingMembership(userId: string, organizationId: string) {
+    return OrganizationMembershipMongoose.findOne({
+      _userId: new mongoose.Types.ObjectId(userId),
+      _organizationId: new mongoose.Types.ObjectId(organizationId),
+    }).lean();
+  }
+
+  async createBulk(memberships: Array<{ _userId: string; _organizationId: string; role: OrgRole; joinedAt: Date }>) {
+    const docs = memberships.map(m => ({
+      _userId: new mongoose.Types.ObjectId(m._userId),
+      _organizationId: new mongoose.Types.ObjectId(m._organizationId),
+      role: m.role,
+      joinedAt: m.joinedAt,
+    }));
+    return OrganizationMembershipMongoose.insertMany(docs, { ordered: false }).catch(() => []);
+  }
+
+  async destroyByUserAndOrganizationBatch(userIds: string[], organizationId: string) {
+    if (userIds.length === 0) return;
+    await OrganizationMembershipMongoose.deleteMany({
+      _userId: { $in: userIds.map(id => new mongoose.Types.ObjectId(id)) },
+      _organizationId: new mongoose.Types.ObjectId(organizationId),
+    });
   }
 }
 

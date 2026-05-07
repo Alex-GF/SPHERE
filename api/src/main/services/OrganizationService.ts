@@ -46,14 +46,79 @@ class OrganizationService {
   }
 
   async createWithOwner(data: any, userId: string) {
+    if (data._parentId) {
+      const parent: any = await this.organizationRepository.findById(data._parentId);
+      if (!parent) {
+        throw new Error('NOT FOUND: Parent organization not found');
+      }
+      data.ancestors = [...(parent.ancestors ?? []), parent.id ?? parent._id?.toString()];
+    }
+
     const organization: any = await this.organizationRepository.create(data);
+    const orgId = organization.id ?? organization._id?.toString();
+
     await this.organizationMembershipRepository.create({
       _userId: userId,
-      _organizationId: organization.id ?? organization._id?.toString(),
+      _organizationId: orgId,
       role: 'OWNER',
       joinedAt: new Date(),
     });
+
+    if (data._parentId) {
+      await this.propagateMembershipsToChild(data._parentId, orgId);
+    }
+
     return organization;
+  }
+
+  private async propagateMembershipsToChild(parentId: string, childId: string) {
+    const parentMembers = await this.organizationMembershipRepository.findDirectMemberships(parentId);
+    if (parentMembers.length === 0) return;
+
+    const eligibleMembers = parentMembers.filter(
+      (m: any) => m.role === 'OWNER' || m.role === 'ADMIN'
+    );
+
+    if (eligibleMembers.length === 0) return;
+
+    const now = new Date();
+    const memberships = eligibleMembers.map((m: any) => ({
+      _userId: m._userId.toString(),
+      _organizationId: childId,
+      role: m.role as OrgRole,
+      joinedAt: now,
+    }));
+
+    await this.organizationMembershipRepository.createBulk(memberships);
+  }
+
+  private async cascadeRoleChange(userId: string, organizationId: string, newRole: OrgRole) {
+    const childIds = await this.organizationRepository.findChildOrganizationIds(organizationId);
+    if (childIds.length === 0) return;
+
+    if (newRole === 'MEMBER') {
+      await this.organizationMembershipRepository.destroyByUserAndOrganizationBatch(
+        childIds.map(id => userId),
+        undefined as any
+      );
+      for (const childId of childIds) {
+        await this.organizationMembershipRepository.destroyByUserAndOrganization(userId, childId);
+      }
+    } else {
+      for (const childId of childIds) {
+        const existing = await this.organizationMembershipRepository.findExistingMembership(userId, childId);
+        if (existing) {
+          await this.organizationMembershipRepository.updateByUserAndOrganization(userId, childId, { role: newRole });
+        } else {
+          await this.organizationMembershipRepository.create({
+            _userId: userId,
+            _organizationId: childId,
+            role: newRole,
+            joinedAt: new Date(),
+          });
+        }
+      }
+    }
   }
 
   async ensurePersonalOrganizationForUser(user: { id: string; username: string }) {
@@ -68,7 +133,7 @@ class OrganizationService {
       name: user.username.toLowerCase(),
       displayName: `${user.username} (personal)`,
       description: null,
-      avatarUrl: null,
+      avatar: null,
       isPersonal: true,
     });
 
@@ -136,12 +201,28 @@ class OrganizationService {
       }
     }
 
-    return this.organizationMembershipRepository.create({
+    const membership = await this.organizationMembershipRepository.create({
       _userId: userId,
       _organizationId: organizationId,
       role,
       joinedAt: new Date(),
     });
+
+    if (role === 'OWNER' || role === 'ADMIN') {
+      const childIds = await this.organizationRepository.findChildOrganizationIds(organizationId);
+      if (childIds.length > 0) {
+        const now = new Date();
+        const childMemberships = childIds.map(childId => ({
+          _userId: userId,
+          _organizationId: childId,
+          role,
+          joinedAt: now,
+        }));
+        await this.organizationMembershipRepository.createBulk(childMemberships);
+      }
+    }
+
+    return membership;
   }
 
   async updateMemberRole(userId: string, organizationId: string, role: OrgRole, reqUser: LeanUser & {orgRole: OrgRole}) {
@@ -164,6 +245,10 @@ class OrganizationService {
       throw new Error('NOT FOUND: Organization membership not found');
     }
 
+    if (currentMembership.role === 'OWNER' && reqUser.orgRole !== 'OWNER') {
+      throw new Error('PERMISSION ERROR: Only OWNER users can modify the role of another OWNER');
+    }
+
     if (currentMembership.role === 'OWNER' && role !== 'OWNER') {
       const ownerCount = await this.organizationMembershipRepository.countOwners(organizationId);
       if (ownerCount < 2) {
@@ -176,13 +261,20 @@ class OrganizationService {
       organizationId,
       { role }
     );
+
+    await this.cascadeRoleChange(userId, organizationId, role);
+
     return updatedMembership;
   }
 
-  async removeMember(userId: string, organizationId: string) {
+  async removeMember(userId: string, organizationId: string, reqUser?: LeanUser & {orgRole: OrgRole}) {
     const membership: any = await this.organizationMembershipRepository.findByUserAndOrganization(userId, organizationId);
     if (!membership) {
       throw new Error('NOT FOUND: Organization membership not found');
+    }
+
+    if (membership.role === 'OWNER' && reqUser && reqUser.orgRole !== 'OWNER') {
+      throw new Error('PERMISSION ERROR: Only OWNER users can remove another OWNER from the organization');
     }
 
     if (membership.role === 'OWNER') {
@@ -196,6 +288,14 @@ class OrganizationService {
     if (!result) {
       throw new Error('NOT FOUND: Organization membership not found');
     }
+
+    const childIds = await this.organizationRepository.findChildOrganizationIds(organizationId);
+    if (childIds.length > 0) {
+      for (const childId of childIds) {
+        await this.organizationMembershipRepository.destroyByUserAndOrganization(userId, childId);
+      }
+    }
+
     return true;
   }
 

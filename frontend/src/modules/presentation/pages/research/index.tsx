@@ -3,7 +3,7 @@ import './styles.css';
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
 import { FaStar, FaAward } from 'react-icons/fa';
 import timelineData from './data/research-data';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { primary } from '../../../core/theme/palette';
 import { Link } from 'react-router-dom';
 

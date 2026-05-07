@@ -1,6 +1,4 @@
 import PropTypes, { InferProps } from "prop-types";
-import { forwardRef } from "react";
-
 import RouterLink from "../../components/router-link";
 import { ReactSVG } from "react-svg";
 
@@ -10,8 +8,7 @@ type LogoProps = {
   fill?: string;
 };
 
-const ShortLogo = forwardRef(
-  ({ disabledLink = false, sx, fill, ...other }: InferProps<LogoProps>) => {
+const ShortLogo = ({ disabledLink = false, sx, fill, ...other }: InferProps<LogoProps>) => {
     const logo = (
       <ReactSVG
         src="../../../../assets/logo/SPHERE-logo-short.svg"
@@ -51,8 +48,7 @@ const ShortLogo = forwardRef(
         {logo}
       </RouterLink>
     );
-  }
-);
+  };
 
 ShortLogo.propTypes = {
   disabledLink: PropTypes.bool,

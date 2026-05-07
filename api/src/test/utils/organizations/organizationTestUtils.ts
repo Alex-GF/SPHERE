@@ -51,17 +51,23 @@ export const createTestOrganization = async (
     description: string | null;
     avatarUrl: string | null;
     isPersonal: boolean;
+    _parentId: string | null;
   }> = {}
 ): Promise<TestOrganizationData> => {
   const name = orgData.name || `test_org_${randomSuffix()}`;
   const displayName = orgData.displayName || `Test Org ${randomSuffix()}`;
   const isPersonal = orgData.isPersonal ?? false;
+  const parentId = orgData._parentId ?? null;
 
   const payload: any = {
     name: isPersonal ? undefined : name,
     displayName,
     isPersonal,
   };
+
+  if (parentId != null) {
+    payload._parentId = parentId;
+  }
 
   if (orgData.description != null) {
     payload.description = orgData.description;

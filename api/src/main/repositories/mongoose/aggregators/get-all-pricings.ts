@@ -4,6 +4,7 @@ export function getAllPricingsAggregator(filteringAggregators: any, sortAggregat
     latestPricingsByNameAggregator,
     refactorRootAggregator,
     ...parseCollectionNameAggregator,
+    ...parseOrganizationDataAggregator,
     ...filteringAggregators,
     computeFiltersDataAggregator,
     refactorOutputAggregator,
@@ -32,6 +33,39 @@ const refactorRootAggregator = {
     newRoot: '$latestPricing',
   },
 };
+
+const parseOrganizationDataAggregator = [
+  {
+    $lookup: {
+      from: 'organizations',
+      localField: '_organizationId',
+      foreignField: '_id',
+      as: 'organization',
+      pipeline: [
+        {
+          $project: {
+            _id: 1,
+            name: 1,
+            displayName: 1,
+            avatar: 1,
+            isPersonal: 1,
+          },
+        },
+      ],
+    },
+  },
+  {
+    $unwind: '$organization',
+  },
+  {
+    $set: {
+      'organization.id': { $toString: '$organization._id' },
+    },
+  },
+  {
+    $unset: 'organization._id',
+  },
+];
 
 const parseCollectionNameAggregator = [
   {
@@ -97,7 +131,7 @@ const computeFiltersDataAggregator = {
         $project: {
           _id: 0,
           name: 1,
-          _organizationId: 1,
+          organization: 1,
           collectionName: 1,
           version: 1,
           createdAt: 1,

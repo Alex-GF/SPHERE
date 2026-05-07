@@ -1,5 +1,5 @@
 import { useState, type CSSProperties, type MouseEvent } from 'react';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { useRouter } from '../../../core/hooks/useRouter';
 import BackgroundOrbs from './components/background-orbs';
 import FloatingMorphHeader from './components/floating-morph-header';

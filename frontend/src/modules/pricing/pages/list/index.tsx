@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { useEffect, useState } from 'react';
 import PricingListCard from '../../components/pricing-list-card';
 import { usePricingsApi } from '../../api/pricingsApi';
@@ -13,7 +13,12 @@ export function PricingsGrid({ children }: { children: React.ReactNode }) {
 
 export type PricingEntry = {
   name: string;
-  owner: string;
+  organization: {
+    id: string;
+    name: string;
+    displayName: string;
+    avatar: string;
+  };
   version: string;
   collectionName: string;
   createdAt: string;
@@ -69,7 +74,7 @@ export default function PricingListPage() {
             minPrice: data.minPrice,
             maxPrice: data.maxPrice,
             configurationSpaceSize: data.configurationSpaceSize,
-            owners: data.pricings.map((pricing: PricingEntry) => pricing.owner),
+            owners: data.pricings.map((pricing: PricingEntry) => pricing.organization),
           });
         } else {
           setFilterLimits({
@@ -93,11 +98,11 @@ export default function PricingListPage() {
       <div className="flex h-full w-screen max-w-[2000px]">
         <div className="mx-auto flex h-full w-full max-w-[600px] flex-col justify-start border-r border-slate-300 bg-slate-100">
           <div className="w-[20vw]" />
-          {filterLimits && (
+            {filterLimits && (
             <PricingFilters
               filterLimits={filterLimits}
               receivedOwners={pricingsList.reduce((acc, pricing) => {
-                acc[pricing.owner] = (acc[pricing.owner] || 0) + 1;
+                acc[pricing.organization.name] = (acc[pricing.organization.name] || 0) + 1;
                 return acc;
               }, {} as Record<string, number>)}
               textFilterValue={textFilterValue}
@@ -112,9 +117,9 @@ export default function PricingListPage() {
               {pricingsList.length > 0 ? (
                 Object.values(pricingsList).map(pricing => (
                   <PricingListCard
-                    key={`pricing-${pricing.owner}-${pricing.collectionName}-${pricing.name}`}
+                    key={`pricing-${pricing.organization.id}-${pricing.collectionName}-${pricing.name}`}
                     name={pricing.name}
-                    owner={pricing.owner}
+                    owner={pricing.organization.id}
                     dataEntry={pricing}
                   />
                 ))

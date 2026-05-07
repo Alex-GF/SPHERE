@@ -158,7 +158,23 @@ class UserService {
     }
 
     const user = await this.userRepository.update(targetUsername, data);
-    
+
+    if (!user) {
+      throw new Error('NOT FOUND: User not found after update attempt');
+    }
+
+    if (data.username && data.username !== targetUsername) {
+      const userId = user.id;
+      const memberships = await this.organizationMembershipRepository.findByUserId(userId);
+      const personalMembership = memberships.find((m: any) => m.organization?.isPersonal);
+      if (personalMembership) {
+        await this.organizationService.update(personalMembership.organization.id, {
+          name: data.username.toLowerCase(),
+          displayName: `${data.username} (personal)`,
+        });
+      }
+    }
+
     processFileUris(user, ['avatar']);
 
     return user;
@@ -183,7 +199,7 @@ class UserService {
       }
     }
 
-    const userId = (userToDelete as any)._id?.toString() ?? userToDelete.id;
+    const userId = userToDelete.id;
     const userMemberships = await this.organizationMembershipRepository.findByUserId(userId);
 
     for (const membership of userMemberships) {

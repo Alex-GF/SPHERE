@@ -67,7 +67,7 @@ export default function PricingSection({
             {sortedPricings.map((pricing: PricingEntry) => (
               <PricingListCard
                 name={pricing.name}
-                owner={pricing.owner}
+                owner={pricing.organization.id}
                 dataEntry={pricing}
                 showOptions
                 setPricingToAdd={setPricingToAdd}

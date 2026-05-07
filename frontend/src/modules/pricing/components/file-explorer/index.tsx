@@ -127,7 +127,7 @@ export default function FileExplorer({ pricingData }: { pricingData: AnalyticsDa
   const { authUser } = useAuth();
   const { setInCache } = useCacheApi();
 
-  const pricingOwner = pricingData[0]?.owner.username ?? '';
+  const pricingOwner = pricingData[0]?.organization.name ?? '';
 
   const items = useMemo<ExplorerItem[]>(
     () =>
