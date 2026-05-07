@@ -10,10 +10,9 @@ import { usePricingCollectionsApi } from '../../../profile/api/pricingCollection
 import { Collection } from '../../types/collection';
 import type { PricingEntry } from '../list';
 import PricingListCard from '../../../pricing/components/pricing-list-card';
-import { useAuth } from '../../../auth/hooks/useAuth';
 import CollectionSettings from '../../components/collection-settings';
 import { FaSortAlphaDown, FaSortAlphaUpAlt } from 'react-icons/fa';
-import type { AnalyticsDataEntry } from '../../../../assets/data/analytics';
+import { useUserOrganization } from '../../../core/hooks/useUserOrganization';
 
 export default function CollectionCardPage() {
   const [isFollowing, setIsFollowing] = useState(false);
@@ -28,7 +27,7 @@ export default function CollectionCardPage() {
   const pathname = usePathname();
   const { getCollectionByOwnerAndName, downloadCollection } = usePricingCollectionsApi();
   const router = useRouter();
-  const { authUser } = useAuth();
+  const { personalOrganization } = useUserOrganization();
 
   useEffect(() => {
     const segments = pathname.split('/');
@@ -75,15 +74,15 @@ export default function CollectionCardPage() {
   };
 
   const sortedPricings = useMemo<PricingEntry[]>(() => {
-    const collectionPricings = collection?.data?.pricings ?? collection?.pricings?.[0]?.pricings ?? [];
+    const collectionPricings = collection?.data?.pricings ?? [];
 
     if (collectionPricings.length === 0) {
       return [];
     }
 
-    const pricingArray: PricingEntry[] = (collectionPricings as AnalyticsDataEntry[]).map(pricing => ({
+    const pricingArray: PricingEntry[] = (collectionPricings as any[]).map(pricing => ({
       ...pricing,
-      owner: pricing.owner.username,
+      organization: pricing.organization,
     })) as PricingEntry[];
 
     return pricingArray.sort((a, b) => {
@@ -132,7 +131,7 @@ export default function CollectionCardPage() {
                 >
                   Collection Card
                 </button>
-                {collection && authUser.user && collection.owner.username === authUser.user.username && (
+                {collection && personalOrganization && collection.organization.id === personalOrganization.id && (
                   <button
                     type="button"
                     className={`border-b-2 px-0 pb-2 pt-1 text-sm uppercase tracking-wide ${tabValue === 1 ? 'border-sphere-primary-500 text-sphere-primary-500' : 'border-slate-300 text-slate-500'}`}
@@ -207,7 +206,7 @@ export default function CollectionCardPage() {
                         className="h-10 w-[150px] rounded-md border border-sphere-primary-400 text-base font-bold text-sphere-primary-400 hover:bg-sphere-primary-400 hover:text-white"
                         onClick={() =>
                           downloadCollection(
-                            collection?.owner.username as string,
+                            collection?.organization.id as string,
                             collection?.name as string
                           )
                         }
@@ -219,7 +218,7 @@ export default function CollectionCardPage() {
                       {sortedPricings.length > 0 ? (
                         <div className="flex flex-wrap justify-center gap-6 px-3">
                           {sortedPricings.map((pricing) => {
-                            const ownerName = collection.owner.username;
+                            const ownerName = collection.organization.name;
                             return (
                               <PricingListCard
                                 key={pricing.name}

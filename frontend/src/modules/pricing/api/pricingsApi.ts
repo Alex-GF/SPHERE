@@ -161,8 +161,8 @@ export function usePricingsApi() {
   }, [fetchWithInterceptor, token]);
 
   const addPricingToCollection = useCallback(async (pricingName: string, collectionId: string) => {
-    return fetchWithInterceptor(`${import.meta.env.VITE_API_URL}/me/pricings`, {
-      method: 'PUT',
+    return fetchWithInterceptor(`${import.meta.env.VITE_API_URL}/collections/${authUser.user?.username}/pricings`, {
+      method: 'POST',
       headers: basicHeaders,
       body: JSON.stringify({ pricingName, collectionId }),
     })
@@ -177,7 +177,7 @@ export function usePricingsApi() {
         const body = await (error as Response).json().catch(() => ({}));
         return Promise.reject({message: body.error});
       });
-  }, [fetchWithInterceptor, basicHeaders]);
+  }, [fetchWithInterceptor, basicHeaders, authUser]);
 
    
   const updatePricing = useCallback((pricingName: string, collectionName: string, pricingData: any) => {
@@ -239,9 +239,9 @@ export function usePricingsApi() {
       });
   }, [fetchWithInterceptor, basicHeaders, username]);
 
-  const removePricingFromCollection = useCallback(async (pricingName: string, owner: string, collectionName: string) => {
+  const removePricingFromCollection = useCallback(async (pricingName: string, organizationId: string, collectionName: string) => {
     return fetchWithInterceptor(
-      `${import.meta.env.VITE_API_URL}/collections/${owner}/${collectionName}/pricings/${pricingName}`,
+      `${import.meta.env.VITE_API_URL}/collections/${organizationId}/${collectionName}/pricings/${pricingName}`,
       {
         method: 'DELETE',
         headers: basicHeaders,

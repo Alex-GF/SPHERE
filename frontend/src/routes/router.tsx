@@ -15,13 +15,16 @@ import PricingListPage from '../modules/pricing/pages/list';
 import LoginPage from '../modules/auth/pages/login-page';
 import RegisterPage from '../modules/auth/pages/register-page';
 import CardPage from '../modules/pricing/pages/card';
-// import LegacyPricingCard from '../modules/pricing/pages/legacy-pricing-card';
 import CreatePricingPage from '../modules/pricing/pages/create';
 import CollectionCardPage from '../modules/pricing/pages/collection-card';
 import MyPricingsPage from '../modules/profile/pages/pricings';
 import CreateCollectionPage from '../modules/profile/pages/create-collection';
 import CollectionsListPage from '../modules/pricing/pages/collections-list';
 import PricingAssistantPage from '../modules/harvey/pages/pricing-assistant';
+import OrganizationsListPage from '../modules/organization/pages/organizations-list';
+import CreateOrganizationPage from '../modules/organization/pages/create-organization';
+import OrganizationDetailPage from '../modules/organization/pages/organization-detail';
+import OrganizationJoinPage from '../modules/organization/pages/organization-join';
 
 
 export default function Router() {
@@ -41,7 +44,6 @@ export default function Router() {
         { element: <PricingListPage />, path: "/pricings" },
         { element: <CreatePricingPage />, path: "/pricings/new" },
         { element: <CardPage />, path: "/pricings/:owner/:name" },
-        // { element: <LegacyPricingCard />, path: "/pricings/card" },
         { element: <TeamPage />, path: "/team" },
         { element: <ResearchPage />, path: "/research" },
         { element: <ContributionsPage />, path: "/contributions" },
@@ -49,6 +51,13 @@ export default function Router() {
         { element: <CreateCollectionPage />, path: "/pricings/collections/new" },
         { element: <CollectionCardPage />, path: "/pricings/collections/:ownerId/:collectionName" },
         { element: <MyPricingsPage />, path: "/me/pricings" },
+        { element: <OrganizationsListPage />, path: "/me/orgs" },
+        { element: <CreateOrganizationPage />, path: "/orgs/new" },
+        { element: <OrganizationJoinPage />, path: "/orgs/join/:code" },
+        {
+          path: "/orgs/:organizationId",
+          element: <OrganizationDetailPage />
+        },
         { element: <PricingAssistantPage />, path: "/harvey"},
         { element: <PricingAssistantPage playground />, path: "/harvey-play"}
       ],
@@ -67,7 +76,6 @@ export default function Router() {
       path: 'error',
       element: <Page404 />,
     },
-    // { path: 'contract', element: <ContractPage /> },
     {
       path: '*',
       element: <Navigate to="/error" replace />,

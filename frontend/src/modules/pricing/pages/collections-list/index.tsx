@@ -10,7 +10,12 @@ import PricingsListContainer from '../../components/pricings-list-container';
 
 export type PricingEntry = {
   name: string;
-  owner: string;
+  organization: {
+    id: string;
+    name: string;
+    displayName: string;
+    avatar: string;
+  };
   version: string;
   createdAt: string;
   currency: string;
@@ -63,7 +68,7 @@ export default function CollectionsListPage() {
   const receivedOwners = useMemo(
     () =>
       collectionsList.reduce((acc, collection) => {
-        acc[collection.owner.username] = (acc[collection.owner.username] || 0) + 1;
+        acc[collection.organization.name] = (acc[collection.organization.name] || 0) + 1;
         return acc;
       }, {} as Record<string, number>),
     [collectionsList]
@@ -84,7 +89,7 @@ export default function CollectionsListPage() {
         setFilterLimits(
           data.collections.length > 0
             ? {
-                owners: data.collections.map((collection: CollectionEntry) => collection.owner),
+                owners: data.collections.map((collection: CollectionEntry) => collection.organization),
               }
             : null
         );

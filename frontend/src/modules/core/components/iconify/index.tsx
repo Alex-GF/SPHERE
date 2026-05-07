@@ -6,13 +6,14 @@ type IconifyProps = {
     icon: ReactElement | string;
     width?: number;
     color?: string;
+    className?: string;
 } & RefAttributes<HTMLSpanElement>;
 
 const Iconify = forwardRef<HTMLSpanElement, IconifyProps>(
-    ({ icon, width = 20, ...other }, ref) => (
+    ({ icon, width = 20, className, ...other }, ref) => (
         <span
             ref={ref}
-            className="component-iconify inline-flex"
+            className={`component-iconify inline-flex ${className ?? ''}`}
             {...other}
         >
             <Icon icon={icon as string} width={width} height={width} />

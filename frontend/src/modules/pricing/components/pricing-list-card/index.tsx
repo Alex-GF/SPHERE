@@ -14,7 +14,6 @@ import { useAuth } from '../../../auth/hooks/useAuth';
 
 export default function PricingListCard({
   name,
-  owner,
   dataEntry,
   showOptions = false,
   setPricingToAdd = () => {},
@@ -47,7 +46,7 @@ export default function PricingListCard({
         customAlert('You need to be logged in to perform this action');
         return;
       } else {
-        removePricingFromCollection(name, authUser.user.username, dataEntry.collectionName)
+        removePricingFromCollection(name, dataEntry.organization.id, dataEntry.collectionName)
           .then(() => {
             customAlert('Pricing removed from collection');
             window.location.reload();
@@ -142,7 +141,7 @@ export default function PricingListCard({
           type="button"
           className="flex h-[45px] w-full items-center px-[10px] text-left transition-colors hover:text-sphere-primary-600"
           onClick={() =>
-            router.push(`/pricings/${owner}/${name}?collectionName=${dataEntry.collectionName}`)
+            router.push(`/pricings/${dataEntry.organization.id}/${name}?collectionName=${dataEntry.collectionName}`)
           }
         >
           <h3 className="mt-1 text-lg font-bold">

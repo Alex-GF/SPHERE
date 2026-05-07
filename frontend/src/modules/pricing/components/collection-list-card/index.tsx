@@ -20,7 +20,7 @@ export default function CollectionListCard({
       onClick={
         handleCustomClick
           ? handleCustomClick
-          : () => router.push(`/pricings/collections/${collection.owner.username}/${collection.name}`)
+          : () => router.push(`/pricings/collections/${collection.organization.id}/${collection.name}`)
       }
     >
       <FaFolder fontSize={100} />

@@ -7,6 +7,7 @@ import DesktopHeaderItems from './components/desktop-header-items';
 import { headerRoutes } from './router/header-routes';
 import { useRouter } from '../../core/hooks/useRouter';
 import { useResponsive } from '../../core/hooks/useResponsive';
+import OrgSelector from './components/org-selector';
 
 const Header = ({ setUploadModalOpen }: { setUploadModalOpen: (state: boolean) => void }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,6 +23,13 @@ const Header = ({ setUploadModalOpen }: { setUploadModalOpen: (state: boolean) =
       name: 'My Pricings',
       onClick: () => {
         router.push('/me/pricings');
+        handleCloseUserMenu();
+      },
+    },
+    {
+      name: 'Organizations',
+      onClick: () => {
+        router.push('/me/orgs');
         handleCloseUserMenu();
       },
     },
@@ -89,10 +97,13 @@ const Header = ({ setUploadModalOpen }: { setUploadModalOpen: (state: boolean) =
             <DesktopHeaderItems headerRoutes={headerRoutes} />
           )}
 
-          <div className="flex items-center gap-2">
-            <div className="hidden items-center gap-4 md:flex">
-              {authUser.isAuthenticated ? (
-                <div ref={userMenuContainerRef} className="relative">
+           <div className="flex items-center gap-2">
+             <div className="hidden md:block">
+               <OrgSelector />
+             </div>
+             <div className="hidden items-center gap-4 md:flex">
+               {authUser.isAuthenticated ? (
+                 <div ref={userMenuContainerRef} className="relative">
                   <button
                     type="button"
                     onClick={handleToggleUserMenu}

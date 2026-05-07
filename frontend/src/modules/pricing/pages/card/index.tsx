@@ -14,10 +14,10 @@ import AnalyticsModal from '../../components/analyticsModal';
 import { usePricingsApi } from '../../api/pricingsApi';
 import PricingSettings from '../../components/pricing-settings';
 import customAlert from '../../../core/utils/custom-alert';
-import { useAuth } from '../../../auth/hooks/useAuth';
 import { Link } from 'react-router-dom';
 import { useQueryParams } from '../../../core/hooks/useQueryParams';
 import ConfigurationSpaceView from '../../components/configuration-space-view';
+import { useUserOrganization } from '../../../core/hooks/useUserOrganization';
 
 export const CURRENCIES = {
   USD: '$',
@@ -43,7 +43,7 @@ export default function CardPage() {
   const pathname = usePathname();
   const queryParams = useQueryParams();
   const { getPricingByName, updateClientPricingVersion } = usePricingsApi();
-  const { authUser } = useAuth();
+  const { personalOrganization } = useUserOrganization();
 
    
   function updatePricingInformation(pricing: any) {
@@ -223,7 +223,7 @@ export default function CardPage() {
                 Collection:{' '}
                 <Link
                   className='text-blue-500 hover:text-blue-700'
-                  to={`/pricings/collections/${currentPricing.owner.username}/${currentPricing.collectionName}`}
+                  to={`/pricings/collections/${currentPricing.organization.id}/${currentPricing.collectionName}`}
                 >
                   {currentPricing.collectionName}
                 </Link>
@@ -235,7 +235,7 @@ export default function CardPage() {
                 <button type="button" className={`px-4 py-2 text-sm uppercase tracking-wide ${tabValue === 0 ? 'border-b-2 border-sphere-primary-500 text-sphere-primary-500' : 'text-slate-500'}`} onClick={() => setTabValue(0)}>Pricing card</button>
                 <button type="button" className={`px-4 py-2 text-sm uppercase tracking-wide ${tabValue === 1 ? 'border-b-2 border-sphere-primary-500 text-sphere-primary-500' : 'text-slate-500'}`} onClick={() => setTabValue(1)}>Configuration Space Details</button>
                 <button type="button" className={`px-4 py-2 text-sm uppercase tracking-wide ${tabValue === 2 ? 'border-b-2 border-sphere-primary-500 text-sphere-primary-500' : 'text-slate-500'}`} onClick={() => setTabValue(2)}>Files and versions</button>
-                {currentPricing && authUser.user && currentPricing.owner.username === authUser.user.username && (
+                {currentPricing && personalOrganization && currentPricing.organization.id === personalOrganization.id && (
                   <button type="button" className={`px-4 py-2 text-sm uppercase tracking-wide ${tabValue === 3 ? 'border-b-2 border-sphere-primary-500 text-sphere-primary-500' : 'text-slate-500'}`} onClick={() => setTabValue(3)}>Settings</button>
                 )}
               </div>
@@ -292,7 +292,7 @@ export default function CardPage() {
           {tabValue === 2 && pricingData && <FileExplorer pricingData={pricingData} />}
           {tabValue === 1 && pricing && currentPricing && (
             <ConfigurationSpaceView
-              owner={currentPricing.owner.username}
+              owner={currentPricing.organization.name}
               pricingName={pricing.saasName}
               pricingVersion={currentPricing.version}
             />
