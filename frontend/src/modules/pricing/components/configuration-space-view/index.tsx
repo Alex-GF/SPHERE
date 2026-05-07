@@ -45,7 +45,7 @@ function compactList(values: string[], max = 7) {
 const REQUEST_PAGE_SIZE = 200;
 const QUICK_BROWSE_BATCH_SIZE = 120;
 
-export default function ConfigurationSpaceView({ owner, pricingName, pricingVersion }: { owner: string; pricingName: string; pricingVersion: string }) {
+export default function ConfigurationSpaceView({ organizationId, pricingName, pricingVersion }: { organizationId: string; pricingName: string; pricingVersion: string }) {
   const [renderedConfigurationSpace, setRenderedConfigurationSpace] = useState<IndexedConfiguration[]>([]);
   const [renderedConfigurationSpaceSize, setRenderedConfigurationSpaceSize] = useState<number>(0);
   const [loadingInitial, setLoadingInitial] = useState<boolean>(true);
@@ -127,7 +127,7 @@ export default function ConfigurationSpaceView({ owner, pricingName, pricingVers
         let keepFetching = true;
 
         while (keepFetching && !canceled) {
-          const responseData = await getConfigurationSpace(owner, pricingName, pricingVersion, REQUEST_PAGE_SIZE, currentOffset);
+          const responseData = await getConfigurationSpace(organizationId, pricingName, pricingVersion, REQUEST_PAGE_SIZE, currentOffset);
           const rawChunk = (responseData?.configurationSpace as Partial<Configuration>[] | undefined) ?? [];
 
           if (currentOffset === 0) {
@@ -173,7 +173,7 @@ export default function ConfigurationSpaceView({ owner, pricingName, pricingVers
     };
   // getConfigurationSpace can be recreated by context updates; keep preload tied to pricing changes.
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [owner, pricingName, pricingVersion]);
+  }, [organizationId, pricingName, pricingVersion]);
 
   useEffect(() => {
     if (filteredConfigurations.length === 0) {

@@ -292,7 +292,7 @@ export default function CardPage() {
           {tabValue === 2 && pricingData && <FileExplorer pricingData={pricingData} />}
           {tabValue === 1 && pricing && currentPricing && (
             <ConfigurationSpaceView
-              owner={currentPricing.organization.name}
+              organizationId={currentPricing.organization.id}
               pricingName={pricing.saasName}
               pricingVersion={currentPricing.version}
             />
