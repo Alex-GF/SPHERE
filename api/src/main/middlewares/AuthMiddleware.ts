@@ -28,7 +28,7 @@ const authenticateTokenMiddleware = async (req: Request, res: Response, next: Ne
     const token = authHeader.startsWith('Bearer ') ? authHeader.split(' ')[1] : '';
     const apiKey = apiKeyHeader;
 
-    if (token) {
+    if (token && token !== "null") {
       await authenticateToken(req, token);
     } else if (apiKey) {
       await authenticateApiKey(req, apiKey);

@@ -158,7 +158,19 @@ class UserService {
     }
 
     const user = await this.userRepository.update(targetUsername, data);
-    
+
+    if (data.username && data.username !== targetUsername) {
+      const userId = (user as any)._id?.toString() ?? user.id;
+      const memberships = await this.organizationMembershipRepository.findByUserId(userId);
+      const personalMembership = memberships.find((m: any) => m.organization?.isPersonal);
+      if (personalMembership) {
+        await this.organizationService.update(personalMembership.organization.id, {
+          name: data.username.toLowerCase(),
+          displayName: `${data.username} (personal)`,
+        });
+      }
+    }
+
     processFileUris(user, ['avatar']);
 
     return user;
