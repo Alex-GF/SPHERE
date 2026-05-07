@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { useEffect, useState } from 'react';
 import PricingListCard from '../../components/pricing-list-card';
 import { usePricingsApi } from '../../api/pricingsApi';

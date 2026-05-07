@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { FiHome } from 'react-icons/fi';
 
 import RouterLink from '../../components/router-link';

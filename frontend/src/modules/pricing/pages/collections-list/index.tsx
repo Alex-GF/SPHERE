@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import SearchBar from '../../components/search-bar';
 import { usePricingCollectionsApi } from '../../../profile/api/pricingCollectionsApi';
