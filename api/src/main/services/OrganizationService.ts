@@ -126,6 +126,16 @@ class OrganizationService {
       throw new Error('INVALID DATA: User is already a member of this organization');
     }
 
+    if (role === 'OWNER') {
+      const organization: any = await this.organizationRepository.findById(organizationId);
+      if (!organization) {
+        throw new Error('NOT FOUND: Organization not found');
+      }
+      if (organization.isPersonal) {
+        throw new Error('PERMISSION ERROR: Personal organizations can only have one owner');
+      }
+    }
+
     return this.organizationMembershipRepository.create({
       _userId: userId,
       _organizationId: organizationId,
@@ -140,18 +150,48 @@ class OrganizationService {
       throw new Error('PERMISSION ERROR: Only OWNER users can promote others to OWNER role');
     }
 
-    const membership = await this.organizationMembershipRepository.updateByUserAndOrganization(
+    const organization: any = await this.organizationRepository.findById(organizationId);
+    if (!organization) {
+      throw new Error('NOT FOUND: Organization not found');
+    }
+
+    if (role === 'OWNER' && organization.isPersonal) {
+      throw new Error('PERMISSION ERROR: Personal organizations can only have one owner');
+    }
+
+    const currentMembership: any = await this.organizationMembershipRepository.findByUserAndOrganization(userId, organizationId);
+    if (!currentMembership) {
+      throw new Error('NOT FOUND: Organization membership not found');
+    }
+
+    if (currentMembership.role === 'OWNER' && role !== 'OWNER') {
+      const ownerCount = await this.organizationMembershipRepository.countOwners(organizationId);
+      if (ownerCount < 2) {
+        throw new Error('PERMISSION ERROR: Cannot demote the last owner of the organization');
+      }
+    }
+
+    const updatedMembership = await this.organizationMembershipRepository.updateByUserAndOrganization(
       userId,
       organizationId,
       { role }
     );
-    if (!membership) {
-      throw new Error('NOT FOUND: Organization membership not found');
-    }
-    return membership;
+    return updatedMembership;
   }
 
   async removeMember(userId: string, organizationId: string) {
+    const membership: any = await this.organizationMembershipRepository.findByUserAndOrganization(userId, organizationId);
+    if (!membership) {
+      throw new Error('NOT FOUND: Organization membership not found');
+    }
+
+    if (membership.role === 'OWNER') {
+      const ownerCount = await this.organizationMembershipRepository.countOwners(organizationId);
+      if (ownerCount < 2) {
+        throw new Error('PERMISSION ERROR: Cannot remove the last owner of the organization');
+      }
+    }
+
     const result = await this.organizationMembershipRepository.destroyByUserAndOrganization(userId, organizationId);
     if (!result) {
       throw new Error('NOT FOUND: Organization membership not found');

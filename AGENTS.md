@@ -44,6 +44,18 @@ cd api && npx vitest --run --test-name-pattern "<pattern>"
 
 - `/api/docs/sphere-api-docs.yaml` contains the OpenAPI specification for the API. Use it as the primary reference for understanding available endpoints, request and response schemas, authentication requirements, and general API behavior.
 
+## Test distribution
+
+- /api/src/test/unit-tests/** – tests related to individual utility functions, services, and repositories. These tests should be focused on isolated logic and should mock external dependencies.
+- /api/src/test/auth.test.ts – tests related to authentication flows, including login, token generation, and token validation
+- /api/src/test/cache.test.ts – tests related to caching mechanisms
+- /api/src/test/user.test.ts – tests related to user management, authentication, and authorization
+- /api/src/test/organization.test.ts – tests related to organization management and organization-user interactions
+- /api/src/test/collection.test.ts — tests related to collection management and collection-pricing interactions
+- /api/src/test/pricing.test.ts — tests related to pricing management and pricing-analytics
+
+In addition, test utilities are organized in `/api/src/test/utils/` with subfolders for auth, users, organizations, collections and pricings.
+
 ## Lint Config
 
 - API: `api/eslint.config.ts` (TypeScript-eslint, semi required)

@@ -145,6 +145,13 @@ class OrganizationMembershipRepository extends RepositoryBase {
     return membership.toObject({ getters: true, virtuals: true, versionKey: false });
   }
 
+  async findByUserAndOrganization(userId: string, organizationId: string) {
+    return OrganizationMembershipMongoose.findOne({
+      _userId: new mongoose.Types.ObjectId(userId),
+      _organizationId: new mongoose.Types.ObjectId(organizationId),
+    });
+  }
+
   async updateByUserAndOrganization(userId: string, organizationId: string, data: any) {
     if (data.role) {
       data._roleWeight = ROLE_WEIGHT[data.role as keyof typeof ROLE_WEIGHT] ?? 0;
@@ -157,6 +164,13 @@ class OrganizationMembershipRepository extends RepositoryBase {
       data,
       { new: true }
     );
+  }
+
+  async countOwners(organizationId: string): Promise<number> {
+    return OrganizationMembershipMongoose.countDocuments({
+      _organizationId: new mongoose.Types.ObjectId(organizationId),
+      role: 'OWNER',
+    });
   }
 
   async destroyByUserAndOrganization(userId: string, organizationId: string) {
