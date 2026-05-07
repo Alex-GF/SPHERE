@@ -98,6 +98,12 @@ export const ROUTE_PERMISSIONS: RoutePermission[] = [
     methods: ['POST'],
     allowedUserRoles: ['ADMIN', 'USER'],
   },
+  // Get current user's organizations: no org-context required.
+  {
+    path: '/users/me/orgs',
+    methods: ['GET'],
+    allowedUserRoles: ['ADMIN', 'USER'],
+  },
   // Org creation/listing: no org-context required.
   {
     path: '/orgs',

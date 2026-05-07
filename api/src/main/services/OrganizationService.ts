@@ -68,7 +68,7 @@ class OrganizationService {
       name: user.username.toLowerCase(),
       displayName: `${user.username} (personal)`,
       description: null,
-      avatarUrl: null,
+      avatar: null,
       isPersonal: true,
     });
 

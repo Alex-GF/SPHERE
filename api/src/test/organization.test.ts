@@ -2115,4 +2115,104 @@ describe('Organizations API integration', () => {
       expect(response.body.error).toBeDefined();
     });
   });
+
+  // =========================================================================
+  // GET /users/me/orgs
+  // =========================================================================
+  describe('GET /users/me/orgs', () => {
+    it('returns 200 and array of organizations for authenticated USER', async () => {
+      const { user } = await createAndLoginUser('USER');
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/users/me/orgs`)
+        .set('Authorization', `Bearer ${user.token}`);
+
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeGreaterThanOrEqual(1);
+      expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('returns 200 for ADMIN user', async () => {
+      const response = await request(app)
+        .get(`${BASE_PATH}/users/me/orgs`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
+
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBe(true);
+    });
+
+    it('returns the personal organization for the user', async () => {
+      const { user, organizationId } = await createAndLoginUser('USER');
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/users/me/orgs`)
+        .set('Authorization', `Bearer ${user.token}`);
+
+      expect(response.status).toBe(200);
+      const ids = response.body.map((o: any) => o.id);
+      expect(ids).toContain(organizationId);
+
+      const personalOrg = response.body.find((o: any) => o.id === organizationId);
+      expect(personalOrg).toBeDefined();
+      expect(personalOrg.isPersonal).toBe(true);
+    });
+
+    it('returns only organizations the user belongs to', async () => {
+      const { user: user1 } = await createAndLoginUser('USER');
+      const { user: user2 } = await createAndLoginUser('USER');
+      const org1 = await createTestOrganization(user1.token, { name: `user1org_${randomSuffix()}` });
+      const org2 = await createTestOrganization(user2.token, { name: `user2org_${randomSuffix()}` });
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/users/me/orgs`)
+        .set('Authorization', `Bearer ${user1.token}`);
+
+      expect(response.status).toBe(200);
+      const ids = response.body.map((o: any) => o.id);
+      expect(ids).toContain(org1.id);
+      expect(ids).not.toContain(org2.id);
+    });
+
+    it('returns organizations the user joined via membership', async () => {
+      const { user: owner } = await createAndLoginUser('USER');
+      const { user: joiner } = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token, { name: `joinable_${randomSuffix()}` });
+      await createMembership(joiner.id, org.id, 'MEMBER');
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/users/me/orgs`)
+        .set('Authorization', `Bearer ${joiner.token}`);
+
+      expect(response.status).toBe(200);
+      const ids = response.body.map((o: any) => o.id);
+      expect(ids).toContain(org.id);
+    });
+
+    it('returns organizations with expected fields', async () => {
+      const { user } = await createAndLoginUser('USER');
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/users/me/orgs`)
+        .set('Authorization', `Bearer ${user.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.length).toBeGreaterThanOrEqual(1);
+
+      const org = response.body[0];
+      expect(org.id).toBeDefined();
+      expect(org.name).toBeDefined();
+      expect(org.displayName).toBeDefined();
+      expect(org.isPersonal).toBeDefined();
+    });
+
+    it('returns 401 without Authorization header', async () => {
+      const response = await request(app)
+        .get(`${BASE_PATH}/users/me/orgs`);
+
+      expect(response.status).toBe(401);
+      expect(response.body.error).toBeDefined();
+    });
+  });
 });

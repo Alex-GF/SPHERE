@@ -4,7 +4,7 @@
     "name": "sphere",
     "displayName": "sphere (personal)",
     "description": "Personal organization for sphere user.",
-    "avatarUrl": null,
+    "avatar": null,
     "isPersonal": true,
     "createdAt": { "$date": "2023-02-20T11:22:04.000Z" },
     "updatedAt": { "$date": "2023-02-20T11:22:04.000Z" }
@@ -14,7 +14,7 @@
     "name": "demo-org",
     "displayName": "Demo Organization",
     "description": "Shared org seeded for local testing.",
-    "avatarUrl": null,
+    "avatar": null,
     "isPersonal": false,
     "createdAt": { "$date": "2023-02-20T11:22:04.000Z" },
     "updatedAt": { "$date": "2023-02-20T11:22:04.000Z" }

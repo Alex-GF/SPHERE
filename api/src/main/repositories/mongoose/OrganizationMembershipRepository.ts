@@ -31,7 +31,7 @@ class OrganizationMembershipRepository extends RepositoryBase {
             _organizationId: 1,
             role: 1,
             joinedAt: 1,
-            organization: { id: 1, name: 1, displayName: 1, avatarUrl: 1, isPersonal: 1 },
+            organization: { id: 1, name: 1, displayName: 1, avatar: 1, isPersonal: 1 },
           },
         },
       ]);

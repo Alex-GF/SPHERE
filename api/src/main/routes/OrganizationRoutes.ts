@@ -10,6 +10,10 @@ const loadFileRoutes = function (app: express.Application) {
   const orgAvatarUpload = handleFileUpload(['avatar'], process.env.ORG_AVATARS_FOLDER!);
 
   app
+    .route(baseUrl + '/users/me/orgs')
+    .get(organizationController.indexByUser);
+
+  app
     .route(baseUrl + '/orgs')
     .get(organizationController.index)
     .post(OrganizationValidation.create, handleValidation, organizationController.create);
