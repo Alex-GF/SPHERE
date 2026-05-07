@@ -217,6 +217,37 @@ class OrganizationMembershipRepository extends RepositoryBase {
     });
     return true;
   }
+
+  async findDirectMemberships(organizationId: string) {
+    return OrganizationMembershipMongoose.find({
+      _organizationId: new mongoose.Types.ObjectId(organizationId),
+    }).lean();
+  }
+
+  async findExistingMembership(userId: string, organizationId: string) {
+    return OrganizationMembershipMongoose.findOne({
+      _userId: new mongoose.Types.ObjectId(userId),
+      _organizationId: new mongoose.Types.ObjectId(organizationId),
+    }).lean();
+  }
+
+  async createBulk(memberships: Array<{ _userId: string; _organizationId: string; role: OrgRole; joinedAt: Date }>) {
+    const docs = memberships.map(m => ({
+      _userId: new mongoose.Types.ObjectId(m._userId),
+      _organizationId: new mongoose.Types.ObjectId(m._organizationId),
+      role: m.role,
+      joinedAt: m.joinedAt,
+    }));
+    return OrganizationMembershipMongoose.insertMany(docs, { ordered: false }).catch(() => []);
+  }
+
+  async destroyByUserAndOrganizationBatch(userIds: string[], organizationId: string) {
+    if (userIds.length === 0) return;
+    await OrganizationMembershipMongoose.deleteMany({
+      _userId: { $in: userIds.map(id => new mongoose.Types.ObjectId(id)) },
+      _organizationId: new mongoose.Types.ObjectId(organizationId),
+    });
+  }
 }
 
 export default OrganizationMembershipRepository;

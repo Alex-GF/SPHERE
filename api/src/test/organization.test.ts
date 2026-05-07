@@ -13,6 +13,7 @@ import { randomSuffix } from './utils/helpers';
 import { LeanUser } from '../main/types/models/User';
 import OrganizationMembershipMongoose from '../main/repositories/mongoose/models/OrganizationMembershipMongoose';
 import OrganizationInvitationMongoose from '../main/repositories/mongoose/models/OrganizationInvitationMongoose';
+import OrganizationMongoose from '../main/repositories/mongoose/models/OrganizationMongoose';
 
 dotenv.config();
 
@@ -2470,6 +2471,64 @@ describe('Organizations API integration', () => {
         });
       expect(childResponse.status).toBe(201);
       expect(childResponse.body._parentId).toBe(parentOrg.id);
+      expect(childResponse.body.ancestors).toBeDefined();
+      expect(Array.isArray(childResponse.body.ancestors)).toBe(true);
+      expect(childResponse.body.ancestors).toContain(parentOrg.id);
+    });
+
+    it('OWNER of parent can list members of child via inherited role', async () => {
+      const { user: owner } = await createAndLoginUser('USER');
+      const parentOrg = await createTestOrganization(owner.token, { name: `parent_${randomSuffix()}` });
+
+      const childResponse = await request(app)
+        .post(`${BASE_PATH}/orgs`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({
+          name: `child_${randomSuffix()}`,
+          displayName: 'Child Org',
+          _parentId: parentOrg.id,
+        });
+      const childId = childResponse.body.id;
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/orgs/${childId}/members`)
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      expect(response.status).toBe(200);
+    });
+
+    it('child org ancestors are persisted in DB and role lookup resolves through hierarchy', async () => {
+      const { user: owner } = await createAndLoginUser('USER');
+      const parentOrg = await createTestOrganization(owner.token, { name: `parent_${randomSuffix()}` });
+
+      const childResponse = await request(app)
+        .post(`${BASE_PATH}/orgs`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({
+          name: `child_${randomSuffix()}`,
+          displayName: 'Child Org',
+          _parentId: parentOrg.id,
+        });
+      const childId = childResponse.body.id;
+
+      // Verify ancestors are stored in the DB
+      const storedChild = await OrganizationMongoose.findById(childId).lean();
+      expect(storedChild).not.toBeNull();
+      expect(storedChild!.ancestors).toBeDefined();
+      expect(Array.isArray(storedChild!.ancestors)).toBe(true);
+      expect(storedChild!.ancestors.length).toBe(1);
+      expect(storedChild!.ancestors[0].toString()).toBe(parentOrg.id);
+
+      // Verify the child response includes ancestors
+      expect(childResponse.body.ancestors).toBeDefined();
+      expect(childResponse.body.ancestors).toContain(parentOrg.id);
+
+      // Verify GET /orgs/:childId works for OWNER of parent
+      const detailResponse = await request(app)
+        .get(`${BASE_PATH}/orgs/${childId}`)
+        .set('Authorization', `Bearer ${owner.token}`);
+      expect(detailResponse.status).toBe(200);
+      expect(detailResponse.body.id).toBe(childId);
     });
 
     it('global ADMIN can access any child org', async () => {
@@ -2512,6 +2571,284 @@ describe('Organizations API integration', () => {
         .get(`${BASE_PATH}/orgs/${childId}`);
 
       expect(response.status).toBe(401);
+    });
+
+    it('creating sub-org propagates OWNER/ADMIN memberships from parent', async () => {
+      const { user: owner } = await createAndLoginUser('USER');
+      const { user: admin } = await createAndLoginUser('USER');
+      const { user: member } = await createAndLoginUser('USER');
+      const parentOrg = await createTestOrganization(owner.token, { name: `parent_${randomSuffix()}` });
+      await createMembership(admin.id, parentOrg.id, 'ADMIN');
+      await createMembership(member.id, parentOrg.id, 'MEMBER');
+
+      const childResponse = await request(app)
+        .post(`${BASE_PATH}/orgs`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({
+          name: `child_${randomSuffix()}`,
+          displayName: 'Child Org',
+          _parentId: parentOrg.id,
+        });
+      expect(childResponse.status).toBe(201);
+      const childId = childResponse.body.id;
+
+      const membersResponse = await request(app)
+        .get(`${BASE_PATH}/orgs/${childId}/members`)
+        .set('Authorization', `Bearer ${owner.token}`);
+      expect(membersResponse.status).toBe(200);
+      const memberIds = membersResponse.body.map((m: any) => m.user.id);
+      expect(memberIds).toContain(owner.id);
+      expect(memberIds).toContain(admin.id);
+      expect(memberIds).not.toContain(member.id);
+    });
+
+    it('MEMBER of parent does NOT get propagated to child', async () => {
+      const { user: owner } = await createAndLoginUser('USER');
+      const { user: member } = await createAndLoginUser('USER');
+      const parentOrg = await createTestOrganization(owner.token, { name: `parent_${randomSuffix()}` });
+      await createMembership(member.id, parentOrg.id, 'MEMBER');
+
+      const childResponse = await request(app)
+        .post(`${BASE_PATH}/orgs`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({
+          name: `child_${randomSuffix()}`,
+          displayName: 'Child Org',
+          _parentId: parentOrg.id,
+        });
+      const childId = childResponse.body.id;
+
+      const membersResponse = await request(app)
+        .get(`${BASE_PATH}/orgs/${childId}/members`)
+        .set('Authorization', `Bearer ${owner.token}`);
+      const memberIds = membersResponse.body.map((m: any) => m.user.id);
+      expect(memberIds).not.toContain(member.id);
+    });
+
+    it('demoting OWNER to MEMBER removes child memberships', async () => {
+      const { user: owner } = await createAndLoginUser('USER');
+      const { user: admin } = await createAndLoginUser('USER');
+      const parentOrg = await createTestOrganization(owner.token, { name: `parent_${randomSuffix()}` });
+      await createMembership(admin.id, parentOrg.id, 'ADMIN');
+
+      const childResponse = await request(app)
+        .post(`${BASE_PATH}/orgs`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({
+          name: `child_${randomSuffix()}`,
+          displayName: 'Child Org',
+          _parentId: parentOrg.id,
+        });
+      const childId = childResponse.body.id;
+
+      let membersResponse = await request(app)
+        .get(`${BASE_PATH}/orgs/${childId}/members`)
+        .set('Authorization', `Bearer ${owner.token}`);
+      expect(membersResponse.body.map((m: any) => m.user.id)).toContain(admin.id);
+
+      await request(app)
+        .put(`${BASE_PATH}/orgs/${parentOrg.id}/members/${admin.id}`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({ role: 'MEMBER' });
+
+      membersResponse = await request(app)
+        .get(`${BASE_PATH}/orgs/${childId}/members`)
+        .set('Authorization', `Bearer ${owner.token}`);
+      expect(membersResponse.body.map((m: any) => m.user.id)).not.toContain(admin.id);
+    });
+
+    it('promoting MEMBER to ADMIN creates child memberships', async () => {
+      const { user: owner } = await createAndLoginUser('USER');
+      const { user: member } = await createAndLoginUser('USER');
+      const parentOrg = await createTestOrganization(owner.token, { name: `parent_${randomSuffix()}` });
+      await createMembership(member.id, parentOrg.id, 'MEMBER');
+
+      const childResponse = await request(app)
+        .post(`${BASE_PATH}/orgs`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({
+          name: `child_${randomSuffix()}`,
+          displayName: 'Child Org',
+          _parentId: parentOrg.id,
+        });
+      const childId = childResponse.body.id;
+
+      let membersResponse = await request(app)
+        .get(`${BASE_PATH}/orgs/${childId}/members`)
+        .set('Authorization', `Bearer ${owner.token}`);
+      expect(membersResponse.body.map((m: any) => m.user.id)).not.toContain(member.id);
+
+      await request(app)
+        .put(`${BASE_PATH}/orgs/${parentOrg.id}/members/${member.id}`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({ role: 'ADMIN' });
+
+      membersResponse = await request(app)
+        .get(`${BASE_PATH}/orgs/${childId}/members`)
+        .set('Authorization', `Bearer ${owner.token}`);
+      expect(membersResponse.body.map((m: any) => m.user.id)).toContain(member.id);
+    });
+
+    it('removing OWNER/ADMIN from parent removes them from children', async () => {
+      const { user: owner } = await createAndLoginUser('USER');
+      const { user: admin } = await createAndLoginUser('USER');
+      const parentOrg = await createTestOrganization(owner.token, { name: `parent_${randomSuffix()}` });
+      await createMembership(admin.id, parentOrg.id, 'ADMIN');
+
+      const childResponse = await request(app)
+        .post(`${BASE_PATH}/orgs`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({
+          name: `child_${randomSuffix()}`,
+          displayName: 'Child Org',
+          _parentId: parentOrg.id,
+        });
+      const childId = childResponse.body.id;
+
+      let membersResponse = await request(app)
+        .get(`${BASE_PATH}/orgs/${childId}/members`)
+        .set('Authorization', `Bearer ${owner.token}`);
+      expect(membersResponse.body.map((m: any) => m.user.id)).toContain(admin.id);
+
+      await request(app)
+        .delete(`${BASE_PATH}/orgs/${parentOrg.id}/members/${admin.id}`)
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      membersResponse = await request(app)
+        .get(`${BASE_PATH}/orgs/${childId}/members`)
+        .set('Authorization', `Bearer ${owner.token}`);
+      expect(membersResponse.body.map((m: any) => m.user.id)).not.toContain(admin.id);
+    });
+
+    it('propagation works across multiple levels of nesting', async () => {
+      const { user: owner } = await createAndLoginUser('USER');
+      const { user: admin } = await createAndLoginUser('USER');
+      const parentOrg = await createTestOrganization(owner.token, { name: `grand_${randomSuffix()}` });
+      await createMembership(admin.id, parentOrg.id, 'ADMIN');
+
+      const childResponse = await request(app)
+        .post(`${BASE_PATH}/orgs`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({
+          name: `child_${randomSuffix()}`,
+          displayName: 'Child Org',
+          _parentId: parentOrg.id,
+        });
+      const childId = childResponse.body.id;
+
+      const grandchildResponse = await request(app)
+        .post(`${BASE_PATH}/orgs`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({
+          name: `grandchild_${randomSuffix()}`,
+          displayName: 'Grandchild Org',
+          _parentId: childId,
+        });
+      const grandchildId = grandchildResponse.body.id;
+
+      const membersResponse = await request(app)
+        .get(`${BASE_PATH}/orgs/${grandchildId}/members`)
+        .set('Authorization', `Bearer ${owner.token}`);
+      const memberIds = membersResponse.body.map((m: any) => m.user.id);
+      expect(memberIds).toContain(owner.id);
+      expect(memberIds).toContain(admin.id);
+    });
+
+    it('adding OWNER/ADMIN member to parent propagates to existing children', async () => {
+      const { user: owner } = await createAndLoginUser('USER');
+      const { user: newAdmin } = await createAndLoginUser('USER');
+      const parentOrg = await createTestOrganization(owner.token, { name: `parent_${randomSuffix()}` });
+
+      const childResponse = await request(app)
+        .post(`${BASE_PATH}/orgs`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({
+          name: `child_${randomSuffix()}`,
+          displayName: 'Child Org',
+          _parentId: parentOrg.id,
+        });
+      const childId = childResponse.body.id;
+
+      let membersResponse = await request(app)
+        .get(`${BASE_PATH}/orgs/${childId}/members`)
+        .set('Authorization', `Bearer ${owner.token}`);
+      expect(membersResponse.body.map((m: any) => m.user.id)).not.toContain(newAdmin.id);
+
+      await request(app)
+        .post(`${BASE_PATH}/orgs/${parentOrg.id}/members`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({ userId: newAdmin.id, role: 'ADMIN' });
+
+      membersResponse = await request(app)
+        .get(`${BASE_PATH}/orgs/${childId}/members`)
+        .set('Authorization', `Bearer ${owner.token}`);
+      expect(membersResponse.body.map((m: any) => m.user.id)).toContain(newAdmin.id);
+    });
+
+    it('adding MEMBER to parent does NOT propagate to children', async () => {
+      const { user: owner } = await createAndLoginUser('USER');
+      const { user: newMember } = await createAndLoginUser('USER');
+      const parentOrg = await createTestOrganization(owner.token, { name: `parent_${randomSuffix()}` });
+
+      const childResponse = await request(app)
+        .post(`${BASE_PATH}/orgs`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({
+          name: `child_${randomSuffix()}`,
+          displayName: 'Child Org',
+          _parentId: parentOrg.id,
+        });
+      const childId = childResponse.body.id;
+
+      await request(app)
+        .post(`${BASE_PATH}/orgs/${parentOrg.id}/members`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({ userId: newMember.id, role: 'MEMBER' });
+
+      const membersResponse = await request(app)
+        .get(`${BASE_PATH}/orgs/${childId}/members`)
+        .set('Authorization', `Bearer ${owner.token}`);
+      expect(membersResponse.body.map((m: any) => m.user.id)).not.toContain(newMember.id);
+    });
+
+    it('promoting to OWNER also propagates to children', async () => {
+      const { user: owner } = await createAndLoginUser('USER');
+      const { user: member } = await createAndLoginUser('USER');
+      const parentOrg = await createTestOrganization(owner.token, { name: `parent_${randomSuffix()}` });
+      await createMembership(member.id, parentOrg.id, 'MEMBER');
+
+      const childResponse = await request(app)
+        .post(`${BASE_PATH}/orgs`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({
+          name: `child_${randomSuffix()}`,
+          displayName: 'Child Org',
+          _parentId: parentOrg.id,
+        });
+      const childId = childResponse.body.id;
+
+      await request(app)
+        .put(`${BASE_PATH}/orgs/${parentOrg.id}/members/${member.id}`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({ role: 'OWNER' });
+
+      const membersResponse = await request(app)
+        .get(`${BASE_PATH}/orgs/${childId}/members`)
+        .set('Authorization', `Bearer ${owner.token}`);
+      expect(membersResponse.body.map((m: any) => m.user.id)).toContain(member.id);
+    });
+
+    it('top-level org creation does NOT attempt propagation', async () => {
+      const { user: owner } = await createAndLoginUser('USER');
+      const response = await request(app)
+        .post(`${BASE_PATH}/orgs`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({
+          name: `top_${randomSuffix()}`,
+          displayName: 'Top Org',
+        });
+      expect(response.status).toBe(201);
+      expect(response.body._parentId).toBeFalsy();
     });
   });
 });

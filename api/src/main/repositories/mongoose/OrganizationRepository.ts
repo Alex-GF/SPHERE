@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { LeanOrganization } from '../../types/models/Organization';
 import RepositoryBase from '../RepositoryBase';
 import OrganizationMongoose from './models/OrganizationMongoose';
@@ -42,6 +43,13 @@ class OrganizationRepository extends RepositoryBase {
   async destroy(id: string) {
     const result = await OrganizationMongoose.deleteOne({ _id: id });
     return result?.deletedCount === 1;
+  }
+
+  async findChildOrganizationIds(parentId: string): Promise<string[]> {
+    const children = await OrganizationMongoose.find({ _parentId: new mongoose.Types.ObjectId(parentId) })
+      .select('_id')
+      .lean();
+    return children.map((c: any) => c._id.toString());
   }
 }
 
