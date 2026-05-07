@@ -46,6 +46,14 @@ class OrganizationService {
   }
 
   async createWithOwner(data: any, userId: string) {
+    if (data._parentId) {
+      const parent: any = await this.organizationRepository.findById(data._parentId);
+      if (!parent) {
+        throw new Error('NOT FOUND: Parent organization not found');
+      }
+      data.ancestors = [...(parent.ancestors ?? []), parent.id ?? parent._id?.toString()];
+    }
+
     const organization: any = await this.organizationRepository.create(data);
     await this.organizationMembershipRepository.create({
       _userId: userId,
@@ -164,6 +172,10 @@ class OrganizationService {
       throw new Error('NOT FOUND: Organization membership not found');
     }
 
+    if (currentMembership.role === 'OWNER' && reqUser.orgRole !== 'OWNER') {
+      throw new Error('PERMISSION ERROR: Only OWNER users can modify the role of another OWNER');
+    }
+
     if (currentMembership.role === 'OWNER' && role !== 'OWNER') {
       const ownerCount = await this.organizationMembershipRepository.countOwners(organizationId);
       if (ownerCount < 2) {
@@ -179,10 +191,14 @@ class OrganizationService {
     return updatedMembership;
   }
 
-  async removeMember(userId: string, organizationId: string) {
+  async removeMember(userId: string, organizationId: string, reqUser?: LeanUser & {orgRole: OrgRole}) {
     const membership: any = await this.organizationMembershipRepository.findByUserAndOrganization(userId, organizationId);
     if (!membership) {
       throw new Error('NOT FOUND: Organization membership not found');
+    }
+
+    if (membership.role === 'OWNER' && reqUser && reqUser.orgRole !== 'OWNER') {
+      throw new Error('PERMISSION ERROR: Only OWNER users can remove another OWNER from the organization');
     }
 
     if (membership.role === 'OWNER') {

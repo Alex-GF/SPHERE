@@ -101,11 +101,6 @@ async function populateOrganizationContext(req: Request): Promise<void> {
 
       const role = await organizationService.getUserOrgRole((req as any).user.id, organizationId);
 
-      // Global ADMIN bypasses organization membership checks.
-      if (!role && (req as any).user.role !== 'ADMIN') {
-        throw new Error('PERMISSION ERROR: You do not belong to this organization');
-      }
-
       if ((req as any).authType === 'api-key' && (req as any).user.apiKey) {
         const scope = _resolveApiKeyScope(
           (req as any).user.apiKey,
@@ -119,6 +114,11 @@ async function populateOrganizationContext(req: Request): Promise<void> {
 
         (req as any).user.orgRole = _intersectRoleWithScope(role, scope);
       } else {
+        // Global ADMIN bypasses organization membership checks.
+        if (!role && (req as any).user.role !== 'ADMIN') {
+          throw new Error('PERMISSION ERROR: You do not belong to this organization');
+        }
+
         (req as any).user.orgRole = (req as any).user.role === 'ADMIN' ? 'OWNER' : role;
       }
     } else {
@@ -259,7 +259,7 @@ function _resolveApiKeyScope(
 }
 
 function _intersectRoleWithScope(
-  orgRole: 'OWNER' | 'ADMIN' | 'MEMBER',
+  orgRole: 'OWNER' | 'ADMIN' | 'MEMBER' | null,
   apiKeyScope: string
 ): 'OWNER' | 'ADMIN' | 'MEMBER' {
   if (apiKeyScope === 'VIEW') {
@@ -267,10 +267,10 @@ function _intersectRoleWithScope(
   }
 
   if (apiKeyScope === 'MANAGEMENT') {
-    return ROLE_WEIGHT[orgRole] >= ROLE_WEIGHT.ADMIN ? 'ADMIN' : orgRole;
+    return orgRole && ROLE_WEIGHT[orgRole] >= ROLE_WEIGHT.ADMIN ? 'ADMIN' : (orgRole ?? 'MEMBER');
   }
 
-  return orgRole; // ALL
+  return orgRole ?? 'MEMBER'; // ALL
 }
 
 export { authenticateTokenMiddleware };

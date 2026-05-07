@@ -4,7 +4,7 @@ import OrganizationMembershipMongoose from './models/OrganizationMembershipMongo
 import { OrgRole, ROLE_WEIGHT } from '../../types/models/Organization';
 
 class OrganizationMembershipRepository extends RepositoryBase {
-  async findByUserId(userId: string) {
+  async findByUserId(userId: string, includeSubOrgs = false) {
     try {
       return await OrganizationMembershipMongoose.aggregate([
         { $match: { _userId: new mongoose.Types.ObjectId(userId) } },
@@ -23,6 +23,15 @@ class OrganizationMembershipRepository extends RepositoryBase {
             'organization.id': { $toString: '$organization._id' },
           },
         },
+        ...(!includeSubOrgs
+          ? [
+              {
+                $match: {
+                  'organization._parentId': null, // Only return memberships for top-level organizations
+                },
+              },
+            ]
+          : []),
         {
           $project: {
             _id: 0,
@@ -87,11 +96,14 @@ class OrganizationMembershipRepository extends RepositoryBase {
     organizationId: string
   ): Promise<OrgRole | null> {
     try {
+      const targetOrgObjectId = new mongoose.Types.ObjectId(organizationId);
+      const userObjectId = new mongoose.Types.ObjectId(userId);
+
       const membership = await OrganizationMembershipMongoose.aggregate([
         {
           $lookup: {
             from: 'organizations',
-            let: { targetOrgId: new mongoose.Types.ObjectId(organizationId) },
+            let: { targetOrgId: targetOrgObjectId },
             pipeline: [
               { $match: { $expr: { $eq: ['$_id', '$$targetOrgId'] } } },
               { $project: { ancestors: 1 } },
@@ -102,14 +114,14 @@ class OrganizationMembershipRepository extends RepositoryBase {
         { $unwind: '$targetOrg' },
         {
           $match: {
-            _userId: new mongoose.Types.ObjectId(userId),
+            _userId: userObjectId,
             $expr: {
               $in: [
                 '$_organizationId',
                 {
                   $concatArrays: [
-                    [new mongoose.Types.ObjectId(organizationId)],
-                    '$targetOrg.ancestors',
+                    [targetOrgObjectId],
+                    { $ifNull: ['$targetOrg.ancestors', []] },
                   ],
                 },
               ],
@@ -118,6 +130,7 @@ class OrganizationMembershipRepository extends RepositoryBase {
         },
         {
           $addFields: {
+            isDirect: { $eq: ['$_organizationId', targetOrgObjectId] },
             roleWeight: {
               $switch: {
                 branches: [
@@ -130,11 +143,21 @@ class OrganizationMembershipRepository extends RepositoryBase {
             },
           },
         },
+        {
+          $match: {
+            $expr: {
+              $or: [
+                { $eq: ['$isDirect', true] },
+                { $in: ['$role', ['OWNER', 'ADMIN']] },
+              ],
+            },
+          },
+        },
         { $sort: { roleWeight: -1 } },
         { $limit: 1 },
       ]);
       return membership.length > 0 ? membership[0].role : null;
-    } catch {
+    } catch (err) {
       return null;
     }
   }

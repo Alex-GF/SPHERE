@@ -23,7 +23,7 @@ class OrganizationRepository extends RepositoryBase {
 
   async findById(id: string) {
     try {
-      const org = await OrganizationMongoose.findById(id);
+      const org = await OrganizationMongoose.findById(id).populate('subOrganizations');
       return org ? org.toObject() : null;
     } catch {
       return null;

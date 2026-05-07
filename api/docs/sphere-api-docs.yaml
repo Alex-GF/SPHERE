@@ -551,6 +551,10 @@ paths:
         - **`isPersonal`** (optional, default `false`): When set to `true`, the `name` field
           is automatically overridden with the authenticated user's username (lowercase).
           Personal organizations are special-purpose and cannot be deleted.
+        - **`_parentId`** (optional): The ID of a parent organization. When provided, the new
+          organization becomes a child of the specified parent. The `ancestors` array is
+          automatically computed from the parent's ancestry chain. Users with membership in
+          the parent organization automatically inherit role-based access to child organizations.
 
         **Cascading Actions**:
         - An `OrganizationMembership` record is created linking the authenticated user
@@ -571,6 +575,7 @@ paths:
               displayName: "Acme Corporation"
               description: "The leading provider of SaaS solutions"
               isPersonal: false
+              _parentId: "68050bd09890322c57842f6f"
       responses:
         '201':
           description: Organization created successfully — the authenticated user is set as OWNER
@@ -2842,7 +2847,8 @@ components:
       description: |
         Represents an organization in the SPHERE platform. Organizations group users
         together and can own pricings and collections. Each user is automatically assigned
-        a personal organization upon registration.
+        a personal organization upon registration. Organizations support hierarchical
+        parent-child relationships via the `_parentId` and `ancestors` fields.
       required:
         - id
         - name
@@ -2880,6 +2886,50 @@ components:
           nullable: true
           description: URL to the organization's avatar image
           example: "https://sphere.score.us.es/static/avatars/orgs/org-avatar.png"
+        _parentId:
+          type: string
+          nullable: true
+          description: |
+            ID of the parent organization, or `null` if this is a top-level organization.
+            When set, this organization is a child in the hierarchy. Users with membership
+            in ancestor organizations automatically inherit role-based access.
+          example: "68050bd09890322c57842f6f"
+        ancestors:
+          type: array
+          description: |
+            Materialized path of ancestor organization IDs from root to immediate parent.
+            Empty array for top-level organizations. Used for efficient hierarchy queries
+            and role inheritance resolution.
+          items:
+            type: string
+          example: ["68050bd09890322c57842f6f"]
+        subOrganizations:
+          type: array
+          description: |
+            List of immediate child organizations. Not stored in the database, but included
+            in API responses for convenience when fetching organization details.
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              displayName:
+                type: string
+              description:
+                type: string
+                nullable: true
+              _parentId:
+                type: string
+                nullable: true
+              ancestors:
+                type: array
+                items:
+                  type: string
+              avatar:
+                type: string
+                nullable: true
         isPersonal:
           type: boolean
           description: |
@@ -3419,12 +3469,6 @@ components:
                 nullable: true
                 description: Optional free-text description of the organization
                 example: "The leading provider of SaaS solutions"
-              avatarUrl:
-                type: string
-                nullable: true
-                format: uri
-                description: Optional URL to the organization's avatar image (must be a valid URL)
-                example: "https://sphere.score.us.es/static/avatars/orgs/org-avatar.png"
               isPersonal:
                 type: boolean
                 description: |
@@ -3433,6 +3477,15 @@ components:
                   Personal organizations cannot be deleted.
                 default: false
                 example: false
+              _parentId:
+                type: string
+                description: |
+                  ID of a parent organization. When provided, the new organization becomes
+                  a child of the specified parent. The `ancestors` array is automatically
+                  computed from the parent's ancestry chain. Users with membership in
+                  ancestor organizations automatically inherit role-based access to the
+                  new child organization.
+                example: "68050bd09890322c57842f6f"
 
     OrganizationUpdate:
       description: |
@@ -3454,11 +3507,10 @@ components:
                 nullable: true
                 description: Updated description (set to `null` to clear)
                 example: "Updated description"
-              avatarUrl:
+              avatar:
                 type: string
                 nullable: true
-                format: uri
-                description: Updated avatar URL (must be a valid URL, set to `null` to clear)
+                description: Updated avatar URL (set to `null` to clear)
                 example: "https://sphere.score.us.es/static/avatars/orgs/new-avatar.png"
 
     AddMember:

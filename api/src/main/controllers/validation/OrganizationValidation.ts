@@ -28,6 +28,12 @@ const create = [
     .withMessage('The description field must be a string')
     .trim(),
   check('isPersonal').optional().isBoolean().withMessage('The isPersonal field must be a boolean'),
+  check('_parentId')
+    .optional()
+    .isString()
+    .withMessage('The _parentId field must be a string')
+    .matches(/^[a-f0-9]{24}$/)
+    .withMessage('The _parentId must be a valid MongoDB ObjectId'),
 ];
 
 const update = [
