@@ -1,16 +1,22 @@
 import container from '../config/container';
 import UserRepository from '../repositories/mongoose/UserRepository';
+import OrganizationMembershipRepository from '../repositories/mongoose/OrganizationMembershipRepository';
 import { USER_ROLES } from '../types/config/permissions';
 import { LeanUser, UserFilters } from '../types/models/User';
 import { processFileUris } from './FileService';
 import bcrypt from 'bcryptjs';
 import { generateUserTokenDTO, hashPassword } from '../utils/users/helpers';
+import OrganizationService from './OrganizationService';
 
 class UserService {
   private userRepository: UserRepository;
+  private organizationService: OrganizationService;
+  private organizationMembershipRepository: OrganizationMembershipRepository;
 
   constructor() {
     this.userRepository = container.resolve('userRepository');
+    this.organizationService = container.resolve('organizationService');
+    this.organizationMembershipRepository = container.resolve('organizationMembershipRepository');
   }
 
   async index(queryParams: any): Promise<LeanUser[]> {
@@ -59,10 +65,17 @@ class UserService {
       );
     }
 
-    newUser.avatar = newUser.avatar || 'avatars/default-avatar.png';
+    newUser.avatar = newUser.avatar || `${process.env.AVATARS_FOLDER}/default-avatar.png`;
     newUser = { ...newUser, ...generateUserTokenDTO() };
 
     const registeredUser = await this.userRepository.create(newUser);
+
+    // Business rule: every user must have a personal organization they cannot delete.
+    // Create it immediately after user creation.
+    await this.organizationService.ensurePersonalOrganizationForUser({
+      id: registeredUser.id,
+      username: registeredUser.username,
+    });
 
     return registeredUser;
   }
@@ -162,12 +175,44 @@ class UserService {
       throw new Error('NOT FOUND: User not found');
     }
 
-    // Validación: no permitir eliminar al último admin
     if (userToDelete.role === 'ADMIN') {
       const allAdmins = await this.userRepository.find({role: 'ADMIN'});
       const adminCount = allAdmins.filter((u: LeanUser) => u.username !== targetUsername).length;
       if (adminCount < 1) {
         throw new Error('PERMISSION ERROR: There must always be at least one ADMIN user in the system.');
+      }
+    }
+
+    const userId = (userToDelete as any)._id?.toString() ?? userToDelete.id;
+    const userMemberships = await this.organizationMembershipRepository.findByUserId(userId);
+
+    for (const membership of userMemberships) {
+      const org = membership.organization;
+      const isPersonal = org.isPersonal;
+      const membershipRole = membership.role;
+
+      if (isPersonal) {
+        await this.organizationService.destroy(org.id, true);
+      } else {
+        const membersBefore = await this.organizationService.listMembers(org.id, userId);
+
+        if (membershipRole === 'OWNER' && membersBefore.length > 0) {
+          const adminMember = membersBefore.find((m: any) => m.role === 'ADMIN');
+          const newOwner = adminMember ?? membersBefore[0];
+          await this.organizationService.updateMemberRole(
+            newOwner.user.id,
+            org.id,
+            'OWNER',
+            { ...reqUser, orgRole: 'OWNER' }
+          );
+        }
+
+        await this.organizationService.removeMember(userId, org.id);
+
+        const remainingMembers = await this.organizationService.listMembers(org.id);
+        if (remainingMembers.length === 0) {
+          await this.organizationService.destroy(org.id, true);
+        }
       }
     }
 

@@ -1,9 +1,24 @@
-export function getPricingByNameAndOwnerAggregator(pricingName: string, owner: string) {
+import mongoose from 'mongoose';
+
+export function getPricingByNameOrganizationAndVersionAggregator(
+  pricingName: string,
+  organizationId: string,
+  version?: string
+) {
+  const versionMatch = version
+    ? { $eq: [{ $toLower: '$version' }, { $toLower: version }] }
+    : { $literal: true };
+
   return [
     {
       $match: {
-        name: { $regex: `^${pricingName}$`, $options: 'i' },
-        owner: { $regex: `^${owner}$`, $options: 'i' },
+        $expr: {
+          $and: [
+            { $eq: [{ $toLower: '$name' }, { $toLower: pricingName }] },
+            { $eq: ['$_organizationId', new mongoose.Types.ObjectId(organizationId)] },
+            versionMatch,
+          ],
+        },
       },
     },
     {
@@ -29,7 +44,7 @@ export function getPricingByNameAndOwnerAggregator(pricingName: string, owner: s
           },
           {
             $project: {
-              name: 1
+              name: 1,
             },
           },
         ],
@@ -38,25 +53,27 @@ export function getPricingByNameAndOwnerAggregator(pricingName: string, owner: s
     },
     {
       $lookup: {
-        from: 'users',
-        localField: 'owner',
-        foreignField: 'username',
-        as: 'owner',
+        from: 'organizations',
+        localField: '_organizationId',
+        foreignField: '_id',
+        as: 'organization',
         pipeline: [
           {
             $project: {
               _id: 1,
-              username: 1,
+              name: 1,
+              displayName: 1,
+              avatar: 1,
             },
           },
         ],
       },
     },
     { $unwind: { path: '$collection', preserveNullAndEmptyArrays: true } },
-    { $unwind: { path: '$owner', preserveNullAndEmptyArrays: true } },
+    { $unwind: { path: '$organization', preserveNullAndEmptyArrays: true } },
     {
       $group: {
-        _id: { name: '$name', owner: '$owner.username', collectionName: '$collection.name' },
+        _id: { name: '$name', organizationId: { $toString: '$organization._id' }, collectionName: '$collection.name' },
         name: { $first: '$name' },
         collectionName: { $first: '$collection.name' },
         versions: {
@@ -76,9 +93,11 @@ export function getPricingByNameAndOwnerAggregator(pricingName: string, owner: s
             url: '$url',
             yaml: '$yaml',
             analytics: '$analytics',
-            owner: {
-              id: { $toString: '$owner._id' },
-              username: '$owner.username',
+            organization: {
+              id: { $toString: '$organization._id' },
+              name: '$organization.name',
+              displayName: '$organization.displayName',
+              avatar: '$organization.avatar',
             },
           },
         },
@@ -87,10 +106,10 @@ export function getPricingByNameAndOwnerAggregator(pricingName: string, owner: s
     {
       $project: {
         _id: 0,
-        name: 1, // `name` global
-        owner: 1, // `owner` global
+        name: 1,
+        organization: 1,
         collectionName: 1,
-        versions: { $sortArray: { input: '$versions', sortBy: { createdAt: -1 } } }, // Orden descendente por fecha
+        versions: { $sortArray: { input: '$versions', sortBy: { createdAt: -1 } } },
       },
     },
   ];

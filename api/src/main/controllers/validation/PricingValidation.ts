@@ -20,13 +20,6 @@ const update = [
     .isLength({ min: 1, max: 255 })
     .withMessage('The name must have between 1 and 255 characters long')
     .trim(),
-  check('owner')
-    .optional()
-    .isString()
-    .withMessage('The owner field must be a string')
-    .isLength({ min: 1, max: 255 })
-    .withMessage('The owner must have between 1 and 255 characters long')
-    .trim(),
   check('private')
     .optional()
     .isBoolean()

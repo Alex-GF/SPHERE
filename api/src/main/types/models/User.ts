@@ -1,4 +1,4 @@
-import { UserRole } from "../config/permissions";
+import { UserRole } from '../config/permissions';
 
 export interface LeanUser {
   id: string;
@@ -9,15 +9,31 @@ export interface LeanUser {
   lastName: string;
   email: string;
   avatar?: string;
-  phone?: string;
-  address?: string;
-  postalCode?: string;
   token?: string;
   tokenExpiration?: Date;
+  apiKeys: {
+    key: string;
+    name: string;
+    scopes: {
+      organizationId: string;
+      scope: 'ALL' | 'MANAGEMENT' | 'VIEW';
+    }[];
+    expiresAt?: Date;
+    revoked: boolean;
+  }[];
 }
+
+export type LeanUserWithApiKey = (Omit<LeanUser, 'apiKeys' | 'password'> & { apiKey: ApiKey })
 
 export type UserFilters = {
   username?: string;
   email?: string;
   role?: UserRole;
-}
+};
+
+export type ApiKey = {
+  key: string;
+  revoked: boolean;
+  expiresAt: Date | null;
+  scopes: { organizationId: string; scope: 'ALL' | 'MANAGEMENT' | 'VIEW' }[];
+};

@@ -8,8 +8,15 @@ import { LeanUser } from '../main/types/models/User';
 import { BASE_PATH, TEST_PASSWORD } from './utils/config/variables';
 import PricingCollectionMongoose from '../main/repositories/mongoose/models/PricingCollectionMongoose';
 import testContainer from './utils/config/testContainer';
-import { createAndTrackPricingYaml, createPricingForUser, createValidPricingYaml } from './utils/pricings/pricingTestUtils';
-import { createCollectionForUser, createTestCollectionWithPricings } from './utils/collections/collectionTestUtils';
+import {
+  createAndTrackPricingYaml,
+  createPricingForOrganization,
+  createValidPricingYaml,
+} from './utils/pricings/pricingTestUtils';
+import {
+  createCollectionForOrganization,
+  createTestCollectionWithPricings,
+} from './utils/collections/collectionTestUtils';
 import { randomSuffix } from './utils/helpers';
 import PricingMongoose from '../main/repositories/mongoose/models/PricingMongoose';
 
@@ -56,17 +63,16 @@ describe('Pricings API integration', () => {
 
   describe('GET /api/v1/pricings', () => {
     it('Return 200 and paginated pricing list with valid Bearer Authorization header.', async () => {
-      const user = await createAndLoginUser('USER');
-      
+      const { organizationId } = await createAndLoginUser('USER');
+
       for (let i = 0; i < 5; i++) {
-        await createPricingForUser({
-          username: user.username,
+        await createPricingForOrganization({
+          organizationId: organizationId,
           isPrivate: false,
         });
       }
-      
-      const response = await request(app)
-        .get(`${BASE_PATH}/pricings?limit=3&offset=0`);
+
+      const response = await request(app).get(`${BASE_PATH}/pricings?limit=3&offset=0`);
 
       expect(response.status).toBe(200);
       expect(response.body).toBeDefined();
@@ -78,42 +84,37 @@ describe('Pricings API integration', () => {
     });
 
     it('Return 200 and filtered/sorted pricing list when query parameters are provided.', async () => {
-      const user = await createAndLoginUser('USER');
+      const { organizationId } = await createAndLoginUser('USER');
 
-      const testPricing = await createPricingForUser({
-        username: user.username,
+      const testPricing = await createPricingForOrganization({
+        organizationId,
         isPrivate: false,
       });
-      
-      const response = await request(app)
-        .get(
-          `${BASE_PATH}/pricings?name=${testPricing.serviceName}&limit=5&offset=0`
-        );
+
+      const response = await request(app).get(
+        `${BASE_PATH}/pricings?name=${testPricing.serviceName}&limit=5&offset=0`
+      );
 
       expect(response.status).toBe(200);
       expect(Array.isArray(response.body.pricings)).toBe(true);
       expect(typeof response.body.total).toBe('number');
       expect(response.body.pricings.length).toBe(1);
     });
-    
-    it('Return 200 and only PUBLIC pricings if unauthenticated user make the request.', async () => {
-      
-      const user = await createTestUser('USER');
 
-      const publicPricing =  await createPricingForUser({
-          username: user.username,
-          isPrivate: false,
-        });
-        
-      await createPricingForUser({
-          username: user.username,
-          isPrivate: true,
-        });
-      
-      const response = await request(app)
-        .get(
-          `${BASE_PATH}/pricings`
-        );
+    it('Return 200 and only PUBLIC pricings if unauthenticated user make the request.', async () => {
+      const { organizationId } = await createTestUser('USER');
+
+      const publicPricing = await createPricingForOrganization({
+        organizationId: organizationId,
+        isPrivate: false,
+      });
+
+      await createPricingForOrganization({
+        organizationId: organizationId,
+        isPrivate: true,
+      });
+
+      const response = await request(app).get(`${BASE_PATH}/pricings`);
 
       expect(response.status).toBe(200);
       expect(Array.isArray(response.body.pricings)).toBe(true);
@@ -121,26 +122,22 @@ describe('Pricings API integration', () => {
       expect(response.body.pricings.length).toBe(1);
       expect(response.body.pricings[0].name).toBe(publicPricing.serviceName);
     });
-    
+
     it('Return 200 and only PUBLIC pricings if USER make the request.', async () => {
-      
-      const owner = await createTestUser('USER');
+      const { organizationId } = await createTestUser('USER');
 
+      const publicPricing = await createPricingForOrganization({
+        organizationId: organizationId,
+        isPrivate: false,
+      });
 
-      const publicPricing =  await createPricingForUser({
-          username: owner.username,
-          isPrivate: false,
-        });
-        
-      await createPricingForUser({
-          username: owner.username,
-          isPrivate: true,
-        });
-      
+      await createPricingForOrganization({
+        organizationId: organizationId,
+        isPrivate: true,
+      });
+
       const response = await request(app)
-        .get(
-          `${BASE_PATH}/pricings`
-        )
+        .get(`${BASE_PATH}/pricings`)
         .set('Authorization', `Bearer ${testUser.token}`);
 
       expect(response.status).toBe(200);
@@ -149,25 +146,22 @@ describe('Pricings API integration', () => {
       expect(response.body.pricings.length).toBe(1);
       expect(response.body.pricings[0].name).toBe(publicPricing.serviceName);
     });
-    
-    it('Return 200 and all pricings if ADMIN make the request.', async () => {
-      
-      const owner = await createTestUser('USER');
 
-      const publicPricing =  await createPricingForUser({
-          username: owner.username,
-          isPrivate: false,
-        });
-        
-      const privatePricing = await createPricingForUser({
-          username: owner.username,
-          isPrivate: true,
-        });
-      
+    it('Return 200 and all pricings if ADMIN make the request.', async () => {
+      const { organizationId } = await createTestUser('USER');
+
+      const publicPricing = await createPricingForOrganization({
+        organizationId: organizationId,
+        isPrivate: false,
+      });
+
+      const privatePricing = await createPricingForOrganization({
+        organizationId: organizationId,
+        isPrivate: true,
+      });
+
       const response = await request(app)
-        .get(
-          `${BASE_PATH}/pricings`
-        )
+        .get(`${BASE_PATH}/pricings`)
         .set('Authorization', `Bearer ${adminUser.token}`);
 
       expect(response.status).toBe(200);
@@ -198,7 +192,7 @@ describe('Pricings API integration', () => {
       expect(response.body.usageLimits).toBeDefined();
       expect(response.body.plans).toBeDefined();
     });
-    
+
     it('Return 200 and updated pricing object with unauthenticated user.', async () => {
       const serviceName = `updated_pricing_${randomSuffix()}`;
       const version = `3.1.${Math.floor(Math.random() * 1000)}`;
@@ -227,23 +221,22 @@ describe('Pricings API integration', () => {
     });
   });
 
-  describe('GET /api/v1/pricings/:username', () => {
+  describe('GET /api/v1/pricings/:organizationId', () => {
     it('Return 200 and pricing list with owner requesting own username.', async () => {
-      const owner = await createTestUser('USER');
-      usersToDelete.add(owner.username);
+      const { user: owner, organizationId } = await createTestUser('USER');
 
       const ownerLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
         loginField: owner.username,
         password: TEST_PASSWORD,
       });
 
-      await createPricingForUser({
-        username: owner.username,
+      await createPricingForOrganization({
+        organizationId,
         isPrivate: false,
       });
 
       const response = await request(app)
-        .get(`${BASE_PATH}/pricings/${owner.username}`)
+        .get(`${BASE_PATH}/pricings/${organizationId}`)
         .set('Authorization', `Bearer ${ownerLogin.body.token}`);
 
       expect(response.status).toBe(200);
@@ -251,24 +244,22 @@ describe('Pricings API integration', () => {
       expect(Array.isArray(response.body.pricings)).toBe(true);
     });
 
-    it('Return 200 and public pricing list with regular user requesting another username.', async () => {
-      const owner = await createTestUser('USER');
-      const requester = await createAndLoginUser('USER');
-      usersToDelete.add(owner.username);
-      usersToDelete.add(requester.username);
+    it('Return 200 and public pricing list with regular user requesting an organization they are not member of.', async () => {
+      const { organizationId } = await createTestUser('USER');
+      const { user: requester } = await createAndLoginUser('USER');
 
-      await createPricingForUser({
-        username: owner.username,
+      await createPricingForOrganization({
+        organizationId,
         isPrivate: false,
       });
-      
-      await createPricingForUser({
-        username: owner.username,
+
+      await createPricingForOrganization({
+        organizationId,
         isPrivate: true,
       });
 
       const response = await request(app)
-        .get(`${BASE_PATH}/pricings/${owner.username}`)
+        .get(`${BASE_PATH}/pricings/${organizationId}`)
         .set('Authorization', `Bearer ${requester.token}`);
 
       expect(response.status).toBe(200);
@@ -276,23 +267,23 @@ describe('Pricings API integration', () => {
       expect(Array.isArray(response.body.pricings)).toBe(true);
       expect(response.body.pricings.length).toBe(1);
     });
-    
-    it('Return 200 and public/private pricing list with ADMIN user requesting another username.', async () => {
-      const owner = await createTestUser('USER');
-      const requester = await createAndLoginUser('ADMIN');
 
-      await createPricingForUser({
-        username: owner.username,
+    it('Return 200 and public/private pricing list with ADMIN user requesting another username.', async () => {
+      const { organizationId } = await createTestUser('USER');
+      const { user: requester } = await createAndLoginUser('ADMIN');
+
+      await createPricingForOrganization({
+        organizationId,
         isPrivate: false,
       });
-      
-      await createPricingForUser({
-        username: owner.username,
+
+      await createPricingForOrganization({
+        organizationId,
         isPrivate: true,
       });
 
       const response = await request(app)
-        .get(`${BASE_PATH}/pricings/${owner.username}`)
+        .get(`${BASE_PATH}/pricings/${organizationId}`)
         .set('Authorization', `Bearer ${requester.token}`);
 
       expect(response.status).toBe(200);
@@ -300,23 +291,26 @@ describe('Pricings API integration', () => {
       expect(Array.isArray(response.body.pricings)).toBe(true);
       expect(response.body.pricings.length).toBe(2);
     });
-    
+
     it('Return 200 but not pricings in collection.', async () => {
-      const owner = await createTestUser('USER');
-      const requester = await createAndLoginUser('ADMIN');
+      const { organizationId } = await createTestUser('USER');
+      const { user: requester } = await createAndLoginUser('ADMIN');
 
-      const pricingInCollection = await createPricingForUser({
-        username: owner.username,
-      });
-      
-      await createPricingForUser({
-        username: owner.username,
+      const pricingInCollection = await createPricingForOrganization({
+        organizationId,
+        isPrivate: false,
       });
 
-      await createTestCollectionWithPricings({ _ownerName: owner.username }, [pricingInCollection.serviceName]);
+      await createPricingForOrganization({
+        organizationId: organizationId,
+      });
+
+      await createTestCollectionWithPricings({ _organizationId: organizationId }, [
+        pricingInCollection.serviceName,
+      ]);
 
       const response = await request(app)
-        .get(`${BASE_PATH}/pricings/${owner.username}`)
+        .get(`${BASE_PATH}/pricings/${organizationId}`)
         .set('Authorization', `Bearer ${requester.token}`);
 
       expect(response.status).toBe(200);
@@ -324,25 +318,25 @@ describe('Pricings API integration', () => {
       expect(Array.isArray(response.body.pricings)).toBe(true);
       expect(response.body.pricings.length).toBe(1);
     });
-    
+
     it('Return 200 with pricings in collections.', async () => {
-      const owner = await createTestUser('USER');
-      const requester = await createAndLoginUser('ADMIN');
+      const { organizationId } = await createTestUser('USER');
+      const { user: requester } = await createAndLoginUser('ADMIN');
 
-      const pricingInCollection = await createPricingForUser({
-        username: owner.username,
-        isPrivate: false,
-      });
-      
-      await createPricingForUser({
-        username: owner.username,
+      const pricingInCollection = await createPricingForOrganization({
+        organizationId,
         isPrivate: false,
       });
 
-      await createTestCollectionWithPricings(owner.username, [pricingInCollection.serviceName]);
+      await createPricingForOrganization({
+        organizationId,
+        isPrivate: false,
+      });
+
+      await createTestCollectionWithPricings({ _organizationId: organizationId }, [pricingInCollection.serviceName]);
 
       const response = await request(app)
-        .get(`${BASE_PATH}/pricings/${owner.username}?includePricingsInCollection=true`)
+        .get(`${BASE_PATH}/pricings/${organizationId}?includePricingsInCollection=true`)
         .set('Authorization', `Bearer ${requester.token}`);
 
       expect(response.status).toBe(200);
@@ -352,14 +346,14 @@ describe('Pricings API integration', () => {
     });
   });
 
-  describe('POST /api/v1/pricings/:username', () => {
+  describe('POST /api/v1/pricings/:organizationId', () => {
     it('Return 200 and pricing object when owner uploads valid pricing YAML.', async () => {
-      const owner = await createAndLoginUser('USER');
+      const { user: owner, organizationId } = await createAndLoginUser('USER');
 
       const fixture = await createValidPricingYaml(`pricing_${randomSuffix()}`);
 
       const response = await request(app)
-        .post(`${BASE_PATH}/pricings/${owner.username}`)
+        .post(`${BASE_PATH}/pricings/${organizationId}`)
         .set('Authorization', `Bearer ${owner.token}`)
         .field('private', 'false')
         .field('saasName', fixture.saasName)
@@ -368,17 +362,16 @@ describe('Pricings API integration', () => {
 
       expect(response.status).toBe(200);
       expect(response.body.name ?? response.body[0]?.name).toBe(fixture.saasName);
-      expect(response.body.owner ?? response.body[0]?.owner).toBe(owner.username);
     });
 
     it('Return 403 with USER role trying to create pricing for another user.', async () => {
-      const owner = await createAndLoginUser('USER');
-      const other = await createTestUser('USER');
+      const { user: owner } = await createAndLoginUser('USER');
+      const { organizationId: otherOrganizationId } = await createTestUser('USER');
 
       const filePath = await createAndTrackPricingYaml(`pricing_${randomSuffix()}`);
 
       const response = await request(app)
-        .post(`${BASE_PATH}/pricings/${other.username}`)
+        .post(`${BASE_PATH}/pricings/${otherOrganizationId}`)
         .set('Authorization', `Bearer ${owner.token}`)
         .field('private', 'false')
         .attach('yaml', filePath);
@@ -388,10 +381,10 @@ describe('Pricings API integration', () => {
     });
 
     it('Return 422 and validation errors object with missing private field.', async () => {
-      const owner = await createAndLoginUser('USER');
+      const { user: owner, organizationId } = await createAndLoginUser('USER');
 
       const response = await request(app)
-        .post(`${BASE_PATH}/pricings/${owner.username}`)
+        .post(`${BASE_PATH}/pricings/${organizationId}`)
         .set('Authorization', `Bearer ${owner.token}`)
         .field('saasName', `pricing_${randomSuffix()}`);
 
@@ -400,8 +393,10 @@ describe('Pricings API integration', () => {
     });
 
     it('Return 401 and error object with missing Authorization header.', async () => {
+      const { organizationId } = await createAndLoginUser('USER');
+
       const response = await request(app)
-        .post(`${BASE_PATH}/pricings/${testUser.username}`)
+        .post(`${BASE_PATH}/pricings/${organizationId}`)
         .field('private', 'false');
 
       expect(response.status).toBe(401);
@@ -409,17 +404,17 @@ describe('Pricings API integration', () => {
     });
   });
 
-  describe('GET /api/v1/pricings/:username/:pricingName', () => {
+  describe('GET /api/v1/pricings/:organizationId/:pricingName', () => {
     it('Return 200 and pricing details with owner requesting own pricing.', async () => {
-      const owner = await createAndLoginUser('USER');
+      const { user: owner, organizationId } = await createAndLoginUser('USER');
 
-      const { serviceName } = await createPricingForUser({
-        username: owner.username,
+      const { serviceName } = await createPricingForOrganization({
+        organizationId,
         isPrivate: false,
       });
 
       const response = await request(app)
-        .get(`${BASE_PATH}/pricings/${owner.username}/${serviceName}`)
+        .get(`${BASE_PATH}/pricings/${organizationId}/${serviceName}`)
         .set('Authorization', `Bearer ${owner.token}`);
 
       expect(response.status).toBe(200);
@@ -428,15 +423,15 @@ describe('Pricings API integration', () => {
     });
 
     it('Return 200 and pricing details with admin requesting another user pricing.', async () => {
-      const owner = await createTestUser('USER');
+      const { organizationId } = await createTestUser('USER');
 
-      const { serviceName } = await createPricingForUser({
-        username: owner.username,
+      const { serviceName } = await createPricingForOrganization({
+        organizationId,
         isPrivate: false,
       });
 
       const response = await request(app)
-        .get(`${BASE_PATH}/pricings/${owner.username}/${serviceName}`)
+        .get(`${BASE_PATH}/pricings/${organizationId}/${serviceName}`)
         .set('Authorization', `Bearer ${adminUser.token}`);
 
       expect(response.status).toBe(200);
@@ -445,16 +440,16 @@ describe('Pricings API integration', () => {
     });
 
     it('Return 404 with regular user requesting private pricing from another user.', async () => {
-      const owner = await createTestUser('USER');
-      const requester = await createAndLoginUser('USER');
+      const { organizationId } = await createTestUser('USER');
+      const { user: requester } = await createAndLoginUser('USER');
 
-      const { serviceName } = await createPricingForUser({
-        username: owner.username,
+      const { serviceName } = await createPricingForOrganization({
+        organizationId,
         isPrivate: true,
       });
 
       const response = await request(app)
-        .get(`${BASE_PATH}/pricings/${owner.username}/${serviceName}`)
+        .get(`${BASE_PATH}/pricings/${organizationId}/${serviceName}`)
         .set('Authorization', `Bearer ${requester.token}`);
 
       expect(response.status).toBe(404);
@@ -462,93 +457,96 @@ describe('Pricings API integration', () => {
     });
 
     it('Return 404 and error object with non-existing pricing name.', async () => {
+      const { organizationId } = await createAndLoginUser('USER');
+
       const response = await request(app)
-        .get(`${BASE_PATH}/pricings/${testUser.username}/nonexistent_pricing`)
-        .set('Authorization', `Bearer ${testUser.token}`);
+        .get(`${BASE_PATH}/pricings/${organizationId}/nonexistent_pricing`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
 
       expect(response.status).toBe(404);
       expect(response.body.error).toBeDefined();
     });
   });
-  
-  describe('GET /api/v1/pricings/:username/:pricingName/:pricingVersion', () => {
-    it('Return 200 and configuration space with non authenticated request over public pricing.', async () => {
-      const owner = await createAndLoginUser('USER');
 
-      const { serviceName, version } = await createPricingForUser({
-        username: owner.username,
+  describe('GET /api/v1/pricings/:organizationId/:pricingName/:pricingVersion', () => {
+    it('Return 200 and configuration space with non authenticated request over public pricing.', async () => {
+      const { organizationId } = await createAndLoginUser('USER');
+
+      const { serviceName, version } = await createPricingForOrganization({
+        organizationId,
         isPrivate: false,
       });
 
-      const response = await request(app)
-        .get(`${BASE_PATH}/pricings/${owner.username}/${serviceName}/${version}`);
+      const response = await request(app).get(
+        `${BASE_PATH}/pricings/${organizationId}/${serviceName}/${version}`
+      );
 
       expect(response.status).toBe(200);
       expect(response.body.configurationSpace).toBeDefined();
       expect(response.body.configurationSpaceSize).toBeGreaterThan(0);
     });
-    
-    it('Return 200 and configuration space with USER request over public pricing.', async () => {
-      const owner = await createAndLoginUser('USER');
 
-      const { serviceName, version } = await createPricingForUser({
-        username: owner.username,
+    it('Return 200 and configuration space with USER request over public pricing.', async () => {
+      const { organizationId } = await createAndLoginUser('USER');
+
+      const { serviceName, version } = await createPricingForOrganization({
+        organizationId,
         isPrivate: false,
       });
 
       const response = await request(app)
-        .get(`${BASE_PATH}/pricings/${owner.username}/${serviceName}/${version}`)
+        .get(`${BASE_PATH}/pricings/${organizationId}/${serviceName}/${version}`)
         .set('Authorization', `Bearer ${testUser.token}`);
 
       expect(response.status).toBe(200);
       expect(response.body.configurationSpace).toBeDefined();
       expect(response.body.configurationSpaceSize).toBeGreaterThan(0);
     });
-    
-    it('Return 200 and configuration space with ADMIN request over private pricing.', async () => {
-      const owner = await createAndLoginUser('USER');
 
-      const { serviceName, version } = await createPricingForUser({
-        username: owner.username,
+    it('Return 200 and configuration space with ADMIN request over private pricing.', async () => {
+      const { organizationId } = await createAndLoginUser('USER');
+
+      const { serviceName, version } = await createPricingForOrganization({
+        organizationId,
         isPrivate: true,
       });
 
       const response = await request(app)
-        .get(`${BASE_PATH}/pricings/${owner.username}/${serviceName}/${version}`)
+        .get(`${BASE_PATH}/pricings/${organizationId}/${serviceName}/${version}`)
         .set('Authorization', `Bearer ${adminUser.token}`);
 
       expect(response.status).toBe(200);
       expect(response.body.configurationSpace).toBeDefined();
       expect(response.body.configurationSpaceSize).toBeGreaterThan(0);
     });
-    
-    it('Return 200 and configuration space with owner request over private pricing.', async () => {
-      const owner = await createAndLoginUser('USER');
 
-      const { serviceName, version } = await createPricingForUser({
-        username: owner.username,
+    it('Return 200 and configuration space with owner request over private pricing.', async () => {
+      const { user: owner, organizationId } = await createAndLoginUser('USER');
+
+      const { serviceName, version } = await createPricingForOrganization({
+        organizationId,
         isPrivate: true,
       });
 
       const response = await request(app)
-        .get(`${BASE_PATH}/pricings/${owner.username}/${serviceName}/${version}`)
+        .get(`${BASE_PATH}/pricings/${organizationId}/${serviceName}/${version}`)
         .set('Authorization', `Bearer ${owner.token}`);
 
       expect(response.status).toBe(200);
       expect(response.body.configurationSpace).toBeDefined();
       expect(response.body.configurationSpaceSize).toBeGreaterThan(0);
     });
-    
-    it('Return 404 and configuration space with USER request over private pricing.', async () => {
-      const owner = await createAndLoginUser('USER');
 
-      const { serviceName, version } = await createPricingForUser({
-        username: owner.username,
+    it('Return 404 and configuration space with USER request over private pricing.', async () => {
+      const { organizationId } = await createAndLoginUser('USER');
+
+      const { serviceName, version } = await createPricingForOrganization({
+        organizationId,
         isPrivate: true,
       });
 
       const response = await request(app)
-        .get(`${BASE_PATH}/pricings/${owner.username}/${serviceName}/${version}`)
+        .get(`${BASE_PATH}/pricings/${organizationId}/${serviceName}/${version}`)
         .set('Authorization', `Bearer ${testUser.token}`);
 
       expect(response.status).toBe(404);
@@ -556,25 +554,27 @@ describe('Pricings API integration', () => {
     });
 
     it('Return 404 and error object with non-existing pricing name.', async () => {
+      const { organizationId } = await createAndLoginUser('USER');
+
       const response = await request(app)
-        .get(`${BASE_PATH}/pricings/${testUser.username}/nonexistent_pricing`)
-        .set('Authorization', `Bearer ${testUser.token}`);
+        .get(`${BASE_PATH}/pricings/${organizationId}/nonexistent_pricing`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
 
       expect(response.status).toBe(404);
       expect(response.body.error).toBeDefined();
     });
   });
 
-  describe('PUT /api/v1/pricings/:username/:pricingName', () => {
+  describe('PUT /api/v1/pricings/:organizationId/:pricingName', () => {
     it('Return 200 and updated pricing details when owner updates metadata.', async () => {
-      const owner = await createAndLoginUser('USER');
+      const { user: owner, organizationId } = await createAndLoginUser('USER');
 
-      const { serviceName } = await createPricingForUser({
-        username: owner.username,
+      const { serviceName } = await createPricingForOrganization({
+        organizationId,
       });
 
       const response = await request(app)
-        .put(`${BASE_PATH}/pricings/${owner.username}/${serviceName}`)
+        .put(`${BASE_PATH}/pricings/${organizationId}/${serviceName}`)
         .set('Authorization', `Bearer ${owner.token}`)
         .send({ url: 'https://example.com/pricing' });
 
@@ -584,14 +584,14 @@ describe('Pricings API integration', () => {
     });
 
     it('Return 200 and updated pricing details when ADMIN updates another user pricing.', async () => {
-      const owner = await createTestUser('USER');
+      const { organizationId } = await createTestUser('USER');
 
-      const { serviceName } = await createPricingForUser({
-        username: owner.username,
+      const { serviceName } = await createPricingForOrganization({
+        organizationId,
       });
 
       const response = await request(app)
-        .put(`${BASE_PATH}/pricings/${owner.username}/${serviceName}`)
+        .put(`${BASE_PATH}/pricings/${organizationId}/${serviceName}`)
         .set('Authorization', `Bearer ${adminUser.token}`)
         .send({ url: 'https://example.com/admin-update' });
 
@@ -601,15 +601,15 @@ describe('Pricings API integration', () => {
     });
 
     it('Return 403 with USER role trying to update another user pricing.', async () => {
-      const owner = await createTestUser('USER');
-      const requester = await createAndLoginUser('USER');
+      const { organizationId } = await createTestUser('USER');
+      const { user: requester } = await createAndLoginUser('USER');
 
-      const { serviceName } = await createPricingForUser({
-        username: owner.username,
+      const { serviceName } = await createPricingForOrganization({
+        organizationId,
       });
 
       const response = await request(app)
-        .put(`${BASE_PATH}/pricings/${owner.username}/${serviceName}`)
+        .put(`${BASE_PATH}/pricings/${organizationId}/${serviceName}`)
         .set('Authorization', `Bearer ${requester.token}`)
         .send({ private: true });
 
@@ -618,14 +618,14 @@ describe('Pricings API integration', () => {
     });
 
     it('Return 422 and validation errors object with invalid url field.', async () => {
-      const owner = await createAndLoginUser('USER');
+      const { user: owner, organizationId } = await createAndLoginUser('USER');
 
-      const { serviceName } = await createPricingForUser({
-        username: owner.username,
+      const { serviceName } = await createPricingForOrganization({
+        organizationId,
       });
 
       const response = await request(app)
-        .put(`${BASE_PATH}/pricings/${owner.username}/${serviceName}`)
+        .put(`${BASE_PATH}/pricings/${organizationId}/${serviceName}`)
         .set('Authorization', `Bearer ${owner.token}`)
         .send({ url: 'not-a-url' });
 
@@ -634,9 +634,11 @@ describe('Pricings API integration', () => {
     });
 
     it('Return 404 and error object with non-existing pricing.', async () => {
+      const { organizationId } = await createAndLoginUser('USER');
+
       const response = await request(app)
-        .put(`${BASE_PATH}/pricings/${testUser.username}/nonexistent_pricing`)
-        .set('Authorization', `Bearer ${testUser.token}`)
+        .put(`${BASE_PATH}/pricings/${organizationId}/nonexistent_pricing`)
+        .set('Authorization', `Bearer ${adminUser.token}`)
         .send({ private: true });
 
       expect(response.status).toBe(404);
@@ -644,16 +646,16 @@ describe('Pricings API integration', () => {
     });
   });
 
-  describe('DELETE /api/v1/pricings/:username/:pricingName', () => {
+  describe('DELETE /api/v1/pricings/:organizationId/:pricingName', () => {
     it('Return 200 and success message when owner deletes own pricing.', async () => {
-      const owner = await createAndLoginUser('USER');
+      const {user: owner, organizationId} = await createAndLoginUser('USER');
 
-      const { serviceName } = await createPricingForUser({
-        username: owner.username,
+      const { serviceName } = await createPricingForOrganization({
+        organizationId,
       });
 
       const response = await request(app)
-        .delete(`${BASE_PATH}/pricings/${owner.username}/${serviceName}`)
+        .delete(`${BASE_PATH}/pricings/${organizationId}/${serviceName}`)
         .set('Authorization', `Bearer ${owner.token}`);
 
       expect(response.status).toBe(200);
@@ -661,14 +663,14 @@ describe('Pricings API integration', () => {
     });
 
     it('Return 200 and success message when ADMIN deletes another user pricing.', async () => {
-      const owner = await createTestUser('USER');
+      const {organizationId} = await createTestUser('USER');
 
-      const { serviceName } = await createPricingForUser({
-        username: owner.username,
+      const { serviceName } = await createPricingForOrganization({
+        organizationId,
       });
 
       const response = await request(app)
-        .delete(`${BASE_PATH}/pricings/${owner.username}/${serviceName}`)
+        .delete(`${BASE_PATH}/pricings/${organizationId}/${serviceName}`)
         .set('Authorization', `Bearer ${adminUser.token}`);
 
       expect(response.status).toBe(200);
@@ -676,15 +678,15 @@ describe('Pricings API integration', () => {
     });
 
     it('Return 403 with USER role trying to delete another user pricing.', async () => {
-      const owner = await createTestUser('USER');
-      const requester = await createAndLoginUser('USER');
+      const {organizationId} = await createTestUser('USER');
+      const {user: requester} = await createAndLoginUser('USER');
 
-      const { serviceName } = await createPricingForUser({
-        username: owner.username,
+      const { serviceName } = await createPricingForOrganization({
+        organizationId,
       });
 
       const response = await request(app)
-        .delete(`${BASE_PATH}/pricings/${owner.username}/${serviceName}`)
+        .delete(`${BASE_PATH}/pricings/${organizationId}/${serviceName}`)
         .set('Authorization', `Bearer ${requester.token}`);
 
       expect(response.status).toBe(403);
@@ -692,29 +694,31 @@ describe('Pricings API integration', () => {
     });
 
     it('Return 404 with non-existing pricing (must not return 500).', async () => {
+      const { organizationId } = await createAndLoginUser('USER');
+      
       const response = await request(app)
-        .delete(`${BASE_PATH}/pricings/${testUser.username}/nonexistent_pricing`)
-        .set('Authorization', `Bearer ${testUser.token}`);
+        .delete(`${BASE_PATH}/pricings/${organizationId}/nonexistent_pricing`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
 
       expect(response.status).toBe(404);
       expect(response.body.error).toBeDefined();
     });
   });
 
-  describe('DELETE /api/v1/pricings/:username/:pricingName/:pricingVersion', () => {
+  describe('DELETE /api/v1/pricings/:organizationId/:pricingName/:pricingVersion', () => {
     it('Return 200 and success message when owner deletes a specific pricing version.', async () => {
-      const owner = await createAndLoginUser('USER');
+      const { user: owner, organizationId } = await createAndLoginUser('USER');
 
       const serviceName = `pricing_${randomSuffix()}`;
       const version = `2.0.${Math.floor(Math.random() * 1000)}`;
-      await createPricingForUser({
-        username: owner.username,
+      await createPricingForOrganization({
+        organizationId,
         serviceName,
         version,
       });
 
       const response = await request(app)
-        .delete(`${BASE_PATH}/pricings/${owner.username}/${serviceName}/${version}`)
+        .delete(`${BASE_PATH}/pricings/${organizationId}/${serviceName}/${version}`)
         .set('Authorization', `Bearer ${owner.token}`);
 
       expect(response.status).toBe(200);
@@ -722,18 +726,18 @@ describe('Pricings API integration', () => {
     });
 
     it('Return 200 and success message when ADMIN deletes another user pricing version.', async () => {
-      const owner = await createTestUser('USER');
+      const { organizationId } = await createTestUser('USER');
 
       const serviceName = `pricing_${randomSuffix()}`;
       const version = `2.1.${Math.floor(Math.random() * 1000)}`;
-      await createPricingForUser({
-        username: owner.username,
+      await createPricingForOrganization({
+        organizationId,
         serviceName,
         version,
       });
 
       const response = await request(app)
-        .delete(`${BASE_PATH}/pricings/${owner.username}/${serviceName}/${version}`)
+        .delete(`${BASE_PATH}/pricings/${organizationId}/${serviceName}/${version}`)
         .set('Authorization', `Bearer ${adminUser.token}`);
 
       expect(response.status).toBe(200);
@@ -741,19 +745,19 @@ describe('Pricings API integration', () => {
     });
 
     it('Return 403 with USER role trying to delete another user pricing version.', async () => {
-      const owner = await createTestUser('USER');
-      const requester = await createAndLoginUser('USER');
+      const { organizationId } = await createTestUser('USER');
+      const { user: requester } = await createAndLoginUser('USER');
 
       const serviceName = `pricing_${randomSuffix()}`;
       const version = `2.2.${Math.floor(Math.random() * 1000)}`;
-      await createPricingForUser({
-        username: owner.username,
+      await createPricingForOrganization({
+        organizationId,
         serviceName,
         version,
       });
 
       const response = await request(app)
-        .delete(`${BASE_PATH}/pricings/${owner.username}/${serviceName}/${version}`)
+        .delete(`${BASE_PATH}/pricings/${organizationId}/${serviceName}/${version}`)
         .set('Authorization', `Bearer ${requester.token}`);
 
       expect(response.status).toBe(403);
@@ -761,56 +765,32 @@ describe('Pricings API integration', () => {
     });
 
     it('Return 404 with non-existing pricing version (must not return 500).', async () => {
+      const { organizationId } = await createTestUser('USER');
+
       const response = await request(app)
-        .delete(`${BASE_PATH}/pricings/${testUser.username}/nonexistent_pricing/9.9.9`)
-        .set('Authorization', `Bearer ${testUser.token}`);
+        .delete(`${BASE_PATH}/pricings/${organizationId}/nonexistent_pricing/9.9.9`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
 
       expect(response.status).toBe(404);
       expect(response.body.error).toBeDefined();
     });
-  });
 
-  describe('PUT /api/v1/me/pricings', () => {
-    it('Return 200 and success message when adding own pricing to a valid collection.', async () => {
-      const owner = await createAndLoginUser('USER');
+    it('Return 404 with existing pricing name but non-existing version.', async () => {
+      const { organizationId } = await createTestUser('USER');
 
-      const collection = await createCollectionForUser(owner.username);
-
-      const { serviceName } = await createPricingForUser({
-        username: owner.username,
+      const serviceName = `pricing_${randomSuffix()}`;
+      await createPricingForOrganization({
+        organizationId,
+        serviceName,
+        version: '1.0.0',
       });
 
       const response = await request(app)
-        .put(`${BASE_PATH}/me/pricings`)
-        .set('Authorization', `Bearer ${owner.token}`)
-        .send({ pricingName: serviceName, collectionId: collection.id });
-
-      expect(response.status).toBe(200);
-      expect(response.body.message).toBeDefined();
-    });
-
-    it('Return 404 and error object when pricing does not exist for authenticated user.', async () => {
-      const owner = await createAndLoginUser('USER');
-
-      const collection = await createCollectionForUser(owner.username);
-
-      const response = await request(app)
-        .put(`${BASE_PATH}/me/pricings`)
-        .set('Authorization', `Bearer ${owner.token}`)
-        .send({ pricingName: `nonexistent_${randomSuffix()}`, collectionId: collection.id });
+        .delete(`${BASE_PATH}/pricings/${organizationId}/${serviceName}/nonexistent_version`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
 
       expect(response.status).toBe(404);
-      expect(response.body.error).toBeDefined();
-    });
-
-    it('Return 401 and error object with missing Authorization header.', async () => {
-      const response = await request(app)
-        .put(`${BASE_PATH}/me/pricings`)
-        .send({ pricingName: 'any-pricing', collectionId: '507f1f77bcf86cd799439011' });
-
-      expect(response.status).toBe(401);
       expect(response.body.error).toBeDefined();
     });
   });
 });
-

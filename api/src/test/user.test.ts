@@ -3,9 +3,15 @@ import request from 'supertest';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { shutdownApp, TestApp } from './utils/testApp';
 import { createTestUser, deleteTestUser } from './utils/users/userTestUtils';
+import {
+  createTestOrganizationDirect,
+  createMembership,
+} from './utils/organizations/organizationTestUtils';
 import { LeanUser } from '../main/types/models/User';
 import { BASE_PATH, TEST_PASSWORD } from './utils/config/variables';
 import testContainer from './utils/config/testContainer';
+import OrganizationMongoose from '../main/repositories/mongoose/models/OrganizationMongoose';
+import OrganizationMembershipMongoose from '../main/repositories/mongoose/models/OrganizationMembershipMongoose';
 
 dotenv.config();
 
@@ -32,8 +38,8 @@ describe('Users API integration', () => {
 
   describe('GET /api/users', () => {
     it('Return 200 and array of users with ADMIN role.', async () => {
-      const newUser1 = await createTestUser('USER');
-      const newUser2 = await createTestUser('USER');
+      const { user: newUser1 } = await createTestUser('USER');
+      const { user: newUser2 } = await createTestUser('USER');
 
       const response = await request(app)
         .get(`${BASE_PATH}/users`)
@@ -48,7 +54,7 @@ describe('Users API integration', () => {
     });
 
     it('Return 200 and array of users with ADMIN role and username filter.', async () => {
-      const newUser1 = await createTestUser('USER');
+      const { user: newUser1 } = await createTestUser('USER');
       await createTestUser('USER');
 
       const response = await request(app)
@@ -61,7 +67,7 @@ describe('Users API integration', () => {
     });
 
     it('Return 200 and array of users with ADMIN role and email filter.', async () => {
-      const newUser1 = await createTestUser('USER');
+      const { user: newUser1 } = await createTestUser('USER');
       await createTestUser('USER');
 
       const response = await request(app)
@@ -76,7 +82,7 @@ describe('Users API integration', () => {
 
   describe('GET /api/users/me', () => {
     it('Return 200 and user object with valid Bearer Authorization header.', async () => {
-      const user = await createTestUser('USER');
+      const { user } = await createTestUser('USER');
 
       const response = await request(app)
         .get(`${BASE_PATH}/users/me`)
@@ -87,9 +93,9 @@ describe('Users API integration', () => {
       expect(response.body.email).toBe(user.email);
       expect(response.body.role).toBe(user.role);
     });
-    
+
     it('Return 401 with structurally valid token not linked to user', async () => {
-      const user = await createTestUser('USER');
+      const { user } = await createTestUser('USER');
 
       const response = await request(app)
         .get(`${BASE_PATH}/users/me`)
@@ -208,7 +214,7 @@ describe('Users API integration', () => {
 
   describe('POST /api/users/login', () => {
     it('Return 200 and token object with email as loginField parameter.', async () => {
-      const user = await createTestUser('USER');
+      const { user } = await createTestUser('USER');
       usersToDelete.add(user.username);
 
       const loginByEmail = await request(app).post(`${BASE_PATH}/users/login`).send({
@@ -221,7 +227,7 @@ describe('Users API integration', () => {
     });
 
     it('Return 200 and token object with username as loginField parameter.', async () => {
-      const user = await createTestUser('USER');
+      const { user } = await createTestUser('USER');
       usersToDelete.add(user.username);
 
       const loginByUsername = await request(app).post(`${BASE_PATH}/users/login`).send({
@@ -234,7 +240,7 @@ describe('Users API integration', () => {
     });
 
     it('Return 401 and error object with wrong password parameter.', async () => {
-      const user = await createTestUser('USER');
+      const { user } = await createTestUser('USER');
       usersToDelete.add(user.username);
 
       const response = await request(app).post(`${BASE_PATH}/users/login`).send({
@@ -288,7 +294,7 @@ describe('Users API integration', () => {
 
   describe('GET /api/users/:username', () => {
     it('Return 200 and full user object with owner requesting own username parameter.', async () => {
-      const user = await createTestUser('USER');
+      const { user } = await createTestUser('USER');
       usersToDelete.add(user.username);
 
       const response = await request(app)
@@ -304,8 +310,8 @@ describe('Users API integration', () => {
     });
 
     it('Return 200 and public user object with regular user requesting another username parameter.', async () => {
-      const user = await createTestUser('USER');
-      const otherUser = await createTestUser('USER');
+      const { user } = await createTestUser('USER');
+      const { user: otherUser } = await createTestUser('USER');
       usersToDelete.add(otherUser.username);
 
       const response = await request(app)
@@ -321,7 +327,7 @@ describe('Users API integration', () => {
     });
 
     it('Return 200 and full user object with admin requesting another username parameter.', async () => {
-      const targetUser = await createTestUser('USER');
+      const { user: targetUser } = await createTestUser('USER');
 
       const response = await request(app)
         .get(`${BASE_PATH}/users/${targetUser.username}`)
@@ -336,7 +342,7 @@ describe('Users API integration', () => {
     });
 
     it('Return 401 and error object with missing Authorization header.', async () => {
-      const user = await createTestUser('USER');
+      const { user } = await createTestUser('USER');
       usersToDelete.add(user.username);
 
       const response = await request(app).get(`${BASE_PATH}/users/${user.username}`);
@@ -346,7 +352,7 @@ describe('Users API integration', () => {
     });
 
     it('Return 401 and error object with malformed Authorization header.', async () => {
-      const user = await createTestUser('USER');
+      const { user } = await createTestUser('USER');
       usersToDelete.add(user.username);
 
       const response = await request(app)
@@ -358,7 +364,7 @@ describe('Users API integration', () => {
     });
 
     it('Return 404 and not found object with non-existing username parameter.', async () => {
-      const user = await createTestUser('USER');
+      const { user } = await createTestUser('USER');
       usersToDelete.add(user.username);
 
       const response = await request(app)
@@ -371,14 +377,13 @@ describe('Users API integration', () => {
 
   describe('PUT /api/users/:username', () => {
     it('Return 200 and updated user object with owner editing own profile parameters.', async () => {
-      const user = await createTestUser('USER');
+      const { user } = await createTestUser('USER');
       usersToDelete.add(user.username);
 
       const payload = {
         firstName: 'UpdatedName',
         lastName: 'UpdatedLastName',
-        phone: '+34-611-1111',
-        address: 'Test street',
+        email: 'updated@example.com',
       };
 
       const response = await request(app)
@@ -389,12 +394,11 @@ describe('Users API integration', () => {
       expect(response.status).toBe(200);
       expect(response.body.firstName).toBe(payload.firstName);
       expect(response.body.lastName).toBe(payload.lastName);
-      expect(response.body.phone).toBe(payload.phone);
-      expect(response.body.address).toBe(payload.address);
+      expect(response.body.email).toBe(payload.email);
     });
 
     it('Return 200 and updated user object with owner changing password parameter.', async () => {
-      const user = await createTestUser('USER');
+      const { user } = await createTestUser('USER');
       const updatedPassword = 'newPassword123';
 
       const updateResponse = await request(app)
@@ -419,7 +423,7 @@ describe('Users API integration', () => {
     });
 
     it('Return 200 and updated user object with admin changing another user role parameter.', async () => {
-      const targetUser = await createTestUser('USER');
+      const { user: targetUser } = await createTestUser('USER');
 
       const response = await request(app)
         .put(`${BASE_PATH}/users/${targetUser.username}`)
@@ -431,8 +435,8 @@ describe('Users API integration', () => {
     });
 
     it('Return 403 and error object with regular user updating another username parameter.', async () => {
-      const user = await createTestUser('USER');
-      const otherUser = await createTestUser('USER');
+      const { user } = await createTestUser('USER');
+      const { user: otherUser } = await createTestUser('USER');
       usersToDelete.add(user.username);
       usersToDelete.add(otherUser.username);
 
@@ -446,7 +450,7 @@ describe('Users API integration', () => {
     });
 
     it('Return 403 and error object with regular user changing own role parameter.', async () => {
-      const user = await createTestUser('USER');
+      const { user } = await createTestUser('USER');
       usersToDelete.add(user.username);
 
       const response = await request(app)
@@ -459,7 +463,7 @@ describe('Users API integration', () => {
     });
 
     it('Return 422 and validation errors object with invalid email parameter.', async () => {
-      const user = await createTestUser('USER');
+      const { user } = await createTestUser('USER');
       usersToDelete.add(user.username);
 
       const response = await request(app)
@@ -472,8 +476,8 @@ describe('Users API integration', () => {
     });
 
     it('Return 422 and error object with duplicated username parameter.', async () => {
-      const user = await createTestUser('USER');
-      const existingUser = await createTestUser('USER');
+      const { user } = await createTestUser('USER');
+      const { user: existingUser } = await createTestUser('USER');
       usersToDelete.add(existingUser.username);
 
       const response = await request(app)
@@ -486,7 +490,7 @@ describe('Users API integration', () => {
     });
 
     it('Return 401 and error object with missing Authorization header.', async () => {
-      const user = await createTestUser('USER');
+      const { user } = await createTestUser('USER');
       usersToDelete.add(user.username);
 
       const response = await request(app)
@@ -498,7 +502,7 @@ describe('Users API integration', () => {
     });
 
     it('Return 404 and not found object with non-existing username parameter.', async () => {
-      const user = await createTestUser('USER');
+      const { user } = await createTestUser('USER');
       usersToDelete.add(user.username);
 
       const response = await request(app)
@@ -512,7 +516,7 @@ describe('Users API integration', () => {
 
   describe('PUT /api/users/:username/refresh-token', () => {
     it('Return 200 and token object with valid Bearer Authorization header.', async () => {
-      const user = await createTestUser('USER');
+      const { user } = await createTestUser('USER');
       usersToDelete.add(user.username);
 
       const response = await request(app)
@@ -526,7 +530,7 @@ describe('Users API integration', () => {
     });
 
     it('Return 401 and error object with missing Authorization header.', async () => {
-      const user = await createTestUser('USER');
+      const { user } = await createTestUser('USER');
       usersToDelete.add(user.username);
 
       const response = await request(app).put(`${BASE_PATH}/users/${user.username}/refresh-token`);
@@ -536,7 +540,7 @@ describe('Users API integration', () => {
     });
 
     it('Return 401 and error object with malformed Authorization header.', async () => {
-      const user = await createTestUser('USER');
+      const { user } = await createTestUser('USER');
       usersToDelete.add(user.username);
 
       const response = await request(app)
@@ -548,7 +552,7 @@ describe('Users API integration', () => {
     });
 
     it('Return 401 and error object with invalid Bearer token parameter.', async () => {
-      const user = await createTestUser('USER');
+      const { user } = await createTestUser('USER');
       usersToDelete.add(user.username);
 
       const response = await request(app)
@@ -560,7 +564,7 @@ describe('Users API integration', () => {
     });
 
     it("Return 403 with USER role attempting to update user's token.", async () => {
-      const user = await createTestUser('USER');
+      const { user } = await createTestUser('USER');
       usersToDelete.add(user.username);
 
       const response = await request(app)
@@ -572,7 +576,7 @@ describe('Users API integration', () => {
     });
 
     it('Return 401 and 200 responses with old token invalidation after token regeneration.', async () => {
-      const testAdminUser = await createTestUser('ADMIN');
+      const { user: testAdminUser } = await createTestUser('ADMIN');
 
       const refreshResponse = await request(app)
         .put(`${BASE_PATH}/users/${testAdminUser.username}/refresh-token`)
@@ -594,7 +598,7 @@ describe('Users API integration', () => {
 
   describe('DELETE /api/users/:username', () => {
     it('Return 200 and success message object with owner deleting own username parameter.', async () => {
-      const user = await createTestUser('USER');
+      const { user } = await createTestUser('USER');
       usersToDelete.add(user.username);
 
       const response = await request(app)
@@ -606,7 +610,7 @@ describe('Users API integration', () => {
     });
 
     it('Return 200 and success message object with admin deleting another username parameter.', async () => {
-      const targetUser = await createTestUser('USER');
+      const { user: targetUser } = await createTestUser('USER');
 
       const response = await request(app)
         .delete(`${BASE_PATH}/users/${targetUser.username}`)
@@ -617,8 +621,8 @@ describe('Users API integration', () => {
     });
 
     it('Return 403 and error object with regular user deleting another username parameter.', async () => {
-      const user = await createTestUser('USER');
-      const otherUser = await createTestUser('USER');
+      const { user } = await createTestUser('USER');
+      const { user: otherUser } = await createTestUser('USER');
       usersToDelete.add(user.username);
       usersToDelete.add(otherUser.username);
 
@@ -631,7 +635,7 @@ describe('Users API integration', () => {
     });
 
     it('Return 401 and error object with missing Authorization header.', async () => {
-      const user = await createTestUser('USER');
+      const { user } = await createTestUser('USER');
       usersToDelete.add(user.username);
 
       const response = await request(app).delete(`${BASE_PATH}/users/${user.username}`);
@@ -671,6 +675,162 @@ describe('Users API integration', () => {
 
       expect(response.status).toBe(403);
       expect(response.body.error.toLowerCase()).toContain('at least one');
+    });
+
+    it('Removes user membership from non-personal org without deleting it when other members exist', async () => {
+      const { user: userToDelete } = await createTestUser('USER');
+      const { user: otherMember } = await createTestUser('USER');
+      usersToDelete.add(userToDelete.username);
+      usersToDelete.add(otherMember.username);
+
+      const org = await createTestOrganizationDirect({
+        name: `test_org_${Date.now()}`,
+        displayName: 'Test Org',
+        isPersonal: false,
+      });
+      testContainer.resolve('orgsToDelete').add(org.id);
+
+      await createMembership(userToDelete.id, org.id, 'MEMBER');
+      await createMembership(otherMember.id, org.id, 'MEMBER');
+
+      const response = await request(app)
+        .delete(`${BASE_PATH}/users/${userToDelete.username}`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
+
+      expect(response.status).toBe(200);
+
+      const orgAfter = await OrganizationMongoose.findById(org.id);
+      expect(orgAfter).not.toBeNull();
+
+      const membershipAfter = await OrganizationMembershipMongoose.findOne({
+        _userId: userToDelete.id,
+        _organizationId: org.id,
+      });
+      expect(membershipAfter).toBeNull();
+    });
+
+    it('Transfers OWNER role to ADMIN when deleting owner from org with ADMIN member', async () => {
+      const { user: userToDelete } = await createTestUser('USER');
+      const { user: adminMember } = await createTestUser('USER');
+      usersToDelete.add(userToDelete.username);
+      usersToDelete.add(adminMember.username);
+
+      const org = await createTestOrganizationDirect({
+        name: `test_org_${Date.now()}`,
+        displayName: 'Test Org',
+        isPersonal: false,
+      });
+      testContainer.resolve('orgsToDelete').add(org.id);
+
+      await createMembership(userToDelete.id, org.id, 'OWNER');
+      await createMembership(adminMember.id, org.id, 'ADMIN');
+
+      const response = await request(app)
+        .delete(`${BASE_PATH}/users/${userToDelete.username}`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
+
+      expect(response.status).toBe(200);
+
+      const remainingMembership = await OrganizationMembershipMongoose.findOne({
+        _userId: adminMember.id,
+        _organizationId: org.id,
+      });
+      expect(remainingMembership).not.toBeNull();
+      expect(remainingMembership?.role).toBe('OWNER');
+    });
+
+    it('Transfers OWNER role to MEMBER when deleting owner from org with no ADMIN', async () => {
+      const { user: userToDelete } = await createTestUser('USER');
+      const { user: memberUser } = await createTestUser('USER');
+      usersToDelete.add(userToDelete.username);
+      usersToDelete.add(memberUser.username);
+
+      const org = await createTestOrganizationDirect({
+        name: `test_org_${Date.now()}`,
+        displayName: 'Test Org',
+        isPersonal: false,
+      });
+      testContainer.resolve('orgsToDelete').add(org.id);
+
+      await createMembership(userToDelete.id, org.id, 'OWNER');
+      await createMembership(memberUser.id, org.id, 'MEMBER');
+
+      const response = await request(app)
+        .delete(`${BASE_PATH}/users/${userToDelete.username}`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
+
+      expect(response.status).toBe(200);
+
+      const remainingMembership = await OrganizationMembershipMongoose.findOne({
+        _userId: memberUser.id,
+        _organizationId: org.id,
+      });
+      expect(remainingMembership).not.toBeNull();
+      expect(remainingMembership?.role).toBe('OWNER');
+    });
+
+it('Deletes organization when it becomes empty after user deletion (non-personal)', async () => {
+      const { user: userToDelete } = await createTestUser('USER');
+      usersToDelete.add(userToDelete.username);
+
+      const org = await createTestOrganizationDirect({
+        name: `test_org_${Date.now()}`,
+        displayName: 'Test Org',
+        isPersonal: false,
+      });
+
+      await createMembership(userToDelete.id, org.id, 'MEMBER');
+
+      const response = await request(app)
+        .delete(`${BASE_PATH}/users/${userToDelete.username}`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
+
+      expect(response.status).toBe(200);
+
+      const orgAfter = await OrganizationMongoose.findById(org.id);
+      expect(orgAfter).toBeNull();
+    });
+
+    it('Deletes personal organization even when it has other members (edge case)', async () => {
+      const registerPayload = {
+        firstName: 'John',
+        lastName: 'Doe',
+        email: `john_edge_${Date.now()}@example.com`,
+        username: `john_edge_${Date.now()}`,
+        password: TEST_PASSWORD,
+        phone: '+34-600-0002',
+        role: 'USER',
+      };
+
+      const registerResponse = await request(app)
+        .post(`${BASE_PATH}/users/register`)
+        .send(registerPayload);
+      expect(registerResponse.status).toBe(201);
+      usersToDelete.add(registerResponse.body.username);
+
+      const loginResponse = await request(app)
+        .post(`${BASE_PATH}/users/login`)
+        .send({
+          loginField: registerPayload.username,
+          password: TEST_PASSWORD,
+        });
+      expect(loginResponse.status).toBe(200);
+
+      const personalOrg = await OrganizationMongoose.findOne({ name: registerPayload.username.toLowerCase(), isPersonal: true });
+      expect(personalOrg).not.toBeNull();
+
+      const { user: otherMember } = await createTestUser('USER');
+      usersToDelete.add(otherMember.username);
+      await createMembership(otherMember.id, personalOrg!.id, 'MEMBER');
+
+      const response = await request(app)
+        .delete(`${BASE_PATH}/users/${registerPayload.username}`)
+        .set('Authorization', `Bearer ${loginResponse.body.token}`);
+
+      expect(response.status).toBe(200);
+
+      const deletedOrg = await OrganizationMongoose.findById(personalOrg!._id);
+      expect(deletedOrg).toBeNull();
     });
   });
 });

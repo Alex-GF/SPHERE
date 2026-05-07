@@ -15,14 +15,19 @@ class PricingCollectionController {
     this.pricingService = container.resolve('pricingService');
     this.index = this.index.bind(this);
     this.show = this.show.bind(this);
-    this.indexByUsername = this.indexByUsername.bind(this);
+    this.indexByOrganizationId = this.indexByOrganizationId.bind(this);
     this.downloadCollection = this.downloadCollection.bind(this);
     this.create = this.create.bind(this);
     this.bulkCreate = this.bulkCreate.bind(this);
+    this.addPricingToCollection = this.addPricingToCollection.bind(this);
     // this.generateAnalytics = this.generateAnalytics.bind(this);
     this.update = this.update.bind(this);
     this.destroy = this.destroy.bind(this);
     this.removePricingFromCollection = this.removePricingFromCollection.bind(this);
+    this.createInOrganization = this.createInOrganization.bind(this);
+    this.updateInOrganization = this.updateInOrganization.bind(this);
+    this.destroyInOrganization = this.destroyInOrganization.bind(this);
+    this.removePricingFromCollectionInOrganization = this.removePricingFromCollectionInOrganization.bind(this);
   }
 
   async index(req: any, res: any) {
@@ -41,7 +46,7 @@ class PricingCollectionController {
   async show(req: any, res: any) {
     try {
       const collection = await this.pricingCollectionService.show(
-        req.params.username,
+        req.params.organizationId,
         req.params.collectionName,
         req.user
       );
@@ -52,10 +57,10 @@ class PricingCollectionController {
     }
   }
 
-  async indexByUsername(req: any, res: any) {
+  async indexByOrganizationId(req: any, res: any) {
     try {
-      const collections = await this.pricingCollectionService.indexByUsername(req.params.username, req.user);
-      res.json({ collections: collections });
+      const collections = await this.pricingCollectionService.index({ organizationIds: [req.params.organizationId]}, req.user);
+      res.json(collections);
     } catch (err: any) {
       const {status, message} = handleError(err);
       res.status(status).send({ error: message });
@@ -65,9 +70,9 @@ class PricingCollectionController {
   async downloadCollection(req: any, res: any) {
     try {
       const collectionName = req.params.collectionName;
-      const username = req.params.username;
+      const organizationId = req.params.organizationId;
       const collection = await this.pricingCollectionService.show(
-        username,
+        organizationId,
         collectionName,
         req.user
       );
@@ -128,7 +133,7 @@ class PricingCollectionController {
     try {
       const pricing = await this.pricingCollectionService.create(
         req.body,
-        req.params.username,
+        req.params.organizationId,
         req.user
       );
       res.status(201).json(pricing);
@@ -143,10 +148,33 @@ class PricingCollectionController {
       const [collection, pricingsWithErrors] = await this.pricingCollectionService.bulkCreate(
         req.file,
         req.body,
-        req.params.username,
+        req.params.organizationId,
         req.user
       );
       res.status(201).json({collection, pricingsWithErrors});
+    } catch (err: any) {
+      const {status, message} = handleError(err);
+      res.status(status).send({ error: message });
+    }
+  }
+
+  async addPricingToCollection(req: any, res: any) {
+    try {
+
+      const queryParams = req.query;
+
+      const result = await this.pricingService.addPricingToCollection(
+        req.body.pricingName,
+        req.org.id,
+        req.body.collectionId,
+        queryParams
+      );
+
+      if (!result) {
+        res.status(404).send({ error: 'ERROR: Pricing not found or you are not a member of the organization' });
+      }
+      
+      res.json({ message: "Pricing added to collection successfully" });
     } catch (err: any) {
       const {status, message} = handleError(err);
       res.status(status).send({ error: message });
@@ -173,7 +201,7 @@ class PricingCollectionController {
   async update(req: any, res: any) {
     try {
       const collection = await this.pricingCollectionService.update(
-        req.params.username,
+        req.params.organizationId,
         req.params.collectionName,
         req.body,
         req.user
@@ -196,7 +224,7 @@ class PricingCollectionController {
       const deleteCascade = String(cascade).toLowerCase() === 'true';
 
       const result = await this.pricingCollectionService.destroy(
-        req.params.username,
+        req.params.organizationId,
         req.params.collectionName,
         deleteCascade,
         false,
@@ -214,7 +242,7 @@ class PricingCollectionController {
     try {
       await this.pricingCollectionService.removePricingFromCollection(
         req.params.pricingName,
-        req.params.username,
+        req.params.organizationId,
         req.params.collectionName,
         req.user
       );
@@ -225,17 +253,76 @@ class PricingCollectionController {
     }
   }
 
+  async createInOrganization(req: any, res: any) {
+    try {
+      const payload = { ...req.body, _organizationId: req.params.organizationId };
+      const collection = await this.pricingCollectionService.create(payload, req.params.organizationId, req.user);
+      res.status(201).json(collection);
+    } catch (err: any) {
+      const { status, message } = handleError(err);
+      res.status(status).send({ error: message });
+    }
+  }
+
+  async updateInOrganization(req: any, res: any) {
+    try {
+      const collection = await this.pricingCollectionService.update(
+        req.params.organizationId,
+        req.params.collectionName,
+        req.body,
+        req.user
+      );
+      res.json(collection);
+    } catch (err: any) {
+      const { status, message } = handleError(err);
+      res.status(status).send({ error: message });
+    }
+  }
+
+  async destroyInOrganization(req: any, res: any) {
+    try {
+      const { cascade } = req.query;
+      const deleteCascade = String(cascade).toLowerCase() === 'true';
+      await this.pricingCollectionService.destroy(
+        req.params.organizationId,
+        req.params.collectionName,
+        deleteCascade,
+        false,
+        req.user
+      );
+      res.status(204).json({ message: 'Successfully deleted.' });
+    } catch (err: any) {
+      const { status, message } = handleError(err);
+      res.status(status).send({ error: message });
+    }
+  }
+
+  async removePricingFromCollectionInOrganization(req: any, res: any) {
+    try {
+      await this.pricingCollectionService.removePricingFromCollection(
+        req.params.pricingName,
+        req.params.organizationId,
+        req.params.collectionName,
+        req.user
+      );
+      res.json({ message: 'Pricing removed from collection successfully.' });
+    } catch (err: any) {
+      const { status, message } = handleError(err);
+      res.status(status).send({ error: message });
+    }
+  }
+
   _transformIndexQueryParams(indexQueryParams: Record<string, string>): CollectionIndexQueryParams {
     const transformedData: CollectionIndexQueryParams = {
       name: indexQueryParams.name,
       sortBy: indexQueryParams.sortBy,
       sort: indexQueryParams.sort ?? 'asc',
-      selectedOwners: indexQueryParams.owners ? indexQueryParams.owners.split(',') : undefined,
+      organizationIds: indexQueryParams.organizationIds ? indexQueryParams.organizationIds.split(',') : undefined,
       limit: indexQueryParams.limit,
       offset: indexQueryParams.offset,
     };
 
-    const optionalFields = ['name', 'sortBy', 'sort', 'selectedOwners', 'limit', 'offset'];
+    const optionalFields = ['name', 'sortBy', 'sort', 'organizationIds', 'limit', 'offset'];
 
     optionalFields.forEach(field => {
       if (!transformedData[field]) {

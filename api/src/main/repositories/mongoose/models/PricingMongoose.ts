@@ -3,8 +3,8 @@ import mongoose, { Schema } from 'mongoose';
 const pricingSchema = new Schema(
   {
     name: { type: String, required: true },
-    owner: { type: String, required: true },
     _collectionId: { type: String, ref: 'PricingCollection', required: false },
+    _organizationId: { type: Schema.Types.ObjectId, ref: 'Organization', required: true },
     version: { type: String, required: true },
     createdAt: { type: Date, required: true },
     url: { type: String, required: false },
@@ -48,13 +48,9 @@ const pricingSchema = new Schema(
     },
   },
   {
-    toJSON: {
+    toObject: {
+      getters: true,
       virtuals: true,
-      transform: function (doc, resultObject, options) {
-        delete (resultObject as any)._id;
-        delete (resultObject as any).__v;
-        return resultObject;
-      },
     },
   }
 );
@@ -66,8 +62,15 @@ pricingSchema.virtual('collection', {
   justOne: true,
 });
 
-// Adding unique index for [name, owner, version]
-pricingSchema.index({ name: 1, owner: 1, version: 1, _collectionId: 1 }, { unique: true });
+pricingSchema.virtual('organization', {
+  ref: 'Organization',
+  localField: '_organizationId',
+  foreignField: '_id',
+  justOne: true,
+});
+
+// Adding unique index for [name, _organizationId, version, _collectionId]
+pricingSchema.index({ name: 1, _organizationId: 1, version: 1, _collectionId: 1 }, { unique: true });
 
 const pricingModel = mongoose.model('Pricing', pricingSchema, 'pricings');
 

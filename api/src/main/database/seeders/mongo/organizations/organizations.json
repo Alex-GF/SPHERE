@@ -1,0 +1,22 @@
+[
+  {
+    "_id": { "$oid": "63f74bf8eeed64058364b600" },
+    "name": "sphere",
+    "displayName": "sphere (personal)",
+    "description": "Personal organization for sphere user.",
+    "avatarUrl": null,
+    "isPersonal": true,
+    "createdAt": { "$date": "2023-02-20T11:22:04.000Z" },
+    "updatedAt": { "$date": "2023-02-20T11:22:04.000Z" }
+  },
+  {
+    "_id": { "$oid": "63f74bf8eeed64058364b601" },
+    "name": "demo-org",
+    "displayName": "Demo Organization",
+    "description": "Shared org seeded for local testing.",
+    "avatarUrl": null,
+    "isPersonal": false,
+    "createdAt": { "$date": "2023-02-20T11:22:04.000Z" },
+    "updatedAt": { "$date": "2023-02-20T11:22:04.000Z" }
+  }
+]

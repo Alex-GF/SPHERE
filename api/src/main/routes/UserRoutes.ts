@@ -19,8 +19,6 @@ const loadFileRoutes = function (app: express.Application) {
   app
     .route(baseUrl + '/users/register')
     .post(
-      upload,
-      addFilenameToBody('avatar'),
       UserValidation.create,
       handleValidation,
       userController.register

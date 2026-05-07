@@ -1,0 +1,22 @@
+[
+  {
+    "_id": { "$oid": "63f74bf8eeed64058364b800" },
+    "name": "personal",
+    "displayName": "Personal",
+    "description": "Default group in personal org.",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b600" },
+    "_parentGroupId": null,
+    "createdAt": { "$date": "2023-02-20T11:22:04.000Z" },
+    "updatedAt": { "$date": "2023-02-20T11:22:04.000Z" }
+  },
+  {
+    "_id": { "$oid": "63f74bf8eeed64058364b801" },
+    "name": "demo-team",
+    "displayName": "Demo Team",
+    "description": "Default group in demo org.",
+    "_organizationId": { "$oid": "63f74bf8eeed64058364b601" },
+    "_parentGroupId": null,
+    "createdAt": { "$date": "2023-02-20T11:22:04.000Z" },
+    "updatedAt": { "$date": "2023-02-20T11:22:04.000Z" }
+  }
+]

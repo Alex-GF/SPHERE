@@ -1,4 +1,4 @@
-import { LeanUser, UserFilters } from '../../types/models/User';
+import { ApiKey, LeanUser, LeanUserWithApiKey, UserFilters } from '../../types/models/User';
 import RepositoryBase from '../RepositoryBase';
 import UserMongoose from './models/UserMongoose';
 
@@ -31,7 +31,7 @@ class UserRepository extends RepositoryBase {
         };
       }
 
-      const users = await UserMongoose.find(mongoFilter, { password: 0 })
+      const users = await UserMongoose.find(mongoFilter)
         .sort({ [sortBy]: sortOrder })
         .skip(offset)
         .limit(limit)
@@ -44,7 +44,7 @@ class UserRepository extends RepositoryBase {
 
   async findOne(filter: any): Promise<LeanUser | null> {
     try {
-      const user = await UserMongoose.findOne(filter, { password: 0 }).exec();
+      const user = await UserMongoose.findOne(filter).exec();
       return user ? user.toObject() : null;
     } catch (err) {
       return null;
@@ -78,7 +78,73 @@ class UserRepository extends RepositoryBase {
     }
   }
 
-  async create(businessEntity: any) {
+  async findByApiKey(
+    apiKey: string
+  ): Promise<LeanUserWithApiKey | null> {
+    const user = await UserMongoose.aggregate([
+      {
+        $match: {
+          apiKeys: {
+            $elemMatch: {
+              key: apiKey,
+              revoked: false,
+              $or: [{ expiresAt: null }, { expiresAt: { $gt: new Date() } }],
+            },
+          },
+        },
+      },
+      {
+        $set: {
+          apiKey: {
+            $first: {
+              $filter: {
+                input: '$apiKeys',
+                as: 'key',
+                cond: { $eq: ['$$key.key', apiKey] },
+              },
+            },
+          },
+        },
+      },
+      {
+        $set: {
+          'apiKey.scopes': {
+            $map: {
+              input: '$apiKey.scopes',
+              as: 'scope',
+              in: {
+                organizationId: {
+                  $toString: '$$scope.organizationId',
+                },
+                scope: '$$scope.scope',
+              },
+            },
+          },
+        },
+      },
+      {
+        $project: {
+          password: 0,
+          apiKeys: 0,
+        },
+      },
+      {
+        $limit: 1,
+      },
+    ]);
+
+    const rawUser = user[0] ?? null;
+
+    if (!rawUser) {
+      return null;
+    }
+
+    const hydratedUser = UserMongoose.hydrate(rawUser);
+
+    return hydratedUser.toObject() as unknown as LeanUserWithApiKey;
+  }
+
+  async create(businessEntity: any): Promise<LeanUser> {
     const user = await new UserMongoose(businessEntity).save();
 
     return user.toObject();
