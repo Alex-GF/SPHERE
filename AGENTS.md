@@ -40,6 +40,10 @@ cd api && npx vitest --run --test-name-pattern "<pattern>"
 - Migrations auto-run via `npx migrate up` in `dev:api` script
 - API uses `ts-migrate-mongoose` for MongoDB migrations
 
+## API Documentation
+
+- `/api/docs/sphere-api-docs.yaml` contains the OpenAPI specification for the API. Use it as the primary reference for understanding available endpoints, request and response schemas, authentication requirements, and general API behavior.
+
 ## Lint Config
 
 - API: `api/eslint.config.ts` (TypeScript-eslint, semi required)
