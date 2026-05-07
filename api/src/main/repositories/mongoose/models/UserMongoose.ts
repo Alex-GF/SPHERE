@@ -134,9 +134,6 @@ export interface UserDocument extends Document {
   }[];
 }
 
-userSchema.index({ _id: 1 });
-userSchema.index({ username: 1 });
-userSchema.index({ email: 1 });
 userSchema.index({ 'apiKeys.key': 1 });
 
 const userModel = mongoose.model<UserDocument>('User', userSchema, 'users');
