@@ -305,7 +305,7 @@ describe('Pricing Collections API integration', () => {
     });
   });
 
-  describe('POST /api/v1/collections/:username/bulk', () => {
+  describe('POST /api/v1/collections/:organizationId/bulk', () => {
     it('accepts a zip file and creates a collection from bulk pricings', async () => {
       const { user: owner, organizationId } = await createAndLoginUser('USER');
 
@@ -391,7 +391,7 @@ describe('Pricing Collections API integration', () => {
     });
   });
 
-  describe('PUT /api/v1/collections/:username/:collectionName', () => {
+  describe('PUT /api/v1/collections/:organizationId/:collectionName', () => {
     it('Return 200 and allows owner to update collection metadata', async () => {
       const { user: owner, organizationId } = await createAndLoginUser('USER');
 
@@ -475,7 +475,7 @@ describe('Pricing Collections API integration', () => {
     });
   });
 
-  describe('DELETE /api/v1/collections/:username/:collectionName', () => {
+  describe('DELETE /api/v1/collections/:organizationId/:collectionName', () => {
     it('Return 204 and allows owner to delete own collection', async () => {
       const { user: owner, organizationId } = await createAndLoginUser('USER');
 
@@ -539,7 +539,7 @@ describe('Pricing Collections API integration', () => {
     });
   });
 
-  describe('DELETE /api/v1/collections/:username/:collectionName/pricings/:pricingName', () => {
+  describe('DELETE /api/v1/collections/:organizationId/:collectionName/pricings/:pricingName', () => {
     it('returns 200 and removes a pricing from the collection for its owner', async () => {
       const { user: owner, organizationId } = await createAndLoginUser('USER');
 
@@ -621,7 +621,7 @@ describe('Pricing Collections API integration', () => {
     });
   });
 
-  describe('GET /api/v1/collections/:username/:collectionName/download', () => {
+  describe('GET /api/v1/collections/:organizationId/:collectionName/download', () => {
     it('Returns 200 and zip content for existing collection', async () => {
       const {user: owner, organizationId} = await createAndLoginUser('USER');
 
