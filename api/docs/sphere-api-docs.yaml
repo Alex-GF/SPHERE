@@ -12,31 +12,78 @@ info:
     - **Integrate with existing tooling in pricing-driven DevOps**
     - **Perform pricing intelligence analysis**
 
-    ## Authentication Tokens
+    ## Authentication
 
-    SPHERE authentication system relies on auth tokens provided in the `Authorization` header as `<token>`. Here is some information about the purpose and usage of these tokens:
+    SPHERE supports two authentication methods:
 
-    - **Purpose**: Authenticate users and provide access to protected resources
-    - **Obtaining**: Authenticate via `POST /users/login` endpoint with username/email and password
-    - **Usage**: Include in `Authorization` header for requests. **DO NOT REQUIRE** `Bearer` prefix, just the token string.
-    - **Accessible Roles**: `ADMIN` (full access), `USER` (access limited to own account and organizations)
+    1. **User Token** (used by the SPHERE frontend):
+       - Obtained via `POST /users/login` with username/email and password
+       - Include it in `Authorization` header as `Bearer <token>` to authenticate requests
+       - Tokens expire after 24h
 
-    ## Roles
+    2. **API Key** (recommended for programmatic access):
+       - Can be created and managed via the SPHERE UI
+       - Include them in `x-api-key` header to authenticate requests
+       - Can have scoped permissions per organization
 
-    Users in SPHERE can have the following roles:
+    ---
 
-    | Role          | Permissions |
-    |---------------|-------------|
-    | **ADMIN**     | Can perform any operation, over any user/resource allocated in SPHERE |
-    | **USER**      | can perform operations on their own accounts and resources, while retaining read access to all resources. They are not permitted to manage other users’ accounts or resources |
+    ## Permission System Overview
 
-    ## Permission Summary by Endpoint Category
+    SPHERE implements a **three-layer permission system** that provides granular access control:
 
-    All endpoints require an `Authorization` header unless explicitly marked as **Public**. Here is a summary of the auth tags that are going to be used throughout this documentation:
+    ### 1. User Roles (Global Level)
 
-    - **Public**: No authentication required
-    - **ADMIN Role**: Requires user token with ADMIN role
-    - **USER Role**: Requires user token with USER role (or ADMIN)
+    Determines what a user can do across the entire platform:
+
+    | Role   | Description |
+    |--------|-------------|
+    | **ADMIN** | Full platform access. Can perform any operation on any user or resource. Bypasses organization membership checks. |
+    | **USER** | Standard user. Can only manage their own account, organizations they're members of, and resources within those organizations. |
+
+    ### 2. Organization Roles (Within an Organization)
+
+    Determines what a user can do within a specific organization. Organizations have a hierarchical structure where a parent organization can have child organizations.
+
+    | Role | Permissions |
+    |------|-------------|
+    | **OWNER** | Full control: manage organization resources, members, invitations, settings, and delete the organization |
+    | **ADMIN** | Everything an OWNER can do, but cannot delete the organization or downgrade OWNERs |
+    | **MEMBER** | Read-only access to organization data and pricings |
+
+    **Role Hierarchy Behavior:**
+    - A user can have **different roles** in different organizations
+    - Example: User A is MEMBER in org1, ADMIN in org2 (a child of org1), and has no access to org3
+
+    ### 3. API Key Scopes
+
+    API Keys can be created with limited permissions, even if the user has higher permissions in the organization. This is useful for integrating external tools with restricted access.
+
+    | Scope | Effect |
+    |-------|--------|
+    | **ALL** | Full access to organization - same as user's actual org role. Also grants access to **children organizations** in the hierarchy. |
+    | **MANAGEMENT** | Can perform management operations. Effective role is ADMIN for users with OWNER/ADMIN role, otherwise their actual role. This permission **does not extend to child organizations**. |
+    | **VIEW** | Read-only access. Effective role is always MEMBER regardless of actual org role. This permission **does not extend to child organizations** |
+
+    **Scope Intersection Example:**
+    - User has OWNER role in org1; and org1 have two children: org2 and org3 (given that user is OWNER, they also have OWNER permissions in org2 and org3)
+    - User creates API Key with VIEW scope for org1
+    - When using the API Key, the effective role becomes MEMBER (read-only) and can **only operate over org1**.
+
+    ---
+
+    ## Authentication Flow
+
+    1. Request arrives with either `Authorization: Bearer <token>` or `x-api-key: <key>`. 
+
+        - **NOTE:** if token access is provided, the API key is ignored and the user token is used for authentication and permission checks.
+        
+    2. AuthMiddleware authenticates and populates `req.user`
+    3. If accessing organization-scoped resources, `populateOrganizationContext` resolves:
+       - The organization from the URL path
+       - The user's actual role within that organization
+       - For API Keys: the scope-limited effective role
+    4. Permission check validates both user role AND org role (if required)
 
   contact:
     email: agarcia29@us.es
