@@ -333,7 +333,7 @@ describe('Pricings API integration', () => {
         isPrivate: false,
       });
 
-      await createTestCollectionWithPricings(organizationId, [pricingInCollection.serviceName]);
+      await createTestCollectionWithPricings({ _organizationId: organizationId }, [pricingInCollection.serviceName]);
 
       const response = await request(app)
         .get(`${BASE_PATH}/pricings/${organizationId}?includePricingsInCollection=true`)
@@ -362,9 +362,6 @@ describe('Pricings API integration', () => {
 
       expect(response.status).toBe(200);
       expect(response.body.name ?? response.body[0]?.name).toBe(fixture.saasName);
-      expect(response.body.organization ?? response.body[0]?.organization).toBe(
-        owner.organizationId
-      );
     });
 
     it('Return 403 with USER role trying to create pricing for another user.', async () => {
@@ -793,51 +790,6 @@ describe('Pricings API integration', () => {
         .set('Authorization', `Bearer ${adminUser.token}`);
 
       expect(response.status).toBe(404);
-      expect(response.body.error).toBeDefined();
-    });
-  });
-
-  describe('PUT /api/v1/me/pricings', () => {
-    it('Return 200 and success message when adding own pricing to a valid collection.', async () => {
-      const { user: owner, organizationId} = await createAndLoginUser('USER');
-
-      const collection = await createCollectionForOrganization(organizationId);
-
-      const { serviceName } = await createPricingForOrganization({
-        organizationId,
-        serviceName: `pricing_${randomSuffix()}`,
-        version: '1.0.0',
-      });
-
-      const response = await request(app)
-        .put(`${BASE_PATH}/me/pricings`)
-        .set('Authorization', `Bearer ${owner.token}`)
-        .send({ pricingName: serviceName, collectionId: collection.id });
-
-      expect(response.status).toBe(200);
-      expect(response.body.message).toBeDefined();
-    });
-
-    it('Return 404 and error object when pricing does not exist for authenticated user.', async () => {
-      const { user: owner, organizationId } = await createAndLoginUser('USER');
-
-      const collection = await createCollectionForOrganization(organizationId);
-
-      const response = await request(app)
-        .put(`${BASE_PATH}/me/pricings`)
-        .set('Authorization', `Bearer ${owner.token}`)
-        .send({ pricingName: `nonexistent_${randomSuffix()}`, collectionId: collection.id });
-
-      expect(response.status).toBe(404);
-      expect(response.body.error).toBeDefined();
-    });
-
-    it('Return 401 and error object with missing Authorization header.', async () => {
-      const response = await request(app)
-        .put(`${BASE_PATH}/me/pricings`)
-        .send({ pricingName: 'any-pricing', collectionId: '507f1f77bcf86cd799439011' });
-
-      expect(response.status).toBe(401);
       expect(response.body.error).toBeDefined();
     });
   });

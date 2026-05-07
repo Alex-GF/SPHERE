@@ -15,7 +15,6 @@ class PricingController {
     this.show = this.show.bind(this);
     this.getConfigurationSpace = this.getConfigurationSpace.bind(this);
     this.create = this.create.bind(this);
-    this.addPricingToCollection = this.addPricingToCollection.bind(this);
     this.update = this.update.bind(this);
     this.updateVersion = this.updateVersion.bind(this);
     this.destroyByNameAndOrganization = this.destroyByNameAndOrganization.bind(this);
@@ -104,29 +103,6 @@ class PricingController {
       } catch (err) {
         res.status(500).send({ error: (err as Error).message });
       }
-    }
-  }
-
-  async addPricingToCollection(req: any, res: any) {
-    try {
-
-      const queryParams = req.query;
-
-      const result = await this.pricingService.addPricingToCollection(
-        req.body.pricingName,
-        req.user.organizationId || req.body.organizationId,
-        req.body.collectionId,
-        queryParams
-      );
-
-      if (!result) {
-        res.status(404).send({ error: 'ERROR: Pricing not found or you are not a member of the organization' });
-      }
-      
-      res.json({ message: "Pricing added to collection successfully" });
-    } catch (err: any) {
-      const {status, message} = handleError(err);
-      res.status(status).send({ error: message });
     }
   }
 

@@ -338,7 +338,7 @@ class PricingCollectionRepository extends RepositoryBase {
     collection.set(data);
     await collection.save();
 
-    return collection.toJSON();
+    return collection.toObject();
   }
 
   async setCollectionAnalytics(collectionId: string, analytics: any) {
@@ -351,7 +351,7 @@ class PricingCollectionRepository extends RepositoryBase {
     collection.set({ analytics });
     await collection.save();
 
-    return collection.toJSON();
+    return collection.toObject();
   }
 
   async destroy(id: string, ...args: any) {

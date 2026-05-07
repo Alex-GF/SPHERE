@@ -5,7 +5,7 @@ import unzipper from 'unzipper';
 import { afterAll, beforeAll, afterEach, describe, expect, it } from 'vitest';
 import { shutdownApp, TestApp } from './utils/testApp';
 import { createAndLoginUser, createTestUser, deleteTestUser } from './utils/users/userTestUtils';
-import { createTestCollection, createTestCollectionWithPricings } from './utils/collections/collectionTestUtils';
+import { createCollectionForOrganization, createTestCollection, createTestCollectionWithPricings } from './utils/collections/collectionTestUtils';
 import { createBulkZipFixture, removeTempPaths } from './utils/pricingFixtures';
 import { createPricingForOrganization } from './utils/pricings/pricingTestUtils';
 import PricingCollectionMongoose from '../main/repositories/mongoose/models/PricingCollectionMongoose';
@@ -323,6 +323,51 @@ describe('Pricing Collections API integration', () => {
       expect(res.status).toBe(201);
       if (res.body._id) collectionIdsToDelete.add(res.body._id);
       await removeTempPaths(tempPaths);
+    });
+  });
+
+  describe('POST /api/v1/collections/:organizationId/pricings', () => {
+    it('Return 200 and success message when adding own pricing to a valid collection.', async () => {
+      const { user: owner, organizationId} = await createAndLoginUser('USER');
+
+      const collection = await createCollectionForOrganization(organizationId);
+
+      const { serviceName } = await createPricingForOrganization({
+        organizationId,
+        serviceName: `pricing_${randomSuffix()}`,
+        version: '1.0.0',
+      });
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/collections/${organizationId}/pricings`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({ pricingName: serviceName, collectionId: collection.id });
+
+      expect(response.status).toBe(200);
+      expect(response.body.message).toBeDefined();
+    });
+
+    it('Return 404 and error object when pricing does not exist for authenticated user.', async () => {
+      const { user: owner, organizationId } = await createAndLoginUser('USER');
+
+      const collection = await createCollectionForOrganization(organizationId);
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/collections/${organizationId}/pricings`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({ pricingName: `nonexistent_${randomSuffix()}`, collectionId: collection.id });
+
+      expect(response.status).toBe(404);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('Return 401 and error object with missing Authorization header.', async () => {
+      const response = await request(app)
+        .post(`${BASE_PATH}/collections/${testUser.username}/pricings`)
+        .send({ pricingName: 'any-pricing', collectionId: '507f1f77bcf86cd799439011' });
+
+      expect(response.status).toBe(401);
+      expect(response.body.error).toBeDefined();
     });
   });
 

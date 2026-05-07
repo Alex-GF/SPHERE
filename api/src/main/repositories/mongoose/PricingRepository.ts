@@ -335,7 +335,7 @@ class PricingRepository extends RepositoryBase {
       }
     });
 
-    return await PricingMongoose.insertMany(data);
+    return (await PricingMongoose.insertMany(data)).map(pricing => pricing.toObject());
   }
 
   async updateAnalytics(pricingId: string, analytics: PricingAnalytics, ...args: any) {
@@ -347,7 +347,7 @@ class PricingRepository extends RepositoryBase {
     pricing.set({ analytics: analytics });
     await pricing.save();
 
-    return pricing.toJSON();
+    return pricing.toObject();
   }
 
   async updatePricingsCollectionName(pricingsToUpdate: any) {
@@ -397,7 +397,7 @@ class PricingRepository extends RepositoryBase {
     pricing.set(data);
     await pricing.save();
 
-    return pricing.toJSON();
+    return pricing.toObject();
   }
 
   async removePricingFromCollection(pricingName: string, organizationId: string) {

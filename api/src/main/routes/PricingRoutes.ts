@@ -34,10 +34,6 @@ const loadFileRoutes = function (app: express.Application) {
     .route(baseUrl + '/pricings/:organizationId/:pricingName/:pricingVersion')
     .get(pricingController.getConfigurationSpace)
     .delete(pricingController.destroyVersionByNameAndOrganization);
-
-  app
-    .route(baseUrl + '/me/pricings')
-    .put(pricingController.addPricingToCollection);
 };
 
 export default loadFileRoutes;

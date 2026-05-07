@@ -48,15 +48,9 @@ const pricingSchema = new Schema(
     },
   },
   {
-    toJSON: {
+    toObject: {
+      getters: true,
       virtuals: true,
-      transform: function (doc, resultObject) {
-        delete (resultObject as any)._id;
-        delete (resultObject as any).__v;
-        delete (resultObject as any)._organizationId;
-        delete (resultObject as any).organization?._id;
-        return resultObject;
-      },
     },
   }
 );

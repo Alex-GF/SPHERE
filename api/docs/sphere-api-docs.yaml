@@ -110,16 +110,13 @@ tags:
     description: User authentication and API key management
   - name: Users
     description: User account management
+  - name: Organizations
+    description: |
+      Organization, invitations and membership management
   - name: Pricings
     description: Pricing Version Control System (PVCS)
   - name: Collections
     description: Collection management for grouping pricings
-  - name: Organizations
-    description: |
-      Organization management including creation, membership, invitations, and hierarchical structure.
-      Organizations group users together and can own pricings and collections. Each user has a personal
-      organization. Members have roles (OWNER, ADMIN, MEMBER) that control access to organization operations.
-      Invitations use shareable codes for self-service joining.
   - name: Cache
     description: Redis cache operations for temporary data storage
 
@@ -300,7 +297,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
-  /users/{username}:
+  /users/{organizationId}:
     get:
       summary: Get user details by username
       description: |
@@ -418,7 +415,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
-  /users/{username}/updateToken:
+  /users/{organizationId}/updateToken:
     put:
       summary: Regenerate user's token
       description: |
@@ -456,956 +453,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
-  /pricings:
-    get:
-      summary: Get and filter pricings
-      description: |
-        Retrieves a paginated list of pricings that match the provided filter.
-
-        **Authentication**: Public
-
-        **Permission**:
-        - UNAUTHENTICATED: can only see PUBLIC pricings.
-        - USER: can only see PUBLIC pricings.
-        - ADMIN: can see any pricing (PUBLIC or PRIVATE).
-
-      tags:
-        - Pricings
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - $ref: '#/components/parameters/Name'
-        - $ref: '#/components/parameters/SortByPricings'
-        - $ref: '#/components/parameters/Sort'
-        - $ref: '#/components/parameters/MinSubscription'
-        - $ref: '#/components/parameters/MaxSubscription'
-        - $ref: '#/components/parameters/MinMinPrice'
-        - $ref: '#/components/parameters/MaxMinPrice'
-        - $ref: '#/components/parameters/MinMaxPrice'
-        - $ref: '#/components/parameters/MaxMaxPrice'
-        - $ref: '#/components/parameters/SelectedOwners'
-        - $ref: '#/components/parameters/Limit'
-        - $ref: '#/components/parameters/Offset'
-      responses:
-        '200':
-          description: Operation Completed
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/responses/PricingList'
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-    
-    put:
-      summary: Update pricing version
-      description: |
-        Receives a plain text YAML file containing an iPricing in Pricing2Yaml and updates its syntaxVersion to the latest Pricign2Yaml syntax version. 
-        
-        **Authentication**: Public
-
-      tags:
-        - Pricings
-      security:
-        - ApiKeyAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                pricing:
-                  type: string
-                  description: Plain text YAML content of the pricing definition to be updated
-                  example: |-
-                    saasName: Your SaaS Name
-                    syntaxVersion: "3.0"
-                    version: "latest"
-                    createdAt: 2026-04-26
-                    billing:
-                      monthly: 1
-                    currency: EUR
-                    features:
-                      feature1:
-                        description: Feature 1 description
-                        valueType: BOOLEAN
-                        defaultValue: true
-                        type: DOMAIN
-                    usageLimits: null
-                    plans:
-                      BASIC:
-                        description: Basic plan
-                        price: 0.0
-                        unit: user/month
-                        features: null
-                        usageLimits: null
-                    addOns: null
-
-      responses:
-        '200':
-          description: Pricing Updated
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  total:
-                    type: integer
-                    description: The total number of pricings matching the query
-                  configurationSpaceSize:
-                    $ref: '#/components/schemas/MetricHistogram'
-                  minPrice:
-                    $ref: '#/components/schemas/MetricHistogram'
-                  maxPrice:
-                    $ref: '#/components/schemas/MetricHistogram'
-                  pricings:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Pricing'
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /pricings/{username}:
-    get:
-      summary: Get all pricings from a user.
-      description: |
-        Retrieves a paginated list of a user's pricings that ARE NOT in a collection. If you want to retrieve pricings from a usar of a specific collection, use the `collectionName` query parameter in the `GET /pricings` endpoint.
-
-        **Authentication**: Public
-
-        **Permission**: 
-        - UNAUTHENTICATED: can only list PUBLIC pricings of any user.
-        - USER: can list all their pricings (PUBLIC, PRIVATE) and PUBLIC pricings of other users.
-        - ADMIN: can access any user's pricings.
-
-      tags:
-        - Pricings
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - $ref: '#/components/parameters/Username'
-        - $ref: '#/components/parameters/Name'
-        - $ref: '#/components/parameters/SortByPricings'
-        - $ref: '#/components/parameters/Sort'
-        - $ref: '#/components/parameters/MinSubscription'
-        - $ref: '#/components/parameters/MaxSubscription'
-        - $ref: '#/components/parameters/MinMinPrice'
-        - $ref: '#/components/parameters/MaxMinPrice'
-        - $ref: '#/components/parameters/MinMaxPrice'
-        - $ref: '#/components/parameters/MaxMaxPrice'
-        - $ref: '#/components/parameters/CollectionName'
-        - $ref: '#/components/parameters/IncludePricingsInCollection'
-        - $ref: '#/components/parameters/Limit'
-        - $ref: '#/components/parameters/Offset'
-      responses:
-        '200':
-          description: Operation Completed
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  total:
-                    type: integer
-                    description: The total number of pricings matching the query
-                  configurationSpaceSize:
-                    $ref: '#/components/schemas/MetricHistogram'
-                  minPrice:
-                    $ref: '#/components/schemas/MetricHistogram'
-                  maxPrice:
-                    $ref: '#/components/schemas/MetricHistogram'
-                  pricings:
-                    type: array
-                    items:
-                      $ref: '#/components/responses/PricingList'
-        '403':
-          description: Insufficient permissions
-        '404':
-          description: User not found
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-    post:
-      summary: Create pricing for a given user.
-      description: |
-        Creates a new pricing for a given user.
-
-        **Authentication**: User API Key
-
-        **Permission**: 
-        - USER: can create pricings for their own account.
-        - ADMIN: can create pricings for any user.
-
-      tags:
-        - Pricings
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - $ref: '#/components/parameters/Username'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                yaml:
-                  type: string
-                  format: binary
-                private:
-                  type: boolean
-                  default: false
-                collectionId:
-                  type: string
-                  description: Optional collection ID to add the pricing to upon creation
-      responses:
-        '201':
-          description: Pricing Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pricing'
-        '403':
-          description: Insufficient permissions
-        '404':
-          description: User not found
-        '422':
-          $ref: '#/components/responses/UnprocessableEntity'
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /pricings/{username}/{pricingName}:
-    get:
-      summary: Get public pricing details.
-      description: |
-        Retrieves a pricing by name for a given user. If the user requesting is the owner of the pricing, they can then access private pricings. Otherwise, only public ones.
-
-        **Authentication**: Public
-
-        **Permission**: 
-        - UNAUTHENTICATED: can only access PUBLIC pricings.
-        - USER: can access their own pricings (PUBLIC, PRIVATE) and PUBLIC pricings of other users.
-        - ADMIN: can access any user's pricings.
-
-      tags:
-        - Pricings
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - $ref: '#/components/parameters/Username'
-        - $ref: '#/components/parameters/PricingName'
-      responses:
-        '200':
-          description: Operation Completed
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PricingDetails'
-        '403':
-          description: Insufficient permissions
-        '404':
-          description: User or pricing not found
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-  
-    put:
-      summary: Update metadata of a pricing.
-      description: |
-        Updates the metadata of all pricing versions of a given pricing. If a pricing is inside a collection, **you have to provide the `collectionName` query parameter**
-
-        **Authentication**: User API Key
-
-        **Permission**: 
-        - USER: can update their own pricings.
-        - ADMIN: can update any pricing.
-      tags:
-        - Pricings
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - $ref: '#/components/parameters/Username'
-        - $ref: '#/components/parameters/PricingName'
-        - $ref: '#/components/parameters/CollectionName'
-      requestBody:
-        $ref: '#/components/requestBodies/PricingUpdate'
-      responses:
-        '200':
-          description: Operation Completed
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PricingDetails'
-        '403':
-          description: Insufficient permissions
-        '404':
-          description: User or pricing not found
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-  
-    delete:
-      summary: Delete a pricing.
-      description: |
-        Deletes all versions of a given pricing. If a pricing is inside a collection, **you have to provide the `collectionName` query parameter**
-
-        **Authentication**: User API Key
-
-        **Permission**: 
-        - USER: can delete their own pricings.
-        - ADMIN: can delete any pricing.
-
-      tags:
-        - Pricings
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - $ref: '#/components/parameters/Username'
-        - $ref: '#/components/parameters/PricingName'
-        - $ref: '#/components/parameters/CollectionName'
-      responses:
-        '200':
-          description: Operation Completed
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Pricing deleted successfully
-        '403':
-          description: Insufficient permissions
-        '404':
-          description: User or pricing not found
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-  
-  /pricings/{username}/{pricingName}/{pricingVersion}:
-    get:
-      summary: Get the configurations of a pricing version.
-      description: |
-        Retrieves the configuration space of a specific version of a given pricing.
-
-        **Authentication**: Public
-
-        **Permission**: 
-        - UNAUTHENTICATED: can only access PUBLIC pricings.
-        - USER: can access their own pricings (PUBLIC, PRIVATE) and PUBLIC pricings of other users.
-        - ADMIN: can access any user's pricings.
-
-      tags:
-        - Pricings
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - $ref: '#/components/parameters/Username'
-        - $ref: '#/components/parameters/PricingName'
-        - $ref: '#/components/parameters/PricingVersion'
-        - $ref: '#/components/parameters/CollectionName'
-      responses:
-        '200':
-          description: Operation Completed
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PricingConfigurationSpace'
-        '403':
-          description: Insufficient permissions
-        '404':
-          description: User, pricing or pricing version not found
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-    delete:
-      summary: Delete a specific version of a pricing.
-      description: |
-        Deletes a specific version of a given pricing.
-
-        **Authentication**: User API Key
-
-        **Permission**: 
-        - USER: can delete versions of their own pricings.
-        - ADMIN: can delete versions of any pricing.
-
-      tags:
-        - Pricings
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - $ref: '#/components/parameters/Username'
-        - $ref: '#/components/parameters/PricingName'
-        - $ref: '#/components/parameters/PricingVersion'
-      responses:
-        '200':
-          description: Operation Completed
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Pricing version deleted successfully
-        '403':
-          description: Insufficient permissions
-        '404':
-          description: User, pricing or pricing version not found
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /me/pricings:
-    put:
-      summary: Add pricing to collection.
-      description: |
-        Adds a pricing to a collection of the user performing the request.
-
-        **Authentication**: User API Key
-      
-      tags:
-        - Pricings
-      security:
-        - ApiKeyAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                pricingName:
-                  $ref: '#/components/schemas/Name'
-                collectionId:
-                  type: string
-                  description: ID of the collection to add the pricing to
-      responses:
-        '200':
-          description: Operation Completed
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Pricing added to collection successfully
-        '403':
-          description: Insufficient permissions
-        '404':
-          description: Pricing or collection not found
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /collections:
-    get:
-      summary: Get all public collections.
-      description: |
-        Retrieves a paginated list of all public collections.
-
-        **Authentication**: Public
-
-        **Permission**:
-        - UNAUTHENTICATED: can only see PUBLIC collections.
-        - USER: can see PUBLIC collections.
-        - ADMIN: can see any collection (PUBLIC or PRIVATE).
-
-      tags:
-        - Collections
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - $ref: '#/components/parameters/Name'
-        - $ref: '#/components/parameters/SortByCollections'
-        - $ref: '#/components/parameters/Sort'
-        - $ref: '#/components/parameters/SelectedOwners'
-        - $ref: '#/components/parameters/Limit'
-        - $ref: '#/components/parameters/Offset'
-      responses:
-        '200':
-          description: Operation Completed
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/responses/CollectionList'
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-  
-  /collections/{username}:
-    get:
-      summary: Get all collections from a user.
-      description: |
-        Retrieves a paginated list of a user's collections.
-
-        **Authentication**: Public
-
-        **Permission**: 
-        - UNAUTHENTICATED: can only list PUBLIC collections of any user.
-        - USER: can list all their collections (PUBLIC, PRIVATE) and PUBLIC collections of other users.
-        - ADMIN: can access any user's collections.
-
-      tags:
-        - Collections
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - $ref: '#/components/parameters/Username'
-      responses:
-        '200':
-          description: Operation Completed
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/responses/UserCollectionList'
-        '403':
-          description: Insufficient permissions
-        '404':
-          description: User not found
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-    
-    post:
-      summary: Create collection for a given user.
-      description: |
-        Creates a new collection for a given user.
-
-        **Authentication**: User API Key
-
-        **Permission**: 
-        - USER: can create collections for their own account.
-        - ADMIN: can create collections for any user.
-
-      tags:
-        - Collections
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - $ref: '#/components/parameters/Username'
-      requestBody:
-        $ref: '#/components/requestBodies/CollectionCreate'
-      responses:
-        '201':
-          description: Collection Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PricingCollectionWithPricings'
-        '403':
-          description: Insufficient permissions
-        '404':
-          description: User not found
-        '422':
-          $ref: '#/components/responses/UnprocessableEntity'
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /collections/{username}/bulk:
-    post:
-      summary: Creates a collection from a list of pricings.
-      description: |
-        Creates a new collection for a given user from a list of existing pricings.
-
-        **Authentication**: User API Key
-
-        **Permission**: 
-        - USER: can create collections for their own account.
-        - ADMIN: can create collections for any user.
-
-      tags:
-        - Collections
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - $ref: '#/components/parameters/Username'
-      requestBody:
-        $ref: '#/components/requestBodies/CollectionBulkCreate'
-      responses:
-        '201':
-          description: Collection Created
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  collection:
-                    $ref: '#/components/schemas/PricingCollection'
-                  pricingsWithErrors:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        pricingName:
-                          type: string
-                        error:
-                          type: string
-        '403':
-          description: Insufficient permissions
-        '404':
-          description: User not found
-        '422':
-          $ref: '#/components/responses/UnprocessableEntity'
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /collections/{username}/{collectionName}:
-    get:
-      summary: Get collection details.
-      description: |
-        Retrieves a collection by name for a given user. If the user requesting is the owner of the collection, they can then access private collections. Otherwise, only public ones.
-
-        **Authentication**: Public
-
-        **Permission**: 
-        - UNAUTHENTICATED: can only access PUBLIC collections.
-        - USER: can access their own collections (PUBLIC, PRIVATE) and PUBLIC collections of other users.
-        - ADMIN: can access any user's collections.
-
-      tags:
-        - Collections
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - $ref: '#/components/parameters/Username'
-        - $ref: '#/components/parameters/CollectionName'
-      responses:
-        '200':
-          description: Operation Completed
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PricingCollection'
-        '403':
-          description: Insufficient permissions
-        '404':
-          description: User or collection not found
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-    put:
-      summary: Update metadata of a collection.
-      description: |
-        Updates the metadata of a given collection.
-
-        **Authentication**: User API Key
-
-        **Permission**: 
-        - USER: can update their own collections.
-        - ADMIN: can update any collection.
-
-      tags:
-        - Collections
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - $ref: '#/components/parameters/Username'
-        - $ref: '#/components/parameters/CollectionName'
-      requestBody:
-        $ref: '#/components/requestBodies/CollectionUpdate'
-      responses:
-        '200':
-          description: Operation Completed
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PricingCollection'
-        '403':
-          description: Insufficient permissions
-        '404':
-          description: User or collection not found
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-    delete:
-      summary: Delete a collection.
-      description: |
-        Deletes a given collection.
-
-        **Authentication**: User API Key
-
-        **Permission**:
-        - USER: can delete their own collections.
-        - ADMIN: can delete any collection.
-
-      tags:
-        - Collections
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - $ref: '#/components/parameters/Username'
-        - $ref: '#/components/parameters/CollectionName'
-        - $ref: '#/components/parameters/CollectionCascade'
-      responses:
-        '200':
-          description: Operation Completed
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Collection deleted successfully
-        '403':
-          description: Insufficient permissions
-        '404':
-          description: User or collection not found
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-    
-  /collections/{username}/{collectionName}/download:
-    get:
-      summary: Download collection.
-      description: |
-        Downloads a given collection as a zip file containing the text plain YAMLs of the pricings in the collection.
-
-        **Authentication**: Public
-
-        **Permission**:
-        - UNAUTHENTICATED: can only download PUBLIC collections. 
-        - USER: can download their own collections or PUBLIC ones.
-        - ADMIN: can download any collection.
-
-      tags:
-        - Collections
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - $ref: '#/components/parameters/Username'
-        - $ref: '#/components/parameters/CollectionName'
-      responses:
-        '200':
-          description: Operation Completed
-          content:
-            application/zip:
-              schema:
-                type: string
-                format: binary
-        '403':
-          description: Insufficient permissions
-        '404':
-          description: User or collection not found
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /collections/{username}/{collectionName}/pricings/{pricingName}:
-    delete:
-      summary: Remove a pricing from a collection.
-      description: |
-        Removes a pricing from the specified collection.
-
-        **Authentication**: User API Key
-
-        **Permission**:
-        - USER: can remove pricings from their own collections.
-        - ADMIN: can remove pricings from any collection.
-
-        The `collectionName` path parameter must match the collection that contains the pricing, otherwise the endpoint returns 404.
-
-      tags:
-        - Collections
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - $ref: '#/components/parameters/Username'
-        - $ref: '#/components/parameters/CollectionName'
-        - $ref: '#/components/parameters/PricingName'
-      responses:
-        '200':
-          description: Operation Completed
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Pricing removed from collection successfully
-        '403':
-          description: Insufficient permissions
-        '404':
-          description: Pricing or collection not found
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /cache:
-    get:
-      summary: Retrieve a value from cache
-      description: |
-        Retrieves a cached value by key from the Redis cache.
-        The value is returned as-is from the cache. If the key does not exist,
-        returns null.
-
-        **Authentication**: (only if client is sphere frontend, otherwise requires ADMIN role)
-
-      tags:
-        - Cache
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - name: key
-          in: query
-          required: true
-          description: The cache key to retrieve
-          schema:
-            type: string
-            example: "user_preferences_123"
-      responses:
-        '200':
-          description: Successfully retrieved the cached value
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/responses/CacheGetResponse'
-        '400':
-          description: Missing or invalid cache key
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-              example:
-                error: "Cache key is required"
-        '500':
-          description: Redis client not initialized or internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-              example:
-                error: "ERROR: Redis client not initialized"
-                
-    post:
-      summary: Store a value in cache
-      description: |
-        Stores a value in the Redis cache with an optional expiration time.
-        By default, cached values expire after 300 seconds (5 minutes) if no 
-        expiration time is specified.
-
-        **Important**: This endpoint enforces a conflict prevention mechanism.
-        If a key already exists in the cache with a different value, the operation
-        will fail with a CONFLICT error. Use a different key to store a new value.
-
-        **Authentication**: Public (only if client is sphere frontend, otherwise requires ADMIN role)
-
-      tags:
-        - Cache
-      security:
-        - ApiKeyAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/requestBodies/CacheSetRequest'
-      responses:
-        '200':
-          description: Value successfully stored in cache
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/responses/CacheSetResponse'
-        '400':
-          description: Missing or invalid request parameters
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-              example:
-                error: "Cache key and value are required"
-        '409':
-          description: Conflict - value already exists for this key with a different value
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-              example:
-                error: "CONFLICT: Value already exists in cache, please use a different key."
-        '500':
-          description: Redis client not initialized or internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-              example:
-                error: "ERROR: Redis client not initialized"
-
-  # ============================================
+    # ============================================
   # Organization Management
   # ============================================
 
@@ -2249,6 +1297,956 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+
+
+  /pricings:
+    get:
+      summary: Get and filter pricings
+      description: |
+        Retrieves a paginated list of pricings that match the provided filter.
+
+        **Authentication**: Public
+
+        **Permission**:
+        - UNAUTHENTICATED: can only see PUBLIC pricings.
+        - USER: can only see PUBLIC pricings.
+        - ADMIN: can see any pricing (PUBLIC or PRIVATE).
+
+      tags:
+        - Pricings
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Name'
+        - $ref: '#/components/parameters/SortByPricings'
+        - $ref: '#/components/parameters/Sort'
+        - $ref: '#/components/parameters/MinSubscription'
+        - $ref: '#/components/parameters/MaxSubscription'
+        - $ref: '#/components/parameters/MinMinPrice'
+        - $ref: '#/components/parameters/MaxMinPrice'
+        - $ref: '#/components/parameters/MinMaxPrice'
+        - $ref: '#/components/parameters/MaxMaxPrice'
+        - $ref: '#/components/parameters/SelectedOwners'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          description: Operation Completed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/responses/PricingList'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    put:
+      summary: Update pricing version
+      description: |
+        Receives a plain text YAML file containing an iPricing in Pricing2Yaml and updates its syntaxVersion to the latest Pricign2Yaml syntax version. 
+        
+        **Authentication**: Public
+
+      tags:
+        - Pricings
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pricing:
+                  type: string
+                  description: Plain text YAML content of the pricing definition to be updated
+                  example: |-
+                    saasName: Your SaaS Name
+                    syntaxVersion: "3.0"
+                    version: "latest"
+                    createdAt: 2026-04-26
+                    billing:
+                      monthly: 1
+                    currency: EUR
+                    features:
+                      feature1:
+                        description: Feature 1 description
+                        valueType: BOOLEAN
+                        defaultValue: true
+                        type: DOMAIN
+                    usageLimits: null
+                    plans:
+                      BASIC:
+                        description: Basic plan
+                        price: 0.0
+                        unit: user/month
+                        features: null
+                        usageLimits: null
+                    addOns: null
+
+      responses:
+        '200':
+          description: Pricing Updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                    description: The total number of pricings matching the query
+                  configurationSpaceSize:
+                    $ref: '#/components/schemas/MetricHistogram'
+                  minPrice:
+                    $ref: '#/components/schemas/MetricHistogram'
+                  maxPrice:
+                    $ref: '#/components/schemas/MetricHistogram'
+                  pricings:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Pricing'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /pricings/{organizationId}:
+    get:
+      summary: Get all pricings from a user.
+      description: |
+        Retrieves a paginated list of a user's pricings that ARE NOT in a collection. If you want to retrieve pricings from a usar of a specific collection, use the `collectionName` query parameter in the `GET /pricings` endpoint.
+
+        **Authentication**: Public
+
+        **Permission**: 
+        - UNAUTHENTICATED: can only list PUBLIC pricings of any user.
+        - USER: can list all their pricings (PUBLIC, PRIVATE) and PUBLIC pricings of other users.
+        - ADMIN: can access any user's pricings.
+
+      tags:
+        - Pricings
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+        - $ref: '#/components/parameters/Name'
+        - $ref: '#/components/parameters/SortByPricings'
+        - $ref: '#/components/parameters/Sort'
+        - $ref: '#/components/parameters/MinSubscription'
+        - $ref: '#/components/parameters/MaxSubscription'
+        - $ref: '#/components/parameters/MinMinPrice'
+        - $ref: '#/components/parameters/MaxMinPrice'
+        - $ref: '#/components/parameters/MinMaxPrice'
+        - $ref: '#/components/parameters/MaxMaxPrice'
+        - $ref: '#/components/parameters/CollectionName'
+        - $ref: '#/components/parameters/IncludePricingsInCollection'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          description: Operation Completed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                    description: The total number of pricings matching the query
+                  configurationSpaceSize:
+                    $ref: '#/components/schemas/MetricHistogram'
+                  minPrice:
+                    $ref: '#/components/schemas/MetricHistogram'
+                  maxPrice:
+                    $ref: '#/components/schemas/MetricHistogram'
+                  pricings:
+                    type: array
+                    items:
+                      $ref: '#/components/responses/PricingList'
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: User not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create pricing for a given user.
+      description: |
+        Creates a new pricing for a given user.
+
+        **Authentication**: User API Key
+
+        **Permission**: 
+        - USER: can create pricings for their own account.
+        - ADMIN: can create pricings for any user.
+
+      tags:
+        - Pricings
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                yaml:
+                  type: string
+                  format: binary
+                private:
+                  type: boolean
+                  default: false
+                collectionId:
+                  type: string
+                  description: Optional collection ID to add the pricing to upon creation
+      responses:
+        '201':
+          description: Pricing Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pricing'
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: User not found
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /pricings/{organizationId}/{pricingName}:
+    get:
+      summary: Get public pricing details.
+      description: |
+        Retrieves a pricing by name for a given user. If the user requesting is the owner of the pricing, they can then access private pricings. Otherwise, only public ones.
+
+        **Authentication**: Public
+
+        **Permission**: 
+        - UNAUTHENTICATED: can only access PUBLIC pricings.
+        - USER: can access their own pricings (PUBLIC, PRIVATE) and PUBLIC pricings of other users.
+        - ADMIN: can access any user's pricings.
+
+      tags:
+        - Pricings
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+        - $ref: '#/components/parameters/PricingName'
+      responses:
+        '200':
+          description: Operation Completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PricingDetails'
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: User or pricing not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+    put:
+      summary: Update metadata of a pricing.
+      description: |
+        Updates the metadata of all pricing versions of a given pricing. If a pricing is inside a collection, **you have to provide the `collectionName` query parameter**
+
+        **Authentication**: User API Key
+
+        **Permission**: 
+        - USER: can update their own pricings.
+        - ADMIN: can update any pricing.
+      tags:
+        - Pricings
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+        - $ref: '#/components/parameters/PricingName'
+        - $ref: '#/components/parameters/CollectionName'
+      requestBody:
+        $ref: '#/components/requestBodies/PricingUpdate'
+      responses:
+        '200':
+          description: Operation Completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PricingDetails'
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: User or pricing not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+    delete:
+      summary: Delete a pricing.
+      description: |
+        Deletes all versions of a given pricing. If a pricing is inside a collection, **you have to provide the `collectionName` query parameter**
+
+        **Authentication**: User API Key
+
+        **Permission**: 
+        - USER: can delete their own pricings.
+        - ADMIN: can delete any pricing.
+
+      tags:
+        - Pricings
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+        - $ref: '#/components/parameters/PricingName'
+        - $ref: '#/components/parameters/CollectionName'
+      responses:
+        '200':
+          description: Operation Completed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Pricing deleted successfully
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: User or pricing not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /pricings/{organizationId}/{pricingName}/{pricingVersion}:
+    get:
+      summary: Get the configurations of a pricing version.
+      description: |
+        Retrieves the configuration space of a specific version of a given pricing.
+
+        **Authentication**: Public
+
+        **Permission**: 
+        - UNAUTHENTICATED: can only access PUBLIC pricings.
+        - USER: can access their own pricings (PUBLIC, PRIVATE) and PUBLIC pricings of other users.
+        - ADMIN: can access any user's pricings.
+
+      tags:
+        - Pricings
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+        - $ref: '#/components/parameters/PricingName'
+        - $ref: '#/components/parameters/PricingVersion'
+        - $ref: '#/components/parameters/CollectionName'
+      responses:
+        '200':
+          description: Operation Completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PricingConfigurationSpace'
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: User, pricing or pricing version not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Delete a specific version of a pricing.
+      description: |
+        Deletes a specific version of a given pricing.
+
+        **Authentication**: User API Key
+
+        **Permission**: 
+        - USER: can delete versions of their own pricings.
+        - ADMIN: can delete versions of any pricing.
+
+      tags:
+        - Pricings
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+        - $ref: '#/components/parameters/PricingName'
+        - $ref: '#/components/parameters/PricingVersion'
+      responses:
+        '200':
+          description: Operation Completed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Pricing version deleted successfully
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: User, pricing or pricing version not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /collections:
+    get:
+      summary: Get all public collections.
+      description: |
+        Retrieves a paginated list of all public collections.
+
+        **Authentication**: Public
+
+        **Permission**:
+        - UNAUTHENTICATED: can only see PUBLIC collections.
+        - USER: can see PUBLIC collections.
+        - ADMIN: can see any collection (PUBLIC or PRIVATE).
+
+      tags:
+        - Collections
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Name'
+        - $ref: '#/components/parameters/SortByCollections'
+        - $ref: '#/components/parameters/Sort'
+        - $ref: '#/components/parameters/SelectedOwners'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          description: Operation Completed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/responses/CollectionList'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /collections/{organizationId}:
+    get:
+      summary: Get all collections from a user.
+      description: |
+        Retrieves a paginated list of a user's collections.
+
+        **Authentication**: Public
+
+        **Permission**: 
+        - UNAUTHENTICATED: can only list PUBLIC collections of any user.
+        - USER: can list all their collections (PUBLIC, PRIVATE) and PUBLIC collections of other users.
+        - ADMIN: can access any user's collections.
+
+      tags:
+        - Collections
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+      responses:
+        '200':
+          description: Operation Completed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/responses/UserCollectionList'
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: User not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    post:
+      summary: Create collection for a given user.
+      description: |
+        Creates a new collection for a given user.
+
+        **Authentication**: User API Key
+
+        **Permission**: 
+        - USER: can create collections for their own account.
+        - ADMIN: can create collections for any user.
+
+      tags:
+        - Collections
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+      requestBody:
+        $ref: '#/components/requestBodies/CollectionCreate'
+      responses:
+        '201':
+          description: Collection Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PricingCollectionWithPricings'
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: User not found
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /collections/{organizationId}/bulk:
+    post:
+      summary: Creates a collection from a list of pricings.
+      description: |
+        Creates a new collection for a given user from a list of existing pricings.
+
+        **Authentication**: User API Key
+
+        **Permission**: 
+        - USER: can create collections for their own account.
+        - ADMIN: can create collections for any user.
+
+      tags:
+        - Collections
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+      requestBody:
+        $ref: '#/components/requestBodies/CollectionBulkCreate'
+      responses:
+        '201':
+          description: Collection Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  collection:
+                    $ref: '#/components/schemas/PricingCollection'
+                  pricingsWithErrors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        pricingName:
+                          type: string
+                        error:
+                          type: string
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: User not found
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /collections/{organizationId}/pricings:
+    post:
+      summary: Add pricing to collection.
+      description: |
+        Adds a pricing to a collection of the user performing the request.
+
+        **Authentication**: User API Key
+      
+      tags:
+        - Pricings
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pricingName:
+                  $ref: '#/components/schemas/Name'
+                collectionId:
+                  type: string
+                  description: ID of the collection to add the pricing to
+      responses:
+        '200':
+          description: Operation Completed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Pricing added to collection successfully
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: Pricing or collection not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /collections/{organizationId}/{collectionName}:
+    get:
+      summary: Get collection details.
+      description: |
+        Retrieves a collection by name for a given user. If the user requesting is the owner of the collection, they can then access private collections. Otherwise, only public ones.
+
+        **Authentication**: Public
+
+        **Permission**: 
+        - UNAUTHENTICATED: can only access PUBLIC collections.
+        - USER: can access their own collections (PUBLIC, PRIVATE) and PUBLIC collections of other users.
+        - ADMIN: can access any user's collections.
+
+      tags:
+        - Collections
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+        - $ref: '#/components/parameters/CollectionName'
+      responses:
+        '200':
+          description: Operation Completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PricingCollection'
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: User or collection not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      summary: Update metadata of a collection.
+      description: |
+        Updates the metadata of a given collection.
+
+        **Authentication**: User API Key
+
+        **Permission**: 
+        - USER: can update their own collections.
+        - ADMIN: can update any collection.
+
+      tags:
+        - Collections
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+        - $ref: '#/components/parameters/CollectionName'
+      requestBody:
+        $ref: '#/components/requestBodies/CollectionUpdate'
+      responses:
+        '200':
+          description: Operation Completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PricingCollection'
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: User or collection not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      summary: Delete a collection.
+      description: |
+        Deletes a given collection.
+
+        **Authentication**: User API Key
+
+        **Permission**:
+        - USER: can delete their own collections.
+        - ADMIN: can delete any collection.
+
+      tags:
+        - Collections
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+        - $ref: '#/components/parameters/CollectionName'
+        - $ref: '#/components/parameters/CollectionCascade'
+      responses:
+        '200':
+          description: Operation Completed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Collection deleted successfully
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: User or collection not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+  /collections/{organizationId}/{collectionName}/download:
+    get:
+      summary: Download collection.
+      description: |
+        Downloads a given collection as a zip file containing the text plain YAMLs of the pricings in the collection.
+
+        **Authentication**: Public
+
+        **Permission**:
+        - UNAUTHENTICATED: can only download PUBLIC collections. 
+        - USER: can download their own collections or PUBLIC ones.
+        - ADMIN: can download any collection.
+
+      tags:
+        - Collections
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+        - $ref: '#/components/parameters/CollectionName'
+      responses:
+        '200':
+          description: Operation Completed
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: User or collection not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /collections/{organizationId}/{collectionName}/pricings/{pricingName}:
+    delete:
+      summary: Remove a pricing from a collection.
+      description: |
+        Removes a pricing from the specified collection.
+
+        **Authentication**: User API Key
+
+        **Permission**:
+        - USER: can remove pricings from their own collections.
+        - ADMIN: can remove pricings from any collection.
+
+        The `collectionName` path parameter must match the collection that contains the pricing, otherwise the endpoint returns 404.
+
+      tags:
+        - Collections
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+        - $ref: '#/components/parameters/CollectionName'
+        - $ref: '#/components/parameters/PricingName'
+      responses:
+        '200':
+          description: Operation Completed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Pricing removed from collection successfully
+        '403':
+          description: Insufficient permissions
+        '404':
+          description: Pricing or collection not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /cache:
+    get:
+      summary: Retrieve a value from cache
+      description: |
+        Retrieves a cached value by key from the Redis cache.
+        The value is returned as-is from the cache. If the key does not exist,
+        returns null.
+
+        **Authentication**: (only if client is sphere frontend, otherwise requires ADMIN role)
+
+      tags:
+        - Cache
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: key
+          in: query
+          required: true
+          description: The cache key to retrieve
+          schema:
+            type: string
+            example: "user_preferences_123"
+      responses:
+        '200':
+          description: Successfully retrieved the cached value
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/CacheGetResponse'
+        '400':
+          description: Missing or invalid cache key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "Cache key is required"
+        '500':
+          description: Redis client not initialized or internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "ERROR: Redis client not initialized"
+                
+    post:
+      summary: Store a value in cache
+      description: |
+        Stores a value in the Redis cache with an optional expiration time.
+        By default, cached values expire after 300 seconds (5 minutes) if no 
+        expiration time is specified.
+
+        **Important**: This endpoint enforces a conflict prevention mechanism.
+        If a key already exists in the cache with a different value, the operation
+        will fail with a CONFLICT error. Use a different key to store a new value.
+
+        **Authentication**: Public (only if client is sphere frontend, otherwise requires ADMIN role)
+
+      tags:
+        - Cache
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/CacheSetRequest'
+      responses:
+        '200':
+          description: Value successfully stored in cache
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/CacheSetResponse'
+        '400':
+          description: Missing or invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "Cache key and value are required"
+        '409':
+          description: Conflict - value already exists for this key with a different value
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "CONFLICT: Value already exists in cache, please use a different key."
+        '500':
+          description: Redis client not initialized or internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "ERROR: Redis client not initialized"
 
 components:
   schemas:
