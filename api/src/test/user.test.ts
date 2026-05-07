@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import request from 'supertest';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { shutdownApp, TestApp } from './utils/testApp';
-import { createTestUser, deleteTestUser } from './utils/users/userTestUtils';
+import { createTestUser, createAndLoginUser, deleteTestUser } from './utils/users/userTestUtils';
 import {
   createTestOrganizationDirect,
   createMembership,
@@ -12,6 +12,7 @@ import { BASE_PATH, TEST_PASSWORD } from './utils/config/variables';
 import testContainer from './utils/config/testContainer';
 import OrganizationMongoose from '../main/repositories/mongoose/models/OrganizationMongoose';
 import OrganizationMembershipMongoose from '../main/repositories/mongoose/models/OrganizationMembershipMongoose';
+import UserMongoose from '../main/repositories/mongoose/models/UserMongoose';
 
 dotenv.config();
 
@@ -511,6 +512,87 @@ describe('Users API integration', () => {
         .send({ firstName: 'Ghost' });
 
       expect(response.status).toBe(404);
+    });
+
+    it('Renames personal organization name when username is changed.', async () => {
+      const { user } = await createAndLoginUser('USER');
+      const newUsername = `renamed_user_${Date.now()}`;
+
+      const personalOrgBefore = await OrganizationMongoose.findOne({
+        name: user.username.toLowerCase(),
+        isPersonal: true,
+      });
+      expect(personalOrgBefore).not.toBeNull();
+
+      const response = await request(app)
+        .put(`${BASE_PATH}/users/${user.username}`)
+        .set('Authorization', `Bearer ${user.token}`)
+        .send({ username: newUsername });
+
+      expect(response.status).toBe(200);
+      expect(response.body.username).toBe(newUsername);
+
+      const personalOrgAfter = await OrganizationMongoose.findOne({
+        name: newUsername.toLowerCase(),
+        isPersonal: true,
+      });
+      expect(personalOrgAfter).not.toBeNull();
+      expect(personalOrgAfter!.displayName).toBe(`${newUsername} (personal)`);
+
+      const oldOrg = await OrganizationMongoose.findOne({
+        name: user.username.toLowerCase(),
+        isPersonal: true,
+      });
+      expect(oldOrg).toBeNull();
+
+      await UserMongoose.deleteOne({ username: newUsername });
+    });
+
+    it('Does not rename personal organization when username is not changed.', async () => {
+      const { user } = await createAndLoginUser('USER');
+
+      const personalOrgBefore = await OrganizationMongoose.findOne({
+        name: user.username.toLowerCase(),
+        isPersonal: true,
+      });
+      expect(personalOrgBefore).not.toBeNull();
+
+      const response = await request(app)
+        .put(`${BASE_PATH}/users/${user.username}`)
+        .set('Authorization', `Bearer ${user.token}`)
+        .send({ firstName: 'UpdatedOnly' });
+
+      expect(response.status).toBe(200);
+
+      const personalOrgAfter = await OrganizationMongoose.findOne({
+        name: user.username.toLowerCase(),
+        isPersonal: true,
+      });
+      expect(personalOrgAfter).not.toBeNull();
+      expect(personalOrgAfter!.name).toBe(user.username.toLowerCase());
+      expect(personalOrgAfter!.displayName).toBe(`${user.username} (Personal)`);
+    });
+
+    it('Admin renaming another user also renames their personal organization.', async () => {
+      const { user: targetUser } = await createTestUser('USER');
+      const newUsername = `admin_renamed_${Date.now()}`;
+
+      const response = await request(app)
+        .put(`${BASE_PATH}/users/${targetUser.username}`)
+        .set('Authorization', `Bearer ${adminUser.token}`)
+        .send({ username: newUsername });
+
+      expect(response.status).toBe(200);
+      expect(response.body.username).toBe(newUsername);
+
+      const personalOrgAfter = await OrganizationMongoose.findOne({
+        name: newUsername.toLowerCase(),
+        isPersonal: true,
+      });
+      expect(personalOrgAfter).not.toBeNull();
+      expect(personalOrgAfter!.displayName).toBe(`${newUsername} (personal)`);
+
+      await UserMongoose.deleteOne({ username: newUsername });
     });
   });
 
