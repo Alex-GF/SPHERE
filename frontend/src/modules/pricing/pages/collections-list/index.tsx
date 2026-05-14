@@ -1,147 +1,143 @@
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import SearchBar from '../../components/search-bar';
 import { usePricingCollectionsApi } from '../../../profile/api/pricingCollectionsApi';
-import CollectionListCard from '../../components/collection-list-card';
-import { CollectionEntry } from '../../../profile/types/profile-types';
-import CollectionFilters from '../../components/collection-filters';
-import PricingsPagination from '../../components/pricings-pagination';
-import PricingsListContainer from '../../components/pricings-list-container';
+import CollectionCard from '../../components/collection-card';
+import SearchInput from '../../components/search-input';
+import FilterBar from '../../components/filter-bar';
+import Pagination from '../../components/pagination';
+import { motion } from 'framer-motion';
+import { staggerContainer, fadeInUp, transitionDefault } from '../../../core/utils/motion-variants';
 
-export type PricingEntry = {
+interface CollectionEntry {
+  id: string;
   name: string;
-  organization: {
-    id: string;
-    name: string;
-    displayName: string;
-    avatar: string;
-  };
-  version: string;
-  createdAt: string;
-  currency: string;
-  analytics: {
-    configurationSpaceSize: number;
-    minSubscriptionPrice: number;
-    maxSubscriptionPrice: number;
-  };
-};
-
-export type FilterValues = {
-  max: number;
-  min: number;
-  data: {
-    value: string;
-    count: number;
-  }[];
-};
-
-export type FilterLimits = {
-  [key: string]: FilterValues;
-};
+  organization: { id: string; name: string; displayName: string; avatar: string };
+  numberOfPricings: number;
+}
 
 export default function CollectionsListPage() {
-  const [collectionsList, setCollectionsList] = useState<CollectionEntry[]>([]);
-  const [filterLimits, setFilterLimits] = useState<FilterLimits | null>(null);
-  const [filterValues, setFilterValues] = useState<Record<string, string | number>>({});
-  const [textFilterValue, setTextFilterValue] = useState('');
-  const [limit, setLimit] = useState<number>(12);
-  const [offset, setOffset] = useState<number>(0);
-  const [totalCount, setTotalCount] = useState<number>(0);
-
   const { getCollections } = usePricingCollectionsApi();
-  const getCollectionsRef = useRef(getCollections);
+
+  const [collections, setCollections] = useState<CollectionEntry[]>([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const [textFilter, setTextFilter] = useState('');
+  const [selectedOwners, setSelectedOwners] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const limit = 12;
+
+  const fetchCollections = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const filters: Record<string, unknown> = { limit, offset: (page - 1) * limit };
+      if (textFilter) filters.name = textFilter;
+      if (selectedOwners.length > 0) filters.owners = selectedOwners.join(',');
+
+      const data = await getCollections(filters as Record<string, string>);
+      setCollections(data.collections ?? []);
+      setTotal(data.total ?? 0);
+    } catch {
+      setCollections([]);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [page, textFilter, selectedOwners]);
 
   useEffect(() => {
-    getCollectionsRef.current = getCollections;
-  }, [getCollections]);
+    fetchCollections();
+  }, [fetchCollections]);
 
-  const filters = useMemo(
-    () => ({
-      name: textFilterValue,
-      ...filterValues,
-      limit,
-      offset,
-    }),
-    [textFilterValue, filterValues, limit, offset]
-  );
+  const ownerFilters = useMemo(() => {
+    const counts: Record<string, number> = {};
+    collections.forEach(c => {
+      const name = c.organization.displayName || c.organization.name;
+      counts[name] = (counts[name] || 0) + 1;
+    });
+    return Object.entries(counts).map(([label, count]) => ({ label, value: label, count }));
+  }, [collections]);
 
-  const receivedOwners = useMemo(
-    () =>
-      collectionsList.reduce((acc, collection) => {
-        acc[collection.organization.name] = (acc[collection.organization.name] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
-    [collectionsList]
-  );
-
-  useEffect(() => {
-    let isActive = true;
-
-    getCollectionsRef.current(filters)
-      .then(data => {
-        if (!isActive) {
-          return;
-        }
-
-        setCollectionsList(data.collections);
-        setTotalCount(data.total || 0);
-
-        setFilterLimits(
-          data.collections.length > 0
-            ? {
-                owners: data.collections.map((collection: CollectionEntry) => collection.organization),
-              }
-            : null
-        );
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-
-    return () => {
-      isActive = false;
-    };
-  }, [filters]);
+  const totalPages = Math.max(1, Math.ceil(total / limit));
 
   return (
     <>
       <Helmet>
-        <title> SPHERE - Collections </title>
+        <title>SPHERE - Collections</title>
       </Helmet>
-      <div className="flex h-full w-screen max-w-[2000px]">
-        <div className="mx-auto flex h-full w-full max-w-[600px] flex-col justify-start border-r border-slate-300 bg-slate-100">
-          <div className="w-[20vw]" />
-          {filterLimits && collectionsList.length > 0 && (
-            <CollectionFilters
-              receivedOwners={receivedOwners}
-              textFilterValue={textFilterValue}
-              setFilterValues={setFilterValues}
-            />
-          )}
-        </div>
-        <div className="mt-[50px] flex grow flex-col">
-          <SearchBar setTextFilterValue={setTextFilterValue} />
-          <PricingsListContainer>
-            <div className="mt-[50px] mb-[50px] flex w-full flex-wrap justify-evenly gap-12 px-2.5">
-              {collectionsList.length > 0 ? (
-                collectionsList.map(collection => (
-                  <CollectionListCard key={collection.id} collection={collection} />
-                ))
-              ) : (
-                <div>No collections found</div>
-              )}
-            </div>
 
-            <PricingsPagination
-              limit={limit}
-              offset={offset}
-              total={totalCount}
-              onChange={(newOffset: number, newLimit: number) => {
-                setOffset(newOffset);
-                setLimit(newLimit);
-              }}
+      <div className="mx-auto max-w-[1280px] px-4 py-6 md:px-8">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={transitionDefault}
+          className="mb-6"
+        >
+          <h1 className="font-display text-2xl font-normal text-tp-ink">Collections</h1>
+          <p className="mt-1 text-sm text-tp-steel">
+            Browse curated groups of pricing configurations.
+          </p>
+        </motion.div>
+
+        {/* Search + Filters */}
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ ...transitionDefault, delay: 0.05 }}
+          className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+        >
+          <div className="w-full sm:max-w-[20rem]">
+            <SearchInput
+              placeholder="Search collections..."
+              onSearch={(v) => { setTextFilter(v); setPage(1); }}
             />
-          </PricingsListContainer>
+          </div>
+          <FilterBar
+            ownerFilters={ownerFilters}
+            selectedOwners={selectedOwners}
+            onOwnersChange={(o) => { setSelectedOwners(o); setPage(1); }}
+            onClear={() => { setSelectedOwners([]); setTextFilter(''); setPage(1); }}
+          />
+        </motion.div>
+
+        {/* Results count */}
+        <div className="mb-4 text-xs text-tp-steel">
+          {isLoading ? 'Loading...' : `${total} ${total === 1 ? 'collection' : 'collections'} found`}
+        </div>
+
+        {/* Grid */}
+        {isLoading ? (
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div key={i} className="h-28 animate-pulse rounded-xl border border-tp-hairline-soft bg-tp-surface" />
+            ))}
+          </div>
+        ) : collections.length === 0 ? (
+          <div className="flex flex-col items-center justify-center rounded-xl border border-tp-hairline-soft bg-tp-canvas py-16 text-center">
+            <svg className="mb-3 h-10 w-10 text-tp-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
+            </svg>
+            <p className="text-sm font-medium text-tp-ink">No collections found</p>
+            <p className="mt-1 text-xs text-tp-steel">Try adjusting your search or filters.</p>
+          </div>
+        ) : (
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            animate="visible"
+            className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+          >
+            {collections.map((collection) => (
+              <motion.div key={collection.id} variants={fadeInUp} transition={transitionDefault}>
+                <CollectionCard collection={collection} />
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
+
+        {/* Pagination */}
+        <div className="mt-6">
+          <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
         </div>
       </div>
     </>

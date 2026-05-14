@@ -80,7 +80,7 @@ export default function OrganizationJoinPage() {
 
   if (joined && org) {
     return (
-      <div className="mx-auto max-w-md px-4 py-16 text-center">
+      <div className="mx-auto max-w-[28rem] px-4 py-16 text-center">
         <div className="flex flex-col items-center gap-4">
           <span className="flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-green-600">
             <Iconify icon="mdi:check-circle-outline" width={36} />
@@ -103,7 +103,7 @@ export default function OrganizationJoinPage() {
 
   if (error || !org) {
     return (
-      <div className="mx-auto max-w-md px-4 py-16 text-center">
+      <div className="mx-auto max-w-[28rem] px-4 py-16 text-center">
         <div className="flex flex-col items-center gap-4">
           <span className="flex h-16 w-16 items-center justify-center rounded-full bg-red-100 text-red-500">
             <Iconify icon="mdi:link-off" width={36} />
@@ -125,7 +125,7 @@ export default function OrganizationJoinPage() {
   }
 
   return (
-    <div className="mx-auto max-w-md px-4 py-16">
+    <div className="mx-auto max-w-[28rem] px-4 py-16">
       <div className="flex flex-col items-center gap-4 text-center">
         <OrgAvatar org={org} />
         <div>

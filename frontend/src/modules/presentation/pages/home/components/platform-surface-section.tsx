@@ -27,7 +27,7 @@ export default function PlatformSurfaceSection({
                   One platform to design, analyze, and deliver pricings.
                 </h2>
               </div>
-              <p className="mt-8 max-w-xl text-sm leading-relaxed text-[#475467] md:text-base">
+              <p className="mt-8 max-w-[36rem] text-sm leading-relaxed text-[#475467] md:text-base">
                 Author variants, compare constraints, and forecast margin dynamics before publish.
                 Every branch remains reproducible for review and rollback.
               </p>
@@ -75,7 +75,7 @@ export default function PlatformSurfaceSection({
           <div className="rounded-[2rem] border border-black/10 bg-black/[0.03] p-1.5 ring-1 ring-black/5">
             <article className="rounded-[calc(2rem-0.375rem)] border border-black/10 bg-white p-7 shadow-[inset_0_1px_1px_rgba(255,255,255,0.75)] md:p-9">
               <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
-                <div className="max-w-xl">
+                <div className="max-w-[36rem]">
                   <p className="text-[11px] uppercase tracking-[0.22em] text-[#667085]">
                     Lead the market
                   </p>

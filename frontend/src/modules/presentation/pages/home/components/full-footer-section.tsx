@@ -8,7 +8,7 @@ export default function FullFooterSection({ onNavigate }: { onNavigate: (to: str
             <h4 className="mt-3 [font-family:'Clash_Display','Geist',sans-serif] text-3xl leading-[0.95] text-white md:text-4xl">
               SaaS Pricing Holistic Evaluation and Regulation Environment
             </h4>
-            <p className="mt-4 max-w-md text-sm leading-relaxed text-white/70">
+            <p className="mt-4 max-w-[28rem] text-sm leading-relaxed text-white/70">
               Unified pricing operations for product, growth, and engineering teams building
               resilient monetization systems.
             </p>

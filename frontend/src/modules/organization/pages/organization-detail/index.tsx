@@ -80,7 +80,7 @@ function EditOrgModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-      <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+      <div className="w-full max-w-[28rem] rounded-xl bg-white p-6 shadow-xl">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-bold text-sphere-grey-800">Edit Organization</h2>
           <button onClick={onClose} className="text-sphere-grey-400 hover:text-sphere-grey-700">
@@ -175,7 +175,7 @@ function CreateSubOrgModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-      <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+      <div className="w-full max-w-[28rem] rounded-xl bg-white p-6 shadow-xl">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-bold text-sphere-grey-800">Create Sub-organization</h2>
           <button onClick={onClose} className="text-sphere-grey-400 hover:text-sphere-grey-700">
@@ -252,7 +252,7 @@ function AddMemberModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-      <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+      <div className="w-full max-w-[28rem] rounded-xl bg-white p-6 shadow-xl">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-bold text-sphere-grey-800">Add Member</h2>
           <button onClick={onClose} className="text-sphere-grey-400 hover:text-sphere-grey-700">
@@ -351,7 +351,7 @@ function InviteModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-      <div className="w-full max-w-lg rounded-xl bg-white p-6 shadow-xl">
+      <div className="w-full max-w-[32rem] rounded-xl bg-white p-6 shadow-xl">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-bold text-sphere-grey-800">Invite Members</h2>
           <button onClick={onClose} className="text-sphere-grey-400 hover:text-sphere-grey-700">

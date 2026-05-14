@@ -293,7 +293,7 @@ export default function FloatingMorphHeader({ navItems, onNavigate }: Props) {
       <div
         className={`fixed inset-0 z-20 bg-white/85 backdrop-blur-3xl px-4 pt-28 transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] md:hidden ${isMenuOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'}`}
       >
-        <div className="mx-auto flex w-full max-w-md flex-col gap-3">
+        <div className="mx-auto flex w-full max-w-[28rem] flex-col gap-3">
           {navItems.map((item, index) => (
             <div key={item.label} className="rounded-[1.35rem] border border-black/10 bg-white px-5 py-3">
               <button
