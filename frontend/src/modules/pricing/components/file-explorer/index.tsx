@@ -98,7 +98,7 @@ function YamlLinkModal({
   return (
     <div className="fixed inset-0 z-50 bg-black/45 p-4" onClick={onClose}>
       <div
-        className="absolute left-1/2 top-1/2 w-[90vw] max-w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-[20px] bg-white p-4 shadow-2xl"
+        className="absolute left-1/2 top-1/2 w-[90vw] max-w-150 -translate-x-1/2 -translate-y-1/2 rounded-xxl bg-white p-4 shadow-2xl"
         onClick={e => e.stopPropagation()}
       >
         <h2 className="text-center text-xl font-bold">Your link is ready!</h2>

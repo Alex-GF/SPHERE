@@ -6,7 +6,7 @@ import { usePricingsApi } from '../../api/pricingsApi';
 import { useOrganizationsApi } from '../../../organization/api/organizationsApi';
 import { useAuth } from '../../../auth/hooks/useAuth';
 import { PricingRenderer } from '../../../pricing-editor/components/pricing-renderer';
-import { downloadYaml, parseStringYamlToEncodedYaml, createUrlWithEncodedYaml } from '../../../pricing-editor/services/export.service';
+import { downloadYaml, parseStringYamlToEncodedYaml } from '../../../pricing-editor/services/export.service';
 import ConfigurationSpaceView from '../../components/configuration-space-view';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from '../../../core/hooks/useRouter';
@@ -133,6 +133,7 @@ export default function CardPage() {
   const [showLinkModal, setShowLinkModal] = useState(false);
   const [linkUrl, setLinkUrl] = useState('');
   const [canDelete, setCanDelete] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   // Fetch versions + check permissions
   useEffect(() => {
@@ -147,7 +148,7 @@ export default function CardPage() {
         try {
           const members = await getOrgMembers(owner);
           const me = members.find((m: any) => m.user.username === authUser.user?.username);
-          setCanDelete(me && (me.role === 'OWNER' || me.role === 'ADMIN'));
+          setCanDelete(me ? (me.role === 'OWNER' || me.role === 'ADMIN') : false);
         } catch { setCanDelete(false); }
       })
       .catch(() => {})
@@ -177,7 +178,7 @@ export default function CardPage() {
       const lines = ['variables:']; for (const k of Object.keys(variables)) lines.push(`  ${k}: ${ser(variables[k])}`);
       const block = lines.join('\n');
       const re = /^variables:\n(?:[ \t]+.+\n?)*/gm;
-      let newYaml = re.test(yamlText) ? yamlText.replace(re, block + '\n') : yamlText + '\n' + block + '\n';
+      const newYaml = re.test(yamlText) ? yamlText.replace(re, block + '\n') : yamlText + '\n' + block + '\n';
       setYamlText(newYaml);
       setPricing(retrievePricingFromYaml(newYaml));
       setErrors([]);
@@ -207,7 +208,7 @@ export default function CardPage() {
     })), [filteredVersions]);
 
   const a = currentVersion?.analytics ?? null;
-  const aSafe = a ? Object.fromEntries(Object.entries(a).map(([k, v]) => [k, typeof v === 'number' ? v : 0])) as TreeAnalytics : null;
+  const aSafe = a ? Object.fromEntries(Object.entries(a).map(([k, v]) => [k, typeof v === 'number' ? v : 0])) as unknown as TreeAnalytics : null;
   const symbol = currentVersion ? '$' : '$';
 
   const handleDownload = (v: VersionData) => {
@@ -236,7 +237,9 @@ export default function CardPage() {
       await removePricingVersion(name, v.version);
       setVersions(prev => prev.filter(x => x.id !== v.id));
       if (currentVersion?.id === v.id) setCurrentVersion(versions.find(x => x.id !== v.id) ?? null);
-    } catch {}
+    } catch {
+      console.error("Failed to delete version");
+    }
   };
 
   if (isLoading) return <div className="flex h-64 items-center justify-center"><div className="h-8 w-8 animate-spin rounded-full border-2 border-tp-hairline border-t-tp-primary" /></div>;
@@ -244,7 +247,7 @@ export default function CardPage() {
   return (
     <>
       <Helmet><title>SPHERE - {name}</title></Helmet>
-      <div className="mx-auto max-w-[1280px] px-4 py-6 md:px-8">
+      <div className="mx-auto max-w-7xl px-4 py-6 md:px-8">
         {/* Breadcrumb + header */}
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={transitionDefault} className="mb-6">
           <div className="mb-2 flex items-center gap-2 text-xs text-tp-steel">
@@ -304,7 +307,7 @@ export default function CardPage() {
                 </div>
                 <div className="space-y-4">
                   {aSafe && <PricingTree analytics={aSafe} />}
-                  {yamlText && <div className="rounded-xl border border-tp-hairline-soft bg-tp-canvas p-4"><h3 className="mb-3 text-xs font-medium text-tp-ink">YAML source</h3><pre className="max-h-[500px] overflow-auto rounded-lg bg-tp-surface-code p-3 text-[11px] leading-relaxed text-tp-on-dark">{yamlText}</pre></div>}
+                  {yamlText && <div className="rounded-xl border border-tp-hairline-soft bg-tp-canvas p-4"><h3 className="mb-3 text-xs font-medium text-tp-ink">YAML source</h3><pre className="max-h-125 overflow-auto rounded-lg bg-tp-surface-code p-3 text-[11px] leading-relaxed text-tp-on-dark">{yamlText}</pre></div>}
                 </div>
               </div>
             </motion.div>
@@ -380,19 +383,31 @@ export default function CardPage() {
 
       {/* ═══ LINK MODAL ═══ */}
       {showLinkModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={() => setShowLinkModal(false)}>
-          <div className="w-full max-w-lg rounded-xl border border-tp-hairline bg-tp-canvas p-6 shadow-elevation-4" onClick={e => e.stopPropagation()}>
-            <h2 className="text-center text-lg font-semibold text-tp-ink">Your link is ready!</h2>
-            <p className="mt-2 text-center text-sm text-tp-steel">This link points directly to the YAML file of the selected pricing version.</p>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={() => { setShowLinkModal(false); setCopied(false); }}>
+          <div className="w-[90vw] max-w-150 rounded-xl border border-tp-hairline bg-tp-canvas p-6 shadow-elevation-4" onClick={e => e.stopPropagation()}>
+            <h2 className="text-center text-xl font-bold text-tp-ink">Your link is ready!</h2>
+            <p className="mt-2 text-center text-sm text-tp-steel">This link points directly to the YAML file of the selected pricing version. It can be used to integrate with some <a href="https://sphere-docs.vercel.app" target="_blank" rel="noopener noreferrer" className="underline">Pricing Intelligence tools</a>.</p>
             <div className="mt-4 flex items-center gap-2 rounded-lg border border-tp-hairline-strong bg-tp-surface p-2">
               <div className="min-w-0 flex-1 overflow-hidden">
                 <p className="truncate text-xs text-tp-ink">{linkUrl}</p>
               </div>
-              <button type="button" onClick={() => navigator.clipboard.writeText(linkUrl)} className="cursor-pointer shrink-0 rounded-md bg-tp-primary p-2 text-tp-on-primary transition-colors hover:bg-tp-primary-deep">
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9.75a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" /></svg>
-              </button>
+              <motion.button
+                type="button"
+                onClick={() => { navigator.clipboard.writeText(linkUrl); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
+                animate={{ backgroundColor: copied ? '#22c55e' : undefined }}
+                transition={{ duration: 0.2 }}
+                className="cursor-pointer shrink-0 rounded-md bg-tp-primary p-2 text-tp-on-primary transition-colors hover:bg-tp-primary-deep"
+              >
+                <AnimatePresence mode="wait">
+                  {copied ? (
+                    <motion.svg key="check" initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.5, opacity: 0 }} transition={{ duration: 0.15 }} className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></motion.svg>
+                  ) : (
+                    <motion.svg key="copy" initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.5, opacity: 0 }} transition={{ duration: 0.15 }} className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9.75a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" /></motion.svg>
+                  )}
+                </AnimatePresence>
+              </motion.button>
             </div>
-            <div className="mt-4 text-center"><button type="button" onClick={() => setShowLinkModal(false)} className="cursor-pointer text-xs text-tp-steel hover:text-tp-ink">Close</button></div>
+            <div className="mt-4 text-center"><button type="button" onClick={() => { setShowLinkModal(false); setCopied(false); }} className="cursor-pointer text-xs text-tp-steel hover:text-tp-ink">Close</button></div>
           </div>
         </div>
       )}
