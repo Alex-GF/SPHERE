@@ -39,6 +39,17 @@ export const ROUTE_PERMISSIONS: RoutePermission[] = [
     methods: ['PUT'],
     allowedUserRoles: ['ADMIN'],
   },
+  // User pricing/collection access queries (before general /users/**)
+  {
+    path: '/users/*/pricings',
+    methods: ['GET'],
+    allowedUserRoles: ['ADMIN', 'USER'],
+  },
+  {
+    path: '/users/*/collections',
+    methods: ['GET'],
+    allowedUserRoles: ['ADMIN', 'USER'],
+  },
   {
     path: '/users/**',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
@@ -53,6 +64,12 @@ export const ROUTE_PERMISSIONS: RoutePermission[] = [
     path: '/pricings',
     methods: ['GET', 'PUT'], // Also allow updating pricings through /pricings endpoint for simplicity
     isPublic: true, // Allow public access to list pricings
+  },
+  // Pricing entity permissions (before general /pricings/** for GET)
+  {
+    path: '/pricings/*/*/permissions',
+    methods: ['GET'],
+    allowedUserRoles: ['ADMIN', 'USER'],
   },
   {
     path: '/pricings/**',
@@ -74,6 +91,12 @@ export const ROUTE_PERMISSIONS: RoutePermission[] = [
   // Collection Management Routes 
   // ============================================
 
+  // Collection entity permissions
+  {
+    path: '/collections/*/*/permissions',
+    methods: ['GET'],
+    allowedUserRoles: ['ADMIN', 'USER'],
+  },
   {
     path: '/collections/**',
     methods: ['GET'],
@@ -109,6 +132,25 @@ export const ROUTE_PERMISSIONS: RoutePermission[] = [
     path: '/orgs',
     methods: ['GET', 'POST'],
     allowedUserRoles: ['ADMIN', 'USER'],
+  },
+  // Entity permission management is OWNER/ADMIN.
+  {
+    path: '/orgs/*/permissions',
+    methods: ['GET'],
+    allowedUserRoles: ['ADMIN', 'USER'],
+    allowedOrganizationRoles: ['OWNER', 'ADMIN', 'MEMBER'],
+  },
+  {
+    path: '/orgs/*/permissions',
+    methods: ['POST'],
+    allowedUserRoles: ['ADMIN', 'USER'],
+    allowedOrganizationRoles: ['OWNER', 'ADMIN'],
+  },
+  {
+    path: '/orgs/*/permissions/**',
+    methods: ['DELETE'],
+    allowedUserRoles: ['ADMIN', 'USER'],
+    allowedOrganizationRoles: ['OWNER', 'ADMIN'],
   },
   // Everything under /orgs/:organizationId/** requires membership context.
   // Global ADMIN bypasses membership checks.

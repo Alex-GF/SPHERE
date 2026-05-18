@@ -55,11 +55,11 @@ const buildRequestPath = (pattern: string, ctx: AuthContext) => {
 		case '/pricings':
 			return `${BASE_PATH}/pricings`;
 		case '/pricings/**':
-			return `${BASE_PATH}/pricings/${ctx.ownerUser.organizationId}`;
+			return `${BASE_PATH}/pricings/${ctx.ownerOrg.id}`;
 		case '/me/pricings':
 			return `${BASE_PATH}/me/pricings`;
 		case '/collections/**':
-			return `${BASE_PATH}/collections/${ctx.ownerUser.organizationId}`;
+			return `${BASE_PATH}/collections/${ctx.ownerOrg.id}`;
 		case '/orgs/invitations/preview/*':
 			return `${BASE_PATH}/orgs/invitations/preview/${ctx.invitationCode}`;
 		case '/orgs/join/*':
@@ -74,6 +74,18 @@ const buildRequestPath = (pattern: string, ctx: AuthContext) => {
 			return `${BASE_PATH}/orgs/${ctx.ownerOrg.id}/members/${ctx.memberUserId}`;
 		case '/orgs/*/invitations/**':
 			return `${BASE_PATH}/orgs/${ctx.ownerOrg.id}/invitations/${ctx.invitationId}`;
+		case '/orgs/*/permissions':
+			return `${BASE_PATH}/orgs/${ctx.ownerOrg.id}/permissions`;
+		case '/orgs/*/permissions/**':
+			return `${BASE_PATH}/orgs/${ctx.ownerOrg.id}/permissions/fakePermissionId`;
+		case '/users/*/pricings':
+			return `${BASE_PATH}/users/${ctx.ownerUser.id}/pricings`;
+		case '/users/*/collections':
+			return `${BASE_PATH}/users/${ctx.ownerUser.id}/collections`;
+		case '/pricings/*/*/permissions':
+			return `${BASE_PATH}/pricings/${ctx.ownerOrg.id}/${ctx.pricing.serviceName}/permissions`;
+		case '/collections/*/*/permissions':
+			return `${BASE_PATH}/collections/${ctx.ownerOrg.id}/${ctx.collection.name}/permissions`;
 		case '/healthcheck':
 			return `${BASE_PATH}/healthcheck`;
 		case '/cache/**':

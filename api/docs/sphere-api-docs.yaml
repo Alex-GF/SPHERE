@@ -117,6 +117,10 @@ tags:
     description: Pricing Version Control System (PVCS)
   - name: Collections
     description: Collection management for grouping pricings
+  - name: User Access
+    description: Retrieve pricings and collections a user can access
+  - name: Permissions
+    description: Retrieve permission information for entities
   - name: Cache
     description: Redis cache operations for temporary data storage
 
@@ -2288,6 +2292,324 @@ paths:
               example:
                 error: "ERROR: Redis client not initialized"
 
+  # ============================================
+  # Entity Permission Management Routes
+  # ============================================
+
+  /orgs/{orgId}/permissions:
+    get:
+      summary: List entity permissions for an organization
+      description: |
+        Returns all entity permissions configured for the organization. Only OWNER and ADMIN
+        users can access this endpoint. Results can be filtered by entity type.
+      tags:
+        - Permissions
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/OrgId'
+        - name: entityType
+          in: query
+          required: false
+          description: Filter by entity type (pricing or collection)
+          schema:
+            type: string
+            enum: [pricing, collection]
+      responses:
+        '200':
+          description: List of entity permissions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EntityPermission'
+        '403':
+          description: Insufficient permissions (requires OWNER or ADMIN role)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      summary: Set entity permissions for a user
+      description: |
+        Creates or updates permissions for a specific user on an entity (pricing or collection).
+        Only OWNER and ADMIN users can manage entity permissions.
+      tags:
+        - Permissions
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/OrgId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/SetPermissionRequest'
+      responses:
+        '201':
+          description: Permission created or updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityPermission'
+        '403':
+          description: Insufficient permissions (requires OWNER or ADMIN role)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /orgs/{orgId}/permissions/{permissionId}:
+    delete:
+      summary: Remove an entity permission
+      description: |
+        Removes a specific entity permission by ID. Only OWNER and ADMIN users can
+        remove entity permissions.
+      tags:
+        - Permissions
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/OrgId'
+        - $ref: '#/components/parameters/PermissionId'
+      responses:
+        '200':
+          description: Permission removed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Permission removed successfully"
+        '403':
+          description: Insufficient permissions (requires OWNER or ADMIN role)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Permission not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  # ============================================
+  # User Access Query Routes
+  # ============================================
+
+  /users/{userId}/pricings:
+    get:
+      summary: Get pricings accessible to a user
+      description: |
+        Returns all pricings a user has access to across all their organizations, with
+        effective permissions included in the response. Use 'me' as the userId to query
+        the current user. Only ADMIN users can query other users.
+      tags:
+        - User Access
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: The user ID or 'me' for the current user
+          schema:
+            type: string
+        - name: name
+          in: query
+          required: false
+          description: Filter pricings by name (case-insensitive partial match)
+          schema:
+            type: string
+        - name: sortBy
+          in: query
+          required: false
+          description: Field to sort by
+          schema:
+            type: string
+            enum: [name, configurationSpaceSize, featuresCount, usageLimitsCount, plansCount, addonsCount, minPrice, maxPrice]
+        - name: sort
+          in: query
+          required: false
+          description: Sort direction
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+        - name: limit
+          in: query
+          required: false
+          description: Number of results per page
+          schema:
+            type: integer
+            default: 10
+        - name: offset
+          in: query
+          required: false
+          description: Offset for pagination
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: List of pricings with permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPricingsResponse'
+        '403':
+          description: Cannot query other users' pricings (requires ADMIN)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /users/{userId}/collections:
+    get:
+      summary: Get collections accessible to a user
+      description: |
+        Returns all collections a user has access to across all their organizations, with
+        effective permissions included in the response. Use 'me' as the userId to query
+        the current user. Only ADMIN users can query other users.
+      tags:
+        - User Access
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: The user ID or 'me' for the current user
+          schema:
+            type: string
+        - name: name
+          in: query
+          required: false
+          description: Filter collections by name (case-insensitive partial match)
+          schema:
+            type: string
+        - name: sortBy
+          in: query
+          required: false
+          description: Field to sort by
+          schema:
+            type: string
+        - name: sort
+          in: query
+          required: false
+          description: Sort direction
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: asc
+        - name: limit
+          in: query
+          required: false
+          description: Number of results per page
+          schema:
+            type: string
+            default: "10"
+        - name: offset
+          in: query
+          required: false
+          description: Offset for pagination
+          schema:
+            type: string
+            default: "0"
+      responses:
+        '200':
+          description: List of collections with permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCollectionsResponse'
+        '403':
+          description: Cannot query other users' collections (requires ADMIN)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  # ============================================
+  # Entity Permission Query Routes
+  # ============================================
+
+  /pricings/{organizationId}/{pricingName}/permissions:
+    get:
+      summary: Get current user's permissions on a pricing
+      description: |
+        Returns the current user's effective permissions on a specific pricing. If the user
+        is OWNER or ADMIN of the organization, all permissions are returned as true.
+      tags:
+        - Permissions
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/OrgId'
+        - name: pricingName
+          in: path
+          required: true
+          description: The name of the pricing
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User's permissions on the pricing
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityPermission'
+        '404':
+          description: Pricing not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /collections/{organizationId}/{collectionName}/permissions:
+    get:
+      summary: Get current user's permissions on a collection
+      description: |
+        Returns the current user's effective permissions on a specific collection. If the user
+        is OWNER or ADMIN of the organization, all permissions are returned as true.
+      tags:
+        - Permissions
+      security:
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/OrgId'
+        - name: collectionName
+          in: path
+          required: true
+          description: The name of the collection
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User's permissions on the collection
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityPermission'
+        '404':
+          description: Collection not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
 components:
   schemas:
 
@@ -3077,6 +3399,127 @@ components:
               description: Whether this is a personal organization
     
     # ------------------------------
+    # --   ENTITY PERMISSION SCHEMAS --
+    # ------------------------------
+
+    EntityPermission:
+      type: object
+      description: An entity permission record linking a user to specific permissions on a pricing or collection
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the permission record
+          example: "68050bd09890322c57842f80"
+        _userId:
+          type: string
+          description: The ID of the user this permission applies to
+          example: "68050bd09890322c57842f71"
+        _organizationId:
+          type: string
+          description: The ID of the organization this permission belongs to
+          example: "68050bd09890322c57842f6f"
+        entityType:
+          type: string
+          enum: [pricing, collection]
+          description: The type of entity this permission applies to
+          example: "pricing"
+        entityId:
+          type: string
+          description: The ID of the entity (pricing or collection)
+          example: "68050bd09890322c57842f90"
+        permissions:
+          $ref: '#/components/schemas/EntityPermissions'
+        grantedBy:
+          type: string
+          description: The ID of the user who granted this permission
+          example: "68050bd09890322c57842f71"
+        entityName:
+          type: string
+          description: The name of the entity (populated in responses)
+          example: "My Pricing"
+        userName:
+          type: string
+          description: The username of the user (populated in responses)
+          example: "johndoe"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    EntityPermissions:
+      type: object
+      description: Granular permissions for an entity
+      properties:
+        GET:
+          type: boolean
+          description: Whether the user can view the entity
+          example: true
+        PUT:
+          type: boolean
+          description: Whether the user can update the entity
+          example: false
+        DELETE:
+          type: boolean
+          description: Whether the user can delete the entity
+          example: false
+
+    UserPricingsResponse:
+      type: object
+      description: Response containing pricings accessible to a user with their permissions
+      properties:
+        pricings:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: "My Pricing"
+              permissions:
+                $ref: '#/components/schemas/EntityPermissions'
+              organization:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  role:
+                    type: string
+                    enum: [OWNER, ADMIN, MEMBER]
+        total:
+          type: integer
+          description: Total number of pricings accessible to the user
+          example: 10
+
+    UserCollectionsResponse:
+      type: object
+      description: Response containing collections accessible to a user with their permissions
+      properties:
+        collections:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: "My Collection"
+              permissions:
+                $ref: '#/components/schemas/EntityPermissions'
+              organization:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  role:
+                    type: string
+                    enum: [OWNER, ADMIN, MEMBER]
+        total:
+          type: integer
+          description: Total number of collections accessible to the user
+          example: 10
+
+    # ------------------------------
     # --          ERRORS          --
     # ------------------------------
 
@@ -3589,6 +4032,35 @@ components:
                 minimum: 1
                 example: 10
 
+    SetPermissionRequest:
+      description: Request to set entity permissions for a user
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - userId
+              - entityType
+              - entityId
+              - permissions
+            properties:
+              userId:
+                type: string
+                description: The MongoDB ObjectId of the user to grant permissions to
+                example: "68050bd09890322c57842f71"
+              entityType:
+                type: string
+                enum: [pricing, collection]
+                description: The type of entity to set permissions for
+                example: "pricing"
+              entityId:
+                type: string
+                description: The MongoDB ObjectId of the entity (pricing or collection)
+                example: "68050bd09890322c57842f90"
+              permissions:
+                $ref: '#/components/schemas/EntityPermissions'
+
   responses:
     PricingList:
       description: A list of pricings matching the provided filter
@@ -3746,7 +4218,20 @@ components:
               message:
                 type: string
                 example: "Cache set successfully"
+
   parameters:
+    OrgId:
+      name: orgId
+      in: path
+      required: true
+      description: |
+        The MongoDB ObjectId of the organization. The middleware automatically resolves
+        the organization context from this parameter — loading the organization and
+        determining the authenticated user's role within it.
+      schema:
+        type: string
+        example: "68050bd09890322c57842f6f"
+
     Username:
       name: username
       in: path
@@ -3767,6 +4252,17 @@ components:
       required: true
       schema:
         type: string
+
+    PermissionId:
+      name: permissionId
+      in: path
+      required: true
+      description: |
+        The MongoDB ObjectId of the entity permission record. Used to identify which
+        permission to remove when deleting entity permissions.
+      schema:
+        type: string
+        example: "68050bd09890322c57842f80"
 
     UsernameQuery:
       name: username

@@ -8,11 +8,17 @@ import { useAuth } from '../../../auth/hooks/useAuth';
 import { PricingRenderer } from '../../../pricing-editor/components/pricing-renderer';
 import { downloadYaml, parseStringYamlToEncodedYaml } from '../../../pricing-editor/services/export.service';
 import ConfigurationSpaceView from '../../components/configuration-space-view';
+import VisibilityOptions from '../../components/visibility-options';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from '../../../core/hooks/useRouter';
 import { transitionDefault } from '../../../core/utils/motion-variants';
+import customConfirm from '../../../core/utils/custom-confirm';
+import customAlert from '../../../core/utils/custom-alert';
+import Iconify from '../../../core/components/iconify';
+import DatePicker from '../../../core/components/date-picker';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { EntityPermissions } from '../../../organization/types/permissions';
 
 const axisTick = { fill: '#4a4a4a', fontSize: 11 };
 const compactNum = new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 });
@@ -28,7 +34,7 @@ interface VersionData {
   analytics: Record<string, number> | null;
 }
 
-type Tab = 'overview' | 'analytics' | 'config-space' | 'versions';
+type Tab = 'overview' | 'analytics' | 'config-space' | 'versions' | 'settings';
 
 interface TreeAnalytics {
   numberOfPlans: number; numberOfFeatures: number; numberOfAddOns: number; numberOfUsageLimits: number;
@@ -116,7 +122,7 @@ export default function CardPage() {
   const [searchParams] = useSearchParams();
   const collectionName = searchParams.get('collectionName');
   const router = useRouter();
-  const { getPricingByName, removePricingVersion } = usePricingsApi();
+  const { getPricingByName, removePricingVersion, removePricingByName, updatePricing } = usePricingsApi();
   const { getOrgMembers } = useOrganizationsApi();
   const { authUser } = useAuth();
 
@@ -134,6 +140,8 @@ export default function CardPage() {
   const [linkUrl, setLinkUrl] = useState('');
   const [canDelete, setCanDelete] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [entityPermissions, setEntityPermissions] = useState<EntityPermissions | null>(null);
+  const [visibility, setVisibility] = useState('Public');
 
   // Fetch versions + check permissions
   useEffect(() => {
@@ -143,13 +151,29 @@ export default function CardPage() {
       .then(async (data) => {
         const vers = (data.versions ?? []) as VersionData[];
         setVersions(vers);
-        if (vers.length > 0) setCurrentVersion(vers[0]);
+        if (vers.length > 0) {
+          setCurrentVersion(vers[0]);
+          setVisibility(vers[0].private ? 'Private' : 'Public');
+        }
         // Check if user can delete (OWNER or ADMIN of org)
         try {
           const members = await getOrgMembers(owner);
           const me = members.find((m: any) => m.user.username === authUser.user?.username);
           setCanDelete(me ? (me.role === 'OWNER' || me.role === 'ADMIN') : false);
         } catch { setCanDelete(false); }
+
+        // Fetch entity permissions
+        try {
+          const baseUrl = import.meta.env.VITE_API_URL;
+          const token = authUser?.token;
+          const response = await fetch(`${baseUrl}/pricings/${owner}/${name}/permissions`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          if (response.ok) {
+            const data: EntityPermissions = await response.json();
+            setEntityPermissions(data);
+          }
+        } catch { setEntityPermissions(null); }
       })
       .catch(() => {})
       .finally(() => setIsLoading(false));
@@ -242,6 +266,42 @@ export default function CardPage() {
     }
   };
 
+  const handleVisibilityChange = () => {
+    if (!name) return;
+    customConfirm('Are you sure you want to change the visibility of this pricing?')
+      .then(() => {
+        const pricingUpdateBody = { private: visibility === 'Private' };
+        updatePricing(name, collectionName ?? '', pricingUpdateBody)
+          .then(() => {
+            setVisibility(visibility === 'Private' ? 'Public' : 'Private');
+            customAlert('Pricing visibility updated successfully');
+          })
+          .catch((error: Error) => {
+            customAlert(`Error: ${error.message}`);
+          });
+      })
+      .catch(() => {});
+  };
+
+  const handleDeletePricing = () => {
+    if (!name) return;
+    customConfirm('Are you sure you want to delete this pricing? This action is irreversible.')
+      .then(() => {
+        removePricingByName(name, collectionName ?? undefined)
+          .then(() => {
+            customConfirm('Pricing deleted successfully. Do you want to return to the main page?')
+              .then(() => router.push('/'))
+              .catch(() => router.push('/me/pricings'));
+          })
+          .catch(() => {
+            customAlert('An error has occurred while removing the pricing. Please, try again later.');
+          });
+      })
+      .catch(() => {});
+  };
+
+  const showSettingsTab = entityPermissions?.PUT || entityPermissions?.DELETE;
+
   if (isLoading) return <div className="flex h-64 items-center justify-center"><div className="h-8 w-8 animate-spin rounded-full border-2 border-tp-hairline border-t-tp-primary" /></div>;
 
   return (
@@ -262,11 +322,6 @@ export default function CardPage() {
               {currentVersion && <p className="mt-1 text-sm text-tp-steel">Updated {formatDistanceToNow(parseISO(currentVersion.createdAt))} ago</p>}
             </div>
             <div className="flex flex-wrap items-center gap-2">
-              {/* Date from */}
-              <input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} className="h-8 cursor-pointer rounded-lg border border-tp-hairline-strong bg-tp-canvas px-2 text-xs text-tp-ink focus:border-tp-primary focus:outline-none" />
-              <span className="text-xs text-tp-muted">to</span>
-              {/* Date to */}
-              <input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} className="h-8 cursor-pointer rounded-lg border border-tp-hairline-strong bg-tp-canvas px-2 text-xs text-tp-ink focus:border-tp-primary focus:outline-none" />
               {/* Version selector */}
               {versions.length > 1 && (
                 <select value={currentVersion?.id ?? ''} onChange={e => { const v = versions.find(x => x.id === e.target.value); if (v) setCurrentVersion(v); }}
@@ -287,7 +342,13 @@ export default function CardPage() {
 
         {/* Tabs */}
         <div className="mb-6 flex gap-1 overflow-x-auto border-b border-tp-hairline-soft">
-          {([['overview', 'Overview'], ['analytics', 'Analytics'], ['config-space', 'Configuration Space'], ['versions', 'Versions']] as const).map(([k, l]) => (
+          {([
+            ['overview', 'Overview'],
+            ['analytics', 'Analytics'],
+            ['config-space', 'Configuration Space'],
+            ['versions', 'Versions'],
+            ...(showSettingsTab ? [['settings', 'Settings'] as const] : []),
+          ] as const).map(([k, l]) => (
             <button key={k} type="button" onClick={() => setTab(k)} className={`relative cursor-pointer whitespace-nowrap px-4 py-2.5 text-sm font-medium transition-colors ${tab === k ? 'text-tp-primary' : 'text-tp-steel hover:text-tp-ink'}`}>
               {l}
               {tab === k && <motion.div layoutId="pricing-tab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-tp-primary" transition={{ type: 'spring', stiffness: 380, damping: 30 }} />}
@@ -316,6 +377,10 @@ export default function CardPage() {
           {/* ═══ ANALYTICS ═══ */}
           {tab === 'analytics' && (
             <motion.div key="analytics" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={transitionDefault}>
+              <div className="mb-4 flex items-center justify-between">
+                <h3 className="text-sm font-medium text-tp-ink">Analytics</h3>
+                <DatePicker dateFrom={dateFrom} dateTo={dateTo} onDateFromChange={setDateFrom} onDateToChange={setDateTo} />
+              </div>
               {chartData.length > 0 ? (
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   {/* Price evolution — half row */}
@@ -375,6 +440,54 @@ export default function CardPage() {
                     </div>
                   ))}
                 </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* ═══ SETTINGS ═══ */}
+          {tab === 'settings' && (
+            <motion.div key="settings" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={transitionDefault}>
+              <div className="rounded-xl border border-tp-hairline-soft bg-tp-canvas p-5">
+                {entityPermissions?.PUT && (
+                  <div>
+                    <h3 className="mb-2 text-sm font-medium text-tp-ink">Visibility</h3>
+                    <div className="pl-4">
+                      <VisibilityOptions value={visibility} onChange={handleVisibilityChange} />
+                    </div>
+                  </div>
+                )}
+
+                {entityPermissions?.PUT && entityPermissions?.DELETE && (
+                  <hr className="my-6 border-tp-hairline-soft" />
+                )}
+
+                {entityPermissions?.DELETE && (
+                  <div>
+                    <h3 className="mb-2 text-sm font-medium text-red-500">Danger Zone</h3>
+                    <div className="rounded-lg border border-red-500 p-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-sm font-medium text-tp-ink">Delete this pricing</p>
+                          <p className="mt-1 text-xs text-tp-steel">Once you delete a pricing, there is no going back. Please be certain.</p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={handleDeletePricing}
+                          className="cursor-pointer rounded-md border border-red-500 px-4 py-2 text-sm font-bold text-red-500 hover:bg-red-500 hover:text-white"
+                        >
+                          Delete pricing
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {!entityPermissions?.PUT && !entityPermissions?.DELETE && (
+                  <div className="flex flex-col items-center gap-2 py-10 text-tp-steel">
+                    <Iconify icon="mdi:lock-outline" width={36} />
+                    <p className="text-sm">You don't have any edit or delete permissions for this pricing.</p>
+                  </div>
+                )}
               </div>
             </motion.div>
           )}

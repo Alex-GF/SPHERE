@@ -3,6 +3,7 @@ import { useRouter } from '../../../core/hooks/useRouter';
 import OrgSelector from './org-selector';
 import UserMenu from './user-menu';
 import MobileNav from './mobile-nav';
+import CommandPalette from '../../../core/components/command-palette';
 
 interface Props {
   onUploadPricing: () => void;
@@ -126,6 +127,10 @@ export default function AppHeader({ onUploadPricing }: Props) {
               </svg>
               New
             </button>
+
+            <div className="hidden md:block">
+              <CommandPalette />
+            </div>
 
             <div className="hidden md:block">
               <UserMenu onUploadPricing={onUploadPricing} />

@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { useAuth } from '../../auth/hooks/useAuth';
+import { EntityPermission, EntityType, SetPermissionPayload } from '../types/permissions';
 
 export const ORGS_BASE_PATH = import.meta.env.VITE_API_URL + '/orgs';
 
@@ -217,6 +218,38 @@ export function useOrganizationsApi() {
     return children;
   }, [getOrganization]);
 
+  const getOrgPermissions = useCallback(async (orgId: string, entityType?: EntityType): Promise<EntityPermission[]> => {
+    const url = entityType
+      ? `${ORGS_BASE_PATH}/${orgId}/permissions?entityType=${entityType}`
+      : `${ORGS_BASE_PATH}/${orgId}/permissions`;
+    const response = await fetchWithInterceptor(url, {
+      method: 'GET',
+      headers,
+    });
+    if (!response.ok) throw new Error('Failed to fetch permissions');
+    return response.json();
+  }, [fetchWithInterceptor, token]);
+
+  const setOrgPermission = useCallback(async (orgId: string, payload: SetPermissionPayload): Promise<EntityPermission> => {
+    const response = await fetchWithInterceptor(`${ORGS_BASE_PATH}/${orgId}/permissions`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(payload),
+    });
+    const body = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(body.error ?? 'Failed to set permission');
+    return body as EntityPermission;
+  }, [fetchWithInterceptor, token]);
+
+  const removeOrgPermission = useCallback(async (orgId: string, permissionId: string): Promise<void> => {
+    const response = await fetchWithInterceptor(`${ORGS_BASE_PATH}/${orgId}/permissions/${permissionId}`, {
+      method: 'DELETE',
+      headers,
+    });
+    const body = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(body.error ?? 'Failed to remove permission');
+  }, [fetchWithInterceptor, token]);
+
   return {
     getMyOrganizations,
     getOrganization,
@@ -234,5 +267,8 @@ export function useOrganizationsApi() {
     joinViaInvitation,
     lookupUserByUsername,
     getOrgChildren,
+    getOrgPermissions,
+    setOrgPermission,
+    removeOrgPermission,
   };
 }

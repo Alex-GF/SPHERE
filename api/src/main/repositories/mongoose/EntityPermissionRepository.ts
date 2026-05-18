@@ -1,0 +1,291 @@
+import mongoose from 'mongoose';
+import RepositoryBase from '../RepositoryBase';
+import EntityPermissionMongoose from './models/EntityPermissionMongoose';
+import { EntityType, EntityPermissions, LeanEntityPermission } from '../../types/models/EntityPermission';
+
+class EntityPermissionRepository extends RepositoryBase {
+  async findByUserAndOrganization(
+    userId: string,
+    organizationId: string,
+    entityType?: EntityType
+  ): Promise<LeanEntityPermission[]> {
+    const match: any = {
+      _userId: new mongoose.Types.ObjectId(userId),
+      _organizationId: new mongoose.Types.ObjectId(organizationId),
+    };
+    if (entityType) {
+      match.entityType = entityType;
+    }
+
+    const results = await EntityPermissionMongoose.aggregate([
+      { $match: match },
+      {
+        $addFields: {
+          id: { $toString: '$_id' },
+          _userId: { $toString: '$_userId' },
+          _organizationId: { $toString: '$_organizationId' },
+          entityId: { $toString: '$entityId' },
+          grantedBy: { $cond: [{ $ifNull: ['$grantedBy', null] }, { $toString: '$grantedBy' }, null] },
+        },
+      },
+      {
+        $lookup: {
+          from: 'pricings',
+          localField: 'entityId',
+          foreignField: '_id',
+          as: 'pricingEntity',
+          pipeline: [{ $project: { name: 1, _organizationId: 1 } }],
+        },
+      },
+      {
+        $lookup: {
+          from: 'pricingCollections',
+          localField: 'entityId',
+          foreignField: '_id',
+          as: 'collectionEntity',
+          pipeline: [{ $project: { name: 1, _organizationId: 1 } }],
+        },
+      },
+      {
+        $addFields: {
+          entityName: {
+            $cond: [
+              { $eq: ['$entityType', 'pricing'] },
+              { $arrayElemAt: ['$pricingEntity.name', 0] },
+              { $arrayElemAt: ['$collectionEntity.name', 0] },
+            ],
+          },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          id: 1,
+          _userId: 1,
+          _organizationId: 1,
+          entityType: 1,
+          entityId: 1,
+          permissions: 1,
+          grantedBy: 1,
+          entityName: 1,
+          createdAt: 1,
+          updatedAt: 1,
+        },
+      },
+      { $sort: { entityName: 1 } },
+    ]);
+
+    return results as LeanEntityPermission[];
+  }
+
+  async findByEntity(
+    entityType: EntityType,
+    entityId: string
+  ): Promise<LeanEntityPermission[]> {
+    const results = await EntityPermissionMongoose.aggregate([
+      {
+        $match: {
+          entityType,
+          entityId: new mongoose.Types.ObjectId(entityId),
+        },
+      },
+      {
+        $addFields: {
+          id: { $toString: '$_id' },
+          _userId: { $toString: '$_userId' },
+          _organizationId: { $toString: '$_organizationId' },
+          entityId: { $toString: '$entityId' },
+          grantedBy: { $cond: [{ $ifNull: ['$grantedBy', null] }, { $toString: '$grantedBy' }, null] },
+        },
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: '_userId',
+          foreignField: '_id',
+          as: 'user',
+          pipeline: [{ $project: { username: 1, email: 1 } }],
+        },
+      },
+      {
+        $addFields: {
+          userName: { $arrayElemAt: ['$user.username', 0] },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          id: 1,
+          _userId: 1,
+          _organizationId: 1,
+          entityType: 1,
+          entityId: 1,
+          permissions: 1,
+          grantedBy: 1,
+          userName: 1,
+          createdAt: 1,
+          updatedAt: 1,
+        },
+      },
+    ]);
+
+    return results as LeanEntityPermission[];
+  }
+
+  async findByOrganization(
+    organizationId: string,
+    entityType?: EntityType
+  ): Promise<LeanEntityPermission[]> {
+    const match: any = {
+      _organizationId: new mongoose.Types.ObjectId(organizationId),
+    };
+    if (entityType) {
+      match.entityType = entityType;
+    }
+
+    const results = await EntityPermissionMongoose.aggregate([
+      { $match: match },
+      {
+        $addFields: {
+          id: { $toString: '$_id' },
+          _userId: { $toString: '$_userId' },
+          _organizationId: { $toString: '$_organizationId' },
+          entityId: { $toString: '$entityId' },
+          grantedBy: { $cond: [{ $ifNull: ['$grantedBy', null] }, { $toString: '$grantedBy' }, null] },
+        },
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: '_userId',
+          foreignField: '_id',
+          as: 'user',
+          pipeline: [{ $project: { username: 1, email: 1 } }],
+        },
+      },
+      {
+        $lookup: {
+          from: 'pricings',
+          localField: 'entityId',
+          foreignField: '_id',
+          as: 'pricingEntity',
+          pipeline: [{ $project: { name: 1 } }],
+        },
+      },
+      {
+        $lookup: {
+          from: 'pricingCollections',
+          localField: 'entityId',
+          foreignField: '_id',
+          as: 'collectionEntity',
+          pipeline: [{ $project: { name: 1 } }],
+        },
+      },
+      {
+        $addFields: {
+          userName: { $arrayElemAt: ['$user.username', 0] },
+          entityName: {
+            $cond: [
+              { $eq: ['$entityType', 'pricing'] },
+              { $arrayElemAt: ['$pricingEntity.name', 0] },
+              { $arrayElemAt: ['$collectionEntity.name', 0] },
+            ],
+          },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          id: 1,
+          _userId: 1,
+          _organizationId: 1,
+          entityType: 1,
+          entityId: 1,
+          permissions: 1,
+          grantedBy: 1,
+          userName: 1,
+          entityName: 1,
+          createdAt: 1,
+          updatedAt: 1,
+        },
+      },
+      { $sort: { userName: 1, entityName: 1 } },
+    ]);
+
+    return results as LeanEntityPermission[];
+  }
+
+  async findOrCreate(
+    userId: string,
+    organizationId: string,
+    entityType: EntityType,
+    entityId: string,
+    permissions: EntityPermissions,
+    grantedBy?: string
+  ): Promise<LeanEntityPermission> {
+    const update = {
+      permissions,
+      grantedBy: grantedBy ? new mongoose.Types.ObjectId(grantedBy) : undefined,
+    };
+
+    const result = await EntityPermissionMongoose.findOneAndUpdate(
+      {
+        _userId: new mongoose.Types.ObjectId(userId),
+        _organizationId: new mongoose.Types.ObjectId(organizationId),
+        entityType,
+        entityId: new mongoose.Types.ObjectId(entityId),
+      },
+      { $set: update },
+      { new: true, upsert: true }
+    );
+
+    return result.toObject({ getters: true, virtuals: true, versionKey: false }) as unknown as LeanEntityPermission;
+  }
+
+  async findByUserEntityAndOrganization(
+    userId: string,
+    organizationId: string,
+    entityType: EntityType,
+    entityId: string
+  ): Promise<LeanEntityPermission | null> {
+    const result = await EntityPermissionMongoose.findOne({
+      _userId: new mongoose.Types.ObjectId(userId),
+      _organizationId: new mongoose.Types.ObjectId(organizationId),
+      entityType,
+      entityId: new mongoose.Types.ObjectId(entityId),
+    });
+
+    if (!result) return null;
+    return result.toObject({ getters: true, virtuals: true, versionKey: false }) as unknown as LeanEntityPermission;
+  }
+
+  async destroy(permissionId: string): Promise<boolean> {
+    const result = await EntityPermissionMongoose.deleteOne({
+      _id: new mongoose.Types.ObjectId(permissionId),
+    });
+    return result?.deletedCount === 1;
+  }
+
+  async destroyByEntity(entityType: EntityType, entityId: string): Promise<void> {
+    await EntityPermissionMongoose.deleteMany({
+      entityType,
+      entityId: new mongoose.Types.ObjectId(entityId),
+    });
+  }
+
+  async destroyByUserAndOrganization(userId: string, organizationId: string): Promise<void> {
+    await EntityPermissionMongoose.deleteMany({
+      _userId: new mongoose.Types.ObjectId(userId),
+      _organizationId: new mongoose.Types.ObjectId(organizationId),
+    });
+  }
+
+  async countByEntity(entityType: EntityType, entityId: string): Promise<number> {
+    return EntityPermissionMongoose.countDocuments({
+      entityType,
+      entityId: new mongoose.Types.ObjectId(entityId),
+    });
+  }
+}
+
+export default EntityPermissionRepository;

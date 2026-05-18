@@ -13,6 +13,7 @@ import {
   OrgRole,
   useOrganizationsApi,
 } from '../../api/organizationsApi';
+import PermissionsTab from '../../components/PermissionsTab';
 
 const ROLE_LABELS: Record<OrgRole, string> = {
   OWNER: 'Owner',
@@ -420,7 +421,7 @@ function InviteModal({
   );
 }
 
-type Tab = 'overview' | 'members' | 'invitations' | 'children';
+type Tab = 'overview' | 'members' | 'invitations' | 'children' | 'permissions';
 
 export default function OrganizationDetailPage() {
   const { organizationId } = useParams<{ organizationId: string }>();
@@ -606,12 +607,12 @@ export default function OrganizationDetailPage() {
       </div>
 
       <div className="mb-6 flex flex-wrap gap-2 border-b border-sphere-grey-200">
-        {(['overview', 'members', 'invitations', 'children'] as Tab[]).map((tab) => (
+        {(['overview', 'members', 'invitations', 'children', ...(canManage ? ['permissions'] : [])] as Tab[]).map((tab) => (
           <button
             key={tab}
             type="button"
             onClick={() => setActiveTab(tab)}
-            className={`px-4 py-2 text-sm font-semibold capitalize transition-colors ${
+            className={`px-4 py-2 text-sm font-semibold capitalize transition-colors cursor-pointer ${
               activeTab === tab
                 ? 'border-b-2 border-sphere-primary-800 text-sphere-primary-800'
                 : 'text-sphere-grey-500 hover:text-sphere-grey-700'
@@ -860,6 +861,13 @@ export default function OrganizationDetailPage() {
             })}
           </div>
         </div>
+      )}
+
+      {activeTab === 'permissions' && organizationId && (
+        <PermissionsTab
+          organizationId={organizationId}
+          canManage={canManage}
+        />
       )}
 
       {editModalOpen && org && (

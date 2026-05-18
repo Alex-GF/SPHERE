@@ -7,6 +7,8 @@ import UserRepository from '../repositories/mongoose/UserRepository';
 import { handleError } from '../utils/users/helpers';
 import { ApiKey } from '../types/models/User';
 import { ROLE_WEIGHT } from '../types/models/Organization';
+import { EntityType, PermissionType } from '../types/models/EntityPermission';
+import PermissionService from '../services/PermissionService';
 
 /**
  * Middleware to authenticate API Keys (both User and Organization types)
@@ -161,6 +163,9 @@ const checkPermissions = async (req: Request, res: Response, next: NextFunction)
 
     // Find matching permission rule
     const matchingRule = ROUTE_PERMISSIONS.find(rule => {
+      if (!rule.methods.includes(method)) {
+        return false;
+      }
       const methodMatches = rule.methods.includes(method);
       const pathMatches = matchPath(rule.path, apiPath);
       return methodMatches && pathMatches;
@@ -233,6 +238,12 @@ const checkPermissions = async (req: Request, res: Response, next: NextFunction)
     }
 
     // Permission granted
+    // Check entity-level permissions for pricing/collection write operations
+    const entityError = await checkEntityPermissions(req, apiPath, method);
+    if (entityError) {
+      return res.status(403).json({ error: entityError });
+    }
+
     next();
   } catch (error) {
     const { status, message } = handleError(error);
@@ -271,6 +282,115 @@ function _intersectRoleWithScope(
   }
 
   return orgRole ?? 'MEMBER'; // ALL
+}
+
+/**
+ * Determines if a route involves a pricing or collection entity that requires
+ * entity-level permission checking.
+ */
+function _resolveEntityTypeFromPath(apiPath: string): EntityType | null {
+  const segments = apiPath.split('/').filter(Boolean);
+  if (segments[0] === 'pricings' && segments.length >= 2) {
+    return 'pricing';
+  }
+  if (segments[0] === 'collections' && segments.length >= 2) {
+    return 'collection';
+  }
+  return null;
+}
+
+/**
+ * Maps an HTTP method to the required permission type for entity operations.
+ */
+function _mapMethodToPermission(method: HttpMethod, isGet: boolean): PermissionType | null {
+  if (isGet) return 'GET';
+  if (method === 'PUT' || method === 'PATCH') return 'PUT';
+  if (method === 'DELETE') return 'DELETE';
+  return null; // POST (creation) doesn't require entity permission
+}
+
+/**
+ * Checks entity-level permissions for pricing/collection operations.
+ * Returns an error message if the request should be denied, null if allowed.
+ */
+async function checkEntityPermissions(
+  req: Request,
+  apiPath: string,
+  method: HttpMethod
+): Promise<string | null> {
+  const entityType = _resolveEntityTypeFromPath(apiPath);
+  if (!entityType) return null;
+
+  const user = (req as any).user;
+  if (!user) return null;
+
+  const organizationId = req.params.organizationId;
+  if (!organizationId) return null;
+
+  // Extract entity name from URL path
+  const segments = apiPath.split('/').filter(Boolean);
+  const entityName = entityType === 'pricing' ? segments[1] : segments[1];
+  if (!entityName) return null;
+
+  // Skip entity permission check for permission management routes
+  if (segments.includes('permissions')) return null;
+
+  const permissionType = _mapMethodToPermission(method, method === 'GET');
+  if (!permissionType) return null;
+
+  // For GET operations, only check permissions for private entities
+  if (permissionType === 'GET') {
+    const entityRepo = entityType === 'pricing'
+      ? container.resolve('pricingRepository')
+      : container.resolve('pricingCollectionRepository');
+
+    let entity;
+    if (entityType === 'pricing') {
+      entity = await entityRepo.findOne(entityName, organizationId, { includePrivate: true });
+    } else {
+      entity = await entityRepo.findByOrganizationAndName(organizationId, entityName);
+    }
+
+    if (!entity) return null; // Let the service layer handle 404
+
+    const isPrivate = entity.private === true;
+    if (!isPrivate) return null; // Public entities are always accessible
+  }
+
+  const permissionService: PermissionService = container.resolve('permissionService');
+
+  // Resolve entity ID
+  let entityId: string | null = null;
+  if (entityType === 'pricing') {
+    const pricingRepo = container.resolve('pricingRepository');
+    const pricing = await pricingRepo.findOne(entityName, organizationId, { includePrivate: true });
+    if (pricing && pricing.versions && pricing.versions.length > 0) {
+      entityId = pricing.versions[0]._id?.toString() ?? pricing.versions[0].id;
+    }
+  } else {
+    const collectionRepo = container.resolve('pricingCollectionRepository');
+    const collection = await collectionRepo.findByOrganizationAndName(organizationId, entityName);
+    if (collection) {
+      entityId = collection._id?.toString() ?? (collection as any).id;
+    }
+  }
+
+  if (!entityId) return null; // Let the service layer handle 404
+
+  const hasPermission = await permissionService.hasPermission(
+    user.id,
+    organizationId,
+    entityType,
+    entityId,
+    permissionType,
+    user.orgRole
+  );
+
+  if (!hasPermission) {
+    return `PERMISSION ERROR: You do not have ${permissionType} permission on this ${entityType}`;
+  }
+
+  return null;
 }
 
 export { authenticateTokenMiddleware };
