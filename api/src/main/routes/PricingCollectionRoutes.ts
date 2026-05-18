@@ -34,7 +34,7 @@ const loadFileRoutes = function (app: express.Application) {
     .post(upload, pricingCollectionController.addPricingToCollection);
 
   app
-    .route(baseUrl + '/collections/:organizationId/:collectionName')
+    .route(baseUrl + '/collections/:organizationId/:collectionSlug')
     .get(pricingCollectionController.show)
     .put(
       PricingCollectionValidator.update,
@@ -44,11 +44,11 @@ const loadFileRoutes = function (app: express.Application) {
     .delete(pricingCollectionController.destroy);
 
   app
-    .route(baseUrl + '/collections/:organizationId/:collectionName/download')
+    .route(baseUrl + '/collections/:organizationId/:collectionSlug/download')
     .get(pricingCollectionController.downloadCollection);
 
   app
-    .route(baseUrl + '/collections/:organizationId/:collectionName/pricings/:pricingName')
+    .route(baseUrl + '/collections/:organizationId/:collectionSlug/pricings/:pricingName')
     .delete(pricingCollectionController.removePricingFromCollection);
 };
 

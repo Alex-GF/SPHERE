@@ -40,6 +40,22 @@ export interface OrganizationInvitation {
   useCount: number;
 }
 
+export interface OrgPricing {
+  name: string;
+  version: string;
+  createdAt: string;
+  currency: string;
+  private: boolean;
+  organization: { id: string; name: string; displayName: string; avatar: string };
+}
+
+export interface OrgCollection {
+  id: string;
+  name: string;
+  numberOfPricings: number;
+  organization: { id: string; name: string; displayName: string; avatar: string };
+}
+
 export function useOrganizationsApi() {
   const { fetchWithInterceptor, authUser } = useAuth();
   const token = authUser?.token;
@@ -218,6 +234,40 @@ export function useOrganizationsApi() {
     return children;
   }, [getOrganization]);
 
+  const getOrgPricings = useCallback(async (orgId: string, filters?: Record<string, string>): Promise<{ pricings: OrgPricing[]; total: number }> => {
+    const params = new URLSearchParams();
+    params.set('includePricingsInCollection', 'true');
+    if (filters) {
+      Object.entries(filters).forEach(([k, v]) => {
+        if (v !== undefined && v !== null && v !== '') params.set(k, v);
+      });
+    }
+    const response = await fetchWithInterceptor(`${import.meta.env.VITE_API_URL}/pricings/${orgId}?${params.toString()}`, {
+      method: 'GET',
+      headers,
+    });
+    if (!response.ok) throw new Error('Failed to fetch organization pricings');
+    const data = await response.json();
+    return { pricings: data.pricings ?? [], total: data.total ?? 0 };
+  }, [fetchWithInterceptor, token]);
+
+  const getOrgCollections = useCallback(async (orgId: string, filters?: Record<string, string>): Promise<{ collections: OrgCollection[]; total: number }> => {
+    const params = new URLSearchParams();
+    if (filters) {
+      Object.entries(filters).forEach(([k, v]) => {
+        if (v !== undefined && v !== null && v !== '') params.set(k, v);
+      });
+    }
+    const qs = params.toString();
+    const response = await fetchWithInterceptor(`${import.meta.env.VITE_API_URL}/collections/${orgId}${qs ? `?${qs}` : ''}`, {
+      method: 'GET',
+      headers,
+    });
+    if (!response.ok) throw new Error('Failed to fetch organization collections');
+    const data = await response.json();
+    return { collections: data.collections ?? [], total: data.total ?? 0 };
+  }, [fetchWithInterceptor, token]);
+
   const getOrgPermissions = useCallback(async (orgId: string, entityType?: EntityType): Promise<EntityPermission[]> => {
     const url = entityType
       ? `${ORGS_BASE_PATH}/${orgId}/permissions?entityType=${entityType}`
@@ -267,6 +317,8 @@ export function useOrganizationsApi() {
     joinViaInvitation,
     lookupUserByUsername,
     getOrgChildren,
+    getOrgPricings,
+    getOrgCollections,
     getOrgPermissions,
     setOrgPermission,
     removeOrgPermission,

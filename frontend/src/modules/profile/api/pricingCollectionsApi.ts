@@ -119,8 +119,8 @@ export function usePricingCollectionsApi() {
       });
   }, [fetchWithInterceptor, token, username]);
 
-  const getCollectionByOwnerAndName = useCallback(async (ownerId: string, collectionName: string) => {
-    return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${ownerId}/${collectionName}`, {
+  const getCollectionByOwnerAndName = useCallback(async (ownerId: string, collectionSlug: string) => {
+    return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${ownerId}/${collectionSlug}`, {
       method: 'GET',
       headers: basicHeaders,
     })
@@ -137,8 +137,8 @@ export function usePricingCollectionsApi() {
       });
   }, [fetchWithInterceptor, basicHeaders]);
 
-  const downloadCollection = useCallback(async (owner: string, collectionName: string) => {
-    return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${owner}/${collectionName}/download`, {
+  const downloadCollection = useCallback(async (owner: string, collectionSlug: string) => {
+    return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${owner}/${collectionSlug}/download`, {
       method: 'GET',
       headers: basicHeaders,
     })
@@ -151,7 +151,7 @@ export function usePricingCollectionsApi() {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = collectionName + '.zip';
+        a.download = collectionSlug + '.zip';
         a.click();
 
         URL.revokeObjectURL(url);
@@ -164,8 +164,22 @@ export function usePricingCollectionsApi() {
   }, [fetchWithInterceptor, basicHeaders]);
 
    
-  const updateCollection = useCallback(async (collectionName: string, collectionData: any) => {
-    return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${authUser.user!.username}/${collectionName}`, {
+  const getCollectionPermissions = useCallback(async (organizationId: string, collectionSlug: string) => {
+    return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${organizationId}/${collectionSlug}/permissions`, {
+      method: 'GET',
+      headers: basicHeaders,
+    })
+      .then(async response => {
+        if (!response.ok) {
+          return { GET: false, PUT: false, DELETE: false };
+        }
+        return response.json();
+      })
+      .catch(() => ({ GET: false, PUT: false, DELETE: false }));
+  }, [fetchWithInterceptor, basicHeaders]);
+   
+  const updateCollection = useCallback(async (organizationId: string, collectionSlug: string, collectionData: any) => {
+    return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${organizationId}/${collectionSlug}`, {
       method: 'PUT',
       headers: basicHeaders,
       body: JSON.stringify(collectionData),
@@ -175,10 +189,10 @@ export function usePricingCollectionsApi() {
         const body = await (error as Response).json().catch(() => ({}));
         return Promise.reject(body as Error);
       });
-  }, [fetchWithInterceptor, basicHeaders, authUser]);
+  }, [fetchWithInterceptor, basicHeaders]);
 
-  const deleteCollection = useCallback(async (collectionName: string, deleteCascade: boolean) => {
-    return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${authUser.user!.username}/${collectionName}?cascade=${deleteCascade}`, {
+  const deleteCollection = useCallback(async (organizationId: string, collectionSlug: string, deleteCascade: boolean) => {
+    return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${organizationId}/${collectionSlug}?cascade=${deleteCascade}`, {
       method: 'DELETE',
       headers: basicHeaders
     })
@@ -187,7 +201,7 @@ export function usePricingCollectionsApi() {
         const body = await (error as Response).json().catch(() => ({}));
         return Promise.reject(body as Error);
       });
-  }, [fetchWithInterceptor, basicHeaders, authUser]);
+  }, [fetchWithInterceptor, basicHeaders]);
 
   return useMemo(() => ({
     getLoggedUserCollections,
@@ -196,6 +210,7 @@ export function usePricingCollectionsApi() {
     getCollectionByOwnerAndName,
     getCollections,
     downloadCollection,
+    getCollectionPermissions,
     updateCollection,
     deleteCollection
   }), [
@@ -205,6 +220,7 @@ export function usePricingCollectionsApi() {
     getCollectionByOwnerAndName,
     getCollections,
     downloadCollection,
+    getCollectionPermissions,
     updateCollection,
     deleteCollection,
   ]);

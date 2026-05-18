@@ -7,7 +7,7 @@ import PricingVersionLoader from './PricingVersionLoader';
 interface PricingVersionProps {
   owner: string;
   name: string;
-  collectionName?: string | null;
+  collectionSlug?: string | null;
   onContextAdd: (input: SphereContextItemInput) => void;
   onContextRemove: (id: string) => void;
 }
@@ -15,11 +15,11 @@ interface PricingVersionProps {
 function PricingVersions({
   owner,
   name,
-  collectionName,
+  collectionSlug,
   onContextAdd,
   onContextRemove,
 }: PricingVersionProps) {
-  const { loading, error, versions } = usePricingVersions(owner, name, collectionName);
+  const { loading, error, versions } = usePricingVersions(owner, name, collectionSlug);
   const pricingContextItems = usePricingContext();
 
   const isVersionIncludedInContext = (yamlPath: string) =>
@@ -37,8 +37,8 @@ function PricingVersions({
     return <PricingVersionLoader />;
   }
 
-  const calculateLabel = (name: string, collectionName?: string | null) =>
-    `${collectionName ? collectionName + '/' : ''}${name}`;
+  const calculateLabel = (name: string, collectionSlug?: string | null) =>
+    `${collectionSlug ? collectionSlug + '/' : ''}${name}`;
 
   const calculateTotalVersionLabel = () => {
     const res = 'version';
@@ -53,14 +53,14 @@ function PricingVersions({
     onContextAdd({
       sphereId: sphereId,
       kind: 'yaml',
-      label: calculateLabel(name, collectionName),
+      label: calculateLabel(name, collectionSlug),
       value: yamlFile,
       origin: 'sphere',
       owner: owner,
       yamlPath: yamlUrl,
       pricingName: name,
       version: version,
-      collection: collectionName ?? null,
+      collection: collectionSlug ?? null,
     });
   };
 

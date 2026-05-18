@@ -14,7 +14,7 @@ interface PricingEntry {
   name: string;
   organization: { id: string; name: string; displayName: string; avatar: string };
   version: string;
-  collectionName: string;
+  collection: { id: string; name: string; slug: string };
   createdAt: string;
   currency: string;
   analytics: {

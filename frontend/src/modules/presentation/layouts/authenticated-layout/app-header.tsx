@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useRouter } from '../../../core/hooks/useRouter';
-import OrgSelector from './org-selector';
 import UserMenu from './user-menu';
 import MobileNav from './mobile-nav';
 import CommandPalette from '../../../core/components/command-palette';
@@ -44,7 +43,7 @@ export default function AppHeader({ onUploadPricing }: Props) {
     <>
       <header className="sticky top-0 z-40 border-b border-tp-hairline-soft bg-tp-canvas/80 backdrop-blur-xl">
         <div className="mx-auto flex h-14 w-full max-w-[1280px] items-center justify-between px-4 md:px-6">
-          {/* Left: Logo + Org Selector */}
+          {/* Left: Logo */}
           <div className="flex items-center gap-4">
             <button
               type="button"
@@ -53,10 +52,6 @@ export default function AppHeader({ onUploadPricing }: Props) {
             >
               SPHERE
             </button>
-
-            <div className="hidden md:block">
-              <OrgSelector />
-            </div>
           </div>
 
           {/* Center: Navigation (desktop) */}
@@ -78,7 +73,7 @@ export default function AppHeader({ onUploadPricing }: Props) {
                   {item.label}
                   {item.children && (
                     <svg
-                      className={`h-3.5 w-3.5 text-tp-stone transition-transform ${openDropdown === item.label ? 'rotate-180' : ''}`}
+                      className={`h-3.5 w-3.5 text-tp-ink transition-transform ${openDropdown === item.label ? 'rotate-180' : ''}`}
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"

@@ -9,7 +9,7 @@ interface PricingEntry {
   name: string;
   organization: { id: string; name: string; displayName: string; avatar: string };
   version: string;
-  collectionName: string;
+  collection: { id: string; name: string; slug: string } | null;
   createdAt: string;
   currency: string;
   analytics: {
@@ -41,13 +41,14 @@ export default function PricingCard({ data, onRemoved }: Props) {
   }, [menuOpen]);
 
   const handleNavigate = () => {
-    router.push(`/pricings/${data.organization.id}/${data.name}?collectionName=${data.collectionName}`);
+    const slug = data.collection?.slug || data.collection?.name;
+    router.push(`/pricings/${data.organization.id}/${data.name}?collection=${slug}`);
   };
 
   const handleRemove = async (e: React.MouseEvent) => {
     e.stopPropagation();
     try {
-      await removePricingByName(data.name, data.collectionName || undefined);
+      await removePricingByName(data.name, data.collection?.slug || undefined);
       onRemoved?.();
     } catch {
       // error
@@ -77,10 +78,10 @@ export default function PricingCard({ data, onRemoved }: Props) {
             <span className="truncate text-[11px] text-tp-steel">
               {data.organization.displayName || data.organization.name}
             </span>
-            {data.collectionName && (
+            {data.collection?.name && (
               <>
                 <span className="text-tp-hairline">/</span>
-                <span className="truncate text-[11px] text-tp-steel">{data.collectionName}</span>
+                <span className="truncate text-[11px] text-tp-steel">{data.collection.name}</span>
               </>
             )}
           </div>

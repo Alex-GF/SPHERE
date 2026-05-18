@@ -10,7 +10,7 @@ interface PricingListProps {
 
 function PricingsList({ pricings, onContextAdd, onContextRemove }: PricingListProps) {
   const generateKey = (pricing: PricingSearchResultItem) =>
-    `${pricing.owner}-${pricing.name}-${pricing.version}-${pricing.collectionName ?? 'nocollection'}`;
+    `${pricing.owner}-${pricing.name}-${pricing.version}-${pricing.collection?.slug ?? 'nocollection'}`;
 
   if (pricings.length === 0) {
     return <div>No pricings found</div>;
@@ -22,14 +22,14 @@ function PricingsList({ pricings, onContextAdd, onContextRemove }: PricingListPr
         <div key={generateKey(item)} className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
           <div className="flex flex-wrap items-start justify-between gap-2">
             <h3 className="text-lg font-semibold">
-              {item.collectionName ? item.collectionName + '/' + item.name : item.name}
+              {item.collection?.name ? item.collection.name + '/' + item.name : item.name}
             </h3>
             <div className="text-sm font-semibold text-slate-600">Owned by: {item.owner}</div>
           </div>
           <PricingVersions
             owner={item.owner}
             name={item.name}
-            collectionName={item.collectionName}
+            collectionSlug={item.collection?.slug}
             onContextAdd={onContextAdd}
             onContextRemove={onContextRemove}
           />

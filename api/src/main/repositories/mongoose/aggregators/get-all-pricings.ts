@@ -104,7 +104,11 @@ const parseCollectionNameAggregator = [
   },
   {
     $set: {
-      collectionName: '$collection.name',
+      collection: {
+        id: { $toString: '$collection._id' },
+        name: '$collection.name',
+        slug: '$collection.slug',
+      },
     },
   },
 ];
@@ -132,7 +136,11 @@ const computeFiltersDataAggregator = {
           _id: 0,
           name: 1,
           organization: 1,
-          collectionName: 1,
+          collection: {
+            id: 1,
+            name: 1,
+            slug: 1,
+          },
           version: 1,
           createdAt: 1,
           currency: 1,

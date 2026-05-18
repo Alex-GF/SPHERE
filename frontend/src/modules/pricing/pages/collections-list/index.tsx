@@ -11,6 +11,7 @@ import { staggerContainer, fadeInUp, transitionDefault } from '../../../core/uti
 interface CollectionEntry {
   id: string;
   name: string;
+  slug: string;
   organization: { id: string; name: string; displayName: string; avatar: string };
   numberOfPricings: number;
 }

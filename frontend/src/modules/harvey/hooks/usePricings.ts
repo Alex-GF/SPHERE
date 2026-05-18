@@ -20,7 +20,7 @@ export interface PricingSearchResultItem {
     minSubscriptionPrice: number;
     maxSubscriptionPrice: number;
   };
-  collectionName?: string | null;
+  collection: { id: string; name: string; slug: string } | null;
 }
 
 export function usePricings(

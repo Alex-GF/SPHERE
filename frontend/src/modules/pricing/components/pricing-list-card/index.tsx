@@ -46,7 +46,7 @@ export default function PricingListCard({
         customAlert('You need to be logged in to perform this action');
         return;
       } else {
-        removePricingFromCollection(name, dataEntry.organization.id, dataEntry.collectionName)
+        removePricingFromCollection(name, dataEntry.organization.id, dataEntry.collection?.slug || '')
           .then(() => {
             customAlert('Pricing removed from collection');
             window.location.reload();
@@ -60,7 +60,7 @@ export default function PricingListCard({
   };
 
   const handleRemovePricing = () => {
-    removePricingByName(name, dataEntry.collectionName)
+    removePricingByName(name, dataEntry.collection?.slug)
       .then(() => {
         customAlert('Pricing removed');
         window.location.reload();
@@ -141,11 +141,11 @@ export default function PricingListCard({
           type="button"
           className="flex h-[45px] w-full items-center px-[10px] text-left transition-colors hover:text-sphere-primary-600"
           onClick={() =>
-            router.push(`/pricings/${dataEntry.organization.id}/${name}?collectionName=${dataEntry.collectionName}`)
+            router.push(`/pricings/${dataEntry.organization.id}/${name}?collection=${dataEntry.collection?.slug || ''}`)
           }
         >
           <h3 className="mt-1 text-lg font-bold">
-            {dataEntry.collectionName ? `${dataEntry.collectionName}/${name}` : name}
+            {dataEntry.collection?.name ? `${dataEntry.collection.name}/${name}` : name}
           </h3>
         </button>
         <div className="mt-2 flex items-center justify-evenly gap-3">

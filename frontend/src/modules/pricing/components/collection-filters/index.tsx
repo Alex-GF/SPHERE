@@ -113,7 +113,7 @@ export default function CollectionFilters({
         </button>
         <button
           type="button"
-          className="rounded-md bg-sphere-primary-300 px-4 py-2 text-white hover:bg-sphere-primary-500"
+          className="rounded-md bg-tp-primary px-4 py-2 text-white hover:bg-tp-primary"
           onClick={handleFilter}
         >
           Filter

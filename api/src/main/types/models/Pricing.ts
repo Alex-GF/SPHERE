@@ -60,6 +60,7 @@ export interface PricingAnalytics {
 export interface PricingCollection {
   _id: Types.ObjectId | string;
   name?: string;
+  slug?: string;
 }
 
 export interface PricingOrganization {

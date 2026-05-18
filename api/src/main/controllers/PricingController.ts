@@ -177,8 +177,8 @@ class PricingController {
     indexQueryParams: Record<string, string>
   ): PricingIndexQueryParams {
 
-    if (indexQueryParams['collectionName'] && indexQueryParams['excludePricingsInCollection'] === 'true') {
-      throw new Error('INVALID DATA: `collectionName` and `excludePricingsInCollection` cannot be used together');
+    if (indexQueryParams['collection'] && indexQueryParams['excludePricingsInCollection'] === 'true') {
+      throw new Error('INVALID DATA: `collection` and `excludePricingsInCollection` cannot be used together');
     }
 
     const transformedData: PricingIndexQueryParams = {
@@ -194,13 +194,13 @@ class PricingController {
         max: parseFloat(indexQueryParams['max-minPrice'] as string),
       },
       maxPrice: {
-        min: parseFloat(indexQueryParams['min-maxPrice'] as string),
+        min: parseFloat(indexQueryParams['max-minPrice'] as string),
         max: parseFloat(indexQueryParams['max-maxPrice'] as string),
       },
       selectedOrganizations: indexQueryParams.selectedOrganizations
         ? (indexQueryParams.selectedOrganizations as string).split(',')
         : undefined,
-      collectionName: indexQueryParams.collectionName as string,
+      collection: indexQueryParams.collection as string,
       includePricingsInCollection: indexQueryParams.includePricingsInCollection === 'true',
       limit: parseInt(indexQueryParams.limit) || 10,
       offset: parseInt(indexQueryParams.offset) || 0,
@@ -212,13 +212,13 @@ class PricingController {
       'minPrice',
       'maxPrice',
       'selectedOrganizations',
-      'collectionName',
+      'collection',
       'sortBy',
       'sort',
     ] as const;
 
     optionalFields.forEach(field => {
-      if (['name', 'selectedOrganizations', 'sortBy', 'sort', 'collectionName'].includes(field)) {
+      if (['name', 'selectedOrganizations', 'sortBy', 'sort', 'collection'].includes(field)) {
         if (!transformedData[field]) {
           delete transformedData[field];
         }

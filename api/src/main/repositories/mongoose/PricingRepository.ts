@@ -14,7 +14,15 @@ class PricingRepository extends RepositoryBase {
     const sortAggregator = [];
 
     if (Object.keys(queryParams).length > 0) {
-      const { name, subscriptions, minPrice, maxPrice, selectedOrganizations, includePricingsInCollection, sortBy, sort } = queryParams;
+      const { name, subscriptions, minPrice, maxPrice, selectedOrganizations, includePricingsInCollection, collection, sortBy, sort } = queryParams;
+
+      if (collection) {
+        filteringAggregators.push({
+          $match: {
+            'collection.slug': collection,
+          },
+        });
+      }
 
       if (name) {
         filteringAggregators.push({
@@ -149,15 +157,6 @@ class PricingRepository extends RepositoryBase {
           ? [{ $match: { _organizationId: new mongoose.Types.ObjectId(queryParams.organizationId) } }]
           : []),
         ...aggregator,
-        ...(queryParams.collectionName ?
-          [
-            {
-              $match: {
-                collectionName: queryParams.collectionName,
-              },
-            },
-          ] : []
-         ),
       ];
 
       const offset = queryParams.offset;
@@ -218,7 +217,7 @@ class PricingRepository extends RepositoryBase {
   async findOne(
     name: string,
     organizationId: string,
-    queryParams: { collectionId?: string, collectionName?: string; version?: string, includePrivate?: boolean; organizationId?: string } = {includePrivate: false}
+    queryParams: { collectionId?: string, collectionSlug?: string; version?: string, includePrivate?: boolean; organizationId?: string } = {includePrivate: false}
   ) {
     // Filtro de visibilidad
     const visibilityMatch = queryParams.includePrivate
@@ -229,7 +228,7 @@ class PricingRepository extends RepositoryBase {
       let pricing;
       const organizationMatch = { _organizationId: new mongoose.Types.ObjectId(organizationId) };
 
-      if (queryParams?.collectionName) {
+      if (queryParams?.collectionSlug) {
         pricing = await PricingMongoose.aggregate([
           {
             $match: { ...visibilityMatch, ...organizationMatch },
@@ -237,7 +236,7 @@ class PricingRepository extends RepositoryBase {
           ...getPricingByNameOrganizationAndVersionAggregator(name, organizationId, queryParams.version),
           {
             $match: {
-              collectionName: queryParams.collectionName,
+              "collection.slug": queryParams.collectionSlug,
             },
           },
         ]);

@@ -45,6 +45,7 @@ export function getPricingByNameOrganizationAndVersionAggregator(
           {
             $project: {
               name: 1,
+              slug: 1,
             },
           },
         ],
@@ -73,9 +74,15 @@ export function getPricingByNameOrganizationAndVersionAggregator(
     { $unwind: { path: '$organization', preserveNullAndEmptyArrays: true } },
     {
       $group: {
-        _id: { name: '$name', organizationId: { $toString: '$organization._id' }, collectionName: '$collection.name' },
+        _id: { name: '$name', organizationId: { $toString: '$organization._id' }, collectionSlug: '$collection.slug' },
         name: { $first: '$name' },
-        collectionName: { $first: '$collection.name' },
+        collection: {
+          $first: {
+            id: { $toString: '$collection._id' },
+            name: '$collection.name',
+            slug: '$collection.slug',
+          },
+        },
         versions: {
           $push: {
             id: { $toString: '$_id' },
@@ -108,7 +115,7 @@ export function getPricingByNameOrganizationAndVersionAggregator(
         _id: 0,
         name: 1,
         organization: 1,
-        collectionName: 1,
+        collection: 1,
         versions: { $sortArray: { input: '$versions', sortBy: { createdAt: -1 } } },
       },
     },

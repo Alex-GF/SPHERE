@@ -325,12 +325,12 @@ class PermissionService {
   async getCollectionPermissions(
     userId: string,
     organizationId: string,
-    collectionName: string,
+    collectionSlug: string,
     userOrgRole?: OrgRole | null
   ): Promise<EntityPermissions> {
-    const collection = await this.pricingCollectionRepository.findByOrganizationAndName(
+    const collection = await this.pricingCollectionRepository.findByOrganizationAndSlug(
       organizationId,
-      collectionName
+      collectionSlug
     );
     if (!collection) {
       throw new Error('NOT FOUND: Collection not found');

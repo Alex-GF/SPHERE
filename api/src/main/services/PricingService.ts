@@ -13,6 +13,7 @@ import PricingRepository from '../repositories/mongoose/PricingRepository';
 import CacheService from './CacheService';
 import { LeanUser } from '../types/models/User';
 import OrganizationMembershipRepository from '../repositories/mongoose/OrganizationMembershipRepository';
+import { generateSlug, generateTextFromSlug } from '../utils/slug-manager';
 
 class PricingService {
   private pricingRepository: PricingRepository;
@@ -28,7 +29,7 @@ class PricingService {
   }
 
   async index(queryParams: PricingIndexQueryParams, reqUser?: LeanUser) {
-    const includePrivate = reqUser !== undefined && reqUser.role === 'ADMIN';
+    const includePrivate = reqUser !== undefined && reqUser.role === 'ADMIN'; // TODO: we should also include private pricings for non-admin users if they belong to the organization, but this would require additional queries to check the user's role in each organization, so for now we will only include private pricings for admin users
 
     const pricings = await this.pricingRepository.findAll(queryParams, includePrivate);
     return pricings;
@@ -43,10 +44,13 @@ class PricingService {
     name: string,
     organizationId: string,
     reqUser?: LeanUser,
-    queryParams: { collectionName?: string; includePrivate: boolean } = { includePrivate: false }
+    queryParams: { collectionSlug?: string; includePrivate: boolean } = { includePrivate: false }
   ) {
     if (reqUser) {
-      const role = await this.organizationMembershipRepository.findUserRoleInOrganization(reqUser.id, organizationId);
+      const role = await this.organizationMembershipRepository.findUserRoleInOrganization(
+        reqUser.id,
+        organizationId
+      );
       queryParams.includePrivate = reqUser.role === 'ADMIN' || role !== null;
     }
 
@@ -69,7 +73,7 @@ class PricingService {
     pricingName: string,
     pricingVersion: string,
     reqUser?: LeanUser,
-    queryParams?: { collectionName?: string, limit?: string; offset?: string }
+    queryParams?: { collectionSlug?: string; limit?: string; offset?: string }
   ) {
     // Validations
     if (queryParams?.limit && !/^\d+$/.test(queryParams.limit)) {
@@ -87,15 +91,18 @@ class PricingService {
 
     let includePrivate = false;
     if (reqUser) {
-      const role = await this.organizationMembershipRepository.findUserRoleInOrganization(reqUser.id, organizationId);
+      const role = await this.organizationMembershipRepository.findUserRoleInOrganization(
+        reqUser.id,
+        organizationId
+      );
       includePrivate = reqUser.role === 'ADMIN' || role !== null;
     }
 
-    const retrievedPricing = await this.pricingRepository.findOne(
-      pricingName,
-      organizationId,
-      { ...queryParams, version: pricingVersion, includePrivate }
-    );
+    const retrievedPricing = await this.pricingRepository.findOne(pricingName, organizationId, {
+      ...queryParams,
+      version: pricingVersion,
+      includePrivate,
+    });
     if (!retrievedPricing) {
       throw new Error('NOT FOUND: Pricing not found');
     }
@@ -140,7 +147,10 @@ class PricingService {
     collectionId?: string
   ) {
     try {
-      const role = await this.organizationMembershipRepository.findUserRoleInOrganization(reqUser.id, organizationId);
+      const role = await this.organizationMembershipRepository.findUserRoleInOrganization(
+        reqUser.id,
+        organizationId
+      );
       if (!role && reqUser.role !== 'ADMIN') {
         throw new Error(
           'PERMISSION ERROR: You do not have permission to create a pricing for this organization'
@@ -210,14 +220,28 @@ class PricingService {
     }
   }
 
-  async addPricingToCollection(pricingName: string, organizationId: string, collectionId: string, queryParams: { collectionName?: string } = {}) {
+  async addPricingToCollection(
+    pricingName: string,
+    organizationId: string,
+    collectionId: string,
+    queryParams: { collectionSlug?: string } = {}
+  ) {
     try {
-      const pricing = await this.pricingRepository.findOne(pricingName, organizationId, { ...queryParams, includePrivate: true });
+      const pricing = await this.pricingRepository.findOne(pricingName, organizationId, {
+        ...queryParams,
+        includePrivate: true,
+      });
       if (!pricing) {
-        throw new Error('NOT FOUND: Pricing not found. Please check that: 1) the pricing is created, 2) that you\'re a member of the organization, and 3) that the collectionName you\'ve specified is correct (the collectionName is case-sensitive).');
+        throw new Error(
+          "NOT FOUND: Pricing not found. Please check that: 1) the pricing is created, 2) that you're a member of the organization, and 3) that the collectionName you've specified is correct (the collectionName is case-sensitive)."
+        );
       }
 
-      await this.pricingRepository.addPricingToCollection(pricingName, organizationId, collectionId);
+      await this.pricingRepository.addPricingToCollection(
+        pricingName,
+        organizationId,
+        collectionId
+      );
       await this.pricingCollectionService.updateCollectionAnalytics(collectionId);
 
       return true;
@@ -226,25 +250,42 @@ class PricingService {
     }
   }
 
-  async update(pricingName: string, organizationId: string, reqUser: LeanUser, data: any, queryParams: { collectionName?: string; organizationId?: string } = {}) {
+  async update(
+    pricingName: string,
+    organizationId: string,
+    reqUser: LeanUser,
+    data: any,
+    queryParams: { collectionSlug?: string; organizationId?: string } = {}
+  ) {
     const effectiveOrgId = queryParams.organizationId || organizationId;
-    const role = await this.organizationMembershipRepository.findUserRoleInOrganization(reqUser.id, effectiveOrgId);
+    const role = await this.organizationMembershipRepository.findUserRoleInOrganization(
+      reqUser.id,
+      effectiveOrgId
+    );
     if (!role && reqUser.role !== 'ADMIN') {
       throw new Error(
         'PERMISSION ERROR: You do not have permission to update a pricing for this organization'
       );
     }
 
-    const pricing = await this.pricingRepository.findOne(pricingName, effectiveOrgId, { ...queryParams, includePrivate: true });
+    const pricing = await this.pricingRepository.findOne(pricingName, effectiveOrgId, {
+      ...queryParams,
+      includePrivate: true,
+    });
     if (!pricing) {
-      throw new Error('NOT FOUND: Either the pricing does not exist or you are not a member of its organization');
+      throw new Error(
+        'NOT FOUND: Either the pricing does not exist or you are not a member of its organization'
+      );
     }
 
     for (const pricingVersion of pricing.versions) {
       await this.pricingRepository.update(pricingVersion.id, data);
     }
 
-    const updatedPricing = await this.pricingRepository.findOne(pricingName, effectiveOrgId, { ...queryParams, includePrivate: true });
+    const updatedPricing = await this.pricingRepository.findOne(pricingName, effectiveOrgId, {
+      ...queryParams,
+      includePrivate: true,
+    });
 
     return updatedPricing;
   }
@@ -259,19 +300,26 @@ class PricingService {
   }
 
   async updatePricingsCollectionName(
-    oldCollectionName: string,
+    collectionSlug: string,
     newCollectionName: string,
     collectionId: string
   ) {
-    if (oldCollectionName === newCollectionName) {
+    if (collectionSlug === generateSlug(newCollectionName)) {
       return true;
     }
 
     const pricings = await this.pricingRepository.findByCollection(collectionId);
     const pricingsToUpdate = [];
     for (const pricing of pricings) {
-      if (pricing.yaml.includes(oldCollectionName)) {
-        pricing.yaml = pricing.yaml.replace(oldCollectionName, newCollectionName);
+      if (
+        pricing.yaml
+          .toLocaleLowerCase()
+          .includes(generateTextFromSlug(collectionSlug).toLocaleLowerCase())
+      ) {
+        pricing.yaml = pricing.yaml.replace(
+          new RegExp(generateTextFromSlug(collectionSlug), "i"),
+          newCollectionName
+        );
         pricingsToUpdate.push(pricing);
       }
     }
@@ -284,22 +332,25 @@ class PricingService {
     pricingName: string,
     organizationId: string,
     reqUser: LeanUser,
-    queryParams: { collectionName?: string; organizationId?: string } = {}
+    queryParams: { collectionSlug?: string; organizationId?: string } = {}
   ) {
     const effectiveOrgId = queryParams.organizationId || organizationId;
     let collectionId;
 
-    const role = await this.organizationMembershipRepository.findUserRoleInOrganization(reqUser.id, effectiveOrgId);
+    const role = await this.organizationMembershipRepository.findUserRoleInOrganization(
+      reqUser.id,
+      effectiveOrgId
+    );
     if (!role && reqUser.role !== 'ADMIN') {
       throw new Error(
         'PERMISSION ERROR: You do not have permission to delete a pricing for this organization'
       );
     }
 
-    if (queryParams?.collectionName) {
+    if (queryParams?.collectionSlug) {
       const collection = await this.pricingCollectionService.show(
         effectiveOrgId,
-        queryParams.collectionName,
+        queryParams.collectionSlug,
         reqUser
       );
       if (!collection) {
@@ -315,7 +366,9 @@ class PricingService {
       collectionId
     );
     if (!result) {
-      throw new Error('NOT FOUND: Either the pricing does not exist or you are not a member of its organization');
+      throw new Error(
+        'NOT FOUND: Either the pricing does not exist or you are not a member of its organization'
+      );
     }
     return true;
   }
@@ -326,7 +379,10 @@ class PricingService {
     organizationId: string,
     reqUser: LeanUser
   ) {
-    const role = await this.organizationMembershipRepository.findUserRoleInOrganization(reqUser.id, organizationId);
+    const role = await this.organizationMembershipRepository.findUserRoleInOrganization(
+      reqUser.id,
+      organizationId
+    );
     if (!role && reqUser.role !== 'ADMIN') {
       throw new Error(
         'PERMISSION ERROR: You do not have permission to delete a pricing version for this organization'
@@ -350,7 +406,9 @@ class PricingService {
     }
 
     if (!result) {
-      throw new Error('NOT FOUND: Either the pricing does not exist or you are not a member of its organization');
+      throw new Error(
+        'NOT FOUND: Either the pricing does not exist or you are not a member of its organization'
+      );
     }
 
     return true;

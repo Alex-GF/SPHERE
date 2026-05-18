@@ -4,6 +4,7 @@ import { Accept, useDropzone } from 'react-dropzone';
 import { MdDeleteForever } from 'react-icons/md';
 import { error } from '../../theme/palette';
 import customAlert from '../../utils/custom-alert';
+import ActionButton from '../action-button';
 
 export default function FileUpload({
   onSubmit,
@@ -100,13 +101,7 @@ export default function FileUpload({
           </ul>
         )}
       </div>
-      <button
-        onClick={handleSubmit}
-        type="button"
-        className={`mt-5 rounded-xl bg-sphere-primary-700 px-5 py-2 text-base font-bold text-white ${submitButtonWidth ? 'w-auto' : 'w-full'}`}
-      >
-        {submitButtonText ?? 'Submit file'}
-      </button>
+      <ActionButton text={submitButtonText ?? 'Submit file'} onClick={handleSubmit} disabled={!file} className={`mt-5 font-bold ${submitButtonWidth ? 'w-auto' : 'w-full'}`}/>
     </div>
   );
 }

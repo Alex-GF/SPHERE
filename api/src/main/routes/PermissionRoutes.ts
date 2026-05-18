@@ -40,7 +40,7 @@ const loadPermissionRoutes = function (app: express.Application) {
     .get(permissionController.getPricingPermissions);
 
   app
-    .route(baseUrl + '/collections/:organizationId/:collectionName/permissions')
+    .route(baseUrl + '/collections/:organizationId/:collectionSlug/permissions')
     .get(permissionController.getCollectionPermissions);
 };
 

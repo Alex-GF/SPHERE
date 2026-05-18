@@ -86,7 +86,7 @@ export default function AddPricingToCollectionModal({
                 onClick={handleAddPricingToCollection}
                 whileHover={{ y: -1 }}
                 whileTap={{ scale: 0.98 }}
-                className="rounded-lg bg-sphere-primary-700 px-5 py-2 text-sm font-semibold text-white shadow-[0_6px_18px_rgba(2,62,138,0.3)] transition hover:bg-sphere-primary-800"
+                className="rounded-lg bg-tp-primary px-5 py-2 text-sm font-semibold text-white shadow-[0_6px_18px_rgba(2,62,138,0.3)] transition hover:bg-tp-primary"
               >
                 Save
               </motion.button>

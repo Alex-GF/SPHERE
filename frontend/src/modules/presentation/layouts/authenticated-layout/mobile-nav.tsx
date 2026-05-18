@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from '../../../core/hooks/useRouter';
 import { useAuth } from '../../../auth/hooks/useAuth';
-import { useOrganization } from '../../../organization/hooks/useOrganization';
 import { staggerContainer, menuItemVariants, transitionFast } from '../../../core/utils/motion-variants';
 
 interface Props {
@@ -39,7 +38,6 @@ const NAV_STRUCTURE = [
 export default function MobileNav({ isOpen, onClose, onUploadPricing }: Props) {
   const router = useRouter();
   const { authUser, logout } = useAuth();
-  const { activeOrganization } = useOrganization();
   const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
 
   const handleNavigate = (to: string) => {
@@ -99,7 +97,6 @@ export default function MobileNav({ isOpen, onClose, onUploadPricing }: Props) {
                     </div>
                     <div>
                       <p className="text-sm font-medium text-tp-ink">{authUser.user?.firstName}</p>
-                      <p className="text-xs text-tp-steel">{activeOrganization?.name}</p>
                     </div>
                   </div>
                 </div>

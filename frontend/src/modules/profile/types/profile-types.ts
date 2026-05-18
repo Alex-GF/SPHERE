@@ -22,7 +22,7 @@ export interface PricingEntry {
     avatar: string;
     isPersonal: boolean;
   };
-  collectionName: string
+  collection: { id: string; name: string; slug: string } | null;
 }
 
 export interface CollectionToCreate {

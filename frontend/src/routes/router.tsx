@@ -80,7 +80,7 @@ export default function Router() {
         { element: <PricingListPage />, path: '/pricings' },
         { element: <CardPage />, path: '/pricings/:owner/:name' },
         { element: <CollectionsListPage />, path: '/pricings/collections' },
-        { element: <CollectionCardPage />, path: '/pricings/collections/:ownerId/:collectionName' },
+        { element: <CollectionCardPage />, path: '/pricings/collections/:ownerId/:collectionSlug' },
         { element: <TeamPage />, path: '/team' },
         { element: <ResearchPage />, path: '/research' },
         { element: <ContributionsPage />, path: '/contributions' },

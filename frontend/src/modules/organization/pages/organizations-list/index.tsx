@@ -10,9 +10,9 @@ const ROLE_LABELS: Record<string, string> = {
 };
 
 const ROLE_STYLES: Record<string, string> = {
-  OWNER: 'bg-sphere-primary-100 text-sphere-primary-800',
+  OWNER: 'bg-tp-primary/20 text-tp-primary',
   ADMIN: 'bg-amber-100 text-amber-800',
-  MEMBER: 'bg-sphere-grey-200 text-sphere-grey-700',
+  MEMBER: 'bg-tp-grey-200 text-tp-grey-700',
 };
 
 function OrgAvatar({
@@ -22,29 +22,38 @@ function OrgAvatar({
   org: { avatar: string | null; displayName: string; isPersonal: boolean };
   size?: number;
 }) {
-  if (org.avatar) {
-    return (
-      <img
-        src={org.avatar}
-        alt={org.displayName}
-        className="rounded-full object-cover"
-        style={{ width: size, height: size }}
-      />
-    );
-  }
-
-  return (
+  const fallback = (
     <span
-      className="flex items-center justify-center rounded-full bg-sphere-primary-800 text-white"
+      className="flex items-center justify-center rounded-full bg-tp-primary text-white"
       style={{ width: size, height: size }}
     >
       <Iconify icon={org.isPersonal ? 'mdi:account' : 'mdi:domain'} width={Math.round(size * 0.45)} />
     </span>
   );
+
+  if (org.avatar) {
+    return (
+      <>
+        <img
+          src={org.avatar}
+          alt={org.displayName}
+          className="rounded-full object-cover"
+          style={{ width: size, height: size }}
+          onError={(e) => {
+            (e.target as HTMLImageElement).style.display = 'none';
+            (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
+          }}
+        />
+        <span className="hidden">{fallback}</span>
+      </>
+    );
+  }
+
+  return fallback;
 }
 
 export default function OrganizationsListPage() {
-  const { organizations, activeOrganization, setActiveOrganization, isLoading } = useOrganization();
+  const { organizations, isLoading } = useOrganization();
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -67,7 +76,7 @@ export default function OrganizationsListPage() {
         <h1 className="text-2xl font-bold text-sphere-grey-800">My Organizations</h1>
         <Link
           to="/orgs/new"
-          className="flex items-center gap-2 rounded-md bg-sphere-primary-800 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-sphere-primary-700"
+          className="flex items-center gap-2 rounded-md bg-tp-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-tp-primary"
         >
           <Iconify icon="mdi:plus" width={18} />
           New Organization
@@ -113,17 +122,6 @@ export default function OrganizationsListPage() {
               </div>
 
               <div className="flex flex-wrap items-center justify-end gap-2">
-                <button
-                  type="button"
-                  onClick={() => setActiveOrganization(org)}
-                  className={`rounded-md border px-3 py-1.5 text-sm font-semibold transition-colors ${
-                    activeOrganization?.id === org.id
-                      ? 'border-sphere-primary-300 bg-sphere-primary-50 text-sphere-primary-800'
-                      : 'border-sphere-grey-300 text-sphere-grey-700 hover:bg-sphere-grey-100'
-                  }`}
-                >
-                  {activeOrganization?.id === org.id ? 'Active' : 'Set active'}
-                </button>
                 <Link
                   to={`/orgs/${org.id}`}
                   className="flex items-center gap-1 rounded-md border border-sphere-grey-300 px-3 py-1.5 text-sm font-semibold text-sphere-grey-700 transition-colors hover:bg-sphere-grey-100"

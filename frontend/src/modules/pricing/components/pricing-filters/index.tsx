@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import SliderFilter from '../slider-filter';
 import { FilterLimits } from '../../pages/list';
+import ActionButton from '../../../core/components/action-button';
 
 export default function PricingFilters({
   filterLimits,
@@ -175,13 +176,10 @@ export default function PricingFilters({
         >
           Clear
         </button>
-        <button
-          type="button"
-          className="rounded-md bg-sphere-primary-300 px-4 py-2 text-white hover:bg-sphere-primary-500"
+        <ActionButton
+          text="Filter"
           onClick={handleFilter}
-        >
-          Filter
-        </button>
+        />
       </div>
     </div>
   );

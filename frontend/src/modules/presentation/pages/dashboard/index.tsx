@@ -13,19 +13,20 @@ interface PricingEntry {
   createdAt: string;
   currency: string;
   organization: { id: string; name: string; displayName: string; avatar: string };
-  collectionName: string;
+  collection: { id: string; name: string; slug: string } | null;
 }
 
 interface CollectionEntry {
   id: string;
   name: string;
+  slug: string;
   organization: { id: string; name: string; displayName: string; avatar: string };
   numberOfPricings: number;
 }
 
 export default function DashboardPage() {
   const { authUser } = useAuth();
-  const { organizations, activeOrganization } = useOrganization();
+  const { organizations } = useOrganization();
   const { getLoggedUserPricings } = usePricingsApi();
   const { getLoggedUserCollections } = usePricingCollectionsApi();
   const router = useRouter();
@@ -85,7 +86,7 @@ export default function DashboardPage() {
   const quickActions = [
     {
       label: 'Browse Pricings',
-      description: 'Explore all public pricings in the repository',
+      description: 'Explore all public pricings in the SPHERE',
       to: '/pricings',
       icon: (
         <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -214,9 +215,6 @@ export default function DashboardPage() {
                       <p className="truncate text-sm font-medium text-tp-ink">{org.displayName || org.name}</p>
                       <p className="text-[11px] text-tp-steel">
                         {org.isPersonal ? 'Personal' : 'Team'}
-                        {org.id === activeOrganization?.id && (
-                          <span className="ml-1 text-tp-primary">• Active</span>
-                        )}
                       </p>
                     </div>
                   </button>
@@ -266,7 +264,7 @@ export default function DashboardPage() {
                       <p className="truncate text-sm font-medium text-tp-ink">{pricing.name}</p>
                       <p className="text-[11px] text-tp-steel">
                         v{pricing.version} · {pricing.currency}
-                        {pricing.collectionName && ` · ${pricing.collectionName}`}
+                        {pricing.collection?.name && ` · ${pricing.collection.name}`}
                       </p>
                     </div>
                     <span className="text-[11px] text-tp-muted">
@@ -312,7 +310,7 @@ export default function DashboardPage() {
                   <button
                     key={collection.id}
                     type="button"
-                    onClick={() => router.push(`/pricings/collections/${collection.organization.id}/${collection.name}`)}
+                    onClick={() => router.push(`/pricings/collections/${collection.organization.id}/${collection.slug || collection.name}`)}
                     className="flex w-full items-center justify-between rounded-xl border border-tp-hairline-soft bg-tp-canvas px-4 py-3 text-left transition-all hover:border-tp-hairline-strong hover:shadow-elevation-1"
                   >
                     <div className="min-w-0">

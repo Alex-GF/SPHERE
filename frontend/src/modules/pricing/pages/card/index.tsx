@@ -30,7 +30,7 @@ interface VersionData {
   createdAt: string;
   yaml: string;
   private: boolean;
-  collectionName: string | null;
+  collection: { id: string; name: string; slug: string } | null;
   analytics: Record<string, number> | null;
 }
 
@@ -120,7 +120,7 @@ function PricingTree({ analytics: a }: { analytics: TreeAnalytics }) {
 export default function CardPage() {
   const { owner, name } = useParams<{ owner: string; name: string }>();
   const [searchParams] = useSearchParams();
-  const collectionName = searchParams.get('collectionName');
+  const collectionSlug = searchParams.get('collectionSlug');
   const router = useRouter();
   const { getPricingByName, removePricingVersion, removePricingByName, updatePricing } = usePricingsApi();
   const { getOrgMembers } = useOrganizationsApi();
@@ -147,7 +147,7 @@ export default function CardPage() {
   useEffect(() => {
     if (!name || !owner) return;
     setIsLoading(true);
-    getPricingByName(name, owner, collectionName)
+    getPricingByName(name, owner, collectionSlug)
       .then(async (data) => {
         const vers = (data.versions ?? []) as VersionData[];
         setVersions(vers);
@@ -177,7 +177,7 @@ export default function CardPage() {
       })
       .catch(() => {})
       .finally(() => setIsLoading(false));
-  }, [name, owner, collectionName]);
+  }, [name, owner, collectionSlug]);
 
   // Fetch YAML when version changes
   useEffect(() => {
@@ -271,7 +271,7 @@ export default function CardPage() {
     customConfirm('Are you sure you want to change the visibility of this pricing?')
       .then(() => {
         const pricingUpdateBody = { private: visibility === 'Private' };
-        updatePricing(name, collectionName ?? '', pricingUpdateBody)
+        updatePricing(name, collectionSlug ?? '', pricingUpdateBody)
           .then(() => {
             setVisibility(visibility === 'Private' ? 'Public' : 'Private');
             customAlert('Pricing visibility updated successfully');
@@ -287,7 +287,7 @@ export default function CardPage() {
     if (!name) return;
     customConfirm('Are you sure you want to delete this pricing? This action is irreversible.')
       .then(() => {
-        removePricingByName(name, collectionName ?? undefined)
+        removePricingByName(name, collectionSlug ?? undefined)
           .then(() => {
             customConfirm('Pricing deleted successfully. Do you want to return to the main page?')
               .then(() => router.push('/'))
@@ -313,7 +313,7 @@ export default function CardPage() {
           <div className="mb-2 flex items-center gap-2 text-xs text-tp-steel">
             <button type="button" onClick={() => router.push('/pricings')} className="cursor-pointer hover:text-tp-ink">Pricings</button>
             <span>/</span>
-            {collectionName && <><button type="button" onClick={() => router.push('/pricings/collections')} className="cursor-pointer hover:text-tp-ink">{collectionName}</button><span>/</span></>}
+            {collectionSlug && <><button type="button" onClick={() => router.push('/pricings/collections')} className="cursor-pointer hover:text-tp-ink">{collectionSlug}</button><span>/</span></>}
             <span className="text-tp-ink">{name}</span>
           </div>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

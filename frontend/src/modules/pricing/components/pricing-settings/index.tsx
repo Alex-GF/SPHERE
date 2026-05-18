@@ -35,7 +35,7 @@ export default function PricingSettings({
           private: !(visibility === 'Private'),
         };
 
-        updatePricing(pricingName, pricingData[0].collectionName, pricingUpdateBody)
+        updatePricing(pricingName, pricingData[0].collection?.slug || '', pricingUpdateBody)
           .then((pricing: any) => {
             updatePricingInformation(pricing);
             setVisibility(visibility === 'Private' ? 'Public' : 'Private');
@@ -51,7 +51,7 @@ export default function PricingSettings({
   function handleDeletePricing() {
     customConfirm('Are you sure you want to delete this pricing? This action is irreversible.')
       .then(() => {
-        removePricingByName(pricingName, pricingData[0].collectionName)
+        removePricingByName(pricingName, pricingData[0].collection?.slug)
           .then(() => {
             customConfirm('Pricing deleted successfully. Do you want to return to the main page?')
               .then(() => {

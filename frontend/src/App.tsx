@@ -4,15 +4,15 @@ import { AuthContext } from './modules/auth/contexts/authContext';
 import { AuthUserContext } from './modules/auth/hooks/useAuth';
 import { useState } from 'react';
 import { useScrollToTop } from './modules/core/hooks/useScrollToTop';
-import { OrganizationContext } from './modules/organization/contexts/organizationContext';
+import OrganizationContext from './modules/organization/contexts/organizationContext';
 import { useOrganizationManager } from './modules/organization/hooks/useOrganization';
 
 function OrganizationProvider({ children }: { children: React.ReactNode }) {
-  const { organizations, activeOrganization, setActiveOrganization, isLoading } = useOrganizationManager();
+  const { organizations, isLoading } = useOrganizationManager();
 
   return (
     <OrganizationContext.Provider
-      value={{ organizations, activeOrganization, setActiveOrganization, isLoading }}
+      value={{ organizations, isLoading }}
     >
       {children}
     </OrganizationContext.Provider>

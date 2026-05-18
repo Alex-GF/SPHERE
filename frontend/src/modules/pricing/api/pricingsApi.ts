@@ -67,10 +67,10 @@ export function usePricingsApi() {
       });
   }, []);
 
-  const getPricingByName = useCallback(async (name: string, owner: string, collectionName: string | null) => {
+  const getPricingByName = useCallback(async (name: string, owner: string, collectionSlug: string | null) => {
     return fetch(
       `${PRICINGS_BASE_PATH}/${owner}/${name}${
-        collectionName && collectionName !== 'undefined' ? `?collectionName=${collectionName}` : ''
+        collectionSlug && collectionSlug !== 'undefined' ? `?collectionSlug=${collectionSlug}` : ''
       }`,
       {
         method: 'GET',
@@ -180,8 +180,8 @@ export function usePricingsApi() {
   }, [fetchWithInterceptor, basicHeaders, authUser]);
 
    
-  const updatePricing = useCallback((pricingName: string, collectionName: string, pricingData: any) => {
-    return fetchWithInterceptor(`${PRICINGS_BASE_PATH}/${username}/${pricingName}?collectionName=${collectionName}`, {
+  const updatePricing = useCallback((pricingName: string, collectionSlug: string, pricingData: any) => {
+    return fetchWithInterceptor(`${PRICINGS_BASE_PATH}/${username}/${pricingName}?collectionSlug=${collectionSlug}`, {
       method: 'PUT',
       headers: basicHeaders,
       body: JSON.stringify(pricingData),
@@ -239,9 +239,9 @@ export function usePricingsApi() {
       });
   }, [fetchWithInterceptor, basicHeaders, username]);
 
-  const removePricingFromCollection = useCallback(async (pricingName: string, organizationId: string, collectionName: string) => {
+  const removePricingFromCollection = useCallback(async (pricingName: string, organizationId: string, collectionSlug: string) => {
     return fetchWithInterceptor(
-      `${import.meta.env.VITE_API_URL}/collections/${organizationId}/${collectionName}/pricings/${pricingName}`,
+      `${import.meta.env.VITE_API_URL}/collections/${organizationId}/${collectionSlug}/pricings/${pricingName}`,
       {
         method: 'DELETE',
         headers: basicHeaders,
@@ -260,10 +260,10 @@ export function usePricingsApi() {
       });
   }, [fetchWithInterceptor, basicHeaders]);
 
-  const removePricingByName = useCallback(async (name: string, collectionName?: string) => {
+  const removePricingByName = useCallback(async (name: string, collectionSlug?: string) => {
     return fetchWithInterceptor(
       `${PRICINGS_BASE_PATH}/${username}/${name}${
-        collectionName ? `?collectionName=${collectionName}` : ''
+        collectionSlug ? `?collectionSlug=${collectionSlug}` : ''
       }`,
       {
         method: 'DELETE',

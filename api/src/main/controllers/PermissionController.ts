@@ -133,7 +133,7 @@ class PermissionController {
       const result = await this.permissionService.getCollectionPermissions(
         req.user.id,
         req.params.organizationId,
-        req.params.collectionName,
+        req.params.collectionSlug,
         req.user.orgRole
       );
       res.json(result);

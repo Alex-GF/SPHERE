@@ -5,7 +5,7 @@ import { usePricingsApi } from "../../pricing/api/pricingsApi";
 export function usePricingVersions(
   owner: string,
   name: string,
-  collectionName?: string | null
+  collectionSlug?: string | null
 ) {
   const [versions, setVersions] = useState<PricingVersionsResult | undefined>(
     undefined
@@ -18,9 +18,8 @@ export function usePricingVersions(
     const makeRequest = async () => {
       try {
         setLoading(true)
-        const data = await getPricingByName(name, owner, collectionName ?? null);
+        const data = await getPricingByName(name, owner, collectionSlug ?? null);
         if ("error" in data) {
-          data.error;
           setError(Error(data.error));
         } else {
           setVersions(data);

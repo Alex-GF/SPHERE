@@ -20,7 +20,7 @@ function OrgAvatar({
     );
   }
   return (
-    <span className="flex h-20 w-20 items-center justify-center rounded-full bg-sphere-primary-800 text-white">
+    <span className="flex h-20 w-20 items-center justify-center rounded-full bg-tp-primary text-white">
       <Iconify icon="mdi:domain" width={36} />
     </span>
   );
@@ -80,7 +80,7 @@ export default function OrganizationJoinPage() {
 
   if (joined && org) {
     return (
-      <div className="mx-auto max-w-[28rem] px-4 py-16 text-center">
+      <div className="mx-auto max-w-112 px-4 py-16 text-center">
         <div className="flex flex-col items-center gap-4">
           <span className="flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-green-600">
             <Iconify icon="mdi:check-circle-outline" width={36} />
@@ -92,7 +92,7 @@ export default function OrganizationJoinPage() {
           <button
             type="button"
             onClick={() => router.push('/me/orgs')}
-            className="mt-2 rounded-md bg-sphere-primary-800 px-6 py-2 text-sm font-semibold text-white hover:bg-sphere-primary-700"
+            className="mt-2 rounded-md bg-tp-primary px-6 py-2 text-sm font-semibold text-white hover:bg-tp-primary"
           >
             Go to My Organizations
           </button>
@@ -103,7 +103,7 @@ export default function OrganizationJoinPage() {
 
   if (error || !org) {
     return (
-      <div className="mx-auto max-w-[28rem] px-4 py-16 text-center">
+      <div className="mx-auto max-w-112 px-4 py-16 text-center">
         <div className="flex flex-col items-center gap-4">
           <span className="flex h-16 w-16 items-center justify-center rounded-full bg-red-100 text-red-500">
             <Iconify icon="mdi:link-off" width={36} />
@@ -125,7 +125,7 @@ export default function OrganizationJoinPage() {
   }
 
   return (
-    <div className="mx-auto max-w-[28rem] px-4 py-16">
+    <div className="mx-auto max-w-112 px-4 py-16">
       <div className="flex flex-col items-center gap-4 text-center">
         <OrgAvatar org={org} />
         <div>
@@ -151,7 +151,7 @@ export default function OrganizationJoinPage() {
             type="button"
             onClick={handleJoin}
             disabled={isJoining}
-            className="w-full rounded-md bg-sphere-primary-800 py-2.5 text-sm font-semibold text-white hover:bg-sphere-primary-700 disabled:opacity-50"
+            className="w-full rounded-md bg-tp-primary py-2.5 text-sm font-semibold text-white hover:bg-tp-primary disabled:opacity-50"
           >
             {isJoining ? 'Joining...' : `Join ${org.displayName}`}
           </button>

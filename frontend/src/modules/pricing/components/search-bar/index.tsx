@@ -4,7 +4,7 @@ import MagnifyingGlassIcon from '../magnifying-glass';
 export default function SearchBar({
   setTextFilterValue,
 }: {
-  setTextFilterValue: Function;
+  setTextFilterValue: (value: string) => void;
 }) {
   const [searchValue, setSearchValue] = useState('');
 
@@ -19,7 +19,7 @@ export default function SearchBar({
   };
 
   return (
-    <div className="relative mx-auto flex h-[60px] w-[95dvw] max-w-[500px] items-center justify-between gap-2 rounded-[50px] bg-slate-100 shadow-[0px_4px_6px_rgba(0,0,0,0.5)]">
+    <div className="relative mx-auto flex h-15 w-[95dvw] max-w-125 items-center justify-between gap-2 rounded-[50px] bg-slate-100 shadow-[0px_4px_6px_rgba(0,0,0,0.5)]">
       <input
         placeholder="Filter by name"
         type="text"
@@ -31,7 +31,7 @@ export default function SearchBar({
       <button
         type="button"
         onClick={handleSearch}
-        className="absolute right-2 flex h-10 w-10 items-center justify-center rounded-full bg-sphere-primary-500 text-white transition-all duration-300 [transition-timing-function:cubic-bezier(.23,1,0.32,1)] hover:-translate-y-[3px] hover:bg-sphere-primary-700 hover:shadow-[0px_10px_20px_rgba(0,0,0,0.5)] active:translate-y-0 active:shadow-none"
+        className="absolute right-2 flex h-10 w-10 items-center justify-center rounded-full bg-tp-primary text-white transition-all duration-300 ease-[cubic-bezier(.23,1,0.32,1)] hover:-translate-y-0.75 hover:bg-tp-primary hover:shadow-[0px_10px_20px_rgba(0,0,0,0.5)] active:translate-y-0 active:shadow-none"
       >
         <MagnifyingGlassIcon />
       </button>

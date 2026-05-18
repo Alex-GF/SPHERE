@@ -119,6 +119,7 @@ class PricingCollectionRepository extends RepositoryBase {
               id: { $toString: '$organization._id' },
             },
             name: 1,
+            slug: 1,
             numberOfPricings: 1,
           },
         },
@@ -207,6 +208,7 @@ class PricingCollectionRepository extends RepositoryBase {
               avatar: 1,
             },
             name: 1,
+            slug: 1,
             numberOfPricings: 1,
           },
         },
@@ -214,6 +216,52 @@ class PricingCollectionRepository extends RepositoryBase {
 
       return collections;
     } catch (err) {
+      return null;
+    }
+  }
+
+  async findByOrganizationAndSlug(organizationId: string, slug: string) {
+    try {
+      const collections = await PricingCollectionMongoose.aggregate([
+        {
+          $match: {
+            slug: {
+              $eq: slug,
+            },
+            _organizationId: new mongoose.Types.ObjectId(organizationId),
+          },
+        },
+        ...getAllPricingsFromCollection(),
+        ...addOrganizationToCollectionAggregator(),
+        ...addLastPricingUpdateAggregator(),
+        {
+          $addFields: {
+            id: { $toString: '$_id' },
+          },
+        },
+        {
+          $project: {
+            _id: 0,
+            id: 1,
+            organization: {
+              name: 1,
+              displayName: 1,
+              avatar: 1,
+            },
+            name: 1,
+            slug: 1,
+            description: 1,
+            private: 1,
+            analytics: 1,
+            data: 1,
+            lastUpdate: 1,
+          },
+        },
+      ]);
+
+      return collections[0];
+    } catch (err) {
+      console.log('[ERROR] An error occurred during the retrieval of the pricing collection');
       return null;
     }
   }
@@ -248,6 +296,7 @@ class PricingCollectionRepository extends RepositoryBase {
               avatar: 1,
             },
             name: 1,
+            slug: 1,
             description: 1,
             private: 1,
             analytics: 1,
@@ -259,19 +308,17 @@ class PricingCollectionRepository extends RepositoryBase {
 
       return collections[0];
     } catch (err) {
-      console.log('[ERROR] An error occurred during the retrieval of the pricing collection');
       return null;
     }
   }
 
-  async findCollectionPricingsByOrganization(name: string, organizationId: string) {
+  async findCollectionPricingsByOrganization(slug: string, organizationId: string) {
     try {
       const collections = await PricingCollectionMongoose.aggregate([
         {
           $match: {
-            name: {
-              $regex: `^${name}$`,
-              $options: 'i',
+            slug: {
+              $eq: slug,
             },
             _organizationId: new mongoose.Types.ObjectId(organizationId),
           },

@@ -1371,6 +1371,13 @@ paths:
         - $ref: '#/components/parameters/MinMaxPrice'
         - $ref: '#/components/parameters/MaxMaxPrice'
         - $ref: '#/components/parameters/SelectedOwners'
+        - name: collection
+          in: query
+          required: false
+          description: Filter pricings by collection slug (URL-friendly identifier)
+          schema:
+            type: string
+            example: "ieee-tsc-2025"
         - $ref: '#/components/parameters/Limit'
         - $ref: '#/components/parameters/Offset'
       responses:
@@ -1466,7 +1473,7 @@ paths:
     get:
       summary: Get all pricings from a user.
       description: |
-        Retrieves a paginated list of a user's pricings that ARE NOT in a collection. If you want to retrieve pricings from a usar of a specific collection, use the `collectionName` query parameter in the `GET /pricings` endpoint.
+        Retrieves a paginated list of a user's pricings that ARE NOT in a collection. If you want to retrieve pricings from a usar of a specific collection, use the `collection` query parameter in the `GET /pricings` endpoint.
 
         **Authentication**: Public
 
@@ -1490,7 +1497,7 @@ paths:
         - $ref: '#/components/parameters/MaxMinPrice'
         - $ref: '#/components/parameters/MinMaxPrice'
         - $ref: '#/components/parameters/MaxMaxPrice'
-        - $ref: '#/components/parameters/CollectionName'
+        - $ref: '#/components/parameters/CollectionQuery'
         - $ref: '#/components/parameters/IncludePricingsInCollection'
         - $ref: '#/components/parameters/Limit'
         - $ref: '#/components/parameters/Offset'
@@ -1619,7 +1626,7 @@ paths:
     put:
       summary: Update metadata of a pricing.
       description: |
-        Updates the metadata of all pricing versions of a given pricing. If a pricing is inside a collection, **you have to provide the `collectionName` query parameter**
+        Updates the metadata of all pricing versions of a given pricing. If a pricing is inside a collection, **you have to provide the `collection` query parameter**
 
         **Authentication**: User API Key
 
@@ -1633,7 +1640,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/Username'
         - $ref: '#/components/parameters/PricingName'
-        - $ref: '#/components/parameters/CollectionName'
+        - $ref: '#/components/parameters/CollectionQuery'
       requestBody:
         $ref: '#/components/requestBodies/PricingUpdate'
       responses:
@@ -1657,7 +1664,7 @@ paths:
     delete:
       summary: Delete a pricing.
       description: |
-        Deletes all versions of a given pricing. If a pricing is inside a collection, **you have to provide the `collectionName` query parameter**
+        Deletes all versions of a given pricing. If a pricing is inside a collection, **you have to provide the `collection` query parameter**
 
         **Authentication**: User API Key
 
@@ -1672,7 +1679,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/Username'
         - $ref: '#/components/parameters/PricingName'
-        - $ref: '#/components/parameters/CollectionName'
+        - $ref: '#/components/parameters/CollectionQuery'
       responses:
         '200':
           description: Operation Completed
@@ -1991,11 +1998,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
-  /collections/{organizationId}/{collectionName}:
+  /collections/{organizationId}/{collectionSlug}:
     get:
       summary: Get collection details.
       description: |
-        Retrieves a collection by name for a given user. If the user requesting is the owner of the collection, they can then access private collections. Otherwise, only public ones.
+        Retrieves a collection by slug for a given user. If the user requesting is the owner of the collection, they can then access private collections. Otherwise, only public ones.
 
         **Authentication**: Public
 
@@ -2010,7 +2017,7 @@ paths:
         - ApiKeyAuth: []
       parameters:
         - $ref: '#/components/parameters/Username'
-        - $ref: '#/components/parameters/CollectionName'
+        - $ref: '#/components/parameters/CollectionSlug'
       responses:
         '200':
           description: Operation Completed
@@ -2046,7 +2053,7 @@ paths:
         - ApiKeyAuth: []
       parameters:
         - $ref: '#/components/parameters/Username'
-        - $ref: '#/components/parameters/CollectionName'
+        - $ref: '#/components/parameters/CollectionSlug'
       requestBody:
         $ref: '#/components/requestBodies/CollectionUpdate'
       responses:
@@ -2084,7 +2091,7 @@ paths:
         - ApiKeyAuth: []
       parameters:
         - $ref: '#/components/parameters/Username'
-        - $ref: '#/components/parameters/CollectionName'
+        - $ref: '#/components/parameters/CollectionSlug'
         - $ref: '#/components/parameters/CollectionCascade'
       responses:
         '200':
@@ -2108,7 +2115,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
     
-  /collections/{organizationId}/{collectionName}/download:
+  /collections/{organizationId}/{collectionSlug}/download:
     get:
       summary: Download collection.
       description: |
@@ -2127,7 +2134,7 @@ paths:
         - ApiKeyAuth: []
       parameters:
         - $ref: '#/components/parameters/Username'
-        - $ref: '#/components/parameters/CollectionName'
+        - $ref: '#/components/parameters/CollectionSlug'
       responses:
         '200':
           description: Operation Completed
@@ -2147,7 +2154,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
-  /collections/{organizationId}/{collectionName}/pricings/{pricingName}:
+  /collections/{organizationId}/{collectionSlug}/pricings/{pricingName}:
     delete:
       summary: Remove a pricing from a collection.
       description: |
@@ -2159,7 +2166,7 @@ paths:
         - USER: can remove pricings from their own collections.
         - ADMIN: can remove pricings from any collection.
 
-        The `collectionName` path parameter must match the collection that contains the pricing, otherwise the endpoint returns 404.
+        The `collectionSlug` path parameter must match the collection that contains the pricing, otherwise the endpoint returns 404.
 
       tags:
         - Collections
@@ -2167,7 +2174,7 @@ paths:
         - ApiKeyAuth: []
       parameters:
         - $ref: '#/components/parameters/Username'
-        - $ref: '#/components/parameters/CollectionName'
+        - $ref: '#/components/parameters/CollectionSlug'
         - $ref: '#/components/parameters/PricingName'
       responses:
         '200':
@@ -2578,7 +2585,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
-  /collections/{organizationId}/{collectionName}/permissions:
+  /collections/{organizationId}/{collectionSlug}/permissions:
     get:
       summary: Get current user's permissions on a collection
       description: |
@@ -2590,10 +2597,10 @@ paths:
         - BearerAuth: []
       parameters:
         - $ref: '#/components/parameters/OrgId'
-        - name: collectionName
+        - name: collectionSlug
           in: path
           required: true
-          description: The name of the collection
+          description: The slug of the collection
           schema:
             type: string
       responses:
@@ -2841,10 +2848,23 @@ components:
           type: string
         owner:
           type: string
-        collectionName:
-          type: string
-          description: Name of the pricing collection to which this pricing belongs
-          example: "MyCollection"
+        collection:
+          type: object
+          description: Details about the collection that contains the pricing, if any
+          properties:
+            id:
+              type: string
+              description: ID of the collection
+            name:
+              type: string
+              description: Name of the collection
+            slug:
+              type: string
+              description: Slug of the collection
+          example:
+            id: "68050bd09890322c57842f6f"
+            name: "My Collection"
+            slug: "my-collection"
         version:
           type: string
           description: Any string representing the version of the pricing definition (e.g. "1.0", "2.1.3", "2024-09-30")
@@ -2884,10 +2904,23 @@ components:
         name:
           type: string
           description: Common name of all pricing versions
-        collectionName:
-          type: string
-          description: Name of the pricing collection to which this pricing belongs
-          example: "MyCollection"
+        collection:
+          type: object
+          description: Details about the collection that contains the pricing, if any
+          properties:
+            id:
+              type: string
+              description: ID of the collection
+            name:
+              type: string
+              description: Name of the collection
+            slug:
+              type: string
+              description: Slug of the collection
+          example:
+            id: "68050bd09890322c57842f6f"
+            name: "My Collection"
+            slug: "my-collection"
         versions:
           type: array
           description: List of all versions of the pricing definition with their details
@@ -2906,10 +2939,23 @@ components:
         private:
           type: boolean
           default: false
-        collectionName:
-          type: string
-          description: Name of the pricing collection to which this pricing belongs
-          example: "MyCollection"
+        collection:
+          type: object
+          description: Details about the collection that contains the pricing, if any
+          properties:
+            id:
+              type: string
+              description: ID of the collection
+            name:
+              type: string
+              description: Name of the collection
+            slug:
+              type: string
+              description: Slug of the collection
+          example:
+            id: "68050bd09890322c57842f6f"
+            name: "My Collection"
+            slug: "my-collection"
         createdAt:
           $ref: '#/components/schemas/Date'
         url:
@@ -4238,6 +4284,15 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/Username'
+
+    CollectionSlug:
+      name: collectionSlug
+      in: path
+      required: true
+      description: The URL-safe slug identifier of the collection (e.g., "my-collection")
+      schema:
+        type: string
+        example: "my-collection"
     
     PricingName:
       name: pricingName
@@ -4385,16 +4440,18 @@ components:
       schema:
         $ref: '#/components/schemas/Offset'
 
-    CollectionName:
-      name: collectionName
-      in: path
+    CollectionQuery:
+      name: collection
+      description: The slug identifier of the collection to filter pricings by (only pricings that are in this collection will be included in the results)
+      in: query
       required: true
       schema:
         type: string
+        example: "my-collection"
 
     IncludePricingsInCollection:
       name: includePricingsInCollection
-      description: Whether to include pricings that are in a collection in the results (only applicable when `collectionName` is NOT PROVIDED)
+      description: Whether to include pricings that are in a collection in the results (only applicable when `collection` is NOT PROVIDED)
       in: query
       required: false
       schema:

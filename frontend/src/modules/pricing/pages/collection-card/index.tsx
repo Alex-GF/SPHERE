@@ -1,57 +1,131 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { usePricingCollectionsApi } from '../../../profile/api/pricingCollectionsApi';
+import { usePricingsApi } from '../../api/pricingsApi';
+import { useAuth } from '../../../auth/hooks/useAuth';
 import PricingCard from '../../components/pricing-card';
+import Pagination from '../../components/pagination';
+import CollectionSettings, { type CollectionPermissions } from '../../components/collection-settings';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from '../../../core/hooks/useRouter';
 import { transitionDefault, staggerContainer, fadeInUp } from '../../../core/utils/motion-variants';
 import type { Collection } from '../../types/collection';
 
-type Tab = 'pricings' | 'analytics';
+type Tab = 'pricings' | 'analytics' | 'settings';
+
+interface PricingEntry {
+  name: string;
+  organization: { id: string; name: string; displayName: string; avatar: string };
+  version: string;
+  collection: { id: string; name: string; slug: string };
+  createdAt: string;
+  currency: string;
+  analytics: {
+    configurationSpaceSize: number;
+    minSubscriptionPrice: number;
+    maxSubscriptionPrice: number;
+  };
+}
+
+const PRICINGS_PER_PAGE = 12;
 
 export default function CollectionCardPage() {
-  const { ownerId, collectionName } = useParams<{ ownerId: string; collectionName: string }>();
+  const { ownerId, collectionSlug } = useParams<{ ownerId: string; collectionSlug: string }>();
   const router = useRouter();
-  const { getCollectionByOwnerAndName, downloadCollection } = usePricingCollectionsApi();
+  const { getCollectionByOwnerAndName, downloadCollection, getCollectionPermissions } = usePricingCollectionsApi();
+  const { getPricings } = usePricingsApi();
+  const { authUser } = useAuth();
 
   const [collection, setCollection] = useState<Collection | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingCollection, setIsLoadingCollection] = useState(true);
   const [tab, setTab] = useState<Tab>('pricings');
   const [sortAsc, setSortAsc] = useState(true);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [permissions, setPermissions] = useState<CollectionPermissions>({ GET: true, PUT: false, DELETE: false });
+
+  const [pricings, setPricings] = useState<PricingEntry[]>([]);
+  const [pricingsTotal, setPricingsTotal] = useState(0);
+  const [pricingsPage, setPricingsPage] = useState(1);
+  const [isLoadingPricings, setIsLoadingPricings] = useState(true);
 
   useEffect(() => {
-    if (!ownerId || !collectionName) return;
-    setIsLoading(true);
-    getCollectionByOwnerAndName(ownerId, collectionName)
+    if (!ownerId || !collectionSlug) return;
+    setIsLoadingCollection(true);
+    getCollectionByOwnerAndName(ownerId, collectionSlug)
       .then(data => setCollection(data))
       .catch(() => {})
-      .finally(() => setIsLoading(false));
-  }, [ownerId, collectionName]);
+      .finally(() => setIsLoadingCollection(false));
+  }, [ownerId, collectionSlug]);
 
-  const pricings = useMemo(() => {
-    const list = collection?.data?.pricings ?? [];
-    return [...list].sort((a: any, b: any) => sortAsc ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name));
-  }, [collection, sortAsc]);
+  useEffect(() => {
+    if (!ownerId || !collectionSlug || !authUser?.isAuthenticated) return;
+    getCollectionPermissions(ownerId, collectionSlug)
+      .then(data => setPermissions(data))
+      .catch(() => {});
+  }, [ownerId, collectionSlug, authUser?.isAuthenticated]);
+
+  const fetchPricings = useCallback(async () => {
+    if (!collectionSlug) return;
+    setIsLoadingPricings(true);
+    try {
+      const filters: Record<string, string | number> = {
+        collectionSlug: collection?.slug || collectionSlug,
+        limit: PRICINGS_PER_PAGE,
+        offset: (pricingsPage - 1) * PRICINGS_PER_PAGE,
+        sortBy: 'name',
+        sort: sortAsc ? 'asc' : 'desc',
+      };
+      const data = await getPricings(filters as Record<string, string>);
+      setPricings(data.pricings ?? []);
+      setPricingsTotal(data.total ?? 0);
+    } catch {
+      setPricings([]);
+    } finally {
+      setIsLoadingPricings(false);
+    }
+  }, [collection, collectionSlug, pricingsPage, sortAsc]);
+
+  useEffect(() => {
+    fetchPricings();
+  }, [fetchPricings]);
 
   const analytics = collection?.analytics;
   const d = collection?.data;
 
   const handleDownload = async () => {
-    if (!ownerId || !collectionName) return;
+    if (!ownerId || !collectionSlug) return;
     setIsDownloading(true);
-    try { await downloadCollection(ownerId, collectionName); } catch {}
+    try { await downloadCollection(ownerId, collectionSlug); } catch { /* download failed */ }
     setIsDownloading(false);
   };
 
-  if (isLoading) {
+  const handleCollectionUpdated = (updated: Collection) => {
+    setCollection(updated);
+  };
+
+  const handleSortToggle = () => {
+    setSortAsc(!sortAsc);
+    setPricingsPage(1);
+  };
+
+  const pricingsTotalPages = Math.max(1, Math.ceil(pricingsTotal / PRICINGS_PER_PAGE));
+
+  const showSettingsTab = permissions.PUT || permissions.DELETE;
+
+  const availableTabs: [Tab, string][] = [
+    ['pricings', 'Pricings'],
+    ['analytics', 'Analytics'],
+    ...(showSettingsTab ? [['settings', 'Settings'] as [Tab, string]] : []),
+  ];
+
+  if (isLoadingCollection) {
     return <div className="flex h-64 items-center justify-center"><div className="h-8 w-8 animate-spin rounded-full border-2 border-tp-hairline border-t-tp-primary" /></div>;
   }
 
   return (
     <>
-      <Helmet><title>SPHERE - {collectionName}</title></Helmet>
+      <Helmet><title>SPHERE - {collection?.name || collectionSlug}</title></Helmet>
 
       <div className="mx-auto max-w-[1280px] px-4 py-6 md:px-8">
         {/* Header */}
@@ -59,11 +133,11 @@ export default function CollectionCardPage() {
           <div className="mb-2 flex items-center gap-2 text-xs text-tp-steel">
             <button type="button" onClick={() => router.push('/pricings/collections')} className="cursor-pointer hover:text-tp-ink">Collections</button>
             <span>/</span>
-            <span className="text-tp-ink">{collectionName}</span>
+            <span className="text-tp-ink">{collection?.name || collectionSlug}</span>
           </div>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
-              <h1 className="font-display text-2xl font-normal text-tp-ink">{collectionName}</h1>
+              <h1 className="font-display text-2xl font-normal text-tp-ink">{collection?.name || collectionSlug}</h1>
               <p className="mt-1 text-sm text-tp-steel">
                 {collection?.organization?.displayName || collection?.organization?.name}
                 {collection?.description && <span className="ml-1">· {collection.description}</span>}
@@ -84,7 +158,7 @@ export default function CollectionCardPage() {
         {/* Stats */}
         <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ ...transitionDefault, delay: 0.05 }} className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {[
-            { label: 'Pricings', value: String(pricings.length) },
+            { label: 'Pricings', value: String(pricingsTotal || (d?.pricings?.length ?? 0)) },
             { label: 'Min price', value: d?.minPrice ? `$${d.minPrice.min.toFixed(2)} – $${d.minPrice.max.toFixed(2)}` : '—' },
             { label: 'Max price', value: d?.maxPrice ? `$${d.maxPrice.min.toFixed(2)} – $${d.maxPrice.max.toFixed(2)}` : '—' },
             { label: 'Config space', value: d?.configurationSpaceSize ? `${d.configurationSpaceSize.min.toLocaleString()} – ${d.configurationSpaceSize.max.toLocaleString()}` : '—' },
@@ -98,7 +172,7 @@ export default function CollectionCardPage() {
 
         {/* Tabs */}
         <div className="mb-6 flex gap-1 border-b border-tp-hairline-soft">
-          {([['pricings', 'Pricings'], ['analytics', 'Analytics']] as const).map(([key, label]) => (
+          {availableTabs.map(([key, label]) => (
             <button key={key} type="button" onClick={() => setTab(key)} className={`relative cursor-pointer px-4 py-2.5 text-sm font-medium transition-colors ${tab === key ? 'text-tp-primary' : 'text-tp-steel hover:text-tp-ink'}`}>
               {label}
               {tab === key && <motion.div layoutId="collection-tab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-tp-primary" transition={{ type: 'spring', stiffness: 380, damping: 30 }} />}
@@ -111,9 +185,11 @@ export default function CollectionCardPage() {
           {tab === 'pricings' && (
             <motion.div key="pricings" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={transitionDefault}>
               <div className="mb-4 flex items-center justify-between">
-                <h2 className="text-sm font-medium text-tp-ink">{pricings.length} {pricings.length === 1 ? 'pricing' : 'pricings'} in collection</h2>
+                <h2 className="text-sm font-medium text-tp-ink">
+                  {isLoadingPricings ? 'Loading...' : `${pricingsTotal} ${pricingsTotal === 1 ? 'pricing' : 'pricings'} in collection`}
+                </h2>
                 <button
-                  type="button" onClick={() => setSortAsc(!sortAsc)}
+                  type="button" onClick={handleSortToggle}
                   className="flex cursor-pointer items-center gap-1 rounded-md px-2 py-1 text-xs text-tp-steel transition-colors hover:bg-tp-surface hover:text-tp-ink"
                 >
                   <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -123,19 +199,30 @@ export default function CollectionCardPage() {
                 </button>
               </div>
 
-              {pricings.length === 0 ? (
+              {isLoadingPricings ? (
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                  {Array.from({ length: PRICINGS_PER_PAGE }).map((_, i) => (
+                    <div key={i} className="h-32 animate-pulse rounded-xl border border-tp-hairline-soft bg-tp-surface" />
+                  ))}
+                </div>
+              ) : pricings.length === 0 ? (
                 <div className="flex flex-col items-center justify-center rounded-xl border border-tp-hairline-soft bg-tp-canvas py-16 text-center">
                   <p className="text-sm font-medium text-tp-ink">No pricings in this collection</p>
                 </div>
               ) : (
                 <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                  {pricings.map((p: any) => (
-                    <motion.div key={`${p.name}-${p.version}`} variants={fadeInUp} transition={transitionDefault}>
-                      <PricingCard data={p} />
+                  {pricings.map((p) => (
+                    <motion.div key={`${p.organization.name}-${p.name}`} variants={fadeInUp} transition={transitionDefault}>
+                      <PricingCard data={p} onRemoved={fetchPricings} />
                     </motion.div>
                   ))}
                 </motion.div>
               )}
+
+              {/* Pagination */}
+              <div className="mt-6">
+                <Pagination currentPage={pricingsPage} totalPages={pricingsTotalPages} onPageChange={setPricingsPage} />
+              </div>
             </motion.div>
           )}
 
@@ -245,6 +332,17 @@ export default function CollectionCardPage() {
                   <p className="text-sm text-tp-steel">No analytics data available for this collection.</p>
                 </div>
               )}
+            </motion.div>
+          )}
+
+          {/* SETTINGS TAB */}
+          {tab === 'settings' && collection && (
+            <motion.div key="settings" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={transitionDefault}>
+              <CollectionSettings
+                collection={collection}
+                permissions={permissions}
+                onCollectionUpdated={handleCollectionUpdated}
+              />
             </motion.div>
           )}
         </AnimatePresence>

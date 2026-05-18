@@ -10,6 +10,7 @@ import fs from 'fs';
 import { calculateAnalyticsForPricings } from '../utils/pricing-collections-utils';
 import { LeanUser } from '../types/models/User';
 import OrganizationMembershipRepository from '../repositories/mongoose/OrganizationMembershipRepository';
+import { generateSlug } from '../repositories/mongoose/models/PricingCollectionMongoose';
 
 class PricingCollectionService {
   private readonly pricingCollectionRepository: PricingCollectionRepository;
@@ -46,10 +47,10 @@ class PricingCollectionService {
     return collections;
   }
 
-  async show(organizationId: string, collectionName: string, reqUser?: LeanUser) {
-    const collection = await this.pricingCollectionRepository.findByOrganizationAndName(
+  async show(organizationId: string, collectionSlug: string, reqUser?: LeanUser) {
+    const collection = await this.pricingCollectionRepository.findByOrganizationAndSlug(
       organizationId,
-      collectionName
+      collectionSlug
     );
     if (!collection) {
       throw new Error('NOT FOUND: Pricing collection not found');
@@ -79,6 +80,9 @@ class PricingCollectionService {
     let collection: any;
     try {
       newCollection._organizationId = organizationId;
+      if (!newCollection.slug && newCollection.name) {
+        newCollection.slug = generateSlug(newCollection.name);
+      }
       newCollection.analytics = {
         evolutionOfPlans: {
           dates: [],
@@ -135,6 +139,9 @@ class PricingCollectionService {
       const extractedFiles = await decompressZip(zipPath, extractPath);
 
       newCollectionData._organizationId = organizationId;
+      if (!newCollectionData.slug && newCollectionData.name) {
+        newCollectionData.slug = generateSlug(newCollectionData.name);
+      }
 
       // Create collection and keep reference so we only attempt cleanup if it was created
       collection = await this.pricingCollectionRepository.create(newCollectionData);
@@ -217,29 +224,18 @@ class PricingCollectionService {
     }
   }
 
-  async update(organizationId: string, collectionName: string, data: any, reqUser: LeanUser) {
+  async update(organizationId: string, collectionSlug: string, data: any, reqUser: LeanUser) {
     const role = await this.organizationMembershipRepository.findUserRoleInOrganization(reqUser.id, organizationId);
     if (!role && reqUser.role !== 'ADMIN') {
       throw new Error('PERMISSION ERROR: You can only update collections for organizations you belong to');
     }
 
-    const collection = await this.pricingCollectionRepository.findByOrganizationAndName(
+    const collection = await this.pricingCollectionRepository.findByOrganizationAndSlug(
       organizationId,
-      collectionName
+      collectionSlug
     );
     if (!collection) {
       throw new Error('NOT FOUND: Either the collection does not exist or you are not a member of its organization');
-    }
-
-    if (data.name && data.name !== collectionName) {
-      const existingCollection = await this.pricingCollectionRepository.findByOrganizationAndName(
-        organizationId,
-        data.name
-      );
-
-      if (existingCollection) {
-        throw new Error('CONFLICT: You already have a collection with that name.');
-      }
     }
 
     await this.pricingCollectionRepository.update(collection.id, data);
@@ -250,21 +246,21 @@ class PricingCollectionService {
       throw new Error('NOT FOUND: Collection not found after update');
     }
 
-    if (updatedCollection.name !== collectionName) {
+    if (updatedCollection.slug !== collection.slug) {
       try {
-        const sourcePath = this._getExtractPath(organizationId, collectionName);
+        const sourcePath = this._getExtractPath(organizationId, collection.slug);
 
         if (fs.existsSync(sourcePath)) {
-          const destPath = this._getExtractPath(organizationId, updatedCollection.name);
+          const destPath = this._getExtractPath(organizationId, updatedCollection.slug);
 
           fs.mkdirSync(destPath, { recursive: true });
           fs.renameSync(sourcePath, destPath);
         }
       } catch (err) {
-        // Attempt to rollback collection name change if folder rename fails
-        await this.pricingCollectionRepository.update(collection.id, { name: collectionName });
+        // Attempt to rollback collection slug change if folder rename fails
+        await this.pricingCollectionRepository.update(collection.id, { slug: collection.slug });
         throw new Error(
-          'Error renaming collection folder. Collection name change has been rolled back. Please try again.'
+          'Error renaming collection folder. Collection slug change has been rolled back. Please try again.'
         );
       }
     }
@@ -286,7 +282,7 @@ class PricingCollectionService {
 
   async destroy(
     organizationId: string,
-    collectionName: string,
+    collectionSlug: string,
     deleteCascade: boolean,
     ignoreResult: boolean = false,
     reqUser?: LeanUser
@@ -304,9 +300,9 @@ class PricingCollectionService {
       }
     }
 
-    const collection = await this.pricingCollectionRepository.findByOrganizationAndName(
+    const collection = await this.pricingCollectionRepository.findByOrganizationAndSlug(
       organizationId,
-      collectionName
+      collectionSlug
     );
     if (!collection) {
       throw new Error('NOT FOUND: Either the collection does not exist or you are not a member of its organization');
@@ -317,7 +313,7 @@ class PricingCollectionService {
     if (deleteCascade) {
       result = await this.pricingCollectionRepository.destroyWithPricings(collection.id);
 
-      const collectionPath = this._getExtractPath(organizationId, collectionName);
+      const collectionPath = this._getExtractPath(organizationId, collection.slug);
       if (fs.existsSync(collectionPath)) {
         fs.rmSync(collectionPath, { recursive: true });
       }
@@ -333,7 +329,7 @@ class PricingCollectionService {
     return true;
   }
 
-  async removePricingFromCollection(pricingName: string, organizationId: string, collectionName: string, reqUser?: LeanUser) {
+  async removePricingFromCollection(pricingName: string, organizationId: string, collectionSlug: string, reqUser?: LeanUser) {
     try {
 
       if (reqUser) {
@@ -343,7 +339,7 @@ class PricingCollectionService {
         }
       }
 
-      const pricing = await this.pricingRepository.findOne(pricingName, organizationId, { collectionName });
+      const pricing = await this.pricingRepository.findOne(pricingName, organizationId, { collectionSlug });
 
       if (!pricing) {
         throw new Error('NOT FOUND: Either the pricing does not exist or you are not a member of its organization');
@@ -408,8 +404,8 @@ class PricingCollectionService {
     return evolution;
   }
 
-  _getExtractPath(organizationId: string, collectionName: string) {
-    return `${process.env.COLLECTIONS_FOLDER}/${organizationId}/${collectionName}`;
+  _getExtractPath(organizationId: string, collectionSlug: string) {
+    return `${process.env.COLLECTIONS_FOLDER}/${organizationId}/${collectionSlug}`;
   }
 
   async _handleCollectionCreationError(
@@ -421,7 +417,7 @@ class PricingCollectionService {
     // If a collection was created before the error, remove it (cleanup of partial state)
     try {
       if (collection?._id) {
-        await this.destroy(organizationId, newCollectionData.name, true, true);
+        await this.destroy(organizationId, newCollectionData.slug || generateSlug(newCollectionData.name), true, true);
       }
     } catch (cleanupErr) {
       // If cleanup fails, log it but continue to throw the original error

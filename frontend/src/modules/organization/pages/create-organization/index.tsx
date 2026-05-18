@@ -24,7 +24,7 @@ export default function CreateOrganizationPage() {
   };
 
   return (
-    <div className="mx-auto mt-4 w-full max-w-xl px-4 py-8">
+    <div className="mx-auto mt-4 w-[90vw] max-w-150 px-4 py-8">
       <h1 className="mb-6 text-center text-2xl font-bold text-sphere-grey-800">Create a new organization</h1>
 
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
@@ -90,7 +90,7 @@ export default function CreateOrganizationPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="rounded-md bg-sphere-primary-800 px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-sphere-primary-700 disabled:opacity-50"
+            className="rounded-md bg-tp-primary px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-tp-primary disabled:opacity-50"
           >
             {isSubmitting ? 'Creating...' : 'Create organization'}
           </button>

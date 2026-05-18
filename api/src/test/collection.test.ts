@@ -67,6 +67,62 @@ describe('Pricing Collections API integration', () => {
       expect(response.body.total).toBe(5);
     });
 
+    it('returns empty collections when offset exceeds total', async () => {
+      const { organizationId } = await createAndLoginUser('USER');
+
+      for (let i = 0; i < 3; i++) {
+        await createTestCollection({ _organizationId: organizationId });
+      }
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/collections?limit=10&offset=10`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.collections.length).toBe(0);
+      expect(response.body.total).toBe(3);
+    });
+
+    it('returns all collections when limit exceeds total', async () => {
+      const { organizationId } = await createAndLoginUser('USER');
+
+      for (let i = 0; i < 3; i++) {
+        await createTestCollection({ _organizationId: organizationId });
+      }
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/collections?limit=100&offset=0`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.collections.length).toBe(3);
+      expect(response.body.total).toBe(3);
+    });
+
+    it('returns correct page when using offset for second page', async () => {
+      const { organizationId } = await createAndLoginUser('USER');
+
+      const names: string[] = [];
+      for (let i = 0; i < 5; i++) {
+        const c = await createTestCollection({ _organizationId: organizationId, name: `Collection_${i}` });
+        names.push(c.name);
+      }
+
+      const page1 = await request(app)
+        .get(`${BASE_PATH}/collections?limit=2&offset=0`);
+      const page2 = await request(app)
+        .get(`${BASE_PATH}/collections?limit=2&offset=2`);
+
+      expect(page1.status).toBe(200);
+      expect(page2.status).toBe(200);
+      expect(page1.body.collections.length).toBe(2);
+      expect(page2.body.collections.length).toBe(2);
+      expect(page1.body.total).toBe(5);
+      expect(page2.body.total).toBe(5);
+
+      const page1Names = page1.body.collections.map((c: any) => c.name);
+      const page2Names = page2.body.collections.map((c: any) => c.name);
+      expect(page1Names).not.toEqual(expect.arrayContaining(page2Names));
+    });
+
     it('returns 200 and filters collections by name', async () => {
       const { organizationId } = await createAndLoginUser('USER');
 
@@ -378,7 +434,7 @@ describe('Pricing Collections API integration', () => {
       const collection = await createTestCollection({ _organizationId: organizationId });
 
       const res = await request(app)
-        .get(`${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(collection.name)}`);
+        .get(`${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(collection.slug)}`);
 
       expect(res.status).toBe(200);
       expect(res.body.name).toBe(collection.name);
@@ -390,7 +446,7 @@ describe('Pricing Collections API integration', () => {
       const collection = await createTestCollection({ _organizationId: organizationId });
 
       const res = await request(app)
-        .get(`${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(collection.name)}`)
+        .get(`${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(collection.slug)}`)
         .set('Authorization', `Bearer ${owner.token}`);
 
       expect(res.status).toBe(200);
@@ -405,7 +461,7 @@ describe('Pricing Collections API integration', () => {
       const collection = await createTestCollectionWithPricings({ _organizationId: organizationId }, [testPricing.serviceName]);
 
       const res = await request(app)
-        .get(`${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(collection.name)}`)
+        .get(`${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(collection.slug)}`)
         .set('Authorization', `Bearer ${owner.token}`);
 
       expect(res.status).toBe(200);
@@ -420,7 +476,7 @@ describe('Pricing Collections API integration', () => {
       await createTestCollection({ _organizationId: organizationId, name: `Test Collection 2` });
 
       const res = await request(app)
-        .get(`${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(collection1.name)}`)
+        .get(`${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(collection1.slug)}`)
         .set('Authorization', `Bearer ${owner.token}`);
 
       expect(res.status).toBe(200);
@@ -443,7 +499,7 @@ describe('Pricing Collections API integration', () => {
       const collection = await createTestCollection({ _organizationId: organizationId });
 
       const res = await request(app)
-        .put(`${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(collection.name)}`)
+        .put(`${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(collection.slug)}`)
         .set('Authorization', `Bearer ${owner.token}`)
         .send({ description: 'Updated description' });
 
@@ -457,7 +513,7 @@ describe('Pricing Collections API integration', () => {
       const collection = await createTestCollection({ _organizationId: organizationId });
 
       const res = await request(app)
-        .put(`${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(collection.name)}`)
+        .put(`${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(collection.slug)}`)
         .set('Authorization', `Bearer ${owner.token}`)
         .send({ name: 'Updated Collection Name' });
 
@@ -480,7 +536,7 @@ describe('Pricing Collections API integration', () => {
         .attach('zip', zipPath);
 
       const res = await request(app)
-        .put(`${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(resCreate.body.collection.name)}`)
+        .put(`${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(resCreate.body.collection.slug)}`)
         .set('Authorization', `Bearer ${owner.token}`)
         .send({ name: 'Updated Collection Name' });
 
@@ -497,7 +553,7 @@ describe('Pricing Collections API integration', () => {
       const collection = await createTestCollection({ _organizationId: organizationId });
 
       const res = await request(app)
-        .put(`${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(collection.name)}`)
+        .put(`${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(collection.slug)}`)
         .set('Authorization', `Bearer ${adminUser.token}`)
         .send({ private: true });
 
@@ -512,7 +568,7 @@ describe('Pricing Collections API integration', () => {
       const collection = await createTestCollection({ _organizationId: organizationId });
 
       const res = await request(app)
-        .put(`${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(collection.name)}`)
+        .put(`${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(collection.slug)}`)
         .set('Authorization', `Bearer ${requester.token}`)
         .send({ description: 'malicious update' });
 
@@ -527,7 +583,7 @@ describe('Pricing Collections API integration', () => {
       const collection = await createTestCollection({ _organizationId: organizationId });
 
       const res = await request(app)
-        .delete(`${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(collection.name)}`)
+        .delete(`${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(collection.slug)}`)
         .set('Authorization', `Bearer ${owner.token}`);
 
       expect(res.status).toBe(204);
@@ -539,7 +595,7 @@ describe('Pricing Collections API integration', () => {
       const collection = await createTestCollection({ _organizationId: organizationId });
 
       const res = await request(app)
-        .delete(`${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(collection.name)}`)
+        .delete(`${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(collection.slug)}`)
         .set('Authorization', `Bearer ${adminUser.token}`);
 
       expect(res.status).toBe(204);
@@ -554,7 +610,7 @@ describe('Pricing Collections API integration', () => {
       const collection = await createTestCollectionWithPricings({ _organizationId: organizationId }, [testPricing1.serviceName, testPricing2.serviceName]);
 
       const res = await request(app)
-        .delete(`${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(collection.name)}?cascade=true`)
+        .delete(`${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(collection.slug)}?cascade=true`)
         .set('Authorization', `Bearer ${adminUser.token}`);
 
       expect(res.status).toBe(204);
@@ -577,7 +633,7 @@ describe('Pricing Collections API integration', () => {
       collectionIdsToDelete.add(collection.id);
 
       const res = await request(app)
-        .delete(`${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(collection.name)}`)
+        .delete(`${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(collection.slug)}`)
         .set('Authorization', `Bearer ${requester.token}`);
 
       expect(res.status).toBe(403);
@@ -598,7 +654,7 @@ describe('Pricing Collections API integration', () => {
 
       const res = await request(app)
         .delete(
-          `${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(createdCollection.name)}/pricings/${encodeURIComponent(pricingToRemove.serviceName)}`
+          `${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(createdCollection.slug)}/pricings/${encodeURIComponent(pricingToRemove.serviceName)}`
         )
         .set('Authorization', `Bearer ${owner.token}`);
 
@@ -607,7 +663,7 @@ describe('Pricing Collections API integration', () => {
 
       const refreshedCollection = await request(app)
         .get(
-          `${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(createdCollection.name)}`
+          `${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(createdCollection.slug)}`
         )
         .set('Authorization', `Bearer ${owner.token}`);
 
@@ -658,7 +714,7 @@ describe('Pricing Collections API integration', () => {
 
       const res = await request(app)
         .delete(
-          `${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(createdCollection.name)}/pricings/${encodeURIComponent(pricingToRemove.serviceName)}`
+          `${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(createdCollection.slug)}/pricings/${encodeURIComponent(pricingToRemove.serviceName)}`
         )
         .set('Authorization', `Bearer ${requester.token}`);
 
@@ -677,7 +733,7 @@ describe('Pricing Collections API integration', () => {
 
       const res = await request(app)
         .get(
-          `${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(collection.name)}/download`
+          `${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(collection.slug)}/download`
         )
         .set('Authorization', `Bearer ${owner.token}`)
         .buffer(true)
@@ -709,7 +765,7 @@ describe('Pricing Collections API integration', () => {
 
       const res = await request(app)
         .get(
-          `${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(collection.name)}/download`
+          `${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(collection.slug)}/download`
         )
         .set('Authorization', `Bearer ${owner.token}`);
 
@@ -724,7 +780,7 @@ describe('Pricing Collections API integration', () => {
 
       const res = await request(app)
         .get(
-          `${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(collection.name)}/download`
+          `${BASE_PATH}/collections/${organizationId}/${encodeURIComponent(collection.slug)}/download`
         )
         .set('Authorization', `Bearer ${testUser.token}`);
 

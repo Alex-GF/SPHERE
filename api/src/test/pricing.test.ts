@@ -344,6 +344,29 @@ describe('Pricings API integration', () => {
       expect(Array.isArray(response.body.pricings)).toBe(true);
       expect(response.body.pricings.length).toBe(2);
     });
+
+    it('Return 200 and filter pricings by collection with spaces in name', async () => {
+      const { organizationId } = await createAndLoginUser('USER');
+
+      const pricingInCollection = await createPricingForOrganization({
+        organizationId,
+        isPrivate: false,
+      });
+
+      const collection = await createTestCollectionWithPricings(
+        { _organizationId: organizationId, name: 'IEEE TSC 2025' },
+        [pricingInCollection.serviceName]
+      );
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/pricings?collection=${encodeURIComponent(collection.slug || 'ieee-tsc-2025')}`)
+        .set('Authorization', `Bearer ${(await createAndLoginUser('USER')).user.token}`);
+
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body.pricings)).toBe(true);
+      expect(response.body.pricings.length).toBe(1);
+      expect(response.body.pricings[0].name).toBe(pricingInCollection.serviceName);
+    });
   });
 
   describe('POST /api/v1/pricings/:organizationId', () => {

@@ -47,7 +47,8 @@ export default function PermissionsTab({ organizationId, canManage }: Permission
     } finally {
       setIsLoading(false);
     }
-  }, [organizationId, entityType, getOrgMembers, getOrgPermissions]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [organizationId, entityType]);
 
   useEffect(() => {
     loadData();
@@ -117,7 +118,7 @@ export default function PermissionsTab({ organizationId, canManage }: Permission
             onClick={() => setEntityType(type)}
             className={`rounded-md px-3 py-1.5 text-sm font-semibold capitalize cursor-pointer transition-colors ${
               entityType === type
-                ? 'bg-sphere-primary-800 text-white'
+                ? 'bg-tp-primary text-white'
                 : 'border border-sphere-grey-300 text-sphere-grey-700 hover:bg-sphere-grey-100'
             }`}
           >
@@ -146,7 +147,7 @@ export default function PermissionsTab({ organizationId, canManage }: Permission
 
       {/* Owner/Admin full access notice */}
       {isOwnerOrAdmin && (
-        <div className="mb-4 flex items-center gap-2 rounded-lg border border-sphere-primary-200 bg-sphere-primary-50 px-4 py-3">
+        <div className="mb-4 flex items-center gap-2 rounded-lg border border-sphere-primary-200 bg-tp-primary/25 px-4 py-3">
           <Iconify icon="mdi:shield-check-outline" width={20} className="text-sphere-primary-800" />
           <p className="text-sm text-sphere-primary-800">
             <span className="font-semibold">{selectedMember?.role}</span> users have full access to all {entityType === 'pricing' ? 'pricings' : 'collections'} in this organization.
