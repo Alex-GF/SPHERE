@@ -49,24 +49,48 @@ export default function EditorPage() {
   const {getFromCache} = useCacheApi();
 
   const timeoutRef = useRef<any>(null);
+  const requestIdRef = useRef(0);
 
   function handleEditorChange(value: string | undefined) {
     if (value) {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
-      timeoutRef.current = setTimeout(() => {
+      const currentRequestId = ++requestIdRef.current;
+      timeoutRef.current = setTimeout(async () => {
         try {
           setEditorValue(value);
-          const parsedPricing: Pricing = retrievePricingFromYaml(value);
-          
-          if (!['3.0', '3.1'].includes(parsedPricing.syntaxVersion)){
+
+          const regex = /^syntaxVersion:\s*['"]?([^'"\n\r]+)['"]?$/m;
+          const syntaxVersion = value.match(regex)?.[1];
+          let parsedPricing: Pricing;
+
+          if (syntaxVersion !== '3.1') {
+            const response = await fetch('/api/v1/pricings', {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ pricing: value }),
+            });
+
+            if (!response.ok) {
+              throw new Error('Failed to parse pricing. Please check the YAML syntax.');
+            }
+
+            parsedPricing = await response.json();
+          } else {
+            parsedPricing = retrievePricingFromYaml(value);
+          }
+
+          if (currentRequestId !== requestIdRef.current) return;
+
+          if (!['3.0', '3.1'].includes(parsedPricing.syntaxVersion)) {
             throw new Error('Only Pricing YAML syntax version 3.X is supported in this editor.');
           }
-          
+
           setPricing(parsedPricing);
           setErrors([]);
         } catch (err) {
+          if (currentRequestId !== requestIdRef.current) return;
           const errorMessage = (err as Error).message;
           setErrors(prevErrors => {
             if (!prevErrors.includes(errorMessage)) {

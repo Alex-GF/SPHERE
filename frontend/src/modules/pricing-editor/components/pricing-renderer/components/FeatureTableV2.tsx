@@ -5,6 +5,7 @@ import { AddOn, Feature, Plan, UsageLimit } from 'pricing4ts';
 import { camelToTitle } from '../shared/stringUtils';
 import { formatMoneyDisplay, formatUsageDisplay } from '../shared/value-helpers';
 import { useState } from 'react';
+import PALETTE from '../shared/planPalette';
 
 interface FeatureTableV2Props {
   plans: Record<string, Plan>;
@@ -15,17 +16,6 @@ interface FeatureTableV2Props {
 }
 
 type Row = { id: string; type: 'feature' | 'usageLimit'; key: string };
-
-const PLAN_HEADER_CLASSES = [
-  'bg-[linear-gradient(to_right,#7c3aed,#6d28d9,#4c1d95)]',
-  'bg-[linear-gradient(to_right,#2563eb,#1e40af,#0b61d8)]',
-  'bg-[linear-gradient(to_right,#059669,#047857,#065f46)]',
-  'bg-[linear-gradient(to_right,#ec4899,#be185d,#9d174d)]',
-  'bg-[linear-gradient(to_right,#14b8a6,#0f766e,#0b6158)]',
-  'bg-[linear-gradient(to_right,#ef4444,#b91c1c,#7f1d1d)]',
-  'bg-[linear-gradient(to_right,#f59e0b,#d97706,#92400e)]',
-  'bg-[linear-gradient(to_right,#0ea5e9,#0369a1,#075985)]',
-];
 
 function getRenderFlagFrom(obj?: unknown): string {
   if (!obj) return 'AUTO';
@@ -268,19 +258,22 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
             {planKeys.map((planKey, index) => {
               const plan = plans[planKey];
               const planName = plan.name ?? camelToTitle(planKey);
-              const planHeaderClass = PLAN_HEADER_CLASSES[index % PLAN_HEADER_CLASSES.length];
+              const [a, b] = PALETTE[index % PALETTE.length];
 
               return (
                 <th key={planKey} className="align-top">
-                  <div className={`flex h-[124px] flex-col items-center justify-center text-center text-white shadow-sm ${planHeaderClass}`}>
-                    <p className="text-[24px] tracking-[0.04em]">{String(planName).toUpperCase()}</p>
-                    <p className="text-[20px]">
+                  <div
+                    className="flex h-[124px] flex-col items-center justify-center text-center text-tp-on-primary shadow-sm"
+                    style={{ background: `linear-gradient(135deg, ${a}, ${b})` }}
+                  >
+                    <p className="text-xl font-bold tracking-wide sm:text-2xl">{String(planName).toUpperCase()}</p>
+                    <p className="text-lg font-semibold sm:text-xl">
                       {plan.price === 0
                         ? 'FREE'
                         : `${formatMoneyDisplay(plan.price)}${typeof plan.price === 'number' ? (currency ?? '') : ''}`}
                     </p>
                     {typeof plan.unit === 'string' && (
-                      <p className="text-[16px] opacity-90">{plan.unit}</p>
+                      <p className="text-sm opacity-90">{plan.unit}</p>
                     )}
                   </div>
                 </th>
@@ -306,7 +299,7 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
                   exit={{ opacity: 0, x: 8 }}
                   transition={{ delay: 0.04 * rowIndex, duration: 0.35 }}
                 >
-                  <th scope="row" className="p-[16px] text-left text-[16px] font-bold leading-tight text-slate-700">
+                  <th scope="row" className="p-[16px] text-left text-sm font-bold leading-tight text-tp-charcoal sm:text-base">
                     {camelToTitle(feature.name) ?? camelToTitle(featureKey)}
                   </th>
 
@@ -345,7 +338,7 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
                       if (hasNonEmptyValue(effectiveUsage)) {
                         return (
                           <td key={planKey} className="py-5 text-center align-middle">
-                            <span className="inline-flex items-center justify-center rounded-[8px] bg-emerald-500 px-5 py-2 text-[14px] font-bold leading-none text-white">
+                            <span className="inline-flex items-center justify-center rounded-lg bg-tp-primary px-5 py-2 text-sm font-bold leading-none text-tp-on-primary">
                               {formatUsageDisplay(effectiveUsage, usage)}
                             </span>
                           </td>
@@ -356,7 +349,7 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
                     if (typeof rawValue === 'boolean' && rawValue) {
                       return (
                         <td key={planKey} className="py-5 text-center align-middle">
-                          <FaCheckCircle className="mx-auto text-[20px] text-emerald-600" />
+                          <FaCheckCircle className="mx-auto text-lg text-tp-primary" />
                         </td>
                       );
                     }
@@ -364,7 +357,7 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
                     if (typeof rawValue === 'string' || typeof rawValue === 'number') {
                       return (
                         <td key={planKey} className="py-5 text-center align-middle">
-                          <span className="text-[14px] font-semibold uppercase tracking-wide text-slate-700">{String(rawValue)}</span>
+                          <span className="text-sm font-semibold uppercase tracking-wide text-tp-charcoal">{String(rawValue)}</span>
                         </td>
                       );
                     }
@@ -372,14 +365,14 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
                     if (providedByAddOn) {
                       return (
                         <td key={planKey} className="py-5 text-center align-middle">
-                          <span className="text-[14px] font-semibold text-slate-500">Add-on</span>
+                          <span className="text-sm font-semibold text-tp-steel">Add-on</span>
                         </td>
                       );
                     }
 
                     return (
                       <td key={planKey} className="py-5 text-center align-middle">
-                        <FaTimesCircle className="mx-auto text-[20px] text-slate-400" />
+                        <FaTimesCircle className="mx-auto text-lg text-tp-muted" />
                       </td>
                     );
                   })}
@@ -399,7 +392,7 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
                 exit={{ opacity: 0, y: -8 }}
                 transition={{ delay: 0.04 * rowIndex, duration: 0.18 }}
               >
-                <th scope="row" className="px-4 py-5 text-left text-[16px] font-bold leading-tight text-slate-700">
+                <th scope="row" className="px-4 py-5 text-left text-sm font-bold leading-tight text-tp-charcoal sm:text-base">
                   {camelToTitle(usage?.name ?? usageKey)}
                 </th>
 
@@ -411,7 +404,7 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
                   if (hasNonEmptyValue(effectiveUsage)) {
                     return (
                       <td key={planKey} className="py-5 text-center align-middle">
-                        <span className="inline-flex items-center justify-center rounded-full bg-emerald-500 px-5 py-2 text-[14px] font-bold leading-none text-white">
+                        <span className="inline-flex items-center justify-center rounded-full bg-tp-primary px-5 py-2 text-sm font-bold leading-none text-tp-on-primary">
                           {formatUsageDisplay(effectiveUsage, usage)}
                         </span>
                       </td>
@@ -420,7 +413,7 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
 
                   return (
                     <td key={planKey} className="py-5 text-center align-middle">
-                      <FaTimesCircle className="mx-auto text-[20px] text-slate-400" />
+                      <FaTimesCircle className="mx-auto text-lg text-tp-muted" />
                     </td>
                   );
                 })}
@@ -442,11 +435,11 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
         const tagPanelId = `tag-panel-${tag.replace(/\s+/g, '-').toLowerCase()}`;
 
         return (
-          <div key={tag} className="mt-5 overflow-hidden rounded-xl border border-slate-300 bg-white shadow-sm">
+          <div key={tag} className="mt-5 overflow-hidden rounded-xl border border-tp-hairline-soft bg-tp-canvas shadow-elevation-1">
             <button
               type="button"
               onClick={() => toggleTag(tag, index)}
-              className="cursor-pointer flex w-full items-center justify-between bg-slate-100 px-5 py-4 text-left text-[16px] font-semibold text-slate-800 transition-colors hover:bg-slate-200"
+              className="flex w-full cursor-pointer items-center justify-between bg-tp-surface px-5 py-4 text-left text-base font-semibold text-tp-ink transition-colors hover:bg-tp-hairline-soft"
               aria-expanded={open}
               aria-controls={tagPanelId}
             >
@@ -455,7 +448,7 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
                 initial={false}
                 animate={{ rotate: open ? 180 : 0 }}
                 transition={{ duration: 0.2, ease: 'easeOut' }}
-                className="inline-flex text-slate-500"
+                className="inline-flex text-tp-steel"
                 aria-hidden
               >
                 <FaChevronDown className="h-4 w-4" />
@@ -472,7 +465,7 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
                   transition={{ duration: 0.24, ease: 'easeInOut' }}
                   className="overflow-hidden"
                 >
-                  <div className="overflow-x-auto border-t border-slate-200 px-1 pb-3 pt-2">{renderTable(tagToFeatureKeys[tag])}</div>
+                  <div className="overflow-x-auto border-t border-tp-hairline px-1 pb-3 pt-2">{renderTable(tagToFeatureKeys[tag])}</div>
                 </motion.div>
               )}
             </AnimatePresence>

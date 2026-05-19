@@ -200,15 +200,32 @@ export default function CardPage() {
     const url = currentVersion.yaml.startsWith('http') ? currentVersion.yaml : `${import.meta.env.VITE_API_URL}${currentVersion.yaml}`;
     fetch(url)
       .then(r => r.text())
-      .then(text => {
+      .then(async text => {
         setYamlText(text);
-        try { setPricing(retrievePricingFromYaml(text)); } catch (err) { setErrors([(err as Error).message]); setPricing(null); }
+        try {
+          setPricing(retrievePricingFromYaml(text));
+        } catch {
+          // Non-3.1 YAML: upgrade via API
+          try {
+            const response = await fetch('/api/v1/pricings', {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ pricing: text }),
+            });
+            if (!response.ok) throw new Error('Failed to parse pricing');
+            setPricing(await response.json());
+            setErrors([]);
+          } catch (err) {
+            setErrors([(err as Error).message]);
+            setPricing(null);
+          }
+        }
       })
       .catch(() => { setYamlText(''); setPricing(null); })
       .finally(() => setIsLoadingYaml(false));
   }, [currentVersion]);
 
-  const handleApplyVariables = (variables: Record<string, unknown>) => {
+  const handleApplyVariables = async (variables: Record<string, unknown>) => {
     if (!yamlText) return;
     try {
       const ser = (v: unknown) => { if (typeof v === 'string') return JSON.stringify(v); if (typeof v === 'boolean') return v ? 'true' : 'false'; if (typeof v === 'number' && Number.isFinite(v)) return String(v); return JSON.stringify(v); };
@@ -217,8 +234,19 @@ export default function CardPage() {
       const re = /^variables:\n(?:[ \t]+.+\n?)*/gm;
       const newYaml = re.test(yamlText) ? yamlText.replace(re, block + '\n') : yamlText + '\n' + block + '\n';
       setYamlText(newYaml);
-      setPricing(retrievePricingFromYaml(newYaml));
-      setErrors([]);
+      try {
+        setPricing(retrievePricingFromYaml(newYaml));
+        setErrors([]);
+      } catch {
+        const response = await fetch('/api/v1/pricings', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ pricing: newYaml }),
+        });
+        if (!response.ok) throw new Error('Failed to parse pricing');
+        setPricing(await response.json());
+        setErrors([]);
+      }
     } catch (e) { setErrors([(e as Error).message]); }
   };
 

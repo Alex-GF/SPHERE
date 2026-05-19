@@ -3,12 +3,13 @@ import VisibilityOptions from '../../../pricing/components/visibility-options';
 import CollectionNameInput from '../collection-name-input';
 import CollectionDescriptionInput from '../collection-description-input';
 import PricingSelector from '../pricings-selector';
+import OrganizationSelector from '../../../pricing/components/organization-selector';
 import { usePricingCollectionsApi } from '../../api/pricingCollectionsApi';
 import { useRouter } from '../../../core/hooks/useRouter';
-import { useAuth } from '../../../auth/hooks/useAuth';
 import FileUpload from '../../../core/components/file-upload-input';
 import customAlert from '../../../core/utils/custom-alert';
 import customConfirm from '../../../core/utils/custom-confirm';
+import { Organization } from '../../../organization/api/organizationsApi';
 
 export type CreateCollectionFormFieldProps = {
   value: string;
@@ -28,13 +29,17 @@ export default function CreateCollectionForm({setShowLoading}: CreateCollectionF
   const [collectionDescription, setCollectionDescription] = useState('');
   const [visibility, setVisibility] = useState('Public');
   const [selectedPricings, setSelectedPricings] = useState<string[]>([]);
+  const [selectedOrg, setSelectedOrg] = useState<Organization | null>(null);
   const [tabValue, setTabValue] = useState(0);
 
   const { createCollection, createBulkCollection, deleteCollection } = usePricingCollectionsApi();
-  const { authUser } = useAuth();
   const router = useRouter();
 
   const handleSubmit = (file?: File | null) => {
+    if (!selectedOrg) {
+      customAlert('Please select an organization');
+      return;
+    }
 
     const fileToUpload = file instanceof File ? file : null;
 
@@ -46,7 +51,7 @@ export default function CreateCollectionForm({setShowLoading}: CreateCollectionF
         pricings: selectedPricings,
       };
 
-      createCollection(collectionToCreate)
+      createCollection(collectionToCreate, selectedOrg.id)
         .then(() => {
           router.push('/pricings/collections');
         })
@@ -68,7 +73,7 @@ export default function CreateCollectionForm({setShowLoading}: CreateCollectionF
 
       setShowLoading(true);
 
-      createBulkCollection(formData)
+      createBulkCollection(formData, selectedOrg.id)
         .then(data => {
           setShowLoading(false);
           handleBulkSuccess(data);
@@ -90,9 +95,11 @@ export default function CreateCollectionForm({setShowLoading}: CreateCollectionF
       customConfirm(`Some pricings could not be added to the collection due to errors: ${data.pricingsWithErrors.map((p: {name: string, error: string}) => p.name).join(' | ')}. Do you still want to save the collection and add them again manually?`).then(() => {
         router.push('/pricings/collections');
       }).catch(() => {
-        deleteCollection(authUser.user!.username, collectionName, true).then(() => {
+        if (selectedOrg) {
+          deleteCollection(selectedOrg.id, collectionName, true).then(() => {
             router.push('/pricings/collections');
-          })
+          });
+        }
       });
     } else {
       router.push('/pricings/collections');
@@ -108,7 +115,21 @@ export default function CreateCollectionForm({setShowLoading}: CreateCollectionF
       <h2 className="mb-5 text-center text-2xl font-bold">
         Create a collection to store your pricings
       </h2>
-      <CollectionNameInput value={collectionName} onChange={setCollectionName} />
+
+      <div className="flex items-end gap-1">
+        <div className="flex-1">
+          <OrganizationSelector value={selectedOrg} onChange={setSelectedOrg} />
+        </div>
+
+        <div className="text-4xl text-slate-400 pb-2">
+          /
+        </div>
+
+        <div className="relative flex-[2]">
+          <CollectionNameInput value={collectionName} onChange={setCollectionName} />
+        </div>
+      </div>
+
       <p className="text-xs text-tp-steel mt-1">Slug: {generateSlug(collectionName) || '...'}</p>
       <CollectionDescriptionInput
         value={collectionDescription}
@@ -119,14 +140,14 @@ export default function CreateCollectionForm({setShowLoading}: CreateCollectionF
         <div className="flex gap-2">
           <button
             type="button"
-            className={`cursor-pointer rounded-t-md px-4 py-2 ${tabValue === 0 ? 'bg-tp-primary text-white' : 'bg-slate-100 text-slate-700'}`}
+            className={`rounded-t-md px-4 py-2 ${tabValue === 0 ? 'bg-tp-primary text-white' : 'bg-slate-100 text-slate-700'}`}
             onClick={() => setTabValue(0)}
           >
             Select unassigned pricings
           </button>
           <button
             type="button"
-            className={`cursor-pointer rounded-t-md px-4 py-2 ${tabValue === 1 ? 'bg-tp-primary text-white' : 'bg-slate-100 text-slate-700'}`}
+            className={`rounded-t-md px-4 py-2 ${tabValue === 1 ? 'bg-tp-primary text-white' : 'bg-slate-100 text-slate-700'}`}
             onClick={() => setTabValue(1)}
           >
             Upload collection
@@ -139,7 +160,7 @@ export default function CreateCollectionForm({setShowLoading}: CreateCollectionF
           <div className="flex items-center justify-center">
             <button
               type="button"
-              className="mt-5 w-[400px] cursor-pointer rounded-xl bg-tp-primary px-5 py-2 text-base font-bold text-white"
+              className="mt-5 w-[400px] rounded-xl bg-tp-primary px-5 py-2 text-base font-bold text-white"
               onClick={handleAddCollectionClick}
                 >
               Add Collection
