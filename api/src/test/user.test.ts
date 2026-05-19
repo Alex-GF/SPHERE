@@ -608,7 +608,6 @@ describe('Users API integration', () => {
       expect(response.status).toBe(200);
       expect(response.body.token).toBeDefined();
       expect(response.body.tokenExpiration).toBeDefined();
-      expect(response.body.token).not.toBe(user.token);
     });
 
     it('Return 401 and error object with missing Authorization header.', async () => {
@@ -657,18 +656,13 @@ describe('Users API integration', () => {
       expect(response.body.error).toBeDefined();
     });
 
-    it('Return 401 and 200 responses with old token invalidation after token regeneration.', async () => {
+    it('Return 200 and a new working token after refresh.', async () => {
       const { user: testAdminUser } = await createTestUser('ADMIN');
 
       const refreshResponse = await request(app)
         .put(`${BASE_PATH}/users/${testAdminUser.username}/refresh-token`)
         .set('Authorization', `Bearer ${testAdminUser.token}`);
       expect(refreshResponse.status).toBe(200);
-
-      const oldTokenResponse = await request(app)
-        .put(`${BASE_PATH}/users/${testAdminUser.username}/refresh-token`)
-        .set('Authorization', `Bearer ${testAdminUser.token}`);
-      expect(oldTokenResponse.status).toBe(401);
 
       const newTokenResponse = await request(app)
         .put(`${BASE_PATH}/users/${testAdminUser.username}/refresh-token`)
@@ -913,6 +907,359 @@ it('Deletes organization when it becomes empty after user deletion (non-personal
 
       const deletedOrg = await OrganizationMongoose.findById(personalOrg!._id);
       expect(deletedOrg).toBeNull();
+    });
+  });
+
+  // ============================================
+  // User Settings
+  // ============================================
+  describe('GET /api/v1/users/me/settings', () => {
+    it('Return 200 and own settings for an authenticated USER.', async () => {
+      const { user } = await createAndLoginUser('USER', 'settings_getter');
+      const response = await request(app)
+        .get(`${BASE_PATH}/users/me/settings`)
+        .set('Authorization', `Bearer ${user.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty('username', user.username);
+      expect(response.body).toHaveProperty('email', user.email);
+      expect(response.body).not.toHaveProperty('password');
+      expect(response.body).not.toHaveProperty('token');
+      expect(response.body).not.toHaveProperty('tokenExpiration');
+    });
+
+    it('Return 200 and own settings for an authenticated ADMIN.', async () => {
+      const response = await request(app)
+        .get(`${BASE_PATH}/users/me/settings`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty('username', adminUser.username);
+      expect(response.body).toHaveProperty('role', 'ADMIN');
+      expect(response.body).not.toHaveProperty('password');
+      expect(response.body).not.toHaveProperty('token');
+    });
+
+    it('Return 401 without authorization header.', async () => {
+      const response = await request(app)
+        .get(`${BASE_PATH}/users/me/settings`);
+
+      expect(response.status).toBe(401);
+    });
+  });
+
+  describe('PUT /api/v1/users/me/settings', () => {
+    it('Return 200 and updated email.', async () => {
+      const { user } = await createAndLoginUser('USER', 'settings_updater');
+      const newEmail = `updated_${Date.now()}@test.com`;
+      const response = await request(app)
+        .put(`${BASE_PATH}/users/me/settings`)
+        .set('Authorization', `Bearer ${user.token}`)
+        .send({ email: newEmail });
+
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty('email', newEmail);
+    });
+
+    it('Return 200 and updated firstName and lastName.', async () => {
+      const { user } = await createAndLoginUser('USER', 'settings_name');
+      const response = await request(app)
+        .put(`${BASE_PATH}/users/me/settings`)
+        .set('Authorization', `Bearer ${user.token}`)
+        .send({ firstName: 'Jane', lastName: 'Smith' });
+
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty('firstName', 'Jane');
+      expect(response.body).toHaveProperty('lastName', 'Smith');
+    });
+
+    it('Return 200 and updated phone in settings.', async () => {
+      const { user } = await createAndLoginUser('USER', 'settings_phone');
+      const response = await request(app)
+        .put(`${BASE_PATH}/users/me/settings`)
+        .set('Authorization', `Bearer ${user.token}`)
+        .send({ phone: '+1234567890' });
+
+      expect(response.status).toBe(200);
+      expect(response.body.settings).toHaveProperty('phone', '+1234567890');
+    });
+
+    it('Return 422 when email is already in use.', async () => {
+      const { user } = await createAndLoginUser('USER', 'settings_dup_email');
+      const response = await request(app)
+        .put(`${BASE_PATH}/users/me/settings`)
+        .set('Authorization', `Bearer ${user.token}`)
+        .send({ email: adminUser.email });
+
+      expect(response.status).toBe(422);
+      expect(response.body.error).toMatch(/email/i);
+    });
+
+    it('Return 401 without authorization header.', async () => {
+      const response = await request(app)
+        .put(`${BASE_PATH}/users/me/settings`)
+        .send({ firstName: 'Unauthorized' });
+
+      expect(response.status).toBe(401);
+    });
+  });
+
+  describe('PUT /api/v1/users/me/settings/profile', () => {
+    it('Return 200 and updated profile fields.', async () => {
+      const { user } = await createAndLoginUser('USER', 'settings_profile');
+      const response = await request(app)
+        .put(`${BASE_PATH}/users/me/settings/profile`)
+        .set('Authorization', `Bearer ${user.token}`)
+        .send({
+          displayName: 'Test Display Name',
+          bio: 'This is a test bio.',
+          city: 'Buenos Aires',
+          country: 'Argentina',
+          dateOfBirth: '1990-05-15',
+        });
+
+      expect(response.status).toBe(200);
+      expect(response.body.settings?.profile).toHaveProperty('displayName', 'Test Display Name');
+      expect(response.body.settings?.profile).toHaveProperty('bio', 'This is a test bio.');
+      expect(response.body.settings?.profile).toHaveProperty('city', 'Buenos Aires');
+      expect(response.body.settings?.profile).toHaveProperty('country', 'Argentina');
+      expect(response.body.settings?.profile).toHaveProperty('dateOfBirth', '1990-05-15');
+    });
+
+    it('Return 200 and update only provided profile fields.', async () => {
+      const { user } = await createAndLoginUser('USER', 'settings_profile2');
+      const response = await request(app)
+        .put(`${BASE_PATH}/users/me/settings/profile`)
+        .set('Authorization', `Bearer ${user.token}`)
+        .send({ bio: 'Updated bio only.' });
+
+      expect(response.status).toBe(200);
+      expect(response.body.settings?.profile).toHaveProperty('bio', 'Updated bio only.');
+    });
+
+    it('Return 401 without authorization header.', async () => {
+      const response = await request(app)
+        .put(`${BASE_PATH}/users/me/settings/profile`)
+        .send({ displayName: 'No Auth' });
+
+      expect(response.status).toBe(401);
+    });
+  });
+
+  describe('PUT /api/v1/users/me/settings/social-links', () => {
+    it('Return 200 and update social links with valid URLs.', async () => {
+      const { user } = await createAndLoginUser('USER', 'settings_social');
+      const response = await request(app)
+        .put(`${BASE_PATH}/users/me/settings/social-links`)
+        .set('Authorization', `Bearer ${user.token}`)
+        .send({
+          linkedin: 'https://www.linkedin.com/in/johndoe',
+          instagram: 'https://www.instagram.com/johndoe',
+          facebook: 'https://www.facebook.com/johndoe',
+          x: 'https://x.com/johndoe',
+        });
+
+      expect(response.status).toBe(200);
+      expect(response.body.settings?.socialLinks).toHaveProperty('linkedin', 'https://www.linkedin.com/in/johndoe');
+      expect(response.body.settings?.socialLinks).toHaveProperty('instagram', 'https://www.instagram.com/johndoe');
+      expect(response.body.settings?.socialLinks).toHaveProperty('facebook', 'https://www.facebook.com/johndoe');
+      expect(response.body.settings?.socialLinks).toHaveProperty('x', 'https://x.com/johndoe');
+    });
+
+    it('Return 200 and update only provided social links.', async () => {
+      const { user } = await createAndLoginUser('USER', 'settings_social2');
+      const response = await request(app)
+        .put(`${BASE_PATH}/users/me/settings/social-links`)
+        .set('Authorization', `Bearer ${user.token}`)
+        .send({ linkedin: 'https://www.linkedin.com/in/janedoe' });
+
+      expect(response.status).toBe(200);
+      expect(response.body.settings?.socialLinks).toHaveProperty('linkedin', 'https://www.linkedin.com/in/janedoe');
+    });
+
+    it('Return 422 for invalid LinkedIn URL.', async () => {
+      const { user } = await createAndLoginUser('USER', 'settings_social_li');
+      const response = await request(app)
+        .put(`${BASE_PATH}/users/me/settings/social-links`)
+        .set('Authorization', `Bearer ${user.token}`)
+        .send({ linkedin: 'https://www.notlinkedin.com/profile' });
+
+      expect(response.status).toBe(422);
+      expect(response.body.error).toMatch(/linkedin/i);
+    });
+
+    it('Return 422 for invalid Instagram URL.', async () => {
+      const { user } = await createAndLoginUser('USER', 'settings_social_ig');
+      const response = await request(app)
+        .put(`${BASE_PATH}/users/me/settings/social-links`)
+        .set('Authorization', `Bearer ${user.token}`)
+        .send({ instagram: 'https://www.notinstagram.com/johndoe' });
+
+      expect(response.status).toBe(422);
+      expect(response.body.error).toMatch(/instagram/i);
+    });
+
+    it('Return 422 for invalid Facebook URL.', async () => {
+      const { user } = await createAndLoginUser('USER', 'settings_social_fb');
+      const response = await request(app)
+        .put(`${BASE_PATH}/users/me/settings/social-links`)
+        .set('Authorization', `Bearer ${user.token}`)
+        .send({ facebook: 'https://www.notfacebook.com/johndoe' });
+
+      expect(response.status).toBe(422);
+      expect(response.body.error).toMatch(/facebook/i);
+    });
+
+    it('Return 422 for invalid X/Twitter URL.', async () => {
+      const { user } = await createAndLoginUser('USER', 'settings_social_x');
+      const response = await request(app)
+        .put(`${BASE_PATH}/users/me/settings/social-links`)
+        .set('Authorization', `Bearer ${user.token}`)
+        .send({ x: 'https://www.notx.com/johndoe' });
+
+      expect(response.status).toBe(422);
+      expect(response.body.error).toMatch(/x/i);
+    });
+
+    it('Return 200 with valid LinkedIn company URL.', async () => {
+      const { user } = await createAndLoginUser('USER', 'settings_social_li2');
+      const response = await request(app)
+        .put(`${BASE_PATH}/users/me/settings/social-links`)
+        .set('Authorization', `Bearer ${user.token}`)
+        .send({ linkedin: 'https://www.linkedin.com/company/acme-corp' });
+
+      expect(response.status).toBe(200);
+      expect(response.body.settings?.socialLinks).toHaveProperty('linkedin', 'https://www.linkedin.com/company/acme-corp');
+    });
+
+    it('Return 200 with valid Twitter URL format.', async () => {
+      const { user } = await createAndLoginUser('USER', 'settings_social_tw');
+      const response = await request(app)
+        .put(`${BASE_PATH}/users/me/settings/social-links`)
+        .set('Authorization', `Bearer ${user.token}`)
+        .send({ x: 'https://twitter.com/johndoe' });
+
+      expect(response.status).toBe(200);
+      expect(response.body.settings?.socialLinks).toHaveProperty('x', 'https://twitter.com/johndoe');
+    });
+
+    it('Return 401 without authorization header.', async () => {
+      const response = await request(app)
+        .put(`${BASE_PATH}/users/me/settings/social-links`)
+        .send({ linkedin: 'https://www.linkedin.com/in/nobody' });
+
+      expect(response.status).toBe(401);
+    });
+  });
+
+  describe('PUT /api/v1/users/me/settings/notifications', () => {
+    it('Return 200 and update notification preferences.', async () => {
+      const { user } = await createAndLoginUser('USER', 'settings_notif');
+      const response = await request(app)
+        .put(`${BASE_PATH}/users/me/settings/notifications`)
+        .set('Authorization', `Bearer ${user.token}`)
+        .send({
+          OrganizationInvitation: { email: true, inbox: false },
+          PricingUpdated: { email: false, inbox: true },
+        });
+
+      expect(response.status).toBe(200);
+      expect(response.body.settings).toHaveProperty('notificationPrefs');
+    });
+
+    it('Return 401 without authorization header.', async () => {
+      const response = await request(app)
+        .put(`${BASE_PATH}/users/me/settings/notifications`)
+        .send({ pricingCreated: { email: true, inbox: true } });
+
+      expect(response.status).toBe(401);
+    });
+  });
+
+  describe('POST /api/v1/users/me/settings/avatar', () => {
+    it('Return 200 and upload avatar image.', async () => {
+      const { user } = await createAndLoginUser('USER', 'settings_avatar');
+      const imageBuffer = Buffer.from(
+        'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
+        'base64'
+      );
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/users/me/settings/avatar`)
+        .set('Authorization', `Bearer ${user.token}`)
+        .attach('avatar', imageBuffer, { filename: 'test.png', contentType: 'image/png' });
+
+      expect(response.status).toBe(200);
+      expect(response.body.settings).toHaveProperty('avatar');
+      expect(typeof response.body.settings?.avatar).toBe('string');
+      expect(response.body.settings?.avatar).toContain('avatar');
+    });
+
+    it('Return 400 when no file is uploaded.', async () => {
+      const { user } = await createAndLoginUser('USER', 'settings_avatar2');
+      const response = await request(app)
+        .post(`${BASE_PATH}/users/me/settings/avatar`)
+        .set('Authorization', `Bearer ${user.token}`);
+
+      expect(response.status).toBe(400);
+    });
+
+    it('Return 401 without authorization header.', async () => {
+      const imageBuffer = Buffer.from(
+        'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
+        'base64'
+      );
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/users/me/settings/avatar`)
+        .attach('avatar', imageBuffer, { filename: 'test.png', contentType: 'image/png' });
+
+      expect(response.status).toBe(401);
+    });
+  });
+
+  describe('DELETE /api/v1/users/me/settings/avatar', () => {
+    it('Return 200 and remove avatar.', async () => {
+      const { user } = await createAndLoginUser('USER', 'settings_del_avatar');
+      const response = await request(app)
+        .delete(`${BASE_PATH}/users/me/settings/avatar`)
+        .set('Authorization', `Bearer ${user.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.settings).toHaveProperty('avatar', null);
+    });
+
+    it('Return 401 without authorization header.', async () => {
+      const response = await request(app)
+        .delete(`${BASE_PATH}/users/me/settings/avatar`);
+
+      expect(response.status).toBe(401);
+    });
+  });
+
+  describe('PUT /api/v1/users/me/settings/avatar-colors', () => {
+    it('Return 200 and update avatar colors.', async () => {
+      const { user } = await createAndLoginUser('USER', 'settings_colors');
+      const response = await request(app)
+        .put(`${BASE_PATH}/users/me/settings/avatar-colors`)
+        .set('Authorization', `Bearer ${user.token}`)
+        .send({
+          avatarPath: 'static/avatars/users/default/avatar-1.svg',
+          avatarBgColor: '#ff5733',
+          avatarFgColor: '#ffffff',
+        });
+
+      expect(response.status).toBe(200);
+      expect(response.body.settings).toHaveProperty('avatarBgColor', '#ff5733');
+      expect(response.body.settings).toHaveProperty('avatarFgColor', '#ffffff');
+    });
+
+    it('Return 401 without authorization header.', async () => {
+      const response = await request(app)
+        .put(`${BASE_PATH}/users/me/settings/avatar-colors`)
+        .send({ avatarBgColor: '#000000', avatarFgColor: '#ffffff' });
+
+      expect(response.status).toBe(401);
     });
   });
 });

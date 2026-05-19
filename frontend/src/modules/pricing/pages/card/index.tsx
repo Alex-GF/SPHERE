@@ -5,6 +5,7 @@ import { Pricing, retrievePricingFromYaml } from 'pricing4ts';
 import { usePricingsApi } from '../../api/pricingsApi';
 import { useOrganizationsApi } from '../../../organization/api/organizationsApi';
 import { useAuth } from '../../../auth/hooks/useAuth';
+import { useRecentItems } from '../../../core/hooks/useRecentItems';
 import { PricingRenderer } from '../../../pricing-editor/components/pricing-renderer';
 import { downloadYaml, parseStringYamlToEncodedYaml } from '../../../pricing-editor/services/export.service';
 import ConfigurationSpaceView from '../../components/configuration-space-view';
@@ -125,6 +126,7 @@ export default function CardPage() {
   const { getPricingByName, removePricingVersion, removePricingByName, updatePricing } = usePricingsApi();
   const { getOrgMembers } = useOrganizationsApi();
   const { authUser } = useAuth();
+  const { addRecentPricing } = useRecentItems();
 
   const [versions, setVersions] = useState<VersionData[]>([]);
   const [currentVersion, setCurrentVersion] = useState<VersionData | null>(null);
@@ -178,6 +180,17 @@ export default function CardPage() {
       .catch(() => {})
       .finally(() => setIsLoading(false));
   }, [name, owner, collectionSlug]);
+
+  // Track visit for recent items
+  useEffect(() => {
+    if (!authUser.isAuthenticated || !name || !owner) return;
+    addRecentPricing({
+      id: `${owner}/${name}`,
+      name,
+      orgId: owner,
+      orgName: owner,
+    });
+  }, [name, owner, authUser.isAuthenticated]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Fetch YAML when version changes
   useEffect(() => {

@@ -14,6 +14,7 @@ export default function PublicLayout({ children }: { children?: React.ReactNode 
   const location = useLocation();
   const router = useRouter();
   const isLanding = location.pathname === '/';
+  const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
 
   const [uploadModalOpen, setUploadModalOpen] = useState<boolean>(false);
   const [errors, setErrors] = useState<string[]>([]);
@@ -57,7 +58,7 @@ export default function PublicLayout({ children }: { children?: React.ReactNode 
 
   const handleNavigate = (to: string) => router.push(to);
 
-  if (isLanding) {
+  if (isLanding || isAuthPage) {
     return <>{children}</>;
   }
 

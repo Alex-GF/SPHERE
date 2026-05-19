@@ -1,15 +1,18 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { usePricingCollectionsApi } from '../../../profile/api/pricingCollectionsApi';
 import { usePricingsApi } from '../../api/pricingsApi';
 import { useAuth } from '../../../auth/hooks/useAuth';
+import { useRecentItems } from '../../../core/hooks/useRecentItems';
 import PricingCard from '../../components/pricing-card';
 import Pagination from '../../components/pagination';
 import CollectionSettings, { type CollectionPermissions } from '../../components/collection-settings';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from '../../../core/hooks/useRouter';
 import { transitionDefault, staggerContainer, fadeInUp } from '../../../core/utils/motion-variants';
+import DatePicker from '../../../core/components/date-picker';
+import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import type { Collection } from '../../types/collection';
 
 type Tab = 'pricings' | 'analytics' | 'settings';
@@ -29,6 +32,9 @@ interface PricingEntry {
 }
 
 const PRICINGS_PER_PAGE = 12;
+const axisTick = { fill: '#4a4a4a', fontSize: 11 };
+const compactNum = new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 });
+const fmtY = (v: number) => { if (!Number.isFinite(v)) return ''; return Math.abs(v) >= 1000 ? compactNum.format(v) : String(v); };
 
 export default function CollectionCardPage() {
   const { ownerId, collectionSlug } = useParams<{ ownerId: string; collectionSlug: string }>();
@@ -36,6 +42,7 @@ export default function CollectionCardPage() {
   const { getCollectionByOwnerAndName, downloadCollection, getCollectionPermissions } = usePricingCollectionsApi();
   const { getPricings } = usePricingsApi();
   const { authUser } = useAuth();
+  const { addRecentCollection } = useRecentItems();
 
   const [collection, setCollection] = useState<Collection | null>(null);
   const [isLoadingCollection, setIsLoadingCollection] = useState(true);
@@ -49,6 +56,9 @@ export default function CollectionCardPage() {
   const [pricingsPage, setPricingsPage] = useState(1);
   const [isLoadingPricings, setIsLoadingPricings] = useState(true);
 
+  const [dateFrom, setDateFrom] = useState('');
+  const [dateTo, setDateTo] = useState('');
+
   useEffect(() => {
     if (!ownerId || !collectionSlug) return;
     setIsLoadingCollection(true);
@@ -57,6 +67,17 @@ export default function CollectionCardPage() {
       .catch(() => {})
       .finally(() => setIsLoadingCollection(false));
   }, [ownerId, collectionSlug]);
+
+  // Track visit for recent items
+  useEffect(() => {
+    if (!authUser.isAuthenticated || !ownerId || !collectionSlug) return;
+    addRecentCollection({
+      id: `${ownerId}/${collectionSlug}`,
+      name: collectionSlug,
+      orgId: ownerId,
+      orgName: collection?.organization?.name ?? ownerId,
+    });
+  }, [ownerId, collectionSlug, collection?.organization?.name, authUser.isAuthenticated]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!ownerId || !collectionSlug || !authUser?.isAuthenticated) return;
@@ -110,6 +131,52 @@ export default function CollectionCardPage() {
   };
 
   const pricingsTotalPages = Math.max(1, Math.ceil(pricingsTotal / PRICINGS_PER_PAGE));
+
+  const filteredEvolution = useMemo(() => {
+    if (!analytics) return null;
+    const filterSeries = (series: { dates: string[]; values: number[] }) => {
+      let dates = [...series.dates];
+      let values = [...series.values];
+      if (dateFrom) {
+        const from = dateFrom + 'T00:00:00';
+        const idx = dates.findIndex(d => d >= from);
+        if (idx > 0) { dates = dates.slice(idx); values = values.slice(idx); }
+        else if (idx === -1) { dates = []; values = []; }
+      }
+      if (dateTo) {
+        const to = dateTo + 'T23:59:59';
+        const idx = dates.findLastIndex(d => d <= to);
+        if (idx >= 0 && idx < dates.length - 1) { dates = dates.slice(0, idx + 1); values = values.slice(0, idx + 1); }
+        else if (idx === -1) { dates = []; values = []; }
+      }
+      return { dates, values };
+    };
+    return {
+      configSpace: filterSeries(analytics.evolutionOfConfigurationSpaceSize),
+      plans: filterSeries(analytics.evolutionOfPlans),
+      features: filterSeries(analytics.evolutionOfFeatures),
+      addOns: filterSeries(analytics.evolutionOfAddOns),
+    };
+  }, [analytics, dateFrom, dateTo]);
+
+  const chartData = useMemo(() => {
+    if (!filteredEvolution) return [];
+    const len = filteredEvolution.configSpace.dates.length;
+    return Array.from({ length: len }, (_, i) => ({
+      date: new Date(filteredEvolution.configSpace.dates[i]).toLocaleDateString(),
+      configSpace: filteredEvolution.configSpace.values[i] ?? 0,
+      plans: filteredEvolution.plans.values[i] ?? 0,
+      features: filteredEvolution.features.values[i] ?? 0,
+      addOns: filteredEvolution.addOns.values[i] ?? 0,
+    }));
+  }, [filteredEvolution]);
+
+  const avgPrices = useMemo(() => {
+    if (pricings.length === 0) return { avgMin: 0, avgMax: 0 };
+    const sumMin = pricings.reduce((s, p) => s + (p.analytics?.minSubscriptionPrice ?? 0), 0);
+    const sumMax = pricings.reduce((s, p) => s + (p.analytics?.maxSubscriptionPrice ?? 0), 0);
+    return { avgMin: sumMin / pricings.length, avgMax: sumMax / pricings.length };
+  }, [pricings]);
 
   const showSettingsTab = permissions.PUT || permissions.DELETE;
 
@@ -228,102 +295,57 @@ export default function CollectionCardPage() {
 
           {/* ANALYTICS TAB */}
           {tab === 'analytics' && (
-            <motion.div key="analytics" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={transitionDefault} className="space-y-6">
-              {analytics ? (
+            <motion.div key="analytics" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={transitionDefault}>
+              <div className="mb-4 flex items-center justify-between">
+                <h3 className="text-sm font-medium text-tp-ink">Analytics</h3>
+                <DatePicker dateFrom={dateFrom} dateTo={dateTo} onDateFromChange={setDateFrom} onDateToChange={setDateTo} />
+              </div>
+
+              {analytics && (chartData.length > 0 || pricings.length > 0) ? (
                 <>
-                  {/* Config Space Evolution */}
-                  {analytics.evolutionOfConfigurationSpaceSize?.dates?.length > 0 && (
-                    <div className="rounded-xl border border-tp-hairline-soft bg-tp-canvas p-5">
-                      <h3 className="mb-4 text-sm font-medium text-tp-ink">Configuration Space Evolution</h3>
-                      <div className="h-48">
-                        <svg viewBox={`0 0 ${analytics.evolutionOfConfigurationSpaceSize.dates.length * 50 + 30} 180`} className="h-full w-full">
-                          {analytics.evolutionOfConfigurationSpaceSize.dates.map((date, i) => {
-                            const val = analytics.evolutionOfConfigurationSpaceSize.values[i] ?? 0;
-                            const maxVal = Math.max(...analytics.evolutionOfConfigurationSpaceSize.values, 1);
-                            const x = i * 50 + 20;
-                            const h = (val / maxVal) * 140;
-                            return (
-                              <g key={i}>
-                                <rect x={x} y={160 - h} width={32} height={h} fill="#fa520f" opacity={0.6} rx={4} />
-                                <text x={x + 16} y={158 - h} textAnchor="middle" fill="#1f1f1f" fontSize={8} fontWeight={500}>{val.toLocaleString()}</text>
-                                <text x={x + 16} y={172} textAnchor="middle" fill="#8a8a8a" fontSize={7}>{new Date(date).toLocaleDateString()}</text>
-                              </g>
-                            );
-                          })}
-                        </svg>
+                  {/* Summary stats */}
+                  {pricings.length > 0 && (
+                    <div className="mb-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                      <div className="rounded-xl border border-tp-hairline-soft bg-tp-canvas p-3">
+                        <p className="text-[11px] text-tp-steel">Avg min price</p>
+                        <p className="mt-0.5 text-lg font-semibold text-tp-ink">${avgPrices.avgMin.toFixed(2)}</p>
+                      </div>
+                      <div className="rounded-xl border border-tp-hairline-soft bg-tp-canvas p-3">
+                        <p className="text-[11px] text-tp-steel">Avg max price</p>
+                        <p className="mt-0.5 text-lg font-semibold text-tp-ink">${avgPrices.avgMax.toFixed(2)}</p>
+                      </div>
+                      <div className="rounded-xl border border-tp-hairline-soft bg-tp-canvas p-3">
+                        <p className="text-[11px] text-tp-steel">Pricings</p>
+                        <p className="mt-0.5 text-lg font-semibold text-tp-ink">{pricingsTotal}</p>
                       </div>
                     </div>
                   )}
 
-                  {/* Plans Evolution */}
-                  {analytics.evolutionOfPlans?.dates?.length > 0 && (
-                    <div className="rounded-xl border border-tp-hairline-soft bg-tp-canvas p-5">
-                      <h3 className="mb-4 text-sm font-medium text-tp-ink">Plans Evolution</h3>
-                      <div className="h-48">
-                        <svg viewBox={`0 0 ${analytics.evolutionOfPlans.dates.length * 50 + 30} 180`} className="h-full w-full">
-                          {analytics.evolutionOfPlans.dates.map((date, i) => {
-                            const val = analytics.evolutionOfPlans.values[i] ?? 0;
-                            const maxVal = Math.max(...analytics.evolutionOfPlans.values, 1);
-                            const x = i * 50 + 20;
-                            const h = (val / maxVal) * 140;
-                            return (
-                              <g key={i}>
-                                <rect x={x} y={160 - h} width={32} height={h} fill="#ffa110" opacity={0.6} rx={4} />
-                                <text x={x + 16} y={158 - h} textAnchor="middle" fill="#1f1f1f" fontSize={8} fontWeight={500}>{val}</text>
-                                <text x={x + 16} y={172} textAnchor="middle" fill="#8a8a8a" fontSize={7}>{new Date(date).toLocaleDateString()}</text>
-                              </g>
-                            );
-                          })}
-                        </svg>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Features Evolution */}
-                  {analytics.evolutionOfFeatures?.dates?.length > 0 && (
-                    <div className="rounded-xl border border-tp-hairline-soft bg-tp-canvas p-5">
-                      <h3 className="mb-4 text-sm font-medium text-tp-ink">Features Evolution</h3>
-                      <div className="h-48">
-                        <svg viewBox={`0 0 ${analytics.evolutionOfFeatures.dates.length * 50 + 30} 180`} className="h-full w-full">
-                          {analytics.evolutionOfFeatures.dates.map((date, i) => {
-                            const val = analytics.evolutionOfFeatures.values[i] ?? 0;
-                            const maxVal = Math.max(...analytics.evolutionOfFeatures.values, 1);
-                            const x = i * 50 + 20;
-                            const h = (val / maxVal) * 140;
-                            return (
-                              <g key={i}>
-                                <rect x={x} y={160 - h} width={32} height={h} fill="#cc3a05" opacity={0.5} rx={4} />
-                                <text x={x + 16} y={158 - h} textAnchor="middle" fill="#1f1f1f" fontSize={8} fontWeight={500}>{val}</text>
-                                <text x={x + 16} y={172} textAnchor="middle" fill="#8a8a8a" fontSize={7}>{new Date(date).toLocaleDateString()}</text>
-                              </g>
-                            );
-                          })}
-                        </svg>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Add-ons Evolution */}
-                  {analytics.evolutionOfAddOns?.dates?.length > 0 && (
-                    <div className="rounded-xl border border-tp-hairline-soft bg-tp-canvas p-5">
-                      <h3 className="mb-4 text-sm font-medium text-tp-ink">Add-ons Evolution</h3>
-                      <div className="h-48">
-                        <svg viewBox={`0 0 ${analytics.evolutionOfAddOns.dates.length * 50 + 30} 180`} className="h-full w-full">
-                          {analytics.evolutionOfAddOns.dates.map((date, i) => {
-                            const val = analytics.evolutionOfAddOns.values[i] ?? 0;
-                            const maxVal = Math.max(...analytics.evolutionOfAddOns.values, 1);
-                            const x = i * 50 + 20;
-                            const h = (val / maxVal) * 140;
-                            return (
-                              <g key={i}>
-                                <rect x={x} y={160 - h} width={32} height={h} fill="#ff8105" opacity={0.5} rx={4} />
-                                <text x={x + 16} y={158 - h} textAnchor="middle" fill="#1f1f1f" fontSize={8} fontWeight={500}>{val}</text>
-                                <text x={x + 16} y={172} textAnchor="middle" fill="#8a8a8a" fontSize={7}>{new Date(date).toLocaleDateString()}</text>
-                              </g>
-                            );
-                          })}
-                        </svg>
-                      </div>
+                  {/* Evolution charts */}
+                  {chartData.length > 0 && (
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                      {([
+                        ['configSpace', 'Configuration Space', '#08aeb3'],
+                        ['plans', 'Plans', '#7c3aed'],
+                        ['features', 'Features', '#0891b2'],
+                        ['addOns', 'Add-ons', '#16a34a'],
+                      ] as const).map(([k, label, color]) => (
+                        <div key={k} className="rounded-xl border border-tp-hairline-soft bg-tp-canvas p-4">
+                          <div className="mb-2 flex items-center justify-center gap-2 text-[11px] text-tp-ink">
+                            <span className="inline-block h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: color }} />
+                            {label}
+                          </div>
+                          <ResponsiveContainer width="100%" height={220}>
+                            <LineChart data={chartData} margin={{ top: 5, right: 10, left: -8, bottom: 0 }}>
+                              <CartesianGrid strokeDasharray="3 3" stroke="#ededed" />
+                              <XAxis dataKey="date" tick={axisTick} />
+                              <YAxis tick={axisTick} tickFormatter={fmtY} width={50} domain={['auto', 'auto']} />
+                              <Tooltip />
+                              <Line type="monotone" dataKey={k} stroke={color} strokeWidth={2} dot={{ r: 2 }} />
+                            </LineChart>
+                          </ResponsiveContainer>
+                        </div>
+                      ))}
                     </div>
                   )}
                 </>

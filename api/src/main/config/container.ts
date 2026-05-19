@@ -10,6 +10,7 @@ import OrganizationRepository from '../repositories/mongoose/OrganizationReposit
 import OrganizationMembershipRepository from '../repositories/mongoose/OrganizationMembershipRepository';
 import OrganizationInvitationRepository from '../repositories/mongoose/OrganizationInvitationRepository';
 import EntityPermissionRepository from '../repositories/mongoose/EntityPermissionRepository';
+import NotificationRepository from '../repositories/mongoose/NotificationRepository';
 
 import UserService from "../services/UserService";
 import PricingService from "../services/PricingService";
@@ -17,12 +18,14 @@ import PricingCollectionService from "../services/PricingCollectionService";
 import CacheService from "../services/CacheService";
 import OrganizationService from '../services/OrganizationService';
 import PermissionService from '../services/PermissionService';
+import UserSettingsService from '../services/UserSettingsService';
+import NotificationService from '../services/NotificationService';
 
 dotenv.config();
 
 function initContainer(databaseType: string): AwilixContainer {
   const container: AwilixContainer = createContainer();
-  let userRepository, pricingRepository, pricingCollectionRepository, organizationRepository, organizationMembershipRepository, organizationInvitationRepository, entityPermissionRepository;
+  let userRepository, pricingRepository, pricingCollectionRepository, organizationRepository, organizationMembershipRepository, organizationInvitationRepository, entityPermissionRepository, notificationRepository;
 
   switch (databaseType) {
     case "mongoDB":
@@ -33,6 +36,7 @@ function initContainer(databaseType: string): AwilixContainer {
       organizationMembershipRepository = new OrganizationMembershipRepository();
       organizationInvitationRepository = new OrganizationInvitationRepository();
       entityPermissionRepository = new EntityPermissionRepository();
+      notificationRepository = new NotificationRepository();
       break;
     default:
       throw new Error(`Unsupported database type: ${databaseType}`);
@@ -45,12 +49,15 @@ function initContainer(databaseType: string): AwilixContainer {
     organizationMembershipRepository: asValue(organizationMembershipRepository),
     organizationInvitationRepository: asValue(organizationInvitationRepository),
     entityPermissionRepository: asValue(entityPermissionRepository),
+    notificationRepository: asValue(notificationRepository),
     userService: asClass(UserService).singleton(),
     pricingService: asClass(PricingService).singleton(),
     pricingCollectionService: asClass(PricingCollectionService).singleton(),
     cacheService: asClass(CacheService).singleton(),
     organizationService: asClass(OrganizationService).singleton(),
     permissionService: asClass(PermissionService).singleton(),
+    userSettingsService: asClass(UserSettingsService).singleton(),
+    notificationService: asClass(NotificationService).singleton(),
   });
   return container;
 }

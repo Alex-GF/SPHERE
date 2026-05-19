@@ -108,6 +108,26 @@ export function usePricingsApi() {
       });
   }, [fetchWithInterceptor, basicHeaders]);
 
+  const USERS_BASE_PATH = import.meta.env.VITE_API_URL + '/users';
+
+  const getPermissionBasedUserPricings = useCallback(async () => {
+    return fetchWithInterceptor(`${USERS_BASE_PATH}/me/pricings?limit=100`, {
+      method: 'GET',
+      headers: basicHeaders,
+    })
+      .then(response => {
+        if (!response.ok) {
+          return Promise.reject(response);
+        } else {
+          return response.json();
+        }
+      })
+      .catch(async error => {
+        const body = await (error as Response).json().catch(() => ({}));
+        return Promise.reject({message: body.error});
+      });
+  }, [fetchWithInterceptor, basicHeaders]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const getConfigurationSpace = useCallback(async (owner: string, pricingName: string, pricingVersion: string, limit?: number, offset?: number) => {
     
     const params = new URLSearchParams();
@@ -289,6 +309,7 @@ export function usePricingsApi() {
       getPricings,
       getPricingByName,
       getLoggedUserPricings,
+      getPermissionBasedUserPricings,
       getConfigurationSpace,
       createPricing,
       addPricingToCollection,
@@ -302,6 +323,7 @@ export function usePricingsApi() {
       getPricings,
       getPricingByName,
       getLoggedUserPricings,
+      getPermissionBasedUserPricings,
       getConfigurationSpace,
       createPricing,
       addPricingToCollection,

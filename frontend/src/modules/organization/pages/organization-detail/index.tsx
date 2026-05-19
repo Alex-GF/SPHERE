@@ -1261,7 +1261,7 @@ export default function OrganizationDetailPage() {
                     <button
                       key={`${pricing.name}-${pricing.version}`}
                       type="button"
-                      onClick={() => router.push(`/pricings/${org.name}/${pricing.name}`)}
+                      onClick={() => router.push(`/pricings/${org.id}/${pricing.name}`)}
                       className="flex w-full items-center gap-3 px-5 py-3 text-left transition-colors hover:bg-tp-surface/50 sm:gap-4 cursor-pointer"
                     >
                       <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">

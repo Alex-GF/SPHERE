@@ -492,6 +492,815 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /users/me/settings:
+    get:
+      summary: Get current user's settings
+      description: |
+        Retrieves the full settings for the currently authenticated user, including
+        profile, social links, notification preferences, and avatar configuration.
+        Sensitive fields (password, token, API keys) are excluded.
+
+        **Authentication**: User token
+
+        **Permission**: Any authenticated user (ADMIN or USER).
+
+      tags:
+        - Users
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: User settings retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSettings'
+        '401':
+          description: Authentication required
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      summary: Update current user's account settings
+      description: |
+        Updates the account-level settings for the currently authenticated user.
+        Only provided fields are updated (partial update).
+
+        **Authentication**: User token
+
+        **Permission**: Any authenticated user (ADMIN or USER).
+
+      tags:
+        - Users
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                phone:
+                  type: string
+                  nullable: true
+      responses:
+        '200':
+          description: Settings updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSettings'
+        '401':
+          description: Authentication required
+        '422':
+          description: Validation error (e.g. email already in use)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /users/me/settings/profile:
+    put:
+      summary: Update current user's public profile
+      description: |
+        Updates the public profile fields for the currently authenticated user.
+        These fields control how the user appears to other users on the platform.
+
+        **Authentication**: User token
+
+        **Permission**: Any authenticated user (ADMIN or USER).
+
+      tags:
+        - Users
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                displayName:
+                  type: string
+                  nullable: true
+                  description: Public display name (overrides real name in rankings)
+                bio:
+                  type: string
+                  nullable: true
+                  maxLength: 200
+                city:
+                  type: string
+                  nullable: true
+                country:
+                  type: string
+                  nullable: true
+                dateOfBirth:
+                  type: string
+                  format: date
+                  nullable: true
+      responses:
+        '200':
+          description: Profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSettings'
+        '401':
+          description: Authentication required
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /users/me/settings/social-links:
+    put:
+      summary: Update current user's social links
+      description: |
+        Updates the social media links for the currently authenticated user.
+        URLs are validated against platform-specific patterns.
+
+        **Authentication**: User token
+
+        **Permission**: Any authenticated user (ADMIN or USER).
+
+      tags:
+        - Users
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                linkedin:
+                  type: string
+                  format: uri
+                  nullable: true
+                instagram:
+                  type: string
+                  format: uri
+                  nullable: true
+                facebook:
+                  type: string
+                  format: uri
+                  nullable: true
+                x:
+                  type: string
+                  format: uri
+                  nullable: true
+      responses:
+        '200':
+          description: Social links updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSettings'
+        '401':
+          description: Authentication required
+        '422':
+          description: Invalid URL for a social platform
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /users/me/settings/notifications:
+    put:
+      summary: Update current user's notification preferences
+      description: |
+        Updates the notification preferences for the currently authenticated user.
+        Controls which notification types are received via which channels.
+
+        **Authentication**: User token
+
+        **Permission**: Any authenticated user (ADMIN or USER).
+
+      tags:
+        - Users
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Map of notification kind to channel preferences
+              additionalProperties:
+                type: object
+                properties:
+                  email:
+                    type: boolean
+                  inbox:
+                    type: boolean
+              example:
+                OrganizationInvitation: { email: true, inbox: true }
+                System: { email: true, inbox: false }
+                CollectionShared: { email: false, inbox: true }
+                PricingUpdated: { email: false, inbox: false }
+      responses:
+        '200':
+          description: Notification preferences updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSettings'
+        '401':
+          description: Authentication required
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /users/me/settings/avatar:
+    post:
+      summary: Upload avatar image
+      description: |
+        Uploads a new avatar image for the currently authenticated user.
+        Accepts JPEG, PNG, and WebP formats. Maximum file size is 2MB.
+        The image is saved to disk and the avatar path is updated.
+
+        **Authentication**: User token
+
+        **Permission**: Any authenticated user (ADMIN or USER).
+
+      tags:
+        - Users
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                avatar:
+                  type: string
+                  format: binary
+                  description: Image file (JPEG, PNG, or WebP, max 2MB)
+                avatarBgColor:
+                  type: string
+                  description: Background color for avatar (hex)
+                  example: "#fa520f"
+                avatarFgColor:
+                  type: string
+                  description: Foreground/text color for avatar (hex)
+                  example: "#ffffff"
+      responses:
+        '200':
+          description: Avatar uploaded successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  avatar:
+                    type: string
+                    description: URL path to the uploaded avatar
+        '400':
+          description: No file uploaded or invalid file type/size
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Authentication required
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      summary: Remove avatar (revert to initials)
+      description: |
+        Removes the current user's custom avatar, reverting to the initials-based
+        default display.
+
+        **Authentication**: User token
+
+        **Permission**: Any authenticated user (ADMIN or USER).
+
+      tags:
+        - Users
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Avatar removed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSettings'
+        '401':
+          description: Authentication required
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /users/me/settings/avatar-colors:
+    put:
+      summary: Update avatar colors (for initials/SVG mode)
+      description: |
+        Updates the avatar display with custom colors. Used for initials-based
+        avatars or SVG avatars to set background and foreground colors.
+
+        **Authentication**: User token
+
+        **Permission**: Any authenticated user (ADMIN or USER).
+
+      tags:
+        - Users
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - avatarBgColor
+                - avatarFgColor
+              properties:
+                avatarPath:
+                  type: string
+                  description: Path to the avatar file (for SVG avatars)
+                avatarBgColor:
+                  type: string
+                  description: Background color (hex)
+                  example: "#fa520f"
+                avatarFgColor:
+                  type: string
+                  description: Foreground/text color (hex)
+                  example: "#ffffff"
+      responses:
+        '200':
+          description: Avatar colors updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSettings'
+        '401':
+          description: Authentication required
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /users/{username}/settings:
+    get:
+      summary: Get user settings by username (ADMIN only)
+      description: |
+        Retrieves the full settings for a specific user by username.
+        Sensitive fields (password, token, API keys) are excluded.
+
+        **Authentication**: User token with ADMIN role
+
+        **Permission**: Only ADMIN users can access other users' settings.
+
+      tags:
+        - Users
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+      responses:
+        '200':
+          description: User settings retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSettings'
+        '401':
+          description: Authentication required
+        '403':
+          description: Insufficient permissions (requires ADMIN)
+        '404':
+          description: User not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      summary: Update user account settings by username (ADMIN only)
+      description: |
+        Updates account-level settings for a specific user by username.
+
+        **Authentication**: User token with ADMIN role
+
+        **Permission**: Only ADMIN users can update other users' settings.
+
+      tags:
+        - Users
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                phone:
+                  type: string
+                  nullable: true
+      responses:
+        '200':
+          description: Settings updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSettings'
+        '401':
+          description: Authentication required
+        '403':
+          description: Insufficient permissions (requires ADMIN)
+        '404':
+          description: User not found
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /users/{username}/settings/profile:
+    put:
+      summary: Update user profile by username (ADMIN only)
+      description: |
+        Updates the public profile for a specific user by username.
+
+        **Authentication**: User token with ADMIN role
+
+        **Permission**: Only ADMIN users.
+
+      tags:
+        - Users
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                displayName:
+                  type: string
+                  nullable: true
+                bio:
+                  type: string
+                  nullable: true
+                  maxLength: 200
+                city:
+                  type: string
+                  nullable: true
+                country:
+                  type: string
+                  nullable: true
+                dateOfBirth:
+                  type: string
+                  format: date
+                  nullable: true
+      responses:
+        '200':
+          description: Profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSettings'
+        '401':
+          description: Authentication required
+        '403':
+          description: Insufficient permissions (requires ADMIN)
+        '404':
+          description: User not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /users/{username}/settings/social-links:
+    put:
+      summary: Update user social links by username (ADMIN only)
+      description: |
+        Updates social media links for a specific user by username.
+
+        **Authentication**: User token with ADMIN role
+
+        **Permission**: Only ADMIN users.
+
+      tags:
+        - Users
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                linkedin:
+                  type: string
+                  format: uri
+                  nullable: true
+                instagram:
+                  type: string
+                  format: uri
+                  nullable: true
+                facebook:
+                  type: string
+                  format: uri
+                  nullable: true
+                x:
+                  type: string
+                  format: uri
+                  nullable: true
+      responses:
+        '200':
+          description: Social links updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSettings'
+        '401':
+          description: Authentication required
+        '403':
+          description: Insufficient permissions (requires ADMIN)
+        '404':
+          description: User not found
+        '422':
+          description: Invalid URL
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /users/{username}/settings/notifications:
+    put:
+      summary: Update user notification preferences by username (ADMIN only)
+      description: |
+        Updates notification preferences for a specific user by username.
+
+        **Authentication**: User token with ADMIN role
+
+        **Permission**: Only ADMIN users.
+
+      tags:
+        - Users
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: object
+                properties:
+                  email:
+                    type: boolean
+                  inbox:
+                    type: boolean
+      responses:
+        '200':
+          description: Notification preferences updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSettings'
+        '401':
+          description: Authentication required
+        '403':
+          description: Insufficient permissions (requires ADMIN)
+        '404':
+          description: User not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /users/{username}/settings/avatar:
+    post:
+      summary: Upload avatar for a user (ADMIN only)
+      description: |
+        Uploads a new avatar image for a specific user by username.
+
+        **Authentication**: User token with ADMIN role
+
+        **Permission**: Only ADMIN users.
+
+      tags:
+        - Users
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                avatar:
+                  type: string
+                  format: binary
+                avatarBgColor:
+                  type: string
+                avatarFgColor:
+                  type: string
+      responses:
+        '200':
+          description: Avatar uploaded successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  avatar:
+                    type: string
+        '400':
+          description: Invalid file
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Authentication required
+        '403':
+          description: Insufficient permissions (requires ADMIN)
+        '404':
+          description: User not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      summary: Remove avatar for a user (ADMIN only)
+      description: |
+        Removes the avatar for a specific user by username.
+
+        **Authentication**: User token with ADMIN role
+
+        **Permission**: Only ADMIN users.
+
+      tags:
+        - Users
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+      responses:
+        '200':
+          description: Avatar removed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSettings'
+        '401':
+          description: Authentication required
+        '403':
+          description: Insufficient permissions (requires ADMIN)
+        '404':
+          description: User not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /users/{username}/settings/avatar-colors:
+    put:
+      summary: Update avatar colors for a user (ADMIN only)
+      description: |
+        Updates avatar colors for a specific user by username.
+
+        **Authentication**: User token with ADMIN role
+
+        **Permission**: Only ADMIN users.
+
+      tags:
+        - Users
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/Username'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - avatarBgColor
+                - avatarFgColor
+              properties:
+                avatarPath:
+                  type: string
+                avatarBgColor:
+                  type: string
+                avatarFgColor:
+                  type: string
+      responses:
+        '200':
+          description: Avatar colors updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSettings'
+        '401':
+          description: Authentication required
+        '403':
+          description: Insufficient permissions (requires ADMIN)
+        '404':
+          description: User not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
     # ============================================
   # Organization Management
   # ============================================
@@ -2816,6 +3625,102 @@ components:
           type: string
           format: date-time
 
+    UserSettings:
+      type: object
+      description: User settings (password, token, API keys excluded)
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        role:
+          $ref: '#/components/schemas/Role'
+        settings:
+          type: object
+          description: User preferences and configuration
+          properties:
+            phone:
+              type: string
+              nullable: true
+            avatar:
+              type: string
+              nullable: true
+              description: URI to the user's avatar image or SVG path
+            avatarBgColor:
+              type: string
+              nullable: true
+              description: Background color for avatar (hex)
+              example: "#fa520f"
+            avatarFgColor:
+              type: string
+              nullable: true
+              description: Icon/text color for avatar (hex)
+              example: "#ffffff"
+            profile:
+              type: object
+              nullable: true
+              properties:
+                displayName:
+                  type: string
+                  nullable: true
+                  description: Public display name (overrides real name)
+                bio:
+                  type: string
+                  nullable: true
+                  maxLength: 200
+                city:
+                  type: string
+                  nullable: true
+                country:
+                  type: string
+                  nullable: true
+                dateOfBirth:
+                  type: string
+                  format: date
+                  nullable: true
+            socialLinks:
+              type: object
+              nullable: true
+              properties:
+                linkedin:
+                  type: string
+                  nullable: true
+                instagram:
+                  type: string
+                  nullable: true
+                facebook:
+                  type: string
+                  nullable: true
+                x:
+                  type: string
+                  nullable: true
+            notificationPrefs:
+              type: object
+              nullable: true
+              description: Map of notification kind to channel preferences
+              additionalProperties:
+                type: object
+                properties:
+                  email:
+                    type: boolean
+                  inbox:
+                    type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    # ------------------------------
+    # --        ORGANIZATIONS     --
     # ------------------------------
     # --         PRICINGS         --
     # ------------------------------

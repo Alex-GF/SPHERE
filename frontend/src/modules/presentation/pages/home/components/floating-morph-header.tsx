@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useAuth } from '../../../../auth/hooks/useAuth';
+import Avatar from '../../../../core/components/avatar';
 import type { NavItem } from '../data';
 
 type Props = {
@@ -199,15 +200,9 @@ export default function FloatingMorphHeader({ navItems, onNavigate }: Props) {
                   onClick={() => setIsUserMenuOpen(prev => !prev)}
                   aria-label="User settings"
                   aria-expanded={isUserMenuOpen}
-                  className="h-10 w-10 overflow-hidden rounded-full border border-black/15 bg-white"
+                  className="overflow-hidden rounded-full border border-black/15 bg-white"
                 >
-                  {authUser.user?.avatar ? (
-                    <img src={authUser.user.avatar} alt={authUser.user.firstName ?? 'User avatar'} className="h-full w-full object-cover" />
-                  ) : (
-                    <span className="flex h-full w-full items-center justify-center text-sm font-medium text-[#0f172a]">
-                      {authUser.user?.firstName?.[0] ?? 'U'}
-                    </span>
-                  )}
+                  <Avatar w={40} h={40} />
                 </button>
 
                 <div
@@ -341,14 +336,8 @@ export default function FloatingMorphHeader({ navItems, onNavigate }: Props) {
               className={`mt-2 rounded-[1.35rem] border border-black/10 bg-white px-5 py-4 transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] ${isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}
             >
               <div className="mb-3 flex items-center gap-3">
-                <div className="h-10 w-10 overflow-hidden rounded-full border border-black/10 bg-white">
-                  {authUser.user?.avatar ? (
-                    <img src={authUser.user.avatar} alt={authUser.user.firstName ?? 'User avatar'} className="h-full w-full object-cover" />
-                  ) : (
-                    <span className="flex h-full w-full items-center justify-center text-sm font-medium text-[#0f172a]">
-                      {authUser.user?.firstName?.[0] ?? 'U'}
-                    </span>
-                  )}
+                <div className="overflow-hidden rounded-full border border-black/10 bg-white">
+                  <Avatar w={40} h={40} />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-[#0f172a]">{authUser.user?.firstName ?? 'User'}</p>

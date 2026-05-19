@@ -1,5 +1,39 @@
 import { UserRole } from '../config/permissions';
 
+export interface UserPublicProfile {
+  displayName?: string;
+  bio?: string;
+  city?: string;
+  country?: string;
+  dateOfBirth?: string;
+}
+
+export interface UserSocialLinks {
+  linkedin?: string;
+  instagram?: string;
+  facebook?: string;
+  x?: string;
+}
+
+export type NotificationChannel = 'email' | 'inbox';
+export type NotificationKind =
+  | 'OrganizationInvitation'
+  | 'System'
+  | 'CollectionShared'
+  | 'PricingUpdated';
+
+export type NotificationPreferences = Record<string, Record<NotificationChannel, boolean>>;
+
+export interface UserSettings {
+  phone?: string;
+  avatar?: string;
+  avatarBgColor?: string;
+  avatarFgColor?: string;
+  profile?: UserPublicProfile;
+  socialLinks?: UserSocialLinks;
+  notificationPrefs?: NotificationPreferences;
+}
+
 export interface LeanUser {
   id: string;
   username: string;
@@ -8,7 +42,7 @@ export interface LeanUser {
   firstName: string;
   lastName: string;
   email: string;
-  avatar?: string;
+  settings?: UserSettings;
   token?: string;
   tokenExpiration?: Date;
   apiKeys: {

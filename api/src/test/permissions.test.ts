@@ -237,6 +237,32 @@ describe('Entity Permissions API integration', () => {
       expect(Array.isArray(response.body.pricings)).toBe(true);
     });
 
+    it('should preserve organization name and id in pricing responses', async () => {
+      const { user, organizationId } = await createAndLoginUser('USER');
+
+      const pricing = await createPricingForOrganization({
+        organizationId,
+        isPrivate: false,
+      });
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/users/me/pricings`)
+        .set('Authorization', `Bearer ${user.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.pricings.length).toBeGreaterThan(0);
+
+      const returnedPricing = response.body.pricings.find(
+        (p: any) => p.name === pricing.serviceName
+      );
+      expect(returnedPricing).toBeDefined();
+      expect(returnedPricing.organization).toBeDefined();
+      expect(returnedPricing.organization.id).toBe(organizationId);
+      expect(returnedPricing.organization.name).toBeDefined();
+      expect(typeof returnedPricing.organization.name).toBe('string');
+      expect(returnedPricing.organization.name.length).toBeGreaterThan(0);
+    });
+
     it('should allow ADMIN to query any user\'s pricings', async () => {
       const { user: targetUser, organizationId } = await createAndLoginUser('USER');
       const { user: adminUserObj } = await createAndLoginUser('ADMIN');
@@ -303,6 +329,26 @@ describe('Entity Permissions API integration', () => {
         expect(response.body.collections[0].permissions).toHaveProperty('PUT');
         expect(response.body.collections[0].permissions).toHaveProperty('DELETE');
       }
+    });
+
+    it('should preserve organization name and id in collection responses', async () => {
+      const { user, organizationId } = await createAndLoginUser('USER');
+
+      await createTestCollection({ _organizationId: organizationId });
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/users/me/collections`)
+        .set('Authorization', `Bearer ${user.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.collections.length).toBeGreaterThan(0);
+
+      const returnedCollection = response.body.collections[0];
+      expect(returnedCollection.organization).toBeDefined();
+      expect(returnedCollection.organization.id).toBe(organizationId);
+      expect(returnedCollection.organization.name).toBeDefined();
+      expect(typeof returnedCollection.organization.name).toBe('string');
+      expect(returnedCollection.organization.name.length).toBeGreaterThan(0);
     });
   });
 

@@ -52,7 +52,24 @@ class UserRepository extends RepositoryBase {
   }
 
   async findById(id: string): Promise<LeanUser | null> {
-    return await UserMongoose.findOne({ _id: id }).exec();
+    try {
+      const user = await UserMongoose.findOne({ _id: id }).exec();
+      return user ? user.toObject() : null;
+    } catch (err) {
+      return null;
+    }
+  }
+
+  async updateById(id: string, data: any): Promise<LeanUser | null> {
+    try {
+      const updatedUser = await UserMongoose.findByIdAndUpdate({ _id: id }, data, {
+        new: true,
+        projection: { password: 0 },
+      });
+      return updatedUser ? updatedUser.toObject() : null;
+    } catch (err) {
+      return null;
+    }
   }
 
   async findByToken(token: string): Promise<LeanUser | null> {

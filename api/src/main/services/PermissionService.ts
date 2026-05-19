@@ -187,7 +187,7 @@ class PermissionService {
           allPricings.push({
             ...pricing,
             permissions,
-            organization: { id: orgId, role: orgRole },
+            organization: { ...pricing.organization, id: orgId, role: orgRole },
           });
         }
         totalCount += result.total ?? result.pricings.length;
@@ -260,7 +260,7 @@ class PermissionService {
           allCollections.push({
             ...collection,
             permissions,
-            organization: { id: orgId, role: orgRole },
+            organization: { ...(collection as any).organization, id: orgId, role: orgRole },
           });
         }
         totalCount += result.total ?? result.collections.length;

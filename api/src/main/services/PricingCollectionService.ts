@@ -275,7 +275,14 @@ class PricingCollectionService {
       throw new Error('NOT FOUND: Pricing collection not found');
     }
 
-    const newAnalyticsEntry = this._computeCollectionAnalytics(collection);
+    // findById doesn't $lookup pricings, so we need to fetch them separately
+    const collectionWithPricings = await this.pricingCollectionRepository.findCollectionPricingsByOrganization(
+      collection.slug,
+      collection.organization.id
+    );
+
+    const analyticsData = collectionWithPricings ?? collection;
+    const newAnalyticsEntry = this._computeCollectionAnalytics(analyticsData);
 
     await this.pricingCollectionRepository.updateAnalytics(collection.id, newAnalyticsEntry);
   }

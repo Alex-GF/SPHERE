@@ -4,7 +4,6 @@ import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeli
 import { FaStar, FaAward } from 'react-icons/fa';
 import timelineData from './data/research-data';
 import { Helmet } from 'react-helmet-async';
-import { primary } from '../../../core/theme/palette';
 import { Link } from 'react-router-dom';
 
 export default function ResearchPage() {
@@ -14,7 +13,7 @@ export default function ResearchPage() {
         <title> SPHERE - Research </title>
       </Helmet>
       <div className="h-full w-full overflow-y-scroll bg-[#f5f5f5] p-2 pb-10">
-        <VerticalTimeline lineColor={primary[700]} className="research-timeline">
+        <VerticalTimeline lineColor="#FA5210" className="research-timeline">
           {timelineData.map((item, index) => (
             <VerticalTimelineElement
               key={index}
@@ -27,20 +26,20 @@ export default function ResearchPage() {
             >
               <div className="bg-transparent p-2 shadow-none">
                 <Link to={item.href} target="_blank" rel="noopener noreferrer">
-                  <h3 className="text-2xl font-bold text-sphere-primary-700 underline underline-offset-2">
+                  <h3 className="text-2xl font-bold text-tp-ink underline underline-offset-2">
                     {item.title}
                   </h3>
                 </Link>
-                <p className="mb-1 text-base text-sphere-primary-700">
+                <p className="mb-1 text-base text-tp-ink">
                   {item.subtitle}
                 </p>
                 {item.text.map((element, idx) => (
-                  <p className="text-sm text-black" key={idx}>
+                  <p className="text-sm text-tp-ink" key={idx}>
                     {element}
                   </p>
                 ))}
                 {item.awards && (
-                  <div className="mt-[1.2rem] font-bold text-black">
+                  <div className="mt-[1.2rem] font-bold text-tp-ink">
                     This work has been awarded with:
                     <ul className="list-disc">
                       {item.awards.map((award, idx) => (
@@ -51,8 +50,8 @@ export default function ResearchPage() {
                 )}
               </div>
               {item.awards && (
-                <div className="absolute right-[-30px] top-[-30px] flex h-[80px] w-[80px] items-center justify-center rounded-full border-4 border-sphere-primary-700 bg-white">
-                  <FaAward color={primary[700]} fontSize={40} />
+                <div className="absolute -right-7.5 -top-7.5 flex h-20 w-20 items-center justify-center rounded-full border-4 border-tp-primary bg-white">
+                  <FaAward color="#FA5210" fontSize={40} />
                 </div>
               )}
             </VerticalTimelineElement>

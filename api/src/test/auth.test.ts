@@ -23,6 +23,7 @@ import OrganizationMembershipMongoose from '../main/repositories/mongoose/models
 import PricingCollectionMongoose from '../main/repositories/mongoose/models/PricingCollectionMongoose';
 import PricingMongoose from '../main/repositories/mongoose/models/PricingMongoose';
 import OrganizationService from '../main/services/OrganizationService';
+import { generateJwtToken } from '../main/utils/users/helpers';
 import mongoose from 'mongoose';
 
 dotenv.config();
@@ -167,7 +168,6 @@ describe('Auth Middleware - Integration Tests', () => {
 			firstName: 'API',
 			lastName: 'Key',
 			email: `${username}@example.com`,
-			token: `token_${randomSuffix()}_${randomSuffix()}`,
 			tokenExpiration: new Date(Date.now() + 24 * 60 * 60 * 1000),
 			apiKeys: [
 				{
@@ -186,12 +186,14 @@ describe('Auth Middleware - Integration Tests', () => {
 		});
 
 		const saved = await userDoc.save();
+		const id = saved._id.toString();
+		const token = generateJwtToken({ id, username, role: params.role ?? 'USER' });
 		usersToDelete.add(username);
 
 		return {
-			id: saved._id.toString(),
+			id,
 			username,
-			token: userDoc.token,
+			token,
 			role: params.role ?? 'USER',
 			apiKey,
 		};
@@ -199,7 +201,6 @@ describe('Auth Middleware - Integration Tests', () => {
 
 	const createPersistedUser = async (params: { role: 'USER' | 'ADMIN'; prefix: string }) => {
 		const username = `${params.prefix}_${randomSuffix()}`;
-		const token = `token_${randomSuffix()}_${randomSuffix()}`;
 		const userDoc = new UserMongoose({
 			username,
 			password: TEST_PASSWORD,
@@ -207,16 +208,17 @@ describe('Auth Middleware - Integration Tests', () => {
 			firstName: 'Auth',
 			lastName: params.role,
 			email: `${username}@example.com`,
-			token,
 			tokenExpiration: new Date(Date.now() + 24 * 60 * 60 * 1000),
 			avatar: `${process.env.AVATARS_FOLDER}/default-avatar.png`,
 		});
 
 		const saved = await userDoc.save();
+		const id = saved._id.toString();
+		const token = generateJwtToken({ id, username, role: params.role });
 		usersToDelete.add(username);
 
 		return {
-			id: saved._id.toString(),
+			id,
 			username,
 			token,
 			role: params.role,

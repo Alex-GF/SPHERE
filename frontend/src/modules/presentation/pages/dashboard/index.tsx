@@ -1,10 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../../../auth/hooks/useAuth';
 import { useOrganization } from '../../../organization/hooks/useOrganization';
 import { usePricingsApi } from '../../../pricing/api/pricingsApi';
 import { usePricingCollectionsApi } from '../../../profile/api/pricingCollectionsApi';
 import { useRouter } from '../../../core/hooks/useRouter';
+import { useRecentItems } from '../../../core/hooks/useRecentItems';
+import PricingCard from '../../../pricing/components/pricing-card';
+import CollectionCard from '../../../pricing/components/collection-card';
 import { staggerContainer, fadeInUp, transitionDefault } from '../../../core/utils/motion-variants';
 
 interface PricingEntry {
@@ -14,6 +17,11 @@ interface PricingEntry {
   currency: string;
   organization: { id: string; name: string; displayName: string; avatar: string };
   collection: { id: string; name: string; slug: string } | null;
+  analytics: {
+    configurationSpaceSize: number;
+    minSubscriptionPrice: number;
+    maxSubscriptionPrice: number;
+  };
 }
 
 interface CollectionEntry {
@@ -24,29 +32,58 @@ interface CollectionEntry {
   numberOfPricings: number;
 }
 
+const RECENT_LIMIT = 3;
+
 export default function DashboardPage() {
   const { authUser } = useAuth();
   const { organizations } = useOrganization();
-  const { getLoggedUserPricings } = usePricingsApi();
-  const { getLoggedUserCollections } = usePricingCollectionsApi();
+  const { getPermissionBasedUserPricings } = usePricingsApi();
+  const { getPermissionBasedUserCollections } = usePricingCollectionsApi();
   const router = useRouter();
+  const { recentPricings, recentCollections } = useRecentItems();
 
-  const [pricings, setPricings] = useState<PricingEntry[]>([]);
-  const [collections, setCollections] = useState<CollectionEntry[]>([]);
+  const [accessiblePricings, setAccessiblePricings] = useState<PricingEntry[]>([]);
+  const [accessibleCollections, setAccessibleCollections] = useState<CollectionEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!authUser.isAuthenticated) return;
 
     Promise.all([
-      getLoggedUserPricings().catch(() => ({ pricings: [] })),
-      getLoggedUserCollections().catch(() => ({ collections: [] })),
+      getPermissionBasedUserPricings().catch(() => ({ pricings: [] })),
+      getPermissionBasedUserCollections().catch(() => ({ collections: [] })),
     ]).then(([pricingsData, collectionsData]) => {
-      setPricings(pricingsData.pricings ?? []);
-      setCollections(collectionsData.collections ?? []);
+      setAccessiblePricings(pricingsData.pricings ?? []);
+      setAccessibleCollections(collectionsData.collections ?? []);
       setIsLoading(false);
     });
-  }, [authUser.isAuthenticated]);
+  }, [authUser.isAuthenticated]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const recentPricingsData = useMemo(() => {
+    const accessible = new Map(
+      accessiblePricings.map(p => [`${p.organization.id}/${p.name}`, p])
+    );
+    return recentPricings
+      .filter(item => accessible.has(item.id))
+      .slice(0, RECENT_LIMIT)
+      .map(item => {
+        const pricing = accessible.get(item.id)!;
+        return { ...pricing, visitedAt: item.visitedAt };
+      });
+  }, [recentPricings, accessiblePricings]);
+
+  const recentCollectionsData = useMemo(() => {
+    const accessible = new Map(
+      accessibleCollections.map(c => [`${c.organization.id}/${c.slug || c.name}`, c])
+    );
+    return recentCollections
+      .filter(item => accessible.has(item.id))
+      .slice(0, RECENT_LIMIT)
+      .map(item => {
+        const collection = accessible.get(item.id)!;
+        return { ...collection, visitedAt: item.visitedAt };
+      });
+  }, [recentCollections, accessibleCollections]);
 
   const firstName = authUser.user?.firstName ?? 'there';
 
@@ -62,8 +99,8 @@ export default function DashboardPage() {
       color: 'bg-tp-primary/10 text-tp-primary',
     },
     {
-      label: 'My Pricings',
-      value: pricings.length,
+      label: 'Pricings',
+      value: accessiblePricings.length,
       icon: (
         <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
@@ -73,7 +110,7 @@ export default function DashboardPage() {
     },
     {
       label: 'Collections',
-      value: collections.length,
+      value: accessibleCollections.length,
       icon: (
         <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
@@ -240,37 +277,21 @@ export default function DashboardPage() {
               </button>
             </div>
 
-            {pricings.length === 0 ? (
+            {recentPricingsData.length === 0 ? (
               <div className="rounded-xl border border-tp-hairline-soft bg-tp-canvas p-6 text-center">
-                <p className="text-sm text-tp-steel">No pricings yet</p>
+                <p className="text-sm text-tp-steel">No recent activity yet</p>
                 <button
                   type="button"
-                  onClick={() => router.push('/editor')}
+                  onClick={() => router.push('/pricings')}
                   className="mt-2 text-sm font-medium text-tp-primary hover:underline"
                 >
-                  Create your first pricing
+                  Browse pricings
                 </button>
               </div>
             ) : (
-              <div className="space-y-2">
-                {pricings.slice(0, 5).map(pricing => (
-                  <button
-                    key={`${pricing.organization.name}-${pricing.name}`}
-                    type="button"
-                    onClick={() => router.push(`/pricings/${pricing.organization.name}/${pricing.name}`)}
-                    className="flex w-full items-center justify-between rounded-xl border border-tp-hairline-soft bg-tp-canvas px-4 py-3 text-left transition-all hover:border-tp-hairline-strong hover:shadow-elevation-1"
-                  >
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-medium text-tp-ink">{pricing.name}</p>
-                      <p className="text-[11px] text-tp-steel">
-                        v{pricing.version} · {pricing.currency}
-                        {pricing.collection?.name && ` · ${pricing.collection.name}`}
-                      </p>
-                    </div>
-                    <span className="text-[11px] text-tp-muted">
-                      {new Date(pricing.createdAt).toLocaleDateString()}
-                    </span>
-                  </button>
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {recentPricingsData.map(pricing => (
+                  <PricingCard key={`${pricing.organization.id}-${pricing.name}`} data={pricing} />
                 ))}
               </div>
             )}
@@ -293,36 +314,21 @@ export default function DashboardPage() {
               </button>
             </div>
 
-            {collections.length === 0 ? (
+            {recentCollectionsData.length === 0 ? (
               <div className="rounded-xl border border-tp-hairline-soft bg-tp-canvas p-6 text-center">
-                <p className="text-sm text-tp-steel">No collections yet</p>
+                <p className="text-sm text-tp-steel">No recent activity yet</p>
                 <button
                   type="button"
-                  onClick={() => router.push('/pricings/collections/new')}
+                  onClick={() => router.push('/pricings/collections')}
                   className="mt-2 text-sm font-medium text-tp-primary hover:underline"
                 >
-                  Create a collection
+                  Browse collections
                 </button>
               </div>
             ) : (
-              <div className="space-y-2">
-                {collections.slice(0, 5).map(collection => (
-                  <button
-                    key={collection.id}
-                    type="button"
-                    onClick={() => router.push(`/pricings/collections/${collection.organization.id}/${collection.slug || collection.name}`)}
-                    className="flex w-full items-center justify-between rounded-xl border border-tp-hairline-soft bg-tp-canvas px-4 py-3 text-left transition-all hover:border-tp-hairline-strong hover:shadow-elevation-1"
-                  >
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-medium text-tp-ink">{collection.name}</p>
-                      <p className="text-[11px] text-tp-steel">
-                        {collection.numberOfPricings} {collection.numberOfPricings === 1 ? 'pricing' : 'pricings'}
-                      </p>
-                    </div>
-                    <span className="text-[11px] text-tp-muted">
-                      {collection.organization.displayName || collection.organization.name}
-                    </span>
-                  </button>
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {recentCollectionsData.map(collection => (
+                  <CollectionCard key={`${collection.organization.id}-${collection.slug}`} collection={collection} />
                 ))}
               </div>
             )}

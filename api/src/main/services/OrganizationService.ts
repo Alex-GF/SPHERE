@@ -3,6 +3,7 @@ import container from '../config/container';
 import OrganizationRepository from '../repositories/mongoose/OrganizationRepository';
 import OrganizationMembershipRepository from '../repositories/mongoose/OrganizationMembershipRepository';
 import OrganizationInvitationRepository from '../repositories/mongoose/OrganizationInvitationRepository';
+import NotificationService from './NotificationService';
 import { OrgRole } from '../types/models/Organization';
 import { LeanUser } from '../types/models/User';
 import { processFileUris } from './FileService';
@@ -11,11 +12,13 @@ class OrganizationService {
   private organizationRepository: OrganizationRepository;
   private organizationMembershipRepository: OrganizationMembershipRepository;
   private organizationInvitationRepository: OrganizationInvitationRepository;
+  private notificationService: NotificationService;
 
   constructor() {
     this.organizationRepository = container.resolve('organizationRepository');
     this.organizationMembershipRepository = container.resolve('organizationMembershipRepository');
     this.organizationInvitationRepository = container.resolve('organizationInvitationRepository');
+    this.notificationService = container.resolve('notificationService');
   }
 
   async index() {
@@ -304,7 +307,7 @@ class OrganizationService {
     const expiresInDays = options?.expiresInDays ?? 7;
     const expiresAt = new Date(Date.now() + expiresInDays * 24 * 60 * 60 * 1000);
 
-    return this.organizationInvitationRepository.create({
+    const invitation = await this.organizationInvitationRepository.create({
       _organizationId: organizationId,
       code,
       createdBy: userId,
@@ -312,6 +315,22 @@ class OrganizationService {
       maxUses: options?.maxUses ?? null,
       useCount: 0,
     });
+
+    try {
+      const org = await this.organizationRepository.findById(organizationId);
+      const orgName = org?.displayName || org?.name || 'an organization';
+      await this.notificationService.createNotification({
+        userId,
+        kind: 'System',
+        title: 'Invitation link created',
+        message: `You created an invitation link for "${orgName}"`,
+        data: { organizationId, code, invitationId: String(invitation._id) },
+      });
+    } catch {
+      // Notification creation should not fail the invitation
+    }
+
+    return invitation;
   }
 
   async listInvitations(organizationId: string) {

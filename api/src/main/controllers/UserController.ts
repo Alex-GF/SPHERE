@@ -1,13 +1,28 @@
 import container from '../config/container';
 import UserService from '../services/UserService';
+import UserSettingsService from '../services/UserSettingsService';
 import { LeanUser, UserFilters } from '../types/models/User';
 import { handleError } from '../utils/users/helpers';
+import multer from 'multer';
+
+const settingsUpload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 2 * 1024 * 1024 },
+  fileFilter: (_req, file, cb) => {
+    const allowed = ['image/jpeg', 'image/png', 'image/webp'];
+    if (allowed.includes(file.mimetype)) cb(null, true);
+    else cb(new Error('Only JPEG, PNG and WebP images are allowed'));
+  },
+});
 
 class UserController {
   private userService: UserService;
+  private userSettingsService: UserSettingsService;
+  public settingsUploadMiddleware: any;
 
   constructor() {
     this.userService = container.resolve('userService');
+    this.userSettingsService = container.resolve('userSettingsService');
     this.index = this.index.bind(this);
     this.show = this.show.bind(this);
     this.getCurrentUser = this.getCurrentUser.bind(this);
@@ -16,6 +31,15 @@ class UserController {
     this.destroy = this.destroy.bind(this);
     this.update = this.update.bind(this);
     this.updateToken = this.updateToken.bind(this);
+    this.getSettings = this.getSettings.bind(this);
+    this.updateAccountSettings = this.updateAccountSettings.bind(this);
+    this.updateProfile = this.updateProfile.bind(this);
+    this.updateSocialLinks = this.updateSocialLinks.bind(this);
+    this.updateNotificationPrefs = this.updateNotificationPrefs.bind(this);
+    this.uploadAvatar = this.uploadAvatar.bind(this);
+    this.removeAvatar = this.removeAvatar.bind(this);
+    this.updateAvatarColors = this.updateAvatarColors.bind(this);
+    this.settingsUploadMiddleware = settingsUpload.single('avatar');
   }
 
   async index(req: any, res: any) {
@@ -33,7 +57,6 @@ class UserController {
   }
 
   async show(req: any, res: any) {
-    // Only returns PUBLIC information of if reqUser ask for another username
     try {
       const targetUsername = req.params.username;
       const user = await this.userService.show(targetUsername);
@@ -94,9 +117,8 @@ class UserController {
 
   async login(req: any, res: any) {
     try {
-      const user: LeanUser = await this.userService.login(req.body.loginField, req.body.password);
-
-      res.json({ token: user.token });
+      const { user, token } = await this.userService.login(req.body.loginField, req.body.password);
+      res.json({ token });
     } catch (err: any) {
       if (err.message.toLowerCase().includes('invalid credentials')) {
         return res.status(401).send({ error: err.message });
@@ -132,6 +154,140 @@ class UserController {
       const result = await this.userService.destroy(req.user, req.params.username);
       const message = result ? 'Successfully deleted.' : 'Could not delete user.';
       res.json({ message });
+    } catch (err: any) {
+      const { status, message } = handleError(err);
+      res.status(status).send({ error: message });
+    }
+  }
+
+  // ============================================
+  // Settings endpoints
+  // ============================================
+
+  private sanitizeSettingsResponse(user: any) {
+    const { password, token, tokenExpiration, apiKeys, ...rest } = user;
+    return rest;
+  }
+
+  private async resolveTargetUserId(req: any): Promise<string> {
+    if (req.params.username) {
+      if (req.user.role !== 'ADMIN') {
+        throw new Error('PERMISSION ERROR: Only ADMIN users can access other users\' settings');
+      }
+      const targetUser = await this.userService.exists(req.params.username);
+      if (!targetUser) throw new Error('NOT FOUND: User not found');
+      return targetUser.id;
+    }
+    return req.user.id;
+  }
+
+  async getSettings(req: any, res: any) {
+    try {
+      const targetUserId = await this.resolveTargetUserId(req);
+      const settings = await this.userSettingsService.getSettings(targetUserId);
+      res.json(settings);
+    } catch (err: any) {
+      const { status, message } = handleError(err);
+      res.status(status).send({ error: message });
+    }
+  }
+
+  async updateAccountSettings(req: any, res: any) {
+    try {
+      const targetUserId = await this.resolveTargetUserId(req);
+      const { email, firstName, lastName, phone } = req.body;
+      const settings = await this.userSettingsService.updateAccount(targetUserId, { email, firstName, lastName, phone });
+      res.json(settings);
+    } catch (err: any) {
+      const { status, message } = handleError(err);
+      res.status(status).send({ error: message });
+    }
+  }
+
+  async updateProfile(req: any, res: any) {
+    try {
+      const targetUserId = await this.resolveTargetUserId(req);
+      const { displayName, bio, city, country, dateOfBirth } = req.body;
+      const settings = await this.userSettingsService.updateProfile(targetUserId, { displayName, bio, city, country, dateOfBirth });
+      res.json(settings);
+    } catch (err: any) {
+      const { status, message } = handleError(err);
+      res.status(status).send({ error: message });
+    }
+  }
+
+  async updateSocialLinks(req: any, res: any) {
+    try {
+      const targetUserId = await this.resolveTargetUserId(req);
+      const { linkedin, instagram, facebook, x } = req.body;
+      const settings = await this.userSettingsService.updateSocialLinks(targetUserId, { linkedin, instagram, facebook, x });
+      res.json(settings);
+    } catch (err: any) {
+      const { status, message } = handleError(err);
+      res.status(status).send({ error: message });
+    }
+  }
+
+  async updateNotificationPrefs(req: any, res: any) {
+    try {
+      const targetUserId = await this.resolveTargetUserId(req);
+      const settings = await this.userSettingsService.updateNotificationPrefs(targetUserId, req.body);
+      res.json(settings);
+    } catch (err: any) {
+      const { status, message } = handleError(err);
+      res.status(status).send({ error: message });
+    }
+  }
+
+  async uploadAvatar(req: any, res: any) {
+    try {
+      if (!req.file) {
+        return res.status(400).send({ error: 'No file uploaded' });
+      }
+
+      const targetUserId = await this.resolveTargetUserId(req);
+      const fs = await import('fs');
+      const path = await import('path');
+
+      const ext = req.file.originalname.split('.').pop() || 'webp';
+      const filename = `${targetUserId}-${Date.now()}.${ext}`;
+      const folder = process.env.AVATARS_FOLDER || 'public/static/avatars/users';
+
+      fs.mkdirSync(folder, { recursive: true });
+      const filePath = path.join(folder, filename);
+      fs.writeFileSync(filePath, req.file.buffer);
+
+      const avatarPath = `${process.env.AVATARS_FOLDER?.replace("public/", "") || 'public/static/avatars/users/uploaded'}/${filename}`;
+      const updated = await this.userSettingsService.updateAvatar(targetUserId, {
+        avatarPath,
+        avatarBgColor: req.body.avatarBgColor || '#fa520f',
+        avatarFgColor: req.body.avatarFgColor || '#ffffff',
+      });
+
+      res.json(this.sanitizeSettingsResponse(updated));
+    } catch (err: any) {
+      const { status, message } = handleError(err);
+      res.status(status).send({ error: message });
+    }
+  }
+
+  async removeAvatar(req: any, res: any) {
+    try {
+      const targetUserId = await this.resolveTargetUserId(req);
+      const settings = await this.userSettingsService.removeAvatar(targetUserId);
+      res.json(settings);
+    } catch (err: any) {
+      const { status, message } = handleError(err);
+      res.status(status).send({ error: message });
+    }
+  }
+
+  async updateAvatarColors(req: any, res: any) {
+    try {
+      const targetUserId = await this.resolveTargetUserId(req);
+      const { avatarPath, avatarBgColor, avatarFgColor } = req.body;
+      const settings = await this.userSettingsService.updateAvatar(targetUserId, { avatarPath, avatarBgColor, avatarFgColor });
+      res.json(settings);
     } catch (err: any) {
       const { status, message } = handleError(err);
       res.status(status).send({ error: message });

@@ -35,7 +35,7 @@ export default function ContributionDetailsModal({
                     remarkPlugins={[remarkGfm]}
                     components={{
                       a: ({ node, ...props }) => (
-                        <a {...props} target="_blank" rel="noopener noreferrer" className="text-sphere-primary-700 underline">
+                        <a {...props} target="_blank" rel="noopener noreferrer" className="text-tp-ink underline">
                           {props.children}
                         </a>
                       ),

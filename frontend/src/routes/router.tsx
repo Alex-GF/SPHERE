@@ -28,6 +28,7 @@ import OrganizationsListPage from '../modules/organization/pages/organizations-l
 import CreateOrganizationPage from '../modules/organization/pages/create-organization';
 import OrganizationDetailPage from '../modules/organization/pages/organization-detail';
 import OrganizationJoinPage from '../modules/organization/pages/organization-join';
+import SettingsPage from '../modules/settings/pages/SettingsPage';
 
 function RootPage() {
   const { authUser } = useAuth();
@@ -105,6 +106,7 @@ export default function Router() {
         { element: <CreateCollectionPage />, path: '/pricings/collections/new' },
         { element: <MyPricingsPage />, path: '/me/pricings' },
         { element: <OrganizationsListPage />, path: '/me/orgs' },
+        { element: <SettingsPage />, path: '/me/settings' },
         { element: <CreateOrganizationPage />, path: '/orgs/new' },
         { element: <OrganizationJoinPage />, path: '/orgs/join/:code' },
         { element: <OrganizationDetailPage />, path: '/orgs/:organizationId' },

@@ -326,8 +326,16 @@ class PricingCollectionRepository extends RepositoryBase {
         {
           $lookup: {
             from: 'pricings',
-            localField: '_id',
-            foreignField: '_collectionId',
+            let: { localId: { $toString: '$_id' } },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $eq: ['$_collectionId', '$$localId'],
+                  },
+                },
+              },
+            ],
             as: 'pricings',
           },
         },

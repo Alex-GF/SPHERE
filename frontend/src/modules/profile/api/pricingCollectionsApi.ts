@@ -68,6 +68,24 @@ export function usePricingCollectionsApi() {
       });
   }, [fetchWithInterceptor, basicHeaders, username]);
 
+  const USERS_BASE_PATH = import.meta.env.VITE_API_URL + '/users';
+
+  const getPermissionBasedUserCollections = useCallback(async () => {
+    return fetchWithInterceptor(`${USERS_BASE_PATH}/me/collections?limit=100`, {
+      method: 'GET',
+      headers: basicHeaders,
+    })
+      .then(response => response.json())
+      .then(data => ({
+        ...data,
+        collections: data.collections ?? [],
+      }))
+      .catch(async error => {
+        const body = await (error as Response).json().catch(() => ({}));
+        return Promise.reject(body as Error);
+      });
+  }, [fetchWithInterceptor, basicHeaders]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const createCollection = useCallback(async (collection: CollectionToCreate) => {
     return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${username}`, {
       method: 'POST',
@@ -205,6 +223,7 @@ export function usePricingCollectionsApi() {
 
   return useMemo(() => ({
     getLoggedUserCollections,
+    getPermissionBasedUserCollections,
     createCollection,
     createBulkCollection,
     getCollectionByOwnerAndName,
@@ -215,6 +234,7 @@ export function usePricingCollectionsApi() {
     deleteCollection
   }), [
     getLoggedUserCollections,
+    getPermissionBasedUserCollections,
     createCollection,
     createBulkCollection,
     getCollectionByOwnerAndName,

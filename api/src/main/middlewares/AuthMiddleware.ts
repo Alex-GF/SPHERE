@@ -4,7 +4,7 @@ import { HttpMethod } from '../types/permissions';
 import { extractApiPath, matchPath } from '../utils/routeMatcher';
 import { DEFAULT_PERMISSION_DENIED_MESSAGE, ROUTE_PERMISSIONS } from '../config/permissions';
 import UserRepository from '../repositories/mongoose/UserRepository';
-import { handleError } from '../utils/users/helpers';
+import { handleError, verifyJwtToken } from '../utils/users/helpers';
 import { ApiKey } from '../types/models/User';
 import { ROLE_WEIGHT } from '../types/models/Organization';
 import { EntityType, PermissionType } from '../types/models/EntityPermission';
@@ -66,19 +66,23 @@ async function authenticateApiKey(req: Request, apiKey: string): Promise<void> {
 }
 
 /**
- * Authenticates a User API Key and populates req.user
+ * Authenticates a User via JWT token and populates req.user
  */
 async function authenticateToken(req: Request, token: string): Promise<void> {
   const userRepository: UserRepository = container.resolve('userRepository');
 
-  const user = await userRepository.findOne({ token: token });
-
-  if (!user) {
-    throw new Error('UNAUTHORIZED: Invalid User Token');
+  // Try JWT verification first
+  let decoded: { id: string; username: string; role: string };
+  try {
+    decoded = verifyJwtToken(token);
+  } catch {
+    throw new Error('UNAUTHORIZED: Invalid or expired token');
   }
 
-  if (user.tokenExpiration && new Date() > new Date(user.tokenExpiration)) {
-    throw new Error('UNAUTHORIZED: User Token has expired');
+  // Look up the full user document by ID from the JWT payload
+  const user = await userRepository.findById(decoded.id);
+  if (!user) {
+    throw new Error('UNAUTHORIZED: User not found');
   }
 
   (req as any).user = user;

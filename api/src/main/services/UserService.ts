@@ -5,7 +5,7 @@ import { USER_ROLES } from '../types/config/permissions';
 import { LeanUser, UserFilters } from '../types/models/User';
 import { processFileUris } from './FileService';
 import bcrypt from 'bcryptjs';
-import { generateUserTokenDTO, hashPassword } from '../utils/users/helpers';
+import { generateUserTokenDTO, generateJwtToken, hashPassword } from '../utils/users/helpers';
 import OrganizationService from './OrganizationService';
 
 class UserService {
@@ -42,7 +42,9 @@ class UserService {
       throw new Error('NOT FOUND: User not found');
     }
 
-    processFileUris(user, ['avatar']);
+    if (user.settings?.avatar) {
+      processFileUris(user.settings, ['avatar']);
+    }
 
     return user;
   }
@@ -65,7 +67,8 @@ class UserService {
       );
     }
 
-    newUser.avatar = newUser.avatar || `${process.env.AVATARS_FOLDER}/default-avatar.png`;
+    if (!newUser.settings) newUser.settings = {};
+    newUser.settings.avatar = newUser.settings.avatar || `${process.env.AVATARS_FOLDER}/default-avatar.png`;
     newUser = { ...newUser, ...generateUserTokenDTO() };
 
     const registeredUser = await this.userRepository.create(newUser);
@@ -91,15 +94,16 @@ class UserService {
       throw new Error('INVALID DATA: User not found');
     }
 
-    const updatedUser = await this.userRepository.updateToken(
-      targetUsername,
-      generateUserTokenDTO()
-    );
+    // Generate a new JWT token
+    const token = generateJwtToken({ id: user.id, username: user.username, role: user.role });
 
-    return { token: updatedUser!.token, tokenExpiration: updatedUser!.tokenExpiration };
+    // Also update the legacy token in DB
+    await this.userRepository.updateToken(targetUsername, generateUserTokenDTO());
+
+    return { token, tokenExpiration: new Date(Date.now() + 24 * 60 * 60 * 1000) };
   }
 
-  async login(loginField: string, password: string): Promise<LeanUser> {
+  async login(loginField: string, password: string): Promise<{ user: LeanUser; token: string }> {
     let user: LeanUser | null = await this.userRepository.findByUsername(loginField, "+password");
 
     if (!user) {
@@ -115,12 +119,13 @@ class UserService {
       throw new Error('INVALID DATA: Invalid credentials');
     }
 
-    const updatedUser = await this.userRepository.updateToken(
-      user.username,
-      generateUserTokenDTO()
-    );
+    // Generate JWT token
+    const token = generateJwtToken({ id: user.id, username: user.username, role: user.role });
 
-    return updatedUser!;
+    // Also store the legacy token in DB for backward compatibility
+    await this.userRepository.updateToken(user.username, generateUserTokenDTO());
+
+    return { user, token };
   }
 
   async update(reqUser: LeanUser, targetUsername: string, data: any) {
@@ -175,7 +180,9 @@ class UserService {
       }
     }
 
-    processFileUris(user, ['avatar']);
+    if ((user as any).settings?.avatar) {
+      processFileUris((user as any).settings, ['avatar']);
+    }
 
     return user;
   }

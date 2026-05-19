@@ -50,6 +50,12 @@ export const ROUTE_PERMISSIONS: RoutePermission[] = [
     methods: ['GET'],
     allowedUserRoles: ['ADMIN', 'USER'],
   },
+  // User settings: /users/me/settings (own settings)
+  {
+    path: '/users/me/settings/**',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedUserRoles: ['ADMIN', 'USER'],
+  },
   {
     path: '/users/**',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
@@ -186,6 +192,15 @@ export const ROUTE_PERMISSIONS: RoutePermission[] = [
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     allowedUserRoles: ['ADMIN', 'USER'],
     allowedOrganizationRoles: ['OWNER', 'ADMIN'],
+  },
+
+  // ============================================
+  // Notification Routes
+  // ============================================
+  {
+    path: '/notifications/**',
+    methods: ['GET', 'PUT', 'DELETE'],
+    allowedUserRoles: ['ADMIN', 'USER'],
   },
 
   // ============================================

@@ -27,11 +27,55 @@ const loadFileRoutes = function (app: express.Application) {
   app
     .route(baseUrl + '/users/login')
     .post(UserValidation.login, handleValidation, userController.login);
-  
+
+  // ============================================
+  // /users/me routes (must come before /users/:username)
+  // ============================================
   app
     .route(baseUrl + '/users/me')
     .get(userController.getCurrentUser);
 
+  // ============================================
+  // /users/me/settings routes (before /users/:username)
+  // ============================================
+  app
+    .route(baseUrl + '/users/me/settings')
+    .get(userController.getSettings)
+    .put(userController.updateAccountSettings);
+
+  app
+    .route(baseUrl + '/users/me/settings/profile')
+    .put(userController.updateProfile);
+
+  app
+    .route(baseUrl + '/users/me/settings/social-links')
+    .put(userController.updateSocialLinks);
+
+  app
+    .route(baseUrl + '/users/me/settings/notifications')
+    .put(userController.updateNotificationPrefs);
+
+  app
+    .route(baseUrl + '/users/me/settings/avatar')
+    .post((req, res) => {
+      userController.settingsUploadMiddleware(req, res, (err: any) => {
+        if (err) {
+          if (err.code === 'LIMIT_FILE_SIZE')
+            return res.status(400).json({ error: 'File size must be less than 2MB' });
+          return res.status(400).json({ error: err.message });
+        }
+        userController.uploadAvatar(req, res);
+      });
+    })
+    .delete(userController.removeAvatar);
+
+  app
+    .route(baseUrl + '/users/me/settings/avatar-colors')
+    .put(userController.updateAvatarColors);
+
+  // ============================================
+  // /users/:username routes (after /users/me)
+  // ============================================
   app
     .route(baseUrl + '/users/:username')
     .get(checkEntityExists(userService, 'username'), userController.show)
