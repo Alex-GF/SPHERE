@@ -1,4 +1,4 @@
-import Header from './header';
+import Header from './editor-layout/editor-header';
 import Main from './main';
 import { useState } from 'react';
 import { createUrlWithEncodedYaml, parseStringYamlToEncodedYaml } from '../services/export.service';
@@ -71,13 +71,13 @@ export default function EditorLayout({ children }: { children?: React.ReactNode 
 
   return (
     <EditorValueContext.Provider value={{ editorValue, setEditorValue }}>
-      <div className="grid min-h-dvh grid-rows-[auto_1fr]">
-        <Header renderSharedLink={renderSharedLink} renderYamlImport={renderYamlImport} />
+      <div className="flex flex-col min-h-screen">
+        <Header onShareLink={renderSharedLink} onImport={renderYamlImport} />
         <Main>{children}</Main>
       </div>
       {sharedLinkModalOpen && (
         <div className="fixed inset-0 z-50 flex cursor-pointer items-center justify-center bg-black/60 p-4" role="dialog" aria-modal="true" onClick={handleSharedLinkClose}>
-          <div className="w-full max-w-[600px] rounded-3xl bg-white px-8 pb-7 pt-8 shadow-[0_22px_60px_rgba(15,23,42,0.35)]" onClick={(e) => e.stopPropagation()}>
+          <div className="w-full max-w-150 rounded-3xl bg-white px-8 pb-7 pt-8 shadow-[0_22px_60px_rgba(15,23,42,0.35)]" onClick={(e) => e.stopPropagation()}>
             <h2 className="text-center text-[20px] font-extrabold leading-tight text-slate-800">
               Your pricing is a step away from the world
             </h2>
