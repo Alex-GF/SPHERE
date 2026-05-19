@@ -370,6 +370,7 @@ function PricingAssistantPage({ playground = false }: Props) {
                   onQuestionChange={setQuestion}
                   onSubmit={!playground ? handleSubmit : handlePlaygroundSubmit}
                   onFileDrop={handleFilesSelected}
+                  onOpenContext={() => setShowMobileContext(true)}
                 />
               </div>
 
@@ -388,22 +389,6 @@ function PricingAssistantPage({ playground = false }: Props) {
             </div>
           </HarveyLayout>
 
-          {/* Mobile context toggle button */}
-          <button
-            type="button"
-            onClick={() => setShowMobileContext(true)}
-            className="fixed bottom-20 right-4 z-40 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-tp-primary text-tp-on-primary shadow-elevation-4 transition-colors hover:bg-tp-primary-deep lg:hidden"
-          >
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
-            </svg>
-            {contextItems.length > 0 && (
-              <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-tp-canvas text-[10px] font-bold text-tp-ink shadow-sm">
-                {contextItems.length}
-              </span>
-            )}
-          </button>
-
           {/* Mobile context panel overlay */}
           <AnimatePresence>
             {showMobileContext && (
@@ -419,7 +404,7 @@ function PricingAssistantPage({ playground = false }: Props) {
                   initial={{ x: '100%' }}
                   animate={{ x: 0 }}
                   exit={{ x: '100%' }}
-                  transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                  transition={{ type: 'tween', duration: 0.2 }}
                   className="fixed bottom-0 right-0 top-0 z-50 w-[320px] max-w-[85vw] border-l border-tp-hairline-soft bg-tp-canvas shadow-elevation-4 lg:hidden"
                 >
                   <ContextPanel
