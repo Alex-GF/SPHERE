@@ -12,7 +12,7 @@ export default function Harvey() {
         <>
               <div className="flex items-center justify-between">
                   <h3 className="text-xl font-semibold">HARVEY</h3>
-                  <button type="button" title="Expand chat" className="rounded-full p-2 hover:bg-slate-100">
+                  <button type="button" title="Expand chat" className="cursor-pointer rounded-full p-2 hover:bg-slate-100">
                       <LuExpand />
                   </button>
               </div>
@@ -25,13 +25,13 @@ export default function Harvey() {
                   rows={4}
                 />
                 <div className="mt-2 flex items-center justify-between">
-                  <button type="button" className="inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium hover:bg-slate-100">
+                  <button type="button" className="cursor-pointer inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium hover:bg-slate-100">
                     <FaCode />
                     View Code
                   </button>
                   <button
                     type="button"
-                    className="inline-flex items-center gap-2 rounded-md bg-tp-primary px-4 py-2 text-sm font-medium text-white hover:bg-tp-primary"
+                    className="cursor-pointer inline-flex items-center gap-2 rounded-md bg-tp-primary px-4 py-2 text-sm font-medium text-white hover:bg-tp-primary"
                     onClick={() => setMessage('')}
                   >
                     <IoIosSend />

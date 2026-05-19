@@ -58,7 +58,7 @@ export default function PricingSettings({
                 router.push('/');
               })
               .catch(() => {
-                router.push('/me/pricings');
+                router.push('/pricings');
               });
           }).catch(() => {
             customAlert(`An error has occurred while removing the pricing. Please, try again later.`);
@@ -94,7 +94,7 @@ export default function PricingSettings({
           <button
             type="button"
             onClick={handleDeletePricing}
-            className="rounded-md border border-red-500 px-4 py-2 font-bold text-red-500 hover:bg-red-500 hover:text-white"
+            className="cursor-pointer rounded-md border border-red-500 px-4 py-2 font-bold text-red-500 hover:bg-red-500 hover:text-white"
           >
             Delete pricing
           </button>

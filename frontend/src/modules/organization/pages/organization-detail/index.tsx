@@ -92,7 +92,7 @@ function EditOrgModal({
       >
         <div className="mb-5 flex items-center justify-between">
           <h2 className="font-display text-xl text-tp-ink">Edit Organization</h2>
-          <button onClick={onClose} className="text-tp-steel transition-colors hover:text-tp-ink">
+          <button onClick={onClose} className="cursor-pointer text-tp-steel transition-colors hover:text-tp-ink">
             <Iconify icon="mdi:close" width={20} />
           </button>
         </div>
@@ -105,7 +105,7 @@ function EditOrgModal({
               onChange={(e) => setDisplayName(e.target.value)}
               required
               maxLength={255}
-              className="rounded-lg border border-tp-hairline-strong bg-tp-canvas px-3 py-2.5 text-sm text-tp-ink outline-none transition-colors focus:border-tp-primary focus:ring-1 focus:ring-tp-primary/20"
+              className="rounded-lg border border-tp-input-border bg-tp-input-bg px-3 py-2.5 text-sm text-tp-ink outline-none transition-colors focus:border-tp-primary focus:ring-1 focus:ring-tp-primary/20 dark:focus:ring-tp-primary/20"
             />
           </div>
           <div className="flex flex-col gap-1.5">
@@ -115,14 +115,14 @@ function EditOrgModal({
               onChange={(e) => setDescription(e.target.value)}
               rows={3}
               maxLength={500}
-              className="rounded-lg border border-tp-hairline-strong bg-tp-canvas px-3 py-2.5 text-sm text-tp-ink outline-none transition-colors focus:border-tp-primary focus:ring-1 focus:ring-tp-primary/20"
+              className="rounded-lg border border-tp-input-border bg-tp-input-bg px-3 py-2.5 text-sm text-tp-ink outline-none transition-colors focus:border-tp-primary focus:ring-1 focus:ring-tp-primary/20 dark:focus:ring-tp-primary/20"
             />
           </div>
           <div className="flex justify-end gap-3 pt-1">
-            <button type="button" onClick={onClose} className="rounded-lg border border-tp-hairline-strong px-4 py-2 text-sm font-medium text-tp-slate transition-colors hover:bg-tp-surface">
+            <button type="button" onClick={onClose} className="cursor-pointer rounded-lg border border-tp-hairline-strong px-4 py-2 text-sm font-medium text-tp-slate transition-colors hover:bg-tp-surface">
               Cancel
             </button>
-            <button type="submit" disabled={isSaving} className="rounded-lg bg-tp-primary px-4 py-2 text-sm font-medium text-tp-on-primary transition-colors hover:bg-tp-primary-deep disabled:opacity-50">
+            <button type="submit" disabled={isSaving} className="cursor-pointer rounded-lg bg-tp-primary px-4 py-2 text-sm font-medium text-tp-on-primary transition-colors hover:bg-tp-primary-deep disabled:opacity-50">
               {isSaving ? 'Saving...' : 'Save changes'}
             </button>
           </div>
@@ -181,7 +181,7 @@ function CreateSubOrgModal({
       >
         <div className="mb-5 flex items-center justify-between">
           <h2 className="font-display text-xl text-tp-ink">Create Sub-organization</h2>
-          <button onClick={onClose} className="text-tp-steel transition-colors hover:text-tp-ink">
+          <button onClick={onClose} className="cursor-pointer text-tp-steel transition-colors hover:text-tp-ink">
             <Iconify icon="mdi:close" width={20} />
           </button>
         </div>
@@ -195,7 +195,7 @@ function CreateSubOrgModal({
               placeholder="My Sub Organization"
               required
               maxLength={255}
-              className="rounded-lg border border-tp-hairline-strong bg-tp-canvas px-3 py-2.5 text-sm text-tp-ink outline-none transition-colors focus:border-tp-primary focus:ring-1 focus:ring-tp-primary/20"
+              className="rounded-lg border border-tp-input-border bg-tp-input-bg px-3 py-2.5 text-sm text-tp-ink outline-none transition-colors focus:border-tp-primary focus:ring-1 focus:ring-tp-primary/20 dark:focus:ring-tp-primary/20"
             />
             {displayName.trim() && (
               <p className="text-xs text-tp-ink">
@@ -204,10 +204,10 @@ function CreateSubOrgModal({
             )}
           </div>
           <div className="flex justify-end gap-3 pt-1">
-            <button type="button" onClick={onClose} className="rounded-lg border border-tp-hairline-strong px-4 py-2 text-sm font-medium text-tp-slate transition-colors hover:bg-tp-surface">
+            <button type="button" onClick={onClose} className="cursor-pointer rounded-lg border border-tp-hairline-strong px-4 py-2 text-sm font-medium text-tp-slate transition-colors hover:bg-tp-surface">
               Cancel
             </button>
-            <button type="submit" disabled={isSaving || slug.length < 3} className="rounded-lg bg-tp-primary px-4 py-2 text-sm font-medium text-tp-on-primary transition-colors hover:bg-tp-primary-deep disabled:opacity-50">
+            <button type="submit" disabled={isSaving || slug.length < 3} className="cursor-pointer rounded-lg bg-tp-primary px-4 py-2 text-sm font-medium text-tp-on-primary transition-colors hover:bg-tp-primary-deep disabled:opacity-50">
               {isSaving ? 'Creating...' : 'Create sub-organization'}
             </button>
           </div>
@@ -266,7 +266,7 @@ function AddMemberModal({
       >
         <div className="mb-5 flex items-center justify-between">
           <h2 className="font-display text-xl text-tp-ink">Add Member</h2>
-          <button onClick={onClose} className="text-tp-steel transition-colors hover:text-tp-ink">
+          <button onClick={onClose} className="cursor-pointer text-tp-steel transition-colors hover:text-tp-ink">
             <Iconify icon="mdi:close" width={20} />
           </button>
         </div>
@@ -279,7 +279,7 @@ function AddMemberModal({
               onChange={(e) => setUsername(e.target.value)}
               placeholder="john-doe"
               required
-              className="rounded-lg border border-tp-hairline-strong bg-tp-canvas px-3 py-2.5 text-sm text-tp-ink outline-none transition-colors focus:border-tp-primary focus:ring-1 focus:ring-tp-primary/20"
+              className="rounded-lg border border-tp-input-border bg-tp-input-bg px-3 py-2.5 text-sm text-tp-ink outline-none transition-colors focus:border-tp-primary focus:ring-1 focus:ring-tp-primary/20 dark:focus:ring-tp-primary/20"
             />
           </div>
           <div className="flex flex-col gap-1.5">
@@ -287,17 +287,17 @@ function AddMemberModal({
             <select
               value={role}
               onChange={(e) => setRole(e.target.value as OrgRole)}
-              className="rounded-lg border border-tp-hairline-strong bg-tp-canvas px-3 py-2.5 text-sm text-tp-ink outline-none transition-colors focus:border-tp-primary focus:ring-1 focus:ring-tp-primary/20"
+              className="rounded-lg border border-tp-input-border bg-tp-input-bg px-3 py-2.5 text-sm text-tp-ink outline-none transition-colors focus:border-tp-primary focus:ring-1 focus:ring-tp-primary/20 dark:focus:ring-tp-primary/20"
             >
               <option value="MEMBER">Member</option>
               <option value="ADMIN">Admin</option>
             </select>
           </div>
           <div className="flex justify-end gap-3 pt-1">
-            <button type="button" onClick={onClose} className="rounded-lg border border-tp-hairline-strong px-4 py-2 text-sm font-medium text-tp-slate transition-colors hover:bg-tp-surface">
+            <button type="button" onClick={onClose} className="cursor-pointer rounded-lg border border-tp-hairline-strong px-4 py-2 text-sm font-medium text-tp-slate transition-colors hover:bg-tp-surface">
               Cancel
             </button>
-            <button type="submit" disabled={isSubmitting} className="rounded-lg bg-tp-primary px-4 py-2 text-sm font-medium text-tp-on-primary transition-colors hover:bg-tp-primary-deep disabled:opacity-50">
+            <button type="submit" disabled={isSubmitting} className="cursor-pointer rounded-lg bg-tp-primary px-4 py-2 text-sm font-medium text-tp-on-primary transition-colors hover:bg-tp-primary-deep disabled:opacity-50">
               {isSubmitting ? 'Adding...' : 'Add member'}
             </button>
           </div>
@@ -367,7 +367,7 @@ function InviteModal({
       >
         <div className="mb-5 flex items-center justify-between">
           <h2 className="font-display text-xl text-tp-ink">Invite Members</h2>
-          <button onClick={onClose} className="text-tp-steel transition-colors hover:text-tp-ink">
+          <button onClick={onClose} className="cursor-pointer text-tp-steel transition-colors hover:text-tp-ink">
             <Iconify icon="mdi:close" width={20} />
           </button>
         </div>
@@ -378,7 +378,7 @@ function InviteModal({
         <button
           onClick={handleGenerate}
           disabled={isGenerating}
-          className="mb-5 flex w-full items-center justify-center gap-2 rounded-lg bg-tp-primary px-4 py-2.5 text-sm font-medium text-tp-on-primary transition-colors hover:bg-tp-primary-deep disabled:opacity-50"
+          className="mb-5 flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-tp-primary px-4 py-2.5 text-sm font-medium text-tp-on-primary transition-colors hover:bg-tp-primary-deep disabled:opacity-50"
         >
           <Iconify icon="mdi:link-plus" width={18} />
           {isGenerating ? 'Generating...' : 'Generate new invite link'}
@@ -399,10 +399,10 @@ function InviteModal({
                   {inv.useCount} use{inv.useCount !== 1 ? 's' : ''}
                   {inv.expiresAt && <> · exp {new Date(inv.expiresAt).toLocaleDateString()}</>}
                 </span>
-                <button onClick={() => handleCopy(inv.code)} title="Copy invite link" className="text-tp-ink transition-colors hover:text-tp-primary">
+                <button onClick={() => handleCopy(inv.code)} title="Copy invite link" className="cursor-pointer text-tp-ink transition-colors hover:text-tp-primary">
                   <Iconify icon={copiedCode === inv.code ? 'mdi:check' : 'mdi:content-copy'} width={14} />
                 </button>
-                <button onClick={() => handleRevoke(inv)} title="Revoke invitation" className="text-tp-ink transition-colors hover:text-red-500">
+                <button onClick={() => handleRevoke(inv)} title="Revoke invitation" className="cursor-pointer text-tp-ink transition-colors hover:text-red-500">
                   <Iconify icon="mdi:trash-can-outline" width={14} />
                 </button>
               </div>
@@ -471,7 +471,7 @@ function OrgTreeNode({
           <button
             type="button"
             onClick={(e) => { e.stopPropagation(); onToggle(node.id); }}
-            className="flex h-5 w-5 shrink-0 items-center justify-center rounded text-tp-steel transition-colors hover:bg-tp-hairline-soft"
+            className="flex h-5 w-5 shrink-0 cursor-pointer items-center justify-center rounded text-tp-steel transition-colors hover:bg-tp-hairline-soft"
           >
             <Iconify icon={isExpanded ? 'mdi:chevron-down' : 'mdi:chevron-right'} width={14} />
           </button>
@@ -876,7 +876,7 @@ export default function OrganizationDetailPage() {
               transition={transitionDefault}
               type="button"
               onClick={() => router.push('/me/orgs')}
-              className="mb-5 inline-flex items-center gap-1.5 text-sm text-tp-steel transition-colors hover:text-tp-ink"
+              className="mb-5 inline-flex cursor-pointer items-center gap-1.5 text-sm text-tp-steel transition-colors hover:text-tp-ink"
             >
               <Iconify icon="mdi:arrow-left" width={16} />
               Organizations
@@ -920,7 +920,7 @@ export default function OrganizationDetailPage() {
                     <button
                       type="button"
                       onClick={() => setEditModalOpen(true)}
-                      className="ml-auto flex items-center gap-1.5 rounded-lg border border-tp-hairline-strong bg-tp-canvas px-3 py-2 text-sm font-medium text-tp-slate transition-colors hover:border-tp-hairline hover:bg-tp-surface hover:text-tp-ink sm:ml-0"
+                      className="ml-auto flex cursor-pointer items-center gap-1.5 rounded-lg border border-tp-hairline-strong bg-tp-canvas px-3 py-2 text-sm font-medium text-tp-slate transition-colors hover:border-tp-hairline hover:bg-tp-surface hover:text-tp-ink sm:ml-0"
                     >
                       <Iconify icon="mdi:pencil-outline" width={15} />
                       Edit
@@ -975,7 +975,7 @@ export default function OrganizationDetailPage() {
               <select
                 value={activeTab}
                 onChange={(e) => setActiveTab(e.target.value as Tab)}
-                className="w-full appearance-none rounded-lg border border-tp-hairline-strong bg-tp-canvas px-3 py-2.5 pr-8 text-sm font-medium text-tp-ink transition-colors focus:border-tp-primary focus:outline-none"
+                className="w-full appearance-none rounded-lg border border-tp-input-border bg-tp-input-bg px-3 py-2.5 pr-8 text-sm font-medium text-tp-ink transition-colors focus:border-tp-primary focus:outline-none"
               >
                 {availableTabs.map((tab) => (
                   <option key={tab} value={tab}>
@@ -1087,7 +1087,7 @@ export default function OrganizationDetailPage() {
                     <button
                       type="button"
                       onClick={() => setAddMemberModalOpen(true)}
-                      className="flex items-center gap-1.5 rounded-lg bg-tp-primary px-3 py-2 text-sm font-medium text-tp-on-primary transition-colors hover:bg-tp-primary-deep"
+                      className="flex cursor-pointer items-center gap-1.5 rounded-lg bg-tp-primary px-3 py-2 text-sm font-medium text-tp-on-primary transition-colors hover:bg-tp-primary-deep"
                     >
                       <Iconify icon="mdi:account-plus-outline" width={16} />
                       Add member
@@ -1121,7 +1121,7 @@ export default function OrganizationDetailPage() {
                         <select
                           value={member.role}
                           onChange={(event) => handleRoleChange(member, event.target.value as OrgRole)}
-                          className="rounded-lg border border-tp-hairline-strong bg-tp-canvas px-2.5 py-1.5 text-xs font-medium text-tp-slate outline-none transition-colors focus:border-tp-primary"
+                          className="rounded-lg border border-tp-input-border bg-tp-input-bg px-2.5 py-1.5 text-xs font-medium text-tp-slate outline-none transition-colors focus:border-tp-primary"
                         >
                           <option value="MEMBER">Member</option>
                           <option value="ADMIN">Admin</option>
@@ -1134,11 +1134,11 @@ export default function OrganizationDetailPage() {
                       )}
 
                       {canManage && member.user.id !== authUser.user?.id && (
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveMember(member)}
-                          title="Remove member"
-                          className="text-tp-hairline-strong transition-colors hover:text-red-500"
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveMember(member)}
+                      title="Remove member"
+                      className="cursor-pointer text-tp-hairline-strong transition-colors hover:text-red-500"
                         >
                           <Iconify icon="mdi:account-remove-outline" width={18} />
                         </button>
@@ -1169,7 +1169,7 @@ export default function OrganizationDetailPage() {
                     <button
                       type="button"
                       onClick={() => setInviteModalOpen(true)}
-                      className="flex items-center gap-1.5 rounded-lg bg-tp-primary px-3 py-2 text-sm font-medium text-tp-on-primary transition-colors hover:bg-tp-primary-deep"
+                      className="flex cursor-pointer items-center gap-1.5 rounded-lg bg-tp-primary px-3 py-2 text-sm font-medium text-tp-on-primary transition-colors hover:bg-tp-primary-deep"
                     >
                       <Iconify icon="mdi:link-plus" width={16} />
                       Generate invite
@@ -1210,7 +1210,7 @@ export default function OrganizationDetailPage() {
                                 .then(() => revokeInvitation(org.id, inv.id).then(() => refreshInvitations()).catch((err: Error) => customAlert(err.message)))
                                 .catch(() => {});
                             }}
-                            className="text-tp-hairline-strong transition-colors hover:text-red-500"
+                            className="cursor-pointer text-tp-hairline-strong transition-colors hover:text-red-500"
                           >
                             <Iconify icon="mdi:trash-can-outline" width={16} />
                           </button>
@@ -1244,7 +1244,7 @@ export default function OrganizationDetailPage() {
                       value={pricingSearch}
                       onChange={(e) => { setPricingSearch(e.target.value); setPricingPage(1); }}
                       placeholder="Search pricings..."
-                      className="h-9 w-full rounded-lg border border-tp-hairline-strong bg-tp-canvas px-3 text-sm text-tp-ink placeholder-tp-muted transition-colors focus:border-tp-primary focus:outline-none"
+                      className="h-9 w-full rounded-lg border border-tp-input-border bg-tp-input-bg px-3 text-sm text-tp-ink placeholder-tp-muted transition-colors focus:border-tp-primary focus:outline-none"
                     />
                   </div>
                 </div>
@@ -1315,7 +1315,7 @@ export default function OrganizationDetailPage() {
                       value={collectionSearch}
                       onChange={(e) => { setCollectionSearch(e.target.value); setCollectionPage(1); }}
                       placeholder="Search collections..."
-                      className="h-9 w-full rounded-lg border border-tp-hairline-strong bg-tp-canvas px-3 text-sm text-tp-ink placeholder-tp-muted transition-colors focus:border-tp-primary focus:outline-none"
+                      className="h-9 w-full rounded-lg border border-tp-input-border bg-tp-input-bg px-3 text-sm text-tp-ink placeholder-tp-muted transition-colors focus:border-tp-primary focus:outline-none"
                     />
                   </div>
                 </div>
@@ -1385,7 +1385,7 @@ export default function OrganizationDetailPage() {
                     <button
                       type="button"
                       onClick={() => setCreateSubOrgModalOpen(true)}
-                      className="flex items-center gap-1.5 rounded-lg bg-tp-primary px-3 py-2 text-sm font-medium text-tp-on-primary transition-colors hover:bg-tp-primary-deep"
+                      className="flex cursor-pointer items-center gap-1.5 rounded-lg bg-tp-primary px-3 py-2 text-sm font-medium text-tp-on-primary transition-colors hover:bg-tp-primary-deep"
                     >
                       <Iconify icon="mdi:plus" width={16} />
                       Add child
@@ -1402,7 +1402,7 @@ export default function OrganizationDetailPage() {
                         <button
                           type="button"
                           onClick={() => setCreateSubOrgModalOpen(true)}
-                          className="mt-1 text-sm font-medium text-tp-primary hover:underline"
+                          className="mt-1 cursor-pointer text-sm font-medium text-tp-primary hover:underline"
                         >
                           Create the first sub-organization
                         </button>

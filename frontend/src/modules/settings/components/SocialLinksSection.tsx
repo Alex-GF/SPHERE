@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FiCheck, FiLoader, FiExternalLink } from 'react-icons/fi';
 import { useUserSettingsApi, type UserSettings } from '../api/userSettingsApi';
@@ -6,6 +6,7 @@ import { useUserSettingsApi, type UserSettings } from '../api/userSettingsApi';
 interface Props {
   settings: UserSettings;
   onUpdate: (partial: Partial<UserSettings>) => void;
+  onDirtyChange?: (dirty: boolean) => void;
 }
 
 const SOCIAL_PLATFORMS = [
@@ -54,7 +55,7 @@ function validateUrl(url: string, patterns: RegExp[]): string | null {
   return isValid ? null : 'Invalid URL for this platform';
 }
 
-export default function SocialLinksSection({ settings, onUpdate }: Props) {
+export default function SocialLinksSection({ settings, onUpdate, onDirtyChange }: Props) {
   const api = useUserSettingsApi();
   const [links, setLinks] = useState({
     linkedin: settings.settings?.socialLinks?.linkedin || '',
@@ -69,6 +70,10 @@ export default function SocialLinksSection({ settings, onUpdate }: Props) {
   const hasChanges = Object.keys(links).some(
     (key) => links[key as keyof typeof links] !== ((settings.settings?.socialLinks as any)?.[key] || '')
   );
+
+  useEffect(() => {
+    onDirtyChange?.(hasChanges);
+  }, [hasChanges, onDirtyChange]);
 
   const handleChange = (key: string, value: string) => {
     setLinks((prev) => ({ ...prev, [key]: value }));
@@ -142,10 +147,10 @@ export default function SocialLinksSection({ settings, onUpdate }: Props) {
                   value={links[platform.key]}
                   onChange={(e) => handleChange(platform.key, e.target.value)}
                   placeholder={platform.placeholder}
-                  className={`h-11 w-full rounded-[8px] border bg-tp-canvas px-3.5 pr-10 text-sm text-tp-ink outline-none transition-colors focus:ring-1 ${
+                  className={`h-11 w-full rounded-[8px] border bg-tp-input-bg px-3.5 pr-10 text-sm text-tp-ink outline-none transition-colors focus:ring-1 ${
                     errors[platform.key]
                       ? 'border-red-400 focus:border-red-500 focus:ring-red-500/20'
-                      : 'border-tp-hairline-strong focus:border-tp-primary focus:ring-tp-primary/20'
+                      : 'border-tp-input-border focus:border-tp-primary focus:ring-tp-primary/20 dark:focus:ring-tp-primary/20'
                   }`}
                 />
                 {links[platform.key] && !errors[platform.key] && (
@@ -153,7 +158,7 @@ export default function SocialLinksSection({ settings, onUpdate }: Props) {
                     href={links[platform.key]}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-tp-steel transition-colors hover:text-tp-primary"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-tp-steel transition-colors hover:text-tp-primary"
                   >
                     <FiExternalLink className="h-4 w-4" />
                   </a>

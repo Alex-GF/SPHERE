@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { FiCheck, FiLoader, FiMail, FiInbox } from 'react-icons/fi';
 import { useUserSettingsApi, type UserSettings } from '../api/userSettingsApi';
@@ -6,6 +6,7 @@ import { useUserSettingsApi, type UserSettings } from '../api/userSettingsApi';
 interface Props {
   settings: UserSettings;
   onUpdate: (partial: Partial<UserSettings>) => void;
+  onDirtyChange?: (dirty: boolean) => void;
 }
 
 const NOTIFICATION_KINDS = [
@@ -25,13 +26,21 @@ NOTIFICATION_KINDS.forEach((kind) => {
   DEFAULT_PREFS[kind.key] = { email: true, inbox: true };
 });
 
-export default function NotificationsSection({ settings, onUpdate }: Props) {
+export default function NotificationsSection({ settings, onUpdate, onDirtyChange }: Props) {
   const api = useUserSettingsApi();
   const [prefs, setPrefs] = useState<Record<string, { email: boolean; inbox: boolean }>>(
     settings.settings?.notificationPrefs || DEFAULT_PREFS
   );
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+
+  const defaultPrefs = useMemo(() => settings.settings?.notificationPrefs || DEFAULT_PREFS, [settings.settings?.notificationPrefs]);
+
+  const hasChanges = JSON.stringify(prefs) !== JSON.stringify(defaultPrefs);
+
+  useEffect(() => {
+    onDirtyChange?.(hasChanges);
+  }, [hasChanges, onDirtyChange]);
 
   const toggleChannel = (kind: string, channel: 'email' | 'inbox') => {
     setPrefs((prev) => ({
@@ -121,7 +130,7 @@ export default function NotificationsSection({ settings, onUpdate }: Props) {
           whileTap={{ scale: 0.98 }}
           type="button"
           onClick={handleSave}
-          disabled={saving}
+          disabled={!hasChanges || saving}
           className="flex cursor-pointer items-center gap-2 rounded-[8px] bg-tp-primary px-4 py-2.5 text-sm font-medium text-tp-on-primary transition-all disabled:cursor-not-allowed disabled:opacity-40"
         >
           {saving ? (

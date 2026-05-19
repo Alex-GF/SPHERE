@@ -45,7 +45,7 @@ Discover the public entities, projects, and grants that have made SPHERE possibl
             href={partner.href}
             target="_blank"
             rel="noreferrer"
-            className="group rounded-2xl border border-slate-200 bg-slate-50 p-4 transition hover:-translate-y-0.5 hover:bg-white hover:shadow-sm"
+            className="group cursor-pointer rounded-2xl border border-slate-200 bg-slate-50 p-4 transition hover:-translate-y-0.5 hover:bg-white hover:shadow-sm"
           >
             <img src={partner.image} alt={partner.name} className="h-20 w-full object-contain" />
             <p className="mt-3 text-center text-sm font-medium text-slate-600 group-hover:text-slate-900">{partner.name}</p>

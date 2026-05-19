@@ -47,7 +47,7 @@ export default function CollectionSettings({
     ).then(() => {
       updateCollection(organizationId, collection.slug, { name: newName })
         .then(() => {
-          router.push('/me/pricings');
+          router.push('/pricings/collections');
         })
         .catch((error: Error) => {
           customAlert(`Error: ${error.message}`);
@@ -138,7 +138,7 @@ export default function CollectionSettings({
               <input
                 value={nameValue}
                 onChange={(e) => setNameValue(e.target.value)}
-                className="flex-1 rounded-lg border border-tp-hairline-strong bg-tp-surface px-3 py-2 text-sm text-tp-ink outline-none transition-colors focus:border-tp-primary"
+                className="flex-1 rounded-lg border border-tp-input-border bg-tp-input-bg px-3 py-2 text-sm text-tp-ink outline-none transition-colors focus:border-tp-primary"
               />
               <button
                 type="button"

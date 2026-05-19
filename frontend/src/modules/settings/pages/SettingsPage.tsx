@@ -10,6 +10,7 @@ import SocialLinksSection from '../components/SocialLinksSection';
 import NotificationsSection from '../components/NotificationsSection';
 import PaymentsSection from '../components/PaymentsSection';
 import DangerZoneSection from '../components/DangerZoneSection';
+import UnsavedChangesDialog from '../components/UnsavedChangesDialog';
 import { fadeInUp, transitionDefault } from '../../core/utils/motion-variants';
 
 const SECTIONS = [
@@ -38,9 +39,12 @@ function buildUserSettings(authUser: any): UserSettings | null {
 }
 
 export default function SettingsPage() {
-  const { authUser, updateUserSettings } = useAuth();
+  const { authUser, updateUser, updateUserSettings } = useAuth();
   const [activeSection, setActiveSection] = useState<SectionId>('account');
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [pendingSection, setPendingSection] = useState<SectionId | null>(null);
+  const [showUnsavedDialog, setShowUnsavedDialog] = useState(false);
+  const dirtySectionsRef = useRef<Record<string, boolean>>({});
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const settings = buildUserSettings(authUser);
@@ -49,7 +53,46 @@ export default function SettingsPage() {
     if (partial.settings) {
       updateUserSettings(partial.settings);
     }
-  }, [updateUserSettings]);
+    const userFields: Record<string, unknown> = {};
+    if (partial.firstName !== undefined) userFields.firstName = partial.firstName;
+    if (partial.lastName !== undefined) userFields.lastName = partial.lastName;
+    if (partial.email !== undefined) userFields.email = partial.email;
+    if (Object.keys(userFields).length > 0) {
+      updateUser(userFields);
+    }
+  }, [updateUserSettings, updateUser]);
+
+  const markDirty = useCallback((sectionId: string, dirty: boolean) => {
+    dirtySectionsRef.current[sectionId] = dirty;
+  }, []);
+
+  const switchSection = useCallback((newSection: SectionId) => {
+    if (dirtySectionsRef.current[activeSection]) {
+      setPendingSection(newSection);
+      setShowUnsavedDialog(true);
+      return;
+    }
+    setActiveSection(newSection);
+  }, [activeSection]);
+
+  const confirmDiscard = useCallback(() => {
+    if (pendingSection) {
+      dirtySectionsRef.current[activeSection] = false;
+      setActiveSection(pendingSection);
+      setPendingSection(null);
+    }
+    setShowUnsavedDialog(false);
+  }, [pendingSection, activeSection]);
+
+  const cancelDiscard = useCallback(() => {
+    setPendingSection(null);
+    setShowUnsavedDialog(false);
+  }, []);
+
+  const accountDirtyChange = useCallback((d: boolean) => markDirty('account', d), [markDirty]);
+  const profileDirtyChange = useCallback((d: boolean) => markDirty('profile', d), [markDirty]);
+  const socialDirtyChange = useCallback((d: boolean) => markDirty('social', d), [markDirty]);
+  const notificationsDirtyChange = useCallback((d: boolean) => markDirty('notifications', d), [markDirty]);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -127,7 +170,7 @@ export default function SettingsPage() {
                       key={section.id}
                       type="button"
                       onClick={() => {
-                        setActiveSection(section.id);
+                        switchSection(section.id);
                         setDropdownOpen(false);
                       }}
                       className={`flex w-full cursor-pointer items-center gap-3 px-4 py-3 text-sm font-medium transition-colors ${
@@ -159,16 +202,16 @@ export default function SettingsPage() {
                 const isActive = activeSection === section.id;
                 const Icon = section.icon;
                 return (
-                  <button
-                    key={section.id}
-                    type="button"
-                    onClick={() => setActiveSection(section.id)}
-                    className={`flex w-full cursor-pointer items-center gap-3 rounded-[8px] px-3 py-2.5 text-sm font-medium transition-all duration-150 ${
-                      isActive
-                        ? 'bg-tp-primary/10 text-tp-primary'
-                        : 'text-tp-steel hover:bg-tp-surface hover:text-tp-ink'
-                    }`}
-                  >
+                    <button
+                      key={section.id}
+                      type="button"
+                      onClick={() => switchSection(section.id)}
+                      className={`flex w-full cursor-pointer items-center gap-3 rounded-[8px] px-3 py-2.5 text-sm font-medium transition-all duration-150 ${
+                        isActive
+                          ? 'bg-tp-primary/10 text-tp-primary'
+                          : 'text-tp-steel hover:bg-tp-surface hover:text-tp-ink'
+                      }`}
+                    >
                     <Icon className="h-4 w-4 shrink-0" />
                     {section.label}
                   </button>
@@ -188,16 +231,16 @@ export default function SettingsPage() {
                 transition={{ duration: 0.2, ease: 'easeOut' }}
               >
                 {activeSection === 'account' && (
-                  <AccountSection settings={settings} onUpdate={updateSettings} />
+                  <AccountSection settings={settings} onUpdate={updateSettings} onDirtyChange={accountDirtyChange} />
                 )}
                 {activeSection === 'profile' && (
-                  <PublicProfileSection settings={settings} onUpdate={updateSettings} />
+                  <PublicProfileSection settings={settings} onUpdate={updateSettings} onDirtyChange={profileDirtyChange} />
                 )}
                 {activeSection === 'social' && (
-                  <SocialLinksSection settings={settings} onUpdate={updateSettings} />
+                  <SocialLinksSection settings={settings} onUpdate={updateSettings} onDirtyChange={socialDirtyChange} />
                 )}
                 {activeSection === 'notifications' && (
-                  <NotificationsSection settings={settings} onUpdate={updateSettings} />
+                  <NotificationsSection settings={settings} onUpdate={updateSettings} onDirtyChange={notificationsDirtyChange} />
                 )}
                 {activeSection === 'payments' && <PaymentsSection settings={settings} />}
                 {activeSection === 'danger' && <DangerZoneSection />}
@@ -206,6 +249,11 @@ export default function SettingsPage() {
           </div>
         </div>
       </div>
+      <UnsavedChangesDialog
+        open={showUnsavedDialog}
+        onDiscard={confirmDiscard}
+        onCancel={cancelDiscard}
+      />
     </>
   );
 }

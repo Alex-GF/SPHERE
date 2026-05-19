@@ -92,7 +92,7 @@ export default function OrganizationJoinPage() {
           <button
             type="button"
             onClick={() => router.push('/me/orgs')}
-            className="mt-2 rounded-md bg-tp-primary px-6 py-2 text-sm font-semibold text-white hover:bg-tp-primary"
+            className="mt-2 cursor-pointer rounded-md bg-tp-primary px-6 py-2 text-sm font-semibold text-white hover:bg-tp-primary"
           >
             Go to My Organizations
           </button>
@@ -115,7 +115,7 @@ export default function OrganizationJoinPage() {
           <button
             type="button"
             onClick={() => router.push('/me/orgs')}
-            className="mt-2 rounded-md border border-sphere-grey-300 px-5 py-2 text-sm font-semibold text-sphere-grey-700 hover:bg-sphere-grey-100"
+            className="mt-2 cursor-pointer rounded-md border border-sphere-grey-300 px-5 py-2 text-sm font-semibold text-sphere-grey-700 hover:bg-sphere-grey-100"
           >
             Back to Organizations
           </button>
@@ -151,14 +151,14 @@ export default function OrganizationJoinPage() {
             type="button"
             onClick={handleJoin}
             disabled={isJoining}
-            className="w-full rounded-md bg-tp-primary py-2.5 text-sm font-semibold text-white hover:bg-tp-primary disabled:opacity-50"
+            className="w-full cursor-pointer rounded-md bg-tp-primary py-2.5 text-sm font-semibold text-white hover:bg-tp-primary disabled:opacity-50"
           >
             {isJoining ? 'Joining...' : `Join ${org.displayName}`}
           </button>
           <button
             type="button"
             onClick={() => router.push('/me/orgs')}
-            className="w-full rounded-md border border-sphere-grey-300 py-2.5 text-sm font-semibold text-sphere-grey-700 hover:bg-sphere-grey-100"
+            className="w-full cursor-pointer rounded-md border border-sphere-grey-300 py-2.5 text-sm font-semibold text-sphere-grey-700 hover:bg-sphere-grey-100"
           >
             Cancel
           </button>

@@ -19,7 +19,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({ message, onConfirm, onCan
 
   return (
     <div
-      className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/35 px-4"
+      className="fixed inset-0 z-[1000] flex cursor-pointer items-center justify-center bg-black/35 px-4"
       onClick={handleCancel}
       role="presentation"
     >
@@ -37,14 +37,14 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({ message, onConfirm, onCan
           <button
             type="button"
             onClick={handleConfirm}
-            className="rounded-xl border-2 border-black px-4 py-2 text-xl transition hover:bg-slate-100"
+            className="cursor-pointer rounded-xl border-2 border-black px-4 py-2 text-xl transition hover:bg-slate-100"
           >
             Confirm
           </button>
           <button
             type="button"
             onClick={handleCancel}
-            className="rounded-xl border-2 border-black px-4 py-2 text-xl transition hover:bg-slate-100"
+            className="cursor-pointer rounded-xl border-2 border-black px-4 py-2 text-xl transition hover:bg-slate-100"
           >
             Deny
           </button>

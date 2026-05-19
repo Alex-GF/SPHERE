@@ -48,7 +48,7 @@ export default function MinimalHeroSection({ onStart, onExplore }: MinimalHeroSe
             <button
               type="button"
               onClick={onStart}
-              className="inline-flex items-center gap-2 rounded-full bg-cyan-300 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200"
+              className="inline-flex cursor-pointer items-center gap-2 rounded-full bg-cyan-300 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200"
             >
               Start Free
               <FiArrowRight />
@@ -56,7 +56,7 @@ export default function MinimalHeroSection({ onStart, onExplore }: MinimalHeroSe
             <button
               type="button"
               onClick={onExplore}
-              className="inline-flex items-center gap-2 rounded-full border border-slate-400 bg-white/70 px-6 py-3 text-sm font-semibold text-slate-700 transition hover:bg-white"
+              className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-slate-400 bg-white/70 px-6 py-3 text-sm font-semibold text-slate-700 transition hover:bg-white"
             >
               Explore Pricings
               <FiPlay className="text-xs" />

@@ -62,7 +62,7 @@ export default function CollectionAnalyticsModal({
   });
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 p-4" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex cursor-pointer items-center justify-center bg-black/45 p-4" onClick={onClose}>
       <div
         className="max-h-[90vh] min-w-[50%] max-w-[80%] overflow-auto rounded-xl bg-white p-10"
         onClick={e => e.stopPropagation()}
@@ -77,7 +77,7 @@ export default function CollectionAnalyticsModal({
             type="button"
             title="Reduce view"
             onClick={onClose}
-            className="rounded-full p-2 hover:bg-slate-100"
+            className="cursor-pointer rounded-full p-2 hover:bg-slate-100"
           >
             <LuShrink />
           </button>

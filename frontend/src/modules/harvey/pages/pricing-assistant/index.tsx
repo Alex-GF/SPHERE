@@ -1,4 +1,5 @@
 import { FormEvent, useEffect, useMemo, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import ChatTranscript from '../../components-new/chat-transcript';
 import ChatInput from '../../components-new/chat-input';
 import ContextPanel from '../../components-new/context-panel';
@@ -45,6 +46,7 @@ function PricingAssistantPage({ playground = false }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [preset, setPreset] = useState<PromptPreset | null>(null);
   const [showSearchModal, setShowSearchModal] = useState(false);
+  const [showMobileContext, setShowMobileContext] = useState(false);
 
   const urlTransformEvent: UrlTransformEvent = !playground
     ? sseUrlTransformEvent
@@ -386,6 +388,54 @@ function PricingAssistantPage({ playground = false }: Props) {
             </div>
           </HarveyLayout>
 
+          {/* Mobile context toggle button */}
+          <button
+            type="button"
+            onClick={() => setShowMobileContext(true)}
+            className="fixed bottom-20 right-4 z-40 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-tp-primary text-tp-on-primary shadow-elevation-4 transition-colors hover:bg-tp-primary-deep lg:hidden"
+          >
+            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
+            </svg>
+            {contextItems.length > 0 && (
+              <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-tp-canvas text-[10px] font-bold text-tp-ink shadow-sm">
+                {contextItems.length}
+              </span>
+            )}
+          </button>
+
+          {/* Mobile context panel overlay */}
+          <AnimatePresence>
+            {showMobileContext && (
+              <>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="fixed inset-0 z-40 cursor-pointer bg-tp-ink/50 lg:hidden"
+                  onClick={() => setShowMobileContext(false)}
+                />
+                <motion.div
+                  initial={{ x: '100%' }}
+                  animate={{ x: 0 }}
+                  exit={{ x: '100%' }}
+                  transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                  className="fixed bottom-0 right-0 top-0 z-50 w-[320px] max-w-[85vw] border-l border-tp-hairline-soft bg-tp-canvas shadow-elevation-4 lg:hidden"
+                >
+                  <ContextPanel
+                    items={contextItems}
+                    detectedUrls={detectedPricingUrls}
+                    isPlayground={playground}
+                    onAdd={addContextItem}
+                    onRemove={removeContextItem}
+                    onClear={clearContext}
+                    onOpenSearch={() => { setShowMobileContext(false); setShowSearchModal(true); }}
+                  />
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
+
           {/* Search Pricings Modal */}
           {showSearchModal && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-tp-ink/60 p-4">
@@ -395,7 +445,7 @@ function PricingAssistantPage({ playground = false }: Props) {
                   <button
                     type="button"
                     onClick={() => setShowSearchModal(false)}
-                    className="rounded-md border border-tp-hairline px-3 py-1.5 text-sm text-tp-steel hover:bg-tp-surface"
+                    className="cursor-pointer rounded-md border border-tp-hairline px-3 py-1.5 text-sm text-tp-steel hover:bg-tp-surface"
                   >
                     Close
                   </button>

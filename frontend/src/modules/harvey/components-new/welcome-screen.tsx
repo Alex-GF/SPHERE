@@ -37,7 +37,7 @@ export default function WelcomeScreen({ presets, onSelect }: Props) {
               transition={transitionFast}
               type="button"
               onClick={() => onSelect(preset)}
-              className="group rounded-xl border border-tp-hairline-soft bg-tp-canvas p-4 text-left transition-all hover:border-tp-primary/30 hover:shadow-elevation-2"
+              className="group cursor-pointer rounded-xl border border-tp-hairline-soft bg-tp-canvas p-4 text-left transition-all hover:border-tp-primary/30 hover:shadow-elevation-2"
             >
               <p className="text-sm font-medium text-tp-ink group-hover:text-tp-primary">
                 {preset.label}

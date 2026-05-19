@@ -9,7 +9,7 @@ const Alert = ({ message, onClose }: { message: string, onClose: () => void }): 
 
   return (
     <div
-      className="fixed inset-0 z-1000 flex items-center justify-center bg-black/35 px-4"
+      className="fixed inset-0 z-1000 flex cursor-pointer items-center justify-center bg-black/35 px-4"
       onClick={handleClose}
       role="presentation"
     >

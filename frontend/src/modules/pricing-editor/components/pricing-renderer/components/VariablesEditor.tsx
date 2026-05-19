@@ -120,7 +120,7 @@ function NumberEditor({
             if (Number.isNaN(n)) return;
             onValueChange(decimalsAllowed ? Number(n.toFixed(2)) : Math.round(n));
           }}
-          className="w-full rounded-xl border border-slate-300 bg-white/70 px-3 py-2.5 text-sm outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
+          className="w-full rounded-xl border border-tp-input-border bg-tp-input-bg px-3 py-2.5 text-sm text-tp-ink outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
         />
 
         <div className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white/60 px-4 py-2.5">
@@ -171,7 +171,7 @@ function CollectionTypeSelector({
     <select
       value={value}
       onChange={(e) => onChange(e.target.value as CollectionItemKind)}
-      className="rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-xs font-medium outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
+      className="rounded-lg border border-tp-input-border bg-tp-input-bg px-2 py-1.5 text-xs font-medium text-tp-ink outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
     >
       <option value="string">string</option>
       <option value="number">number</option>
@@ -196,7 +196,7 @@ function CollectionValueEditor({
       <select
         value={value === true ? 'true' : 'false'}
         onChange={(e) => onChange(e.target.value === 'true')}
-        className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
+        className="w-full rounded-lg border border-tp-input-border bg-tp-input-bg px-3 py-2 text-sm text-tp-ink outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
       >
         <option value="true">true</option>
         <option value="false">false</option>
@@ -213,7 +213,7 @@ function CollectionValueEditor({
       <textarea
         value={toJsonText(value)}
         onChange={(e) => onChange(parseCollectionValue(e.target.value, 'json'))}
-        className="h-24 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
+        className="h-24 w-full rounded-lg border border-tp-input-border bg-tp-input-bg px-3 py-2 text-xs text-tp-ink outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
       />
     );
   }
@@ -223,7 +223,7 @@ function CollectionValueEditor({
       type={type === 'number' ? 'number' : 'text'}
       value={type === 'number' ? (typeof value === 'number' ? value : 0) : String(value ?? '')}
       onChange={(e) => onChange(parseCollectionValue(e.target.value, type))}
-      className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
+      className="w-full rounded-lg border border-tp-input-border bg-tp-input-bg px-3 py-2 text-sm text-tp-ink outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
     />
   );
 }
@@ -244,7 +244,7 @@ function ArrayEditor({
         <button
           type="button"
           onClick={() => onChange([...value, ''])}
-          className="inline-flex items-center gap-2 rounded-lg border border-cyan-300 bg-cyan-50 px-2.5 py-1.5 text-xs font-semibold text-cyan-800 hover:bg-cyan-100"
+          className="cursor-pointer inline-flex items-center gap-2 rounded-lg border border-cyan-300 bg-cyan-50 px-2.5 py-1.5 text-xs font-semibold text-cyan-800 hover:bg-cyan-100"
         >
           <FaPlus /> Add item
         </button>
@@ -275,7 +275,7 @@ function ArrayEditor({
             <button
               type="button"
               onClick={() => onChange(value.filter((_, i) => i !== idx))}
-              className="rounded-lg border border-rose-200 bg-rose-50 px-2 py-1 text-rose-700 hover:bg-rose-100"
+              className="cursor-pointer rounded-lg border border-rose-200 bg-rose-50 px-2 py-1 text-rose-700 hover:bg-rose-100"
               aria-label={`Remove item ${idx + 1}`}
             >
               <FaTrash />
@@ -311,7 +311,7 @@ function ObjectEditor({
             }
             onChange({ ...value, [candidate]: '' });
           }}
-          className="inline-flex items-center gap-2 rounded-lg border border-cyan-300 bg-cyan-50 px-2.5 py-1.5 text-xs font-semibold text-cyan-800 hover:bg-cyan-100"
+          className="cursor-pointer inline-flex items-center gap-2 rounded-lg border border-cyan-300 bg-cyan-50 px-2.5 py-1.5 text-xs font-semibold text-cyan-800 hover:bg-cyan-100"
         >
           <FaPlus /> Add property
         </button>
@@ -333,7 +333,7 @@ function ObjectEditor({
                   next[nextKey] = item;
                   onChange(next);
                 }}
-                className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
+                className="rounded-lg border border-tp-input-border bg-tp-input-bg px-3 py-2 text-sm text-tp-ink outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
               />
 
               <CollectionTypeSelector
@@ -354,7 +354,7 @@ function ObjectEditor({
                   delete next[key];
                   onChange(next);
                 }}
-                className="rounded-lg border border-rose-200 bg-rose-50 px-2 py-1 text-rose-700 hover:bg-rose-100"
+                className="cursor-pointer rounded-lg border border-rose-200 bg-rose-50 px-2 py-1 text-rose-700 hover:bg-rose-100"
                 aria-label={`Remove property ${key}`}
               >
                 <FaTrash />
@@ -447,7 +447,7 @@ export default function VariablesEditor({ open, onClose, variables, onApply }: P
               <button
                 type="button"
                 onClick={onClose}
-                className="rounded-xl border border-slate-200 bg-white/80 p-2.5 text-slate-700 transition hover:border-rose-200 hover:bg-rose-50 hover:text-rose-700"
+                className="cursor-pointer rounded-xl border border-slate-200 bg-white/80 p-2.5 text-slate-700 transition hover:border-rose-200 hover:bg-rose-50 hover:text-rose-700"
                 aria-label="close"
               >
                 <FaRegCircleXmark />
@@ -513,7 +513,7 @@ export default function VariablesEditor({ open, onClose, variables, onApply }: P
                                 whileTap={{ scale: 0.98 }}
                                 onClick={() => setLocal(s => ({ ...s, [k]: value === true ? false : true }))}
                                 aria-pressed={value === true}
-                                className={`group relative flex w-full max-w-[320px] items-center justify-between overflow-hidden rounded-2xl border p-2.5 text-left shadow-[0_10px_30px_-18px_rgba(15,23,42,0.45)] transition ${
+                                className={`group relative flex w-full max-w-[320px] cursor-pointer items-center justify-between overflow-hidden rounded-2xl border p-2.5 text-left shadow-[0_10px_30px_-18px_rgba(15,23,42,0.45)] transition ${
                                   value === true
                                     ? 'border-cyan-200 bg-gradient-to-r from-cyan-500 via-sky-500 to-cyan-600 text-white'
                                     : 'border-slate-200 bg-white text-slate-700 hover:border-cyan-200 hover:bg-cyan-50'
@@ -560,7 +560,7 @@ export default function VariablesEditor({ open, onClose, variables, onApply }: P
                                 type="text"
                                 value={String(value ?? '')}
                                 onChange={(e) => setLocal(s => ({ ...s, [k]: e.target.value }))}
-                                className="w-full rounded-xl border border-slate-300 bg-white/80 px-3 py-2.5 text-sm outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
+                                className="w-full rounded-xl border border-tp-input-border bg-tp-input-bg px-3 py-2.5 text-sm text-tp-ink outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
                               />
                             )}
 
@@ -619,7 +619,7 @@ export default function VariablesEditor({ open, onClose, variables, onApply }: P
           <button
             type="button"
             onClick={handleReset}
-            className="rounded-xl border border-slate-300 px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:border-cyan-300 hover:bg-cyan-50"
+            className="cursor-pointer rounded-xl border border-slate-300 px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:border-cyan-300 hover:bg-cyan-50"
           >
             Reset
           </button>
@@ -627,14 +627,14 @@ export default function VariablesEditor({ open, onClose, variables, onApply }: P
           <button
             type="button"
             onClick={onClose}
-            className="rounded-xl border border-slate-300 px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:border-slate-400 hover:bg-slate-50"
+            className="cursor-pointer rounded-xl border border-slate-300 px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:border-slate-400 hover:bg-slate-50"
           >
             Cancel
           </button>
           <button
             type="button"
             onClick={handleApply}
-            className="rounded-xl bg-gradient-to-r from-cyan-600 to-sky-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg transition hover:from-cyan-500 hover:to-sky-500"
+            className="cursor-pointer rounded-xl bg-gradient-to-r from-cyan-600 to-sky-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg transition hover:from-cyan-500 hover:to-sky-500"
           >
             <span className="inline-flex items-center gap-2"><FaCalculator /> Test</span>
           </button>

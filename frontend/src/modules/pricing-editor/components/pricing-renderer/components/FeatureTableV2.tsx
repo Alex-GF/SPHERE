@@ -446,7 +446,7 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
             <button
               type="button"
               onClick={() => toggleTag(tag, index)}
-              className="flex w-full items-center justify-between bg-slate-100 px-5 py-4 text-left text-[16px] font-semibold text-slate-800 transition-colors hover:bg-slate-200"
+              className="cursor-pointer flex w-full items-center justify-between bg-slate-100 px-5 py-4 text-left text-[16px] font-semibold text-slate-800 transition-colors hover:bg-slate-200"
               aria-expanded={open}
               aria-controls={tagPanelId}
             >

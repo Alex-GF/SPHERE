@@ -18,7 +18,7 @@ export default function PricingNameInput({ value, onChange }: PricingNameInputPr
         </label>
         <select
           value={authUser.user?.username || ''}
-          className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm"
+          className="w-full rounded-md border border-tp-input-border bg-tp-input-bg px-3 py-2 text-sm"
         >
           <option value={`${authUser.user?.username}`}>{authUser.user?.username}</option>
         </select>
@@ -36,7 +36,7 @@ export default function PricingNameInput({ value, onChange }: PricingNameInputPr
           placeholder="New pricing name"
           value={value}
           onChange={e => onChange(e.target.value)}
-          className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-sphere-primary-500"
+          className="w-full rounded-md border border-tp-input-border bg-tp-input-bg px-3 py-2 text-sm text-tp-ink outline-none focus:border-tp-primary focus:ring-1 focus:ring-tp-primary/20 dark:focus:ring-tp-primary/20"
         />
       </div>
     </div>

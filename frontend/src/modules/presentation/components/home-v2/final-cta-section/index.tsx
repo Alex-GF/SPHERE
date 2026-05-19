@@ -25,7 +25,7 @@ export default function FinalCtaSection({ onCreateAccount }: FinalCtaSectionProp
         <button
           type="button"
           onClick={onCreateAccount}
-          className="inline-flex items-center gap-2 rounded-md bg-white px-5 py-2.5 text-sm font-semibold text-slate-900 transition hover:bg-slate-100"
+          className="inline-flex cursor-pointer items-center gap-2 rounded-md bg-white px-5 py-2.5 text-sm font-semibold text-slate-900 transition hover:bg-slate-100"
         >
           Create Account
           <FiArrowRight />

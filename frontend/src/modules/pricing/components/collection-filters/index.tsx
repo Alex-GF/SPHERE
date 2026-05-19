@@ -58,7 +58,7 @@ export default function CollectionFilters({
           id="sort-by"
           value={sortBy}
           onChange={e => setSortBy(e.target.value)}
-          className="rounded-md border border-slate-300 px-3 py-2"
+          className="rounded-md border border-tp-input-border bg-tp-input-bg px-3 py-2 text-sm text-tp-ink"
         >
           <option value="">None</option>
           <option value="numberOfPricings">Number of Pricings</option>
@@ -78,7 +78,7 @@ export default function CollectionFilters({
             id="sort-order"
             value={sort}
             onChange={e => setSort(e.target.value)}
-            className="rounded-md border border-slate-300 px-3 py-2"
+            className="rounded-md border border-tp-input-border bg-tp-input-bg px-3 py-2 text-sm text-tp-ink"
           >
             <option value="asc">Ascending</option>
             <option value="desc">Descending</option>
@@ -106,14 +106,14 @@ export default function CollectionFilters({
       <div className="mt-4 flex justify-evenly gap-3">
         <button
           type="button"
-          className="rounded-md border border-slate-400 px-4 py-2"
+          className="cursor-pointer rounded-md border border-slate-400 px-4 py-2"
           onClick={handleClear}
         >
           Clear
         </button>
         <button
           type="button"
-          className="rounded-md bg-tp-primary px-4 py-2 text-white hover:bg-tp-primary"
+          className="cursor-pointer rounded-md bg-tp-primary px-4 py-2 text-white hover:bg-tp-primary"
           onClick={handleFilter}
         >
           Filter

@@ -206,7 +206,7 @@ export default function ToolsCatalogSection() {
                     event.stopPropagation();
                     openLink(link.href, link.kind);
                   }}
-                  className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-700 transition hover:border-cyan-300 hover:text-cyan-700"
+                  className="inline-flex cursor-pointer items-center gap-1 rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-700 transition hover:border-cyan-300 hover:text-cyan-700"
                 >
                   {link.label}
                   {link.kind === 'external' ? <FiExternalLink className="text-[10px]" /> : null}

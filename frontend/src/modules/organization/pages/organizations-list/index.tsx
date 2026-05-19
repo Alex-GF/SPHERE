@@ -76,7 +76,7 @@ export default function OrganizationsListPage() {
         <h1 className="text-2xl font-bold text-sphere-grey-800">My Organizations</h1>
         <Link
           to="/orgs/new"
-          className="flex items-center gap-2 rounded-md bg-tp-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-tp-primary"
+          className="flex cursor-pointer items-center gap-2 rounded-md bg-tp-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-tp-primary"
         >
           <Iconify icon="mdi:plus" width={18} />
           New Organization
@@ -124,7 +124,7 @@ export default function OrganizationsListPage() {
               <div className="flex flex-wrap items-center justify-end gap-2">
                 <Link
                   to={`/orgs/${org.id}`}
-                  className="flex items-center gap-1 rounded-md border border-sphere-grey-300 px-3 py-1.5 text-sm font-semibold text-sphere-grey-700 transition-colors hover:bg-sphere-grey-100"
+                  className="flex cursor-pointer items-center gap-1 rounded-md border border-sphere-grey-300 px-3 py-1.5 text-sm font-semibold text-sphere-grey-700 transition-colors hover:bg-sphere-grey-100"
                 >
                   Open
                   <Iconify icon="mdi:chevron-right" width={16} className="text-sphere-grey-400" />

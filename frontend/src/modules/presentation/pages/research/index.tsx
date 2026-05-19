@@ -25,7 +25,7 @@ export default function ResearchPage() {
               textClassName="relative"
             >
               <div className="bg-transparent p-2 shadow-none">
-                <Link to={item.href} target="_blank" rel="noopener noreferrer">
+                <Link to={item.href} target="_blank" rel="noopener noreferrer" className="cursor-pointer">
                   <h3 className="text-2xl font-bold text-tp-ink underline underline-offset-2">
                     {item.title}
                   </h3>

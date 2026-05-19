@@ -68,7 +68,7 @@ export default function ContextItem({ item, onRemove }: Props) {
       <button
         type="button"
         onClick={() => onRemove(item.id)}
-        className="shrink-0 rounded p-0.5 text-tp-muted opacity-0 transition-all hover:bg-red-50 hover:text-red-500 group-hover:opacity-100"
+        className="shrink-0 cursor-pointer rounded p-0.5 text-tp-muted opacity-0 transition-all hover:bg-red-50 hover:text-red-500 group-hover:opacity-100"
         aria-label={`Remove ${item.label}`}
       >
         <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

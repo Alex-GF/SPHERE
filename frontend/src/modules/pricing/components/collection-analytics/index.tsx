@@ -78,7 +78,7 @@ export default function CollectionAnalytics({
           type="button"
           title="Discover more"
           onClick={toggleModal}
-          className="rounded-full p-2 transition hover:bg-slate-100"
+          className="cursor-pointer rounded-full p-2 transition hover:bg-slate-100"
         >
           <LuExpand />
         </button>

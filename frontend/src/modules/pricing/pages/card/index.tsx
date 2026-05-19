@@ -304,7 +304,7 @@ export default function CardPage() {
           .then(() => {
             customConfirm('Pricing deleted successfully. Do you want to return to the main page?')
               .then(() => router.push('/'))
-              .catch(() => router.push('/me/pricings'));
+              .catch(() => router.push('/pricings'));
           })
           .catch(() => {
             customAlert('An error has occurred while removing the pricing. Please, try again later.');
@@ -338,7 +338,7 @@ export default function CardPage() {
               {/* Version selector */}
               {versions.length > 1 && (
                 <select value={currentVersion?.id ?? ''} onChange={e => { const v = versions.find(x => x.id === e.target.value); if (v) setCurrentVersion(v); }}
-                  className="h-8 cursor-pointer rounded-lg border border-tp-hairline-strong bg-tp-canvas px-2 text-xs text-tp-ink focus:border-tp-primary focus:outline-none">
+                  className="h-8 cursor-pointer rounded-lg border border-tp-input-border bg-tp-input-bg px-2 text-xs text-tp-ink focus:border-tp-primary focus:outline-none">
                   {versions.map(v => <option key={v.id} value={v.id}>{v.version}</option>)}
                 </select>
               )}
@@ -509,10 +509,10 @@ export default function CardPage() {
 
       {/* ═══ LINK MODAL ═══ */}
       {showLinkModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={() => { setShowLinkModal(false); setCopied(false); }}>
+        <div className="fixed inset-0 z-50 flex cursor-pointer items-center justify-center bg-black/40 p-4" onClick={() => { setShowLinkModal(false); setCopied(false); }}>
           <div className="w-[90vw] max-w-150 rounded-xl border border-tp-hairline bg-tp-canvas p-6 shadow-elevation-4" onClick={e => e.stopPropagation()}>
             <h2 className="text-center text-xl font-bold text-tp-ink">Your link is ready!</h2>
-            <p className="mt-2 text-center text-sm text-tp-steel">This link points directly to the YAML file of the selected pricing version. It can be used to integrate with some <a href="https://sphere-docs.vercel.app" target="_blank" rel="noopener noreferrer" className="underline">Pricing Intelligence tools</a>.</p>
+            <p className="mt-2 text-center text-sm text-tp-steel">This link points directly to the YAML file of the selected pricing version. It can be used to integrate with some <a href="https://sphere-docs.vercel.app" target="_blank" rel="noopener noreferrer" className="cursor-pointer underline">Pricing Intelligence tools</a>.</p>
             <div className="mt-4 flex items-center gap-2 rounded-lg border border-tp-hairline-strong bg-tp-surface p-2">
               <div className="min-w-0 flex-1 overflow-hidden">
                 <p className="truncate text-xs text-tp-ink">{linkUrl}</p>

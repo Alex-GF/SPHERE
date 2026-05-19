@@ -61,7 +61,7 @@ export default function ContextPanel({ items, detectedUrls, isPlayground, onAdd,
           <button
             type="button"
             onClick={onClear}
-            className="rounded-md px-2 py-1 text-[11px] text-tp-muted transition-colors hover:bg-red-50 hover:text-red-500"
+            className="cursor-pointer rounded-md px-2 py-1 text-[11px] text-tp-muted transition-colors hover:bg-red-50 hover:text-red-500"
           >
             Clear all
           </button>
@@ -112,7 +112,7 @@ export default function ContextPanel({ items, detectedUrls, isPlayground, onAdd,
                     origin: 'detected',
                   })
                 }
-                className="truncate rounded-full border border-tp-hairline bg-tp-surface px-2 py-0.5 text-[10px] text-tp-slate transition-colors hover:border-tp-primary/30 hover:text-tp-primary"
+                className="cursor-pointer truncate rounded-full border border-tp-hairline bg-tp-surface px-2 py-0.5 text-[10px] text-tp-slate transition-colors hover:border-tp-primary/30 hover:text-tp-primary"
               >
                 {url.length > 30 ? url.slice(0, 30) + '...' : url}
               </button>
@@ -131,12 +131,12 @@ export default function ContextPanel({ items, detectedUrls, isPlayground, onAdd,
               onChange={(e) => { setUrlInput(e.target.value); setUrlError(null); }}
               onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAddUrl(); } }}
               placeholder="https://..."
-              className="flex-1 rounded-md border border-tp-hairline-strong bg-tp-canvas px-2.5 py-1.5 text-xs text-tp-ink placeholder-tp-muted focus:border-tp-primary focus:outline-none"
+              className="flex-1 rounded-md border border-tp-input-border bg-tp-input-bg px-2.5 py-1.5 text-xs text-tp-ink placeholder-tp-muted focus:border-tp-primary focus:outline-none"
             />
             <button
               type="button"
               onClick={handleAddUrl}
-              className="shrink-0 rounded-md bg-tp-primary px-2.5 py-1.5 text-xs font-medium text-tp-on-primary transition-colors hover:bg-tp-primary-deep"
+              className="shrink-0 cursor-pointer rounded-md bg-tp-primary px-2.5 py-1.5 text-xs font-medium text-tp-on-primary transition-colors hover:bg-tp-primary-deep"
             >
               Add
             </button>
@@ -174,7 +174,7 @@ export default function ContextPanel({ items, detectedUrls, isPlayground, onAdd,
             <button
               type="button"
               onClick={onOpenSearch}
-              className="flex flex-1 items-center justify-center gap-1.5 rounded-md border border-tp-hairline-strong bg-tp-canvas px-2.5 py-1.5 text-xs font-medium text-tp-ink transition-colors hover:bg-tp-surface"
+              className="flex cursor-pointer flex-1 items-center justify-center gap-1.5 rounded-md border border-tp-hairline-strong bg-tp-canvas px-2.5 py-1.5 text-xs font-medium text-tp-ink transition-colors hover:bg-tp-surface"
             >
               <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />

@@ -79,7 +79,7 @@ export default function EditorLayout({ children }: { children?: React.ReactNode 
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-tp-ink/60 p-4"
+            className="fixed inset-0 z-50 flex cursor-pointer items-center justify-center bg-tp-ink/60 p-4"
             role="dialog"
             aria-modal="true"
             onClick={handleSharedLinkClose}
@@ -105,7 +105,7 @@ export default function EditorLayout({ children }: { children?: React.ReactNode 
                     key={type}
                     type="button"
                     onClick={() => setTabValue(type === 'short' ? 0 : 1)}
-                    className={`relative flex-1 rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
+                    className={`relative flex-1 cursor-pointer rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
                       (tabValue === 0 && type === 'short') || (tabValue === 1 && type === 'full')
                         ? 'bg-tp-canvas text-tp-ink shadow-sm'
                         : 'text-tp-steel hover:text-tp-slate'
@@ -142,7 +142,7 @@ export default function EditorLayout({ children }: { children?: React.ReactNode 
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-tp-ink/60 p-4"
+            className="fixed inset-0 z-50 flex cursor-pointer items-center justify-center bg-tp-ink/60 p-4"
             role="dialog"
             aria-modal="true"
             onClick={handleYamlImportClose}

@@ -76,7 +76,7 @@ export default function EditorLayout({ children }: { children?: React.ReactNode 
         <Main>{children}</Main>
       </div>
       {sharedLinkModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" role="dialog" aria-modal="true" onClick={handleSharedLinkClose}>
+        <div className="fixed inset-0 z-50 flex cursor-pointer items-center justify-center bg-black/60 p-4" role="dialog" aria-modal="true" onClick={handleSharedLinkClose}>
           <div className="w-full max-w-[600px] rounded-3xl bg-white px-8 pb-7 pt-8 shadow-[0_22px_60px_rgba(15,23,42,0.35)]" onClick={(e) => e.stopPropagation()}>
             <h2 className="text-center text-[20px] font-extrabold leading-tight text-slate-800">
               Your pricing is a step away from the world
@@ -90,7 +90,7 @@ export default function EditorLayout({ children }: { children?: React.ReactNode 
               <button
                 type="button"
                 onClick={() => setTabValue(0)}
-                className={`border-b-2 px-1 pb-2 text-[15px] uppercase tracking-wide transition ${
+                className={`border-b-2 cursor-pointer px-1 pb-2 text-[15px] uppercase tracking-wide transition ${
                   tabValue === 0
                     ? 'border-sky-500 text-sky-500'
                     : 'border-transparent text-slate-500 hover:text-slate-700'
@@ -101,7 +101,7 @@ export default function EditorLayout({ children }: { children?: React.ReactNode 
               <button
                 type="button"
                 onClick={() => setTabValue(1)}
-                className={`border-b-2 px-1 pb-2 text-[15px] uppercase tracking-wide transition ${
+                className={`border-b-2 cursor-pointer px-1 pb-2 text-[15px] uppercase tracking-wide transition ${
                   tabValue === 1
                     ? 'border-sky-500 text-sky-500'
                     : 'border-transparent text-slate-500 hover:text-slate-700'
@@ -128,7 +128,7 @@ export default function EditorLayout({ children }: { children?: React.ReactNode 
         </div>
       )}
       {importModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" role="dialog" aria-modal="true" onClick={handleYamlImportClose}>
+        <div className="fixed inset-0 z-50 flex cursor-pointer items-center justify-center bg-black/60 p-4" role="dialog" aria-modal="true" onClick={handleYamlImportClose}>
           <div className="w-full max-w-xl rounded-3xl bg-white p-6 shadow-2xl" onClick={(e) => e.stopPropagation()}>
             <FileUpload onSubmit={onSubmitImport} />
           </div>

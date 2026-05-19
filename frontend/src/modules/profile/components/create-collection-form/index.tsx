@@ -48,7 +48,7 @@ export default function CreateCollectionForm({setShowLoading}: CreateCollectionF
 
       createCollection(collectionToCreate)
         .then(() => {
-          router.push('/me/pricings');
+          router.push('/pricings/collections');
         })
         .catch(error => {
           // If API returned an Error with status 409, show duplicate alert and keep form
@@ -88,14 +88,14 @@ export default function CreateCollectionForm({setShowLoading}: CreateCollectionF
   function handleBulkSuccess(data: { pricingsWithErrors?: Array<{ name: string; error: string }>} ) {
     if (data.pricingsWithErrors && data.pricingsWithErrors.length > 0) {
       customConfirm(`Some pricings could not be added to the collection due to errors: ${data.pricingsWithErrors.map((p: {name: string, error: string}) => p.name).join(' | ')}. Do you still want to save the collection and add them again manually?`).then(() => {
-        router.push('/me/pricings');
+        router.push('/pricings/collections');
       }).catch(() => {
         deleteCollection(authUser.user!.username, collectionName, true).then(() => {
-            router.push('/me/pricings');
+            router.push('/pricings/collections');
           })
       });
     } else {
-      router.push('/me/pricings');
+      router.push('/pricings/collections');
     }
   }
 
@@ -119,14 +119,14 @@ export default function CreateCollectionForm({setShowLoading}: CreateCollectionF
         <div className="flex gap-2">
           <button
             type="button"
-            className={`rounded-t-md px-4 py-2 ${tabValue === 0 ? 'bg-tp-primary text-white' : 'bg-slate-100 text-slate-700'}`}
+            className={`cursor-pointer rounded-t-md px-4 py-2 ${tabValue === 0 ? 'bg-tp-primary text-white' : 'bg-slate-100 text-slate-700'}`}
             onClick={() => setTabValue(0)}
           >
             Select unassigned pricings
           </button>
           <button
             type="button"
-            className={`rounded-t-md px-4 py-2 ${tabValue === 1 ? 'bg-tp-primary text-white' : 'bg-slate-100 text-slate-700'}`}
+            className={`cursor-pointer rounded-t-md px-4 py-2 ${tabValue === 1 ? 'bg-tp-primary text-white' : 'bg-slate-100 text-slate-700'}`}
             onClick={() => setTabValue(1)}
           >
             Upload collection
@@ -139,7 +139,7 @@ export default function CreateCollectionForm({setShowLoading}: CreateCollectionF
           <div className="flex items-center justify-center">
             <button
               type="button"
-              className="mt-5 w-[400px] rounded-xl bg-tp-primary px-5 py-2 text-base font-bold text-white"
+              className="mt-5 w-[400px] cursor-pointer rounded-xl bg-tp-primary px-5 py-2 text-base font-bold text-white"
               onClick={handleAddCollectionClick}
                 >
               Add Collection

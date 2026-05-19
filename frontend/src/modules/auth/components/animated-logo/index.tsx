@@ -11,20 +11,31 @@ export default function AnimatedSphereLogo({ className = "" }: { className?: str
           className="h-full w-full"
         >
           <defs>
+            <radialGradient id="backdrop-vignette" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#000000" stopOpacity="0.35" />
+              <stop offset="70%" stopColor="#000000" stopOpacity="0.1" />
+              <stop offset="100%" stopColor="#000000" stopOpacity="0" />
+            </radialGradient>
             <radialGradient id="core-glow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#ffa110" stopOpacity="0.9" />
-              <stop offset="50%" stopColor="#fa520f" stopOpacity="0.5" />
+              <stop offset="0%" stopColor="#ffa110" stopOpacity="1" />
+              <stop offset="50%" stopColor="#fa520f" stopOpacity="0.6" />
               <stop offset="100%" stopColor="#fa520f" stopOpacity="0" />
             </radialGradient>
             <radialGradient id="core-inner" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stopColor="#ffffff" stopOpacity="0.95" />
-              <stop offset="40%" stopColor="#ffd06a" stopOpacity="0.8" />
-              <stop offset="100%" stopColor="#fa520f" stopOpacity="0.6" />
+              <stop offset="40%" stopColor="#ffd06a" stopOpacity="0.85" />
+              <stop offset="100%" stopColor="#fa520f" stopOpacity="0.7" />
             </radialGradient>
             <filter id="blur-glow" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur stdDeviation="3" />
+              <feGaussianBlur stdDeviation="5" />
+            </filter>
+            <filter id="blur-soft" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="8" />
             </filter>
           </defs>
+
+          {/* Backdrop vignette */}
+          <circle cx="100" cy="100" r="90" fill="url(#backdrop-vignette)" />
 
           {/* Outer glow */}
           <motion.circle
@@ -33,7 +44,7 @@ export default function AnimatedSphereLogo({ className = "" }: { className?: str
             r="60"
             fill="url(#core-glow)"
             filter="url(#blur-glow)"
-            animate={{ r: [55, 62, 55], opacity: [0.4, 0.7, 0.4] }}
+            animate={{ r: [55, 62, 55], opacity: [0.6, 0.9, 0.6] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
           />
 
@@ -44,8 +55,8 @@ export default function AnimatedSphereLogo({ className = "" }: { className?: str
             rx="70"
             ry="22"
             stroke="white"
-            strokeWidth="1"
-            strokeOpacity="0.25"
+            strokeWidth="1.2"
+            strokeOpacity="0.45"
             fill="none"
             animate={{ rotate: 360 }}
             transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
@@ -60,7 +71,7 @@ export default function AnimatedSphereLogo({ className = "" }: { className?: str
             ry="22"
             stroke="white"
             strokeWidth="1"
-            strokeOpacity="0.18"
+            strokeOpacity="0.35"
             fill="none"
             animate={{ rotate: -360 }}
             transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
@@ -74,8 +85,8 @@ export default function AnimatedSphereLogo({ className = "" }: { className?: str
             rx="70"
             ry="22"
             stroke="white"
-            strokeWidth="1"
-            strokeOpacity="0.12"
+            strokeWidth="0.8"
+            strokeOpacity="0.28"
             fill="none"
             animate={{ rotate: 360 }}
             transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
@@ -86,14 +97,14 @@ export default function AnimatedSphereLogo({ className = "" }: { className?: str
           <motion.circle
             cx="100"
             cy="100"
-            r="14"
+            r="16"
             fill="url(#core-inner)"
-            animate={{ r: [13, 15, 13] }}
+            animate={{ r: [15, 17, 15] }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
           />
 
           {/* Inner highlight */}
-          <circle cx="96" cy="96" r="4" fill="white" opacity="0.5" />
+          <circle cx="96" cy="96" r="5" fill="white" opacity="0.7" />
 
           {/* Traveling dot 1 */}
           <motion.g
@@ -101,8 +112,8 @@ export default function AnimatedSphereLogo({ className = "" }: { className?: str
             transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
             style={{ transformOrigin: "100px 100px" }}
           >
-            <circle cx="170" cy="100" r="3" fill="#ffd06a" opacity="0.9" />
-            <circle cx="170" cy="100" r="6" fill="#ffd06a" opacity="0.2" filter="url(#blur-glow)" />
+            <circle cx="170" cy="100" r="4" fill="#ffd06a" opacity="1" />
+            <circle cx="170" cy="100" r="8" fill="#ffd06a" opacity="0.35" filter="url(#blur-glow)" />
           </motion.g>
 
           {/* Traveling dot 2 */}
@@ -111,8 +122,8 @@ export default function AnimatedSphereLogo({ className = "" }: { className?: str
             transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
             style={{ transformOrigin: "100px 100px", rotate: 60 }}
           >
-            <circle cx="170" cy="100" r="2.5" fill="#ffb83e" opacity="0.7" />
-            <circle cx="170" cy="100" r="5" fill="#ffb83e" opacity="0.15" filter="url(#blur-glow)" />
+            <circle cx="170" cy="100" r="3.5" fill="#ffb83e" opacity="0.9" />
+            <circle cx="170" cy="100" r="7" fill="#ffb83e" opacity="0.3" filter="url(#blur-glow)" />
           </motion.g>
 
           {/* Traveling dot 3 */}
@@ -121,8 +132,8 @@ export default function AnimatedSphereLogo({ className = "" }: { className?: str
             transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
             style={{ transformOrigin: "100px 100px", rotate: 120 }}
           >
-            <circle cx="170" cy="100" r="2" fill="#ffa110" opacity="0.6" />
-            <circle cx="170" cy="100" r="4" fill="#ffa110" opacity="0.12" filter="url(#blur-glow)" />
+            <circle cx="170" cy="100" r="3" fill="#ffa110" opacity="0.8" />
+            <circle cx="170" cy="100" r="6" fill="#ffa110" opacity="0.25" filter="url(#blur-glow)" />
           </motion.g>
         </svg>
       </div>

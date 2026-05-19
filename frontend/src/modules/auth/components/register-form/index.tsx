@@ -19,7 +19,7 @@ export type RegisterFormProps = {
 };
 
 const inputClass =
-  "h-11 w-full rounded-lg border border-tp-hairline-strong bg-tp-canvas px-4 text-sm text-tp-ink outline-none transition-all duration-200 placeholder:text-tp-muted focus:border-tp-primary focus:ring-2 focus:ring-tp-primary/10";
+  "h-11 w-full rounded-lg border border-tp-input-border bg-tp-input-bg px-4 text-sm text-tp-ink outline-none transition-all duration-200 placeholder:text-tp-muted focus:border-tp-primary focus:ring-2 focus:ring-tp-primary/10 dark:focus:ring-tp-primary/20";
 
 const RegisterForm: React.FC = () => {
   const [errors, setErrors] = useState<string[]>([]);

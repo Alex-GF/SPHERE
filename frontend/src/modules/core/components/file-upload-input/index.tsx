@@ -94,7 +94,7 @@ export default function FileUpload({
                 <p className="text-sm font-medium text-sphere-grey-900">{file.name}</p>
                 <p className="text-xs text-sphere-grey-600">{`${(file.size / 1024).toFixed(2)} KB`}</p>
               </div>
-              <button type="button" aria-label="delete" onClick={handleDelete}>
+              <button type="button" aria-label="delete" onClick={handleDelete} className="cursor-pointer">
                 <MdDeleteForever size={25} fill={error.dark} />
               </button>
             </li>

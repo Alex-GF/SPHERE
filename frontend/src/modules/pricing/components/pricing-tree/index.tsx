@@ -190,7 +190,7 @@ function TreeNode({
     <li key={node.id}>
       <button
         type="button"
-        className={`flex w-full items-center rounded-md px-2 py-1.5 text-left transition-colors ${isFocused ? 'bg-[#d8edf4]' : 'bg-white hover:bg-slate-100'}`}
+        className={`flex w-full cursor-pointer items-center rounded-md px-2 py-1.5 text-left transition-colors ${isFocused ? 'bg-[#d8edf4]' : 'bg-white hover:bg-slate-100'}`}
         style={{ paddingLeft: `${level * 22 + 8}px` }}
         onClick={() => {
           onFocus(node.id);

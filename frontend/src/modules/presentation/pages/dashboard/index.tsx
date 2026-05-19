@@ -219,7 +219,7 @@ export default function DashboardPage() {
               <button
                 type="button"
                 onClick={() => router.push('/me/orgs')}
-                className="text-xs text-tp-primary hover:underline"
+                className="cursor-pointer text-xs text-tp-primary hover:underline"
               >
                 View all
               </button>
@@ -231,7 +231,7 @@ export default function DashboardPage() {
                 <button
                   type="button"
                   onClick={() => router.push('/orgs/new')}
-                  className="mt-2 text-sm font-medium text-tp-primary hover:underline"
+                  className="mt-2 cursor-pointer text-sm font-medium text-tp-primary hover:underline"
                 >
                   Create your first organization
                 </button>
@@ -243,7 +243,7 @@ export default function DashboardPage() {
                     key={org.id}
                     type="button"
                     onClick={() => router.push(`/orgs/${org.id}`)}
-                    className="flex items-center gap-3 rounded-xl border border-tp-hairline-soft bg-tp-canvas p-4 text-left transition-all hover:border-tp-hairline-strong hover:shadow-elevation-1"
+                    className="flex cursor-pointer items-center gap-3 rounded-xl border border-tp-hairline-soft bg-tp-canvas p-4 text-left transition-all hover:border-tp-hairline-strong hover:shadow-elevation-1"
                   >
                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-tp-cream text-sm font-bold text-tp-primary">
                       {org.name?.[0]?.toUpperCase() ?? 'O'}
@@ -270,8 +270,8 @@ export default function DashboardPage() {
               <h2 className="text-sm font-medium text-tp-ink">Recent Pricings</h2>
               <button
                 type="button"
-                onClick={() => router.push('/me/pricings')}
-                className="text-xs text-tp-primary hover:underline"
+                onClick={() => router.push('/pricings')}
+                className="cursor-pointer text-xs text-tp-primary hover:underline"
               >
                 View all
               </button>
@@ -283,7 +283,7 @@ export default function DashboardPage() {
                 <button
                   type="button"
                   onClick={() => router.push('/pricings')}
-                  className="mt-2 text-sm font-medium text-tp-primary hover:underline"
+                  className="mt-2 cursor-pointer text-sm font-medium text-tp-primary hover:underline"
                 >
                   Browse pricings
                 </button>
@@ -308,7 +308,7 @@ export default function DashboardPage() {
               <button
                 type="button"
                 onClick={() => router.push('/pricings/collections')}
-                className="text-xs text-tp-primary hover:underline"
+                className="cursor-pointer text-xs text-tp-primary hover:underline"
               >
                 View all
               </button>
@@ -320,7 +320,7 @@ export default function DashboardPage() {
                 <button
                   type="button"
                   onClick={() => router.push('/pricings/collections')}
-                  className="mt-2 text-sm font-medium text-tp-primary hover:underline"
+                  className="mt-2 cursor-pointer text-sm font-medium text-tp-primary hover:underline"
                 >
                   Browse collections
                 </button>
@@ -349,7 +349,7 @@ export default function DashboardPage() {
               key={action.to}
               type="button"
               onClick={() => router.push(action.to)}
-              className="flex w-full items-center gap-3 rounded-xl border border-tp-hairline-soft bg-tp-canvas p-4 text-left transition-all hover:border-tp-primary/30 hover:shadow-elevation-1"
+              className="flex w-full cursor-pointer items-center gap-3 rounded-xl border border-tp-hairline-soft bg-tp-canvas p-4 text-left transition-all hover:border-tp-primary/30 hover:shadow-elevation-1"
             >
               <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-tp-surface text-tp-steel">
                 {action.icon}

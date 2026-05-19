@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FiCheck, FiLoader } from 'react-icons/fi';
 import { useUserSettingsApi, type UserSettings } from '../api/userSettingsApi';
@@ -7,9 +7,10 @@ import AvatarEditor from './AvatarEditor';
 interface Props {
   settings: UserSettings;
   onUpdate: (partial: Partial<UserSettings>) => void;
+  onDirtyChange?: (dirty: boolean) => void;
 }
 
-export default function PublicProfileSection({ settings, onUpdate }: Props) {
+export default function PublicProfileSection({ settings, onUpdate, onDirtyChange }: Props) {
   const api = useUserSettingsApi();
 
   const s = settings.settings;
@@ -28,6 +29,10 @@ export default function PublicProfileSection({ settings, onUpdate }: Props) {
     city !== (s?.profile?.city || '') ||
     country !== (s?.profile?.country || '') ||
     dateOfBirth !== (s?.profile?.dateOfBirth || '');
+
+  useEffect(() => {
+    onDirtyChange?.(hasChanges);
+  }, [hasChanges, onDirtyChange]);
 
   const handleSaveProfile = async () => {
     setSaving(true);
@@ -96,7 +101,7 @@ function Field({ label, value, onChange, placeholder, type = 'text', hint }: { l
   return (
     <div>
       <label className="mb-1.5 block text-xs font-medium text-tp-steel">{label}</label>
-      <input type={type} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} className="h-11 w-full rounded-[8px] border border-tp-hairline-strong bg-tp-canvas px-3.5 text-sm text-tp-ink outline-none transition-colors focus:border-tp-primary focus:ring-1 focus:ring-tp-primary/20" />
+      <input type={type} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} className="h-11 w-full rounded-[8px] border border-tp-input-border bg-tp-input-bg px-3.5 text-sm text-tp-ink outline-none transition-colors focus:border-tp-primary focus:ring-1 focus:ring-tp-primary/20 dark:focus:ring-tp-primary/20" />
       {hint && <p className="mt-1 text-xs text-tp-steel">{hint}</p>}
     </div>
   );

@@ -37,7 +37,7 @@ export default function ResearchShowcaseSection({ onOpenResearch, onOpenTeam }: 
           <button
             type="button"
             onClick={onOpenResearch}
-            className="inline-flex justify-between items-center gap-2 rounded-md border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
+            className="inline-flex cursor-pointer justify-between items-center gap-2 rounded-md border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
           >
             Read Publications
             <FiArrowRight />
@@ -45,7 +45,7 @@ export default function ResearchShowcaseSection({ onOpenResearch, onOpenTeam }: 
           <button
             type="button"
             onClick={onOpenTeam}
-            className="inline-flex justify-between items-center gap-2 rounded-md border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
+            className="inline-flex cursor-pointer justify-between items-center gap-2 rounded-md border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
           >
             Meet the team
             <FiArrowRight />

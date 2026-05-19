@@ -20,7 +20,6 @@ import RegisterPage from '../modules/auth/pages/register-page';
 import CardPage from '../modules/pricing/pages/card';
 import CreatePricingPage from '../modules/pricing/pages/create';
 import CollectionCardPage from '../modules/pricing/pages/collection-card';
-import MyPricingsPage from '../modules/profile/pages/pricings';
 import CreateCollectionPage from '../modules/profile/pages/create-collection';
 import CollectionsListPage from '../modules/pricing/pages/collections-list';
 import PricingAssistantPage from '../modules/harvey/pages/pricing-assistant';
@@ -104,7 +103,6 @@ export default function Router() {
       children: [
         { element: <CreatePricingPage />, path: '/pricings/new' },
         { element: <CreateCollectionPage />, path: '/pricings/collections/new' },
-        { element: <MyPricingsPage />, path: '/me/pricings' },
         { element: <OrganizationsListPage />, path: '/me/orgs' },
         { element: <SettingsPage />, path: '/me/settings' },
         { element: <CreateOrganizationPage />, path: '/orgs/new' },

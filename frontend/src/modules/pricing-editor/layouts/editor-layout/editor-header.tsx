@@ -58,7 +58,7 @@ export default function EditorHeader({ onShareLink, onImport }: Props) {
         <button
           type="button"
           onClick={() => router.push('/')}
-          className="text-xs font-semibold tracking-[0.22em] text-white/60 transition-colors hover:text-white"
+          className="cursor-pointer text-xs font-semibold tracking-[0.22em] text-white/60 transition-colors hover:text-white"
         >
           SPHERE
         </button>
@@ -73,7 +73,7 @@ export default function EditorHeader({ onShareLink, onImport }: Props) {
           <button
             type="button"
             onClick={() => { setFileMenuOpen(prev => !prev); setExportMenuOpen(false); }}
-            className="rounded-md px-3 py-1.5 text-xs font-medium text-white/60 transition-colors hover:bg-white/10 hover:text-white"
+            className="cursor-pointer rounded-md px-3 py-1.5 text-xs font-medium text-white/60 transition-colors hover:bg-white/10 hover:text-white"
           >
             File
           </button>
@@ -90,7 +90,7 @@ export default function EditorHeader({ onShareLink, onImport }: Props) {
                 <button
                   type="button"
                   onClick={() => { setEditorValue(originalValue); setFileMenuOpen(false); }}
-                  className="flex w-full items-center gap-2 px-3 py-2 text-left text-xs text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+                  className="flex w-full cursor-pointer items-center gap-2 px-3 py-2 text-left text-xs text-white/70 transition-colors hover:bg-white/10 hover:text-white"
                 >
                   <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182" />
@@ -100,7 +100,7 @@ export default function EditorHeader({ onShareLink, onImport }: Props) {
                 <button
                   type="button"
                   onClick={() => { onImport(); setFileMenuOpen(false); }}
-                  className="flex w-full items-center gap-2 px-3 py-2 text-left text-xs text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+                  className="flex w-full cursor-pointer items-center gap-2 px-3 py-2 text-left text-xs text-white/70 transition-colors hover:bg-white/10 hover:text-white"
                 >
                   <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
@@ -110,7 +110,7 @@ export default function EditorHeader({ onShareLink, onImport }: Props) {
                 <button
                   type="button"
                   onClick={() => { setEditorValue(getClearEditorValue()); setFileMenuOpen(false); }}
-                  className="flex w-full items-center gap-2 px-3 py-2 text-left text-xs text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+                  className="flex w-full cursor-pointer items-center gap-2 px-3 py-2 text-left text-xs text-white/70 transition-colors hover:bg-white/10 hover:text-white"
                 >
                   <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12h-15" />
@@ -127,7 +127,7 @@ export default function EditorHeader({ onShareLink, onImport }: Props) {
           <button
             type="button"
             onClick={() => { setExportMenuOpen(prev => !prev); setFileMenuOpen(false); }}
-            className="rounded-md px-3 py-1.5 text-xs font-medium text-white/60 transition-colors hover:bg-white/10 hover:text-white"
+            className="cursor-pointer rounded-md px-3 py-1.5 text-xs font-medium text-white/60 transition-colors hover:bg-white/10 hover:text-white"
           >
             Export
           </button>
@@ -144,7 +144,7 @@ export default function EditorHeader({ onShareLink, onImport }: Props) {
                 <button
                   type="button"
                   onClick={handleDownload}
-                  className="flex w-full items-center gap-2 px-3 py-2 text-left text-xs text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+                  className="flex w-full cursor-pointer items-center gap-2 px-3 py-2 text-left text-xs text-white/70 transition-colors hover:bg-white/10 hover:text-white"
                 >
                   <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
@@ -154,7 +154,7 @@ export default function EditorHeader({ onShareLink, onImport }: Props) {
                 <button
                   type="button"
                   onClick={() => { onShareLink(); setExportMenuOpen(false); }}
-                  className="flex w-full items-center gap-2 px-3 py-2 text-left text-xs text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+                  className="flex w-full cursor-pointer items-center gap-2 px-3 py-2 text-left text-xs text-white/70 transition-colors hover:bg-white/10 hover:text-white"
                 >
                   <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
@@ -170,7 +170,7 @@ export default function EditorHeader({ onShareLink, onImport }: Props) {
         <button
           type="button"
           onClick={() => window.open('https://sphere-docs.vercel.app/docs/2.0.1/api/pricing-description-languages/Pricing2Yaml/the-pricing2yaml-syntax', '_blank')}
-          className="rounded-md px-3 py-1.5 text-xs font-medium text-white/60 transition-colors hover:bg-white/10 hover:text-white"
+          className="cursor-pointer rounded-md px-3 py-1.5 text-xs font-medium text-white/60 transition-colors hover:bg-white/10 hover:text-white"
         >
           Docs
         </button>

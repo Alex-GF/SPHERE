@@ -23,6 +23,20 @@ export interface PricingSearchResultItem {
   collection: { id: string; name: string; slug: string } | null;
 }
 
+export interface PricingEntry {
+  name: string;
+  organization: { id: string; name: string; displayName: string; avatar: string };
+  version: string;
+  collection: { id: string; name: string; slug: string } | null;
+  createdAt: string;
+  currency: string;
+  analytics: {
+    configurationSpaceSize: number;
+    minSubscriptionPrice: number;
+    maxSubscriptionPrice: number;
+  };
+}
+
 export function usePricings(
   search: string,
   offset: number = 0,

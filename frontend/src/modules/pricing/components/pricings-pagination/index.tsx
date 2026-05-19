@@ -21,7 +21,7 @@ export default function PricingsPagination({ limit, offset, total, onChange }: P
     <div className="my-4 flex items-center justify-center gap-2">
       <button
         type="button"
-        className="rounded-full p-2 disabled:cursor-not-allowed disabled:opacity-50"
+        className="cursor-pointer rounded-full p-2 disabled:cursor-not-allowed disabled:opacity-50"
         onClick={() => goToPage(Math.max(1, currentPage - 1))}
         disabled={currentPage <= 1}
         aria-label="previous page"
@@ -44,7 +44,7 @@ export default function PricingsPagination({ limit, offset, total, onChange }: P
 
       <button
         type="button"
-        className="rounded-full p-2 disabled:cursor-not-allowed disabled:opacity-50"
+        className="cursor-pointer rounded-full p-2 disabled:cursor-not-allowed disabled:opacity-50"
         onClick={() => goToPage(Math.min(totalPages, currentPage + 1))}
         disabled={currentPage >= totalPages}
         aria-label="next page"

@@ -94,7 +94,7 @@ const LoginForm: React.FC = () => {
             placeholder="Enter your username or email"
             name="loginField"
             autoComplete="username"
-            className="h-11 w-full rounded-lg border border-tp-hairline-strong bg-tp-canvas px-4 text-sm text-tp-ink outline-none transition-all duration-200 placeholder:text-tp-muted focus:border-tp-primary focus:ring-2 focus:ring-tp-primary/10"
+            className="h-11 w-full rounded-lg border border-tp-input-border bg-tp-input-bg px-4 text-sm text-tp-ink outline-none transition-all duration-200 placeholder:text-tp-muted focus:border-tp-primary focus:ring-2 focus:ring-tp-primary/10 dark:focus:ring-tp-primary/20"
           />
         </motion.div>
 
@@ -108,7 +108,7 @@ const LoginForm: React.FC = () => {
             type="password"
             name="password"
             autoComplete="current-password"
-            className="h-11 w-full rounded-lg border border-tp-hairline-strong bg-tp-canvas px-4 text-sm text-tp-ink outline-none transition-all duration-200 placeholder:text-tp-muted focus:border-tp-primary focus:ring-2 focus:ring-tp-primary/10"
+            className="h-11 w-full rounded-lg border border-tp-input-border bg-tp-input-bg px-4 text-sm text-tp-ink outline-none transition-all duration-200 placeholder:text-tp-muted focus:border-tp-primary focus:ring-2 focus:ring-tp-primary/10 dark:focus:ring-tp-primary/20"
           />
         </motion.div>
 

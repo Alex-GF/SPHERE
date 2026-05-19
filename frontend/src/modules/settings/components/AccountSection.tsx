@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FiCheck, FiLoader } from 'react-icons/fi';
 import { useUserSettingsApi, type UserSettings } from '../api/userSettingsApi';
@@ -6,9 +6,10 @@ import { useUserSettingsApi, type UserSettings } from '../api/userSettingsApi';
 interface Props {
   settings: UserSettings;
   onUpdate: (partial: Partial<UserSettings>) => void;
+  onDirtyChange?: (dirty: boolean) => void;
 }
 
-export default function AccountSection({ settings, onUpdate }: Props) {
+export default function AccountSection({ settings, onUpdate, onDirtyChange }: Props) {
   const api = useUserSettingsApi();
   const [email, setEmail] = useState(settings.email);
   const [firstName, setFirstName] = useState(settings.firstName);
@@ -22,6 +23,10 @@ export default function AccountSection({ settings, onUpdate }: Props) {
     firstName !== settings.firstName ||
     lastName !== settings.lastName ||
     phone !== (settings.settings?.phone || '');
+
+  useEffect(() => {
+    onDirtyChange?.(hasChanges);
+  }, [hasChanges, onDirtyChange]);
 
   const handleSave = async () => {
     setSaving(true);
@@ -111,7 +116,7 @@ function Field({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="h-11 w-full rounded-[8px] border border-tp-hairline-strong bg-tp-canvas px-3.5 text-sm text-tp-ink outline-none transition-colors focus:border-tp-primary focus:ring-1 focus:ring-tp-primary/20"
+        className="h-11 w-full rounded-[8px] border border-tp-input-border bg-tp-input-bg px-3.5 text-sm text-tp-ink outline-none transition-colors focus:border-tp-primary focus:ring-1 focus:ring-tp-primary/20 dark:focus:ring-tp-primary/20"
       />
     </div>
   );

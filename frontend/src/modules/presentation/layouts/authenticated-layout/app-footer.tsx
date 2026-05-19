@@ -20,7 +20,7 @@ export default function AppFooter() {
                     key={index}
                     type="button"
                     onClick={() => route.to && router.push(route.to)}
-                    className="text-xs text-tp-steel transition-colors hover:text-tp-ink"
+                    className="cursor-pointer text-xs text-tp-steel transition-colors hover:text-tp-ink"
                   >
                     {route.name}
                   </button>

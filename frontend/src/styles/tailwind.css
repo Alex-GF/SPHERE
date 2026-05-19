@@ -71,6 +71,12 @@
   --color-tp-footer-cream: #fff8e0;
 
   /* ═══════════════════════════════════════════════════════════════
+     FORM INPUTS
+     ═══════════════════════════════════════════════════════════════ */
+  --color-tp-input-bg: #ffffff;
+  --color-tp-input-border: #c7c7c7;
+
+  /* ═══════════════════════════════════════════════════════════════
      LINKS
      ═══════════════════════════════════════════════════════════════ */
   --color-tp-link: #fa520f;
@@ -188,6 +194,10 @@
 
   /* Footer */
   --color-tp-footer-cream: #1f1a12;
+
+  /* Form inputs */
+  --color-tp-input-bg: #1e1e1e;
+  --color-tp-input-border: #333333;
 
   /* Links */
   --color-tp-link: #ff7a3d;

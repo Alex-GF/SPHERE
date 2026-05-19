@@ -135,7 +135,7 @@ export default function PermissionsTab({ organizationId, canManage }: Permission
         <select
           value={selectedMemberId ?? ''}
           onChange={e => setSelectedMemberId(e.target.value)}
-          className="w-full rounded-md border border-sphere-grey-300 px-3 py-2 text-sm outline-none focus:border-sphere-primary-500 focus:ring-1 focus:ring-sphere-primary-500"
+          className="w-full rounded-md border border-tp-input-border bg-tp-input-bg px-3 py-2 text-sm text-tp-ink outline-none focus:border-tp-primary focus:ring-1 focus:ring-tp-primary/20 dark:focus:ring-tp-primary/20"
         >
           {members.map(m => (
             <option key={m.user.id} value={m.user.id}>

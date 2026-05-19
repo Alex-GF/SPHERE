@@ -46,7 +46,7 @@ function ExplorerRow({
 
   return (
     <div
-      className={`flex items-center justify-between gap-3 rounded-md px-3 py-2 transition ${isActive ? 'bg-[#dff4ff]' : 'hover:bg-slate-50'}`}
+      className={`flex cursor-pointer items-center justify-between gap-3 rounded-md px-3 py-2 transition ${isActive ? 'bg-[#dff4ff]' : 'hover:bg-slate-50'}`}
       style={{ paddingLeft: `${depth * 20 + 12}px` }}
       onClick={onSelect}
       role="button"
@@ -63,17 +63,17 @@ function ExplorerRow({
         <p className="truncate text-[16px] font-medium">{fileName}</p>
       </div>
       <div className="flex items-center gap-2">
-        <button type="button" className="rounded-full p-2 text-slate-500 hover:bg-slate-100" onClick={(e) => { e.stopPropagation(); onDownload(item.yaml); }} title="Download">
+        <button type="button" className="cursor-pointer rounded-full p-2 text-slate-500 hover:bg-slate-100" onClick={(e) => { e.stopPropagation(); onDownload(item.yaml); }} title="Download">
           <FaDownload />
         </button>
-        <button type="button" className="rounded-full p-2 text-slate-500 hover:bg-slate-100" onClick={(e) => { e.stopPropagation(); onOpen(item.yaml); }} title="Open">
+        <button type="button" className="cursor-pointer rounded-full p-2 text-slate-500 hover:bg-slate-100" onClick={(e) => { e.stopPropagation(); onOpen(item.yaml); }} title="Open">
           <FaExternalLinkAlt />
         </button>
-        <button type="button" className="rounded-full p-2 text-slate-500 hover:bg-slate-100" onClick={(e) => { e.stopPropagation(); onCopyLink(item.yaml); }} title="Copy link">
+        <button type="button" className="cursor-pointer rounded-full p-2 text-slate-500 hover:bg-slate-100" onClick={(e) => { e.stopPropagation(); onCopyLink(item.yaml); }} title="Copy link">
           <IoIosLink fontSize={24} />
         </button>
         {canDelete && (
-          <button type="button" className="rounded-full p-2 text-red-600 hover:bg-slate-100" onClick={(e) => { e.stopPropagation(); onDelete(item.yaml); }} title="Delete version">
+          <button type="button" className="cursor-pointer rounded-full p-2 text-red-600 hover:bg-slate-100" onClick={(e) => { e.stopPropagation(); onDelete(item.yaml); }} title="Delete version">
             <MdDeleteForever fontSize={24} />
           </button>
         )}
@@ -96,7 +96,7 @@ function YamlLinkModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/45 p-4" onClick={onClose}>
+      <div className="fixed inset-0 z-50 cursor-pointer bg-black/45 p-4" onClick={onClose}>
       <div
         className="absolute left-1/2 top-1/2 w-[90vw] max-w-150 -translate-x-1/2 -translate-y-1/2 rounded-xxl bg-white p-4 shadow-2xl"
         onClick={e => e.stopPropagation()}
@@ -104,7 +104,7 @@ function YamlLinkModal({
         <h2 className="text-center text-xl font-bold">Your link is ready!</h2>
         <p className="mt-2 mb-3 text-center text-sm text-slate-600">
           This link points directly to the YAML file of the selected pricing version. It can be used to leverage some functionalities within the{' '}
-          <a href="https://pricing4saas-docs.vercel.app" target="_blank" rel="noreferrer" className="underline">
+          <a href="https://pricing4saas-docs.vercel.app" target="_blank" rel="noreferrer" className="cursor-pointer underline">
             Pricing4SaaS suite
           </a>
           .
@@ -225,7 +225,7 @@ export default function FileExplorer({ pricingData }: { pricingData: AnalyticsDa
         <div className="flex flex-col gap-2 p-4">
           <button
             type="button"
-            className={`flex w-full items-center justify-between rounded-md px-3 py-2 text-left text-[16px] font-medium transition ${activeNode === 'folder-pricings' ? 'bg-[#7fd4e6] text-slate-900' : 'bg-[#b6e7f3] text-slate-800 hover:bg-[#a9e2f0]'}`}
+            className={`flex w-full cursor-pointer items-center justify-between rounded-md px-3 py-2 text-left text-[16px] font-medium transition ${activeNode === 'folder-pricings' ? 'bg-[#7fd4e6] text-slate-900' : 'bg-[#b6e7f3] text-slate-800 hover:bg-[#a9e2f0]'}`}
             onClick={() => {
               setActiveNode('folder-pricings');
               setIsFolderExpanded(prev => !prev);

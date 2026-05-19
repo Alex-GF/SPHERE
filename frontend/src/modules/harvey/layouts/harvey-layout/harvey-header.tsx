@@ -14,7 +14,7 @@ export default function HarveyHeader({ isPlayground, onNewConversation }: Props)
         <button
           type="button"
           onClick={() => router.push('/')}
-          className="text-xs font-semibold tracking-[0.22em] text-tp-steel transition-colors hover:text-tp-ink"
+          className="cursor-pointer text-xs font-semibold tracking-[0.22em] text-tp-steel transition-colors hover:text-tp-ink"
         >
           SPHERE
         </button>
@@ -37,7 +37,7 @@ export default function HarveyHeader({ isPlayground, onNewConversation }: Props)
           <button
             type="button"
             onClick={onNewConversation}
-            className="rounded-md border border-tp-hairline-strong bg-tp-canvas px-3 py-1.5 text-xs font-medium text-tp-ink transition-colors hover:bg-tp-surface"
+            className="cursor-pointer rounded-md border border-tp-hairline-strong bg-tp-canvas px-3 py-1.5 text-xs font-medium text-tp-ink transition-colors hover:bg-tp-surface"
           >
             New conversation
           </button>

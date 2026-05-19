@@ -201,7 +201,7 @@ export default function EditorPage() {
                     key={version}
                     type="button"
                     onClick={() => handleSyntaxVersionChange(version)}
-                    className="relative rounded-lg px-3 py-1.5 text-sm font-semibold text-slate-700 transition-colors hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-1 dark:text-slate-200 dark:hover:text-white"
+                    className="relative cursor-pointer rounded-lg px-3 py-1.5 text-sm font-semibold text-slate-700 transition-colors hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-1 dark:text-slate-200 dark:hover:text-white"
                   >
                     {isSelected && (
                       <motion.span

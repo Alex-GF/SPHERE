@@ -63,7 +63,7 @@ export default function PlatformSurfaceSection({
               <button
                 type="button"
                 onClick={onResearch}
-                className="mt-4 inline-flex items-center gap-2 text-xs uppercase tracking-[0.15em] text-[#1d2939] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] hover:translate-x-1"
+                className="mt-4 inline-flex cursor-pointer items-center gap-2 text-xs uppercase tracking-[0.15em] text-[#1d2939] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] hover:translate-x-1"
               >
                 Open research ↗
               </button>
@@ -86,7 +86,7 @@ export default function PlatformSurfaceSection({
                 <button
                   type="button"
                   onClick={onEditor}
-                  className={`group inline-flex w-36 items-center justify-evenly gap-3 rounded-full border px-3 py-3 text-sm font-medium transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] active:scale-[0.98] 'border-black/10 bg-[#0f172a] text-white hover:bg-[#1e293b]`}
+                  className={`group inline-flex w-36 cursor-pointer items-center justify-evenly gap-3 rounded-full border px-3 py-3 text-sm font-medium transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] active:scale-[0.98] 'border-black/10 bg-[#0f172a] text-white hover:bg-[#1e293b]`}
                 >
                   <span className='text-left'>Pricings</span>
                   <span

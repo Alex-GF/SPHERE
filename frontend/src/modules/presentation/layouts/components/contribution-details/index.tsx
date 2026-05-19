@@ -13,7 +13,7 @@ export default function ContributionDetailsModal({
 }>) {
   return (
     isOpen ? (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/35 p-4" onClick={handleClose} role="presentation">
+      <div className="fixed inset-0 z-50 flex cursor-pointer items-center justify-center bg-black/35 p-4" onClick={handleClose} role="presentation">
         <div
           className="flex h-[90dvh] w-[90%] max-w-[1200px] flex-col overflow-hidden rounded-lg bg-white p-4 shadow-2xl"
           onClick={(event) => event.stopPropagation()}
@@ -35,7 +35,7 @@ export default function ContributionDetailsModal({
                     remarkPlugins={[remarkGfm]}
                     components={{
                       a: ({ node, ...props }) => (
-                        <a {...props} target="_blank" rel="noopener noreferrer" className="text-tp-ink underline">
+                        <a {...props} target="_blank" rel="noopener noreferrer" className="cursor-pointer text-tp-ink underline">
                           {props.children}
                         </a>
                       ),

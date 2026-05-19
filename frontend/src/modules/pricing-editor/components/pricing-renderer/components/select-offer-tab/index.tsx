@@ -20,14 +20,14 @@ export default function SelectOfferTab({
           <button
             type="button"
             onClick={() => handleSwitchTab('monthly')}
-            className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${selectedBilledType === 'monthly' ? activeClasses : idleClasses}`}
+            className={`cursor-pointer rounded-lg px-4 py-2 text-sm font-semibold transition ${selectedBilledType === 'monthly' ? activeClasses : idleClasses}`}
           >
             Monthly
           </button>
           <button
             type="button"
             onClick={() => handleSwitchTab('annually')}
-            className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${selectedBilledType === 'annually' ? activeClasses : idleClasses}`}
+            className={`cursor-pointer rounded-lg px-4 py-2 text-sm font-semibold transition ${selectedBilledType === 'annually' ? activeClasses : idleClasses}`}
           >
             Annually
           </button>

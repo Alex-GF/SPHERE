@@ -43,7 +43,7 @@ export default function CreateOrganizationPage() {
             maxLength={50}
             pattern="[a-z0-9_-]+"
             title="Lowercase letters, numbers, hyphens and underscores only"
-            className="rounded-md border border-sphere-grey-300 px-3 py-2 text-sm outline-none focus:border-sphere-primary-500 focus:ring-1 focus:ring-sphere-primary-500"
+            className="rounded-md border border-tp-input-border bg-tp-input-bg px-3 py-2 text-sm outline-none focus:border-tp-primary focus:ring-1 focus:ring-tp-primary/20 dark:focus:ring-tp-primary/20"
           />
           <p className="text-xs text-sphere-grey-500">Lowercase letters, numbers, hyphens and underscores only</p>
         </div>
@@ -60,7 +60,7 @@ export default function CreateOrganizationPage() {
             placeholder="My Organization"
             required
             maxLength={255}
-            className="rounded-md border border-sphere-grey-300 px-3 py-2 text-sm outline-none focus:border-sphere-primary-500 focus:ring-1 focus:ring-sphere-primary-500"
+            className="rounded-md border border-tp-input-border bg-tp-input-bg px-3 py-2 text-sm outline-none focus:border-tp-primary focus:ring-1 focus:ring-tp-primary/20 dark:focus:ring-tp-primary/20"
           />
         </div>
 
@@ -75,7 +75,7 @@ export default function CreateOrganizationPage() {
             placeholder="A short description of your organization"
             rows={3}
             maxLength={500}
-            className="rounded-md border border-sphere-grey-300 px-3 py-2 text-sm outline-none focus:border-sphere-primary-500 focus:ring-1 focus:ring-sphere-primary-500"
+            className="rounded-md border border-tp-input-border bg-tp-input-bg px-3 py-2 text-sm outline-none focus:border-tp-primary focus:ring-1 focus:ring-tp-primary/20 dark:focus:ring-tp-primary/20"
           />
         </div>
 
@@ -83,14 +83,14 @@ export default function CreateOrganizationPage() {
           <button
             type="button"
             onClick={() => router.back()}
-            className="rounded-md border border-sphere-grey-300 px-5 py-2 text-sm font-semibold text-sphere-grey-700 transition-colors hover:bg-sphere-grey-100"
+            className="cursor-pointer rounded-md border border-sphere-grey-300 px-5 py-2 text-sm font-semibold text-sphere-grey-700 transition-colors hover:bg-sphere-grey-100"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={isSubmitting}
-            className="rounded-md bg-tp-primary px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-tp-primary disabled:opacity-50"
+            className="cursor-pointer rounded-md bg-tp-primary px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-tp-primary disabled:opacity-50"
           >
             {isSubmitting ? 'Creating...' : 'Create organization'}
           </button>

@@ -31,7 +31,7 @@ export default function SearchInput({ placeholder = 'Search...', onSearch }: Pro
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder={placeholder}
-        className="h-9 w-full rounded-lg border border-tp-hairline-strong bg-tp-canvas pl-9 pr-3 text-sm text-tp-ink placeholder-tp-muted transition-colors focus:border-tp-primary focus:outline-none"
+        className="h-9 w-full rounded-lg border border-tp-input-border bg-tp-input-bg pl-9 pr-3 text-sm text-tp-ink placeholder-tp-muted transition-colors focus:border-tp-primary focus:outline-none"
       />
       {value && (
         <button
