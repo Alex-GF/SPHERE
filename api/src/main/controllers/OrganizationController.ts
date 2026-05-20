@@ -39,8 +39,15 @@ class OrganizationController {
 
   async indexByUser(req: any, res: any) {
     try {
-      const organizations = await this.organizationService.indexByUser(req.user.id);
-      res.json(organizations);
+      const { limit, offset } = req.query;
+      const pagination = (limit !== undefined || offset !== undefined)
+        ? {
+            limit: limit !== undefined ? parseInt(limit as string, 10) : undefined,
+            offset: offset !== undefined ? parseInt(offset as string, 10) : undefined,
+          }
+        : undefined;
+      const result = await this.organizationService.indexByUser(req.user.id, pagination);
+      res.json(result);
     } catch (err: any) {
       const { status, message } = handleError(err);
       res.status(status).send({ error: message });

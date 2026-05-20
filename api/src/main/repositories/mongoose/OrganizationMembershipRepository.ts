@@ -27,7 +27,7 @@ class OrganizationMembershipRepository extends RepositoryBase {
           ? [
               {
                 $match: {
-                  'organization._parentId': null, // Only return memberships for top-level organizations
+                  'organization._parentId': null,
                 },
               },
             ]
@@ -40,12 +40,68 @@ class OrganizationMembershipRepository extends RepositoryBase {
             _organizationId: 1,
             role: 1,
             joinedAt: 1,
-            organization: { id: 1, name: 1, displayName: 1, avatar: 1, isPersonal: 1 },
+            organization: { id: 1, name: 1, displayName: 1, avatar: 1, isPersonal: 1, _parentId: 1, ancestors: 1 },
           },
         },
       ]);
     } catch {
       return [];
+    }
+  }
+
+  async findPaginatedByUserId(userId: string, pagination: { limit: number; offset: number }) {
+    try {
+      const basePipeline: any[] = [
+        { $match: { _userId: new mongoose.Types.ObjectId(userId) } },
+        {
+          $lookup: {
+            from: 'organizations',
+            localField: '_organizationId',
+            foreignField: '_id',
+            as: 'organization',
+          },
+        },
+        { $unwind: '$organization' },
+        {
+          $addFields: {
+            id: { $toString: '$_id' },
+            'organization.id': { $toString: '$organization._id' },
+          },
+        },
+        {
+          $project: {
+            _id: 0,
+            id: 1,
+            _userId: 1,
+            _organizationId: 1,
+            role: 1,
+            joinedAt: 1,
+            organization: { id: 1, name: 1, displayName: 1, avatar: 1, isPersonal: 1, _parentId: 1, ancestors: 1 },
+          },
+        },
+      ];
+
+      const result = await OrganizationMembershipMongoose.aggregate([
+        ...basePipeline,
+        {
+          $facet: {
+            items: [
+              { $skip: pagination.offset },
+              { $limit: pagination.limit },
+            ],
+            total: [
+              { $count: 'count' },
+            ],
+          },
+        },
+      ]);
+      const facet = result[0] || { items: [], total: [] };
+      return {
+        items: facet.items,
+        total: facet.total[0]?.count ?? 0,
+      };
+    } catch {
+      return { items: [], total: 0 };
     }
   }
 

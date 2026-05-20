@@ -9,8 +9,8 @@ import { LeanUser } from '../types/models/User';
 import { PricingIndexQueryParams } from '../types/services/PricingService';
 import { CollectionIndexQueryParams } from '../types/services/PricingCollection';
 
-const FULL_PERMISSIONS: EntityPermissions = { GET: true, PUT: true, DELETE: true };
-const NO_PERMISSIONS: EntityPermissions = { GET: false, PUT: false, DELETE: false };
+const FULL_PERMISSIONS: EntityPermissions = { GET: true, PUT: true, DELETE: true, CREATE: true };
+const NO_PERMISSIONS: EntityPermissions = { GET: false, PUT: false, DELETE: false, CREATE: false };
 
 class PermissionService {
   private entityPermissionRepository: EntityPermissionRepository;
@@ -38,7 +38,7 @@ class PermissionService {
     userOrgRole?: OrgRole | null
   ): Promise<EntityPermissions> {
     if (userOrgRole === 'OWNER' || userOrgRole === 'ADMIN') {
-      return FULL_PERMISSIONS;
+      return { ...FULL_PERMISSIONS };
     }
 
     const permission = await this.entityPermissionRepository.findByUserEntityAndOrganization(
@@ -75,6 +75,34 @@ class PermissionService {
   }
 
   /**
+   * Checks if a user has an org-scoped permission (e.g., CREATE) for an entity type.
+   * OWNER/ADMIN always return true.
+   * For MEMBERs, looks up the EntityPermission record with entityId=null.
+   */
+  async hasOrgPermission(
+    userId: string,
+    organizationId: string,
+    entityType: EntityType,
+    userOrgRole?: OrgRole | null
+  ): Promise<boolean> {
+    if (userOrgRole === 'OWNER' || userOrgRole === 'ADMIN') {
+      return true;
+    }
+
+    const permission = await this.entityPermissionRepository.findByUserAndOrgScopedType(
+      userId,
+      organizationId,
+      entityType
+    );
+
+    if (!permission) {
+      return false;
+    }
+
+    return permission.permissions.CREATE === true;
+  }
+
+  /**
    * Checks if a user can access an entity (GET permission check only for private entities).
    * Public entities are always accessible.
    */
@@ -95,12 +123,13 @@ class PermissionService {
 
   /**
    * Sets permissions for a user on an entity. Only OWNER/ADMIN can call this.
+   * When entityId is null, sets org-scoped permissions (e.g., CREATE).
    */
   async setPermission(
     organizationId: string,
     userId: string,
     entityType: EntityType,
-    entityId: string,
+    entityId: string | null,
     permissions: EntityPermissions,
     grantedBy: string,
     granterOrgRole: OrgRole
@@ -273,13 +302,10 @@ class PermissionService {
       return { collections: filtered, total: filtered.length };
     }
 
-    const sortBy = queryParams.sortBy || 'name';
-    const sortDir = queryParams.sort === 'asc' ? 1 : -1;
     allCollections.sort((a: any, b: any) => {
-      const aVal = a[sortBy] ?? a.name ?? '';
-      const bVal = b[sortBy] ?? b.name ?? '';
-      if (typeof aVal === 'string') return aVal.localeCompare(bVal) * sortDir;
-      return ((aVal as number) - (bVal as number)) * sortDir;
+      const aVal = a.name ?? '';
+      const bVal = b.name ?? '';
+      return aVal.localeCompare(bVal);
     });
 
     const offset = parseInt(queryParams.offset as string) || 0;
@@ -306,7 +332,7 @@ class PermissionService {
     const entityId = pricing.versions[0].id;
     const isOwnerOrAdmin = userOrgRole === 'OWNER' || userOrgRole === 'ADMIN';
     if (isOwnerOrAdmin) {
-      return FULL_PERMISSIONS;
+      return { ...FULL_PERMISSIONS };
     }
     const permissions = await this.getEffectivePermissions(
       userId,
@@ -339,7 +365,7 @@ class PermissionService {
     const entityId = collection.id;
     const isOwnerOrAdmin = userOrgRole === 'OWNER' || userOrgRole === 'ADMIN';
     if (isOwnerOrAdmin) {
-      return FULL_PERMISSIONS;
+      return { ...FULL_PERMISSIONS };
     }
     const permissions = await this.getEffectivePermissions(
       userId,

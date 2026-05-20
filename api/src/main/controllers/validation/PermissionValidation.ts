@@ -14,8 +14,7 @@ const setPermission = [
     .isIn(['pricing', 'collection'])
     .withMessage('The entityType must be one of: pricing, collection'),
   check('entityId')
-    .exists()
-    .withMessage('An entityId must be provided')
+    .optional({ values: 'null' })
     .isString()
     .withMessage('The entityId field must be a string')
     .matches(/^[a-f0-9]{24}$/)
@@ -37,6 +36,10 @@ const setPermission = [
     .optional()
     .isBoolean()
     .withMessage('permissions.DELETE must be a boolean'),
+  check('permissions.CREATE')
+    .optional()
+    .isBoolean()
+    .withMessage('permissions.CREATE must be a boolean'),
 ];
 
 const removePermission = [

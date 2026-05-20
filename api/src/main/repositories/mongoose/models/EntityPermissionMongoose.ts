@@ -23,14 +23,16 @@ const entityPermissionSchema = new Schema(
     },
     entityId: {
       type: Schema.Types.ObjectId,
-      required: true,
-      set: (v: string | mongoose.Types.ObjectId) => new mongoose.Types.ObjectId(v),
-      get: (v: mongoose.Types.ObjectId | null) => v?.toString(),
+      required: false,
+      default: null,
+      set: (v: string | mongoose.Types.ObjectId | null) => v ? new mongoose.Types.ObjectId(v) : null,
+      get: (v: mongoose.Types.ObjectId | null) => v?.toString() ?? null,
     },
     permissions: {
-      GET: { type: Boolean, required: true, default: true },
+      GET: { type: Boolean, required: true, default: false },
       PUT: { type: Boolean, required: true, default: false },
       DELETE: { type: Boolean, required: true, default: false },
+      CREATE: { type: Boolean, required: true, default: false },
     },
     grantedBy: {
       type: Schema.Types.ObjectId,
@@ -58,10 +60,15 @@ const entityPermissionSchema = new Schema(
   }
 );
 
+// Unique index: one permission per user/org/entityType/entityId combination.
+// MongoDB treats null as a distinct value in unique indexes, so:
+// - entity-scoped (entityId present): enforced per entityId
+// - org-scoped (entityId null): only one per user/org/entityType
 entityPermissionSchema.index(
   { _userId: 1, _organizationId: 1, entityType: 1, entityId: 1 },
   { unique: true }
 );
+
 entityPermissionSchema.index({ _organizationId: 1 });
 entityPermissionSchema.index({ _userId: 1, entityType: 1 });
 

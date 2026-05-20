@@ -12,9 +12,12 @@ export interface Organization {
   displayName: string;
   description: string | null;
   avatar: string | null;
+  avatarBgColor?: string;
+  avatarFgColor?: string;
   isPersonal: boolean;
   _parentId: string | null;
   ancestors: string[];
+  role?: OrgRole;
   subOrganizations?: Organization[];
   createdAt?: string;
 }
@@ -65,8 +68,12 @@ export function useOrganizationsApi() {
     Authorization: `Bearer ${token}`,
   };
 
-  const getMyOrganizations = useCallback(async (): Promise<Organization[]> => {
-    const response = await fetchWithInterceptor(`${import.meta.env.VITE_API_URL}/users/me/orgs`, {
+  const getMyOrganizations = useCallback(async (params?: { limit?: number; offset?: number }): Promise<Organization[] | { items: Organization[]; total: number }> => {
+    const qs = new URLSearchParams();
+    if (params?.limit !== undefined) qs.set('limit', String(params.limit));
+    if (params?.offset !== undefined) qs.set('offset', String(params.offset));
+    const query = qs.toString();
+    const response = await fetchWithInterceptor(`${import.meta.env.VITE_API_URL}/users/me/orgs${query ? `?${query}` : ''}`, {
       method: 'GET',
       headers,
     });

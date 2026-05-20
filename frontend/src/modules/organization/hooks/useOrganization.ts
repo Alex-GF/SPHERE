@@ -1,7 +1,9 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, useCallback, useRef } from 'react';
 import OrganizationContext from '../contexts/organizationContext';
 import { Organization, useOrganizationsApi } from '../api/organizationsApi';
 import { useAuth } from '../../auth/hooks/useAuth';
+
+const PER_PAGE = 10;
 
 export const useOrganization = () => {
   return useContext(OrganizationContext);
@@ -10,8 +12,12 @@ export const useOrganization = () => {
 export const useOrganizationManager = () => {
   const [organizations, setOrganizations] = useState<Organization[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const { authUser } = useAuth();
   const { getMyOrganizations } = useOrganizationsApi();
+  const getMyOrganizationsRef = useRef(getMyOrganizations);
+  getMyOrganizationsRef.current = getMyOrganizations;
 
   useEffect(() => {
     if (!authUser.isAuthenticated || authUser.isLoading) {
@@ -23,15 +29,27 @@ export const useOrganizationManager = () => {
     }
 
     setIsLoading(true);
-    getMyOrganizations()
-      .then(orgs => {
-        setOrganizations(orgs);
+    const offset = (page - 1) * PER_PAGE;
+    getMyOrganizationsRef.current({ limit: PER_PAGE, offset })
+      .then((result) => {
+        if (Array.isArray(result)) {
+          setOrganizations(result);
+          setTotalPages(1);
+        } else {
+          setOrganizations(result.items);
+          setTotalPages(Math.max(1, Math.ceil(result.total / PER_PAGE)));
+        }
       })
       .catch(() => {
         setOrganizations([]);
+        setTotalPages(1);
       })
       .finally(() => setIsLoading(false));
-  }, [authUser.isAuthenticated, authUser.isLoading]);
+  }, [authUser.isAuthenticated, authUser.isLoading, page]);
 
-  return { organizations, isLoading };
+  const handlePageChange = useCallback((newPage: number) => {
+    setPage(newPage);
+  }, []);
+
+  return { organizations, isLoading, page, totalPages, setPage: handlePageChange };
 };

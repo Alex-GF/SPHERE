@@ -1,10 +1,11 @@
 export type EntityType = 'pricing' | 'collection';
-export type PermissionType = 'GET' | 'PUT' | 'DELETE';
+export type PermissionType = 'GET' | 'PUT' | 'DELETE' | 'CREATE';
 
 export interface EntityPermissions {
   GET: boolean;
   PUT: boolean;
   DELETE: boolean;
+  CREATE: boolean;
 }
 
 export interface EntityPermission {
@@ -12,7 +13,7 @@ export interface EntityPermission {
   _userId: string;
   _organizationId: string;
   entityType: EntityType;
-  entityId: string;
+  entityId: string | null;
   permissions: EntityPermissions;
   grantedBy?: string;
   entityName?: string;
@@ -24,6 +25,6 @@ export interface EntityPermission {
 export interface SetPermissionPayload {
   userId: string;
   entityType: EntityType;
-  entityId: string;
+  entityId: string | null;
   permissions: EntityPermissions;
 }

@@ -1,22 +1,27 @@
 import { useState } from 'react';
 import VisibilityOptions from '../visibility-options';
 import FileUpload from '../../../core/components/file-upload-input';
-import { useAuth } from '../../../auth/hooks/useAuth';
+import OrganizationSelector from '../organization-selector';
 import { usePricingsApi } from '../../api/pricingsApi';
 import { useRouter } from '../../../core/hooks/useRouter';
 import { retrievePricingFromYaml } from 'pricing4ts';
 import customAlert from '../../../core/utils/custom-alert';
+import { Organization } from '../../../organization/api/organizationsApi';
 
 export default function CreatePricingForm() {
   const [pricingName, setPricingName] = useState('');
   const [visibility, setVisibility] = useState('Public');
+  const [selectedOrg, setSelectedOrg] = useState<Organization | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
 
-  const { authUser } = useAuth();
   const { createPricing } = usePricingsApi();
   const router = useRouter();
 
   const handleSubmit = (file: File) => {
+    if (!selectedOrg) {
+      customAlert('Please select an organization');
+      return;
+    }
     if (!pricingName.trim()) {
       customAlert('Please enter a pricing name');
       return;
@@ -31,7 +36,7 @@ export default function CreatePricingForm() {
         formData.append('version', uploadedPricing.version);
         formData.append('yaml', file);
         formData.append('private', visibility === 'Private' ? 'true' : 'false');
-        createPricing(formData, setErrors).then(() => {
+        createPricing(formData, selectedOrg.id, setErrors).then(() => {
           router.push('/pricings');
         }).catch((error) => {
           console.error('Error creating pricing:', error);
@@ -48,27 +53,17 @@ export default function CreatePricingForm() {
         Upload a pricing to SPHERE
       </h2>
 
-      <div className="flex items-center gap-1">
-        <div className="relative flex-1">
-          <label className="absolute -top-6 left-0 block text-sm text-slate-700">
-            Owner
-          </label>
-          <select
-            value={authUser.user?.username || ''}
-            className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm"
-          >
-            <option value={authUser.user?.username}>{authUser.user?.username}</option>
-          </select>
+      <div className="flex items-end gap-1">
+        <div className="flex-1">
+          <OrganizationSelector value={selectedOrg} onChange={setSelectedOrg} />
         </div>
 
-        <div className="text-4xl text-slate-400 pt-4">
+        <div className="text-4xl text-slate-400 pb-2">
           /
         </div>
 
         <div className="relative flex-[2]">
-          <label className="absolute -top-6 left-0 block text-sm text-slate-700">
-            Pricing Name
-          </label>
+          <label className="mb-1 block text-sm text-slate-700">Pricing Name</label>
           <input
             placeholder="New pricing name"
             value={pricingName}

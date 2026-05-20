@@ -5,6 +5,15 @@ import AppLayout from './app-layout';
 import ProtectedRoute from '../modules/auth/components/protected-route';
 import { useAuth } from '../modules/auth/hooks/useAuth';
 
+import DashboardSkeleton from '../modules/core/components/skeletons/dashboard-skeleton';
+import PricingListSkeleton from '../modules/core/components/skeletons/pricing-list-skeleton';
+import PricingCardSkeleton from '../modules/core/components/skeletons/pricing-card-skeleton';
+import CollectionsListSkeleton from '../modules/core/components/skeletons/collections-list-skeleton';
+import CollectionCardSkeleton from '../modules/core/components/skeletons/collection-card-skeleton';
+import OrgDetailSkeleton from '../modules/core/components/skeletons/org-detail-skeleton';
+import OrgJoinSkeleton from '../modules/core/components/skeletons/org-join-skeleton';
+import EditorSkeleton from '../modules/core/components/skeletons/editor-skeleton';
+
 export const HomePage = lazy(() => import('../modules/presentation/pages/home'));
 export const DashboardPage = lazy(() => import('../modules/presentation/pages/dashboard'));
 export const TeamPage = lazy(() => import('../modules/presentation/pages/team'));
@@ -39,7 +48,7 @@ function RootPage() {
   if (authUser.isAuthenticated) {
     return (
       <AppLayout>
-        <Suspense fallback={<LoadingView />}>
+        <Suspense fallback={<DashboardSkeleton />}>
           <DashboardPage />
         </Suspense>
       </AppLayout>
@@ -77,10 +86,38 @@ export default function Router() {
       children: [
         { element: <LoginPage />, path: '/login' },
         { element: <RegisterPage />, path: '/register' },
-        { element: <PricingListPage />, path: '/pricings' },
-        { element: <CardPage />, path: '/pricings/:owner/:name' },
-        { element: <CollectionsListPage />, path: '/pricings/collections' },
-        { element: <CollectionCardPage />, path: '/pricings/collections/:ownerId/:collectionSlug' },
+        {
+          path: '/pricings',
+          element: (
+            <Suspense fallback={<PricingListSkeleton />}>
+              <PricingListPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: '/pricings/:owner/:name',
+          element: (
+            <Suspense fallback={<PricingCardSkeleton />}>
+              <CardPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: '/pricings/collections',
+          element: (
+            <Suspense fallback={<CollectionsListSkeleton />}>
+              <CollectionsListPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: '/pricings/collections/:ownerId/:collectionSlug',
+          element: (
+            <Suspense fallback={<CollectionCardSkeleton />}>
+              <CollectionCardPage />
+            </Suspense>
+          ),
+        },
         { element: <TeamPage />, path: '/team' },
         { element: <ResearchPage />, path: '/research' },
         { element: <ContributionsPage />, path: '/contributions' },
@@ -106,8 +143,22 @@ export default function Router() {
         { element: <OrganizationsListPage />, path: '/me/orgs' },
         { element: <SettingsPage />, path: '/me/settings' },
         { element: <CreateOrganizationPage />, path: '/orgs/new' },
-        { element: <OrganizationJoinPage />, path: '/orgs/join/:code' },
-        { element: <OrganizationDetailPage />, path: '/orgs/:organizationId' },
+        {
+          path: '/orgs/join/:code',
+          element: (
+            <Suspense fallback={<OrgJoinSkeleton />}>
+              <OrganizationJoinPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: '/orgs/:organizationId',
+          element: (
+            <Suspense fallback={<OrgDetailSkeleton />}>
+              <OrganizationDetailPage />
+            </Suspense>
+          ),
+        },
       ],
     },
 
@@ -118,7 +169,7 @@ export default function Router() {
       path: '/editor',
       element: (
         <EditorLayout>
-          <Suspense fallback={<LoadingView />}>
+          <Suspense fallback={<EditorSkeleton />}>
             <EditorPage />
           </Suspense>
         </EditorLayout>

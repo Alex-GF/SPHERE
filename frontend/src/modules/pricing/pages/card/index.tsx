@@ -20,6 +20,7 @@ import DatePicker from '../../../core/components/date-picker';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { EntityPermissions } from '../../../organization/types/permissions';
+import PricingCardSkeleton from '../../../core/components/skeletons/pricing-card-skeleton';
 
 const axisTick = { fill: '#4a4a4a', fontSize: 11 };
 const compactNum = new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 });
@@ -343,7 +344,7 @@ export default function CardPage() {
 
   const showSettingsTab = entityPermissions?.PUT || entityPermissions?.DELETE;
 
-  if (isLoading) return <div className="flex h-64 items-center justify-center"><div className="h-8 w-8 animate-spin rounded-full border-2 border-tp-hairline border-t-tp-primary" /></div>;
+  if (isLoading) return <PricingCardSkeleton />;
 
   return (
     <>

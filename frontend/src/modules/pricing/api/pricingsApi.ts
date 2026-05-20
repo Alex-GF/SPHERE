@@ -158,8 +158,8 @@ export function usePricingsApi() {
       });
   }, [fetchWithInterceptor, basicHeaders]);
 
-  const createPricing = useCallback(async (formData: FormData, setErrors: (errors: string[]) => void = () => {}) => {
-    return fetchWithInterceptor(`${PRICINGS_BASE_PATH}/${authUser.user?.username}`, {
+  const createPricing = useCallback(async (formData: FormData, organizationId: string, setErrors: (errors: string[]) => void = () => {}) => {
+    return fetchWithInterceptor(`${PRICINGS_BASE_PATH}/${organizationId}`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,

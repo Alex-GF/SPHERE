@@ -8,11 +8,11 @@ import OrganizationContext from './modules/organization/contexts/organizationCon
 import { useOrganizationManager } from './modules/organization/hooks/useOrganization';
 
 function OrganizationProvider({ children }: { children: React.ReactNode }) {
-  const { organizations, isLoading } = useOrganizationManager();
+  const { organizations, isLoading, page, totalPages, setPage } = useOrganizationManager();
 
   return (
     <OrganizationContext.Provider
-      value={{ organizations, isLoading }}
+      value={{ organizations, isLoading, page, totalPages, setPage }}
     >
       {children}
     </OrganizationContext.Provider>

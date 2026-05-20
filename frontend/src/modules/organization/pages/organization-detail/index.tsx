@@ -24,6 +24,7 @@ import {
 } from '../../api/organizationsApi';
 import PermissionsTab from '../../components/PermissionsTab';
 import Pagination from '../../../pricing/components/pagination';
+import OrgDetailSkeleton from '../../../core/components/skeletons/org-detail-skeleton';
 
 const ROLE_LABELS: Record<OrgRole, string> = {
   OWNER: 'Owner',
@@ -838,14 +839,7 @@ export default function OrganizationDetailPage() {
 
   /* ─── Loading state ─── */
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-32">
-        <div className="flex flex-col items-center gap-3">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-tp-hairline border-b-tp-primary" />
-          <span className="text-sm text-tp-steel">Loading organization...</span>
-        </div>
-      </div>
-    );
+    return <OrgDetailSkeleton />;
   }
 
   /* ─── Error state ─── */

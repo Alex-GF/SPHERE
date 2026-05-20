@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import Skeleton from 'react-loading-skeleton';
 import { usePricingCollectionsApi } from '../../../profile/api/pricingCollectionsApi';
 import CollectionCard from '../../components/collection-card';
 import SearchInput from '../../components/search-input';
@@ -110,7 +111,7 @@ export default function CollectionsListPage() {
         {isLoading ? (
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="h-28 animate-pulse rounded-xl border border-tp-hairline-soft bg-tp-surface" />
+              <Skeleton key={i} height={112} />
             ))}
           </div>
         ) : collections.length === 0 ? (

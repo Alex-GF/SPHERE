@@ -38,7 +38,7 @@ class PermissionController {
         req.params.orgId,
         userId,
         entityType as EntityType,
-        entityId,
+        entityId ?? null,
         permissions as EntityPermissions,
         req.user.id,
         req.user.orgRole

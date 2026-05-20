@@ -18,6 +18,7 @@ import {
   createTestCollectionWithPricings,
 } from './utils/collections/collectionTestUtils';
 import { randomSuffix } from './utils/helpers';
+import { createOrgScopedPermission, createMembership } from './utils/organizations';
 import PricingMongoose from '../main/repositories/mongoose/models/PricingMongoose';
 
 dotenv.config();
@@ -423,6 +424,108 @@ describe('Pricings API integration', () => {
         .field('private', 'false');
 
       expect(response.status).toBe(401);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('Return 200 when MEMBER with CREATE permission uploads valid pricing YAML.', async () => {
+      const { user: owner, organizationId } = await createAndLoginUser('USER');
+      const { user: member } = await createAndLoginUser('USER');
+
+      // Add member to owner's org
+      await createMembership(member.id, organizationId, 'MEMBER');
+
+      // Grant CREATE permission to member
+      await createOrgScopedPermission(member.id, organizationId, 'pricing', {
+        GET: false,
+        PUT: false,
+        DELETE: false,
+        CREATE: true,
+      });
+
+      const fixture = await createValidPricingYaml(`pricing_${randomSuffix()}`);
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/pricings/${organizationId}`)
+        .set('Authorization', `Bearer ${member.token}`)
+        .field('private', 'false')
+        .field('saasName', fixture.saasName)
+        .field('version', fixture.version)
+        .attach('yaml', fixture.filePath);
+
+      expect(response.status).toBe(200);
+      expect(response.body.name ?? response.body[0]?.name).toBe(fixture.saasName);
+    });
+
+    it('Return 403 when MEMBER without CREATE permission tries to create pricing.', async () => {
+      const { user: owner, organizationId } = await createAndLoginUser('USER');
+      const { user: member } = await createAndLoginUser('USER');
+
+      // Add member to owner's org (no CREATE permission granted)
+      await createMembership(member.id, organizationId, 'MEMBER');
+
+      const fixture = await createValidPricingYaml(`pricing_${randomSuffix()}`);
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/pricings/${organizationId}`)
+        .set('Authorization', `Bearer ${member.token}`)
+        .field('private', 'false')
+        .field('saasName', fixture.saasName)
+        .field('version', fixture.version)
+        .attach('yaml', fixture.filePath);
+
+      expect(response.status).toBe(403);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('Return 200 when OWNER creates pricing (bypasses CREATE check).', async () => {
+      const { user: owner, organizationId } = await createAndLoginUser('USER');
+
+      const fixture = await createValidPricingYaml(`pricing_${randomSuffix()}`);
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/pricings/${organizationId}`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .field('private', 'false')
+        .field('saasName', fixture.saasName)
+        .field('version', fixture.version)
+        .attach('yaml', fixture.filePath);
+
+      expect(response.status).toBe(200);
+      expect(response.body.name ?? response.body[0]?.name).toBe(fixture.saasName);
+    });
+
+    it('Return 200 when global ADMIN creates pricing (bypasses CREATE check).', async () => {
+      const { organizationId } = await createTestUser('USER');
+
+      const fixture = await createValidPricingYaml(`pricing_${randomSuffix()}`);
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/pricings/${organizationId}`)
+        .set('Authorization', `Bearer ${adminUser.token}`)
+        .field('private', 'false')
+        .field('saasName', fixture.saasName)
+        .field('version', fixture.version)
+        .attach('yaml', fixture.filePath);
+
+      expect(response.status).toBe(200);
+      expect(response.body.name ?? response.body[0]?.name).toBe(fixture.saasName);
+    });
+
+    it('Return 403 when user not in org tries to create pricing.', async () => {
+      const { user: outsider } = await createAndLoginUser('USER');
+      const { organizationId } = await createAndLoginUser('USER');
+
+      const fixture = await createValidPricingYaml(`pricing_${randomSuffix()}`);
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/pricings/${organizationId}`)
+        .set('Authorization', `Bearer ${outsider.token}`)
+        .field('private', 'false')
+        .field('saasName', fixture.saasName)
+        .field('version', fixture.version)
+        .attach('yaml', fixture.filePath);
+
+      expect(response.status).toBe(403);
       expect(response.body.error).toBeDefined();
     });
   });

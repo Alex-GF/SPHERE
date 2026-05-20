@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import Skeleton from 'react-loading-skeleton';
 import { usePricingsApi } from '../../api/pricingsApi';
 import PricingCard from '../../components/pricing-card';
 import SearchInput from '../../components/search-input';
@@ -221,7 +222,7 @@ export default function PricingListPage() {
         <div className="min-h-[680px]">
           {isLoading ? (
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {Array.from({ length: PER_PAGE }).map((_, i) => <div key={i} className="h-32 animate-pulse rounded-xl border border-tp-hairline-soft bg-tp-surface" />)}
+              {Array.from({ length: PER_PAGE }).map((_, i) => <Skeleton key={i} height={128} />)}
             </div>
           ) : pricings.length === 0 ? (
             <div className="flex flex-col items-center justify-center rounded-xl border border-tp-hairline-soft bg-tp-canvas py-16 text-center">

@@ -24,7 +24,9 @@ class EntityPermissionRepository extends RepositoryBase {
           id: { $toString: '$_id' },
           _userId: { $toString: '$_userId' },
           _organizationId: { $toString: '$_organizationId' },
-          entityId: { $toString: '$entityId' },
+          entityId: {
+            $cond: [{ $ifNull: ['$entityId', null] }, { $toString: '$entityId' }, null]
+          },
           grantedBy: { $cond: [{ $ifNull: ['$grantedBy', null] }, { $toString: '$grantedBy' }, null] },
         },
       },
@@ -150,7 +152,9 @@ class EntityPermissionRepository extends RepositoryBase {
           id: { $toString: '$_id' },
           _userId: { $toString: '$_userId' },
           _organizationId: { $toString: '$_organizationId' },
-          entityId: { $toString: '$entityId' },
+          entityId: {
+            $cond: [{ $ifNull: ['$entityId', null] }, { $toString: '$entityId' }, null]
+          },
           grantedBy: { $cond: [{ $ifNull: ['$grantedBy', null] }, { $toString: '$grantedBy' }, null] },
         },
       },
@@ -219,22 +223,31 @@ class EntityPermissionRepository extends RepositoryBase {
     userId: string,
     organizationId: string,
     entityType: EntityType,
-    entityId: string,
+    entityId: string | null,
     permissions: EntityPermissions,
     grantedBy?: string
   ): Promise<LeanEntityPermission> {
-    const update = {
-      permissions,
-      grantedBy: grantedBy ? new mongoose.Types.ObjectId(grantedBy) : undefined,
+    const match: any = {
+      _userId: new mongoose.Types.ObjectId(userId),
+      _organizationId: new mongoose.Types.ObjectId(organizationId),
+      entityType,
     };
 
+    if (entityId) {
+      match.entityId = new mongoose.Types.ObjectId(entityId);
+    } else {
+      match.entityId = null;
+    }
+
+    const update: any = {
+      permissions,
+    };
+    if (grantedBy) {
+      update.grantedBy = new mongoose.Types.ObjectId(grantedBy);
+    }
+
     const result = await EntityPermissionMongoose.findOneAndUpdate(
-      {
-        _userId: new mongoose.Types.ObjectId(userId),
-        _organizationId: new mongoose.Types.ObjectId(organizationId),
-        entityType,
-        entityId: new mongoose.Types.ObjectId(entityId),
-      },
+      match,
       { $set: update },
       { new: true, upsert: true }
     );
@@ -253,6 +266,22 @@ class EntityPermissionRepository extends RepositoryBase {
       _organizationId: new mongoose.Types.ObjectId(organizationId),
       entityType,
       entityId: new mongoose.Types.ObjectId(entityId),
+    });
+
+    if (!result) return null;
+    return result.toObject({ getters: true, virtuals: true, versionKey: false }) as unknown as LeanEntityPermission;
+  }
+
+  async findByUserAndOrgScopedType(
+    userId: string,
+    organizationId: string,
+    entityType: EntityType
+  ): Promise<LeanEntityPermission | null> {
+    const result = await EntityPermissionMongoose.findOne({
+      _userId: new mongoose.Types.ObjectId(userId),
+      _organizationId: new mongoose.Types.ObjectId(organizationId),
+      entityType,
+      entityId: null,
     });
 
     if (!result) return null;

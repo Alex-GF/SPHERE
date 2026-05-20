@@ -1,4 +1,3 @@
-import './styles.css';
 import { PricingProps } from './types.d';
 import FeatureTableV2 from './components/FeatureTableV2';
 import PricingCard from './components/pricing-card';

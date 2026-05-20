@@ -4,6 +4,7 @@ import { useOrganizationsApi, Organization, OrganizationInvitation } from '../..
 import Iconify from '../../../core/components/iconify';
 import { useRouter } from '../../../core/hooks/useRouter';
 import { useAuth } from '../../../auth/hooks/useAuth';
+import OrgJoinSkeleton from '../../../core/components/skeletons/org-join-skeleton';
 
 function OrgAvatar({
   org,
@@ -71,11 +72,7 @@ export default function OrganizationJoinPage() {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-24">
-        <span className="text-sphere-grey-500">Loading invitation...</span>
-      </div>
-    );
+    return <OrgJoinSkeleton />;
   }
 
   if (joined && org) {

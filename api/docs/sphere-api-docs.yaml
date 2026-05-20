@@ -305,10 +305,15 @@ paths:
     get:
       summary: Get current user's organizations
       description: |
-        Retrieves all organizations the currently authenticated user is a member of.
-        Returns an array of organization objects sorted by creation date (newest first).
-        Each organization includes the standard fields: `id`, `name`, `displayName`,
-        `description`, `avatar`, `isPersonal`, and timestamps.
+        Retrieves organizations the currently authenticated user is a member of.
+        Returns a tree-structured list where each top-level organization includes its
+        sub-organizations nested under the `subOrganizations` field. Each item also
+        includes the user's `role` in that organization.
+
+        Supports optional pagination via `limit` and `offset` query parameters.
+        When pagination params are provided, the response is wrapped in an object
+        with `items` and `total` fields. When omitted, returns a flat array for
+        backward compatibility.
 
         **Authentication**: User token
 
@@ -318,15 +323,36 @@ paths:
         - Users
       security:
         - ApiKeyAuth: []
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+          description: Maximum number of top-level organizations to return
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+          description: Number of top-level organizations to skip
       responses:
         '200':
-          description: List of organizations the user belongs to
+          description: List of organizations the user belongs to (tree-structured)
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Organization'
+                oneOf:
+                  - type: array
+                    items:
+                      $ref: '#/components/schemas/UserOrganization'
+                    description: Plain array when no pagination params are provided
+                  - $ref: '#/components/schemas/PaginatedUserOrganizations'
         '401':
           description: Authentication required — no valid token or API key provided
         default:
@@ -2342,49 +2368,57 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
     post:
-      summary: Create pricing for a given user.
+      summary: Create pricing for an organization.
       description: |
-        Creates a new pricing for a given user.
+        Creates a new pricing under the specified organization.
 
-        **Authentication**: User API Key
+        **Authentication**: Bearer Token or User API Key
 
         **Permission**: 
-        - USER: can create pricings for their own account.
-        - ADMIN: can create pricings for any user.
+        - OWNER or ADMIN of the organization: can always create pricings.
+        - MEMBER: requires the `CREATE` permission on the `pricing` entity type for the organization.
+        - Global ADMIN: can create pricings for any organization.
 
       tags:
         - Pricings
       security:
+        - BearerAuth: []
         - ApiKeyAuth: []
       parameters:
-        - $ref: '#/components/parameters/Username'
+        - $ref: '#/components/parameters/OrganizationId'
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               type: object
               properties:
                 yaml:
                   type: string
                   format: binary
+                  description: The Pricing2Yaml file
                 private:
                   type: boolean
                   default: false
+                  description: Whether the pricing should be private
                 collectionId:
                   type: string
                   description: Optional collection ID to add the pricing to upon creation
+              required:
+                - yaml
       responses:
-        '201':
+        '200':
           description: Pricing Created
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Pricing'
+        '401':
+          description: Authentication required
         '403':
-          description: Insufficient permissions
+          description: Insufficient permissions (user is not a member of the organization, or lacks CREATE permission)
         '404':
-          description: User not found
+          description: Organization not found
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
         default:
@@ -4214,6 +4248,84 @@ components:
           $ref: '#/components/schemas/Date'
         updatedAt:
           $ref: '#/components/schemas/Date'
+
+    UserOrganization:
+      type: object
+      description: |
+        An organization as returned by the user's organization list endpoint. Extends the
+        base Organization with the user's role and nested sub-organizations.
+      required:
+        - id
+        - name
+        - displayName
+        - isPersonal
+        - role
+      properties:
+        id:
+          type: string
+          description: Unique MongoDB ObjectId identifier of the organization
+          example: "68050bd09890322c57842f6f"
+        name:
+          type: string
+          description: URL-safe unique identifier for the organization
+          example: "acme-corp"
+        displayName:
+          type: string
+          description: Human-readable name for the organization
+          example: "Acme Corporation"
+        description:
+          type: string
+          nullable: true
+          description: Optional free-text description of the organization
+        avatar:
+          type: string
+          nullable: true
+          description: URL to the organization's avatar image
+        avatarBgColor:
+          type: string
+          description: Background color for avatar initials fallback
+        avatarFgColor:
+          type: string
+          description: Foreground color for avatar initials fallback
+        _parentId:
+          type: string
+          nullable: true
+          description: ID of the parent organization, or null if top-level
+        ancestors:
+          type: array
+          description: Materialized path of ancestor organization IDs
+          items:
+            type: string
+        isPersonal:
+          type: boolean
+          description: Whether this is a personal organization
+        role:
+          type: string
+          enum: [OWNER, ADMIN, MEMBER]
+          description: The authenticated user's role in this organization
+          example: "MEMBER"
+        subOrganizations:
+          type: array
+          description: Nested child organizations (tree structure)
+          items:
+            $ref: '#/components/schemas/UserOrganization'
+
+    PaginatedUserOrganizations:
+      type: object
+      description: Paginated response containing user organizations with tree structure
+      required:
+        - items
+        - total
+      properties:
+        items:
+          type: array
+          description: Array of top-level organizations with nested sub-organizations
+          items:
+            $ref: '#/components/schemas/UserOrganization'
+        total:
+          type: integer
+          description: Total number of top-level organizations the user belongs to
+          example: 5
 
     OrganizationMember:
       type: object

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useOrganizationsApi } from '../../api/organizationsApi';
 import { useRouter } from '../../../core/hooks/useRouter';
 import customAlert from '../../../core/utils/custom-alert';
+import OrgAvatar from '../../../core/components/org-avatar';
 
 export default function CreateOrganizationPage() {
   const [name, setName] = useState('');
@@ -26,6 +27,13 @@ export default function CreateOrganizationPage() {
   return (
     <div className="mx-auto mt-4 w-[90vw] max-w-150 px-4 py-8">
       <h1 className="mb-6 text-center text-2xl font-bold text-sphere-grey-800">Create a new organization</h1>
+
+      <div className="flex justify-center mb-4">
+        <OrgAvatar
+          name={displayName || name || '?'}
+          size={72}
+        />
+      </div>
 
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-1">

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import Skeleton from 'react-loading-skeleton';
 import { usePricingCollectionsApi } from '../../../profile/api/pricingCollectionsApi';
 import { usePricingsApi } from '../../api/pricingsApi';
 import { useAuth } from '../../../auth/hooks/useAuth';
@@ -14,6 +15,7 @@ import { transitionDefault, staggerContainer, fadeInUp } from '../../../core/uti
 import DatePicker from '../../../core/components/date-picker';
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import type { Collection } from '../../types/collection';
+import CollectionCardSkeleton from '../../../core/components/skeletons/collection-card-skeleton';
 
 type Tab = 'pricings' | 'analytics' | 'settings';
 
@@ -187,7 +189,7 @@ export default function CollectionCardPage() {
   ];
 
   if (isLoadingCollection) {
-    return <div className="flex h-64 items-center justify-center"><div className="h-8 w-8 animate-spin rounded-full border-2 border-tp-hairline border-t-tp-primary" /></div>;
+    return <CollectionCardSkeleton />;
   }
 
   return (
@@ -269,7 +271,7 @@ export default function CollectionCardPage() {
               {isLoadingPricings ? (
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {Array.from({ length: PRICINGS_PER_PAGE }).map((_, i) => (
-                    <div key={i} className="h-32 animate-pulse rounded-xl border border-tp-hairline-soft bg-tp-surface" />
+                    <Skeleton key={i} height={128} />
                   ))}
                 </div>
               ) : pricings.length === 0 ? (

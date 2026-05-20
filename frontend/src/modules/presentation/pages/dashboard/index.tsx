@@ -9,6 +9,7 @@ import { useRecentItems } from '../../../core/hooks/useRecentItems';
 import PricingCard from '../../../pricing/components/pricing-card';
 import CollectionCard from '../../../pricing/components/collection-card';
 import { staggerContainer, fadeInUp, transitionDefault } from '../../../core/utils/motion-variants';
+import DashboardSkeleton from '../../../core/components/skeletons/dashboard-skeleton';
 
 interface PricingEntry {
   name: string;
@@ -84,6 +85,10 @@ export default function DashboardPage() {
         return { ...collection, visitedAt: item.visitedAt };
       });
   }, [recentCollections, accessibleCollections]);
+
+  if (isLoading) {
+    return <DashboardSkeleton />;
+  }
 
   const firstName = authUser.user?.firstName ?? 'there';
 
@@ -198,7 +203,7 @@ export default function DashboardPage() {
               {stat.icon}
             </div>
             <div>
-              <p className="text-2xl font-semibold text-tp-ink">{isLoading ? '—' : stat.value}</p>
+              <p className="text-2xl font-semibold text-tp-ink">{stat.value}</p>
               <p className="text-xs text-tp-steel">{stat.label}</p>
             </div>
           </motion.div>

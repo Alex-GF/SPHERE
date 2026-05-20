@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { Pricing, retrievePricingFromYaml } from 'pricing4ts';
 
 import { PricingRenderer } from '../../components/pricing-renderer';
-import LoadingView from '../../../core/pages/loading';
 import { Helmet } from 'react-helmet-async';
 import Alerts from '../../../core/components/alerts';
 import { useMode } from '../../../core/hooks/useTheme';
@@ -15,6 +14,7 @@ import { useEditorValue } from '../../hooks/useEditorValue';
 import { parseEncodedYamlToStringYaml } from '../../services/export.service';
 import { useCacheApi } from '../../components/pricing-renderer/api/cacheApi';
 import { TEMPLATE_PETCLINIC_PRICING } from './templates/petclinic';
+import EditorSkeleton from '../../../core/components/skeletons/editor-skeleton';
 
 type SyntaxVersion = '3.0' | '3.1';
 
@@ -300,7 +300,7 @@ export default function EditorPage() {
               })(editorValue, variables);
 
               setEditorValue(newYaml);
-            }} /> : <LoadingView />}
+            }} /> : <EditorSkeleton />}
           </div>
         </div>
       </div>

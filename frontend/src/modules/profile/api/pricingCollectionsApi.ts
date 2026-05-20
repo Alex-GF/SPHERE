@@ -86,8 +86,8 @@ export function usePricingCollectionsApi() {
       });
   }, [fetchWithInterceptor, basicHeaders]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const createCollection = useCallback(async (collection: CollectionToCreate) => {
-    return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${username}`, {
+  const createCollection = useCallback(async (collection: CollectionToCreate, organizationId: string) => {
+    return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${organizationId}`, {
       method: 'POST',
       headers: basicHeaders,
       body: JSON.stringify(collection),
@@ -107,10 +107,10 @@ export function usePricingCollectionsApi() {
       .catch(error => {
   return Promise.reject(error instanceof Error ? error : new Error(String(error)));
       });
-  }, [fetchWithInterceptor, basicHeaders, username]);
+  }, [fetchWithInterceptor, basicHeaders]);
   
-  const createBulkCollection = useCallback(async (formData: FormData) => {
-    return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${username}/bulk`, {
+  const createBulkCollection = useCallback(async (formData: FormData, organizationId: string) => {
+    return fetchWithInterceptor(`${COLLECTIONS_BASE_PATH}/${organizationId}/bulk`, {
       method: 'POST',
       headers: token ? { Authorization: `Bearer ${token}` } : {},
       body: formData,

@@ -5,7 +5,6 @@
 Use the `@theme` directive for CSS-based configuration:
 
 ```css
-/* src/styles.css */
 @import "tailwindcss";
 
 @theme {

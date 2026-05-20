@@ -13,6 +13,7 @@ import PricingRepository from '../repositories/mongoose/PricingRepository';
 import CacheService from './CacheService';
 import { LeanUser } from '../types/models/User';
 import OrganizationMembershipRepository from '../repositories/mongoose/OrganizationMembershipRepository';
+import PermissionService from './PermissionService';
 import { generateSlug, generateTextFromSlug } from '../utils/slug-manager';
 
 class PricingService {
@@ -20,12 +21,14 @@ class PricingService {
   private pricingCollectionService: PricingCollectionService;
   private cacheService: CacheService;
   private organizationMembershipRepository: OrganizationMembershipRepository;
+  private permissionService: PermissionService;
 
   constructor() {
     this.pricingRepository = container.resolve('pricingRepository');
     this.pricingCollectionService = container.resolve('pricingCollectionService');
     this.cacheService = container.resolve('cacheService');
     this.organizationMembershipRepository = container.resolve('organizationMembershipRepository');
+    this.permissionService = container.resolve('permissionService');
   }
 
   async index(queryParams: PricingIndexQueryParams, reqUser?: LeanUser) {
@@ -154,6 +157,20 @@ class PricingService {
       if (!role && reqUser.role !== 'ADMIN') {
         throw new Error(
           'PERMISSION ERROR: You do not have permission to create a pricing for this organization'
+        );
+      }
+
+      // Check CREATE permission for MEMBERs (OWNER/ADMIN bypass in hasOrgPermission)
+      const effectiveRole = reqUser.role === 'ADMIN' ? 'OWNER' : role;
+      const hasCreatePermission = await this.permissionService.hasOrgPermission(
+        reqUser.id,
+        organizationId,
+        'pricing',
+        effectiveRole
+      );
+      if (!hasCreatePermission) {
+        throw new Error(
+          'PERMISSION ERROR: You do not have CREATE permission for pricings in this organization'
         );
       }
 

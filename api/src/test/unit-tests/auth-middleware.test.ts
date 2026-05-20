@@ -10,7 +10,16 @@
 
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { Response, NextFunction } from 'express';
-import { authenticateTokenMiddleware } from '../../main/middlewares/AuthMiddleware';
+import { authenticationMiddleware } from '../../main/middlewares/AuthenticationMiddleware';
+import { authorizationMiddleware } from '../../main/middlewares/AuthorizationMiddleware';
+
+/** Combined middleware that runs authentication then authorization (like the old single middleware) */
+const authenticateTokenMiddleware = async (req: any, res: any, next: any) => {
+  authenticationMiddleware(req, res, (err?: any) => {
+    if (err) return next(err);
+    authorizationMiddleware(req, res, next);
+  });
+};
 import {
   createMockRequest,
   createMockResponse,
@@ -97,6 +106,12 @@ describe('Auth Middleware - Real Execution Tests', () => {
       userRepository: mockUserRepository,
       organizationRepository: mockOrgRepository,
       organizationService: mockOrgService,
+      permissionService: {
+        hasPermission: vi.fn().mockResolvedValue(true),
+        hasOrgPermission: vi.fn().mockResolvedValue(true),
+      },
+      pricingRepository: {},
+      pricingCollectionRepository: {},
     };
 
     // Reset JWT mock
