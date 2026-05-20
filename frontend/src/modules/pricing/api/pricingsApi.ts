@@ -199,8 +199,8 @@ export function usePricingsApi() {
   }, [fetchWithInterceptor, basicHeaders, authUser]);
 
    
-  const updatePricing = useCallback((pricingName: string, collectionSlug: string, pricingData: any) => {
-    return fetchWithInterceptor(`${PRICINGS_BASE_PATH}/${username}/${pricingName}?collectionSlug=${collectionSlug}`, {
+  const updatePricing = useCallback((organizationId: string, pricingName: string, collectionSlug: string, pricingData: any) => {
+    return fetchWithInterceptor(`${PRICINGS_BASE_PATH}/${organizationId}/${pricingName}?collectionSlug=${collectionSlug}`, {
       method: 'PUT',
       headers: basicHeaders,
       body: JSON.stringify(pricingData),

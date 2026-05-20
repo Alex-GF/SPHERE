@@ -313,7 +313,7 @@ export default function CardPage() {
     customConfirm('Are you sure you want to change the visibility of this pricing?', { danger: true })
       .then(() => {
         const pricingUpdateBody = { private: visibility === 'Private' };
-        updatePricing(name, collectionSlug ?? '', pricingUpdateBody)
+        updatePricing(organizationId!, name, collectionSlug ?? '', pricingUpdateBody)
           .then(() => {
             setVisibility(visibility === 'Private' ? 'Public' : 'Private');
             customAlert('Pricing visibility updated successfully', 'success');
