@@ -210,7 +210,7 @@ class OrganizationService {
 
     const organization = await this.organizationRepository.create({
       name: user.username.toLowerCase(),
-      displayName: `${user.username} (personal)`,
+      displayName: `${user.username} PERSONAL`,
       description: null,
       avatar: null,
       isPersonal: true,
@@ -352,7 +352,9 @@ class OrganizationService {
       throw new Error('NOT FOUND: Organization membership not found');
     }
 
-    if (membership.role === 'OWNER' && reqUser && reqUser.orgRole !== 'OWNER') {
+    const isSelfRemoval = reqUser && userId === reqUser.id;
+
+    if (!isSelfRemoval && membership.role === 'OWNER' && reqUser && reqUser.orgRole !== 'OWNER') {
       throw new Error('PERMISSION ERROR: Only OWNER users can remove another OWNER from the organization');
     }
 

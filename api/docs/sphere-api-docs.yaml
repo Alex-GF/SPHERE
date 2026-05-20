@@ -221,9 +221,11 @@ paths:
               schema:
                 type: object
                 properties:
-                  message:
+                  user:
+                    $ref: '#/components/schemas/User'
+                  token:
                     type: string
-                    example: User registered successfully
+                    description: JWT authentication token
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
         default:
@@ -1971,7 +1973,7 @@ paths:
                 $ref: '#/components/schemas/Error'
 
     delete:
-      summary: Remove a member from the organization
+      summary: Remove a member from the organization (or leave)
       description: |
         Removes a user from the organization by deleting their membership record. After
         removal, the user loses all access to the organization's resources.
@@ -1979,19 +1981,18 @@ paths:
         **Authentication**: User token
 
         **Permission**:
+        - **Self-removal (leave)**: Any authenticated member can remove themselves from
+          an organization by setting `userId` to their own user ID. This allows users to
+          leave organizations they belong to.
         - **ADMIN** (global): Can remove any member from any organization.
-        - **USER**: Must have the `OWNER` or `ADMIN` role within the organization.
+        - **USER**: Must have the `OWNER` or `ADMIN` role within the organization to
+          remove other members.
 
         **Constraints**:
         - The target user must be a member of the organization. If no membership record
           is found, the request returns **404**.
-        - **Warning**: There is no built-in check to prevent removal of the last OWNER.
-          Removing the sole OWNER will leave the organization without an owner. Ensure
-          ownership is transferred before removing the current owner.
-
-        **Note**: This only removes the membership record. The user account itself is not
-        affected. Pricings and collections owned by the user within the organization are
-        not affected.
+        - The last OWNER cannot be removed from the organization (even via self-removal).
+          Ownership must be transferred before the OWNER can leave.
 
       tags:
         - Organizations

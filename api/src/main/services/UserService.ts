@@ -35,7 +35,7 @@ class UserService {
     // When using q with non-ADMIN user, limit results and project only public fields
     const isSearch = !!queryParams.q;
     const shouldExcludeSensitive = isSearch && userRole !== 'ADMIN';
-    const projection = shouldExcludeSensitive
+    const projection: Record<string, 0 | 1> | undefined = shouldExcludeSensitive
       ? { password: 0, email: 0, role: 0, phone: 0, token: 0, tokenExpiration: 0, apiKeys: 0, createdAt: 0, updatedAt: 0 }
       : undefined;
 
@@ -76,7 +76,7 @@ class UserService {
     }
 
     if (!newUser.settings) newUser.settings = {};
-    newUser.settings.avatar = newUser.settings.avatar || `${process.env.AVATARS_FOLDER}/default-avatar.png`;
+    newUser.settings.avatar = newUser.settings.avatar || '';
     newUser = { ...newUser, ...generateUserTokenDTO() };
 
     const registeredUser = await this.userRepository.create(newUser);
@@ -88,7 +88,9 @@ class UserService {
       username: registeredUser.username,
     });
 
-    return registeredUser;
+    const token = generateJwtToken({ id: registeredUser.id, username: registeredUser.username, role: registeredUser.role });
+
+    return { registeredUser, token };
   }
 
   async updateToken(targetUsername: string, reqUser: LeanUser) {
@@ -183,7 +185,7 @@ class UserService {
       if (personalMembership) {
         await this.organizationService.update(personalMembership.organization.id, {
           name: data.username.toLowerCase(),
-          displayName: `${data.username} (personal)`,
+          displayName: `${data.username} PERSONAL`,
         });
       }
     }

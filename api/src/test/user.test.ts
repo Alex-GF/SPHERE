@@ -223,10 +223,11 @@ describe('Users API integration', () => {
       const response = await request(app).post(`${BASE_PATH}/users/register`).send(payload);
 
       expect(response.status).toBe(201);
-      expect(response.body.username).toBe(payload.username);
-      expect(response.body.email).toBe(payload.email);
-      expect(response.body.role).toBe('USER');
-      expect(typeof response.body.password).toBe('string');
+      expect(response.body.user.username).toBe(payload.username);
+      expect(response.body.user.email).toBe(payload.email);
+      expect(response.body.user.role).toBe('USER');
+      expect(typeof response.body.user.password).toBe('string');
+      expect(response.body.token).toBeDefined();
 
       usersToDelete.add(payload.username);
     });
@@ -238,8 +239,8 @@ describe('Users API integration', () => {
       const response = await request(app).post(`${BASE_PATH}/users/register`).send(payload);
 
       expect(response.status).toBe(201);
-      expect(response.body.username).toBe(payload.username);
-      expect(response.body.role).toBe('USER');
+      expect(response.body.user.username).toBe(payload.username);
+      expect(response.body.user.role).toBe('USER');
 
       usersToDelete.add(payload.username);
     });
@@ -629,7 +630,7 @@ describe('Users API integration', () => {
         isPersonal: true,
       });
       expect(personalOrgAfter).not.toBeNull();
-      expect(personalOrgAfter!.displayName).toBe(`${newUsername} (personal)`);
+      expect(personalOrgAfter!.displayName).toBe(`${newUsername} PERSONAL`);
 
       const oldOrg = await OrganizationMongoose.findOne({
         name: user.username.toLowerCase(),
@@ -682,7 +683,7 @@ describe('Users API integration', () => {
         isPersonal: true,
       });
       expect(personalOrgAfter).not.toBeNull();
-      expect(personalOrgAfter!.displayName).toBe(`${newUsername} (personal)`);
+      expect(personalOrgAfter!.displayName).toBe(`${newUsername} PERSONAL`);
 
       await UserMongoose.deleteOne({ username: newUsername });
     });
@@ -974,7 +975,7 @@ it('Deletes organization when it becomes empty after user deletion (non-personal
         .post(`${BASE_PATH}/users/register`)
         .send(registerPayload);
       expect(registerResponse.status).toBe(201);
-      usersToDelete.add(registerResponse.body.username);
+      usersToDelete.add(registerResponse.body.user.username);
 
       const loginResponse = await request(app)
         .post(`${BASE_PATH}/users/login`)

@@ -26,7 +26,7 @@ export default function AddMemberModal({ orgId, onClose, onAdded }: Props) {
       onAdded();
       onClose();
     } catch (err: any) {
-      customAlert(err.message);
+      customAlert(err.message, 'error');
       setIsSubmitting(false);
     }
   };

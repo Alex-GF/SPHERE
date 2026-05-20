@@ -81,7 +81,13 @@ const authorizationMiddleware = async (req: Request, res: Response, next: NextFu
           .json({ error: 'PERMISSION ERROR: You do not belong to this organization' });
       }
 
-      if (!matchingRule.allowedOrganizationRoles.includes(user.orgRole)) {
+      // Allow any authenticated member to remove themselves from an organization (leave).
+      const isSelfRemoval =
+        method === 'DELETE' &&
+        /\/orgs\/[^/]+\/members\/[^/]+$/.test(apiPath) &&
+        req.params.userId === user.id;
+
+      if (!isSelfRemoval && !matchingRule.allowedOrganizationRoles.includes(user.orgRole)) {
         return res
           .status(403)
           .json({

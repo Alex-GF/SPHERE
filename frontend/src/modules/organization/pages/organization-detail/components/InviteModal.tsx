@@ -26,13 +26,13 @@ export default function InviteModal({ orgId, invitations, onClose, onRefresh }: 
     setIsGenerating(true);
     createInvitation(orgId)
       .then(() => onRefresh())
-      .catch((err: Error) => customAlert(err.message))
+      .catch((err: Error) => customAlert(err.message, 'error'))
       .finally(() => setIsGenerating(false));
   };
 
   const handleRevoke = (inv: OrganizationInvitation) => {
-    customConfirm('Revoke this invitation? Members with this code will no longer be able to join.')
-      .then(() => revokeInvitation(orgId, inv.id).then(() => onRefresh()).catch((err: Error) => customAlert(err.message)))
+    customConfirm('Revoke this invitation? Members with this code will no longer be able to join.', { danger: true })
+      .then(() => revokeInvitation(orgId, inv.id).then(() => onRefresh()).catch((err: Error) => customAlert(err.message, 'error')))
       .catch(() => {});
   };
 
@@ -49,12 +49,12 @@ export default function InviteModal({ orgId, invitations, onClose, onRefresh }: 
     setIsInviting(true);
     try {
       await inviteUsers(orgId, selectedUsers.map((u) => u.id));
-      customAlert(`${selectedUsers.length} invitation(s) sent successfully!`);
+      customAlert(`${selectedUsers.length} invitation(s) sent successfully!`, 'success');
       setSelectedUsers([]);
       onRefresh();
       onClose();
     } catch (err: any) {
-      customAlert(err.message || 'Failed to send invitations');
+      customAlert(err.message || 'Failed to send invitations', 'error');
     } finally {
       setIsInviting(false);
     }

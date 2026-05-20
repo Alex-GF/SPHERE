@@ -116,6 +116,22 @@
   --radius-full: 9999px;
 
   /* ═══════════════════════════════════════════════════════════════
+     SEVERITY / ALERT COLORS
+     ═══════════════════════════════════════════════════════════════ */
+  --color-tp-severity-error: #ef4444;
+  --color-tp-severity-error-bg: #fef2f2;
+  --color-tp-severity-error-border: #fca5a5;
+  --color-tp-severity-warning: #f59e0b;
+  --color-tp-severity-warning-bg: #fffbeb;
+  --color-tp-severity-warning-border: #fcd34d;
+  --color-tp-severity-info: #3b82f6;
+  --color-tp-severity-info-bg: #eff6ff;
+  --color-tp-severity-info-border: #93c5fd;
+  --color-tp-severity-success: #22c55e;
+  --color-tp-severity-success-bg: #f0fdf4;
+  --color-tp-severity-success-border: #86efac;
+
+  /* ═══════════════════════════════════════════════════════════════
      ELEVATION / SHADOWS
      ═══════════════════════════════════════════════════════════════ */
   --shadow-elevation-0: none;
@@ -201,6 +217,20 @@
 
   /* Links */
   --color-tp-link: #ff7a3d;
+
+  /* Severity / alert colors (dark mode) */
+  --color-tp-severity-error: #f87171;
+  --color-tp-severity-error-bg: #450a0a;
+  --color-tp-severity-error-border: #7f1d1d;
+  --color-tp-severity-warning: #fbbf24;
+  --color-tp-severity-warning-bg: #451a03;
+  --color-tp-severity-warning-border: #78350f;
+  --color-tp-severity-info: #60a5fa;
+  --color-tp-severity-info-bg: #172554;
+  --color-tp-severity-info-border: #1e3a5f;
+  --color-tp-severity-success: #4ade80;
+  --color-tp-severity-success-bg: #052e16;
+  --color-tp-severity-success-border: #14532d;
 
   /* Elevation (darker shadows for dark mode) */
   --shadow-elevation-1: 0 1px 2px 0 rgba(0, 0, 0, 0.2);

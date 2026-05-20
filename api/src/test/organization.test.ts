@@ -1572,6 +1572,84 @@ describe('Organizations API integration', () => {
       expect(response.status).toBe(401);
       expect(response.body.error).toBeDefined();
     });
+
+    it('returns 200 when MEMBER removes themselves (self-removal / leave)', async () => {
+      const { user: owner, organizationId } = await createAndLoginUser('USER');
+      const { user: member } = await createAndLoginUser('USER');
+      await createMembership(member.id, organizationId, 'MEMBER');
+
+      const response = await request(app)
+        .delete(`${BASE_PATH}/orgs/${organizationId}/members/${member.id}`)
+        .set('Authorization', `Bearer ${member.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.message).toBe('Successfully removed.');
+
+      const membership = await OrganizationMembershipMongoose.findOne({
+        _userId: member.id,
+        _organizationId: organizationId,
+      });
+      expect(membership).toBeNull();
+    });
+
+    it('returns 200 when ADMIN removes themselves (self-removal / leave)', async () => {
+      const { user: owner, organizationId } = await createAndLoginUser('USER');
+      const { user: orgAdmin } = await createAndLoginUser('USER');
+      await createMembership(orgAdmin.id, organizationId, 'ADMIN');
+
+      const response = await request(app)
+        .delete(`${BASE_PATH}/orgs/${organizationId}/members/${orgAdmin.id}`)
+        .set('Authorization', `Bearer ${orgAdmin.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.message).toBe('Successfully removed.');
+    });
+
+    it('returns 200 when OWNER removes themselves with other OWNERs present', async () => {
+      const { user: owner } = await createAndLoginUser('USER');
+      const { user: otherOwner } = await createAndLoginUser('USER');
+      const org = await createTestOrganization(owner.token);
+      await createMembership(otherOwner.id, org.id, 'OWNER');
+
+      const response = await request(app)
+        .delete(`${BASE_PATH}/orgs/${org.id}/members/${owner.id}`)
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.message).toBe('Successfully removed.');
+
+      const membership = await OrganizationMembershipMongoose.findOne({
+        _userId: owner.id,
+        _organizationId: org.id,
+      });
+      expect(membership).toBeNull();
+    });
+
+    it('returns 403 when OWNER tries to remove themselves as last OWNER', async () => {
+      const { user: owner, organizationId } = await createAndLoginUser('USER');
+
+      const response = await request(app)
+        .delete(`${BASE_PATH}/orgs/${organizationId}/members/${owner.id}`)
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      expect(response.status).toBe(403);
+      expect(response.body.error).toContain('last owner');
+    });
+
+    it('returns 403 when MEMBER tries to remove another member', async () => {
+      const { organizationId } = await createAndLoginUser('USER');
+      const { user: member1 } = await createAndLoginUser('USER');
+      const { user: member2 } = await createAndLoginUser('USER');
+      await createMembership(member1.id, organizationId, 'MEMBER');
+      await createMembership(member2.id, organizationId, 'MEMBER');
+
+      const response = await request(app)
+        .delete(`${BASE_PATH}/orgs/${organizationId}/members/${member2.id}`)
+        .set('Authorization', `Bearer ${member1.token}`);
+
+      expect(response.status).toBe(403);
+      expect(response.body.error).toBeDefined();
+    });
   });
 
   // =========================================================================

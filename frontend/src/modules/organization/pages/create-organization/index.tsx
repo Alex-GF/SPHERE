@@ -19,7 +19,7 @@ export default function CreateOrganizationPage() {
     createOrganization({ name, displayName, description: description || undefined })
       .then((org) => router.push(`/me/orgs/${org.id}`))
       .catch((err: Error) => {
-        customAlert(err.message);
+        customAlert(err.message, 'error');
         setIsSubmitting(false);
       });
   };

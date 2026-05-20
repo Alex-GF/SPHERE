@@ -22,7 +22,7 @@ export default function EditOrgModal({ org, onClose, onSaved }: Props) {
     setIsSaving(true);
     updateOrganization(org.id, { displayName, description: description || null })
       .then((updated) => { onSaved(updated); onClose(); })
-      .catch((err: Error) => { customAlert(err.message); setIsSaving(false); });
+      .catch((err: Error) => { customAlert(err.message, 'error'); setIsSaving(false); });
   };
 
   return (

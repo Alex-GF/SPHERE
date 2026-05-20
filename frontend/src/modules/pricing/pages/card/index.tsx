@@ -310,16 +310,16 @@ export default function CardPage() {
 
   const handleVisibilityChange = () => {
     if (!name) return;
-    customConfirm('Are you sure you want to change the visibility of this pricing?')
+    customConfirm('Are you sure you want to change the visibility of this pricing?', { danger: true })
       .then(() => {
         const pricingUpdateBody = { private: visibility === 'Private' };
         updatePricing(name, collectionSlug ?? '', pricingUpdateBody)
           .then(() => {
             setVisibility(visibility === 'Private' ? 'Public' : 'Private');
-            customAlert('Pricing visibility updated successfully');
+            customAlert('Pricing visibility updated successfully', 'success');
           })
           .catch((error: Error) => {
-            customAlert(`Error: ${error.message}`);
+            customAlert(`Error: ${error.message}`, 'error');
           });
       })
       .catch(() => {});
@@ -327,16 +327,16 @@ export default function CardPage() {
 
   const handleDeletePricing = () => {
     if (!name) return;
-    customConfirm('Are you sure you want to delete this pricing? This action is irreversible.')
+    customConfirm('Are you sure you want to delete this pricing? This action is irreversible.', { danger: true })
       .then(() => {
         removePricingByName(name, collectionSlug ?? undefined)
           .then(() => {
-            customConfirm('Pricing deleted successfully. Do you want to return to the main page?')
+            customConfirm('Pricing deleted successfully. Do you want to return to the main page?', { danger: false })
               .then(() => router.push('/'))
               .catch(() => router.push('/pricings'));
           })
           .catch(() => {
-            customAlert('An error has occurred while removing the pricing. Please, try again later.');
+            customAlert('An error has occurred while removing the pricing. Please, try again later.', 'error');
           });
       })
       .catch(() => {});

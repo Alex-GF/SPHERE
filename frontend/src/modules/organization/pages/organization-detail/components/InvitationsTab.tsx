@@ -71,8 +71,8 @@ export default function InvitationsTab({ orgId, invitations, canManage, onRefres
                   <button
                     type="button"
                     onClick={() => {
-                      customConfirm('Revoke this invitation?')
-                        .then(() => revokeInvitation(orgId, inv.id).then(() => onRefresh()).catch((err: Error) => customAlert(err.message)))
+                      customConfirm('Revoke this invitation?', { danger: true })
+                        .then(() => revokeInvitation(orgId, inv.id).then(() => onRefresh()).catch((err: Error) => customAlert(err.message, 'error')))
                         .catch(() => {});
                     }}
                     className="cursor-pointer text-tp-hairline-strong transition-colors hover:text-red-500"

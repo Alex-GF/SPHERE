@@ -43,7 +43,7 @@ export default function PermissionsTab({ organizationId, canManage }: Permission
         setSelectedMemberId(membersData[0].user.id);
       }
     } catch (err: any) {
-      customAlert(err.message);
+      customAlert(err.message, 'error');
     } finally {
       setIsLoading(false);
     }
@@ -75,7 +75,7 @@ export default function PermissionsTab({ organizationId, canManage }: Permission
         prev.map(p => p.id === permission.id ? { ...p, permissions: newPermissions } : p)
       );
     } catch (err: any) {
-      customAlert(err.message);
+      customAlert(err.message, 'error');
     } finally {
       setIsSaving(null);
     }
@@ -89,7 +89,7 @@ export default function PermissionsTab({ organizationId, canManage }: Permission
       await removeOrgPermission(organizationId, permissionId);
       setPermissions(prev => prev.filter(p => p.id !== permissionId));
     } catch (err: any) {
-      customAlert(err.message);
+      customAlert(err.message, 'error');
     } finally {
       setIsSaving(null);
     }

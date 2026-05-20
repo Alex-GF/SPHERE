@@ -112,9 +112,9 @@ class UserController {
 
   async register(req: any, res: any) {
     try {
-      const registeredUser = await this.userService.register(req.body, req.user);
+      const { registeredUser, token } = await this.userService.register(req.body, req.user);
 
-      res.status(201).json(registeredUser);
+      res.status(201).json({ user: registeredUser, token });
     } catch (err: any) {
       const { status, message } = handleError(err);
       res.status(status).send({ error: message });

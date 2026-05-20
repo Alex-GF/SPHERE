@@ -19,11 +19,11 @@ export default function CreatePricingForm() {
 
   const handleSubmit = (file: File) => {
     if (!selectedOrg) {
-      customAlert('Please select an organization');
+      customAlert('Please select an organization', 'warning');
       return;
     }
     if (!pricingName.trim()) {
-      customAlert('Please enter a pricing name');
+      customAlert('Please enter a pricing name', 'warning');
       return;
     }
 

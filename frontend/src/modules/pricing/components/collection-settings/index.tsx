@@ -43,14 +43,15 @@ export default function CollectionSettings({
     if (!newName || newName === collection.name) return;
 
     customConfirm(
-      `Are you sure you want to change the name of this collection? You'll be redirected to your profile page.`
+      `Are you sure you want to change the name of this collection? You'll be redirected to your profile page.`,
+      { danger: false }
     ).then(() => {
       updateCollection(organizationId, collection.slug, { name: newName })
         .then(() => {
           router.push('/pricings/collections');
         })
         .catch((error: Error) => {
-          customAlert(`Error: ${error.message}`);
+          customAlert(`Error: ${error.message}`, 'error');
         });
     });
   }
@@ -58,30 +59,30 @@ export default function CollectionSettings({
   function handleDescriptionChange() {
     updateCollection(organizationId, collection.slug, { description: descriptionValue })
       .then(() => {
-        customAlert('Description updated!');
+        customAlert('Description updated!', 'success');
       })
       .catch((error: Error) => {
-        customAlert(`Error: ${error.message}`);
+        customAlert(`Error: ${error.message}`, 'error');
       });
   }
 
   function handleVisibilityChange() {
-    customConfirm('Are you sure you want to change the visibility of this collection?')
+    customConfirm('Are you sure you want to change the visibility of this collection?', { danger: false })
       .then(() => {
         const collectionUpdateBody = { private: visibility === 'Public' };
 
         updateCollection(organizationId, collection.slug, collectionUpdateBody)
           .then((data: any) => {
             if (data.error) {
-              customAlert(`Error: ${data.error}`);
+              customAlert(`Error: ${data.error}`, 'error');
               return;
             }
             onCollectionUpdated(data);
             setVisibility(visibility === 'Private' ? 'Public' : 'Private');
-            customAlert('Visibility updated successfully');
+            customAlert('Visibility updated successfully', 'success');
           })
           .catch((error: Error) => {
-            customAlert(`Error: ${error.message}`);
+            customAlert(`Error: ${error.message}`, 'error');
           });
       })
       .catch(() => {});
@@ -89,28 +90,30 @@ export default function CollectionSettings({
 
   function handleDeleteCollection() {
     customConfirm(
-      'Are you sure you want to delete this collection and preserve its pricings? This action is irreversible.'
+      'Are you sure you want to delete this collection and preserve its pricings? This action is irreversible.',
+      { danger: true }
     ).then(() => {
       deleteCollection(organizationId, collection.slug, false)
         .then(() => {
           router.push('/pricings/collections');
         })
         .catch(() => {
-          customAlert('An error has occurred while removing the collection. Please, try again later.');
+          customAlert('An error has occurred while removing the collection. Please, try again later.', 'error');
         });
     });
   }
 
   function handleDeleteCollectionAndPricings() {
     customConfirm(
-      'Are you sure you want to delete this collection and its pricings? This action is irreversible.'
+      'Are you sure you want to delete this collection and its pricings? This action is irreversible.',
+      { danger: true }
     ).then(() => {
       deleteCollection(organizationId, collection.slug, true)
         .then(() => {
           router.push('/pricings/collections');
         })
         .catch(() => {
-          customAlert('An error has occurred while removing the collection. Please, try again later.');
+          customAlert('An error has occurred while removing the collection. Please, try again later.', 'error');
         });
     });
   }

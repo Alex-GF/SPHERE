@@ -28,7 +28,7 @@ export default function CreateSubOrgModal({ parentId, onClose, onCreated }: Prop
     setIsSaving(true);
     createOrganization({ name: slug, displayName: displayName.trim(), _parentId: parentId })
       .then(() => { onCreated(); onClose(); })
-      .catch((err: Error) => { customAlert(err.message); setIsSaving(false); });
+      .catch((err: Error) => { customAlert(err.message, 'error'); setIsSaving(false); });
   };
 
   return (

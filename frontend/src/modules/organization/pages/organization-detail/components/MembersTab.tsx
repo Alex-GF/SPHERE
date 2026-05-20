@@ -15,17 +15,30 @@ interface Props {
   onAddMember: () => void;
 }
 
-export default function MembersTab({ orgId, members, canManage, currentUserId, onRefresh, onAddMember }: Props) {
+export default function MembersTab({
+  orgId,
+  members,
+  canManage,
+  currentUserId,
+  onRefresh,
+  onAddMember,
+}: Props) {
   const { updateMemberRole, removeMember } = useOrganizationsApi();
 
   const handleRemoveMember = (member: OrgMemberWithUser) => {
-    customConfirm(`Remove @${member.user.username} from this organization?`)
-      .then(() => removeMember(orgId, member.user.id).then(() => onRefresh()).catch((err: Error) => customAlert(err.message)))
+    customConfirm(`Remove @${member.user.username} from this organization?`, { danger: true })
+      .then(() =>
+        removeMember(orgId, member.user.id)
+          .then(() => onRefresh())
+          .catch((err: Error) => customAlert(err.message, 'error'))
+      )
       .catch(() => {});
   };
 
   const handleRoleChange = async (member: OrgMemberWithUser, newRole: OrgRole) => {
-    updateMemberRole(orgId, member.user.id, newRole).then(() => onRefresh()).catch((err: Error) => customAlert(err.message));
+    updateMemberRole(orgId, member.user.id, newRole)
+      .then(() => onRefresh())
+      .catch((err: Error) => customAlert(err.message, 'error'));
   };
 
   return (
@@ -62,7 +75,7 @@ export default function MembersTab({ orgId, members, canManage, currentUserId, o
             </div>
           )}
 
-          {members.map((member) => (
+          {members.map(member => (
             <div
               key={member.id}
               className="flex flex-wrap items-center gap-3 px-5 py-3 transition-colors hover:bg-tp-surface/50"
@@ -76,30 +89,49 @@ export default function MembersTab({ orgId, members, canManage, currentUserId, o
                 <p className="text-[11px] text-tp-steel">{member.user.email}</p>
               </div>
 
-              {canManage && member.user.id !== currentUserId ? (
+              {canManage && member.user.id !== currentUserId && (
                 <select
                   value={member.role}
-                  onChange={(event) => handleRoleChange(member, event.target.value as OrgRole)}
+                  onChange={event => handleRoleChange(member, event.target.value as OrgRole)}
                   className="rounded-lg border border-tp-input-border bg-tp-input-bg px-2.5 py-1.5 text-xs font-medium text-tp-slate outline-none transition-colors focus:border-tp-primary"
                 >
                   <option value="MEMBER">Member</option>
                   <option value="ADMIN">Admin</option>
                   <option value="OWNER">Owner</option>
                 </select>
-              ) : (
-                <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${ROLE_COLORS[member.role]}`}>
+              )}
+              {member.user.id === currentUserId ? (
+                <span
+                  className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${ROLE_COLORS[member.role]}`}
+                >
                   {ROLE_LABELS[member.role]}
                 </span>
-              )}
+              ) : !canManage ? (
+                <span
+                  className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${ROLE_COLORS[member.role]}`}
+                >
+                  {ROLE_LABELS[member.role]}
+                </span>
+              ) : null}
 
               {canManage && member.user.id !== currentUserId && (
                 <button
                   type="button"
                   onClick={() => handleRemoveMember(member)}
-                  title="Remove member"
+                  title={member.user.id === currentUserId ? 'Leave organization' : 'Remove member'}
                   className="cursor-pointer text-tp-hairline-strong transition-colors hover:text-red-500"
                 >
                   <Iconify icon="mdi:account-remove-outline" width={18} />
+                </button>
+              )}
+              {member.user.id === currentUserId && (
+                <button
+                  type="button"
+                  onClick={() => handleRemoveMember(member)}
+                  title={member.user.id === currentUserId ? 'Leave organization' : 'Remove member'}
+                  className="cursor-pointer text-tp-hairline-strong transition-colors hover:text-red-500"
+                >
+                  <Iconify icon="mdi:logout" width={18} className="text-red-600" />
                 </button>
               )}
             </div>

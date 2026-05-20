@@ -4,11 +4,9 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Iconify from '../../../core/components/iconify';
 import { useRouter } from '../../../core/hooks/useRouter';
 import { useAuth } from '../../../auth/hooks/useAuth';
-import {
-  staggerContainer,
-  fadeInUp,
-  transitionDefault,
-} from '../../../core/utils/motion-variants';
+import customConfirm from '../../../core/utils/custom-confirm';
+import customAlert from '../../../core/utils/custom-alert';
+import { staggerContainer, fadeInUp, transitionDefault } from '../../../core/utils/motion-variants';
 import {
   Organization,
   OrgMemberWithUser,
@@ -69,9 +67,24 @@ export default function OrganizationDetailPage() {
     listInvitations,
     getOrgPricings,
     getOrgCollections,
+    removeMember,
   } = useOrganizationsApi();
 
   const canManage = myRole === 'OWNER' || myRole === 'ADMIN';
+
+  const handleLeaveOrg = useCallback(() => {
+    if (!authUser.user?.id || !organizationId) return;
+    customConfirm(
+      'Are you sure you want to leave this organization? You will lose access to all its resources.',
+      { danger: true }
+    )
+      .then(() =>
+        removeMember(organizationId, authUser.user!.id)
+          .then(() => router.push('/me/orgs'))
+          .catch((err: Error) => customAlert(err.message))
+      )
+      .catch(() => {});
+  }, [authUser.user?.id, organizationId, removeMember, router]);
 
   /* ─── Data loading ─── */
   const loadOrgData = useCallback(async () => {
@@ -84,20 +97,25 @@ export default function OrganizationDetailPage() {
       const membersData = await getOrgMembers(organizationId);
       setMembers(membersData);
 
-      const memberEntry = membersData.find((m) => m.user.id === authUser.user?.id);
+      const memberEntry = membersData.find(m => m.user.id === authUser.user?.id);
       const userRole = memberEntry?.role ?? null;
       if (userRole) setMyRole(userRole);
 
-      const invitationsData = (userRole === 'OWNER' || userRole === 'ADMIN')
-        ? await listInvitations(organizationId)
-        : [];
+      const invitationsData =
+        userRole === 'OWNER' || userRole === 'ADMIN' ? await listInvitations(organizationId) : [];
       setInvitations(invitationsData);
 
-      const pricingsData = await getOrgPricings(organizationId).catch(() => ({ pricings: [], total: 0 }));
+      const pricingsData = await getOrgPricings(organizationId).catch(() => ({
+        pricings: [],
+        total: 0,
+      }));
       setPricings(pricingsData.pricings);
       setPricingsTotal(pricingsData.total);
 
-      const collectionsData = await getOrgCollections(organizationId).catch(() => ({ collections: [], total: 0 }));
+      const collectionsData = await getOrgCollections(organizationId).catch(() => ({
+        collections: [],
+        total: 0,
+      }));
       setCollections(collectionsData.collections);
       setCollectionsTotal(collectionsData.total);
 
@@ -108,7 +126,7 @@ export default function OrganizationDetailPage() {
         setChildAccessMap(map);
       } else {
         const results = await Promise.allSettled(
-          children.map(async (child) => {
+          children.map(async child => {
             await getOrganization(child.id);
             return { id: child.id, ok: true };
           })
@@ -130,7 +148,10 @@ export default function OrganizationDetailPage() {
   const buildHierarchyTree = useCallback(async () => {
     if (!org) return;
 
-    const buildDescendants = async (nodeOrg: Organization, accessRole: OrgRole | null): Promise<TreeNode[]> => {
+    const buildDescendants = async (
+      nodeOrg: Organization,
+      accessRole: OrgRole | null
+    ): Promise<TreeNode[]> => {
       const children = nodeOrg.subOrganizations ?? [];
       const results: TreeNode[] = [];
 
@@ -151,9 +172,8 @@ export default function OrganizationDetailPage() {
           }
         }
 
-        const grandchildren = hasAccess && childOrgData
-          ? await buildDescendants(childOrgData, accessRole)
-          : [];
+        const grandchildren =
+          hasAccess && childOrgData ? await buildDescendants(childOrgData, accessRole) : [];
 
         results.push({
           id: child.id,
@@ -217,7 +237,7 @@ export default function OrganizationDetailPage() {
 
   useEffect(() => {
     if (hierarchyTree) {
-      setExpandedTreeIds((prev) => {
+      setExpandedTreeIds(prev => {
         const next = new Set(prev);
         next.add(hierarchyTree.id);
         return next;
@@ -231,7 +251,9 @@ export default function OrganizationDetailPage() {
     try {
       const data = await getOrgMembers(org.id);
       setMembers(data);
-    } catch { /* silently ignore */ }
+    } catch {
+      /* silently ignore */
+    }
   }, [org, getOrgMembers]);
 
   const refreshInvitations = useCallback(async () => {
@@ -239,45 +261,60 @@ export default function OrganizationDetailPage() {
     try {
       const data = await listInvitations(org.id);
       setInvitations(data);
-    } catch { /* silently ignore */ }
+    } catch {
+      /* silently ignore */
+    }
   }, [org, listInvitations]);
 
   /* ─── Paginated fetches ─── */
   const debouncedPricingSearch = useDebouncedValue(pricingSearch, 500);
   const debouncedCollectionSearch = useDebouncedValue(collectionSearch, 500);
 
-  const fetchPricings = useCallback(async (page: number, search: string) => {
-    if (!org) return;
-    try {
-      const filters: Record<string, string> = {
-        limit: String(PER_PAGE),
-        offset: String((page - 1) * PER_PAGE),
-      };
-      if (search) filters.name = search;
-      const data = await getOrgPricings(org.id, filters);
-      setPricings(data.pricings);
-      setPricingsTotal(data.total);
-    } catch { /* silently ignore */ }
-  }, [org, getOrgPricings]);
+  const fetchPricings = useCallback(
+    async (page: number, search: string) => {
+      if (!org) return;
+      try {
+        const filters: Record<string, string> = {
+          limit: String(PER_PAGE),
+          offset: String((page - 1) * PER_PAGE),
+        };
+        if (search) filters.name = search;
+        const data = await getOrgPricings(org.id, filters);
+        setPricings(data.pricings);
+        setPricingsTotal(data.total);
+      } catch {
+        /* silently ignore */
+      }
+    },
+    [org, getOrgPricings]
+  );
 
-  const fetchCollections = useCallback(async (page: number, search: string) => {
-    if (!org) return;
-    try {
-      const filters: Record<string, string> = {
-        limit: String(PER_PAGE),
-        offset: String((page - 1) * PER_PAGE),
-      };
-      if (search) filters.name = search;
-      const data = await getOrgCollections(org.id, filters);
-      setCollections(data.collections);
-      setCollectionsTotal(data.total);
-    } catch { /* silently ignore */ }
-  }, [org, getOrgCollections]);
+  const fetchCollections = useCallback(
+    async (page: number, search: string) => {
+      if (!org) return;
+      try {
+        const filters: Record<string, string> = {
+          limit: String(PER_PAGE),
+          offset: String((page - 1) * PER_PAGE),
+        };
+        if (search) filters.name = search;
+        const data = await getOrgCollections(org.id, filters);
+        setCollections(data.collections);
+        setCollectionsTotal(data.total);
+      } catch {
+        /* silently ignore */
+      }
+    },
+    [org, getOrgCollections]
+  );
 
   /* ─── Effects ─── */
   useEffect(() => {
     if (authUser.isLoading) return;
-    if (!authUser.isAuthenticated) { router.push('/login'); return; }
+    if (!authUser.isAuthenticated) {
+      router.push('/login');
+      return;
+    }
     if (!organizationId) return;
     loadOrgData();
   }, [authUser.isLoading, authUser.isAuthenticated, organizationId]);
@@ -287,12 +324,13 @@ export default function OrganizationDetailPage() {
   }, [activeTab, org, pricingPage, debouncedPricingSearch]);
 
   useEffect(() => {
-    if (activeTab === 'collections' && org) fetchCollections(collectionPage, debouncedCollectionSearch);
+    if (activeTab === 'collections' && org)
+      fetchCollections(collectionPage, debouncedCollectionSearch);
   }, [activeTab, org, collectionPage, debouncedCollectionSearch]);
 
   /* ─── Tree toggle ─── */
   const handleTreeToggle = useCallback((id: string) => {
-    setExpandedTreeIds((prev) => {
+    setExpandedTreeIds(prev => {
       const next = new Set(prev);
       if (next.has(id)) next.delete(id);
       else next.add(id);
@@ -302,7 +340,14 @@ export default function OrganizationDetailPage() {
 
   /* ─── Tabs ─── */
   const availableTabs = useMemo(() => {
-    const tabs: Tab[] = ['overview', 'members', 'invitations', 'pricings', 'collections', 'children'];
+    const tabs: Tab[] = [
+      'overview',
+      'members',
+      'invitations',
+      'pricings',
+      'collections',
+      'children',
+    ];
     if (canManage) tabs.push('permissions');
     return tabs;
   }, [canManage]);
@@ -345,9 +390,11 @@ export default function OrganizationDetailPage() {
                       src={org.avatar}
                       alt={org.displayName}
                       className="h-16 w-16 rounded-2xl object-cover ring-2 ring-white shadow-elevation-2 sm:h-20 sm:w-20"
-                      onError={(e) => {
+                      onError={e => {
                         (e.target as HTMLImageElement).style.display = 'none';
-                        (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
+                        (e.target as HTMLImageElement).nextElementSibling?.classList.remove(
+                          'hidden'
+                        );
                       }}
                     />
                     <div className="hidden h-16 w-16 items-center justify-center rounded-2xl bg-tp-primary/10 ring-2 ring-white shadow-elevation-2 sm:h-20 sm:w-20">
@@ -362,43 +409,79 @@ export default function OrganizationDetailPage() {
               </motion.div>
 
               <div className="min-w-0 flex-1">
-                <motion.div variants={fadeInUp} transition={transitionDefault} className="flex flex-wrap items-center gap-3">
-                  <h1 className="font-display text-2xl text-tp-ink sm:text-3xl">{org.displayName}</h1>
+                <motion.div
+                  variants={fadeInUp}
+                  transition={transitionDefault}
+                  className="flex flex-wrap items-center gap-3"
+                >
+                  <h1 className="font-display text-2xl text-tp-ink sm:text-3xl">
+                    {org.displayName}
+                  </h1>
                   {myRole && (
-                    <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${ROLE_COLORS[myRole]}`}>
+                    <span
+                      className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${ROLE_COLORS[myRole]}`}
+                    >
                       {ROLE_LABELS[myRole]}
                     </span>
                   )}
-                  {canManage && (
-                    <button
-                      type="button"
-                      onClick={() => setEditModalOpen(true)}
-                      className="ml-auto flex cursor-pointer items-center gap-1.5 rounded-lg border border-tp-hairline-strong bg-tp-canvas px-3 py-2 text-sm font-medium text-tp-slate transition-colors hover:border-tp-hairline hover:bg-tp-surface hover:text-tp-ink sm:ml-0"
-                    >
-                      <Iconify icon="mdi:pencil-outline" width={15} />
-                      Edit
-                    </button>
-                  )}
+                  <div className="ml-auto flex items-center gap-2 sm:ml-0">
+                    {canManage && (
+                      <button
+                        type="button"
+                        onClick={() => setEditModalOpen(true)}
+                        className="flex cursor-pointer items-center gap-1.5 rounded-lg border border-tp-hairline-strong bg-tp-canvas px-3 py-2 text-sm font-medium text-tp-slate transition-colors hover:border-tp-hairline hover:bg-tp-surface hover:text-tp-ink"
+                      >
+                        <Iconify icon="mdi:pencil-outline" width={15} />
+                        Edit
+                      </button>
+                    )}
+                    {!org.isPersonal && (
+                      <button
+                        type="button"
+                        onClick={handleLeaveOrg}
+                        className="flex cursor-pointer items-center gap-1.5 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-600 transition-colors hover:border-red-300 hover:bg-red-100 dark:border-red-800 dark:bg-red-900/20 dark:text-red-400 dark:hover:border-red-700 dark:hover:bg-red-900/40"
+                      >
+                        <Iconify icon="mdi:logout" width={15} />
+                        Leave
+                      </button>
+                    )}
+                  </div>
                 </motion.div>
-                <motion.p variants={fadeInUp} transition={transitionDefault} className="mt-0.5 font-mono text-sm text-tp-steel">
+                <motion.p
+                  variants={fadeInUp}
+                  transition={transitionDefault}
+                  className="mt-0.5 font-mono text-sm text-tp-steel"
+                >
                   @{org.name}
                 </motion.p>
                 {org.description && (
-                  <motion.p variants={fadeInUp} transition={transitionDefault} className="mt-2 max-w-2xl text-sm leading-relaxed text-tp-slate">
+                  <motion.p
+                    variants={fadeInUp}
+                    transition={transitionDefault}
+                    className="mt-2 max-w-2xl text-sm leading-relaxed text-tp-slate"
+                  >
                     {org.description}
                   </motion.p>
                 )}
               </div>
             </div>
 
-            <motion.div variants={fadeInUp} transition={transitionDefault} className="mt-6 flex flex-wrap gap-x-5 gap-y-2 sm:gap-x-6">
+            <motion.div
+              variants={fadeInUp}
+              transition={transitionDefault}
+              className="mt-6 flex flex-wrap gap-x-5 gap-y-2 sm:gap-x-6"
+            >
               {[
                 { label: 'Members', value: members.length, icon: 'mdi:account-group-outline' },
-                { label: 'Sub-orgs', value: org.subOrganizations?.length ?? 0, icon: 'mdi:graph-outline' },
+                {
+                  label: 'Sub-orgs',
+                  value: org.subOrganizations?.length ?? 0,
+                  icon: 'mdi:graph-outline',
+                },
                 { label: 'Pricings', value: pricingsTotal, icon: 'mdi:tag-outline' },
                 { label: 'Collections', value: collectionsTotal, icon: 'mdi:folder-outline' },
                 { label: 'Invitations', value: invitations.length, icon: 'mdi:link-variant' },
-              ].map((stat) => (
+              ].map(stat => (
                 <div key={stat.label} className="flex items-center gap-1.5">
                   <Iconify icon={stat.icon} width={14} className="text-tp-steel" />
                   <span className="text-sm font-semibold text-tp-ink">{stat.value}</span>
@@ -409,7 +492,12 @@ export default function OrganizationDetailPage() {
                 <div className="flex items-center gap-2">
                   <Iconify icon="mdi:calendar-outline" width={15} className="text-tp-ink" />
                   <span className="text-xs text-tp-steel">
-                    Created {new Date(org.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                    Created{' '}
+                    {new Date(org.createdAt).toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
+                    })}
                   </span>
                 </div>
               )}
@@ -425,21 +513,29 @@ export default function OrganizationDetailPage() {
             <div className="relative">
               <select
                 value={activeTab}
-                onChange={(e) => setActiveTab(e.target.value as Tab)}
+                onChange={e => setActiveTab(e.target.value as Tab)}
                 className="w-full appearance-none rounded-lg border border-tp-input-border bg-tp-input-bg px-3 py-2.5 pr-8 text-sm font-medium text-tp-ink transition-colors focus:border-tp-primary focus:outline-none"
               >
-                {availableTabs.map((tab) => (
-                  <option key={tab} value={tab}>{TAB_META[tab].label}</option>
+                {availableTabs.map(tab => (
+                  <option key={tab} value={tab}>
+                    {TAB_META[tab].label}
+                  </option>
                 ))}
               </select>
-              <svg className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-tp-steel" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg
+                className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-tp-steel"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
               </svg>
             </div>
           </div>
 
           <nav className="hidden gap-1 overflow-x-auto py-1 md:flex" role="tablist">
-            {availableTabs.map((tab) => {
+            {availableTabs.map(tab => {
               const meta = TAB_META[tab];
               return (
                 <button
@@ -526,7 +622,7 @@ export default function OrganizationDetailPage() {
               hierarchyTree={hierarchyTree}
               expandedTreeIds={expandedTreeIds}
               onToggle={handleTreeToggle}
-              onNavigate={(id) => router.push(`/orgs/${id}`)}
+              onNavigate={id => router.push(`/orgs/${id}`)}
               onCreateSubOrg={() => setCreateSubOrgModalOpen(true)}
             />
           )}
@@ -548,16 +644,36 @@ export default function OrganizationDetailPage() {
       {/* ═══ MODALS ═══ */}
       <AnimatePresence>
         {editModalOpen && org && (
-          <EditOrgModal org={org} onClose={() => setEditModalOpen(false)} onSaved={(updated) => { setOrg(updated); setEditModalOpen(false); }} />
+          <EditOrgModal
+            org={org}
+            onClose={() => setEditModalOpen(false)}
+            onSaved={updated => {
+              setOrg(updated);
+              setEditModalOpen(false);
+            }}
+          />
         )}
         {addMemberModalOpen && org && (
-          <AddMemberModal orgId={org.id} onClose={() => setAddMemberModalOpen(false)} onAdded={refreshMembers} />
+          <AddMemberModal
+            orgId={org.id}
+            onClose={() => setAddMemberModalOpen(false)}
+            onAdded={refreshMembers}
+          />
         )}
         {inviteModalOpen && org && (
-          <InviteModal orgId={org.id} invitations={invitations} onClose={() => setInviteModalOpen(false)} onRefresh={refreshInvitations} />
+          <InviteModal
+            orgId={org.id}
+            invitations={invitations}
+            onClose={() => setInviteModalOpen(false)}
+            onRefresh={refreshInvitations}
+          />
         )}
         {createSubOrgModalOpen && org && (
-          <CreateSubOrgModal parentId={org.id} onClose={() => setCreateSubOrgModalOpen(false)} onCreated={loadOrgData} />
+          <CreateSubOrgModal
+            parentId={org.id}
+            onClose={() => setCreateSubOrgModalOpen(false)}
+            onCreated={loadOrgData}
+          />
         )}
       </AnimatePresence>
     </div>

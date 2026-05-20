@@ -5,27 +5,29 @@ import Iconify from '../../../core/components/iconify';
 import { useRouter } from '../../../core/hooks/useRouter';
 import { useAuth } from '../../../auth/hooks/useAuth';
 import OrgJoinSkeleton from '../../../core/components/skeletons/org-join-skeleton';
+import OrgAvatar from '../../../core/components/org-avatar';
 
-function OrgAvatar({
-  org,
-}: {
-  org: { avatar: string | null; displayName: string };
-}) {
-  if (org.avatar) {
-    return (
-      <img
-        src={org.avatar}
-        alt={org.displayName}
-        className="h-20 w-20 rounded-full object-cover"
-      />
-    );
-  }
-  return (
-    <span className="flex h-20 w-20 items-center justify-center rounded-full bg-tp-primary text-white">
-      <Iconify icon="mdi:domain" width={36} />
-    </span>
-  );
-}
+// function OrgAvatar({
+//   org,
+// }: {
+//   org: { avatar: string | null; displayName: string };
+// }) {
+//   console.log('Org avatar:', org);
+//   if (org.avatar) {
+//     return (
+//       <img
+//         src={org.avatar}
+//         alt={org.displayName}
+//         className="h-20 w-20 rounded-full object-cover"
+//       />
+//     );
+//   }
+//   return (
+//     <span className="flex h-20 w-20 items-center justify-center rounded-full bg-tp-primary text-white">
+//       <Iconify icon="mdi:domain" width={36} />
+//     </span>
+//   );
+// }
 
 export default function OrganizationJoinPage() {
   const { code } = useParams<{ code: string }>();
@@ -124,7 +126,7 @@ export default function OrganizationJoinPage() {
   return (
     <div className="mx-auto max-w-112 px-4 py-16">
       <div className="flex flex-col items-center gap-4 text-center">
-        <OrgAvatar org={org} />
+        <OrgAvatar name={org.displayName} avatar={org.avatar} size={100}/>
         <div>
           <h1 className="text-2xl font-bold text-sphere-grey-800">{org.displayName}</h1>
           <p className="text-sm text-sphere-grey-500">@{org.name}</p>

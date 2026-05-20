@@ -34,7 +34,7 @@ export default function FileUpload({
     if (uploadedFile && extensionValidator) {
       setFile(uploadedFile);
     } else {
-      customAlert('Please upload a file with a .yaml or .yml extension');
+      customAlert('Please upload a file with a .yaml or .yml extension', 'warning');
     }
   }, []);
 

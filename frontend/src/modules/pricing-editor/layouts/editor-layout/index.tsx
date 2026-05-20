@@ -44,7 +44,7 @@ export default function EditorLayout({ children }: { children?: React.ReactNode 
         const assignedId = urlParams.get('pricing') ?? uuidv4();
         const encodedPricing = parseStringYamlToEncodedYaml(editorValue);
         setInCache(assignedId, encodedPricing, 24 * 60 * 60).catch(error => {
-          customAlert(`Error saving link in cache: ${error}`);
+          customAlert(`Error saving link in cache: ${error}`, 'error');
         });
         return createUrlWithEncodedYaml(assignedId);
       }
@@ -60,7 +60,7 @@ export default function EditorLayout({ children }: { children?: React.ReactNode 
       };
       reader.readAsText(file);
     } else {
-      customAlert('No file selected');
+      customAlert('No file selected', 'warning');
     }
   };
 

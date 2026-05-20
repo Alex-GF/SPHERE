@@ -80,7 +80,7 @@ export default function ConfigurationSpaceView({ organizationId, pricingName, pr
           else offset += PAGE_SIZE;
         }
         if (!canceled) { setAllConfigs(all); if (total === 0) setTotalSize(all.length); }
-      } catch (e) { if (!canceled) customAlert(`Error: ${e}`); }
+      } catch (e) { if (!canceled) customAlert(`Error: ${e}`, 'error'); }
       finally { if (!canceled) setLoading(false); }
     };
     load();
