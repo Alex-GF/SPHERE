@@ -314,6 +314,17 @@ export function useOrganizationsApi() {
     if (!response.ok) throw new Error(body.error ?? 'Failed to remove permission');
   }, [fetchWithInterceptor, token]);
 
+  const inviteUsers = useCallback(async (orgId: string, userIds: string[]): Promise<OrganizationInvitation> => {
+    const response = await fetchWithInterceptor(`${ORGS_BASE_PATH}/${orgId}/invitations/invite-users`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ userIds }),
+    });
+    const body = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(body.error ?? 'Failed to invite users');
+    return body as OrganizationInvitation;
+  }, [fetchWithInterceptor, token]);
+
   return {
     getMyOrganizations,
     getOrganization,
@@ -336,5 +347,6 @@ export function useOrganizationsApi() {
     getOrgPermissions,
     setOrgPermission,
     removeOrgPermission,
+    inviteUsers,
   };
 }

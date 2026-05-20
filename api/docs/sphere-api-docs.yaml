@@ -121,6 +121,8 @@ tags:
     description: Retrieve pricings and collections a user can access
   - name: Permissions
     description: Retrieve permission information for entities
+  - name: Notifications
+    description: User notifications and real-time updates
   - name: Cache
     description: Redis cache operations for temporary data storage
 
@@ -233,19 +235,39 @@ paths:
 
   /users:
     get:
-      summary: Get all users
+      summary: Get all users or search users
       description: |
-        Retrieves a paginated list of all users in the system.
+        Retrieves a paginated list of users. Supports two access modes:
 
-        **Authentication**: User token with ADMIN role
+        **1. ADMIN mode (no `q` parameter):**
+        Returns all users with full details. Only accessible to ADMIN users.
 
-        **Permission**: Only ADMIN users can access this endpoint.
+        **2. Search mode (`q` parameter with 4+ characters):**
+        Searches users by username, firstName, or lastName (case-insensitive partial match).
+        Accessible to any authenticated user (ADMIN or USER).
+        When using search mode, sensitive fields (email, role, phone, token, apiKeys) are excluded from the response.
+
+        **Authentication**: User token
+
+        **Permission**:
+        - ADMIN: full access to all users (with or without `q`)
+        - USER: only accessible with `q` parameter (4+ characters)
       
       tags:
         - Users
       security:
         - ApiKeyAuth: []
       parameters:
+        - name: q
+          in: query
+          required: false
+          schema:
+            type: string
+            minLength: 4
+          description: |
+            Search query to find users by username, firstName, or lastName.
+            Must be at least 4 characters long. When provided, any authenticated user can access this endpoint.
+            Sensitive fields are excluded from the response for non-ADMIN users.
         - $ref: '#/components/parameters/UsernameQuery'
         - $ref: '#/components/parameters/Email'
         - $ref: '#/components/parameters/Role'
@@ -259,13 +281,19 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/User'
+                oneOf:
+                  - type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+                    description: Full user list (ADMIN only, no q parameter)
+                  - type: array
+                    items:
+                      $ref: '#/components/schemas/PublicUser'
+                    description: Search results (with q parameter, sensitive fields excluded)
         '401':
           description: Authentication required
         '403':
-          description: Insufficient permissions
+          description: Insufficient permissions (USER without q parameter, or q < 4 chars)
         default:
           description: Unexpected error
           content:
@@ -3460,6 +3488,315 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
+  # ============================================
+  # Notifications
+  # ============================================
+
+  /notifications:
+    get:
+      summary: Get current user's notifications
+      description: |
+        Retrieves a paginated list of notifications for the currently authenticated user.
+        Supports filtering by read/unread status.
+
+        **Authentication**: User token
+
+        **Permission**: Any authenticated user (ADMIN or USER).
+
+      tags:
+        - Notifications
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: unreadOnly
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: ['true', 'false']
+          description: Filter to only return unread notifications
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+          description: Number of notifications to skip
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: Maximum number of notifications to return
+      responses:
+        '200':
+          description: List of notifications
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Notification'
+        '401':
+          description: Authentication required
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /notifications/stream:
+    get:
+      summary: SSE stream for real-time notifications
+      description: |
+        Establishes a Server-Sent Events (SSE) connection for real-time notification delivery.
+        Events are sent when new notifications are created for the authenticated user.
+
+        **Authentication**: JWT token as query parameter `?token=xxx`
+
+        **Events**:
+        - `connected`: Sent on successful connection with `{ userId }`
+        - `notification`: Sent when a new notification is created
+        - `unread-count`: Sent on connection with current unread count
+
+      tags:
+        - Notifications
+      parameters:
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
+          description: JWT authentication token
+      responses:
+        '200':
+          description: SSE event stream
+          content:
+            text/event-stream:
+              schema:
+                type: string
+        '401':
+          description: Invalid or missing token
+
+  /notifications/unread-count:
+    get:
+      summary: Get unread notification count
+      description: |
+        Returns the count of unread notifications for the currently authenticated user.
+
+        **Authentication**: User token
+
+        **Permission**: Any authenticated user (ADMIN or USER).
+
+      tags:
+        - Notifications
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Unread count
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 5
+        '401':
+          description: Authentication required
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /notifications/mark-all-read:
+    put:
+      summary: Mark all notifications as read
+      description: |
+        Marks all notifications for the currently authenticated user as read.
+
+        **Authentication**: User token
+
+        **Permission**: Any authenticated user (ADMIN or USER).
+
+      tags:
+        - Notifications
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Number of notifications updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  updated:
+                    type: integer
+                    example: 5
+        '401':
+          description: Authentication required
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /notifications/{notificationId}:
+    put:
+      summary: Mark a notification as read
+      description: |
+        Marks a specific notification as read.
+
+        **Authentication**: User token
+
+        **Permission**: Any authenticated user (ADMIN or USER).
+
+      tags:
+        - Notifications
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: notificationId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The notification ID
+      responses:
+        '200':
+          description: Notification marked as read
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        '401':
+          description: Authentication required
+        '404':
+          description: Notification not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      summary: Delete a notification
+      description: |
+        Deletes a specific notification.
+
+        **Authentication**: User token
+
+        **Permission**: Any authenticated user (ADMIN or USER).
+
+      tags:
+        - Notifications
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: notificationId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The notification ID
+      responses:
+        '200':
+          description: Notification deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        '401':
+          description: Authentication required
+        '404':
+          description: Notification not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  # ============================================
+  # Organization Invitations (Invite Users)
+  # ============================================
+
+  /orgs/{organizationId}/invitations/invite-users:
+    post:
+      summary: Invite users to organization via notifications
+      description: |
+        Creates an invitation and sends notifications to the specified users.
+        Internally generates an invitation link with `maxUses` set to the number of invited users.
+        Each invited user receives a notification with the invitation link.
+
+        **Authentication**: User token
+
+        **Permission**: Only OWNER or ADMIN of the organization.
+
+      tags:
+        - Organizations
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/OrganizationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userIds:
+                  type: array
+                  items:
+                    type: string
+                  description: Array of user IDs to invite
+                  minItems: 1
+              required:
+                - userIds
+      responses:
+        '201':
+          description: Invitation created and notifications sent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationInvitation'
+        '400':
+          description: Invalid request (empty userIds array)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Authentication required
+        '403':
+          description: Insufficient permissions (requires OWNER or ADMIN)
+        '404':
+          description: Organization not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
 components:
   schemas:
 
@@ -4460,6 +4797,51 @@ components:
             isPersonal:
               type: boolean
               description: Whether this is a personal organization
+
+    # ------------------------------
+    # --       NOTIFICATIONS      --
+    # ------------------------------
+
+    Notification:
+      type: object
+      description: |
+        Represents a notification for a user. Notifications are created for various events
+        such as organization invitations, system messages, and more.
+      required:
+        - id
+        - kind
+        - title
+        - message
+        - read
+        - createdAt
+      properties:
+        id:
+          type: string
+          description: Unique MongoDB ObjectId of the notification
+          example: "68050bd09890322c57842f80"
+        kind:
+          type: string
+          enum: [OrganizationInvitation, System, CollectionShared, PricingUpdated]
+          description: The type of notification
+          example: "OrganizationInvitation"
+        title:
+          type: string
+          description: Short title of the notification
+          example: "You've been invited to join Acme Corp"
+        message:
+          type: string
+          description: Detailed message of the notification
+          example: "John Doe has invited you to join Acme Corp"
+        data:
+          type: object
+          description: Additional data related to the notification (kind-specific)
+          example: { "invitationCode": "a1b2c3d4e5", "organizationId": "68050bd09890322c57842f6f" }
+        read:
+          type: boolean
+          description: Whether the notification has been read
+          example: false
+        createdAt:
+          $ref: '#/components/schemas/Date'
     
     # ------------------------------
     # --   ENTITY PERMISSION SCHEMAS --

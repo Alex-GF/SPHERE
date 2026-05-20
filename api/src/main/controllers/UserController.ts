@@ -45,10 +45,16 @@ class UserController {
   async index(req: any, res: any) {
     try {
       const queryParamas = req.query;
+      const q = queryParamas.q as string | undefined;
+
+      // Allow USER role when searching with q (minimum 4 characters)
       if (req.user.role !== 'ADMIN') {
-        throw new Error('PERMISSION ERROR: Only ADMIN users can access the full list of users.');
+        if (!q || q.length < 4) {
+          throw new Error('PERMISSION ERROR: Only ADMIN users can access the full list of users.');
+        }
       }
-      const users = await this.userService.index(queryParamas);
+
+      const users = await this.userService.index(queryParamas, req.user.role);
       res.json(users);
     } catch (err: any) {
       const { status, message } = handleError(err);

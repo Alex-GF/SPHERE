@@ -56,6 +56,10 @@ const loadFileRoutes = function (app: express.Application) {
     .post(organizationController.createInvitation);
 
   app
+    .route(baseUrl + '/orgs/:organizationId/invitations/invite-users')
+    .post(organizationController.inviteUsers);
+
+  app
     .route(baseUrl + '/orgs/:organizationId/invitations/:invitationId')
     .delete(organizationController.revokeInvitation);
 };

@@ -6,6 +6,8 @@ import { useState } from 'react';
 import { useScrollToTop } from './modules/core/hooks/useScrollToTop';
 import OrganizationContext from './modules/organization/contexts/organizationContext';
 import { useOrganizationManager } from './modules/organization/hooks/useOrganization';
+import { NotificationsProvider } from './modules/notification/contexts/notificationsContext';
+import { useNotificationsSSE } from './modules/notification/hooks/useNotificationsSSE';
 
 function OrganizationProvider({ children }: { children: React.ReactNode }) {
   const { organizations, isLoading, page, totalPages, setPage } = useOrganizationManager();
@@ -17,6 +19,11 @@ function OrganizationProvider({ children }: { children: React.ReactNode }) {
       {children}
     </OrganizationContext.Provider>
   );
+}
+
+function NotificationsSSEProvider({ children }: { children: React.ReactNode }) {
+  useNotificationsSSE();
+  return <>{children}</>;
 }
 
 export default function App() {
@@ -34,7 +41,11 @@ export default function App() {
     <SphereThemeProvider>
       <AuthContext.Provider value={{ authUser, setAuthUser }}>
         <OrganizationProvider>
-          <Router />
+          <NotificationsProvider>
+            <NotificationsSSEProvider>
+              <Router />
+            </NotificationsSSEProvider>
+          </NotificationsProvider>
         </OrganizationProvider>
       </AuthContext.Provider>
     </SphereThemeProvider>

@@ -18,6 +18,7 @@ export const HomePage = lazy(() => import('../modules/presentation/pages/home'))
 export const DashboardPage = lazy(() => import('../modules/presentation/pages/dashboard'));
 export const TeamPage = lazy(() => import('../modules/presentation/pages/team'));
 export const Page404 = lazy(() => import('../modules/core/pages/page-not-found'));
+export const InboxPage = lazy(() => import('../modules/notification/pages/inbox'));
 
 import EditorPage from '../modules/pricing-editor/pages/pricing2yaml-editor';
 import EditorLayout from '../modules/pricing-editor/layouts/editor-layout';
@@ -156,6 +157,14 @@ export default function Router() {
           element: (
             <Suspense fallback={<OrgDetailSkeleton />}>
               <OrganizationDetailPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: '/notifications',
+          element: (
+            <Suspense fallback={<LoadingView />}>
+              <InboxPage />
             </Suspense>
           ),
         },

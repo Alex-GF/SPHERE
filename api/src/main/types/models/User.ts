@@ -63,6 +63,7 @@ export type UserFilters = {
   username?: string;
   email?: string;
   role?: UserRole;
+  q?: string;
 };
 
 export type ApiKey = {

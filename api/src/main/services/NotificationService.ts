@@ -1,5 +1,6 @@
 import container from '../config/container';
 import NotificationRepository from '../repositories/mongoose/NotificationRepository';
+import sseManager from './SseManager';
 
 class NotificationService {
   private notificationRepository: NotificationRepository;
@@ -23,13 +24,26 @@ class NotificationService {
     message: string;
     data?: Record<string, any>;
   }) {
-    return this.notificationRepository.create({
+    const notification = await this.notificationRepository.create({
       _userId: data.userId,
       kind: data.kind,
       title: data.title,
       message: data.message,
       data: data.data,
     });
+
+    // Send real-time event to connected user
+    sseManager.sendToUser(data.userId, 'notification', {
+      id: notification._id,
+      kind: notification.kind,
+      title: notification.title,
+      message: notification.message,
+      data: notification.data,
+      read: notification.read,
+      createdAt: notification.createdAt,
+    });
+
+    return notification;
   }
 
   async markAsRead(notificationId: string, userId: string) {

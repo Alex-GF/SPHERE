@@ -3,6 +3,7 @@ import { useRouter } from '../../../core/hooks/useRouter';
 import UserMenu from './user-menu';
 import MobileNav from './mobile-nav';
 import CommandPalette from '../../../core/components/command-palette';
+import NotificationBell from '../../../notification/components/notification-bell';
 import { FaFileInvoiceDollar, FaFolder } from "react-icons/fa";
 
 const NAV_ITEMS = [
@@ -172,6 +173,10 @@ export default function AppHeader() {
 
             <div className="hidden md:block">
               <CommandPalette />
+            </div>
+
+            <div className="hidden md:block">
+              <NotificationBell />
             </div>
 
             <div className="hidden md:block">

@@ -4,10 +4,13 @@ import { useAuth } from '../../../auth/hooks/useAuth';
 import { useRouter } from '../../../core/hooks/useRouter';
 import { dropdownVariants, transitionFast } from '../../../core/utils/motion-variants';
 import Avatar from '../../../core/components/avatar';
+import Iconify from '../../../core/components/iconify';
+import { useNotificationsContext } from '../../../notification/hooks/useNotificationsContext';
 
 export default function UserMenu() {
   const { authUser, logout } = useAuth();
   const router = useRouter();
+  const { unreadCount } = useNotificationsContext();
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -36,6 +39,15 @@ export default function UserMenu() {
   }, [isOpen]);
 
   const menuItems = [
+    {
+      label: 'Inbox',
+      icon: <Iconify icon="mdi:inbox" className="h-4 w-4" />,
+      onClick: () => {
+        router.push('/notifications');
+        setIsOpen(false);
+      },
+      badge: unreadCount > 0 ? unreadCount : undefined,
+    },
     {
       label: 'Organizations',
       icon: (
@@ -105,6 +117,11 @@ export default function UserMenu() {
               >
                 {item.icon}
                 {item.label}
+                {item.badge !== undefined && (
+                  <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-tp-primary px-1 text-[10px] font-medium text-tp-on-primary">
+                    {item.badge > 9 ? '9+' : item.badge}
+                  </span>
+                )}
               </button>
             ))}
 

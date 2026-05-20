@@ -462,6 +462,53 @@ class OrganizationService {
 
     return organization;
   }
+
+  async inviteUsersToOrganization(organizationId: string, invitedUserIds: string[], invitedBy: string) {
+    // Create invitation with maxUses = number of invited users
+    const code = crypto.randomBytes(5).toString('hex');
+    const expiresInDays = 7;
+    const expiresAt = new Date(Date.now() + expiresInDays * 24 * 60 * 60 * 1000);
+
+    const invitation = await this.organizationInvitationRepository.create({
+      _organizationId: organizationId,
+      code,
+      createdBy: invitedBy,
+      expiresAt,
+      maxUses: invitedUserIds.length,
+      useCount: 0,
+    });
+
+    // Get organization name for notifications
+    const org = await this.organizationRepository.findById(organizationId);
+    const orgName = org?.displayName || org?.name || 'an organization';
+
+    // Get inviter name
+    const inviter = await this.userRepository.findById(invitedBy);
+    const inviterName = inviter ? `${inviter.firstName} ${inviter.lastName}` : 'Someone';
+
+    // Create notification for each invited user
+    for (const userId of invitedUserIds) {
+      try {
+        await this.notificationService.createNotification({
+          userId,
+          kind: 'OrganizationInvitation',
+          title: `You've been invited to join ${orgName}`,
+          message: `${inviterName} has invited you to join "${orgName}". Click to accept the invitation.`,
+          data: {
+            invitationCode: code,
+            organizationId,
+            organizationName: orgName,
+            invitedBy: inviterName,
+            invitedById: invitedBy,
+          },
+        });
+      } catch {
+        // Notification creation should not fail the invitation process
+      }
+    }
+
+    return invitation;
+  }
 }
 
 export default OrganizationService;

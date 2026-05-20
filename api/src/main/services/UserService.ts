@@ -19,9 +19,10 @@ class UserService {
     this.organizationMembershipRepository = container.resolve('organizationMembershipRepository');
   }
 
-  async index(queryParams: any): Promise<LeanUser[]> {
+  async index(queryParams: any, userRole?: string): Promise<LeanUser[]> {
     const filter: UserFilters = {};
 
+    if (queryParams.q) filter.q = String(queryParams.q);
     if (queryParams.username) filter.username = String(queryParams.username);
     if (queryParams.email) filter.email = String(queryParams.email);
     if (queryParams.role) filter.role = String(queryParams.role) as any;
@@ -31,7 +32,14 @@ class UserService {
     const sortBy = queryParams.sortBy === 'email' ? 'email' : 'username';
     const sortOrder = queryParams.sortOrder === 'desc' ? 'desc' : 'asc';
 
-    const users = await this.userRepository.find(filter, offset, limit, sortBy, sortOrder);
+    // When using q with non-ADMIN user, limit results and project only public fields
+    const isSearch = !!queryParams.q;
+    const shouldExcludeSensitive = isSearch && userRole !== 'ADMIN';
+    const projection = shouldExcludeSensitive
+      ? { password: 0, email: 0, role: 0, phone: 0, token: 0, tokenExpiration: 0, apiKeys: 0, createdAt: 0, updatedAt: 0 }
+      : undefined;
+
+    const users = await this.userRepository.find(filter, offset, limit, sortBy, sortOrder, projection);
     return users;
   }
 

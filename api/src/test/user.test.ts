@@ -79,6 +79,98 @@ describe('Users API integration', () => {
       expect(Array.isArray(response.body)).toBe(true);
       expect(response.body.length).toBeLessThan(3);
     });
+
+    it('Return 200 with q search for USER role when q has 4+ characters.', async () => {
+      const suffix = `alice_${Date.now()}`;
+      await createTestUser('USER', suffix);
+      await createTestUser('USER');
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/users?q=alice`)
+        .set('Authorization', `Bearer ${testUser.token}`);
+
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeGreaterThanOrEqual(1);
+      const usernames = response.body.map((u: any) => u.username);
+      expect(usernames).toContain(suffix);
+    });
+
+    it('Return 403 with q search for USER role when q has less than 4 characters.', async () => {
+      const response = await request(app)
+        .get(`${BASE_PATH}/users?q=ali`)
+        .set('Authorization', `Bearer ${testUser.token}`);
+
+      expect(response.status).toBe(403);
+      expect(response.body.error).toBeDefined();
+    });
+
+    it('Return 403 for USER role without q parameter.', async () => {
+      const response = await request(app)
+        .get(`${BASE_PATH}/users`)
+        .set('Authorization', `Bearer ${testUser.token}`);
+
+      expect(response.status).toBe(403);
+    });
+
+    it('Return 200 with q search matching firstName for USER role.', async () => {
+      const suffix = `searchuser_${Date.now()}`;
+      const userData = {
+        username: suffix,
+        password: TEST_PASSWORD,
+        role: 'USER',
+        firstName: 'SpecialFirstName',
+        lastName: 'SpecialLastName',
+        email: `${suffix}@example.com`,
+      };
+      const user = new UserMongoose(userData);
+      await user.save();
+      testContainer.resolve('usersToDelete').add(suffix);
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/users?q=SpecialFirst`)
+        .set('Authorization', `Bearer ${testUser.token}`);
+
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeGreaterThanOrEqual(1);
+      const usernames = response.body.map((u: any) => u.username);
+      expect(usernames).toContain(suffix);
+    });
+
+    it('Return 200 with q search excluding sensitive fields for USER role.', async () => {
+      const suffix = `privacy_${Date.now()}`;
+      await createTestUser('USER', suffix);
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/users?q=${suffix}`)
+        .set('Authorization', `Bearer ${testUser.token}`);
+
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBe(true);
+      const user = response.body.find((u: any) => u.username === suffix);
+      expect(user).toBeDefined();
+      expect(user.email).toBeUndefined();
+      expect(user.role).toBeUndefined();
+      expect(user.phone).toBeUndefined();
+      expect(user.token).toBeUndefined();
+    });
+
+    it('Return 200 with q search including sensitive fields for ADMIN role.', async () => {
+      const suffix = `adminsearch_${Date.now()}`;
+      await createTestUser('USER', suffix);
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/users?q=${suffix}`)
+        .set('Authorization', `Bearer ${adminUser.token}`);
+
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBe(true);
+      const user = response.body.find((u: any) => u.username === suffix);
+      expect(user).toBeDefined();
+      expect(user.email).toBeDefined();
+      expect(user.role).toBeDefined();
+    });
   });
 
   describe('GET /api/users/me', () => {
