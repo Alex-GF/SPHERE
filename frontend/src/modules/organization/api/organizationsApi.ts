@@ -50,11 +50,18 @@ export interface OrgPricing {
   currency: string;
   private: boolean;
   organization: { id: string; name: string; displayName: string; avatar: string };
+  collection: { id: string; name: string; slug: string } | null;
+  analytics: {
+    configurationSpaceSize: number;
+    minSubscriptionPrice: number;
+    maxSubscriptionPrice: number;
+  };
 }
 
 export interface OrgCollection {
   id: string;
   name: string;
+  slug: string;
   numberOfPricings: number;
   organization: { id: string; name: string; displayName: string; avatar: string };
 }

@@ -23,6 +23,8 @@ import {
   useOrganizationsApi,
 } from '../../api/organizationsApi';
 import PermissionsTab from '../../components/PermissionsTab';
+import PricingCard from '../../../pricing/components/pricing-card';
+import CollectionCard from '../../../pricing/components/collection-card';
 import Pagination from '../../../pricing/components/pagination';
 import OrgDetailSkeleton from '../../../core/components/skeletons/org-detail-skeleton';
 
@@ -31,6 +33,15 @@ const ROLE_LABELS: Record<OrgRole, string> = {
   ADMIN: 'Admin',
   MEMBER: 'Member',
 };
+
+function useDebouncedValue<T>(value: T, delayMs: number): T {
+  const [debounced, setDebounced] = useState(value);
+  useEffect(() => {
+    const id = setTimeout(() => setDebounced(value), delayMs);
+    return () => clearTimeout(id);
+  }, [value, delayMs]);
+  return debounced;
+}
 
 const ROLE_COLORS: Record<OrgRole, string> = {
   OWNER: 'bg-tp-primary/10 text-tp-primary',
@@ -755,6 +766,9 @@ export default function OrganizationDetailPage() {
 
   const PER_PAGE = 10;
 
+  const debouncedPricingSearch = useDebouncedValue(pricingSearch, 500);
+  const debouncedCollectionSearch = useDebouncedValue(collectionSearch, 500);
+
   const fetchPricings = useCallback(async (page: number, search: string) => {
     if (!org) return;
     try {
@@ -763,6 +777,7 @@ export default function OrganizationDetailPage() {
         offset: String((page - 1) * PER_PAGE),
       };
       if (search) filters.name = search;
+      filters.limit = "9";
       const data = await getOrgPricings(org.id, filters);
       setPricings(data.pricings);
       setPricingsTotal(data.total);
@@ -792,15 +807,15 @@ export default function OrganizationDetailPage() {
 
   useEffect(() => {
     if (activeTab === 'pricings' && org) {
-      fetchPricings(pricingPage, pricingSearch);
+      fetchPricings(pricingPage, debouncedPricingSearch);
     }
-  }, [activeTab, org, pricingPage, pricingSearch]);
+  }, [activeTab, org, pricingPage, debouncedPricingSearch]);
 
   useEffect(() => {
     if (activeTab === 'collections' && org) {
-      fetchCollections(collectionPage, collectionSearch);
+      fetchCollections(collectionPage, debouncedCollectionSearch);
     }
-  }, [activeTab, org, collectionPage, collectionSearch]);
+  }, [activeTab, org, collectionPage, debouncedCollectionSearch]);
 
   const handleRemoveMember = (member: OrgMemberWithUser) => {
     customConfirm(`Remove @${member.user.username} from this organization?`)
@@ -936,8 +951,8 @@ export default function OrganizationDetailPage() {
               {[
                 { label: 'Members', value: members.length, icon: 'mdi:account-group-outline' },
                 { label: 'Sub-orgs', value: org.subOrganizations?.length ?? 0, icon: 'mdi:graph-outline' },
-                { label: 'Pricings', value: pricings.length, icon: 'mdi:tag-outline' },
-                { label: 'Collections', value: collections.length, icon: 'mdi:folder-outline' },
+                { label: 'Pricings', value: pricingsTotal, icon: 'mdi:tag-outline' },
+                { label: 'Collections', value: collectionsTotal, icon: 'mdi:folder-outline' },
                 { label: 'Invitations', value: invitations.length, icon: 'mdi:link-variant' },
               ].map((stat) => (
                 <div key={stat.label} className="flex items-center gap-1.5">
@@ -1242,36 +1257,19 @@ export default function OrganizationDetailPage() {
                   </div>
                 </div>
 
-                <div className="divide-y divide-tp-hairline-soft">
-                  {pricings.length === 0 && (
-                    <div className="flex flex-col items-center gap-2 py-12 text-tp-ink">
+                <div className="min-h-[420px] p-4">
+                  {pricings.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center py-12 text-tp-ink">
                       <Iconify icon="mdi:tag-off-outline" width={32} />
                       <p className="text-sm">No pricings found.</p>
                     </div>
+                  ) : (
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                      {pricings.map((pricing) => (
+                        <PricingCard key={`${pricing.name}-${pricing.version}`} data={pricing} />
+                      ))}
+                    </div>
                   )}
-
-                  {pricings.map((pricing) => (
-                    <button
-                      key={`${pricing.name}-${pricing.version}`}
-                      type="button"
-                      onClick={() => router.push(`/pricings/${org.id}/${pricing.name}`)}
-                      className="flex w-full items-center gap-3 px-5 py-3 text-left transition-colors hover:bg-tp-surface/50 sm:gap-4 cursor-pointer"
-                    >
-                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-                        <Iconify icon="mdi:tag-outline" width={18} />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <p className="truncate text-sm font-medium text-tp-ink">{pricing.name}</p>
-                        <p className="text-[11px] text-tp-steel">
-                          v{pricing.version} · {pricing.currency}
-                        </p>
-                      </div>
-                      <span className="hidden text-[11px] text-tp-ink sm:inline">
-                        {new Date(pricing.createdAt).toLocaleDateString()}
-                      </span>
-                      <Iconify icon="mdi:chevron-right" width={16} className="text-tp-hairline-strong" />
-                    </button>
-                  ))}
                 </div>
 
                 {pricingsTotal > PER_PAGE && (
@@ -1313,33 +1311,19 @@ export default function OrganizationDetailPage() {
                   </div>
                 </div>
 
-                <div className="divide-y divide-tp-hairline-soft">
-                  {collections.length === 0 && (
-                    <div className="flex flex-col items-center gap-2 py-12 text-tp-ink">
+                <div className="min-h-[420px] p-4">
+                  {collections.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center py-12 text-tp-ink">
                       <Iconify icon="mdi:folder-off-outline" width={32} />
                       <p className="text-sm">No collections found.</p>
                     </div>
+                  ) : (
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                      {collections.map((collection) => (
+                        <CollectionCard key={collection.id} collection={collection} />
+                      ))}
+                    </div>
                   )}
-
-                  {collections.map((collection) => (
-                    <button
-                      key={collection.id}
-                      type="button"
-                      onClick={() => router.push(`/pricings/collections/${org.id}/${collection.name}`)}
-                      className="flex w-full items-center gap-3 px-5 py-3 text-left transition-colors hover:bg-tp-surface/50 sm:gap-4 cursor-pointer"
-                    >
-                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-purple-50 text-purple-600">
-                        <Iconify icon="mdi:folder-outline" width={18} />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <p className="truncate text-sm font-medium text-tp-ink">{collection.name}</p>
-                        <p className="text-[11px] text-tp-steel">
-                          {collection.numberOfPricings} {collection.numberOfPricings === 1 ? 'pricing' : 'pricings'}
-                        </p>
-                      </div>
-                      <Iconify icon="mdi:chevron-right" width={16} className="text-tp-hairline-strong" />
-                    </button>
-                  ))}
                 </div>
 
                 {collectionsTotal > PER_PAGE && (
