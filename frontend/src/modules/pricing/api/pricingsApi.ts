@@ -279,9 +279,9 @@ export function usePricingsApi() {
       });
   }, [fetchWithInterceptor, basicHeaders]);
 
-  const removePricingByName = useCallback(async (name: string, collectionSlug?: string) => {
+  const removePricingByName = useCallback(async (organizationId: string, name: string, collectionSlug?: string) => {
     return fetchWithInterceptor(
-      `${PRICINGS_BASE_PATH}/${username}/${name}${
+      `${PRICINGS_BASE_PATH}/${organizationId}/${name}${
         collectionSlug ? `?collectionSlug=${collectionSlug}` : ''
       }`,
       {

@@ -329,7 +329,11 @@ export default function CardPage() {
     if (!name) return;
     customConfirm('Are you sure you want to delete this pricing? This action is irreversible.', { danger: true })
       .then(() => {
-        removePricingByName(name, collectionSlug ?? undefined)
+        if (!organizationId) {
+          customAlert('Organization ID is missing. Cannot delete pricing.', 'error');
+          return;
+        }
+        removePricingByName(organizationId, name, collectionSlug ?? undefined)
           .then(() => {
             customConfirm('Pricing deleted successfully. Do you want to return to the main page?', { danger: false })
               .then(() => router.push('/'))
