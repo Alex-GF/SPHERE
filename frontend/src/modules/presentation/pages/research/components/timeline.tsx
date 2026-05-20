@@ -1,6 +1,6 @@
 import { motion, type Variants } from 'framer-motion';
 import { type ReactNode } from 'react';
-import { FaTrophy } from 'react-icons/fa';
+import { FaStar, FaTrophy } from 'react-icons/fa';
 
 export interface TimelineItem {
   date: string;
@@ -84,7 +84,7 @@ function DesktopTimelineCard({ item, side }: { item: TimelineItem; side: 'left' 
 
   return (
     <div className="relative grid grid-cols-[1fr_64px_1fr] items-center">
-      {/* ── Left column: card OR spacer ── */}
+      {/* ── Left column ── */}
       {isLeft ? (
         <div className="col-start-1 flex justify-end">
           <motion.div
@@ -114,32 +114,31 @@ function DesktopTimelineCard({ item, side }: { item: TimelineItem; side: 'left' 
             {/* Arrow */}
             <div
               className="absolute top-1/2 right-0 hidden -translate-y-1/2 translate-x-[9px] md:block"
-              style={{
-                width: 0,
-                height: 0,
-                borderTop: '9px solid transparent',
-                borderBottom: '9px solid transparent',
-                borderLeft: '9px solid #e5e5e5',
-              }}
+              style={{ width: 0, height: 0, borderTop: '9px solid transparent', borderBottom: '9px solid transparent', borderLeft: '9px solid #e5e5e5' }}
             />
             <div
               className="absolute top-1/2 right-0 hidden -translate-y-1/2 translate-x-[10px] md:block"
-              style={{
-                width: 0,
-                height: 0,
-                borderTop: '8px solid transparent',
-                borderBottom: '8px solid transparent',
-                borderLeft: '8px solid white',
-              }}
+              style={{ width: 0, height: 0, borderTop: '8px solid transparent', borderBottom: '8px solid transparent', borderLeft: '8px solid white' }}
             />
           </motion.div>
         </div>
       ) : (
-        <div className="col-start-1" />
+        /* Date on the left for right-side cards */
+        <div className="col-start-1 flex justify-end pr-6">
+          <motion.span
+            variants={dateVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="self-center whitespace-nowrap text-sm font-semibold text-tp-ink"
+          >
+            {item.date}
+          </motion.span>
+        </div>
       )}
 
-      {/* ── Center column: icon + date ── */}
-      <div className="col-start-2 flex flex-col items-center gap-2">
+      {/* ── Center column: icon ── */}
+      <div className="col-start-2 flex justify-center">
         <motion.div
           variants={iconVariants}
           initial="hidden"
@@ -150,18 +149,9 @@ function DesktopTimelineCard({ item, side }: { item: TimelineItem; side: 'left' 
         >
           {item.icon}
         </motion.div>
-        <motion.span
-          variants={dateVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="whitespace-nowrap text-[11px] font-semibold text-tp-stone"
-        >
-          {item.date}
-        </motion.span>
       </div>
 
-      {/* ── Right column: card OR spacer ── */}
+      {/* ── Right column ── */}
       {!isLeft ? (
         <div className="col-start-3 flex justify-start">
           <motion.div
@@ -191,28 +181,27 @@ function DesktopTimelineCard({ item, side }: { item: TimelineItem; side: 'left' 
             {/* Arrow */}
             <div
               className="absolute top-1/2 left-0 hidden -translate-y-1/2 -translate-x-[9px] md:block"
-              style={{
-                width: 0,
-                height: 0,
-                borderTop: '9px solid transparent',
-                borderBottom: '9px solid transparent',
-                borderRight: '9px solid #e5e5e5',
-              }}
+              style={{ width: 0, height: 0, borderTop: '9px solid transparent', borderBottom: '9px solid transparent', borderRight: '9px solid #e5e5e5' }}
             />
             <div
               className="absolute top-1/2 left-0 hidden -translate-y-1/2 -translate-x-[10px] md:block"
-              style={{
-                width: 0,
-                height: 0,
-                borderTop: '8px solid transparent',
-                borderBottom: '8px solid transparent',
-                borderRight: '8px solid white',
-              }}
+              style={{ width: 0, height: 0, borderTop: '8px solid transparent', borderBottom: '8px solid transparent', borderRight: '8px solid white' }}
             />
           </motion.div>
         </div>
       ) : (
-        <div className="col-start-3" />
+        /* Date on the right for left-side cards */
+        <div className="col-start-3 flex justify-start pl-6">
+          <motion.span
+            variants={dateVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="self-center whitespace-nowrap text-sm font-semibold text-tp-ink"
+          >
+            {item.date}
+          </motion.span>
+        </div>
       )}
     </div>
   );
@@ -302,7 +291,7 @@ export default function Timeline({ items }: { items: TimelineItem[] }) {
             transition={{ type: 'spring', stiffness: 260, damping: 20 }}
             className="relative z-10 flex h-11 w-11 items-center justify-center rounded-full border-[3px] border-white bg-tp-primary shadow-[0_0_0_3px_var(--color-tp-primary),0_4px_12px_rgba(250,82,15,0.3)]"
           >
-            <FaTrophy className="h-5 w-5 text-white" />
+            <FaStar className="h-5 w-5 text-white" />
           </motion.div>
         </div>
       </div>

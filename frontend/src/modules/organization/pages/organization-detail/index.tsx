@@ -856,8 +856,7 @@ export default function OrganizationDetailPage() {
   return (
     <div className="min-h-screen">
       {/* ═══ HERO HEADER ═══ */}
-      <div className="relative overflow-hidden border-b border-tp-hairline-soft bg-gradient-to-br from-tp-cream via-tp-cream-light to-tp-canvas">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(250,82,15,0.06)_0%,transparent_60%)]" />
+      <div className="relative overflow-hidden border-b border-tp-hairline-soft bg-linear-to-b from-tp-cream via-tp-cream-light to-tp-canvas">
         <div className="relative mx-auto max-w-5xl px-4 py-8 md:px-8 md:py-10">
           <motion.div
             initial="hidden"

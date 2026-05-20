@@ -226,11 +226,6 @@ describe('Pricings API integration', () => {
     it('Return 200 and pricing list with owner requesting own username.', async () => {
       const { user: owner, organizationId } = await createTestUser('USER');
 
-      const ownerLogin = await request(app).post(`${BASE_PATH}/users/login`).send({
-        loginField: owner.username,
-        password: TEST_PASSWORD,
-      });
-
       await createPricingForOrganization({
         organizationId,
         isPrivate: false,
@@ -238,11 +233,12 @@ describe('Pricings API integration', () => {
 
       const response = await request(app)
         .get(`${BASE_PATH}/pricings/${organizationId}`)
-        .set('Authorization', `Bearer ${ownerLogin.body.token}`);
+        .set('Authorization', `Bearer ${owner.token}`);
 
       expect(response.status).toBe(200);
       expect(response.body).toBeDefined();
       expect(Array.isArray(response.body.pricings)).toBe(true);
+      expect(response.body.pricings.length).toBeGreaterThanOrEqual(1);
     });
 
     it('Return 200 and public pricing list with regular user requesting an organization they are not member of.', async () => {

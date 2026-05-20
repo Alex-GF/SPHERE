@@ -263,7 +263,7 @@ export default function OrganizationsListPage() {
           animate="visible"
           variants={fadeInUp}
           transition={{ ...transitionDefault, delay: 0.1 }}
-          className="flex flex-col items-center gap-5 rounded-[var(--radius-xl)] border border-dashed border-tp-hairline-strong bg-tp-surface/50 py-20 dark:border-tp-hairline dark:bg-tp-surface"
+          className="flex flex-col items-center gap-5 rounded-[--radius-xl] border border-dashed border-tp-hairline-strong bg-tp-surface/50 py-20 dark:border-tp-hairline dark:bg-tp-surface"
         >
           <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-tp-cream dark:bg-tp-cream">
             <Iconify

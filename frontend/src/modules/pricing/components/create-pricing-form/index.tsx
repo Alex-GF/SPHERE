@@ -58,17 +58,19 @@ export default function CreatePricingForm() {
           <OrganizationSelector value={selectedOrg} onChange={setSelectedOrg} />
         </div>
 
-        <div className="text-4xl text-slate-400 pb-2">
+        <div className="text-4xl text-slate-400">
           /
         </div>
 
         <div className="relative flex-[2]">
-          <label className="mb-1 block text-sm text-slate-700">Pricing Name</label>
+          <label className="absolute -top-8 left-0 block text-base text-slate-700">
+            Pricing Name
+          </label>
           <input
-            placeholder="New pricing name"
+            placeholder="e.g. GitHub"
             value={pricingName}
             onChange={e => setPricingName(e.target.value)}
-            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-sphere-primary-500"
+            className="w-full rounded-md border border-tp-input-border bg-tp-input-bg px-3 py-2 text-sm text-tp-ink outline-none focus:border-tp-primary focus:ring-1 focus:ring-tp-primary/20 dark:focus:ring-tp-primary/20"
           />
         </div>
       </div>

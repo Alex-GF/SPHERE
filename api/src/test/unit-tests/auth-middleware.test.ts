@@ -15,10 +15,35 @@ import { authorizationMiddleware } from '../../main/middlewares/AuthorizationMid
 
 /** Combined middleware that runs authentication then authorization (like the old single middleware) */
 const authenticateTokenMiddleware = async (req: any, res: any, next: any) => {
-  authenticationMiddleware(req, res, (err?: any) => {
-    if (err) return next(err);
-    authorizationMiddleware(req, res, next);
+  await new Promise<void>((resolve, reject) => {
+    const originalJson = res.json;
+    let settled = false;
+
+    res.json = function (body: any) {
+      if (!settled) {
+        settled = true;
+        res.json = originalJson;
+      }
+      const result = originalJson.call(res, body);
+      resolve();
+      return result;
+    };
+
+    authenticationMiddleware(req, res, (err?: any) => {
+      if (settled) return;
+      settled = true;
+      res.json = originalJson;
+      if (err) return reject(err);
+      resolve();
+    });
+  }).catch((err) => {
+    next(err);
+    return;
   });
+
+  if (res.headersSent) return;
+
+  await authorizationMiddleware(req, res, next);
 };
 import {
   createMockRequest,
@@ -52,6 +77,9 @@ vi.mock('../../main/config/container', () => ({
       }
       if (key === 'organizationService') {
         return mockContainer.organizationService;
+      }
+      if (key === 'permissionService') {
+        return mockContainer.permissionService;
       }
       return undefined;
     }),
@@ -228,8 +256,10 @@ describe('Auth Middleware - Real Execution Tests', () => {
     });
 
     it('should reject revoked API key - CALLS MIDDLEWARE', async () => {
-      const user = createMockUserWithRevokedApiKey();
-      const apiKey = user.apiKeys[0].key;
+      const user: any = createMockUserWithRevokedApiKey();
+      user.apiKey = user.apiKeys[0];
+      delete user.apiKeys;
+      const apiKey = user.apiKey.key;
       mockUserRepository.findByApiKey.mockResolvedValue(user);
 
       mockReq = createMockRequest({
@@ -244,8 +274,10 @@ describe('Auth Middleware - Real Execution Tests', () => {
     });
 
     it('should reject expired API key - CALLS MIDDLEWARE', async () => {
-      const user = createMockUserWithExpiredApiKey();
-      const apiKey = user.apiKeys[0].key;
+      const user: any = createMockUserWithExpiredApiKey();
+      user.apiKey = user.apiKeys[0];
+      delete user.apiKeys;
+      const apiKey = user.apiKey.key;
       mockUserRepository.findByApiKey.mockResolvedValue(user);
 
       mockReq = createMockRequest({

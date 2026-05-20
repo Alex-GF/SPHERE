@@ -807,7 +807,7 @@ describe('Organizations API integration', () => {
       expect(memberEntry).toBeDefined();
       expect(memberEntry.user.username).toBe(member.username);
       expect(memberEntry.user.email).toBe(member.email);
-      expect(memberEntry.user.avatar).toBeDefined();
+      expect(memberEntry.user.settings.avatar).toBeDefined();
     });
 
     it('returns 200 when MEMBER (org role) requests', async () => {

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import VisibilityOptions from '../../../pricing/components/visibility-options';
-import CollectionNameInput from '../collection-name-input';
 import CollectionDescriptionInput from '../collection-description-input';
 import PricingSelector from '../pricings-selector';
 import OrganizationSelector from '../../../pricing/components/organization-selector';
@@ -121,12 +120,20 @@ export default function CreateCollectionForm({setShowLoading}: CreateCollectionF
           <OrganizationSelector value={selectedOrg} onChange={setSelectedOrg} />
         </div>
 
-        <div className="text-4xl text-slate-400 pb-2">
+        <div className="text-4xl text-slate-400">
           /
         </div>
 
         <div className="relative flex-[2]">
-          <CollectionNameInput value={collectionName} onChange={setCollectionName} />
+          <label className="absolute -top-8 left-0 block text-base text-slate-700">
+            Collection Name
+          </label>
+          <input
+            placeholder="e.g. My Collection"
+            value={collectionName}
+            onChange={e => setCollectionName(e.target.value)}
+            className="w-full rounded-md border border-tp-input-border bg-tp-input-bg px-3 py-2 text-sm text-tp-ink outline-none focus:border-tp-primary focus:ring-1 focus:ring-tp-primary/20 dark:focus:ring-tp-primary/20"
+          />
         </div>
       </div>
 

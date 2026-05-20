@@ -60,13 +60,62 @@ describe('Entity Permissions API integration', () => {
       expect(response.status).toBe(201);
       expect(response.body.permissions).toEqual({
         GET: true,
+        CREATE: false,
+        PUT: false,
+        DELETE: false,
+      });
+    });
+    
+    it('should allow OWNER to set organization permissions on pricings', async () => {
+      const { user: owner, organizationId } = await createAndLoginUser('USER');
+      const { user: member } = await createAndLoginUser('USER');
+      await createMembership(member.id, organizationId, 'MEMBER');
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/orgs/${organizationId}/permissions`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({
+          userId: member.id,
+          entityType: 'pricing',
+          entityId: null,
+          permissions: { CREATE: true },
+        });
+
+      expect(response.status).toBe(201);
+      expect(response.body.permissions).toEqual({
+        GET: false,
+        CREATE: true,
+        PUT: false,
+        DELETE: false,
+      });
+    });
+    
+    it('should allow OWNER to set organization permissions on collections', async () => {
+      const { user: owner, organizationId } = await createAndLoginUser('USER');
+      const { user: member } = await createAndLoginUser('USER');
+      await createMembership(member.id, organizationId, 'MEMBER');
+
+      const response = await request(app)
+        .post(`${BASE_PATH}/orgs/${organizationId}/permissions`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({
+          userId: member.id,
+          entityType: 'collection',
+          entityId: null,
+          permissions: { CREATE: true },
+        });
+
+      expect(response.status).toBe(201);
+      expect(response.body.permissions).toEqual({
+        GET: false,
+        CREATE: true,
         PUT: false,
         DELETE: false,
       });
     });
 
     it('should deny MEMBER from setting entity permissions', async () => {
-      const { user: owner, organizationId } = await createAndLoginUser('USER');
+      const { organizationId } = await createAndLoginUser('USER');
       const { user: member1 } = await createAndLoginUser('USER');
       const { user: member2 } = await createAndLoginUser('USER');
       await createMembership(member1.id, organizationId, 'MEMBER');
@@ -368,6 +417,7 @@ describe('Entity Permissions API integration', () => {
       expect(response.status).toBe(200);
       expect(response.body).toEqual({
         GET: true,
+        CREATE: true,
         PUT: true,
         DELETE: true,
       });
@@ -391,6 +441,7 @@ describe('Entity Permissions API integration', () => {
       expect(response.status).toBe(200);
       expect(response.body).toEqual({
         GET: true,
+        CREATE: true,
         PUT: true,
         DELETE: true,
       });
@@ -414,6 +465,7 @@ describe('Entity Permissions API integration', () => {
       expect(response.status).toBe(200);
       expect(response.body).toEqual({
         GET: false,
+        CREATE: false,
         PUT: false,
         DELETE: false,
       });
@@ -429,7 +481,7 @@ describe('Entity Permissions API integration', () => {
       });
 
       await createMembership(requester.id, organizationId, 'MEMBER');
-      await createEntityPermission(requester.id, organizationId, 'pricing', pricing.response.body.id, { GET: true, PUT: false, DELETE: false });
+      await createEntityPermission(requester.id, organizationId, 'pricing', pricing.response.body.id, { GET: true, CREATE: false, PUT: false, DELETE: false });
 
       const response = await request(app)
         .get(`${BASE_PATH}/pricings/${organizationId}/${pricing.serviceName}/permissions`)
@@ -438,6 +490,7 @@ describe('Entity Permissions API integration', () => {
       expect(response.status).toBe(200);
       expect(response.body).toEqual({
         GET: true,
+        CREATE: false,
         PUT: false,
         DELETE: false,
       });

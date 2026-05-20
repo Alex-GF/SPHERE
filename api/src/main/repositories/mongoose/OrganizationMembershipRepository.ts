@@ -40,7 +40,15 @@ class OrganizationMembershipRepository extends RepositoryBase {
             _organizationId: 1,
             role: 1,
             joinedAt: 1,
-            organization: { id: 1, name: 1, displayName: 1, avatar: 1, isPersonal: 1, _parentId: 1, ancestors: 1 },
+            organization: {
+              id: 1,
+              name: 1,
+              displayName: 1,
+              avatar: 1,
+              isPersonal: 1,
+              _parentId: 1,
+              ancestors: 1,
+            },
           },
         },
       ]);
@@ -76,7 +84,15 @@ class OrganizationMembershipRepository extends RepositoryBase {
             _organizationId: 1,
             role: 1,
             joinedAt: 1,
-            organization: { id: 1, name: 1, displayName: 1, avatar: 1, isPersonal: 1, _parentId: 1, ancestors: 1 },
+            organization: {
+              id: 1,
+              name: 1,
+              displayName: 1,
+              avatar: 1,
+              isPersonal: 1,
+              _parentId: 1,
+              ancestors: 1,
+            },
           },
         },
       ];
@@ -85,13 +101,8 @@ class OrganizationMembershipRepository extends RepositoryBase {
         ...basePipeline,
         {
           $facet: {
-            items: [
-              { $skip: pagination.offset },
-              { $limit: pagination.limit },
-            ],
-            total: [
-              { $count: 'count' },
-            ],
+            items: [{ $skip: pagination.offset }, { $limit: pagination.limit }],
+            total: [{ $count: 'count' }],
           },
         },
       ]);
@@ -138,7 +149,14 @@ class OrganizationMembershipRepository extends RepositoryBase {
             _organizationId: 1,
             role: 1,
             joinedAt: 1,
-            user: { id: 1, username: 1, email: 1, avatar: 1 },
+            user: {
+              id: 1,
+              username: 1,
+              email: 1,
+              settings: {
+                avatar: 1,
+              },
+            },
           },
         },
       ]);
@@ -175,10 +193,7 @@ class OrganizationMembershipRepository extends RepositoryBase {
               $in: [
                 '$_organizationId',
                 {
-                  $concatArrays: [
-                    [targetOrgObjectId],
-                    { $ifNull: ['$targetOrg.ancestors', []] },
-                  ],
+                  $concatArrays: [[targetOrgObjectId], { $ifNull: ['$targetOrg.ancestors', []] }],
                 },
               ],
             },
@@ -202,10 +217,7 @@ class OrganizationMembershipRepository extends RepositoryBase {
         {
           $match: {
             $expr: {
-              $or: [
-                { $eq: ['$isDirect', true] },
-                { $in: ['$role', ['OWNER', 'ADMIN']] },
-              ],
+              $or: [{ $eq: ['$isDirect', true] }, { $in: ['$role', ['OWNER', 'ADMIN']] }],
             },
           },
         },
@@ -287,7 +299,9 @@ class OrganizationMembershipRepository extends RepositoryBase {
     }).lean();
   }
 
-  async createBulk(memberships: Array<{ _userId: string; _organizationId: string; role: OrgRole; joinedAt: Date }>) {
+  async createBulk(
+    memberships: Array<{ _userId: string; _organizationId: string; role: OrgRole; joinedAt: Date }>
+  ) {
     const docs = memberships.map(m => ({
       _userId: new mongoose.Types.ObjectId(m._userId),
       _organizationId: new mongoose.Types.ObjectId(m._organizationId),
