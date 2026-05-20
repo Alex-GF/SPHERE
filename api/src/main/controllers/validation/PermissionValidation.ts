@@ -17,8 +17,8 @@ const setPermission = [
     .optional({ values: 'null' })
     .isString()
     .withMessage('The entityId field must be a string')
-    .matches(/^[a-f0-9]{24}$/)
-    .withMessage('The entityId must be a valid MongoDB ObjectId'),
+    .notEmpty()
+    .withMessage('The entityId must not be an empty string'),
   check('permissions')
     .exists()
     .withMessage('A permissions object must be provided')

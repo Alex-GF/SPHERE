@@ -251,7 +251,7 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
     const rows = buildRowsForFeatures(featureBucket);
 
     return (
-      <table className="w-full min-w-[600px]">
+      <table className="w-full min-w-150">
         <thead>
           <tr>
             <th className="px-4 py-2 text-left" />
@@ -263,7 +263,7 @@ export function FeatureTableV2({ plans, features, usageLimits, addOns, currency 
               return (
                 <th key={planKey} className="align-top">
                   <div
-                    className="flex h-[124px] flex-col items-center justify-center text-center text-tp-on-primary shadow-sm"
+                    className="flex h-31 flex-col items-center justify-center text-center text-tp-on-primary shadow-sm"
                     style={{ background: `linear-gradient(135deg, ${a}, ${b})` }}
                   >
                     <p className="text-xl font-bold tracking-wide sm:text-2xl">{String(planName).toUpperCase()}</p>

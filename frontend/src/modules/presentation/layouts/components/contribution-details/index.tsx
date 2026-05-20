@@ -15,7 +15,7 @@ export default function ContributionDetailsModal({
     isOpen ? (
       <div className="fixed inset-0 z-50 flex cursor-pointer items-center justify-center bg-black/35 p-4" onClick={handleClose} role="presentation">
         <div
-          className="flex h-[90dvh] w-[90%] max-w-[1200px] flex-col overflow-hidden rounded-lg bg-white p-4 shadow-2xl"
+          className="flex h-[90dvh] w-[90%] max-w-300 flex-col overflow-hidden rounded-lg bg-white p-4 shadow-2xl"
           onClick={(event) => event.stopPropagation()}
           role="dialog"
           aria-modal="true"
@@ -30,7 +30,7 @@ export default function ContributionDetailsModal({
               {/* Content section with two columns */}
               <div className="flex h-full flex-col overflow-hidden md:flex-row">
                 {/* Description Column */}
-                <div className="flex-[7] overflow-y-auto pr-0 text-justify md:pr-2">
+                <div className="flex-7 overflow-y-auto pr-0 text-justify md:pr-2">
                   <ReactMarkdown
                     remarkPlugins={[remarkGfm]}
                     components={{
@@ -57,10 +57,10 @@ export default function ContributionDetailsModal({
                 </div>
 
                 {/* Divider */}
-                <div className="mx-2 hidden w-[2px] bg-slate-300 md:block" />
+                <div className="mx-2 hidden w-0.5 bg-slate-300 md:block" />
 
                 {/* Supervisor and Tags Column */}
-                <div className="flex flex-[3] flex-col gap-2 overflow-y-auto">
+                <div className="flex flex-3 flex-col gap-2 overflow-y-auto">
                   <p className="font-bold">
                     Supervisor/s:
                   </p>

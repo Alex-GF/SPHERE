@@ -92,7 +92,7 @@ function DesktopTimelineCard({ item, side }: { item: TimelineItem; side: 'left' 
             initial="hiddenLeft"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
-            className="relative w-full max-w-[500px]"
+            className="relative w-full max-w-125"
           >
             {item.awards && item.awards.length > 0 && <AwardBadge />}
             <div className="rounded-2xl border border-tp-hairline-strong bg-white p-5 shadow-elevation-2 transition-all duration-300 hover:border-tp-primary/40 hover:shadow-elevation-3">
@@ -113,11 +113,11 @@ function DesktopTimelineCard({ item, side }: { item: TimelineItem; side: 'left' 
             </div>
             {/* Arrow */}
             <div
-              className="absolute top-1/2 right-0 hidden -translate-y-1/2 translate-x-[9px] md:block"
+              className="absolute top-1/2 right-0 hidden -translate-y-1/2 translate-x-2.25 md:block"
               style={{ width: 0, height: 0, borderTop: '9px solid transparent', borderBottom: '9px solid transparent', borderLeft: '9px solid #e5e5e5' }}
             />
             <div
-              className="absolute top-1/2 right-0 hidden -translate-y-1/2 translate-x-[10px] md:block"
+              className="absolute top-1/2 right-0 hidden -translate-y-1/2 translate-x-2.5 md:block"
               style={{ width: 0, height: 0, borderTop: '8px solid transparent', borderBottom: '8px solid transparent', borderLeft: '8px solid white' }}
             />
           </motion.div>
@@ -159,7 +159,7 @@ function DesktopTimelineCard({ item, side }: { item: TimelineItem; side: 'left' 
             initial="hiddenRight"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
-            className="relative w-full max-w-[500px]"
+            className="relative w-full max-w-125"
           >
             {item.awards && item.awards.length > 0 && <AwardBadge />}
             <div className="rounded-2xl border border-tp-hairline-strong bg-white p-5 shadow-elevation-2 transition-all duration-300 hover:border-tp-primary/40 hover:shadow-elevation-3">
@@ -180,11 +180,11 @@ function DesktopTimelineCard({ item, side }: { item: TimelineItem; side: 'left' 
             </div>
             {/* Arrow */}
             <div
-              className="absolute top-1/2 left-0 hidden -translate-y-1/2 -translate-x-[9px] md:block"
+              className="absolute top-1/2 left-0 hidden -translate-y-1/2 -translate-x-2.25 md:block"
               style={{ width: 0, height: 0, borderTop: '9px solid transparent', borderBottom: '9px solid transparent', borderRight: '9px solid #e5e5e5' }}
             />
             <div
-              className="absolute top-1/2 left-0 hidden -translate-y-1/2 -translate-x-[10px] md:block"
+              className="absolute top-1/2 left-0 hidden -translate-y-1/2 -translate-x-2.5 md:block"
               style={{ width: 0, height: 0, borderTop: '8px solid transparent', borderBottom: '8px solid transparent', borderRight: '8px solid white' }}
             />
           </motion.div>
@@ -274,7 +274,7 @@ export default function Timeline({ items }: { items: TimelineItem[] }) {
       <div className="hidden md:block">
         {/* Vertical line — behind icons */}
         <div className="absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2 bg-tp-hairline-strong" />
-        <div className="absolute left-1/2 top-0 bottom-0 w-[3px] -translate-x-1/2 rounded-full bg-gradient-to-b from-tp-primary via-tp-primary to-tp-primary/20" />
+        <div className="absolute left-1/2 top-0 bottom-0 w-0.75 -translate-x-1/2 rounded-full bg-linear-to-b from-tp-primary via-tp-primary to-tp-primary/20" />
 
         <div className="space-y-14">
           {sorted.map((item, index) => (
@@ -299,7 +299,7 @@ export default function Timeline({ items }: { items: TimelineItem[] }) {
       {/* ═══ Mobile ═══ */}
       <div className="md:hidden">
         {/* Vertical line */}
-        <div className="absolute left-[19px] top-0 bottom-0 w-[3px] rounded-full bg-gradient-to-b from-tp-primary via-tp-primary to-tp-primary/20" />
+        <div className="absolute left-4.75 top-0 bottom-0 w-0.75 rounded-full bg-linear-to-b from-tp-primary via-tp-primary to-tp-primary/20" />
 
         <div className="space-y-6">
           {sorted.map((item, index) => (
@@ -308,7 +308,7 @@ export default function Timeline({ items }: { items: TimelineItem[] }) {
         </div>
 
         {/* End cap */}
-        <div className="relative mt-6 flex justify-start pl-[6px]">
+        <div className="relative mt-6 flex justify-start pl-1.5">
           <motion.div
             initial={{ scale: 0, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}

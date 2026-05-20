@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import Iconify from '../../../core/components/iconify';
+import { FaFileInvoiceDollar } from 'react-icons/fa';
 import { useRouter } from '../../../core/hooks/useRouter';
 import { useAuth } from '../../../auth/hooks/useAuth';
 import customConfirm from '../../../core/utils/custom-confirm';
@@ -478,12 +479,16 @@ export default function OrganizationDetailPage() {
                   value: org.subOrganizations?.length ?? 0,
                   icon: 'mdi:graph-outline',
                 },
-                { label: 'Pricings', value: pricingsTotal, icon: 'mdi:tag-outline' },
+                { label: 'Pricings', value: pricingsTotal, icon: 'mdi:tag-outline', iconComponent: FaFileInvoiceDollar },
                 { label: 'Collections', value: collectionsTotal, icon: 'mdi:folder-outline' },
                 { label: 'Invitations', value: invitations.length, icon: 'mdi:link-variant' },
               ].map(stat => (
                 <div key={stat.label} className="flex items-center gap-1.5">
-                  <Iconify icon={stat.icon} width={14} className="text-tp-steel" />
+                  {stat.iconComponent ? (
+                    <stat.iconComponent size={14} className="text-tp-steel" />
+                  ) : (
+                    <Iconify icon={stat.icon} width={14} className="text-tp-steel" />
+                  )}
                   <span className="text-sm font-semibold text-tp-ink">{stat.value}</span>
                   <span className="text-xs text-tp-steel">{stat.label}</span>
                 </div>
@@ -550,7 +555,11 @@ export default function OrganizationDetailPage() {
                       : 'text-tp-steel hover:bg-tp-surface hover:text-tp-ink'
                   }`}
                 >
-                  <Iconify icon={meta.icon} width={16} />
+                  {meta.iconComponent ? (
+                    <meta.iconComponent size={16} />
+                  ) : (
+                    <Iconify icon={meta.icon} width={16} />
+                  )}
                   {meta.label}
                 </button>
               );

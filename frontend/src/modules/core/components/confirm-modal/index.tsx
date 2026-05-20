@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { AlertTriangle } from 'lucide-react';
+import { MdWarning } from 'react-icons/md';
 import { transitionFast } from '../../utils/motion-variants';
 
 interface ConfirmModalProps {
@@ -42,7 +42,7 @@ const ConfirmModal = ({
       >
         {danger && (
           <div className="mb-3 flex items-center gap-2">
-            <AlertTriangle className="h-5 w-5 text-tp-severity-error" />
+            <MdWarning className="h-5 w-5 text-tp-severity-error" />
             <span className="text-xs font-semibold uppercase tracking-wide text-tp-severity-error">
               WARNING
             </span>

@@ -1778,7 +1778,7 @@ paths:
         - `id`: The membership record ID
         - `role`: The member's role (`OWNER`, `ADMIN`, or `MEMBER`)
         - `joinedAt`: When the user joined the organization
-        - `user`: Nested object with `id`, `username`, `email`, and `avatar` of the member
+        - `user`: Nested object with `id`, `username`, `email`, `avatar`, `avatarBgColor`, and `avatarFgColor` of the member
 
         Returns an empty array if the organization has no members (should not happen in
         practice, as the creator is always added as OWNER).
@@ -4714,6 +4714,14 @@ components:
               nullable: true
               description: URL to the user's avatar image
               example: "https://sphere.score.us.es/static/avatars/users/default-avatar.png"
+            avatarBgColor:
+              type: string
+              description: Background color for the avatar (hex color code). Used for initials/SVG avatars.
+              example: "#fa520f"
+            avatarFgColor:
+              type: string
+              description: Foreground/text color for the avatar (hex color code). Used for initials/SVG avatars.
+              example: "#ffffff"
 
     OrganizationInvitation:
       type: object

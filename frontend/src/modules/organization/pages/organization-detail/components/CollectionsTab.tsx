@@ -41,7 +41,7 @@ export default function CollectionsTab({ collections, collectionsTotal, collecti
           </div>
         </div>
 
-        <div className="min-h-[420px] p-4">
+        <div className="min-h-105 p-4">
           {collections.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 text-tp-ink">
               <Iconify icon="mdi:folder-off-outline" width={32} />

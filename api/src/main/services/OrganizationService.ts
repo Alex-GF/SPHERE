@@ -261,6 +261,12 @@ class OrganizationService {
       return members.filter((m: any) => m._userId !== excludeUserId);
     }
 
+    members.forEach((m: any) => {
+      if (m.user?.avatar) {
+        processFileUris(m.user, ['avatar']);
+      }
+    });
+
     return members;
   }
 

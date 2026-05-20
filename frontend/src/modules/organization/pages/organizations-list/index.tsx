@@ -60,7 +60,7 @@ function OrgTreeNode({
       <motion.div variants={fadeInUp} initial="hidden" animate="visible">
         <Link
           to={`/orgs/${org.id}`}
-          className="group flex cursor-pointer items-center gap-4 rounded-[var(--radius-lg)] border border-tp-hairline-soft bg-tp-canvas px-5 py-4 transition-all hover:border-tp-hairline hover:shadow-[var(--shadow-elevation-2)] dark:border-tp-hairline dark:bg-tp-surface dark:hover:border-tp-hairline-strong"
+          className="group flex cursor-pointer items-center gap-4 rounded-lg border border-tp-hairline-soft bg-tp-canvas px-5 py-4 transition-all hover:border-tp-hairline hover:shadow-(--shadow-elevation-2) dark:border-tp-hairline dark:bg-tp-surface dark:hover:border-tp-hairline-strong"
           style={{ marginLeft: level > 0 ? `${level * 24 + 12}px` : undefined }}
         >
           {hasChildren ? (
@@ -239,7 +239,7 @@ export default function OrganizationsListPage() {
               placeholder="Search organizations..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="h-11 w-full rounded-[var(--radius-md)] border border-tp-hairline-strong bg-tp-canvas py-2.5 pl-10 pr-4 text-sm text-tp-ink placeholder:text-tp-muted focus:border-tp-primary focus:outline-none focus:ring-2 focus:ring-tp-primary/15 dark:border-tp-hairline dark:bg-tp-surface dark:text-tp-ink dark:placeholder:text-tp-stone dark:focus:border-tp-primary dark:focus:ring-tp-primary/20"
+              className="h-11 w-full rounded-md border border-tp-hairline-strong bg-tp-canvas py-2.5 pl-10 pr-4 text-sm text-tp-ink placeholder:text-tp-muted focus:border-tp-primary focus:outline-none focus:ring-2 focus:ring-tp-primary/15 dark:border-tp-hairline dark:bg-tp-surface dark:text-tp-ink dark:placeholder:text-tp-stone dark:focus:border-tp-primary dark:focus:ring-tp-primary/20"
             />
             {search && (
               <button

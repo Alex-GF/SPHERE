@@ -142,6 +142,12 @@ class OrganizationMembershipRepository extends RepositoryBase {
           },
         },
         {
+          $addFields: {
+            'user.avatarBgColor': { $ifNull: ['$user.settings.avatarBgColor', '#fa520f'] },
+            'user.avatarFgColor': { $ifNull: ['$user.settings.avatarFgColor', '#ffffff'] },
+          },
+        },
+        {
           $project: {
             _id: 0,
             id: 1,
@@ -153,9 +159,9 @@ class OrganizationMembershipRepository extends RepositoryBase {
               id: 1,
               username: 1,
               email: 1,
-              settings: {
-                avatar: 1,
-              },
+              avatar: '$user.settings.avatar',
+              avatarBgColor: 1,
+              avatarFgColor: 1,
             },
           },
         },

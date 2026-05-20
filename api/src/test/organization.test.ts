@@ -807,7 +807,25 @@ describe('Organizations API integration', () => {
       expect(memberEntry).toBeDefined();
       expect(memberEntry.user.username).toBe(member.username);
       expect(memberEntry.user.email).toBe(member.email);
-      expect(memberEntry.user.settings.avatar).toBeDefined();
+      expect(memberEntry.user.avatar).toBeDefined();
+      expect(typeof memberEntry.user.avatar).toBe('string');
+      expect(memberEntry.user).not.toHaveProperty('settings');
+    });
+
+    it('returns member avatar colors (avatarBgColor, avatarFgColor)', async () => {
+      const { user: owner, organizationId } = await createAndLoginUser('USER');
+      const { user: member } = await createAndLoginUser('USER');
+      await createMembership(member.id, organizationId, 'MEMBER');
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/orgs/${organizationId}/members`)
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      expect(response.status).toBe(200);
+      const memberEntry = response.body.find((m: any) => m.user?.id === member.id);
+      expect(memberEntry).toBeDefined();
+      expect(memberEntry.user).toHaveProperty('avatarBgColor');
+      expect(memberEntry.user).toHaveProperty('avatarFgColor');
     });
 
     it('returns 200 when MEMBER (org role) requests', async () => {

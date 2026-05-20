@@ -153,7 +153,7 @@ export default function OrganizationSelector({ value, onChange }: OrganizationSe
               className="w-full rounded-md border border-slate-200 px-3 py-1.5 text-sm outline-none focus:border-tp-primary"
             />
           </div>
-          <div className="max-h-[200px] overflow-y-auto">
+          <div className="max-h-50 overflow-y-auto">
             {isLoading ? (
               <div className="px-3 py-4 text-center text-sm text-slate-400">Loading...</div>
             ) : filtered.length === 0 ? (

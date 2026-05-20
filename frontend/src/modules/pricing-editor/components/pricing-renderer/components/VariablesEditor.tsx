@@ -491,7 +491,7 @@ export default function VariablesEditor({ open, onClose, variables, onApply }: P
                                 </div>
                               </div>
 
-                              <div className="max-w-[180px] rounded-lg border border-tp-hairline bg-tp-surface px-2.5 py-1.5 text-right text-xs font-semibold text-tp-charcoal">
+                              <div className="max-w-45 rounded-lg border border-tp-hairline bg-tp-surface px-2.5 py-1.5 text-right text-xs font-semibold text-tp-charcoal">
                                 {kind === 'boolean'
                                   ? value === true
                                     ? 'True'
@@ -511,7 +511,7 @@ export default function VariablesEditor({ open, onClose, variables, onApply }: P
                                 whileTap={{ scale: 0.98 }}
                                 onClick={() => setLocal(s => ({ ...s, [k]: value === true ? false : true }))}
                                 aria-pressed={value === true}
-                                className={`group relative flex w-full max-w-[320px] cursor-pointer items-center justify-between overflow-hidden rounded-xl border p-2.5 text-left shadow-elevation-1 transition ${
+                                className={`group relative flex w-full max-w-80 cursor-pointer items-center justify-between overflow-hidden rounded-xl border p-2.5 text-left shadow-elevation-1 transition ${
                                   value === true
                                     ? 'border-tp-primary bg-tp-primary text-tp-on-primary'
                                     : 'border-tp-hairline bg-tp-canvas text-tp-charcoal hover:border-tp-primary/40 hover:bg-tp-primary/5'

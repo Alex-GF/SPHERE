@@ -134,7 +134,7 @@ export default function PricingListPage() {
   return (
     <>
       <Helmet><title>SPHERE - Pricings</title></Helmet>
-      <div className="mx-auto max-w-[1280px] px-4 py-6 md:px-8">
+      <div className="mx-auto max-w-7xl px-4 py-6 md:px-8">
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={transitionDefault} className="mb-6">
           <h1 className="font-display text-2xl font-normal text-tp-ink">Pricings</h1>
           <p className="mt-1 text-sm text-tp-steel">Browse all public pricing configurations in the repository.</p>
@@ -219,7 +219,7 @@ export default function PricingListPage() {
         <div className="mb-4 text-xs text-tp-steel">{isLoading ? 'Loading...' : `${total} ${total === 1 ? 'pricing' : 'pricings'} found`}</div>
 
         {/* Grid */}
-        <div className="min-h-[680px]">
+        <div className="min-h-170">
           {isLoading ? (
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: PER_PAGE }).map((_, i) => <Skeleton key={i} height={128} />)}

@@ -15,14 +15,14 @@ export default function WelcomeScreen({ presets, onSelect }: Props) {
         <h2 className="font-display text-3xl font-normal text-tp-ink">
           H.A.R.V.E.Y.
         </h2>
-        <p className="mt-2 max-w-[28rem] text-sm text-tp-steel">
+        <p className="mt-2 max-w-112 text-sm text-tp-steel">
           Holistic Agent for Reasoning on Value and Economic analYsis. Ask about optimal
           subscriptions and pricing insights.
         </p>
       </div>
 
       {presets.length > 0 && (
-        <div className="grid w-full max-w-[640px] gap-3 sm:grid-cols-2">
+        <div className="grid w-full max-w-160 gap-3 sm:grid-cols-2">
           {presets.map((preset, i) => (
             <button
               key={preset.id}

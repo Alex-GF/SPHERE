@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import RepositoryBase from '../RepositoryBase';
 import EntityPermissionMongoose from './models/EntityPermissionMongoose';
+import PricingMongoose from './models/PricingMongoose';
+import PricingCollectionMongoose from './models/PricingCollectionMongoose';
 import { EntityType, EntityPermissions, LeanEntityPermission } from '../../types/models/EntityPermission';
 
 class EntityPermissionRepository extends RepositoryBase {
@@ -219,6 +221,24 @@ class EntityPermissionRepository extends RepositoryBase {
     return results as LeanEntityPermission[];
   }
 
+  private async resolveEntityId(
+    entityType: EntityType,
+    entityId: string,
+    organizationId: string
+  ): Promise<mongoose.Types.ObjectId | null> {
+    if (mongoose.Types.ObjectId.isValid(entityId)) {
+      return new mongoose.Types.ObjectId(entityId);
+    }
+    if (entityType === 'pricing') {
+      const pricing = await PricingMongoose.findOne({ name: entityId, _organizationId: new mongoose.Types.ObjectId(organizationId) }).select('_id');
+      if (!pricing) throw new Error(`Pricing "${entityId}" not found in this organization`);
+      return pricing._id;
+    }
+    const collection = await PricingCollectionMongoose.findOne({ name: entityId, _organizationId: new mongoose.Types.ObjectId(organizationId) }).select('_id');
+    if (!collection) throw new Error(`Collection "${entityId}" not found in this organization`);
+    return collection._id;
+  }
+
   async findOrCreate(
     userId: string,
     organizationId: string,
@@ -234,7 +254,7 @@ class EntityPermissionRepository extends RepositoryBase {
     };
 
     if (entityId) {
-      match.entityId = new mongoose.Types.ObjectId(entityId);
+      match.entityId = await this.resolveEntityId(entityType, entityId, organizationId);
     } else {
       match.entityId = null;
     }

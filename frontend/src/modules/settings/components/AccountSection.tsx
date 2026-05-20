@@ -56,7 +56,7 @@ export default function AccountSection({ settings, onUpdate, onDirtyChange }: Pr
         </p>
       </div>
 
-      <div className="rounded-[12px] border border-tp-hairline-soft bg-tp-canvas p-6">
+      <div className="rounded-lg border border-tp-hairline-soft bg-tp-canvas p-6">
         <div className="grid gap-4 sm:grid-cols-2">
           <Field label="First Name" value={firstName} onChange={setFirstName} placeholder="Your first name" />
           <Field label="Last Name" value={lastName} onChange={setLastName} placeholder="Your last name" />
@@ -71,7 +71,7 @@ export default function AccountSection({ settings, onUpdate, onDirtyChange }: Pr
             type="button"
             onClick={handleSave}
             disabled={!hasChanges || saving}
-            className="flex cursor-pointer items-center gap-2 rounded-[8px] bg-tp-primary px-4 py-2.5 text-sm font-medium text-tp-on-primary transition-all disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex cursor-pointer items-center gap-2 rounded-md bg-tp-primary px-4 py-2.5 text-sm font-medium text-tp-on-primary transition-all disabled:cursor-not-allowed disabled:opacity-40"
           >
             {saving ? (
               <FiLoader className="h-4 w-4 animate-spin" />
@@ -116,7 +116,7 @@ function Field({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="h-11 w-full rounded-[8px] border border-tp-input-border bg-tp-input-bg px-3.5 text-sm text-tp-ink outline-none transition-colors focus:border-tp-primary focus:ring-1 focus:ring-tp-primary/20 dark:focus:ring-tp-primary/20"
+        className="h-11 w-full rounded-md border border-tp-input-border bg-tp-input-bg px-3.5 text-sm text-tp-ink outline-none transition-colors focus:border-tp-primary focus:ring-1 focus:ring-tp-primary/20 dark:focus:ring-tp-primary/20"
       />
     </div>
   );

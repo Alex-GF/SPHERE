@@ -167,7 +167,7 @@ export default function UserSearchInput({
           onKeyDown={handleKeyDown}
           placeholder={selectedUsers.length === 0 ? placeholder : ''}
           disabled={selectedUsers.length >= maxUsers}
-          className="min-w-[120px] flex-1 bg-transparent text-sm text-tp-ink outline-none placeholder:text-tp-muted"
+          className="min-w-hero flex-1 bg-transparent text-sm text-tp-ink outline-none placeholder:text-tp-muted"
         />
 
         {isSearching && (

@@ -137,6 +137,16 @@ export default function DashboardPage() {
       ),
     },
     {
+      label: 'Browse Collections',
+      description: 'Explore all public collections in the SPHERE',
+      to: '/collections',
+      icon: (
+        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+        </svg>
+      ),
+    },
+    {
       label: 'Pricing Editor',
       description: 'Create and edit pricings with live preview',
       to: '/editor',
@@ -156,20 +166,10 @@ export default function DashboardPage() {
         </svg>
       ),
     },
-    {
-      label: 'New Organization',
-      description: 'Create a new organization to collaborate',
-      to: '/orgs/new',
-      icon: (
-        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-        </svg>
-      ),
-    },
   ];
 
   return (
-    <div className="mx-auto max-w-[1280px] px-4 py-8 md:px-8">
+    <div className="mx-auto max-w-7xl px-4 py-8 md:px-8">
       {/* Welcome */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}

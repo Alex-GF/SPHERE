@@ -168,7 +168,7 @@ export default function FloatingMorphHeader({ navItems, onNavigate }: Props) {
 
                 {item.children ? (
                   <div
-                    className={`absolute left-0 top-full min-w-[220px] pt-2 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${openDesktopDropdown === item.label ? 'pointer-events-auto translate-y-0 opacity-100' : 'pointer-events-none -translate-y-2 opacity-0'}`}
+                    className={`absolute left-0 top-full min-w-55 pt-2 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${openDesktopDropdown === item.label ? 'pointer-events-auto translate-y-0 opacity-100' : 'pointer-events-none -translate-y-2 opacity-0'}`}
                   >
                     <div className="rounded-2xl border border-black/10 bg-white p-2 shadow-[0_14px_34px_rgba(15,23,42,0.12)]">
                       {item.children.map(child => (
@@ -202,7 +202,7 @@ export default function FloatingMorphHeader({ navItems, onNavigate }: Props) {
                 </button>
 
                 <div
-                  className={`absolute right-0 top-full mt-2 w-[220px] rounded-2xl border border-black/10 bg-white p-2 shadow-[0_14px_34px_rgba(15,23,42,0.12)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${isUserMenuOpen ? 'pointer-events-auto translate-y-0 opacity-100' : 'pointer-events-none -translate-y-2 opacity-0'}`}
+                  className={`absolute right-0 top-full mt-2 w-55 rounded-2xl border border-black/10 bg-white p-2 shadow-[0_14px_34px_rgba(15,23,42,0.12)] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${isUserMenuOpen ? 'pointer-events-auto translate-y-0 opacity-100' : 'pointer-events-none -translate-y-2 opacity-0'}`}
                 >
                   <div className="mb-2 rounded-xl border border-black/10 bg-[#fcfcfb] px-3 py-2 text-center">
                     <p className="text-sm font-medium text-[#0f172a]">{authUser.user?.firstName ?? 'User'}</p>
@@ -246,7 +246,7 @@ export default function FloatingMorphHeader({ navItems, onNavigate }: Props) {
                   className="group inline-flex h-10 cursor-pointer items-center gap-2 rounded-full border border-black/10 bg-[#0f172a] px-5 text-xs uppercase tracking-[0.14em] text-white transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] hover:bg-[#1e293b] active:scale-[0.98]"
                 >
                   Register
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/15 text-[11px] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-translate-y-[1px] group-hover:translate-x-1">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/15 text-[11px] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-translate-y-px group-hover:translate-x-1">
                     ↗
                   </span>
                 </button>
@@ -262,10 +262,10 @@ export default function FloatingMorphHeader({ navItems, onNavigate }: Props) {
             className="relative flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-black/10 bg-white transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] active:scale-[0.98] md:hidden"
           >
             <span
-              className={`absolute h-px w-5 bg-[#0f172a] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] ${isMenuOpen ? 'translate-y-0 rotate-45' : '-translate-y-[5px] rotate-0'}`}
+              className={`absolute h-px w-5 bg-[#0f172a] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] ${isMenuOpen ? 'translate-y-0 rotate-45' : '-translate-y-1.25 rotate-0'}`}
             />
             <span
-              className={`absolute h-px w-5 bg-[#0f172a] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] ${isMenuOpen ? 'translate-y-0 -rotate-45' : 'translate-y-[5px] rotate-0'}`}
+              className={`absolute h-px w-5 bg-[#0f172a] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] ${isMenuOpen ? 'translate-y-0 -rotate-45' : 'translate-y-1.25 rotate-0'}`}
             />
           </button>
         </div>
@@ -274,7 +274,7 @@ export default function FloatingMorphHeader({ navItems, onNavigate }: Props) {
       <div
         className={`fixed inset-0 z-20 bg-white/85 backdrop-blur-3xl px-4 pt-28 transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] md:hidden ${isMenuOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'}`}
       >
-        <div className="mx-auto flex w-full max-w-[28rem] flex-col gap-3">
+        <div className="mx-auto flex w-full max-w-112 flex-col gap-3">
           {navItems.map((item, index) => (
             <div key={item.label} className="rounded-[1.35rem] border border-black/10 bg-white px-5 py-3">
               <button

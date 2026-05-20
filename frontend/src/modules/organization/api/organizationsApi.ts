@@ -31,6 +31,8 @@ export interface OrgMemberWithUser {
     username: string;
     email: string;
     avatar: string | null;
+    avatarBgColor?: string;
+    avatarFgColor?: string;
   };
 }
 

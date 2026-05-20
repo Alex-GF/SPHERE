@@ -151,7 +151,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
             variants={fadeContainer}
             initial="hidden"
             animate="show"
-            className="w-full max-w-[420px]"
+            className="w-full max-w-105"
           >
             {children}
           </motion.div>

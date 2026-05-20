@@ -135,7 +135,7 @@ export default function InboxPage() {
                 }`}
               >
                 <div
-                  className={`mt-0.5 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full ${
+                  className={`mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${
                     notification.read ? 'bg-tp-surface' : 'bg-tp-primary/10'
                   }`}
                 >
@@ -152,7 +152,7 @@ export default function InboxPage() {
                       {notification.title}
                     </p>
                     <div className="flex items-center gap-2">
-                      {!notification.read && <span className="h-2 w-2 flex-shrink-0 rounded-full bg-tp-primary" />}
+                      {!notification.read && <span className="h-2 w-2 shrink-0 rounded-full bg-tp-primary" />}
                       <span className="text-[10px] text-tp-muted">{timeAgo(notification.createdAt)}</span>
                     </div>
                   </div>

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import Iconify from '../../../../core/components/iconify';
+import { FaFileInvoiceDollar } from 'react-icons/fa';
 import { transitionDefault } from '../../../../core/utils/motion-variants';
 import { OrgPricing } from '../../../api/organizationsApi';
 import PricingCard from '../../../../pricing/components/pricing-card';
@@ -41,10 +41,10 @@ export default function PricingsTab({ pricings, pricingsTotal, pricingPage, pric
           </div>
         </div>
 
-        <div className="min-h-[420px] p-4">
+        <div className="min-h-105 p-4">
           {pricings.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 text-tp-ink">
-              <Iconify icon="mdi:tag-off-outline" width={32} />
+              <FaFileInvoiceDollar size={32} className="text-tp-muted" />
               <p className="text-sm">No pricings found.</p>
             </div>
           ) : (

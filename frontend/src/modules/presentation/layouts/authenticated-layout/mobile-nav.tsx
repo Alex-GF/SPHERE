@@ -67,7 +67,7 @@ export default function MobileNav({ isOpen, onClose }: Props) {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-            className="fixed bottom-0 right-0 top-0 z-50 w-[300px] bg-tp-canvas shadow-elevation-4"
+            className="fixed bottom-0 right-0 top-0 z-50 w-75 bg-tp-canvas shadow-elevation-4"
           >
             <div className="flex h-full flex-col">
               {/* Header */}

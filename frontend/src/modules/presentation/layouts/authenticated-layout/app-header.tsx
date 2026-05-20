@@ -39,7 +39,7 @@ export default function AppHeader() {
   return (
     <>
       <header className="sticky top-0 z-40 border-b border-tp-hairline-soft bg-tp-canvas/80 backdrop-blur-xl">
-        <div className="mx-auto flex h-14 w-full max-w-[1280px] items-center justify-between px-4 md:px-6">
+        <div className="mx-auto flex h-14 w-full max-w-7xl items-center justify-between px-4 md:px-6">
           {/* Left: Logo */}
           <div className="flex items-center gap-4">
             <button
@@ -83,7 +83,7 @@ export default function AppHeader() {
 
                 {item.children && (
                   <div
-                    className={`absolute left-0 top-full z-50 min-w-[200px] pt-1 transition-all ${
+                    className={`absolute left-0 top-full z-50 min-w-50 pt-1 transition-all ${
                       openDropdown === item.label
                         ? 'pointer-events-auto translate-y-0 opacity-100'
                         : 'pointer-events-none -translate-y-1 opacity-0'
@@ -134,7 +134,7 @@ export default function AppHeader() {
               </button>
 
               <div
-                className={`absolute right-0 top-full z-50 min-w-[180px] pt-1 transition-all ${
+                className={`absolute right-0 top-full z-50 min-w-45 pt-1 transition-all ${
                   openDropdown === 'new'
                     ? 'pointer-events-auto translate-y-0 opacity-100'
                     : 'pointer-events-none -translate-y-1 opacity-0'

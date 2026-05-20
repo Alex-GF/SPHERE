@@ -61,7 +61,7 @@ export default function PublicProfileSection({ settings, onUpdate, onDirtyChange
         <p className="mt-0.5 text-sm text-tp-steel">Control how other users see you on the platform</p>
       </div>
 
-      <div className="rounded-[12px] border border-tp-hairline-soft bg-tp-canvas p-6">
+      <div className="rounded-lg border border-tp-hairline-soft bg-tp-canvas p-6">
         <AvatarEditor settings={settings} onUpdate={onUpdate} />
 
         <div className="my-6 border-t border-tp-hairline-soft" />
@@ -71,7 +71,7 @@ export default function PublicProfileSection({ settings, onUpdate, onDirtyChange
           <Field label="Display Name" value={displayName} onChange={setDisplayName} placeholder="Name others will see" hint="If set, this replaces your real name in rankings" />
           <div>
             <label className="mb-1.5 block text-xs font-medium text-tp-steel">Bio</label>
-            <textarea value={bio} onChange={(e) => setBio(e.target.value)} placeholder="Tell us something about yourself..." rows={3} maxLength={200} className="w-full rounded-[8px] border border-tp-hairline-strong bg-tp-canvas px-3.5 py-2.5 text-sm text-tp-ink outline-none transition-colors focus:border-tp-primary focus:ring-1 focus:ring-tp-primary/20" />
+            <textarea value={bio} onChange={(e) => setBio(e.target.value)} placeholder="Tell us something about yourself..." rows={3} maxLength={200} className="w-full rounded-md border border-tp-hairline-strong bg-tp-canvas px-3.5 py-2.5 text-sm text-tp-ink outline-none transition-colors focus:border-tp-primary focus:ring-1 focus:ring-tp-primary/20" />
             <p className="mt-1 text-right text-xs text-tp-steel">{bio.length}/200</p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -82,7 +82,7 @@ export default function PublicProfileSection({ settings, onUpdate, onDirtyChange
         </div>
 
         <div className="mt-6 flex items-center gap-3">
-          <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} type="button" onClick={handleSaveProfile} disabled={!hasChanges || saving} className="flex cursor-pointer items-center gap-2 rounded-[8px] bg-tp-primary px-4 py-2.5 text-sm font-medium text-tp-on-primary transition-all disabled:cursor-not-allowed disabled:opacity-40">
+          <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} type="button" onClick={handleSaveProfile} disabled={!hasChanges || saving} className="flex cursor-pointer items-center gap-2 rounded-md bg-tp-primary px-4 py-2.5 text-sm font-medium text-tp-on-primary transition-all disabled:cursor-not-allowed disabled:opacity-40">
             {saving ? <FiLoader className="h-4 w-4 animate-spin" /> : saved ? <FiCheck className="h-4 w-4" /> : null}
             {saved ? 'Saved' : 'Save Changes'}
           </motion.button>
@@ -101,7 +101,7 @@ function Field({ label, value, onChange, placeholder, type = 'text', hint }: { l
   return (
     <div>
       <label className="mb-1.5 block text-xs font-medium text-tp-steel">{label}</label>
-      <input type={type} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} className="h-11 w-full rounded-[8px] border border-tp-input-border bg-tp-input-bg px-3.5 text-sm text-tp-ink outline-none transition-colors focus:border-tp-primary focus:ring-1 focus:ring-tp-primary/20 dark:focus:ring-tp-primary/20" />
+      <input type={type} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} className="h-11 w-full rounded-md border border-tp-input-border bg-tp-input-bg px-3.5 text-sm text-tp-ink outline-none transition-colors focus:border-tp-primary focus:ring-1 focus:ring-tp-primary/20 dark:focus:ring-tp-primary/20" />
       {hint && <p className="mt-1 text-xs text-tp-steel">{hint}</p>}
     </div>
   );

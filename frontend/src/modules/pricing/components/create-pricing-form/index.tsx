@@ -62,7 +62,7 @@ export default function CreatePricingForm() {
           /
         </div>
 
-        <div className="relative flex-[2]">
+        <div className="relative flex-2">
           <label className="absolute -top-8 left-0 block text-base text-slate-700">
             Pricing Name
           </label>

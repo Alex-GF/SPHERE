@@ -124,7 +124,7 @@ export default function CreateCollectionForm({setShowLoading}: CreateCollectionF
           /
         </div>
 
-        <div className="relative flex-[2]">
+        <div className="relative flex-2">
           <label className="absolute -top-8 left-0 block text-base text-slate-700">
             Collection Name
           </label>
@@ -167,7 +167,7 @@ export default function CreateCollectionForm({setShowLoading}: CreateCollectionF
           <div className="flex items-center justify-center">
             <button
               type="button"
-              className="mt-5 w-[400px] rounded-xl bg-tp-primary px-5 py-2 text-base font-bold text-white"
+              className="mt-5 w-100 rounded-xl bg-tp-primary px-5 py-2 text-base font-bold text-white"
               onClick={handleAddCollectionClick}
                 >
               Add Collection

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import Iconify from '../../../../core/components/iconify';
+import UserAvatar from '../../../../core/components/user-avatar';
 import { transitionDefault } from '../../../../core/utils/motion-variants';
 import customAlert from '../../../../core/utils/custom-alert';
 import customConfirm from '../../../../core/utils/custom-confirm';
@@ -80,9 +81,13 @@ export default function MembersTab({
               key={member.id}
               className="flex flex-wrap items-center gap-3 px-5 py-3 transition-colors hover:bg-tp-surface/50"
             >
-              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-tp-cream text-sm font-semibold text-tp-primary">
-                {member.user.username[0]?.toUpperCase() ?? 'U'}
-              </div>
+              <UserAvatar
+                username={member.user.username}
+                avatar={member.user.avatar}
+                avatarBgColor={member.user.avatarBgColor}
+                avatarFgColor={member.user.avatarFgColor}
+                size={36}
+              />
 
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium text-tp-ink">@{member.user.username}</p>

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { AlertCircle, AlertTriangle, Info, CheckCircle } from 'lucide-react';
+import { MdError, MdWarning, MdInfo, MdCheckCircle } from 'react-icons/md';
 import { transitionFast } from '../../utils/motion-variants';
 
 export type Severity = 'error' | 'warning' | 'info' | 'success';
@@ -12,31 +12,31 @@ interface AlertModalProps {
 }
 
 const severityConfig: Record<Severity, {
-  icon: typeof AlertCircle;
+  icon: typeof MdError;
   borderColor: string;
   iconColor: string;
   bgHover: string;
 }> = {
   error: {
-    icon: AlertCircle,
+    icon: MdError,
     borderColor: 'border-t-tp-severity-error',
     iconColor: 'text-tp-severity-error',
     bgHover: 'hover:bg-tp-severity-error-bg',
   },
   warning: {
-    icon: AlertTriangle,
+    icon: MdWarning,
     borderColor: 'border-t-tp-severity-warning',
     iconColor: 'text-tp-severity-warning',
     bgHover: 'hover:bg-tp-severity-warning-bg',
   },
   info: {
-    icon: Info,
+    icon: MdInfo,
     borderColor: 'border-t-tp-severity-info',
     iconColor: 'text-tp-severity-info',
     bgHover: 'hover:bg-tp-severity-info-bg',
   },
   success: {
-    icon: CheckCircle,
+    icon: MdCheckCircle,
     borderColor: 'border-t-tp-severity-success',
     iconColor: 'text-tp-severity-success',
     bgHover: 'hover:bg-tp-severity-success-bg',
@@ -67,7 +67,7 @@ const AlertModal = ({ message, severity = 'auto', onClose }: AlertModalProps): J
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={transitionFast}
-      className="fixed inset-0 z-[1000] flex cursor-pointer items-center justify-center bg-black/50 px-4 backdrop-blur-[2px]"
+      className="fixed inset-0 z-1000 flex cursor-pointer items-center justify-center bg-black/50 px-4 backdrop-blur-[2px]"
       onClick={onClose}
       role="presentation"
     >
@@ -77,7 +77,7 @@ const AlertModal = ({ message, severity = 'auto', onClose }: AlertModalProps): J
         exit={{ opacity: 0, scale: 0.96, y: 8 }}
         transition={transitionFast}
         onClick={(e) => e.stopPropagation()}
-        className={`flex w-[90dvw] max-w-[400px] flex-col rounded-xl border border-tp-hairline-soft border-t-4 ${config.borderColor} bg-tp-canvas p-6 shadow-elevation-4`}
+        className={`flex w-[90dvw] max-w-100 flex-col rounded-xl border border-tp-hairline-soft border-t-4 ${config.borderColor} bg-tp-canvas p-6 shadow-elevation-4`}
         role="dialog"
         aria-modal="true"
       >

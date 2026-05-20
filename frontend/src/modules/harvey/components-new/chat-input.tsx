@@ -49,7 +49,7 @@ export default function ChatInput({ question, isSubmitting, isDisabled, onQuesti
     <div className="border-t border-tp-hairline-soft bg-tp-canvas px-4 py-3">
       <form
         onSubmit={onSubmit}
-        className={`mx-auto max-w-[800px] rounded-xl border transition-colors ${
+        className={`mx-auto max-w-200 rounded-xl border transition-colors ${
           isDragging
             ? 'border-tp-primary bg-tp-primary/5'
             : 'border-tp-hairline-strong bg-tp-canvas'
@@ -122,7 +122,7 @@ export default function ChatInput({ question, isSubmitting, isDisabled, onQuesti
       </form>
 
       {isDragging && (
-        <div className="mx-auto mt-2 max-w-[800px] rounded-lg bg-tp-primary/10 px-3 py-2 text-center text-xs text-tp-primary">
+        <div className="mx-auto mt-2 max-w-200 rounded-lg bg-tp-primary/10 px-3 py-2 text-center text-xs text-tp-primary">
           Drop YAML files here to add to context
         </div>
       )}
