@@ -22,17 +22,6 @@ class EntityPermissionRepository extends RepositoryBase {
     const results = await EntityPermissionMongoose.aggregate([
       { $match: match },
       {
-        $addFields: {
-          id: { $toString: '$_id' },
-          _userId: { $toString: '$_userId' },
-          _organizationId: { $toString: '$_organizationId' },
-          entityId: {
-            $cond: [{ $ifNull: ['$entityId', null] }, { $toString: '$entityId' }, null]
-          },
-          grantedBy: { $cond: [{ $ifNull: ['$grantedBy', null] }, { $toString: '$grantedBy' }, null] },
-        },
-      },
-      {
         $lookup: {
           from: 'pricings',
           localField: 'entityId',
@@ -52,6 +41,13 @@ class EntityPermissionRepository extends RepositoryBase {
       },
       {
         $addFields: {
+          id: { $toString: '$_id' },
+          _userId: { $toString: '$_userId' },
+          _organizationId: { $toString: '$_organizationId' },
+          entityId: {
+            $cond: [{ $ifNull: ['$entityId', null] }, { $toString: '$entityId' }, null]
+          },
+          grantedBy: { $cond: [{ $ifNull: ['$grantedBy', null] }, { $toString: '$grantedBy' }, null] },
           entityName: {
             $cond: [
               { $eq: ['$entityType', 'pricing'] },
@@ -150,17 +146,6 @@ class EntityPermissionRepository extends RepositoryBase {
     const results = await EntityPermissionMongoose.aggregate([
       { $match: match },
       {
-        $addFields: {
-          id: { $toString: '$_id' },
-          _userId: { $toString: '$_userId' },
-          _organizationId: { $toString: '$_organizationId' },
-          entityId: {
-            $cond: [{ $ifNull: ['$entityId', null] }, { $toString: '$entityId' }, null]
-          },
-          grantedBy: { $cond: [{ $ifNull: ['$grantedBy', null] }, { $toString: '$grantedBy' }, null] },
-        },
-      },
-      {
         $lookup: {
           from: 'users',
           localField: '_userId',
@@ -189,6 +174,13 @@ class EntityPermissionRepository extends RepositoryBase {
       },
       {
         $addFields: {
+          id: { $toString: '$_id' },
+          _userId: { $toString: '$_userId' },
+          _organizationId: { $toString: '$_organizationId' },
+          entityId: {
+            $cond: [{ $ifNull: ['$entityId', null] }, { $toString: '$entityId' }, null]
+          },
+          grantedBy: { $cond: [{ $ifNull: ['$grantedBy', null] }, { $toString: '$grantedBy' }, null] },
           userName: { $arrayElemAt: ['$user.username', 0] },
           entityName: {
             $cond: [

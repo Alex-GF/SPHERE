@@ -4879,7 +4879,8 @@ components:
           example: "pricing"
         entityId:
           type: string
-          description: The ID of the entity (pricing or collection)
+          nullable: true
+          description: The MongoDB ObjectId of the entity (pricing or collection). Null for org-scoped permissions.
           example: "68050bd09890322c57842f90"
         permissions:
           $ref: '#/components/schemas/EntityPermissions'
@@ -5496,7 +5497,6 @@ components:
             required:
               - userId
               - entityType
-              - entityId
               - permissions
             properties:
               userId:
@@ -5510,7 +5510,11 @@ components:
                 example: "pricing"
               entityId:
                 type: string
-                description: The MongoDB ObjectId of the entity (pricing or collection)
+                nullable: true
+                description: >-
+                  The entity identifier. Can be the entity name (e.g. pricing name or collection name)
+                  or a MongoDB ObjectId. Use null for org-scoped permissions (e.g. CREATE permission
+                  at the organization level).
                 example: "68050bd09890322c57842f90"
               permissions:
                 $ref: '#/components/schemas/EntityPermissions'

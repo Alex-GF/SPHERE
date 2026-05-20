@@ -11,6 +11,7 @@ import { BASE_PATH } from './utils/config/variables';
 import { LeanUser } from '../main/types/models/User';
 import EntityPermissionMongoose from '../main/repositories/mongoose/models/EntityPermissionMongoose';
 import { createEntityPermission } from './utils/permissions/permissionTestUtils';
+import { randomSuffix } from './utils/helpers';
 
 dotenv.config();
 
@@ -233,6 +234,100 @@ describe('Entity Permissions API integration', () => {
       expect(collectionResponse.status).toBe(200);
       expect(collectionResponse.body.length).toBe(1);
       expect(collectionResponse.body[0].entityType).toBe('collection');
+    });
+
+    it('should resolve entityName when entityId is a pricing name (not an ObjectId)', async () => {
+      const { user: owner, organizationId } = await createAndLoginUser('USER');
+      const { user: member } = await createAndLoginUser('USER');
+      await createMembership(member.id, organizationId, 'MEMBER');
+
+      const pricing = await createPricingForOrganization({
+        organizationId,
+        isPrivate: false,
+      });
+
+      const createResponse = await request(app)
+        .post(`${BASE_PATH}/orgs/${organizationId}/permissions`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({
+          userId: member.id,
+          entityType: 'pricing',
+          entityId: pricing.serviceName,
+          permissions: { GET: true, PUT: false, DELETE: false },
+        });
+
+      expect(createResponse.status).toBe(201);
+
+      const getResponse = await request(app)
+        .get(`${BASE_PATH}/orgs/${organizationId}/permissions`)
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      expect(getResponse.status).toBe(200);
+      expect(getResponse.body.length).toBe(1);
+      expect(getResponse.body[0].entityName).toBe(pricing.serviceName);
+      expect(getResponse.body[0].entityType).toBe('pricing');
+    });
+
+    it('should resolve entityName when entityId is a collection name (not an ObjectId)', async () => {
+      const { user: owner, organizationId } = await createAndLoginUser('USER');
+      const { user: member } = await createAndLoginUser('USER');
+      await createMembership(member.id, organizationId, 'MEMBER');
+
+      const collectionName = 'Test Collection ' + randomSuffix();
+      const collection = await createTestCollection({ _organizationId: organizationId, name: collectionName });
+
+      const createResponse = await request(app)
+        .post(`${BASE_PATH}/orgs/${organizationId}/permissions`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({
+          userId: member.id,
+          entityType: 'collection',
+          entityId: collectionName,
+          permissions: { GET: true, PUT: true, DELETE: false },
+        });
+
+      expect(createResponse.status).toBe(201);
+
+      const getResponse = await request(app)
+        .get(`${BASE_PATH}/orgs/${organizationId}/permissions`)
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      expect(getResponse.status).toBe(200);
+      expect(getResponse.body.length).toBe(1);
+      expect(getResponse.body[0].entityName).toBe(collectionName);
+      expect(getResponse.body[0].entityType).toBe('collection');
+    });
+
+    it('should resolve entityName when entityId is an ObjectId', async () => {
+      const { user: owner, organizationId } = await createAndLoginUser('USER');
+      const { user: member } = await createAndLoginUser('USER');
+      await createMembership(member.id, organizationId, 'MEMBER');
+
+      const pricing = await createPricingForOrganization({
+        organizationId,
+        isPrivate: false,
+      });
+
+      const createResponse = await request(app)
+        .post(`${BASE_PATH}/orgs/${organizationId}/permissions`)
+        .set('Authorization', `Bearer ${owner.token}`)
+        .send({
+          userId: member.id,
+          entityType: 'pricing',
+          entityId: pricing.response.body.id,
+          permissions: { GET: true, PUT: false, DELETE: false },
+        });
+
+      expect(createResponse.status).toBe(201);
+
+      const getResponse = await request(app)
+        .get(`${BASE_PATH}/orgs/${organizationId}/permissions`)
+        .set('Authorization', `Bearer ${owner.token}`);
+
+      expect(getResponse.status).toBe(200);
+      expect(getResponse.body.length).toBe(1);
+      expect(getResponse.body[0].entityName).toBe(pricing.serviceName);
+      expect(getResponse.body[0].entityType).toBe('pricing');
     });
   });
 
