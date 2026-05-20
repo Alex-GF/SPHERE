@@ -120,7 +120,7 @@ function PricingTree({ analytics: a }: { analytics: TreeAnalytics }) {
 }
 
 export default function CardPage() {
-  const { owner, name } = useParams<{ owner: string; name: string }>();
+  const { organizationId, name } = useParams<{ organizationId: string; name: string }>();
   const [searchParams] = useSearchParams();
   const collectionSlug = searchParams.get('collectionSlug');
   const router = useRouter();
@@ -148,9 +148,9 @@ export default function CardPage() {
 
   // Fetch versions + check permissions
   useEffect(() => {
-    if (!name || !owner) return;
+    if (!name || !organizationId) return;
     setIsLoading(true);
-    getPricingByName(name, owner, collectionSlug)
+    getPricingByName(name, organizationId, collectionSlug)
       .then(async (data) => {
         const vers = (data.versions ?? []) as VersionData[];
         setVersions(vers);
@@ -160,7 +160,7 @@ export default function CardPage() {
         }
         // Check if user can delete (OWNER or ADMIN of org)
         try {
-          const members = await getOrgMembers(owner);
+          const members = await getOrgMembers(organizationId);
           const me = members.find((m: any) => m.user.username === authUser.user?.username);
           setCanDelete(me ? (me.role === 'OWNER' || me.role === 'ADMIN') : false);
         } catch { setCanDelete(false); }
@@ -169,7 +169,7 @@ export default function CardPage() {
         try {
           const baseUrl = import.meta.env.VITE_API_URL;
           const token = authUser?.token;
-          const response = await fetch(`${baseUrl}/pricings/${owner}/${name}/permissions`, {
+          const response = await fetch(`${baseUrl}/pricings/${organizationId}/${name}/permissions`, {
             headers: { Authorization: `Bearer ${token}` },
           });
           if (response.ok) {
@@ -180,18 +180,18 @@ export default function CardPage() {
       })
       .catch(() => {})
       .finally(() => setIsLoading(false));
-  }, [name, owner, collectionSlug]);
+  }, [name, organizationId, collectionSlug]);
 
   // Track visit for recent items
   useEffect(() => {
-    if (!authUser.isAuthenticated || !name || !owner) return;
+    if (!authUser.isAuthenticated || !name || !organizationId) return;
     addRecentPricing({
-      id: `${owner}/${name}`,
+      id: `${organizationId}/${name}`,
       name,
-      orgId: owner,
-      orgName: owner,
+      orgId: organizationId,
+      orgName: organizationId,
     });
-  }, [name, owner, authUser.isAuthenticated]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [name, organizationId, authUser.isAuthenticated]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Fetch YAML when version changes
   useEffect(() => {
@@ -454,8 +454,8 @@ export default function CardPage() {
                   <p className="text-sm font-medium text-tp-ink">Configuration space too large</p>
                   <p className="mt-1 max-w-md text-xs text-tp-steel">This pricing has {a.configurationSpaceSize.toLocaleString()} configurations. The explorer is only available for pricing with ≤2,000 configurations.</p>
                 </div>
-              ) : owner && currentVersion ? (
-                <ConfigurationSpaceView organizationId={owner} pricingName={name!} pricingVersion={currentVersion.version} />
+              ) : organizationId && currentVersion ? (
+                <ConfigurationSpaceView organizationId={organizationId} pricingName={name!} pricingVersion={currentVersion.version} />
               ) : null}
             </motion.div>
           )}

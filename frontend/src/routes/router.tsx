@@ -95,7 +95,7 @@ export default function Router() {
           ),
         },
         {
-          path: '/pricings/:owner/:name',
+          path: '/pricings/:organizationId/:name',
           element: (
             <Suspense fallback={<PricingCardSkeleton />}>
               <CardPage />

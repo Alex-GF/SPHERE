@@ -1,6 +1,5 @@
 import { useCallback, useMemo } from 'react';
 import { useAuth } from '../../auth/hooks/useAuth';
-import { FilterValues } from '../pages/list';
 
 export const PRICINGS_BASE_PATH = import.meta.env.VITE_API_URL + '/pricings';
 
@@ -14,7 +13,7 @@ export function usePricingsApi() {
     Authorization: `Bearer ${token}`,
   }), [token]);
 
-  const getPricings = useCallback(async (filters: Record<string, string | FilterValues | number> = {}) => {
+  const getPricings = useCallback(async (filters: Record<string, string | number> = {}) => {
     let requestUrl;
 
     if (Object.keys(filters).length === 0) {
@@ -67,9 +66,9 @@ export function usePricingsApi() {
       });
   }, []);
 
-  const getPricingByName = useCallback(async (name: string, owner: string, collectionSlug: string | null) => {
+  const getPricingByName = useCallback(async (name: string, organizationId: string, collectionSlug: string | null) => {
     return fetch(
-      `${PRICINGS_BASE_PATH}/${owner}/${name}${
+      `${PRICINGS_BASE_PATH}/${organizationId}/${name}${
         collectionSlug && collectionSlug !== 'undefined' ? `?collectionSlug=${collectionSlug}` : ''
       }`,
       {
@@ -128,7 +127,7 @@ export function usePricingsApi() {
       });
   }, [fetchWithInterceptor, basicHeaders]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const getConfigurationSpace = useCallback(async (owner: string, pricingName: string, pricingVersion: string, limit?: number, offset?: number) => {
+  const getConfigurationSpace = useCallback(async (organizationId: string, pricingName: string, pricingVersion: string, limit?: number, offset?: number) => {
     
     const params = new URLSearchParams();
 
@@ -138,7 +137,7 @@ export function usePricingsApi() {
     const queryString = params.toString(); 
     
     return fetchWithInterceptor(
-      `${PRICINGS_BASE_PATH}/${owner}/${pricingName}/${pricingVersion}${queryString ? `?${queryString}` : ''}`,
+      `${PRICINGS_BASE_PATH}/${organizationId}/${pricingName}/${pricingVersion}${queryString ? `?${queryString}` : ''}`,
       {
         method: 'GET',
         headers: basicHeaders,
