@@ -3,10 +3,11 @@ import { AlertCircle, AlertTriangle, Info, CheckCircle } from 'lucide-react';
 import { transitionFast } from '../../utils/motion-variants';
 
 export type Severity = 'error' | 'warning' | 'info' | 'success';
+export type SeverityOption = 'error' | 'warning' | 'info' | 'success' | 'auto';
 
 interface AlertModalProps {
   message: string;
-  severity?: Severity;
+  severity?: SeverityOption;
   onClose: () => void;
 }
 
@@ -42,7 +43,21 @@ const severityConfig: Record<Severity, {
   },
 };
 
-const AlertModal = ({ message, severity = 'info', onClose }: AlertModalProps): JSX.Element => {
+const AlertModal = ({ message, severity = 'auto', onClose }: AlertModalProps): JSX.Element => {
+  
+  if (severity === 'auto') {
+    const lowerMessage = message.toLowerCase();
+    if (lowerMessage.includes('error') || lowerMessage.includes('fail')) {
+      severity = 'error';
+    }else if (lowerMessage.includes('warn')) {
+      severity = 'warning';
+    }else if (lowerMessage.includes('success')) {
+      severity = 'success';
+    } else {
+      severity = 'info';
+    }
+  }
+
   const config = severityConfig[severity];
   const Icon = config.icon;
 
