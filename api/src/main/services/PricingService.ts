@@ -13,7 +13,8 @@ import PricingRepository from '../repositories/mongoose/PricingRepository';
 import CacheService from './CacheService';
 import { LeanUser } from '../types/models/User';
 import OrganizationMembershipRepository from '../repositories/mongoose/OrganizationMembershipRepository';
-import PermissionService from './PermissionService';
+import { PermissionEngine } from '../policies/PermissionEngine';
+import { PermissionQueries } from '../policies/queries/PermissionQueries';
 import { generateSlug, generateTextFromSlug } from '../utils/slug-manager';
 
 class PricingService {
@@ -21,20 +22,82 @@ class PricingService {
   private pricingCollectionService: PricingCollectionService;
   private cacheService: CacheService;
   private organizationMembershipRepository: OrganizationMembershipRepository;
-  private permissionService: PermissionService;
+  private permissionEngine: PermissionEngine;
+  private permissionQueries: PermissionQueries;
 
   constructor() {
     this.pricingRepository = container.resolve('pricingRepository');
     this.pricingCollectionService = container.resolve('pricingCollectionService');
     this.cacheService = container.resolve('cacheService');
     this.organizationMembershipRepository = container.resolve('organizationMembershipRepository');
-    this.permissionService = container.resolve('permissionService');
+    this.permissionEngine = new PermissionEngine();
+    this.permissionQueries = new PermissionQueries();
   }
 
   async index(queryParams: PricingIndexQueryParams, reqUser?: LeanUser) {
-    const includePrivate = reqUser !== undefined && reqUser.role === 'ADMIN'; // TODO: we should also include private pricings for non-admin users if they belong to the organization, but this would require additional queries to check the user's role in each organization, so for now we will only include private pricings for admin users
+    if (!reqUser) {
+      const pricings = await this.pricingRepository.findAll(queryParams, false);
+      return pricings;
+    }
 
-    const pricings = await this.pricingRepository.findAll(queryParams, includePrivate);
+    if (reqUser.role === 'ADMIN') {
+      const pricings = await this.pricingRepository.findAll(queryParams, true);
+      return pricings;
+    }
+
+    const orgId = queryParams.selectedOrganizations?.[0];
+    if (orgId) {
+      const orgRole = await this.permissionQueries.resolveOrgRole(reqUser.id, orgId);
+      const isOwnerOrAdmin = orgRole === 'OWNER' || orgRole === 'ADMIN';
+
+      if (isOwnerOrAdmin) {
+        const pricings = await this.pricingRepository.findAll(queryParams, true);
+        return pricings;
+      }
+
+      const result = await this.pricingRepository.findAll(queryParams, true);
+
+      if (result && result.pricings) {
+        const batchCtx = await this.permissionQueries.buildBatchContext(
+          reqUser.id,
+          orgId,
+          orgRole,
+          false
+        );
+
+        const contexts = result.pricings
+          .filter(p => p.private)
+          .map(p => ({
+            key: p._id?.toString() ?? p.id,
+            context: {
+              userId: reqUser.id,
+              organizationId: orgId,
+              entityType: 'pricing' as const,
+              entityId: p._id?.toString() ?? p.id,
+              action: 'GET' as const,
+              isPrivate: true,
+              userOrgRole: orgRole,
+              isGlobalAdmin: false,
+            },
+          }));
+
+        const results = this.permissionEngine.evaluateBatch(contexts, { batchContext: batchCtx });
+
+        const filteredPricings = result.pricings.filter(p => {
+          if (!p.private) return true;
+          const entityId = p._id?.toString() ?? p.id;
+          const evalResult = results.get(entityId);
+          return evalResult?.allowed ?? false;
+        });
+
+        result.pricings = filteredPricings;
+        result.total = filteredPricings.length;
+      }
+
+      return result;
+    }
+
+    const pricings = await this.pricingRepository.findAll(queryParams, false);
     return pricings;
   }
 
@@ -50,10 +113,7 @@ class PricingService {
     queryParams: { collectionSlug?: string; includePrivate: boolean } = { includePrivate: false }
   ) {
     if (reqUser) {
-      const role = await this.organizationMembershipRepository.findUserRoleInOrganization(
-        reqUser.id,
-        organizationId
-      );
+      const role = await this.permissionQueries.resolveOrgRole(reqUser.id, organizationId);
       queryParams.includePrivate = reqUser.role === 'ADMIN' || role !== null;
     }
 
@@ -94,10 +154,7 @@ class PricingService {
 
     let includePrivate = false;
     if (reqUser) {
-      const role = await this.organizationMembershipRepository.findUserRoleInOrganization(
-        reqUser.id,
-        organizationId
-      );
+      const role = await this.permissionQueries.resolveOrgRole(reqUser.id, organizationId);
       includePrivate = reqUser.role === 'ADMIN' || role !== null;
     }
 
@@ -150,28 +207,24 @@ class PricingService {
     collectionId?: string
   ) {
     try {
-      const role = await this.organizationMembershipRepository.findUserRoleInOrganization(
-        reqUser.id,
-        organizationId
-      );
-      if (!role && reqUser.role !== 'ADMIN') {
-        throw new Error(
-          'PERMISSION ERROR: You do not have permission to create a pricing for this organization'
-        );
-      }
-
-      // Check CREATE permission for MEMBERs (OWNER/ADMIN bypass in hasOrgPermission)
-      const effectiveRole = reqUser.role === 'ADMIN' ? 'OWNER' : role;
-      const hasCreatePermission = await this.permissionService.hasOrgPermission(
+      const orgRole = await this.permissionQueries.resolveOrgRole(reqUser.id, organizationId);
+      const batchCtx = await this.permissionQueries.buildBatchContext(
         reqUser.id,
         organizationId,
-        'pricing',
-        effectiveRole
+        orgRole,
+        reqUser.role === 'ADMIN'
       );
-      if (!hasCreatePermission) {
-        throw new Error(
-          'PERMISSION ERROR: You do not have CREATE permission for pricings in this organization'
-        );
+      const createResult = this.permissionEngine.evaluate({
+        userId: reqUser.id,
+        organizationId,
+        entityType: 'pricing',
+        action: 'CREATE',
+        userOrgRole: orgRole,
+        isGlobalAdmin: reqUser.role === 'ADMIN',
+        orgPermissions: batchCtx.orgPermissions.get('pricing'),
+      });
+      if (!createResult.allowed) {
+        throw new Error(`PERMISSION ERROR: ${createResult.reason}`);
       }
 
       const uploadedPricing: Pricing = retrievePricingFromPath(
@@ -275,15 +328,7 @@ class PricingService {
     queryParams: { collectionSlug?: string; organizationId?: string } = {}
   ) {
     const effectiveOrgId = queryParams.organizationId || organizationId;
-    const role = await this.organizationMembershipRepository.findUserRoleInOrganization(
-      reqUser.id,
-      effectiveOrgId
-    );
-    if (!role && reqUser.role !== 'ADMIN') {
-      throw new Error(
-        'PERMISSION ERROR: You do not have permission to update a pricing for this organization'
-      );
-    }
+    const orgRole = await this.permissionQueries.resolveOrgRole(reqUser.id, effectiveOrgId);
 
     const pricing = await this.pricingRepository.findOne(pricingName, effectiveOrgId, {
       ...queryParams,
@@ -293,6 +338,31 @@ class PricingService {
       throw new Error(
         'NOT FOUND: Either the pricing does not exist or you are not a member of its organization'
       );
+    }
+
+    const batchCtx = await this.permissionQueries.buildBatchContext(
+      reqUser.id,
+      effectiveOrgId,
+      orgRole,
+      reqUser.role === 'ADMIN'
+    );
+
+    const entityId = pricing.versions[0]?.id;
+    const entityPerms = entityId ? batchCtx.entityPermissions.get(`pricing:${entityId}`) : undefined;
+
+    const updateResult = this.permissionEngine.evaluate({
+      userId: reqUser.id,
+      organizationId: effectiveOrgId,
+      entityType: 'pricing',
+      entityId,
+      action: 'PUT',
+      isPrivate: pricing.private,
+      userOrgRole: orgRole,
+      isGlobalAdmin: reqUser.role === 'ADMIN',
+      entityPermissions: entityPerms,
+    });
+    if (!updateResult.allowed) {
+      throw new Error(`PERMISSION ERROR: ${updateResult.reason}`);
     }
 
     for (const pricingVersion of pricing.versions) {
@@ -354,14 +424,36 @@ class PricingService {
     const effectiveOrgId = queryParams.organizationId || organizationId;
     let collectionId;
 
-    const role = await this.organizationMembershipRepository.findUserRoleInOrganization(
+    const orgRole = await this.permissionQueries.resolveOrgRole(reqUser.id, effectiveOrgId);
+
+    const pricing = await this.pricingRepository.findOne(pricingName, effectiveOrgId, {
+      ...queryParams,
+      includePrivate: true,
+    });
+
+    const batchCtx = await this.permissionQueries.buildBatchContext(
       reqUser.id,
-      effectiveOrgId
+      effectiveOrgId,
+      orgRole,
+      reqUser.role === 'ADMIN'
     );
-    if (!role && reqUser.role !== 'ADMIN') {
-      throw new Error(
-        'PERMISSION ERROR: You do not have permission to delete a pricing for this organization'
-      );
+
+    const entityId = pricing?.versions[0]?.id;
+    const entityPerms = entityId ? batchCtx.entityPermissions.get(`pricing:${entityId}`) : undefined;
+
+    const deleteResult = this.permissionEngine.evaluate({
+      userId: reqUser.id,
+      organizationId: effectiveOrgId,
+      entityType: 'pricing',
+      entityId,
+      action: 'DELETE',
+      isPrivate: pricing?.private,
+      userOrgRole: orgRole,
+      isGlobalAdmin: reqUser.role === 'ADMIN',
+      entityPermissions: entityPerms,
+    });
+    if (!deleteResult.allowed) {
+      throw new Error(`PERMISSION ERROR: ${deleteResult.reason}`);
     }
 
     if (queryParams?.collectionSlug) {
@@ -396,14 +488,35 @@ class PricingService {
     organizationId: string,
     reqUser: LeanUser
   ) {
-    const role = await this.organizationMembershipRepository.findUserRoleInOrganization(
+    const orgRole = await this.permissionQueries.resolveOrgRole(reqUser.id, organizationId);
+
+    const pricing = await this.pricingRepository.findOne(pricingName, organizationId, {
+      includePrivate: true,
+    });
+
+    const batchCtx = await this.permissionQueries.buildBatchContext(
       reqUser.id,
-      organizationId
+      organizationId,
+      orgRole,
+      reqUser.role === 'ADMIN'
     );
-    if (!role && reqUser.role !== 'ADMIN') {
-      throw new Error(
-        'PERMISSION ERROR: You do not have permission to delete a pricing version for this organization'
-      );
+
+    const entityId = pricing?.versions[0]?.id;
+    const entityPerms = entityId ? batchCtx.entityPermissions.get(`pricing:${entityId}`) : undefined;
+
+    const deleteResult = this.permissionEngine.evaluate({
+      userId: reqUser.id,
+      organizationId,
+      entityType: 'pricing',
+      entityId,
+      action: 'DELETE',
+      isPrivate: pricing?.private,
+      userOrgRole: orgRole,
+      isGlobalAdmin: reqUser.role === 'ADMIN',
+      entityPermissions: entityPerms,
+    });
+    if (!deleteResult.allowed) {
+      throw new Error(`PERMISSION ERROR: ${deleteResult.reason}`);
     }
 
     let result;

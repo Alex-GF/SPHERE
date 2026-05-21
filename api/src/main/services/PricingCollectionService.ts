@@ -9,33 +9,94 @@ import { PricingService as PricingAnalytics, retrievePricingFromPath } from 'pri
 import fs from 'fs';
 import { calculateAnalyticsForPricings } from '../utils/pricing-collections-utils';
 import { LeanUser } from '../types/models/User';
-import OrganizationMembershipRepository from '../repositories/mongoose/OrganizationMembershipRepository';
+import { PermissionEngine } from '../policies/PermissionEngine';
+import { PermissionQueries } from '../policies/queries/PermissionQueries';
 import { generateSlug } from '../repositories/mongoose/models/PricingCollectionMongoose';
 
 class PricingCollectionService {
   private readonly pricingCollectionRepository: PricingCollectionRepository;
   private readonly pricingRepository: PricingRepository;
-  private readonly organizationMembershipRepository: OrganizationMembershipRepository;
+  private readonly permissionEngine: PermissionEngine;
+  private readonly permissionQueries: PermissionQueries;
 
   constructor() {
     this.pricingCollectionRepository = container.resolve('pricingCollectionRepository');
     this.pricingRepository = container.resolve('pricingRepository');
-    this.organizationMembershipRepository = container.resolve('organizationMembershipRepository');
+    this.permissionEngine = new PermissionEngine();
+    this.permissionQueries = new PermissionQueries();
   }
 
   async index(queryParams: CollectionIndexQueryParams, reqUser?: LeanUser) {
+    if (!reqUser) {
+      const result = await this.pricingCollectionRepository.findAll(queryParams, false);
+      return result;
+    }
 
-    const includePrivate = reqUser !== undefined && reqUser.role === 'ADMIN';
+    if (reqUser.role === 'ADMIN') {
+      const result = await this.pricingCollectionRepository.findAll(queryParams, true);
+      return result;
+    }
 
-    const result = await this.pricingCollectionRepository.findAll(queryParams, includePrivate);
-    // result contains { collections, total }
+    const orgId = queryParams.organizationIds?.[0];
+    if (orgId) {
+      const orgRole = await this.permissionQueries.resolveOrgRole(reqUser.id, orgId);
+      const isOwnerOrAdmin = orgRole === 'OWNER' || orgRole === 'ADMIN';
+
+      if (isOwnerOrAdmin) {
+        const result = await this.pricingCollectionRepository.findAll(queryParams, true);
+        return result;
+      }
+
+      const result = await this.pricingCollectionRepository.findAll(queryParams, true);
+
+      if (result && result.collections) {
+        const batchCtx = await this.permissionQueries.buildBatchContext(
+          reqUser.id,
+          orgId,
+          orgRole,
+          false
+        );
+
+        const contexts = result.collections
+          .filter(c => (c as any).private)
+          .map(c => ({
+            key: (c as any)._id?.toString() ?? (c as any).id,
+            context: {
+              userId: reqUser.id,
+              organizationId: orgId,
+              entityType: 'collection' as const,
+              entityId: (c as any)._id?.toString() ?? (c as any).id,
+              action: 'GET' as const,
+              isPrivate: true,
+              userOrgRole: orgRole,
+              isGlobalAdmin: false,
+            },
+          }));
+
+        const results = this.permissionEngine.evaluateBatch(contexts, { batchContext: batchCtx });
+
+        const filteredCollections = result.collections.filter(c => {
+          if (!(c as any).private) return true;
+          const entityId = (c as any)._id?.toString() ?? (c as any).id;
+          const evalResult = results.get(entityId);
+          return evalResult?.allowed ?? false;
+        });
+
+        result.collections = filteredCollections;
+        result.total = filteredCollections.length;
+      }
+
+      return result;
+    }
+
+    const result = await this.pricingCollectionRepository.findAll(queryParams, false);
     return result;
   }
 
   async indexByOrganizationId(organizationId: string, reqUser?: LeanUser) {
     let includePrivate = false;
     if (reqUser) {
-      const role = await this.organizationMembershipRepository.findUserRoleInOrganization(reqUser.id, organizationId);
+      const role = await this.permissionQueries.resolveOrgRole(reqUser.id, organizationId);
       includePrivate = reqUser.role === 'ADMIN' || role !== null;
     }
 
@@ -60,9 +121,27 @@ class PricingCollectionService {
       if (!reqUser) {
         throw new Error('PERMISSION ERROR: You are not a member of this organization');
       }
-      const role = await this.organizationMembershipRepository.findUserRoleInOrganization(reqUser.id, organizationId);
-      if (!role && reqUser.role !== 'ADMIN') {
-        throw new Error('PERMISSION ERROR: You are not a member of this organization');
+      const orgRole = await this.permissionQueries.resolveOrgRole(reqUser.id, organizationId);
+      const batchCtx = await this.permissionQueries.buildBatchContext(
+        reqUser.id,
+        organizationId,
+        orgRole,
+        reqUser.role === 'ADMIN'
+      );
+      const entityPerms = batchCtx.entityPermissions.get(`collection:${collection.id}`);
+      const evalResult = this.permissionEngine.evaluate({
+        userId: reqUser.id,
+        organizationId,
+        entityType: 'collection',
+        entityId: collection.id,
+        action: 'GET',
+        isPrivate: true,
+        userOrgRole: orgRole,
+        isGlobalAdmin: reqUser.role === 'ADMIN',
+        entityPermissions: entityPerms,
+      });
+      if (!evalResult.allowed) {
+        throw new Error(`PERMISSION ERROR: ${evalResult.reason}`);
       }
     }
 
@@ -72,9 +151,24 @@ class PricingCollectionService {
   }
 
   async create(newCollection: any, organizationId: string, reqUser: LeanUser) {
-    const role = await this.organizationMembershipRepository.findUserRoleInOrganization(reqUser.id, organizationId);
-    if (!role && reqUser.role !== 'ADMIN') {
-      throw new Error('PERMISSION ERROR: You can only create collections for organizations you belong to');
+    const orgRole = await this.permissionQueries.resolveOrgRole(reqUser.id, organizationId);
+    const batchCtx = await this.permissionQueries.buildBatchContext(
+      reqUser.id,
+      organizationId,
+      orgRole,
+      reqUser.role === 'ADMIN'
+    );
+    const createResult = this.permissionEngine.evaluate({
+      userId: reqUser.id,
+      organizationId,
+      entityType: 'collection',
+      action: 'CREATE',
+      userOrgRole: orgRole,
+      isGlobalAdmin: reqUser.role === 'ADMIN',
+      orgPermissions: batchCtx.orgPermissions.get('collection'),
+    });
+    if (!createResult.allowed) {
+      throw new Error(`PERMISSION ERROR: ${createResult.reason}`);
     }
 
     let collection: any;
@@ -126,9 +220,24 @@ class PricingCollectionService {
   }
 
   async bulkCreate(file: any, newCollectionData: any, organizationId: string, reqUser: LeanUser) {
-    const role = await this.organizationMembershipRepository.findUserRoleInOrganization(reqUser.id, organizationId);
-    if (!role && reqUser.role !== 'ADMIN') {
-      throw new Error('PERMISSION ERROR: You can only create collections for organizations you belong to');
+    const orgRole = await this.permissionQueries.resolveOrgRole(reqUser.id, organizationId);
+    const batchCtx = await this.permissionQueries.buildBatchContext(
+      reqUser.id,
+      organizationId,
+      orgRole,
+      reqUser.role === 'ADMIN'
+    );
+    const createResult = this.permissionEngine.evaluate({
+      userId: reqUser.id,
+      organizationId,
+      entityType: 'collection',
+      action: 'CREATE',
+      userOrgRole: orgRole,
+      isGlobalAdmin: reqUser.role === 'ADMIN',
+      orgPermissions: batchCtx.orgPermissions.get('collection'),
+    });
+    if (!createResult.allowed) {
+      throw new Error(`PERMISSION ERROR: ${createResult.reason}`);
     }
 
     let collection: any;
@@ -225,17 +334,37 @@ class PricingCollectionService {
   }
 
   async update(organizationId: string, collectionSlug: string, data: any, reqUser: LeanUser) {
-    const role = await this.organizationMembershipRepository.findUserRoleInOrganization(reqUser.id, organizationId);
-    if (!role && reqUser.role !== 'ADMIN') {
-      throw new Error('PERMISSION ERROR: You can only update collections for organizations you belong to');
-    }
-
     const collection = await this.pricingCollectionRepository.findByOrganizationAndSlug(
       organizationId,
       collectionSlug
     );
     if (!collection) {
       throw new Error('NOT FOUND: Either the collection does not exist or you are not a member of its organization');
+    }
+
+    const orgRole = await this.permissionQueries.resolveOrgRole(reqUser.id, organizationId);
+    const batchCtx = await this.permissionQueries.buildBatchContext(
+      reqUser.id,
+      organizationId,
+      orgRole,
+      reqUser.role === 'ADMIN'
+    );
+
+    const entityPerms = batchCtx.entityPermissions.get(`collection:${collection.id}`);
+
+    const updateResult = this.permissionEngine.evaluate({
+      userId: reqUser.id,
+      organizationId,
+      entityType: 'collection',
+      entityId: collection.id,
+      action: 'PUT',
+      isPrivate: collection.private,
+      userOrgRole: orgRole,
+      isGlobalAdmin: reqUser.role === 'ADMIN',
+      entityPermissions: entityPerms,
+    });
+    if (!updateResult.allowed) {
+      throw new Error(`PERMISSION ERROR: ${updateResult.reason}`);
     }
 
     await this.pricingCollectionRepository.update(collection.id, data);
@@ -300,19 +429,39 @@ class PricingCollectionService {
       );
     }
 
-    if (reqUser && !ignoreResult) {
-      const role = await this.organizationMembershipRepository.findUserRoleInOrganization(reqUser.id, organizationId);
-      if (!role && reqUser.role !== 'ADMIN') {
-        throw new Error('PERMISSION ERROR: You can only delete collections for organizations you belong to');
-      }
-    }
-
     const collection = await this.pricingCollectionRepository.findByOrganizationAndSlug(
       organizationId,
       collectionSlug
     );
     if (!collection) {
       throw new Error('NOT FOUND: Either the collection does not exist or you are not a member of its organization');
+    }
+
+    if (reqUser && !ignoreResult) {
+      const orgRole = await this.permissionQueries.resolveOrgRole(reqUser.id, organizationId);
+      const batchCtx = await this.permissionQueries.buildBatchContext(
+        reqUser.id,
+        organizationId,
+        orgRole,
+        reqUser.role === 'ADMIN'
+      );
+
+      const entityPerms = batchCtx.entityPermissions.get(`collection:${collection.id}`);
+
+      const deleteResult = this.permissionEngine.evaluate({
+        userId: reqUser.id,
+        organizationId,
+        entityType: 'collection',
+        entityId: collection.id,
+        action: 'DELETE',
+        isPrivate: collection.private,
+        userOrgRole: orgRole,
+        isGlobalAdmin: reqUser.role === 'ADMIN',
+        entityPermissions: entityPerms,
+      });
+      if (!deleteResult.allowed) {
+        throw new Error(`PERMISSION ERROR: ${deleteResult.reason}`);
+      }
     }
 
     let result;
@@ -340,9 +489,17 @@ class PricingCollectionService {
     try {
 
       if (reqUser) {
-        const role = await this.organizationMembershipRepository.findUserRoleInOrganization(reqUser.id, organizationId);
-        if (!role && reqUser.role !== 'ADMIN') {
-          throw new Error('PERMISSION ERROR: You can only remove pricings from collections for organizations you belong to');
+        const orgRole = await this.permissionQueries.resolveOrgRole(reqUser.id, organizationId);
+        const evalResult = this.permissionEngine.evaluate({
+          userId: reqUser.id,
+          organizationId,
+          entityType: 'pricing',
+          action: 'PUT',
+          userOrgRole: orgRole,
+          isGlobalAdmin: reqUser.role === 'ADMIN',
+        });
+        if (!evalResult.allowed) {
+          throw new Error(`PERMISSION ERROR: ${evalResult.reason}`);
         }
       }
 

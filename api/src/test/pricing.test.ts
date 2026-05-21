@@ -20,6 +20,7 @@ import {
 import { randomSuffix } from './utils/helpers';
 import { createOrgScopedPermission, createMembership } from './utils/organizations';
 import PricingMongoose from '../main/repositories/mongoose/models/PricingMongoose';
+import { createEntityScopedPermission } from './utils/organizations/organizationTestUtils';
 
 dotenv.config();
 
@@ -265,6 +266,40 @@ describe('Pricings API integration', () => {
       expect(response.body.pricings.length).toBe(1);
     });
 
+    it('Return 200 and list with all public a certain private pricings with MEMBER with scoped permissions requesting.', async () => {
+      const { organizationId } = await createTestUser('USER');
+      const { user: member } = await createAndLoginUser('USER');
+
+      await createMembership(member.id, organizationId, 'MEMBER');
+
+      const pricing = await createPricingForOrganization({
+        organizationId,
+        isPrivate: true,
+      });
+
+      await createEntityScopedPermission(member.id, organizationId, pricing.id, 'pricing', {
+        GET: true,
+        PUT: false,
+        DELETE: false,
+        CREATE: false,
+      });
+
+      await createPricingForOrganization({
+        organizationId,
+        isPrivate: true,
+      });
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/pricings/${organizationId}`)
+        .set('Authorization', `Bearer ${member.token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body).toBeDefined();
+      expect(Array.isArray(response.body.pricings)).toBe(true);
+      expect(response.body.pricings.length).toBe(1);
+      expect(response.body.pricings[0].id).toBe(pricing.id);
+    });
+
     it('Return 200 and public/private pricing list with ADMIN user requesting another username.', async () => {
       const { organizationId } = await createTestUser('USER');
       const { user: requester } = await createAndLoginUser('ADMIN');
@@ -330,7 +365,9 @@ describe('Pricings API integration', () => {
         isPrivate: false,
       });
 
-      await createTestCollectionWithPricings({ _organizationId: organizationId }, [pricingInCollection.serviceName]);
+      await createTestCollectionWithPricings({ _organizationId: organizationId }, [
+        pricingInCollection.serviceName,
+      ]);
 
       const response = await request(app)
         .get(`${BASE_PATH}/pricings/${organizationId}?includePricingsInCollection=true`)
@@ -356,7 +393,9 @@ describe('Pricings API integration', () => {
       );
 
       const response = await request(app)
-        .get(`${BASE_PATH}/pricings?collection=${encodeURIComponent(collection.slug || 'ieee-tsc-2025')}`)
+        .get(
+          `${BASE_PATH}/pricings?collection=${encodeURIComponent(collection.slug || 'ieee-tsc-2025')}`
+        )
         .set('Authorization', `Bearer ${(await createAndLoginUser('USER')).user.token}`);
 
       expect(response.status).toBe(200);
@@ -770,7 +809,7 @@ describe('Pricings API integration', () => {
 
   describe('DELETE /api/v1/pricings/:organizationId/:pricingName', () => {
     it('Return 200 and success message when owner deletes own pricing.', async () => {
-      const {user: owner, organizationId} = await createAndLoginUser('USER');
+      const { user: owner, organizationId } = await createAndLoginUser('USER');
 
       const { serviceName } = await createPricingForOrganization({
         organizationId,
@@ -785,7 +824,7 @@ describe('Pricings API integration', () => {
     });
 
     it('Return 200 and success message when ADMIN deletes another user pricing.', async () => {
-      const {organizationId} = await createTestUser('USER');
+      const { organizationId } = await createTestUser('USER');
 
       const { serviceName } = await createPricingForOrganization({
         organizationId,
@@ -800,8 +839,8 @@ describe('Pricings API integration', () => {
     });
 
     it('Return 403 with USER role trying to delete another user pricing.', async () => {
-      const {organizationId} = await createTestUser('USER');
-      const {user: requester} = await createAndLoginUser('USER');
+      const { organizationId } = await createTestUser('USER');
+      const { user: requester } = await createAndLoginUser('USER');
 
       const { serviceName } = await createPricingForOrganization({
         organizationId,
@@ -817,7 +856,7 @@ describe('Pricings API integration', () => {
 
     it('Return 404 with non-existing pricing (must not return 500).', async () => {
       const { organizationId } = await createAndLoginUser('USER');
-      
+
       const response = await request(app)
         .delete(`${BASE_PATH}/pricings/${organizationId}/nonexistent_pricing`)
         .set('Authorization', `Bearer ${adminUser.token}`);

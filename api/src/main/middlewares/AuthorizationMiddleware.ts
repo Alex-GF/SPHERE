@@ -7,7 +7,7 @@ import { handleError } from '../utils/users/helpers';
 import { ApiKey } from '../types/models/User';
 import { ROLE_WEIGHT } from '../types/models/Organization';
 import { EntityType, PermissionType } from '../types/models/EntityPermission';
-import PermissionService from '../services/PermissionService';
+import { PermissionEngine } from '../policies/PermissionEngine';
 import { extractOrganizationIdFromPath } from './AuthenticationMiddleware';
 
 /**
@@ -85,7 +85,7 @@ const authorizationMiddleware = async (req: Request, res: Response, next: NextFu
       const isSelfRemoval =
         method === 'DELETE' &&
         /\/orgs\/[^/]+\/members\/[^/]+$/.test(apiPath) &&
-        req.params.userId === user.id;
+        apiPath.split("/")[apiPath.split('/').length - 1].trim() === user.id;
 
       if (!isSelfRemoval && !matchingRule.allowedOrganizationRoles.includes(user.orgRole)) {
         return res
@@ -223,22 +223,30 @@ async function checkEntityPermissions(
 
   if (segments.includes('permissions')) return null;
 
+  const permissionEngine = new PermissionEngine();
+
   // For POST (creation), check org-scoped CREATE permission
   if (method === 'POST') {
-    // OWNER/ADMIN always bypass CREATE checks
-    if (user.orgRole === 'OWNER' || user.orgRole === 'ADMIN') {
-      return null;
-    }
-
-    const permissionService: PermissionService = container.resolve('permissionService');
-    const hasCreatePermission = await permissionService.hasOrgPermission(
+    const permissionQueries = new (await import('../policies/queries/PermissionQueries')).PermissionQueries();
+    const batchCtx = await permissionQueries.buildBatchContext(
       user.id,
       organizationId,
-      entityType
+      user.orgRole,
+      user.role === 'ADMIN'
     );
 
-    if (!hasCreatePermission) {
-      return `PERMISSION ERROR: You do not have CREATE permission for ${entityType} in this organization`;
+    const result = permissionEngine.evaluate({
+      userId: user.id,
+      organizationId,
+      entityType,
+      action: 'CREATE',
+      userOrgRole: user.orgRole,
+      isGlobalAdmin: user.role === 'ADMIN',
+      orgPermissions: batchCtx.orgPermissions.get(entityType),
+    });
+
+    if (!result.allowed) {
+      return result.reason || `PERMISSION ERROR: You do not have CREATE permission for ${entityType} in this organization`;
     }
 
     return null;
@@ -262,39 +270,61 @@ async function checkEntityPermissions(
     if (!entity) return null;
 
     const isPrivate = entity.private === true;
-    if (!isPrivate) return null;
+    const entityId = entityType === 'pricing'
+      ? (entity.versions?.[0]?._id?.toString() ?? entity.versions?.[0]?.id)
+      : (entity._id?.toString() ?? entity.id);
+
+    const result = permissionEngine.evaluate({
+      userId: user.id,
+      organizationId,
+      entityType,
+      entityId,
+      action: 'GET',
+      isPrivate,
+      userOrgRole: user.orgRole,
+      isGlobalAdmin: user.role === 'ADMIN',
+    });
+
+    if (!result.allowed) {
+      return result.reason || `PERMISSION ERROR: You do not have GET permission on this ${entityType}`;
+    }
+
+    return null;
   }
 
-  const permissionService: PermissionService = container.resolve('permissionService');
-
   let entityId: string | null = null;
+  let isPrivate = false;
   if (entityType === 'pricing') {
     const pricingRepo = container.resolve('pricingRepository');
     const pricing = await pricingRepo.findOne(entityName, organizationId, { includePrivate: true });
     if (pricing && pricing.versions && pricing.versions.length > 0) {
       entityId = pricing.versions[0]._id?.toString() ?? pricing.versions[0].id;
+      isPrivate = pricing.private === true;
     }
   } else {
     const collectionRepo = container.resolve('pricingCollectionRepository');
     const collection = await collectionRepo.findByOrganizationAndName(organizationId, entityName);
     if (collection) {
       entityId = collection._id?.toString() ?? (collection as any).id;
+      isPrivate = collection.private === true;
     }
   }
 
   if (!entityId) return null;
 
-  const hasPermission = await permissionService.hasPermission(
-    user.id,
+  const result = permissionEngine.evaluate({
+    userId: user.id,
     organizationId,
     entityType,
     entityId,
-    permissionType,
-    user.orgRole
-  );
+    action: permissionType,
+    isPrivate,
+    userOrgRole: user.orgRole,
+    isGlobalAdmin: user.role === 'ADMIN',
+  });
 
-  if (!hasPermission) {
-    return `PERMISSION ERROR: You do not have ${permissionType} permission on this ${entityType}`;
+  if (!result.allowed) {
+    return result.reason || `PERMISSION ERROR: You do not have ${permissionType} permission on this ${entityType}`;
   }
 
   return null;

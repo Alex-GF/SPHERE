@@ -1592,7 +1592,7 @@ describe('Organizations API integration', () => {
     });
 
     it('returns 200 when MEMBER removes themselves (self-removal / leave)', async () => {
-      const { user: owner, organizationId } = await createAndLoginUser('USER');
+      const { organizationId } = await createAndLoginUser('USER');
       const { user: member } = await createAndLoginUser('USER');
       await createMembership(member.id, organizationId, 'MEMBER');
 

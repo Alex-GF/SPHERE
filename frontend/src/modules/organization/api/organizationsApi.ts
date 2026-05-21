@@ -316,6 +316,26 @@ export function useOrganizationsApi() {
     if (!response.ok) throw new Error(body.error ?? 'Failed to remove permission');
   }, [fetchWithInterceptor, token]);
 
+  const USERS_BASE_PATH = import.meta.env.VITE_API_URL + '/users';
+
+  const getUserAccessiblePricings = useCallback(async (limit = 500): Promise<{ pricings: Array<{ name: string; permissions: { GET: boolean }; organization: { id: string; role: string } }>; total: number }> => {
+    const response = await fetchWithInterceptor(`${USERS_BASE_PATH}/me/pricings?limit=${limit}`, {
+      method: 'GET',
+      headers,
+    });
+    if (!response.ok) throw new Error('Failed to fetch accessible pricings');
+    return response.json();
+  }, [fetchWithInterceptor, token]);
+
+  const getUserAccessibleCollections = useCallback(async (limit = 500): Promise<{ collections: Array<{ name: string; permissions: { GET: boolean }; organization: { id: string; role: string } }>; total: number }> => {
+    const response = await fetchWithInterceptor(`${USERS_BASE_PATH}/me/collections?limit=${limit}`, {
+      method: 'GET',
+      headers,
+    });
+    if (!response.ok) throw new Error('Failed to fetch accessible collections');
+    return response.json();
+  }, [fetchWithInterceptor, token]);
+
   const inviteUsers = useCallback(async (orgId: string, userIds: string[]): Promise<OrganizationInvitation> => {
     const response = await fetchWithInterceptor(`${ORGS_BASE_PATH}/${orgId}/invitations/invite-users`, {
       method: 'POST',
@@ -349,6 +369,8 @@ export function useOrganizationsApi() {
     getOrgPermissions,
     setOrgPermission,
     removeOrgPermission,
+    getUserAccessiblePricings,
+    getUserAccessibleCollections,
     inviteUsers,
   };
 }

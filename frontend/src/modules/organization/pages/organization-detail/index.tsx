@@ -50,6 +50,10 @@ export default function OrganizationDetailPage() {
   const [collectionsTotal, setCollectionsTotal] = useState(0);
   const [collectionPage, setCollectionPage] = useState(1);
   const [collectionSearch, setCollectionSearch] = useState('');
+  const [allOrgPricings, setAllOrgPricings] = useState<OrgPricing[]>([]);
+  const [allOrgCollections, setAllOrgCollections] = useState<OrgCollection[]>([]);
+  const [accessiblePricingNames, setAccessiblePricingNames] = useState<Set<string> | null>(null);
+  const [accessibleCollectionNames, setAccessibleCollectionNames] = useState<Set<string> | null>(null);
   const [childAccessMap, setChildAccessMap] = useState<Record<string, boolean>>({});
   const [hierarchyTree, setHierarchyTree] = useState<TreeNode | null>(null);
   const [activeTab, setActiveTab] = useState<Tab>('overview');
@@ -68,6 +72,8 @@ export default function OrganizationDetailPage() {
     listInvitations,
     getOrgPricings,
     getOrgCollections,
+    getUserAccessiblePricings,
+    getUserAccessibleCollections,
     removeMember,
   } = useOrganizationsApi();
 
@@ -106,19 +112,52 @@ export default function OrganizationDetailPage() {
         userRole === 'OWNER' || userRole === 'ADMIN' ? await listInvitations(organizationId) : [];
       setInvitations(invitationsData);
 
-      const pricingsData = await getOrgPricings(organizationId).catch(() => ({
-        pricings: [],
-        total: 0,
-      }));
-      setPricings(pricingsData.pricings);
-      setPricingsTotal(pricingsData.total);
+      if (userRole === 'MEMBER') {
+        const [accessiblePricingsResult, allOrgPricingsResult, accessibleCollectionsResult, allOrgCollectionsResult] = await Promise.all([
+          getUserAccessiblePricings().catch(() => ({ pricings: [], total: 0 })),
+          getOrgPricings(organizationId).catch(() => ({ pricings: [], total: 0 })),
+          getUserAccessibleCollections().catch(() => ({ collections: [], total: 0 })),
+          getOrgCollections(organizationId).catch(() => ({ collections: [], total: 0 })),
+        ]);
 
-      const collectionsData = await getOrgCollections(organizationId).catch(() => ({
-        collections: [],
-        total: 0,
-      }));
-      setCollections(collectionsData.collections);
-      setCollectionsTotal(collectionsData.total);
+        const pricingNames = new Set(
+          accessiblePricingsResult.pricings
+            .filter(p => p.organization.id === organizationId)
+            .map(p => p.name)
+        );
+        const collectionNames = new Set(
+          accessibleCollectionsResult.collections
+            .filter(c => c.organization.id === organizationId)
+            .map(c => c.name)
+        );
+
+        const filteredPricings = allOrgPricingsResult.pricings.filter(p => pricingNames.has(p.name));
+        const filteredCollections = allOrgCollectionsResult.collections.filter(c => collectionNames.has(c.name));
+
+        setAllOrgPricings(allOrgPricingsResult.pricings);
+        setAccessiblePricingNames(pricingNames);
+        setPricings(filteredPricings);
+        setPricingsTotal(filteredPricings.length);
+
+        setAllOrgCollections(allOrgCollectionsResult.collections);
+        setAccessibleCollectionNames(collectionNames);
+        setCollections(filteredCollections);
+        setCollectionsTotal(filteredCollections.length);
+      } else {
+        const pricingsData = await getOrgPricings(organizationId).catch(() => ({
+          pricings: [],
+          total: 0,
+        }));
+        setPricings(pricingsData.pricings);
+        setPricingsTotal(pricingsData.total);
+
+        const collectionsData = await getOrgCollections(organizationId).catch(() => ({
+          collections: [],
+          total: 0,
+        }));
+        setCollections(collectionsData.collections);
+        setCollectionsTotal(collectionsData.total);
+      }
 
       const children = orgData.subOrganizations ?? [];
       if (userRole === 'OWNER' || userRole === 'ADMIN') {
@@ -143,7 +182,7 @@ export default function OrganizationDetailPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [organizationId, authUser.user?.id]);
+  }, [organizationId, authUser.user?.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* ─── Hierarchy tree ─── */
   const buildHierarchyTree = useCallback(async () => {
@@ -274,39 +313,63 @@ export default function OrganizationDetailPage() {
   const fetchPricings = useCallback(
     async (page: number, search: string) => {
       if (!org) return;
-      try {
-        const filters: Record<string, string> = {
-          limit: String(PER_PAGE),
-          offset: String((page - 1) * PER_PAGE),
-        };
-        if (search) filters.name = search;
-        const data = await getOrgPricings(org.id, filters);
-        setPricings(data.pricings);
-        setPricingsTotal(data.total);
-      } catch {
-        /* silently ignore */
+
+      if (myRole === 'MEMBER' && accessiblePricingNames !== null) {
+        let filtered = allOrgPricings.filter(p => accessiblePricingNames.has(p.name));
+        if (search) {
+          const q = search.toLowerCase();
+          filtered = filtered.filter(p => p.name.toLowerCase().includes(q));
+        }
+        setPricingsTotal(filtered.length);
+        const start = (page - 1) * PER_PAGE;
+        setPricings(filtered.slice(start, start + PER_PAGE));
+      } else {
+        try {
+          const filters: Record<string, string> = {
+            limit: String(PER_PAGE),
+            offset: String((page - 1) * PER_PAGE),
+          };
+          if (search) filters.name = search;
+          const data = await getOrgPricings(org.id, filters);
+          setPricings(data.pricings);
+          setPricingsTotal(data.total);
+        } catch {
+          /* silently ignore */
+        }
       }
     },
-    [org, getOrgPricings]
+    [org, myRole, accessiblePricingNames, allOrgPricings, getOrgPricings]
   );
 
   const fetchCollections = useCallback(
     async (page: number, search: string) => {
       if (!org) return;
-      try {
-        const filters: Record<string, string> = {
-          limit: String(PER_PAGE),
-          offset: String((page - 1) * PER_PAGE),
-        };
-        if (search) filters.name = search;
-        const data = await getOrgCollections(org.id, filters);
-        setCollections(data.collections);
-        setCollectionsTotal(data.total);
-      } catch {
-        /* silently ignore */
+
+      if (myRole === 'MEMBER' && accessibleCollectionNames !== null) {
+        let filtered = allOrgCollections.filter(c => accessibleCollectionNames.has(c.name));
+        if (search) {
+          const q = search.toLowerCase();
+          filtered = filtered.filter(c => c.name.toLowerCase().includes(q));
+        }
+        setCollectionsTotal(filtered.length);
+        const start = (page - 1) * PER_PAGE;
+        setCollections(filtered.slice(start, start + PER_PAGE));
+      } else {
+        try {
+          const filters: Record<string, string> = {
+            limit: String(PER_PAGE),
+            offset: String((page - 1) * PER_PAGE),
+          };
+          if (search) filters.name = search;
+          const data = await getOrgCollections(org.id, filters);
+          setCollections(data.collections);
+          setCollectionsTotal(data.total);
+        } catch {
+          /* silently ignore */
+        }
       }
     },
-    [org, getOrgCollections]
+    [org, myRole, accessibleCollectionNames, allOrgCollections, getOrgCollections]
   );
 
   /* ─── Effects ─── */

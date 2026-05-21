@@ -439,6 +439,74 @@ describe('Entity Permissions API integration', () => {
 
       expect(response.status).toBe(403);
     });
+
+    it('should include private pricing in user access when MEMBER has explicit GET permission', async () => {
+      const { organizationId } = await createAndLoginUser('USER');
+      const { user: member } = await createAndLoginUser('USER');
+      await createMembership(member.id, organizationId, 'MEMBER');
+
+      const privatePricing = await createPricingForOrganization({
+        organizationId,
+        isPrivate: true,
+      });
+
+      await createEntityPermission(member.id, organizationId, 'pricing', privatePricing.response.body.id, {
+        GET: true, PUT: false, DELETE: false, CREATE: false,
+      });
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/users/me/pricings`)
+        .set('Authorization', `Bearer ${member.token}`);
+
+      expect(response.status).toBe(200);
+      const returnedPricing = response.body.pricings.find(
+        (p: any) => p.name === privatePricing.serviceName
+      );
+      expect(returnedPricing).toBeDefined();
+      expect(returnedPricing.permissions.GET).toBe(true);
+    });
+
+    it('should exclude private pricing from user access when MEMBER lacks GET permission', async () => {
+      const { organizationId } = await createAndLoginUser('USER');
+      const { user: member } = await createAndLoginUser('USER');
+      await createMembership(member.id, organizationId, 'MEMBER');
+
+      const privatePricing = await createPricingForOrganization({
+        organizationId,
+        isPrivate: true,
+      });
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/users/me/pricings`)
+        .set('Authorization', `Bearer ${member.token}`);
+
+      expect(response.status).toBe(200);
+      const returnedPricing = response.body.pricings.find(
+        (p: any) => p.name === privatePricing.serviceName
+      );
+      expect(returnedPricing).toBeUndefined();
+    });
+
+    it('should include public pricing in user access for MEMBER without explicit GET permission', async () => {
+      const { user: owner, organizationId } = await createAndLoginUser('USER');
+      const { user: member } = await createAndLoginUser('USER');
+      await createMembership(member.id, organizationId, 'MEMBER');
+
+      const publicPricing = await createPricingForOrganization({
+        organizationId,
+        isPrivate: false,
+      });
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/users/me/pricings`)
+        .set('Authorization', `Bearer ${member.token}`);
+
+      expect(response.status).toBe(200);
+      const returnedPricing = response.body.pricings.find(
+        (p: any) => p.name === publicPricing.serviceName
+      );
+      expect(returnedPricing).toBeDefined();
+    });
   });
 
   describe('GET /api/v1/users/:userId/collections', () => {
@@ -493,6 +561,74 @@ describe('Entity Permissions API integration', () => {
       expect(returnedCollection.organization.name).toBeDefined();
       expect(typeof returnedCollection.organization.name).toBe('string');
       expect(returnedCollection.organization.name.length).toBeGreaterThan(0);
+    });
+
+    it('should include private collection in user access when MEMBER has explicit GET permission', async () => {
+      const { user: owner, organizationId } = await createAndLoginUser('USER');
+      const { user: member } = await createAndLoginUser('USER');
+      await createMembership(member.id, organizationId, 'MEMBER');
+
+      const privateCollection = await createTestCollection({
+        _organizationId: organizationId,
+        private: true,
+      });
+
+      await createEntityPermission(member.id, organizationId, 'collection', privateCollection.id, {
+        GET: true, PUT: false, DELETE: false, CREATE: false,
+      });
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/users/me/collections`)
+        .set('Authorization', `Bearer ${member.token}`);
+
+      expect(response.status).toBe(200);
+      const returnedCollection = response.body.collections.find(
+        (c: any) => c.name === privateCollection.name
+      );
+      expect(returnedCollection).toBeDefined();
+      expect(returnedCollection.permissions.GET).toBe(true);
+    });
+
+    it('should exclude private collection from user access when MEMBER lacks GET permission', async () => {
+      const { user: owner, organizationId } = await createAndLoginUser('USER');
+      const { user: member } = await createAndLoginUser('USER');
+      await createMembership(member.id, organizationId, 'MEMBER');
+
+      const privateCollection = await createTestCollection({
+        _organizationId: organizationId,
+        private: true,
+      });
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/users/me/collections`)
+        .set('Authorization', `Bearer ${member.token}`);
+
+      expect(response.status).toBe(200);
+      const returnedCollection = response.body.collections.find(
+        (c: any) => c.name === privateCollection.name
+      );
+      expect(returnedCollection).toBeUndefined();
+    });
+
+    it('should include public collection in user access for MEMBER without explicit GET permission', async () => {
+      const { user: owner, organizationId } = await createAndLoginUser('USER');
+      const { user: member } = await createAndLoginUser('USER');
+      await createMembership(member.id, organizationId, 'MEMBER');
+
+      const publicCollection = await createTestCollection({
+        _organizationId: organizationId,
+        private: false,
+      });
+
+      const response = await request(app)
+        .get(`${BASE_PATH}/users/me/collections`)
+        .set('Authorization', `Bearer ${member.token}`);
+
+      expect(response.status).toBe(200);
+      const returnedCollection = response.body.collections.find(
+        (c: any) => c.name === publicCollection.name
+      );
+      expect(returnedCollection).toBeDefined();
     });
   });
 

@@ -121,6 +121,7 @@ class PricingCollectionRepository extends RepositoryBase {
             name: 1,
             slug: 1,
             numberOfPricings: 1,
+            private: 1,
           },
         },
       ];

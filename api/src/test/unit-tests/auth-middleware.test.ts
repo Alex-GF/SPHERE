@@ -136,7 +136,6 @@ describe('Auth Middleware - Real Execution Tests', () => {
       organizationService: mockOrgService,
       permissionService: {
         hasPermission: vi.fn().mockResolvedValue(true),
-        hasOrgPermission: vi.fn().mockResolvedValue(true),
       },
       pricingRepository: {},
       pricingCollectionRepository: {},

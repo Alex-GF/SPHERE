@@ -133,7 +133,7 @@ const computeFiltersDataAggregator = {
     pricings: [
       {
         $project: {
-          _id: 0,
+          id: { $toString: '$_id' },
           name: 1,
           organization: 1,
           collection: {
@@ -144,6 +144,7 @@ const computeFiltersDataAggregator = {
           version: 1,
           createdAt: 1,
           currency: 1,
+          private: 1,
           analytics: {
             configurationSpaceSize: 1,
             minSubscriptionPrice: 1,

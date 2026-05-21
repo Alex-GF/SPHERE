@@ -30,7 +30,7 @@ class PermissionService {
    * OWNER/ADMIN always get full permissions.
    * For MEMBERs, looks up EntityPermission records.
    */
-  async getEffectivePermissions(
+  private async getEffectivePermissions(
     userId: string,
     organizationId: string,
     entityType: EntityType,
@@ -72,53 +72,6 @@ class PermissionService {
 
     const perms = await this.getEffectivePermissions(userId, organizationId, entityType, entityId, userOrgRole);
     return perms[permission] === true;
-  }
-
-  /**
-   * Checks if a user has an org-scoped permission (e.g., CREATE) for an entity type.
-   * OWNER/ADMIN always return true.
-   * For MEMBERs, looks up the EntityPermission record with entityId=null.
-   */
-  async hasOrgPermission(
-    userId: string,
-    organizationId: string,
-    entityType: EntityType,
-    userOrgRole?: OrgRole | null
-  ): Promise<boolean> {
-    if (userOrgRole === 'OWNER' || userOrgRole === 'ADMIN') {
-      return true;
-    }
-
-    const permission = await this.entityPermissionRepository.findByUserAndOrgScopedType(
-      userId,
-      organizationId,
-      entityType
-    );
-
-    if (!permission) {
-      return false;
-    }
-
-    return permission.permissions.CREATE === true;
-  }
-
-  /**
-   * Checks if a user can access an entity (GET permission check only for private entities).
-   * Public entities are always accessible.
-   */
-  async canAccessEntity(
-    userId: string,
-    organizationId: string,
-    entityType: EntityType,
-    entityId: string,
-    isPrivate: boolean,
-    userOrgRole?: OrgRole | null
-  ): Promise<boolean> {
-    if (!isPrivate) {
-      return true;
-    }
-
-    return this.hasPermission(userId, organizationId, entityType, entityId, 'GET', userOrgRole);
   }
 
   /**
@@ -188,11 +141,11 @@ class PermissionService {
     }
 
     const allPricings: any[] = [];
-    let totalCount = 0;
 
     for (const orgId of orgIds) {
       const membership = memberships.find((m: any) => (m._organizationId?.toString() ?? m._organizationId) === orgId);
       const orgRole = membership?.role as OrgRole | undefined;
+      const isOwnerOrAdmin = reqUser?.role === 'ADMIN' || orgRole === 'OWNER' || orgRole === 'ADMIN';
 
       const orgQueryParams: PricingIndexQueryParams = {
         ...queryParams,
@@ -200,26 +153,27 @@ class PermissionService {
         includePricingsInCollection: true,
       };
 
-      const includePrivate = reqUser?.role === 'ADMIN' || orgRole === 'OWNER' || orgRole === 'ADMIN';
-      const result = await this.pricingRepository.findAll(orgQueryParams, includePrivate);
+      const result = await this.pricingRepository.findAll(orgQueryParams, true);
 
       if (result && result.pricings) {
         for (const pricing of result.pricings) {
+          const entityId = pricing._id?.toString() ?? pricing.id;
           const permissions = await this.getEffectivePermissions(
             userId,
             orgId,
             'pricing',
-            pricing.id,
+            entityId,
             orgRole
           );
 
-          allPricings.push({
-            ...pricing,
-            permissions,
-            organization: { ...pricing.organization, id: orgId, role: orgRole },
-          });
+          if (isOwnerOrAdmin || !pricing.private || permissions.GET) {
+            allPricings.push({
+              ...pricing,
+              permissions,
+              organization: { ...pricing.organization, id: orgId, role: orgRole },
+            });
+          }
         }
-        totalCount += result.total ?? result.pricings.length;
       }
     }
 
@@ -242,7 +196,7 @@ class PermissionService {
     const limit = queryParams.limit || 10;
     const paginated = allPricings.slice(offset, offset + limit);
 
-    return { pricings: paginated, total: totalCount };
+    return { pricings: paginated, total: allPricings.length };
   }
 
   /**
@@ -262,37 +216,38 @@ class PermissionService {
     }
 
     const allCollections: any[] = [];
-    let totalCount = 0;
 
     for (const orgId of orgIds) {
       const membership = memberships.find((m: any) => (m._organizationId?.toString() ?? m._organizationId) === orgId);
       const orgRole = membership?.role as OrgRole | undefined;
+      const isOwnerOrAdmin = reqUser?.role === 'ADMIN' || orgRole === 'OWNER' || orgRole === 'ADMIN';
 
       const orgQueryParams: CollectionIndexQueryParams = {
         ...queryParams,
         organizationIds: [orgId],
       };
 
-      const includePrivate = reqUser?.role === 'ADMIN' || orgRole === 'OWNER' || orgRole === 'ADMIN';
-      const result = await this.pricingCollectionRepository.findAll(orgQueryParams, includePrivate);
+      const result = await this.pricingCollectionRepository.findAll(orgQueryParams, true);
 
       if (result && result.collections) {
         for (const collection of result.collections) {
+          const entityId = (collection as any)._id?.toString() ?? (collection as any).id;
           const permissions = await this.getEffectivePermissions(
             userId,
             orgId,
             'collection',
-            (collection as any).id,
+            entityId,
             orgRole
           );
 
-          allCollections.push({
-            ...collection,
-            permissions,
-            organization: { ...(collection as any).organization, id: orgId, role: orgRole },
-          });
+          if (isOwnerOrAdmin || !(collection as any).private || permissions.GET) {
+            allCollections.push({
+              ...collection,
+              permissions,
+              organization: { ...(collection as any).organization, id: orgId, role: orgRole },
+            });
+          }
         }
-        totalCount += result.total ?? result.collections.length;
       }
     }
 
@@ -312,7 +267,7 @@ class PermissionService {
     const limit = parseInt(queryParams.limit as string) || 10;
     const paginated = allCollections.slice(offset, offset + limit);
 
-    return { collections: paginated, total: totalCount };
+    return { collections: paginated, total: allCollections.length };
   }
 
   /**
@@ -376,20 +331,6 @@ class PermissionService {
     );
 
     return permissions;
-  }
-
-  /**
-   * Removes all permissions for an entity (used when deleting a pricing/collection).
-   */
-  async removeEntityPermissions(entityType: EntityType, entityId: string): Promise<void> {
-    return this.entityPermissionRepository.destroyByEntity(entityType, entityId);
-  }
-
-  /**
-   * Removes all permissions for a user in an organization.
-   */
-  async removeUserOrgPermissions(userId: string, organizationId: string): Promise<void> {
-    return this.entityPermissionRepository.destroyByUserAndOrganization(userId, organizationId);
   }
 }
 

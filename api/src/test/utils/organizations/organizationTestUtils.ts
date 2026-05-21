@@ -266,3 +266,28 @@ export const createOrgScopedPermission = async (
     throw new Error('Failed to create org-scoped permission');
   }
 };
+
+/**
+ * Creates an entity-scoped EntityPermission (entityId=null) for a user.
+ * Used to grant/revoke CREATE permissions at the organization level.
+ */
+export const createEntityScopedPermission = async (
+  userId: string,
+  organizationId: string,
+  entityId: string,
+  entityType: EntityType,
+  permissions: EntityPermissions
+): Promise<void> => {
+  const permission = new EntityPermissionMongoose({
+    _userId: new mongoose.Types.ObjectId(userId),
+    _organizationId: new mongoose.Types.ObjectId(organizationId),
+    entityType,
+    entityId: entityId,
+    permissions,
+  });
+
+  const saved = await permission.save();
+  if (!saved) {
+    throw new Error('Failed to create entity-scoped permission');
+  }
+};
