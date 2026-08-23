@@ -15,16 +15,27 @@ import { useEditorValue } from '../../hooks/useEditorValue';
 import { parseEncodedYamlToStringYaml } from '../../services/export.service';
 import { useCacheApi } from '../../components/pricing-renderer/api/cacheApi';
 import { TEMPLATE_PETCLINIC_PRICING } from './templates/petclinic';
+import { PRICING2YAML_SNIPPETS } from './templates/snippets';
 import EditorSkeleton from '../../../core/components/skeletons/editor-skeleton';
 import type { PricingDraft } from '../../services/pricing2yaml';
 import ProblemsPanel from '../../components/problems-panel';
+import TemplatesMenu from '../../components/templates-menu';
 import { usePricing2YamlLinter } from '../../hooks/usePricing2YamlLinter';
+import { usePricing2YamlSnippets } from '../../hooks/usePricing2YamlSnippets';
+import { formatShortcut } from '../../services/pricing2yaml/snippets';
 import type { LintDiagnostic, LintSeverity } from '../../services/pricing2yaml/linter';
 
 type SyntaxVersion = '3.0' | '3.1';
 
 /** Namespace under which the linter owns its markers, so it never clears anyone else's. */
 const LINTER_MARKER_OWNER = 'pricing2yaml-linter';
+
+/** Shortcut advertised next to the templates menu, taken from the catalog itself. */
+const SNIPPET_HINT_SHORTCUT = (() => {
+  const shortcut = PRICING2YAML_SNIPPETS.find(snippet => snippet.shortcut)?.shortcut;
+
+  return shortcut ? formatShortcut(shortcut) : '';
+})();
 
 function normalizeSyntaxVersion(value?: string): SyntaxVersion {
   return value === '3.1' ? '3.1' : '3.0';
@@ -70,6 +81,7 @@ export default function EditorPage() {
   const [monacoInstance, setMonacoInstance] = useState<Monaco | null>(null);
   const [codeEditor, setCodeEditor] = useState<monaco.editor.IStandaloneCodeEditor | null>(null);
   const lint = usePricing2YamlLinter(editorValue);
+  const insertSnippet = usePricing2YamlSnippets(codeEditor, monacoInstance, PRICING2YAML_SNIPPETS);
 
   const timeoutRef = useRef<any>(null);
   const requestIdRef = useRef(0);
@@ -314,6 +326,20 @@ export default function EditorPage() {
             className="grid h-full w-full gap-4 bg-slate-300 lg:grid-cols-2"
           >
             <div className="relative flex h-full min-h-0 flex-col">
+              <div className="flex shrink-0 items-center justify-between gap-2 border-b border-white/10 bg-tp-surface-code px-3 py-1.5">
+                <TemplatesMenu
+                  snippets={PRICING2YAML_SNIPPETS}
+                  onSelect={insertSnippet}
+                  disabled={!codeEditor}
+                />
+                <p className="hidden text-[10px] text-white/30 lg:block">
+                  Type <span className="font-mono text-white/45">feature</span>,{' '}
+                  <span className="font-mono text-white/45">plan</span>… in the editor, or press{' '}
+                  <kbd className="rounded border border-white/10 bg-white/5 px-1 py-0.5 font-mono text-[9px] text-white/45">
+                    {SNIPPET_HINT_SHORTCUT}
+                  </kbd>
+                </p>
+              </div>
               <div className="min-h-0 flex-1">
                 <Editor
                   height="100%"
