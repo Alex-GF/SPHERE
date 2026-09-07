@@ -206,6 +206,17 @@ export function useUserSettingsApi() {
     return res.json();
   }
 
+  async function deleteAccount(username: string): Promise<{ message: string }> {
+    const res = await fetchWithInterceptor(`${BASE_PATH}/users/${username}`, {
+      method: 'DELETE',
+    });
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new Error(body.error || 'Failed to delete account');
+    }
+    return res.json();
+  }
+  
   async function changePassword(data: { currentPassword: string; newPassword: string }): Promise<AuthenticationMethods> {
     const res = await fetchWithInterceptor(`${BASE_PATH}/users/me/password`, {
       method: 'PUT',
@@ -232,6 +243,7 @@ export function useUserSettingsApi() {
     initiateIdentityLink,
     unlinkIdentity,
     setInitialPassword,
+    deleteAccount,
     changePassword,
   };
 }
