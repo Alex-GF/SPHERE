@@ -314,6 +314,76 @@ paths:
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
 
+  /users/password/forgot:
+    post:
+      summary: Request a password reset email
+      description: Always returns the same response to prevent account enumeration. Delivery is limited to one request per account per minute. SSO-only accounts (no local password) never receive an email.
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [loginField]
+              properties:
+                loginField:
+                  type: string
+                  description: Email address or username
+      responses:
+        '202':
+          description: The request was accepted whether or not a matching account exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+
+  /users/password/reset:
+    post:
+      summary: Reset a password using a reset token
+      description: Consumes a single-use password reset token received by email. Tokens expire after 1 hour.
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [token, password]
+              properties:
+                token:
+                  type: string
+                  maxLength: 256
+                password:
+                  type: string
+                  minLength: 8
+                  maxLength: 128
+      responses:
+        '200':
+          description: Password reset successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '422':
+          description: The token is invalid, expired, or the password does not meet requirements
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /users:
     get:
       summary: Get all users or search users
@@ -602,6 +672,49 @@ paths:
           description: The account already has a local password
         '422':
           description: Password validation failed
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      summary: Change the local password
+      description: Replaces an existing local password. The current password must be provided and correctly verified before the new one is applied.
+      tags:
+        - Users
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [currentPassword, newPassword]
+              properties:
+                currentPassword:
+                  type: string
+                  format: password
+                newPassword:
+                  type: string
+                  format: password
+                  minLength: 8
+                  maxLength: 128
+      responses:
+        '200':
+          description: Password changed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationMethods'
+        '401':
+          description: A user session is required
+        '409':
+          description: The account does not have a local password yet
+        '422':
+          description: The current password is incorrect, or the new password is invalid
         default:
           description: Unexpected error
           content:
@@ -4123,12 +4236,12 @@ paths:
                 $ref: '#/components/schemas/Error'
 
     put:
-      summary: Create or update entity permissions in bulk
+      summary: Create, update, or remove entity permissions in bulk
       description: |
-        Creates or updates up to 100 entity permission records for an organization in
-        a single request. A permission is matched by the combination of `userId`,
-        `entityType`, and `entitySlug`; existing records are updated and missing records
-        are created.
+        Creates, updates, or removes up to 100 entity permission records for an
+        organization in a single request. A permission is matched by the combination of
+        `userId`, `entityType`, and `entitySlug`; existing records are updated and missing
+        records are created. Existing records can be removed with `removePermissionIds`.
 
         All referenced pricing and collection slugs are validated before the bulk write
         starts. Duplicate targets in the same request are rejected. Only organization
@@ -4143,7 +4256,7 @@ paths:
         $ref: '#/components/requestBodies/BulkSetPermissionsRequest'
       responses:
         '200':
-          description: Permissions created or updated successfully
+          description: Permissions created, updated, or removed successfully
           content:
             application/json:
               schema:
@@ -5877,6 +5990,7 @@ components:
       required:
         - created
         - updated
+        - deleted
         - permissions
       properties:
         created:
@@ -5888,6 +6002,11 @@ components:
           type: integer
           minimum: 0
           description: Number of existing permission records updated
+          example: 1
+        deleted:
+          type: integer
+          minimum: 0
+          description: Number of existing permission records removed
           example: 1
         permissions:
           type: array
@@ -6560,21 +6679,26 @@ components:
                 $ref: '#/components/schemas/EntityPermissions'
 
     BulkSetPermissionsRequest:
-      description: Request to create or update entity permissions in bulk
+      description: Request to create, update, or remove entity permissions in bulk
       required: true
       content:
         application/json:
           schema:
             type: object
-            required:
-              - permissions
             properties:
               permissions:
                 type: array
-                minItems: 1
                 maxItems: 100
                 items:
                   $ref: '#/components/schemas/BulkPermissionItem'
+              removePermissionIds:
+                type: array
+                maxItems: 100
+                uniqueItems: true
+                description: IDs of existing permission records to remove
+                items:
+                  type: string
+                  pattern: '^[a-f0-9]{24}$'
 
   responses:
     PricingList:
