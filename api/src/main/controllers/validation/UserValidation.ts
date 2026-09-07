@@ -176,6 +176,23 @@ const setInitialPassword = [
     .withMessage('No spaces are allowed in the password'),
 ];
 
+const changePassword = [
+  check('currentPassword')
+    .exists()
+    .withMessage('Your current password must be provided')
+    .isString()
+    .withMessage('The current password must be a string'),
+  check('newPassword')
+    .exists()
+    .withMessage('A new password must be provided')
+    .isString()
+    .withMessage('The new password must be a string')
+    .isLength({ min: 8, max: 128 })
+    .withMessage('The new password must have between 8 and 128 characters')
+    .custom(value => !/\s/.test(value))
+    .withMessage('No spaces are allowed in the password'),
+];
+
 const forgotPassword = [
   check('loginField')
     .exists()
@@ -213,6 +230,7 @@ export {
   verifyEmail,
   setInitialPassword,
   resendEmailVerification,
+  changePassword,
   forgotPassword,
   resetPassword,
 };

@@ -99,6 +99,11 @@ const loadFileRoutes = function (app: express.Application) {
       UserValidation.setInitialPassword,
       handleValidation,
       identityController.setPassword
+    )
+    .put(
+      UserValidation.changePassword,
+      handleValidation,
+      identityController.changePassword
     );
 
 
