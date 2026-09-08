@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "SPHERE · Runtime Architecture",
+    "output": "sphere-architecture.html",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/Alex-GF/MASSP",
+      "provider": "github",
+      "link_mode": "web",
+      "revision": "8d4bdd7d6a4188c1ef0aa9f03d6f95314be436ff"
+    },
+    "views": [
+      {
+        "id": "request-path",
+        "label": "Request path",
+        "focus": ["user", "frontend", "api", "mongo"],
+        "note": "Follow a user request from the Vite frontend through the Express API to durable state."
+      },
+      {
+        "id": "cache-and-auth",
+        "label": "Cache & auth",
+        "focus": ["frontend", "api", "redis", "mongo"],
+        "note": "See the API boundary, authentication flow, and Redis-backed acceleration around MongoDB."
+      },
+      {
+        "id": "analytics",
+        "label": "Pricing analytics",
+        "focus": ["api", "minizinc", "mongo"],
+        "note": "Trace how pricing analytics leaves the API and returns optimization results."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "user",
+      "type": "external",
+      "label": "User",
+      "sublabel": "Browser",
+      "pos": [40, 320],
+      "size": [140, 68],
+      "sources": [{ "path": "frontend/src/main.tsx" }]
+    },
+    {
+      "id": "frontend",
+      "type": "frontend",
+      "label": "SPHERE Frontend",
+      "sublabel": "React + Vite + TailwindCSS",
+      "tag": "web client",
+      "pos": [250, 320],
+      "size": [190, 72],
+      "sources": [{ "path": "frontend/src/App.tsx" }]
+    },
+    {
+      "id": "api",
+      "type": "backend",
+      "label": "SPHERE API",
+      "sublabel": "Express + TypeScript",
+      "tag": "HTTP : API",
+      "pos": [520, 320],
+      "size": [180, 72],
+      "sources": [
+        { "path": "api/src/main/backend.ts" },
+        { "path": "api/src/main/routes/index.ts" },
+        { "path": "api/src/main/controllers/PricingController.ts" }
+      ]
+    },
+    {
+      "id": "redis",
+      "type": "database",
+      "label": "Redis",
+      "sublabel": "cache layer",
+      "tag": "fast path",
+      "pos": [520, 145],
+      "size": [180, 68],
+      "sources": [{ "path": "api/src/main/config/redis.ts" }]
+    },
+    {
+      "id": "mongo",
+      "type": "database",
+      "label": "MongoDB",
+      "sublabel": "document persistence",
+      "tag": "system of record",
+      "pos": [790, 320],
+      "size": [190, 72],
+      "sources": [
+        { "path": "api/src/main/repositories/mongoose/PricingRepository.ts" },
+        { "path": "api/src/main/migrations/mongo/1739210427506-seed-database.ts" },
+        { "path": "api/src/main/database/seeders/mongo/seeder.ts" }
+      ]
+    },
+    {
+      "id": "minizinc",
+      "type": "cloud",
+      "label": "MiniZinc + Gecode",
+      "sublabel": "pricing optimization",
+      "tag": "analytics engine",
+      "pos": [790, 505],
+      "size": [190, 72],
+      "sources": [{ "path": "api/src/main/services/PricingService.ts" }]
+    },
+    {
+      "id": "auth",
+      "type": "security",
+      "label": "Auth & permissions",
+      "sublabel": "tokens + authorization",
+      "tag": "protected API",
+      "pos": [250, 145],
+      "size": [190, 68],
+      "sources": [
+        { "path": "api/src/main/config/permissions.ts" },
+        { "path": "api/src/main/middlewares/AuthMiddleware.ts" }
+      ]
+    },
+    {
+      "id": "docker",
+      "type": "cloud",
+      "label": "Local infrastructure",
+      "sublabel": "Docker Compose",
+      "tag": "dev + test support",
+      "pos": [40, 505],
+      "size": [180, 72],
+      "sources": [{ "path": "docker/dev/docker-compose.yml" }]
+    },
+    {
+      "id": "openapi",
+      "type": "external",
+      "label": "OpenAPI contract",
+      "sublabel": "sphere-api-docs.yaml",
+      "tag": "source of truth",
+      "pos": [1030, 145],
+      "size": [190, 68],
+      "sources": [{ "path": "api/docs/sphere-api-docs.yaml" }]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "SPHERE platform",
+      "wraps": ["frontend", "api", "redis", "mongo", "minizinc", "auth"]
+    },
+    {
+      "kind": "security-group",
+      "label": "Protected API boundary",
+      "wraps": ["api", "redis", "mongo", "minizinc"]
+    }
+  ],
+  "connections": [
+    { "id": "user-to-frontend", "from": "user", "to": "frontend", "label": "HTTPS", "variant": "emphasis" },
+    { "id": "frontend-to-api", "from": "frontend", "to": "api", "label": "REST / JSON", "variant": "emphasis" },
+    { "id": "auth-to-api", "from": "auth", "to": "api", "label": "authorize request", "variant": "security", "fromSide": "right", "toSide": "top" },
+    { "id": "api-to-redis", "from": "api", "to": "redis", "label": "cache read/write", "fromSide": "top", "toSide": "bottom", "labelDy": -54 },
+    { "id": "api-to-mongo", "from": "api", "to": "mongo", "label": "persist domain data", "labelDy": 53 },
+    { "id": "api-to-minizinc", "from": "api", "to": "minizinc", "label": "run optimization", "fromSide": "bottom", "toSide": "top", "variant": "dashed", "labelDy": 52 },
+    { "id": "minizinc-to-mongo", "from": "minizinc", "to": "mongo", "label": "store results", "fromSide": "top", "toSide": "bottom", "variant": "dashed", "labelDy": -70 },
+    { "id": "openapi-to-api", "from": "openapi", "to": "api", "label": "defines endpoints", "fromSide": "left", "toSide": "right", "variant": "dashed" }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Experience",
+      "items": ["React/Vite client presents the product surface", "REST/JSON connects browser interactions to the API"]
+    },
+    {
+      "dot": "emerald",
+      "title": "Application core",
+      "items": ["Express + TypeScript organizes routers, controllers, services, and repositories", "Redis accelerates repeated reads"]
+    },
+    {
+      "dot": "violet",
+      "title": "Data & analytics",
+      "items": ["MongoDB persists domain data and migration state", "MiniZinc with Gecode powers pricing optimization"]
+    },
+    {
+      "dot": "rose",
+      "title": "Trust boundaries",
+      "items": ["Authentication and permissions protect API access", "OpenAPI defines the endpoint contract", "Docker Compose supports local infrastructure"]
+    }
+  ]
+}
