@@ -1,5 +1,5 @@
 import Editor, { Monaco } from '@monaco-editor/react';
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Pricing, retrievePricingFromYaml } from 'pricing4ts';
 
@@ -17,12 +17,14 @@ import { useCacheApi } from '../../components/pricing-renderer/api/cacheApi';
 import { TEMPLATE_PETCLINIC_PRICING } from './templates/petclinic';
 import { PRICING2YAML_SNIPPETS } from './templates/snippets';
 import EditorSkeleton from '../../../core/components/skeletons/editor-skeleton';
-import type { PricingDraft } from '../../services/pricing2yaml';
+import { ensureSyntaxVersion31, parseDraftFromYaml, type PricingDraft } from '../../services/pricing2yaml';
 import ProblemsPanel from '../../components/problems-panel';
+import ErrorBoundary from '../../../core/components/error-boundary';
+import { VisualEditorUnavailable } from '../../components/visual-editor/components/VisualEditorUnavailable';
 import TemplatesMenu from '../../components/templates-menu';
 import { usePricing2YamlLinter } from '../../hooks/usePricing2YamlLinter';
 import { usePricing2YamlSnippets } from '../../hooks/usePricing2YamlSnippets';
-import { formatShortcut } from '../../services/pricing2yaml/snippets';
+import { templatesShortcutLabel } from '../../services/pricing2yaml/snippets';
 import type { LintDiagnostic, LintSeverity } from '../../services/pricing2yaml/linter';
 
 type SyntaxVersion = '3.0' | '3.1';
@@ -30,12 +32,16 @@ type SyntaxVersion = '3.0' | '3.1';
 /** Namespace under which the linter owns its markers, so it never clears anyone else's. */
 const LINTER_MARKER_OWNER = 'pricing2yaml-linter';
 
-/** Shortcut advertised next to the templates menu, taken from the catalog itself. */
-const SNIPPET_HINT_SHORTCUT = (() => {
-  const shortcut = PRICING2YAML_SNIPPETS.find(snippet => snippet.shortcut)?.shortcut;
+/** Shortcut advertised next to the templates menu. */
+const TEMPLATES_SHORTCUT = templatesShortcutLabel();
 
-  return shortcut ? formatShortcut(shortcut) : '';
-})();
+/**
+ * Plain scalars are strings to the YAML tokenizer, and Monaco keeps quick
+ * suggestions off inside strings by default — which is precisely where a
+ * top-level `feature` or `plan` is typed. Turning them on is what makes the
+ * templates suggest themselves as the user types.
+ */
+const EDITOR_QUICK_SUGGESTIONS = { other: true, comments: false, strings: true } as const;
 
 function normalizeSyntaxVersion(value?: string): SyntaxVersion {
   return value === '3.1' ? '3.1' : '3.0';
@@ -75,13 +81,36 @@ export default function EditorPage() {
   const [selectedSyntaxVersion, setSelectedSyntaxVersion] = useState<SyntaxVersion>('3.1');
 
   const { mode } = useMode();
-  const { editorValue, setEditorValue, editorMode, isDirty, setIsDirty, setPendingVisualDraft, saveDraft } = useEditorValue();
+  const { editorValue, setEditorValue, editorMode, setEditorMode, isDirty, setIsDirty, setPendingVisualDraft, saveDraft } = useEditorValue();
   const {getFromCache} = useCacheApi();
 
   const [monacoInstance, setMonacoInstance] = useState<Monaco | null>(null);
   const [codeEditor, setCodeEditor] = useState<monaco.editor.IStandaloneCodeEditor | null>(null);
   const lint = usePricing2YamlLinter(editorValue);
-  const insertSnippet = usePricing2YamlSnippets(codeEditor, monacoInstance, PRICING2YAML_SNIPPETS);
+  const [isTemplatesMenuOpen, setIsTemplatesMenuOpen] = useState(false);
+  const insertSnippet = usePricing2YamlSnippets(
+    codeEditor,
+    monacoInstance,
+    PRICING2YAML_SNIPPETS,
+    useCallback(() => setIsTemplatesMenuOpen(true), [])
+  );
+
+  // The visual editor builds its draft while rendering, so a document it cannot
+  // read would throw mid-render and blank the page. The parse is tried here
+  // first, and its failure shown as a panel instead.
+  const visualDraftError = useMemo(() => {
+    if (!editorValue) {
+      return null;
+    }
+
+    try {
+      parseDraftFromYaml(ensureSyntaxVersion31(editorValue));
+
+      return null;
+    } catch (err) {
+      return (err as Error).message.split('\n')[0].trim();
+    }
+  }, [editorValue]);
 
   const timeoutRef = useRef<any>(null);
   const requestIdRef = useRef(0);
@@ -305,13 +334,28 @@ export default function EditorPage() {
             transition={{ duration: 0.3 }}
             className="h-full w-full"
           >
-            {pricing ? (
-              <VisualPricingEditor
-                yaml={editorValue}
-                isDirty={isDirty}
-                onDraftChange={handleVisualDraftChange}
-                onSave={saveDraft}
+            {visualDraftError !== null ? (
+              <VisualEditorUnavailable
+                message={visualDraftError}
+                onBackToCode={() => setEditorMode('code')}
               />
+            ) : pricing ? (
+              <ErrorBoundary
+                resetKey={editorValue}
+                fallback={error => (
+                  <VisualEditorUnavailable
+                    message={error.message}
+                    onBackToCode={() => setEditorMode('code')}
+                  />
+                )}
+              >
+                <VisualPricingEditor
+                  yaml={editorValue}
+                  isDirty={isDirty}
+                  onDraftChange={handleVisualDraftChange}
+                  onSave={saveDraft}
+                />
+              </ErrorBoundary>
             ) : (
               <EditorSkeleton />
             )}
@@ -330,13 +374,15 @@ export default function EditorPage() {
                 <TemplatesMenu
                   snippets={PRICING2YAML_SNIPPETS}
                   onSelect={insertSnippet}
+                  isOpen={isTemplatesMenuOpen}
+                  onOpenChange={setIsTemplatesMenuOpen}
                   disabled={!codeEditor}
                 />
                 <p className="hidden text-[10px] text-white/30 lg:block">
                   Type <span className="font-mono text-white/45">feature</span>,{' '}
                   <span className="font-mono text-white/45">plan</span>… in the editor, or press{' '}
                   <kbd className="rounded border border-white/10 bg-white/5 px-1 py-0.5 font-mono text-[9px] text-white/45">
-                    {SNIPPET_HINT_SHORTCUT}
+                    {TEMPLATES_SHORTCUT}
                   </kbd>
                 </p>
               </div>
@@ -354,6 +400,7 @@ export default function EditorPage() {
                       enabled: false,
                     },
                     fontSize: 16,
+                    quickSuggestions: EDITOR_QUICK_SUGGESTIONS,
                   }}
                 />
               </div>
@@ -361,6 +408,7 @@ export default function EditorPage() {
                 diagnostics={lint.diagnostics}
                 errors={lint.errors}
                 warnings={lint.warnings}
+                parseErrors={errors}
                 onSelect={goToDiagnostic}
               />
             </div>

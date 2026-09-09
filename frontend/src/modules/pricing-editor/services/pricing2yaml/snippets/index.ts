@@ -1,9 +1,10 @@
 export * from './types';
 export * from './insert';
 export {
-  formatShortcut,
   insertSnippet,
   registerSnippetActions,
   registerSnippetCompletions,
+  registerTemplatesMenuAction,
   stripPlaceholders,
+  templatesShortcutLabel,
 } from './monaco';

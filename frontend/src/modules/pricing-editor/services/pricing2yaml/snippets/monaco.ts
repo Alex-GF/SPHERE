@@ -2,7 +2,7 @@ import type { Monaco } from '@monaco-editor/react';
 import type monaco from 'monaco-editor';
 
 import { indentBlock, planBlockInsertion, type SnippetPlacement } from './insert';
-import { resolveSnippetBody, type Pricing2YamlSnippet, type SnippetShortcut } from './types';
+import { resolveSnippetBody, type Pricing2YamlSnippet } from './types';
 
 type CodeEditor = monaco.editor.IStandaloneCodeEditor;
 
@@ -94,19 +94,17 @@ export function registerSnippetCompletions(
 }
 
 /**
- * Binds every snippet to a command, so they show up in the context menu and the
- * command palette, and the flagged ones get a keyboard shortcut.
+ * Binds every snippet to a command, so they show up in the editor context menu
+ * and in the command palette.
  */
 export function registerSnippetActions(
   editor: CodeEditor,
-  monacoInstance: Monaco,
   snippets: readonly Pricing2YamlSnippet[]
 ): monaco.IDisposable[] {
   return snippets.map((snippet, index) =>
     editor.addAction({
       id: `pricing2yaml.insert.${snippet.id}`,
       label: `Pricing2Yaml: Insert ${snippet.label}`,
-      keybindings: buildKeybindings(monacoInstance, snippet.shortcut),
       contextMenuGroupId: 'pricing2yaml',
       contextMenuOrder: index,
       run: () => insertSnippet(editor, snippet),
@@ -114,29 +112,31 @@ export function registerSnippetActions(
   );
 }
 
-/** Renders a shortcut the way the running platform spells it. */
-export function formatShortcut(shortcut: SnippetShortcut): string {
-  return isMacPlatform() ? `⌘K ${shortcut.key}` : `Ctrl+K ${shortcut.key}`;
+/**
+ * Binds `Ctrl/Cmd + K` to opening the templates menu.
+ *
+ * A single keystroke rather than a chord per template: a chord gives no visible
+ * feedback until its second key, so pressing `Ctrl/Cmd + K` on its own looks
+ * like nothing happened, and its letters collide with Monaco's own
+ * `Ctrl/Cmd + K` chords. Opening the menu shows every template with the prefix
+ * that inserts it.
+ */
+export function registerTemplatesMenuAction(
+  editor: CodeEditor,
+  monacoInstance: Monaco,
+  open: () => void
+): monaco.IDisposable {
+  return editor.addAction({
+    id: 'pricing2yaml.openTemplates',
+    label: 'Pricing2Yaml: Open templates menu',
+    keybindings: [monacoInstance.KeyMod.CtrlCmd | monacoInstance.KeyCode.KeyK],
+    run: () => open(),
+  });
 }
 
-function buildKeybindings(
-  monacoInstance: Monaco,
-  shortcut: SnippetShortcut | undefined
-): number[] | undefined {
-  if (!shortcut) {
-    return undefined;
-  }
-
-  const keyCodes = monacoInstance.KeyCode as unknown as Record<string, number | undefined>;
-  const keyCode = keyCodes[`Key${shortcut.key}`];
-
-  if (keyCode === undefined) {
-    return undefined;
-  }
-
-  const chordPrefix = monacoInstance.KeyMod.CtrlCmd | monacoInstance.KeyCode.KeyK;
-
-  return [monacoInstance.KeyMod.chord(chordPrefix, keyCode)];
+/** Label of the templates shortcut, the way the running platform spells it. */
+export function templatesShortcutLabel(): string {
+  return isMacPlatform() ? '⌘K' : 'Ctrl+K';
 }
 
 /**
