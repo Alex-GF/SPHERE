@@ -11,7 +11,7 @@ import {
   type DragEndEvent,
 } from '@dnd-kit/core';
 import type { ReactNode } from 'react';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { MdDragIndicator } from 'react-icons/md';
 
 import Iconify from '../../../core/components/iconify';
@@ -56,6 +56,36 @@ export function OrgDndProvider({
     },
     [onDragChange]
   );
+
+  // The pointer sensor only learns that a drag is over from a pointerup on the
+  // document. A button released outside the page — over the browser's own
+  // chrome, or another window — never delivers one, so the drag stays open: the
+  // row it was carrying keeps its dragging state and every later drag is
+  // refused, leaving the tree unusable until a reload. A pointer that comes
+  // back with no button held, or a window that loses focus, both mean the drag
+  // is over as far as the user is concerned, so cancel it on their behalf.
+  useEffect(() => {
+    if (!draggedId) {
+      return;
+    }
+
+    const cancelDrag = () => {
+      document.dispatchEvent(new PointerEvent('pointercancel', { bubbles: true }));
+    };
+    const cancelIfButtonReleased = (event: PointerEvent) => {
+      if (event.buttons === 0) {
+        cancelDrag();
+      }
+    };
+
+    window.addEventListener('pointermove', cancelIfButtonReleased);
+    window.addEventListener('blur', cancelDrag);
+
+    return () => {
+      window.removeEventListener('pointermove', cancelIfButtonReleased);
+      window.removeEventListener('blur', cancelDrag);
+    };
+  }, [draggedId]);
 
   const handleDragEnd = (event: DragEndEvent) => {
     const target = event.over?.id;
@@ -127,7 +157,15 @@ interface OrgRootDropZoneProps {
   isDisabled?: boolean;
 }
 
-/** Drop area that takes an organization out of its parent, back to the root. */
+/**
+ * Drop area that takes an organization out of its parent, back to the root.
+ *
+ * It floats over the viewport rather than sitting at the top of the tree: the
+ * row being dragged is often far down a scrolled page, and a target parked at
+ * the top of the document would be off-screen — with nowhere to drop, taking an
+ * organization out of its parent would be impossible. Floating also keeps the
+ * tree from jumping down by the height of this bar the moment a drag starts.
+ */
 export function OrgRootDropZone({
   label,
   isDisabled = false,
@@ -140,16 +178,18 @@ export function OrgRootDropZone({
   }
 
   return (
-    <div
-      ref={setNodeRef}
-      className={`mb-2 flex items-center justify-center gap-2 rounded-lg border border-dashed px-3 py-2 text-xs transition-colors ${
-        isOver
-          ? 'border-tp-primary bg-tp-primary/10 text-tp-primary'
-          : 'border-tp-hairline text-tp-steel'
-      }`}
-    >
-      <Iconify icon="mdi:arrow-up-left" width={14} />
-      {label}
+    <div className="pointer-events-none fixed inset-x-0 top-20 z-50 flex justify-center px-4">
+      <div
+        ref={setNodeRef}
+        className={`pointer-events-auto flex w-full max-w-2xl items-center justify-center gap-2 rounded-lg border border-dashed px-3 py-2 text-xs shadow-(--shadow-elevation-2) transition-colors ${
+          isOver
+            ? 'border-tp-primary bg-tp-primary/10 text-tp-primary'
+            : 'border-tp-hairline bg-tp-canvas text-tp-steel'
+        }`}
+      >
+        <Iconify icon="mdi:arrow-up-left" width={14} />
+        {label}
+      </div>
     </div>
   );
 }
