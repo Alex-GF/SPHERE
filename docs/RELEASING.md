@@ -16,7 +16,7 @@ on:
       - '*'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   changelog:
@@ -32,6 +32,9 @@ jobs:
         with:
           gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
 ```
+
+> [!NOTE]
+> To use `sphere-changelog` action, you *MUST* configure your workflow with at least `contents: write` in `permissions`.
 
 Read the [usage guide](https://github.com/isa-group/Pricing-Intelligence-Interpretation-Process/tree/main/.github/actions/sphere-changelog/README.md) to configure `isa-group/Pricing-Intelligence-Interpretation-Process/.github/actions/sphere-changelog@main` properly.
 

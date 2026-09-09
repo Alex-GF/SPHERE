@@ -15,7 +15,7 @@ services:
   redis:
     image: redis:7.4.2
     ports:
-      - "6379:6379"
+      - "6378:6379"
     healthcheck:
       test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
     volumes:

@@ -3,6 +3,7 @@ import RepositoryBase from '../RepositoryBase';
 import UserMongoose from './models/UserMongoose';
 import mongoose from 'mongoose';
 import crypto from 'crypto';
+import bcrypt from 'bcryptjs';
 import { escapeRegex } from '../../utils/regex';
 
 class UserRepository extends RepositoryBase {
@@ -247,6 +248,18 @@ class UserRepository extends RepositoryBase {
     await user.save();
   }
 
+  async changePassword(userId: string, currentPassword: string, newPassword: string): Promise<void> {
+    const user = await UserMongoose.findById(userId).select('+password').exec();
+    if (!user) throw new Error('NOT FOUND: User not found');
+    if (!user.password) throw new Error('CONFLICT: This account does not have a password yet');
+
+    const valid = await bcrypt.compare(currentPassword, user.password);
+    if (!valid) throw new Error('INVALID DATA: Current password is incorrect');
+
+    user.password = newPassword;
+    await user.save();
+  }
+
   async update(username: string, businessEntity: any): Promise<LeanUser | null> {
     const updatedUser = await UserMongoose.findOneAndUpdate({ username }, businessEntity, {
       new: true,
@@ -301,6 +314,51 @@ class UserRepository extends RepositoryBase {
           emailVerificationTokenHash: 1,
           emailVerificationExpiresAt: 1,
           emailVerificationSentAt: 1,
+        },
+      },
+      { new: true }
+    ).exec();
+
+    return user ? user.toObject() : null;
+  }
+
+  async setPasswordResetToken(
+    userId: string,
+    tokenHash: string,
+    expiresAt: Date,
+    sentAt: Date
+  ): Promise<LeanUser | null> {
+    const user = await UserMongoose.findByIdAndUpdate(
+      userId,
+      {
+        $set: {
+          passwordResetTokenHash: tokenHash,
+          passwordResetExpiresAt: expiresAt,
+          passwordResetSentAt: sentAt,
+        },
+      },
+      { new: true }
+    ).exec();
+
+    return user ? user.toObject() : null;
+  }
+
+  async resetPasswordByTokenHash(
+    tokenHash: string,
+    hashedPassword: string,
+    now: Date
+  ): Promise<LeanUser | null> {
+    const user = await UserMongoose.findOneAndUpdate(
+      {
+        passwordResetTokenHash: tokenHash,
+        passwordResetExpiresAt: { $gt: now },
+      },
+      {
+        $set: { password: hashedPassword },
+        $unset: {
+          passwordResetTokenHash: 1,
+          passwordResetExpiresAt: 1,
+          passwordResetSentAt: 1,
         },
       },
       { new: true }
