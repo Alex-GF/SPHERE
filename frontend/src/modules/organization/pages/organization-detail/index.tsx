@@ -799,6 +799,7 @@ export default function OrganizationDetailPage() {
               onToggle={handleTreeToggle}
               onNavigate={id => router.push(`/orgs/${id}`)}
               onCreateSubOrg={() => setCreateSubOrgModalOpen(true)}
+              onMoved={loadOrgData}
             />
           )}
 
