@@ -1,11 +1,11 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { FiChevronDown, FiFileText, FiGrid } from 'react-icons/fi';
 
 import { dropdownVariants, transitionFast } from '../../../core/utils/motion-variants';
 import {
   SECTION_ORDER,
-  formatShortcut,
+  templatesShortcutLabel,
   type Pricing2YamlSnippet,
   type SnippetSection,
 } from '../../services/pricing2yaml/snippets';
@@ -13,6 +13,8 @@ import {
 interface TemplatesMenuProps {
   snippets: readonly Pricing2YamlSnippet[];
   onSelect: (snippet: Pricing2YamlSnippet) => void;
+  isOpen: boolean;
+  onOpenChange: (isOpen: boolean) => void;
   /** Disabled until the editor is mounted and can receive the snippet. */
   disabled?: boolean;
 }
@@ -32,15 +34,17 @@ interface SnippetGroup {
 
 /**
  * Lists the available templates so they can be discovered by browsing, next to
- * the shortcut and the prefix that insert them without leaving the keyboard.
+ * the prefix that inserts them without leaving the keyboard.
  */
 export default function TemplatesMenu({
   snippets,
   onSelect,
+  isOpen,
+  onOpenChange,
   disabled = false,
 }: Readonly<TemplatesMenuProps>): JSX.Element {
-  const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!isOpen) {
@@ -49,13 +53,13 @@ export default function TemplatesMenu({
 
     const handleClickOutside = (event: MouseEvent | TouchEvent) => {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
+        onOpenChange(false);
       }
     };
 
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        setIsOpen(false);
+        onOpenChange(false);
       }
     };
 
@@ -66,6 +70,14 @@ export default function TemplatesMenu({
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('keydown', handleEscape);
     };
+  }, [isOpen, onOpenChange]);
+
+  // The menu is also opened from the editor shortcut, where the caret still
+  // holds the focus, so the first entry is focused for keyboard navigation.
+  useEffect(() => {
+    if (isOpen) {
+      focusItem(menuRef.current, 0);
+    }
   }, [isOpen]);
 
   const groups = groupSnippets(snippets);
@@ -75,13 +87,16 @@ export default function TemplatesMenu({
       <button
         type="button"
         disabled={disabled}
-        onClick={() => setIsOpen(current => !current)}
+        onClick={() => onOpenChange(!isOpen)}
         aria-expanded={isOpen}
         aria-haspopup="menu"
         className="flex cursor-pointer items-center gap-1.5 rounded-md border border-white/10 bg-white/5 px-2 py-1 text-[11px] font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
       >
         <FiGrid className="h-3.5 w-3.5" />
         Templates
+        <kbd className="rounded border border-white/10 bg-white/5 px-1 py-0.5 font-mono text-[9px] text-white/45">
+          {templatesShortcutLabel()}
+        </kbd>
         <motion.span animate={{ rotate: isOpen ? 180 : 0 }} transition={transitionFast}>
           <FiChevronDown className="h-3.5 w-3.5 text-white/40" />
         </motion.span>
@@ -90,12 +105,14 @@ export default function TemplatesMenu({
       <AnimatePresence>
         {isOpen && (
           <motion.div
+            ref={menuRef}
             variants={dropdownVariants}
             initial="hidden"
             animate="visible"
             exit="exit"
             transition={transitionFast}
             role="menu"
+            onKeyDown={event => handleMenuNavigation(event, menuRef.current)}
             className="absolute left-0 top-full z-50 mt-1 max-h-[60vh] w-[290px] overflow-y-auto rounded-lg border border-white/10 bg-tp-surface-code py-1 shadow-elevation-4"
           >
             {groups.map(group => (
@@ -115,22 +132,15 @@ export default function TemplatesMenu({
                     role="menuitem"
                     onClick={() => {
                       onSelect(snippet);
-                      setIsOpen(false);
+                      onOpenChange(false);
                     }}
-                    className="flex w-full cursor-pointer items-start gap-2 px-3 py-1.5 text-left transition-colors hover:bg-white/10"
+                    className="flex w-full cursor-pointer items-start gap-2 px-3 py-1.5 text-left transition-colors hover:bg-white/10 focus:bg-white/10 focus:outline-none"
                   >
                     {snippet.kind === 'document' && (
                       <FiFileText className="mt-0.5 h-3.5 w-3.5 shrink-0 text-white/40" />
                     )}
                     <span className="min-w-0 flex-1">
-                      <span className="flex items-center justify-between gap-2">
-                        <span className="truncate text-xs text-white/80">{snippet.label}</span>
-                        {snippet.shortcut && (
-                          <kbd className="shrink-0 rounded border border-white/10 bg-white/5 px-1.5 py-0.5 font-mono text-[9px] text-white/45">
-                            {formatShortcut(snippet.shortcut)}
-                          </kbd>
-                        )}
-                      </span>
+                      <span className="block truncate text-xs text-white/80">{snippet.label}</span>
                       <span className="mt-0.5 flex items-center gap-1.5 text-[10px] text-white/35">
                         <span className="font-mono text-white/45">{snippet.prefix}</span>
                         <span className="truncate">{snippet.detail}</span>
@@ -145,6 +155,31 @@ export default function TemplatesMenu({
       </AnimatePresence>
     </div>
   );
+}
+
+/** Moves the focus between entries, so the menu is usable from the keyboard. */
+function handleMenuNavigation(
+  event: React.KeyboardEvent<HTMLDivElement>,
+  menu: HTMLDivElement | null
+): void {
+  if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') {
+    return;
+  }
+
+  const items = listItems(menu);
+  const current = items.indexOf(document.activeElement as HTMLButtonElement);
+  const step = event.key === 'ArrowDown' ? 1 : -1;
+
+  event.preventDefault();
+  focusItem(menu, (current + step + items.length) % items.length);
+}
+
+function focusItem(menu: HTMLDivElement | null, index: number): void {
+  listItems(menu)[index]?.focus();
+}
+
+function listItems(menu: HTMLDivElement | null): HTMLButtonElement[] {
+  return menu ? [...menu.querySelectorAll<HTMLButtonElement>('[role="menuitem"]')] : [];
 }
 
 /** Orders the templates the way the document itself is laid out. */

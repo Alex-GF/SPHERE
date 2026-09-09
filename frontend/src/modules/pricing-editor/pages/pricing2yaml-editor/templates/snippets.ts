@@ -6,7 +6,12 @@ function today(): string {
   return new Date().toISOString().split('T')[0];
 }
 
-/** Skeleton of a valid pricing: the header plus one feature and one plan. */
+/**
+ * Skeleton of a valid pricing: the header plus one feature and one plan.
+ *
+ * The plan declares `features: null` because the parser requires the key to be
+ * present even when the plan overrides nothing.
+ */
 function buildMinimalPricing(): string {
   return `saasName: \${1:Your SaaS}
 syntaxVersion: "3.1"
@@ -26,12 +31,13 @@ plans:
     description: \${7:Free tier}
     price: 0.0
     unit: user/month
+    features: null
 `;
 }
 
 /**
- * The templates the editor offers, by typing their prefix, through the
- * templates menu, or with their shortcut.
+ * The templates the editor offers, by typing their prefix or through the
+ * templates menu.
  *
  * Every body is written so that the result lints clean out of the box: the
  * required fields are all there, and the conditional ones (a period for a
@@ -47,7 +53,6 @@ export const PRICING2YAML_SNIPPETS: readonly Pricing2YamlSnippet[] = [
     documentation: 'A feature the plans switch on or off. The name is mirrored into its expression.',
     kind: 'block',
     section: 'features',
-    shortcut: { key: 'F' },
     body: `\${1:featureName}:
   description: \${2:What this feature unlocks}
   valueType: BOOLEAN
@@ -73,20 +78,21 @@ export const PRICING2YAML_SNIPPETS: readonly Pricing2YamlSnippet[] = [
   expression: pricingContext['features']['\${1:integrationName}']`,
   },
   {
-    id: 'feature-payment',
-    label: 'Payment feature',
-    prefix: 'featurePayment',
-    detail: 'Feature of type PAYMENT',
+    id: 'feature-automation',
+    label: 'Automation feature',
+    prefix: 'featureAutomation',
+    detail: 'Feature of type AUTOMATION',
     documentation:
-      'Payment features are the exception to the TEXT value type: their value is the list of accepted payment methods.',
+      'Work the SaaS performs on the user behalf. `automationType` is required whenever the type is AUTOMATION.',
     kind: 'block',
     section: 'features',
-    body: `\${1:paymentMethods}:
-  description: \${2:Accepted payment methods}
-  valueType: TEXT
-  defaultValue:
-    - \${3|CARD,GATEWAY,INVOICE,ACH,WIRE_TRANSFER,OTHER|}
-  type: PAYMENT`,
+    body: `\${1:automationName}:
+  description: \${2:What this automation does}
+  valueType: BOOLEAN
+  defaultValue: false
+  type: AUTOMATION
+  automationType: \${3|BOT,FILTERING,TRACKING,TASK_AUTOMATION|}
+  expression: pricingContext['features']['\${1:automationName}']`,
   },
   {
     id: 'usage-limit',
@@ -96,7 +102,6 @@ export const PRICING2YAML_SNIPPETS: readonly Pricing2YamlSnippet[] = [
     documentation: 'A renewable limit, such as a monthly quota. Renewable limits must declare a period.',
     kind: 'block',
     section: 'usageLimits',
-    shortcut: { key: 'U' },
     body: `\${1:maxItemsPerMonth}:
   description: \${2:What this limit caps}
   valueType: NUMERIC
@@ -136,7 +141,6 @@ export const PRICING2YAML_SNIPPETS: readonly Pricing2YamlSnippet[] = [
     documentation: 'A subscription tier. Only the features and limits that differ from their default need overriding.',
     kind: 'block',
     section: 'plans',
-    shortcut: { key: 'P' },
     body: `\${1:PLAN_NAME}:
   description: \${2:What this plan is for}
   price: \${3:0.0}
@@ -157,7 +161,6 @@ export const PRICING2YAML_SNIPPETS: readonly Pricing2YamlSnippet[] = [
       'An extra sold on top of a plan. An add-on must contribute at least one feature, usage limit or usage limit extension.',
     kind: 'block',
     section: 'addOns',
-    shortcut: { key: 'A' },
     body: `\${1:addOnName}:
   description: \${2:What this add-on unlocks}
   price: \${3:5.0}
@@ -197,7 +200,6 @@ export const PRICING2YAML_SNIPPETS: readonly Pricing2YamlSnippet[] = [
     documentation:
       'The smallest valid Pricing2Yaml document: header, one feature and one plan. Replaces the whole editor contents.',
     kind: 'document',
-    shortcut: { key: 'M' },
     body: buildMinimalPricing,
   },
   {
@@ -208,7 +210,6 @@ export const PRICING2YAML_SNIPPETS: readonly Pricing2YamlSnippet[] = [
     documentation:
       'A complete pricing exercising features, usage limits, plans and add-ons. Replaces the whole editor contents.',
     kind: 'document',
-    shortcut: { key: 'E' },
     body: TEMPLATE_PETCLINIC_PRICING,
   },
 ];

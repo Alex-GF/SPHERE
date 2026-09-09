@@ -15,18 +15,6 @@ export const SECTION_ORDER: readonly SnippetSection[] = [
 export type SnippetKind = 'block' | 'document';
 
 /**
- * A shortcut, expressed as the letter that completes the `Ctrl/Cmd + K` chord.
- *
- * A chord is used rather than `Ctrl + Alt + <letter>` because the latter is
- * AltGr on Windows layouts, where it types characters (AltGr + E is `€` on a
- * Spanish keyboard) instead of triggering the command.
- */
-export interface SnippetShortcut {
-  /** Uppercase letter pressed after the chord prefix. */
-  key: string;
-}
-
-/**
  * A ready-made piece of Pricing2Yaml.
  *
  * `block` snippets describe one entry of a section (a feature, a plan, ...) and
@@ -51,7 +39,6 @@ export interface Pricing2YamlSnippet {
   section?: SnippetSection;
   /** Snippet body, or a factory when it depends on the current date. */
   body: string | (() => string);
-  shortcut?: SnippetShortcut;
 }
 
 /** Resolves the body of snippets whose contents depend on the moment of use. */
