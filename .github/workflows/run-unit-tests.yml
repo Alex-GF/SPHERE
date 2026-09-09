@@ -103,7 +103,7 @@ jobs:
           minizinc --solvers # Esto es clave: si no sale 'gecode', por eso te da el 500
 
       - name: Install pnpm
-        run: npm install -g pnpm
+        run: npm install -g pnpm@9
       
       - name: Install dependencies
         run: pnpm install
